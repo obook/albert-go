@@ -583,6 +583,27 @@ input[type="password"], textarea {
     color: var(--texte-doux);
 }
 
+/* Toast : confirmation brève, sous l'en-tête, sans masquer la saisie. */
+.toast {
+    position: fixed;
+    left: 50%;
+    top: 5.5rem;
+    z-index: 10;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    background: var(--texte);
+    color: var(--fond);
+    font-size: 0.875rem;
+    transform: translate(-50%, -0.5rem);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s, transform 0.2s;
+}
+.toast.visible {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+
 /* Réglages */
 
 .reglages {
@@ -627,7 +648,7 @@ fieldset .bouton-texte { justify-self: start; }
 .modeles { display: grid; gap: 0.25rem; }
 .modeles label {
     display: grid;
-    grid-template-columns: auto 1fr;
+    grid-template-columns: auto 1fr auto;
     gap: 0 0.625rem;
     padding: 0.5rem 0.75rem;
     border: 1px solid var(--bord);
@@ -650,7 +671,14 @@ fieldset .bouton-texte { justify-self: start; }
     outline: none;
 }
 .modeles strong { font-weight: 700; }
-.modeles span { font-size: 0.875rem; color: var(--texte-doux); }
+.modeles .alias {
+    align-self: start;
+    margin-top: 0.15rem;
+    font-family: ui-monospace, "Cascadia Mono", "DejaVu Sans Mono", monospace;
+    font-size: 0.75rem;
+    color: var(--texte-doux);
+}
+.modeles span { grid-column: 2 / 4; font-size: 0.875rem; color: var(--texte-doux); }
 
 .temperature {
     display: grid;

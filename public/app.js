@@ -136,7 +136,7 @@ function ajouter(role, texte) {
         copier.addEventListener('click', () => {
             navigator.clipboard.writeText(texte).then(() => {
                 copier.innerHTML = ICONES.copie;
-                etat('Réponse copiée.');
+                toast('Réponse copiée.');
                 setTimeout(() => { copier.innerHTML = ICONES.copier; }, 1500);
             });
         });
@@ -203,6 +203,14 @@ function ajouterAttente() {
     return () => { clearInterval(minuteur); li.remove(); };
 }
 
+let minuteurToast = null;
+function toast(texte) {
+    $('toast').textContent = texte;
+    $('toast').classList.add('visible');
+    clearTimeout(minuteurToast);
+    minuteurToast = setTimeout(() => $('toast').classList.remove('visible'), 2000);
+}
+
 function etat(texte, erreur) {
     $('etat').textContent = texte;
     $('etat').classList.toggle('erreur', !!erreur);
@@ -218,9 +226,12 @@ $('modeles').append(...Albert.MODELES.map(m => {
     radio.value = m.id;
     const nom = document.createElement('strong');
     nom.textContent = m.nom;
+    const alias = document.createElement('code');
+    alias.className = 'alias';
+    alias.textContent = m.id;
     const desc = document.createElement('span');
     desc.textContent = m.description;
-    label.append(radio, nom, desc);
+    label.append(radio, nom, alias, desc);
     return label;
 }));
 
