@@ -1,0 +1,118 @@
+# Fiche de sécurité - Albert Go
+
+**Date de l'audit :** 2026-09-18
+**Version auditée :** commit `0dc4789`
+**Référentiel :** guide ANSSI de développement sécurisé
+
+Albert Go est une page statique publiée sur Pages (Forge des communs numériques éducatifs). Chaque utilisateur y saisit sa propre clé API Albert. L'API Albert n'envoyant pas d'en-têtes CORS, la page passe par un webhook n8n hébergé par l'incubateur de l'Éducation nationale, qui relaie la requête vers Albert.
+
+```
+Navigateur (Pages) -> webhook n8n -> https://albert.api.etalab.gouv.fr
+```
+
+## Surface d'attaque
+
+### Réseau
+
+- **Destination unique de la page :** `https://n8n.incubateur.education.gouv.fr`, imposée par la CSP (`connect-src`).
+- **Destination unique du relais :** `https://albert.api.etalab.gouv.fr/v1/chat/completions` et `/v1/models`, adresses fixées dans le workflow.
+- **Clé API :** en-tête `Authorization: Bearer <clé>`, jamais dans l'URL.
+- **Aucun CDN, aucun service tiers, aucune télémétrie.** Marked, KaTeX et Mermaid sont servis depuis Pages.
+
+### Stockage dans le navigateur (`localStorage`, préfixe `albert-go.`)
+
+- Clé API, en clair.
+- Réglages : modèle, température, mémoire, thème.
+- Historique des 30 dernières questions, en clair.
+
+### Relais n8n
+
+- Deux webhooks publics, `POST .../albert-go/v1/chat/completions` et `GET .../albert-go/v1/models`.
+- Origines CORS autorisées : l'adresse Pages et `http://localhost:8642`.
+- Sauvegarde des exécutions désactivée, réussies comme échouées : n8n n'enregistre ni les en-têtes ni la clé.
+- La clé transite par l'instance : son administrateur peut techniquement la voir.
+
+## Modèle de menaces
+
+| Menace | Mesure |
+|---|---|
+| Vol de la clé par injection de script (XSS) | CSP `script-src 'self'`, aucun script en ligne. Questions insérées par `textContent`. HTML des réponses assaini avant insertion : balises actives, gestionnaires `on*`, attributs `style` et URL `javascript:` retirés. KaTeX en mode `trust: false`. Mermaid en `securityLevel: 'strict'`. |
+| Exfiltration par la page | `connect-src` limité à n8n, `img-src 'self' data:`, `form-action 'none'`, `base-uri 'none'`. |
+| Interception réseau | HTTPS de bout en bout, HSTS sur Pages, TLS 1.3 sur Pages et n8n. |
+| Détournement du relais vers un autre service | URL cible fixée dans le workflow, chemins limités à deux webhooks. |
+| Conservation de la clé côté serveur | Sauvegarde des exécutions n8n désactivée, vérifiée après un appel réel. |
+| Bibliothèque compromise | Fichiers embarqués comparés aux paquets officiels (voir audit interne). |
+| Ouverture d'un lien piégé dans une réponse | Liens ouverts avec `rel="noopener noreferrer"`. |
+
+## Audit interne
+
+Relecture du code de `public/`, du workflow `n8n/albert-proxy.json` et des bibliothèques embarquées.
+
+**Intégrité des bibliothèques.** Chaque fichier de `public/vendor/` a été comparé octet par octet à sa source officielle : Mermaid 11.16.0 et KaTeX 0.16.11 (dont `mhchem`, `auto-render` et les 20 polices) au paquet npm, Marked 17.0.1 à la version minifiée de jsDelivr. Tous sont identiques.
+
+**Vulnérabilités connues.** `npm audit` sur les trois versions embarquées :
+
+| Bibliothèque | Avis | Exploitable ici |
+|---|---|---|
+| Mermaid 11.16.0 | [GHSA-6x64-9x62-f2gx](https://github.com/advisories/GHSA-6x64-9x62-f2gx) injection CSS, [GHSA-c4c3-pg64-4m4v](https://github.com/advisories/GHSA-c4c3-pg64-4m4v) et [GHSA-3rrr-jr9j-h3q3](https://github.com/advisories/GHSA-3rrr-jr9j-h3q3) pollution de prototype, [GHSA-2v8p-3f2j-5mp7](https://github.com/advisories/GHSA-2v8p-3f2j-5mp7) et [GHSA-rhh3-jpg6-66xh](https://github.com/advisories/GHSA-rhh3-jpg6-66xh) blocage de l'onglet | Oui : le diagramme vient de la réponse du modèle, qu'une question piégée peut orienter. Corrigé en 11.17.2. |
+| KaTeX 0.16.11 | [GHSA-cg87-wmx4-v546](https://github.com/advisories/GHSA-cg87-wmx4-v546) `\htmlData` | Non : `\htmlData` n'est actif qu'avec `trust: true`, absent de la configuration. Corrigé en 0.16.21. |
+| Marked 17.0.1 | Aucun | |
+
+**Constats**
+
+| N° | Gravité | Constat | Recommandation |
+|---|---|---|---|
+| I1 | Moyenne | Mermaid 11.16.0 est concerné par cinq avis de sécurité (tableau ci-dessus). | Passer à Mermaid 11.17.2. |
+| I2 | Moyenne | Sur un poste partagé (salle informatique, CDI), la clé API reste dans `localStorage` après la fermeture de l'onglet. L'utilisateur suivant peut s'en servir. | Proposer "Ne pas mémoriser la clé" (stockage `sessionStorage`, effacé à la fermeture de l'onglet). |
+| I3 | Moyenne | L'historique des 30 dernières questions est gardé en clair dans `localStorage`. Sur un poste partagé, il est lisible par l'utilisateur suivant et peut contenir des données personnelles. | Garder l'historique en `sessionStorage`, ou l'effacer avec la clé. |
+| I4 | Faible | Le SVG produit par Mermaid est inséré sans passer par `Rendu.assainir`. Sa sûreté repose sur l'assainissement interne de Mermaid (`securityLevel: 'strict'`), visé par l'avis d'injection CSS. | Corrigé par I1. |
+| I5 | Faible | La CSP autorise `style-src 'unsafe-inline'`, exigé par KaTeX et Mermaid. Une injection CSS reste possible, sans chargement externe grâce à `img-src` et `connect-src`. | Accepter le risque tant que KaTeX et Mermaid l'exigent. |
+| I6 | Faible | KaTeX 0.16.11 est visé par un avis, non exploitable dans la configuration actuelle. | Passer à KaTeX 0.16.47, `mhchem` de la même version. |
+| I7 | Info | Le webhook `/v1/models` n'est plus appelé par la page depuis le passage aux alias fixes. | Le retirer du workflow. |
+| I8 | Info | Le workflow relaie la requête vers Albert même sans en-tête `Authorization`. | Répondre 401 directement si l'en-tête ne commence pas par `Bearer `. |
+
+## Audit externe
+
+Tests en boîte noire depuis un poste extérieur, le 2026-09-18, avec `curl` et `openssl`.
+
+**Résultats conformes**
+
+- Pages : redirection HTTP vers HTTPS (308), HSTS de deux ans, TLS 1.3, certificat valide, `Referrer-Policy: strict-origin-when-cross-origin`.
+- n8n : TLS 1.3, certificat valide, TLS 1.1 refusé.
+- Webhook : 404 sur une autre méthode, un autre chemin, une tentative de traversée (`../`) et l'adresse de test `/webhook-test/`. Un champ `url` ajouté au corps reste sans effet.
+- CORS : une origine non autorisée reçoit un `Access-Control-Allow-Origin` différent du sien, le navigateur bloque la réponse.
+- Clé absente ou invalide : l'erreur d'Albert (401) est renvoyée telle quelle, sans autre information.
+
+**Constats**
+
+| N° | Gravité | Constat | Recommandation |
+|---|---|---|---|
+| E1 | Moyenne | Le webhook n'a pas de limite de débit et reste appelable hors navigateur, où CORS ne s'applique pas. Dix requêtes consécutives sans clé et un corps de 2 Mo ont été relayés jusqu'à Albert. Un tiers peut ainsi solliciter l'instance n8n partagée. | Appliquer I8. Demander aux administrateurs de l'instance une limite de débit par adresse IP. |
+| E2 | Faible | Pages n'envoie ni `X-Frame-Options` ni CSP `frame-ancestors` (ignoré dans une balise meta). La page peut être intégrée dans le cadre d'un autre site. Ce site ne peut pas lire la clé, mais peut tromper l'utilisateur par superposition (clickjacking). | Afficher la page uniquement hors cadre (`window.top === window.self`). Pages ne permet pas d'ajouter des en-têtes HTTP (non vérifié). |
+| E3 | Faible | Pages n'envoie pas `X-Content-Type-Options: nosniff`. | Sans effet pratique ici : tous les fichiers sont servis avec leur type exact. À signaler à l'équipe de la Forge. |
+| E4 | Info | Le workflow publié dans n8n n'est pas celui du dépôt : il autorise encore `http://localhost:8000` au lieu de `http://localhost:8642`. | Réimporter `n8n/albert-proxy.json` et publier. Recontrôler après chaque modification du workflow. |
+
+## Plan d'action
+
+1. I1 et I4 : mettre Mermaid à jour en 11.17.2.
+2. E4 : réimporter le workflow du dépôt dans n8n.
+3. I2 et I3 : option "Ne pas mémoriser" pour la clé et l'historique, destinée aux postes partagés.
+4. I8 et E1 : refuser dans n8n les requêtes sans clé, et demander une limite de débit.
+5. E2 : bloquer l'affichage dans un cadre.
+6. I6 et I7 : KaTeX 0.16.47, retrait du webhook `/v1/models`.
+
+## Pratiques de développement
+
+- Aucune dépendance de construction : ni bundler, ni `npm install` pour publier.
+- Bibliothèques embarquées : versions et provenances listées dans `public/vendor/README.md`.
+- Pas de code dynamique : aucun `eval`, aucun script en ligne (interdit par la CSP).
+- Tests : `node --test` (erreurs d'API, mémoire, historique, protection des formules, URL dangereuses).
+
+## Conformité RGPD
+
+- Aucun compte, aucun cookie, aucune collecte de données par Albert Go.
+- Données transmises : questions et clé, vers le relais n8n puis vers l'API Albert (DINUM).
+- Hébergement de l'instance n8n et durée de conservation des requêtes par Albert : non vérifiés.
+- Données conservées dans le navigateur : voir I2 et I3.
+
+Pour signaler une vulnérabilité, ouvrez un ticket confidentiel sur la Forge : <https://forge.apps.education.fr/booklageolivier/albert-go/-/issues>

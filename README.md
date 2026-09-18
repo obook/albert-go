@@ -30,6 +30,8 @@ Le webhook n'accepte que deux origines : l'adresse Pages du projet et `http://lo
 
 ## Sécurité
 
+Audit interne et externe, modèle de menaces et plan d'action : [SECURITE.md](SECURITE.md).
+
 - La clé est stockée dans le `localStorage` du navigateur. Le bouton "Changer de clé" des réglages l'efface.
 - Elle part dans l'en-tête `Authorization`, jamais dans l'URL.
 - Elle transite par l'instance n8n : l'administrateur de cette instance peut techniquement la voir. Le workflow n'enregistre aucune exécution, donc aucun en-tête.
