@@ -15,19 +15,18 @@ Navigateur (Pages) -> webhook n8n -> https://albert.api.etalab.gouv.fr
 ### Réseau
 
 - **Destination unique de la page :** `https://n8n.incubateur.education.gouv.fr`, imposée par la CSP (`connect-src`).
-- **Destination unique du relais :** `https://albert.api.etalab.gouv.fr/v1/chat/completions` et `/v1/models`, adresses fixées dans le workflow.
+- **Destination unique du relais :** `https://albert.api.etalab.gouv.fr/v1/chat/completions`, adresse fixée dans le workflow.
 - **Clé API :** en-tête `Authorization: Bearer <clé>`, jamais dans l'URL.
 - **Aucun CDN, aucun service tiers, aucune télémétrie.** Marked, KaTeX et Mermaid sont servis depuis Pages.
 
-### Stockage dans le navigateur (`localStorage`, préfixe `albert-go.`)
+### Stockage dans le navigateur (préfixe `albert-go.`)
 
-- Clé API, en clair.
-- Réglages : modèle, température, mémoire, thème.
-- Historique des 30 dernières questions, en clair.
+- Clé API et historique des 30 dernières questions, en clair : dans `localStorage`, ou dans `sessionStorage` (effacé à la fermeture de l'onglet) si l'option "Poste partagé" est cochée.
+- Réglages dans `localStorage` : modèle, température, mémoire, thème, option "Poste partagé".
 
 ### Relais n8n
 
-- Deux webhooks publics, `POST .../albert-go/v1/chat/completions` et `GET .../albert-go/v1/models`.
+- Un webhook public, `POST .../albert-go/v1/chat/completions`. Une requête sans en-tête `Authorization: Bearer` reçoit un 401 sans être relayée.
 - Origines CORS autorisées : l'adresse Pages et `http://localhost:8642`.
 - Sauvegarde des exécutions désactivée, réussies comme échouées : n8n n'enregistre ni les en-têtes ni la clé.
 - La clé transite par l'instance : son administrateur peut techniquement la voir.
@@ -43,6 +42,8 @@ Navigateur (Pages) -> webhook n8n -> https://albert.api.etalab.gouv.fr
 | Conservation de la clé côté serveur | Sauvegarde des exécutions n8n désactivée, vérifiée après un appel réel. |
 | Bibliothèque compromise | Fichiers embarqués comparés aux paquets officiels (voir audit interne). |
 | Ouverture d'un lien piégé dans une réponse | Liens ouverts avec `rel="noopener noreferrer"`. |
+| Clé ou questions lues par l'utilisateur suivant d'un poste partagé | Option "Poste partagé" : clé et historique en `sessionStorage`. |
+| Intégration de la page dans le cadre d'un autre site | La page détecte le cadre et n'affiche qu'un lien vers elle-même. |
 
 ## Audit interne
 
@@ -92,14 +93,20 @@ Tests en boîte noire depuis un poste extérieur, le 2026-09-18, avec `curl` et 
 | E3 | Faible | Pages n'envoie pas `X-Content-Type-Options: nosniff`. | Sans effet pratique ici : tous les fichiers sont servis avec leur type exact. À signaler à l'équipe de la Forge. |
 | E4 | Info | Le workflow publié dans n8n n'est pas celui du dépôt : il autorise encore `http://localhost:8000` au lieu de `http://localhost:8642`. | Réimporter `n8n/albert-proxy.json` et publier. Recontrôler après chaque modification du workflow. |
 
-## Plan d'action
+## Suivi des corrections
 
-1. I1 et I4 : mettre Mermaid à jour en 11.17.2.
-2. E4 : réimporter le workflow du dépôt dans n8n.
-3. I2 et I3 : option "Ne pas mémoriser" pour la clé et l'historique, destinée aux postes partagés.
-4. I8 et E1 : refuser dans n8n les requêtes sans clé, et demander une limite de débit.
-5. E2 : bloquer l'affichage dans un cadre.
-6. I6 et I7 : KaTeX 0.16.47, retrait du webhook `/v1/models`.
+| N° | État au 2026-09-18 |
+|---|---|
+| I1, I4 | Corrigé : Mermaid 11.17.2, identique au paquet npm. `npm audit` ne signale plus de vulnérabilité. |
+| I2, I3 | Corrigé : option "Poste partagé" sur l'écran de la clé et dans les réglages. |
+| I5 | Accepté : exigé par KaTeX et Mermaid. |
+| I6 | Corrigé : KaTeX 0.16.47 et `mhchem` de la même version, identiques au paquet npm. |
+| I7 | Corrigé : webhook `/v1/models` retiré du workflow. |
+| I8 | Corrigé dans le workflow du dépôt : nœud "Clé présente ?". Effectif après réimport (E4). |
+| E1 | En partie : I8 évite de solliciter Albert sans clé. Limite de débit à demander aux administrateurs de la plateforme. |
+| E2 | Corrigé : affichage bloqué dans un cadre. |
+| E3 | Ouvert : à signaler à l'équipe de la Forge. |
+| E4 | À faire : réimporter `n8n/albert-proxy.json` dans n8n et publier. |
 
 ## Pratiques de développement
 
@@ -113,6 +120,6 @@ Tests en boîte noire depuis un poste extérieur, le 2026-09-18, avec `curl` et 
 - Aucun compte, aucun cookie, aucune collecte de données par Albert Go.
 - Données transmises : questions et clé, vers le relais n8n puis vers l'API Albert (DINUM).
 - Hébergement de l'instance n8n et durée de conservation des requêtes par Albert : non vérifiés.
-- Données conservées dans le navigateur : voir I2 et I3.
+- Données conservées dans le navigateur : clé, historique des questions et réglages, sans limite de durée sauf avec l'option "Poste partagé".
 
 Pour signaler une vulnérabilité, ouvrez un ticket confidentiel sur la Forge : <https://forge.apps.education.fr/booklageolivier/albert-go/-/issues>
