@@ -117,13 +117,6 @@ function boutonAction(icone, libelle) {
     return bouton;
 }
 
-// Les voix se chargent parfois après la page : le haut-parleur apparaît quand une voix locale arrive.
-if (typeof speechSynthesis !== 'undefined') {
-    speechSynthesis.addEventListener('voiceschanged', () => {
-        document.querySelectorAll('.lire').forEach(b => { b.hidden = !Lecture.disponible(); });
-    });
-}
-
 function ajouter(role, texte) {
     const li = document.createElement('li');
     li.className = role;
@@ -151,9 +144,13 @@ function ajouter(role, texte) {
 
         if (typeof speechSynthesis !== 'undefined') {
             const lire = boutonAction(ICONES.lire, 'Lire à voix haute');
-            lire.classList.add('lire');
-            lire.hidden = !Lecture.disponible();
-            lire.addEventListener('click', () => Lecture.basculer(lire, contenu));
+            lire.addEventListener('click', () => {
+                if (!Lecture.disponible()) {
+                    etat('Aucune voix française installée sur cet appareil. Les voix en ligne ne sont pas utilisées : elles envoient le texte à un tiers.', true);
+                    return;
+                }
+                Lecture.basculer(lire, contenu);
+            });
             lire.addEventListener('lecture-debut', () => {
                 lire.innerHTML = ICONES.arreter;
                 lire.setAttribute('aria-label', 'Arrêter la lecture');

@@ -314,7 +314,6 @@ input[type="password"], textarea {
     stroke-linejoin: round;
 }
 .bouton-action svg.plein { fill: currentColor; }
-.bouton-action[hidden] { display: none; }
 
 /* Attente de la réponse */
 
