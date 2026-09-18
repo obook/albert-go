@@ -483,6 +483,53 @@ input[type="password"], textarea {
 .envoyer.en-cours .icone-arreter { display: block; }
 
 .saisie .fleche { display: none; flex: none; width: 2.25rem; height: 2.25rem; }
+.saisie .joindre { flex: none; width: 2.25rem; height: 2.25rem; }
+
+/* Fichier glissé au-dessus de la carte. */
+.saisie.depot {
+    border-style: dashed;
+    border-color: var(--bleu);
+    background: var(--bleu-clair);
+}
+
+.piece-jointe {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    max-width: 100%;
+    margin-bottom: 0.5rem;
+    padding: 0.25rem 0.25rem 0.25rem 0.75rem;
+    border: 1px solid var(--bord);
+    border-radius: 1rem;
+    font-size: 0.8125rem;
+}
+.piece-jointe span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.piece-jointe button {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--texte-doux);
+}
+.piece-jointe button:hover { background: var(--bleu-clair); color: var(--bleu); }
+.piece-jointe svg {
+    width: 0.875rem;
+    height: 0.875rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.4;
+    stroke-linecap: round;
+}
+.piece-jointe[hidden] { display: none; }
 
 /* Écran tactile (iPad, smartphone) : pas de flèches de clavier, boutons à la place. */
 @media (pointer: coarse) {

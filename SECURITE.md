@@ -44,6 +44,8 @@ Navigateur (Pages) -> webhook n8n -> https://albert.api.etalab.gouv.fr
 | Ouverture d'un lien piégé dans une réponse | Liens ouverts avec `rel="noopener noreferrer"`. |
 | Clé ou questions lues par l'utilisateur suivant d'un poste partagé | Interrupteur d'effacement, activé par défaut : clé et historique en `sessionStorage`, effacés à la fermeture de l'onglet. |
 | Intégration de la page dans le cadre d'un autre site | La page détecte le cadre et n'affiche qu'un lien vers elle-même. |
+| Envoi d'un texte à un service de synthèse vocale en ligne | Lecture à voix haute limitée aux voix installées sur l'appareil (`localService`). |
+| Fichier joint piégé | Fichiers texte lus comme du texte (200 Ko au plus), images redessinées dans un canevas puis converties en JPEG avant envoi. Le contenu obtenu n'est affiché qu'à travers la réponse, donc assaini. |
 
 ## Audit interne
 
@@ -118,7 +120,7 @@ Tests en boîte noire depuis un poste extérieur, le 2026-09-18, avec `curl` et 
 ## Conformité RGPD
 
 - Aucun compte, aucun cookie, aucune collecte de données par Albert Go.
-- Données transmises : questions et clé, vers le relais n8n puis vers l'API Albert (DINUM).
+- Données transmises : questions, contenu des fichiers joints et clé, vers le relais n8n puis vers l'API Albert (DINUM).
 - Hébergement de l'instance n8n et durée de conservation des requêtes par Albert : non vérifiés.
 - Données conservées dans le navigateur : réglages sans limite de durée. Clé et historique des questions jusqu'à la fermeture de l'onglet par défaut, sans limite de durée si l'utilisateur désactive l'interrupteur d'effacement.
 

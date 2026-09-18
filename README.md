@@ -17,6 +17,10 @@ Navigateur -> webhook n8n -> API Albert
 
 Réglages : modèle (Medium, Large, Small, Code), température et mémoire de la conversation. Mémoire désactivée, seule la dernière question part.
 
+Fichiers joints (trombone, glisser-déposer ou Ctrl+V) : un fichier texte est lu dans le navigateur ; une image est transcrite par le modèle Medium, puis son texte part avec la question. Les PDF ne sont pas pris en charge.
+
+Sous chaque réponse : copier le texte, ou le lire à voix haute avec une voix installée sur l'appareil.
+
 Pour obtenir une clé Albert : [demande d'accès](https://albert.sites.beta.gouv.fr/access/).
 
 ## Développement

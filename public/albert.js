@@ -29,6 +29,30 @@ const Albert = {
 
     HISTORIQUE_MAX: 30,
 
+    // Modèle multimodal d'après docs/MODELES.md d'albert-atelier (non vérifié avec l'alias).
+    MODELE_VISION: 'openweight-medium',
+    CONSIGNE_IMAGE: 'Transcris fidèlement tout le texte visible dans cette image, en Markdown. '
+        + 'Écris les formules en LaTeX entre $. Si l\'image contient une figure ou un schéma, '
+        + 'décris-le en quelques phrases. Ne réponds rien d\'autre.',
+
+    // Texte d'une image, obtenu du modèle de vision.
+    transcrire(cle, dataUrl, annulation) {
+        return this.repondre(cle, {
+            model: this.MODELE_VISION,
+            temperature: 0,
+            messages: [{ role: 'user', content: [
+                { type: 'text', text: this.CONSIGNE_IMAGE },
+                { type: 'image_url', image_url: { url: dataUrl } }
+            ] }]
+        }, annulation);
+    },
+
+    // Question envoyée au modèle : texte saisi suivi du contenu du fichier joint.
+    joindre(question, piece) {
+        if (!piece) return question;
+        return (question ? question + '\n\n' : '') + 'Contenu du fichier "' + piece.nom + '" :\n\n' + piece.texte;
+    },
+
     // Position dans l'historique des questions : -1 = saisie libre, 0 = la plus récente.
     naviguer(historique, index, sens) {
         const suivant = index + (sens === 'haut' ? 1 : -1);

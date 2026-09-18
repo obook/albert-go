@@ -288,6 +288,7 @@ $('form-cle').addEventListener('submit', (e) => {
 
 $('nouvelle').addEventListener('click', () => {
     if (typeof speechSynthesis !== 'undefined') Lecture.arreter();
+    retirerPiece();
     conversation = [];
     $('fil').replaceChildren();
     etat('');
@@ -295,6 +296,105 @@ $('nouvelle').addEventListener('click', () => {
 });
 
 let annulation = null;
+
+// Panne réseau et refus CORS donnent la même TypeError : le navigateur ne dit pas lequel.
+function messageEchec(err) {
+    if (err instanceof TypeError) return 'Relais n8n injoignable, ou adresse de la page non autorisée par le relais.';
+    if (err.name === 'TimeoutError') return 'Albert ne répond pas. Réessayez.';
+    return err.message;
+}
+
+/* Fichier joint (idée reprise d'albert-atelier) : le texte obtenu part avec la question suivante. */
+
+const TEXTE_MAX = 200000;
+const EXTENSIONS_TEXTE = /\.(txt|md|csv|tsv|json|xml|html|css|js|py|tex|sql)$/i;
+let pieceJointe = null;
+let lecturePiece = null;
+
+function afficherPiece(piece, enCours) {
+    pieceJointe = enCours ? null : piece;
+    $('piece-nom').textContent = piece.nom + (enCours ? ' : lecture en cours...' : '');
+    $('piece-jointe').hidden = false;
+}
+
+function retirerPiece() {
+    if (lecturePiece) lecturePiece.abort();
+    lecturePiece = null;
+    pieceJointe = null;
+    $('piece-jointe').hidden = true;
+}
+
+// Image réduite à 1600 px et convertie en JPEG : moins lourde pour le relais et pour Albert.
+async function imageEnDataUrl(fichier) {
+    const image = await createImageBitmap(fichier);
+    const echelle = Math.min(1, 1600 / Math.max(image.width, image.height));
+    const toile = document.createElement('canvas');
+    toile.width = Math.round(image.width * echelle);
+    toile.height = Math.round(image.height * echelle);
+    const contexte = toile.getContext('2d');
+    contexte.fillStyle = '#ffffff';
+    contexte.fillRect(0, 0, toile.width, toile.height);
+    contexte.drawImage(image, 0, 0, toile.width, toile.height);
+    return toile.toDataURL('image/jpeg', 0.85);
+}
+
+async function joindreFichier(fichier) {
+    retirerPiece();
+    const image = fichier.type.startsWith('image/');
+    if (!image && !fichier.type.startsWith('text/') && !EXTENSIONS_TEXTE.test(fichier.name)) {
+        etat('Format non pris en charge : images et fichiers texte uniquement.', true);
+        return;
+    }
+    const piece = { nom: fichier.name || 'image collée', texte: '' };
+    afficherPiece(piece, true);
+    const controle = new AbortController();
+    lecturePiece = controle;
+    try {
+        if (image) {
+            etat('Lecture de l\'image par Albert...');
+            piece.texte = await Albert.transcrire(reglages.cle, await imageEnDataUrl(fichier), controle.signal);
+        } else {
+            if (fichier.size > TEXTE_MAX) throw new Error('Fichier trop long : 200 Ko au plus.');
+            piece.texte = await fichier.text();
+        }
+        if (lecturePiece !== controle) return;
+        lecturePiece = null;
+        afficherPiece(piece);
+        etat('');
+    } catch (err) {
+        if (lecturePiece !== controle) return;
+        retirerPiece();
+        if (err.name !== 'AbortError') etat(messageEchec(err), true);
+    }
+    $('saisie').focus();
+}
+
+$('joindre').addEventListener('click', () => $('fichier').click());
+$('fichier').addEventListener('change', () => {
+    const fichier = $('fichier').files[0];
+    $('fichier').value = '';
+    if (fichier) joindreFichier(fichier);
+});
+$('piece-retirer').addEventListener('click', () => { retirerPiece(); etat(''); $('saisie').focus(); });
+
+// Glisser-déposer sur la carte de saisie, et collage d'image (Ctrl+V) dans le champ.
+$('form-question').addEventListener('dragover', (e) => {
+    e.preventDefault();
+    $('form-question').classList.add('depot');
+});
+$('form-question').addEventListener('dragleave', () => $('form-question').classList.remove('depot'));
+$('form-question').addEventListener('drop', (e) => {
+    e.preventDefault();
+    $('form-question').classList.remove('depot');
+    const fichier = e.dataTransfer.files[0];
+    if (fichier) joindreFichier(fichier);
+});
+$('saisie').addEventListener('paste', (e) => {
+    const image = [...(e.clipboardData ? e.clipboardData.files : [])].find(f => f.type.startsWith('image/'));
+    if (!image) return;
+    e.preventDefault();
+    joindreFichier(image);
+});
 
 // Pendant une requête, le bouton rond passe de la flèche d'envoi au carré d'arrêt.
 function boutonEnvoi(enCours) {
@@ -340,17 +440,25 @@ $('form-question').addEventListener('submit', async (e) => {
         annulation.abort();
         return;
     }
+    if (lecturePiece) {
+        etat('Attendez la fin de la lecture du fichier.');
+        return;
+    }
     const question = $('saisie').value.trim();
-    if (!question) return;
+    const piece = pieceJointe;
+    if (!question && !piece) return;
 
-    historique = [question, ...historique.filter(q => q !== question)].slice(0, Albert.HISTORIQUE_MAX);
-    ecrire('historique', JSON.stringify(historique));
+    if (question) {
+        historique = [question, ...historique.filter(q => q !== question)].slice(0, Albert.HISTORIQUE_MAX);
+        ecrire('historique', JSON.stringify(historique));
+    }
     position = -1;
     brouillon = '';
 
-    conversation.push({ role: 'user', content: question });
-    const bulle = ajouter('user', question);
+    conversation.push({ role: 'user', content: Albert.joindre(question, piece) });
+    const bulle = ajouter('user', question + (piece ? (question ? '\n' : '') + 'Fichier joint : ' + piece.nom : ''));
     $('saisie').value = '';
+    retirerPiece();
     annulation = new AbortController();
     boutonEnvoi(true);
     const retirerAttente = ajouterAttente();
@@ -372,14 +480,9 @@ $('form-question').addEventListener('submit', async (e) => {
         bulle.remove();
         $('vide').hidden = conversation.length > 0;
         $('saisie').value = question;
-        if (err.name === 'AbortError') {
-            etat('Question annulée.');
-        } else {
-            // Panne réseau et refus CORS donnent la même TypeError : le navigateur ne dit pas lequel.
-            etat(err instanceof TypeError ? 'Relais n8n injoignable, ou adresse de la page non autorisée par le relais.'
-                : err.name === 'TimeoutError' ? 'Albert ne répond pas. Réessayez.'
-                : err.message, true);
-        }
+        if (piece) afficherPiece(piece);
+        if (err.name === 'AbortError') etat('Question annulée.');
+        else etat(messageEchec(err), true);
     } finally {
         annulation = null;
         boutonEnvoi(false);

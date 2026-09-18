@@ -14,6 +14,13 @@ test('messagesAEnvoyer : mémoire active ou non', () => {
     assert.deepStrictEqual(Albert.messagesAEnvoyer(conv, false), [{ role: 'user', content: 'c' }]);
 });
 
+test('joindre : question seule, fichier seul, les deux', () => {
+    const piece = { nom: 'notes.txt', texte: 'Ligne 1' };
+    assert.strictEqual(Albert.joindre('Résume', null), 'Résume');
+    assert.strictEqual(Albert.joindre('', piece), 'Contenu du fichier "notes.txt" :\n\nLigne 1');
+    assert.strictEqual(Albert.joindre('Résume', piece), 'Résume\n\nContenu du fichier "notes.txt" :\n\nLigne 1');
+});
+
 test('naviguer : bornes de l\'historique', () => {
     const h = ['c', 'b', 'a'];
     assert.strictEqual(Albert.naviguer(h, -1, 'haut'), 0);
