@@ -104,11 +104,11 @@ Tests en boîte noire depuis un poste extérieur, le 2026-09-18, avec `curl` et 
 | I5 | Accepté : exigé par KaTeX et Mermaid. |
 | I6 | Corrigé : KaTeX 0.16.47 et `mhchem` de la même version, identiques au paquet npm. |
 | I7 | Sans objet : le webhook `/v1/models` a été rétabli pour lister les modèles réellement disponibles, avec la même vérification de clé (I8). |
-| I8 | Corrigé dans le workflow du dépôt : nœud "Clé présente ?". Effectif après réimport (E4). |
+| I8 | Corrigé : nœud "Clé présente ?", publié. Une requête sans clé reçoit 401 (non distinguable de la réponse d'Albert depuis l'extérieur). |
 | E1 | En partie : I8 évite de solliciter Albert sans clé. Limite de débit à demander aux administrateurs de la plateforme. |
 | E2 | Corrigé : affichage bloqué dans un cadre. |
 | E3 | Ouvert : à signaler à l'équipe de la Forge. |
-| E4 | À faire : réimporter `n8n/albert-proxy.json` dans n8n et publier. |
+| E4 | Corrigé : workflow du dépôt publié. Vérifié avec `curl` : origine `http://localhost:8642` acceptée, origine tierce bloquée, `/v1/models` relayé. |
 
 ## Pratiques de développement
 
