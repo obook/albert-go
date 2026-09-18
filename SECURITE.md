@@ -21,7 +21,7 @@ Navigateur (Pages) -> webhook n8n -> https://albert.api.etalab.gouv.fr
 
 ### Stockage dans le navigateur (préfixe `albert-go.`)
 
-- Clé API et historique des 30 dernières questions, en clair : dans `localStorage`, ou dans `sessionStorage` (effacé à la fermeture de l'onglet) si l'option "Poste partagé" est cochée.
+- Clé API et historique des 30 dernières questions, en clair : dans `localStorage`, ou dans `sessionStorage` si l'option "Poste partagé" est cochée. Dans ce cas, ils sont effacés explicitement à la fermeture de l'onglet (`pagehide`), car le navigateur restaure `sessionStorage` quand on rouvre un onglet fermé. Un rechargement de la page redemande donc la clé.
 - Réglages dans `localStorage` : modèle, température, mémoire, thème, option "Poste partagé".
 
 ### Relais n8n
@@ -98,7 +98,7 @@ Tests en boîte noire depuis un poste extérieur, le 2026-09-18, avec `curl` et 
 | N° | État au 2026-09-18 |
 |---|---|
 | I1, I4 | Corrigé : Mermaid 11.17.2, identique au paquet npm. `npm audit` ne signale plus de vulnérabilité. |
-| I2, I3 | Corrigé : option "Poste partagé" sur l'écran de la clé et dans les réglages. |
+| I2, I3 | Corrigé : option "Poste partagé" sur l'écran de la clé et dans les réglages, avec effacement à la fermeture de l'onglet. |
 | I5 | Accepté : exigé par KaTeX et Mermaid. |
 | I6 | Corrigé : KaTeX 0.16.47 et `mhchem` de la même version, identiques au paquet npm. |
 | I7 | Corrigé : webhook `/v1/models` retiré du workflow. |

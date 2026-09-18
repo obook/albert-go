@@ -38,6 +38,12 @@ function ecrire(nom, valeur) {
 
 partage = lire('partage', 'non') === 'oui';
 
+// Le navigateur restaure sessionStorage quand on rouvre un onglet fermé : effacement explicite.
+// pagehide couvre aussi le rechargement, qui redemande donc la clé en mode partagé.
+window.addEventListener('pagehide', () => {
+    if (partage) SENSIBLES.forEach(nom => ecrire(nom, null));
+});
+
 // Bascule du mode partagé : les données sensibles changent de stockage.
 function changerPartage(actif) {
     const valeurs = SENSIBLES.map(nom => lire(nom, null));
