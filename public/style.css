@@ -381,6 +381,12 @@ input[type="password"], textarea {
     max-height: 12rem;
 }
 .saisie .bouton-principal { min-height: 3rem; }
+.saisie .fleche { display: none; flex: none; align-self: center; }
+
+/* Écran tactile (iPad, smartphone) : pas de flèches de clavier, boutons à la place. */
+@media (pointer: coarse) {
+    .saisie .fleche { display: grid; }
+}
 
 .statut {
     display: flex;

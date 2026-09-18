@@ -214,15 +214,23 @@ $('saisie').addEventListener('keydown', (e) => {
     const sens = e.key === 'ArrowUp' && premiereLigne ? 'haut'
         : e.key === 'ArrowDown' && derniereLigne && position >= 0 ? 'bas' : null;
     if (!sens || e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
+    if (rappeler(sens)) e.preventDefault();
+});
 
+// Boutons affichés sur écran tactile, sans flèches de clavier (style.css, pointer: coarse).
+$('question-precedente').addEventListener('click', () => { rappeler('haut'); $('saisie').focus(); });
+$('question-suivante').addEventListener('click', () => { rappeler('bas'); $('saisie').focus(); });
+
+function rappeler(sens) {
+    const champ = $('saisie');
     const nouvelle = Albert.naviguer(historique, position, sens);
-    if (nouvelle === position) return;
-    e.preventDefault();
+    if (nouvelle === position) return false;
     if (position === -1) brouillon = champ.value;
     position = nouvelle;
     champ.value = position === -1 ? brouillon : historique[position];
     champ.setSelectionRange(champ.value.length, champ.value.length);
-});
+    return true;
+}
 
 $('form-question').addEventListener('submit', async (e) => {
     e.preventDefault();

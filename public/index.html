@@ -48,13 +48,19 @@
         <form id="form-question" class="saisie">
             <label for="saisie" class="visuellement-cache">Votre question</label>
             <textarea id="saisie" rows="2" placeholder="Votre question" aria-describedby="aide-saisie"></textarea>
+            <button type="button" class="bouton-icone fleche" id="question-precedente" aria-label="Question précédente">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+            </button>
+            <button type="button" class="bouton-icone fleche" id="question-suivante" aria-label="Question suivante">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+            </button>
             <button type="submit" id="envoyer" class="bouton-principal">Envoyer</button>
         </form>
         <div class="statut">
             <button type="button" class="bouton-lien" id="resume-reglages" aria-haspopup="dialog"></button>
         </div>
         <p id="etat" class="etat" role="status"></p>
-        <p id="aide-saisie" class="avertissement">Entrée pour envoyer, Maj+Entrée pour aller à la ligne, flèches haut et bas pour rappeler une question. L'IA peut se tromper : vérifiez ses réponses.</p>
+        <p id="aide-saisie" class="avertissement">Entrée pour envoyer, Maj+Entrée pour aller à la ligne, flèches haut et bas (ou boutons ↑ ↓ sur écran tactile) pour rappeler une question. L'IA peut se tromper : vérifiez ses réponses.</p>
     </footer>
 
     <dialog id="reglages" class="reglages" aria-labelledby="titre-reglages">
