@@ -6,7 +6,7 @@ Page en ligne : https://booklageolivier.forge.apps.education.fr/albert-go/
 
 ## Fonctionnement
 
-L'API Albert n'accepte pas les appels directs depuis une page web (pas d'en-têtes CORS). La page passe donc par un webhook n8n hébergé par l'Éducation nationale, qui relaie la requête vers Albert.
+L'API Albert n'accepte pas les appels directs depuis une page web (pas d'en-têtes CORS). La page passe donc par un webhook n8n hébergé sur la plateforme n8n interministérielle, qui relaie la requête vers Albert.
 
 ```
 Navigateur -> webhook n8n -> API Albert

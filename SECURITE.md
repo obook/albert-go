@@ -4,7 +4,7 @@
 **Version auditée :** commit `0dc4789`
 **Référentiel :** guide ANSSI de développement sécurisé
 
-Albert Go est une page statique publiée sur Pages (Forge des communs numériques éducatifs). Chaque utilisateur y saisit sa propre clé API Albert. L'API Albert n'envoyant pas d'en-têtes CORS, la page passe par un webhook n8n hébergé par l'incubateur de l'Éducation nationale, qui relaie la requête vers Albert.
+Albert Go est une page statique publiée sur Pages (Forge des communs numériques éducatifs). Chaque utilisateur y saisit sa propre clé API Albert. L'API Albert n'envoyant pas d'en-têtes CORS, la page passe par un webhook n8n hébergé sur la plateforme n8n interministérielle, qui relaie la requête vers Albert.
 
 ```
 Navigateur (Pages) -> webhook n8n -> https://albert.api.etalab.gouv.fr

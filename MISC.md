@@ -2,7 +2,7 @@
 
 ## n8n sur SSPCloud (message épinglé du salon Tchap n8n)
 
-Autre possibilité d'hébergement que l'instance n8n de l'incubateur utilisée par Albert Go : une instance n8n personnelle sur SSPCloud. Texte reproduit tel que publié sur le salon, tirets longs et points de suspension remplacés par de l'ASCII.
+Autre possibilité d'hébergement que la plateforme n8n interministérielle utilisée par Albert Go : une instance n8n personnelle sur SSPCloud. Texte reproduit tel que publié sur le salon, tirets longs et points de suspension remplacés par de l'ASCII.
 
 > Bonjour,
 >
