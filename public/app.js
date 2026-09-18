@@ -88,6 +88,33 @@ function ajouter(role, texte) {
     return li;
 }
 
+// Emplacement de la réponse : trois points animés et secondes écoulées (albert-board, albert-atelier).
+function ajouterAttente() {
+    const li = document.createElement('li');
+    li.className = 'assistant';
+    li.setAttribute('aria-hidden', 'true');
+    const pastille = document.createElement('span');
+    pastille.className = 'pastille';
+    pastille.textContent = 'IA';
+    const attente = document.createElement('div');
+    attente.className = 'attente';
+    const points = document.createElement('span');
+    points.className = 'points';
+    points.append(document.createElement('span'), document.createElement('span'), document.createElement('span'));
+    const duree = document.createElement('span');
+    duree.className = 'duree';
+    attente.append(points, duree);
+    li.append(pastille, attente);
+    $('fil').append(li);
+    li.scrollIntoView({ block: 'end' });
+
+    const debut = Date.now();
+    const minuteur = setInterval(() => {
+        duree.textContent = Math.round((Date.now() - debut) / 1000) + ' s';
+    }, 1000);
+    return () => { clearInterval(minuteur); li.remove(); };
+}
+
 function etat(texte, erreur) {
     $('etat').textContent = texte;
     $('etat').classList.toggle('erreur', !!erreur);
@@ -173,11 +200,14 @@ $('nouvelle').addEventListener('click', () => {
     afficher();
 });
 
+let annulation = null;
+
 $('saisie').addEventListener('keydown', (e) => {
     const champ = $('saisie');
     if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) {
         e.preventDefault();
-        $('form-question').requestSubmit();
+        // Pendant une requête, Entrée ne doit pas déclencher le bouton Arrêter.
+        if (!annulation) $('form-question').requestSubmit();
         return;
     }
     // Les flèches ne rappellent l'historique que depuis la première ou la dernière ligne.
@@ -198,8 +228,12 @@ $('saisie').addEventListener('keydown', (e) => {
 
 $('form-question').addEventListener('submit', async (e) => {
     e.preventDefault();
+    if (annulation) {
+        annulation.abort();
+        return;
+    }
     const question = $('saisie').value.trim();
-    if (!question || $('envoyer').disabled) return;
+    if (!question) return;
 
     historique = [question, ...historique.filter(q => q !== question)].slice(0, Albert.HISTORIQUE_MAX);
     ecrire('historique', JSON.stringify(historique));
@@ -209,28 +243,38 @@ $('form-question').addEventListener('submit', async (e) => {
     conversation.push({ role: 'user', content: question });
     const bulle = ajouter('user', question);
     $('saisie').value = '';
-    $('envoyer').disabled = true;
+    annulation = new AbortController();
+    $('envoyer').textContent = 'Arrêter';
+    const retirerAttente = ajouterAttente();
     etat('Albert réfléchit...');
     try {
         const reponse = await Albert.repondre(reglages.cle, {
             model: reglages.modele,
             temperature: reglages.temperature,
             messages: Albert.messagesAEnvoyer(conversation, reglages.memoire)
-        });
+        }, annulation.signal);
+        retirerAttente();
         conversation.push({ role: 'assistant', content: reponse });
         ajouter('assistant', reponse);
         etat('');
     } catch (err) {
+        retirerAttente();
         // La question non répondue sort du fil pour pouvoir la reposer.
         conversation.pop();
         bulle.remove();
         $('vide').hidden = conversation.length > 0;
         $('saisie').value = question;
-        etat(err instanceof TypeError ? 'Relais n8n injoignable. Vérifiez la connexion.'
-            : err.name === 'TimeoutError' ? 'Albert ne répond pas. Réessayez.'
-            : err.message, true);
+        if (err.name === 'AbortError') {
+            etat('Question annulée.');
+        } else {
+            // Panne réseau et refus CORS donnent la même TypeError : le navigateur ne dit pas lequel.
+            etat(err instanceof TypeError ? 'Relais n8n injoignable, ou adresse de la page non autorisée par le relais.'
+                : err.name === 'TimeoutError' ? 'Albert ne répond pas. Réessayez.'
+                : err.message, true);
+        }
     } finally {
-        $('envoyer').disabled = false;
+        annulation = null;
+        $('envoyer').textContent = 'Envoyer';
         $('saisie').focus();
     }
 });

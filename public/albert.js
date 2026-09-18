@@ -13,12 +13,12 @@ const Albert = {
         { id: 'openweight-code', nom: 'Code', description: 'Spécialisé en programmation.' }
     ],
 
-    async repondre(cle, requete) {
+    async repondre(cle, requete, annulation) {
         const res = await fetch(this.BASE + '/chat/completions', {
             method: 'POST',
             headers: { 'Authorization': 'Bearer ' + cle, 'Content-Type': 'application/json' },
             body: JSON.stringify(requete),
-            signal: AbortSignal.timeout(this.DELAI_MS)
+            signal: AbortSignal.any([annulation, AbortSignal.timeout(this.DELAI_MS)])
         });
         const corps = await res.json().catch(() => null);
         if (!res.ok) {
