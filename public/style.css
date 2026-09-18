@@ -285,7 +285,36 @@ input[type="password"], textarea {
     border: 1px solid var(--bord);
     border-radius: 0.25rem 0.75rem 0.75rem 0.75rem;
 }
-.fil .assistant .bouton-lien { margin-top: 0.5rem; }
+.actions-reponse {
+    display: flex;
+    gap: 0.375rem;
+    margin-top: 0.625rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--bord);
+}
+.bouton-action {
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    border: 1px solid var(--bord);
+    border-radius: 0.375rem;
+    background: transparent;
+    color: var(--texte-doux);
+}
+.bouton-action:hover { border-color: var(--bleu); color: var(--bleu); }
+.bouton-action svg {
+    width: 1.0625rem;
+    height: 1.0625rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+.bouton-action svg.plein { fill: currentColor; }
+.bouton-action[hidden] { display: none; }
 
 /* Attente de la réponse */
 

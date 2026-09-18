@@ -99,6 +99,31 @@ function afficherReglages() {
     document.querySelector('input[name="modele"][value="' + reglages.modele + '"]').checked = true;
 }
 
+// Icônes fixes (jamais de contenu du modèle), insérées par innerHTML.
+const ICONES = {
+    copier: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h8"/></svg>',
+    copie: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>',
+    lire: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9Z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg>',
+    arreter: '<svg class="plein" viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="7" width="10" height="10" rx="1.5"/></svg>'
+};
+
+function boutonAction(icone, libelle) {
+    const bouton = document.createElement('button');
+    bouton.type = 'button';
+    bouton.className = 'bouton-action';
+    bouton.innerHTML = icone;
+    bouton.setAttribute('aria-label', libelle);
+    bouton.title = libelle;
+    return bouton;
+}
+
+// Les voix se chargent parfois après la page : le haut-parleur apparaît quand une voix locale arrive.
+if (typeof speechSynthesis !== 'undefined') {
+    speechSynthesis.addEventListener('voiceschanged', () => {
+        document.querySelectorAll('.lire').forEach(b => { b.hidden = !Lecture.disponible(); });
+    });
+}
+
 function ajouter(role, texte) {
     const li = document.createElement('li');
     li.className = role;
@@ -111,14 +136,36 @@ function ajouter(role, texte) {
         const contenu = document.createElement('div');
         contenu.className = 'texte rendu';
         Rendu.afficher(contenu, texte);
-        const copier = document.createElement('button');
-        copier.type = 'button';
-        copier.className = 'bouton-lien';
-        copier.textContent = 'Copier';
+        const actions = document.createElement('div');
+        actions.className = 'actions-reponse';
+
+        const copier = boutonAction(ICONES.copier, 'Copier la réponse');
         copier.addEventListener('click', () => {
-            navigator.clipboard.writeText(texte).then(() => etat('Réponse copiée.'));
+            navigator.clipboard.writeText(texte).then(() => {
+                copier.innerHTML = ICONES.copie;
+                etat('Réponse copiée.');
+                setTimeout(() => { copier.innerHTML = ICONES.copier; }, 1500);
+            });
         });
-        bloc.append(contenu, copier);
+        actions.append(copier);
+
+        if (typeof speechSynthesis !== 'undefined') {
+            const lire = boutonAction(ICONES.lire, 'Lire à voix haute');
+            lire.classList.add('lire');
+            lire.hidden = !Lecture.disponible();
+            lire.addEventListener('click', () => Lecture.basculer(lire, contenu));
+            lire.addEventListener('lecture-debut', () => {
+                lire.innerHTML = ICONES.arreter;
+                lire.setAttribute('aria-label', 'Arrêter la lecture');
+            });
+            lire.addEventListener('lecture-fin', () => {
+                lire.innerHTML = ICONES.lire;
+                lire.setAttribute('aria-label', 'Lire à voix haute');
+            });
+            actions.append(lire);
+        }
+
+        bloc.append(contenu, actions);
         li.append(pastille, bloc);
     } else {
         const qui = document.createElement('span');
@@ -240,6 +287,7 @@ $('form-cle').addEventListener('submit', (e) => {
 });
 
 $('nouvelle').addEventListener('click', () => {
+    if (typeof speechSynthesis !== 'undefined') Lecture.arreter();
     conversation = [];
     $('fil').replaceChildren();
     etat('');
