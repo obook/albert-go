@@ -158,6 +158,7 @@ $('memoire').addEventListener('change', () => changerMemoire($('memoire').checke
 $('memoire-reglage').addEventListener('change', () => changerMemoire($('memoire-reglage').checked));
 
 $('ouvrir-reglages').addEventListener('click', () => $('reglages').showModal());
+$('ouvrir-info').addEventListener('click', () => $('info').showModal());
 $('resume-reglages').addEventListener('click', () => $('reglages').showModal());
 
 $('changer-cle').addEventListener('click', () => {

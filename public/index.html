@@ -19,6 +19,9 @@
             <button type="button" class="bouton-icone" id="theme" aria-label="Passer en thème sombre">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg>
             </button>
+            <button type="button" class="bouton-icone" id="ouvrir-info" aria-label="À propos d'Albert Go">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-5M12 8h.01"/></svg>
+            </button>
             <button type="button" class="bouton-icone" id="ouvrir-reglages" aria-label="Réglages" hidden>
                 <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg>
             </button>
@@ -92,6 +95,34 @@
                 <p class="note">Une clé est enregistrée dans ce navigateur.</p>
                 <button type="button" class="bouton-texte" id="changer-cle">Changer de clé</button>
             </fieldset>
+
+            <button type="submit" class="bouton-principal">Fermer</button>
+        </form>
+    </dialog>
+
+    <dialog id="info" class="reglages info" aria-labelledby="titre-info">
+        <form method="dialog">
+            <h2 id="titre-info">À propos d'Albert Go</h2>
+            <p>Albert Go permet de discuter avec <a href="https://albert.sites.beta.gouv.fr/">Albert</a>, l'IA de l'État portée par la DINUM, avec votre propre clé API.</p>
+
+            <section>
+                <h3>Vos données</h3>
+                <ul>
+                    <li>Votre clé reste enregistrée dans ce navigateur. "Changer de clé" l'efface.</li>
+                    <li>Vos questions partent vers Albert, hébergé en France, par un relais n8n de l'Éducation nationale qui n'enregistre rien.</li>
+                    <li>Aucun compte, aucun cookie, aucune bibliothèque chargée depuis un site tiers.</li>
+                </ul>
+            </section>
+
+            <section>
+                <h3>Les réponses</h3>
+                <p>L'IA peut se tromper ou inventer. Vérifiez ses réponses avant de les utiliser, et ne lui confiez pas de données personnelles.</p>
+            </section>
+
+            <section>
+                <h3>Le projet</h3>
+                <p>Réalisé par Olivier Booklage. <a href="https://forge.apps.education.fr/booklageolivier/albert-go">Code source sur la Forge des communs numériques éducatifs</a>.</p>
+            </section>
 
             <button type="submit" class="bouton-principal">Fermer</button>
         </form>
