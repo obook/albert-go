@@ -33,6 +33,13 @@ test('conversation : filtre, alias, ordre, nom court', () => {
     assert.strictEqual(modeles[3].description, 'Modèle de conversation.');
 });
 
+test('occupation : pourcentage du contexte, borné, inconnu', () => {
+    assert.strictEqual(Albert.occupation({ total_tokens: 12800 }, 128000), 10);
+    assert.strictEqual(Albert.occupation({ prompt_tokens: 100000, completion_tokens: 40000 }, 128000), 100);
+    assert.strictEqual(Albert.occupation(null, 128000), null);
+    assert.strictEqual(Albert.occupation({ total_tokens: 10 }, null), null);
+});
+
 test('joindre : question seule, fichier seul, les deux', () => {
     const piece = { nom: 'notes.txt', texte: 'Ligne 1' };
     assert.strictEqual(Albert.joindre('Résume', null), 'Résume');

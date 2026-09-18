@@ -58,7 +58,7 @@
                     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
                 </button>
             </div>
-            <textarea id="saisie" rows="2" placeholder="Posez votre question à Albert" aria-describedby="aide-saisie"></textarea>
+            <textarea id="saisie" rows="2" placeholder="Poser votre question..." aria-describedby="aide-saisie"></textarea>
             <div class="barre">
                 <input type="file" id="fichier" accept="image/*,.txt,.md,.csv,.tsv,.json,.xml,.html,.css,.js,.py,.tex,.sql" hidden>
                 <button type="button" class="bouton-icone joindre" id="joindre" aria-label="Joindre une image ou un fichier texte" title="Joindre une image ou un fichier texte">
@@ -76,6 +76,7 @@
                     <svg class="icone-arreter" viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="7" width="10" height="10" rx="1.5"/></svg>
                 </button>
             </div>
+            <div class="jauge" aria-hidden="true"><span id="jauge-niveau"></span></div>
         </form>
         <p id="etat" class="etat" role="status"></p>
         <p id="aide-saisie" class="avertissement">Entrée pour envoyer, Maj+Entrée pour aller à la ligne, flèches haut et bas (ou chevrons sur écran tactile) pour rappeler une question. L'IA peut se tromper : vérifiez ses réponses.</p>
@@ -104,12 +105,12 @@
             </fieldset>
 
             <fieldset>
-                <legend>Mémoire</legend>
+                <legend>Contexte</legend>
                 <label class="interrupteur">
                     <input type="checkbox" id="memoire-reglage" role="switch" aria-describedby="aide-memoire">
                     <span>Envoyer toute la conversation</span>
                 </label>
-                <p id="aide-memoire" class="note">Désactivée, seule la dernière question part : l'IA n'a pas les échanges précédents.</p>
+                <p id="aide-memoire" class="note">Désactivé, seule la dernière question part : l'IA n'a pas les échanges précédents.</p>
             </fieldset>
 
             <fieldset>

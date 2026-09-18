@@ -91,10 +91,17 @@ function afficher() {
     (connecte ? $('saisie') : $('cle')).focus();
 }
 
+// Usage du dernier échange renvoyé par Albert, pour la jauge de contexte.
+let dernierUsage = null;
+
 function afficherReglages() {
     const modele = modeleActuel();
-    $('resume-reglages').textContent = modele.nom + ', température ' + reglages.temperature.toFixed(1)
-        + ', mémoire ' + (reglages.memoire ? 'activée' : 'désactivée');
+    const pourcent = Albert.occupation(dernierUsage, modele.contexte);
+    const contexte = !reglages.memoire ? 'sans contexte'
+        : 'contexte' + (pourcent === null ? ' complet' : ' ' + pourcent + ' %');
+    $('resume-reglages').textContent = modele.nom + ', ' + reglages.temperature.toFixed(1) + ', ' + contexte;
+    $('jauge-niveau').style.width = (pourcent || 0) + '%';
+    $('jauge-niveau').classList.toggle('pleine', pourcent !== null && pourcent >= 80);
     $('memoire-reglage').checked = reglages.memoire;
     $('partage-accueil').checked = partage;
     $('partage-reglage').checked = partage;
@@ -320,6 +327,8 @@ $('nouvelle').addEventListener('click', () => {
     if (typeof speechSynthesis !== 'undefined') Lecture.arreter();
     retirerPiece();
     conversation = [];
+    dernierUsage = null;
+    afficherReglages();
     $('fil').replaceChildren();
     etat('');
     afficher();
@@ -500,8 +509,10 @@ $('form-question').addEventListener('submit', async (e) => {
             messages: Albert.messagesAEnvoyer(conversation, reglages.memoire)
         }, annulation.signal);
         retirerAttente();
-        conversation.push({ role: 'assistant', content: reponse });
-        ajouter('assistant', reponse);
+        conversation.push({ role: 'assistant', content: reponse.texte });
+        ajouter('assistant', reponse.texte);
+        dernierUsage = reponse.usage;
+        afficherReglages();
         etat('');
     } catch (err) {
         retirerAttente();

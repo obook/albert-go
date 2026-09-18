@@ -8,11 +8,11 @@ const Albert = {
     // Liste de secours si /v1/models ne répond pas, d'après l'annuaire BidouIAge (1er août 2026).
     // Albert peut changer le modèle derrière un alias : la liste chargée par modeles() fait foi.
     MODELES: [
-        { id: 'openweight-medium', nom: 'Medium', reel: 'mistral-small-3-2-24b-instruct-2506', description: 'Équilibré entre qualité et rapidité. Accepte les images.' },
-        { id: 'openweight-large', nom: 'Large', reel: 'openai/gpt-oss-120b', description: 'Le plus capable, pour les raisonnements longs. Plus lent.' },
-        { id: 'openweight-small', nom: 'Small', reel: 'ministral-3-8b-instruct-2512', description: 'Le plus rapide, pour les questions simples. Accepte les images.' },
-        { id: 'openweight-code', nom: 'Code', reel: 'qwen3-coder-30b-A3b-instruct', description: 'Spécialisé en programmation.' },
-        { id: 'openweight-code-2', nom: 'Code 2', reel: 'deepseek-v4-flash', description: 'Programmation, contexte très long.' }
+        { id: 'openweight-medium', nom: 'Medium', reel: 'mistral-small-3-2-24b-instruct-2506', contexte: 128000, description: 'Équilibré entre qualité et rapidité. Accepte les images.' },
+        { id: 'openweight-large', nom: 'Large', reel: 'openai/gpt-oss-120b', contexte: 131072, description: 'Le plus capable, pour les raisonnements longs. Plus lent.' },
+        { id: 'openweight-small', nom: 'Small', reel: 'ministral-3-8b-instruct-2512', contexte: 262144, description: 'Le plus rapide, pour les questions simples. Accepte les images.' },
+        { id: 'openweight-code', nom: 'Code', reel: 'qwen3-coder-30b-A3b-instruct', contexte: 262144, description: 'Spécialisé en programmation.' },
+        { id: 'openweight-code-2', nom: 'Code 2', reel: 'deepseek-v4-flash', contexte: 393216, description: 'Programmation, contexte très long.' }
     ],
 
     async modeles(cle) {
@@ -41,7 +41,7 @@ const Albert = {
                     nom: connu ? connu.nom : this.nomCourt(alias),
                     reel: m.id,
                     description: connu ? connu.description : (vision ? 'Accepte les images.' : 'Modèle de conversation.'),
-                    contexte: m.max_context_length || null
+                    contexte: m.max_context_length || (connu && connu.contexte) || null
                 };
             })
             .sort((a, b) => {
@@ -68,7 +68,14 @@ const Albert = {
         if (!res.ok) {
             throw new Error(this.messageErreur(res.status, corps));
         }
-        return corps.choices[0].message.content;
+        return { texte: corps.choices[0].message.content, usage: corps.usage || null };
+    },
+
+    // Part de la fenêtre de contexte occupée par le dernier échange, en %, ou null si inconnue.
+    occupation(usage, contexte) {
+        if (!usage || !contexte) return null;
+        const jetons = usage.total_tokens || ((usage.prompt_tokens || 0) + (usage.completion_tokens || 0));
+        return Math.min(100, Math.round(jetons / contexte * 100));
     },
 
     HISTORIQUE_MAX: 30,
@@ -88,7 +95,7 @@ const Albert = {
                 { type: 'text', text: this.CONSIGNE_IMAGE },
                 { type: 'image_url', image_url: { url: dataUrl } }
             ] }]
-        }, annulation);
+        }, annulation).then(r => r.texte);
     },
 
     // Question envoyée au modèle : texte saisi suivi du contenu du fichier joint.

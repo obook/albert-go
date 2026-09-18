@@ -192,10 +192,9 @@ main {
     padding: 1.5rem 1rem;
 }
 
-.accueil, .chat {
-    max-width: 46rem;
-    margin: 0 auto;
-}
+.accueil, .chat { margin: 0 auto; }
+.accueil { max-width: 46rem; }
+.chat { max-width: 56rem; }
 
 .accueil {
     margin-top: 8vh;
@@ -400,19 +399,38 @@ input[type="password"], textarea {
 .saisie-zone { padding: 0.5rem 1rem 0.5rem; }
 
 .saisie, .etat, .avertissement {
-    max-width: 46rem;
+    max-width: 56rem;
     margin-left: auto;
     margin-right: auto;
 }
 
 /* Carte flottante : le contour de la carte sert d'indicateur de focus du champ. */
 .saisie {
+    position: relative;
+    overflow: hidden;
     padding: 0.75rem 0.75rem 0.5rem 1rem;
     background: var(--surface);
     border: 1px solid var(--bord);
     border-radius: 1rem;
     box-shadow: 0 2px 10px rgb(0 0 145 / 0.08);
 }
+
+/* Jauge de contexte : trait en bas de la carte, rouge au-delà de 80 %. */
+.jauge {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 3px;
+}
+.jauge span {
+    display: block;
+    width: 0;
+    height: 100%;
+    background: var(--bleu);
+    transition: width 0.4s;
+}
+.jauge span.pleine { background: var(--erreur); }
 .saisie:focus-within {
     border-color: var(--bleu);
     box-shadow: 0 0 0 3px var(--bleu-clair);

@@ -22,7 +22,7 @@ Navigateur (Pages) -> webhook n8n -> https://albert.api.etalab.gouv.fr
 ### Stockage dans le navigateur (préfixe `albert-go.`)
 
 - Clé API et historique des 30 dernières questions, en clair : dans `sessionStorage` si l'interrupteur "Effacer la clé et supprimer mes questions à la fermeture de l'onglet" est activé (par défaut), dans `localStorage` sinon. Avec l'interrupteur activé, ils sont effacés explicitement à la fermeture de l'onglet (`pagehide`), car le navigateur restaure `sessionStorage` quand on rouvre un onglet fermé. Un rechargement de la page redemande donc la clé. L'effacement n'a lieu que si la page est visible : un onglet gelé en arrière-plan (par le navigateur ou une extension comme Auto Tab Discard) garde la clé. Risque résiduel : un onglet fermé en arrière-plan (clic milieu, fermeture de la fenêtre) peut être rouvert avec sa clé par Ctrl+Maj+T.
-- Réglages dans `localStorage` : modèle, température, mémoire, thème, état de l'interrupteur d'effacement.
+- Réglages dans `localStorage` : modèle, température, contexte, thème, état de l'interrupteur d'effacement.
 
 ### Relais n8n
 
@@ -115,7 +115,7 @@ Tests en boîte noire depuis un poste extérieur, le 2026-09-18, avec `curl` et 
 - Aucune dépendance de construction : ni bundler, ni `npm install` pour publier.
 - Bibliothèques embarquées : versions et provenances listées dans `public/vendor/README.md`.
 - Pas de code dynamique : aucun `eval`, aucun script en ligne (interdit par la CSP).
-- Tests : `node --test` (erreurs d'API, mémoire, historique, protection des formules, URL dangereuses).
+- Tests : `node --test` (erreurs d'API, contexte, modèles, historique, lecture vocale, protection des formules, URL dangereuses).
 
 ## Conformité RGPD
 

@@ -15,7 +15,7 @@ Navigateur -> webhook n8n -> API Albert
 - `public/` : la page (HTML, CSS, JavaScript), publiée sur Pages. Les réponses gèrent le Markdown, les formules LaTeX et les diagrammes Mermaid, avec des bibliothèques embarquées dans `public/vendor/`.
 - `n8n/albert-proxy.json` : le workflow n8n, à importer dans une instance n8n puis publier.
 
-Réglages : modèle (liste des modèles de conversation lue sur l'API Albert, alias et nom réel au survol), température et mémoire de la conversation. Mémoire désactivée, seule la dernière question part.
+Réglages : modèle (liste des modèles de conversation lue sur l'API Albert, alias et nom réel au survol), température et contexte. Contexte désactivé, seule la dernière question part. Un trait en bas de la zone de saisie montre la part du contexte du modèle occupée par la conversation (rouge au-delà de 80 %).
 
 Fichiers joints (trombone, glisser-déposer ou Ctrl+V) : un fichier texte est lu dans le navigateur ; une image est transcrite par le modèle Medium, puis son texte part avec la question. Les PDF ne sont pas pris en charge.
 
