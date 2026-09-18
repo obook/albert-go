@@ -1,0 +1,142 @@
+{
+  "name": "albert-go - proxy CORS vers Albert",
+  "nodes": [
+    {
+      "id": "0d4c1f52-1a4e-4c3a-9f7e-2b1d6a8e0001",
+      "name": "Webhook chat",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [0, 0],
+      "webhookId": "5b0f3c1e-7d2a-4e8b-a1c9-3f6e2d4b0001",
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "albert-go/v1/chat/completions",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "https://booklageolivier.forge.apps.education.fr,http://localhost:8000"
+        }
+      }
+    },
+    {
+      "id": "0d4c1f52-1a4e-4c3a-9f7e-2b1d6a8e0002",
+      "name": "Albert chat",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [240, 0],
+      "parameters": {
+        "method": "POST",
+        "url": "https://albert.api.etalab.gouv.fr/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "={{ $json.headers.authorization }}" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify(Object.assign({}, $json.body, { stream: false, stream_options: undefined })) }}",
+        "options": {
+          "timeout": 120000,
+          "response": {
+            "response": { "fullResponse": true, "neverError": true, "responseFormat": "json" }
+          }
+        }
+      }
+    },
+    {
+      "id": "0d4c1f52-1a4e-4c3a-9f7e-2b1d6a8e0003",
+      "name": "Réponse chat",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [480, 0],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ typeof $json.body === 'string' ? $json.body : JSON.stringify($json.body) }}",
+        "options": {
+          "responseCode": "={{ $json.statusCode }}",
+          "responseHeaders": {
+            "entries": [
+              { "name": "Content-Type", "value": "application/json" },
+              { "name": "Access-Control-Allow-Origin", "value": "={{ ['https://booklageolivier.forge.apps.education.fr', 'http://localhost:8000'].includes($('Webhook chat').item.json.headers.origin) ? $('Webhook chat').item.json.headers.origin : 'null' }}" },
+              { "name": "Vary", "value": "Origin" }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "0d4c1f52-1a4e-4c3a-9f7e-2b1d6a8e0004",
+      "name": "Webhook modèles",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [0, 240],
+      "webhookId": "5b0f3c1e-7d2a-4e8b-a1c9-3f6e2d4b0002",
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "albert-go/v1/models",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "https://booklageolivier.forge.apps.education.fr,http://localhost:8000"
+        }
+      }
+    },
+    {
+      "id": "0d4c1f52-1a4e-4c3a-9f7e-2b1d6a8e0005",
+      "name": "Albert modèles",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [240, 240],
+      "parameters": {
+        "method": "GET",
+        "url": "https://albert.api.etalab.gouv.fr/v1/models",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "={{ $json.headers.authorization }}" }
+          ]
+        },
+        "options": {
+          "timeout": 30000,
+          "response": {
+            "response": { "fullResponse": true, "neverError": true, "responseFormat": "json" }
+          }
+        }
+      }
+    },
+    {
+      "id": "0d4c1f52-1a4e-4c3a-9f7e-2b1d6a8e0006",
+      "name": "Réponse modèles",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [480, 240],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ typeof $json.body === 'string' ? $json.body : JSON.stringify($json.body) }}",
+        "options": {
+          "responseCode": "={{ $json.statusCode }}",
+          "responseHeaders": {
+            "entries": [
+              { "name": "Content-Type", "value": "application/json" },
+              { "name": "Access-Control-Allow-Origin", "value": "={{ ['https://booklageolivier.forge.apps.education.fr', 'http://localhost:8000'].includes($('Webhook modèles').item.json.headers.origin) ? $('Webhook modèles').item.json.headers.origin : 'null' }}" },
+              { "name": "Vary", "value": "Origin" }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook chat": { "main": [[{ "node": "Albert chat", "type": "main", "index": 0 }]] },
+    "Albert chat": { "main": [[{ "node": "Réponse chat", "type": "main", "index": 0 }]] },
+    "Webhook modèles": { "main": [[{ "node": "Albert modèles", "type": "main", "index": 0 }]] },
+    "Albert modèles": { "main": [[{ "node": "Réponse modèles", "type": "main", "index": 0 }]] }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveDataSuccessExecution": "none",
+    "saveDataErrorExecution": "none",
+    "saveManualExecutions": false,
+    "saveExecutionProgress": false
+  },
+  "active": false
+}
