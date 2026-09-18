@@ -221,6 +221,22 @@ input[type="password"], textarea {
     padding: 0.5rem 0.75rem;
 }
 
+.case {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 400;
+    cursor: pointer;
+}
+.case input {
+    margin: 0.2rem 0 0;
+    accent-color: var(--bleu);
+}
+.accueil .case { margin-top: 0; font-weight: 400; }
+
+.hors-cadre { padding: 2rem; text-align: center; }
+
 .note {
     font-size: 0.875rem;
     color: var(--texte-doux);

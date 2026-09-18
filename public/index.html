@@ -33,11 +33,15 @@
     <main id="principal">
         <form id="form-cle" class="accueil" hidden>
             <h2>Entrez votre clé API Albert</h2>
-            <p>Elle reste enregistrée dans ce navigateur. Pour joindre Albert, elle passe par le relais n8n de la plateforme interministérielle, qui n'enregistre rien.</p>
+            <p>Votre clé reste enregistrée dans ce navigateur. Pour joindre Albert, elle passe par le relais de la plateforme interministérielle n8n qui n'enregistre rien.</p>
             <label for="cle">Clé API</label>
             <input type="password" id="cle" autocomplete="off" spellcheck="false" required>
+            <label class="case">
+                <input type="checkbox" id="partage-accueil">
+                <span>Poste partagé : oublier la clé et mes questions à la fermeture de l'onglet</span>
+            </label>
             <button type="submit" class="bouton-principal">Enregistrer la clé</button>
-            <p class="note">Pas encore de clé ? <a href="https://albert.sites.beta.gouv.fr/access/">Demander un accès à Albert</a>, réservé aux agents publics.</p>
+            <p class="note">Pas encore de clé ? <a href="https://albert.sites.beta.gouv.fr/access/" target="_blank" rel="noopener noreferrer">Demander un accès à Albert</a>, réservé aux agents publics.</p>
         </form>
 
         <section id="chat" class="chat" hidden aria-label="Conversation">
@@ -97,6 +101,10 @@
             <fieldset>
                 <legend>Clé API</legend>
                 <p class="note">Une clé est enregistrée dans ce navigateur.</p>
+                <label class="case">
+                    <input type="checkbox" id="partage-reglage">
+                    <span>Poste partagé : oublier la clé et mes questions à la fermeture de l'onglet</span>
+                </label>
                 <button type="button" class="bouton-texte" id="changer-cle">Changer de clé</button>
             </fieldset>
 
@@ -107,12 +115,12 @@
     <dialog id="info" class="reglages info" aria-labelledby="titre-info">
         <form method="dialog">
             <h2 id="titre-info">À propos d'Albert Go</h2>
-            <p>Albert Go permet de discuter avec <a href="https://albert.sites.beta.gouv.fr/">Albert</a>, l'IA de l'État portée par la DINUM, avec votre propre clé API.</p>
+            <p>Albert Go permet de discuter avec <a href="https://albert.sites.beta.gouv.fr/" target="_blank" rel="noopener noreferrer">Albert</a>, l'IA de l'État portée par la DINUM, avec votre propre clé API.</p>
 
             <section>
                 <h3>Vos données</h3>
                 <ul>
-                    <li>Votre clé reste enregistrée dans ce navigateur. "Changer de clé" l'efface.</li>
+                    <li>Votre clé reste enregistrée dans ce navigateur. "Changer de clé" l'efface. Sur un poste partagé, cochez "Poste partagé" : la clé et vos questions sont oubliées à la fermeture de l'onglet.</li>
                     <li>Vos questions partent vers Albert, hébergé en France, par un relais n8n de la plateforme interministérielle, qui n'enregistre rien.</li>
                     <li>Aucun compte, aucun cookie, aucune bibliothèque chargée depuis un site tiers.</li>
                 </ul>
@@ -125,7 +133,7 @@
 
             <section>
                 <h3>Le projet</h3>
-                <p>Réalisé par Olivier Booklage. <a href="https://forge.apps.education.fr/booklageolivier/albert-go">Code source sur la Forge des communs numériques éducatifs</a>.</p>
+                <p>Réalisé par Olivier Booklage. <a href="https://forge.apps.education.fr/booklageolivier/albert-go" target="_blank" rel="noopener noreferrer">Code source sur la Forge des communs numériques éducatifs</a>.</p>
             </section>
 
             <button type="submit" class="bouton-principal">Fermer</button>

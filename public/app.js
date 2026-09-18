@@ -2,18 +2,49 @@
 
 const $ = (id) => document.getElementById(id);
 
-// localStorage peut être indisponible (navigation privée, stockage bloqué).
+// Pages ne peut pas envoyer X-Frame-Options : dans le cadre d'un autre site, seul un lien s'affiche (SECURITE.md, E2).
+if (window.top !== window.self) {
+    const lien = document.createElement('a');
+    lien.href = location.href;
+    lien.target = '_top';
+    lien.textContent = 'Ouvrir Albert Go dans son propre onglet';
+    const p = document.createElement('p');
+    p.className = 'hors-cadre';
+    p.append(lien);
+    document.body.replaceChildren(p);
+    throw new Error('Albert Go ne s\'affiche pas dans le cadre d\'un autre site.');
+}
+
+// Poste partagé : clé et historique en sessionStorage, effacés à la fermeture de l'onglet.
+const SENSIBLES = ['cle', 'historique'];
+let partage = false;
+function stockage(nom) {
+    return partage && SENSIBLES.includes(nom) ? sessionStorage : localStorage;
+}
+
+// Le stockage peut être indisponible (navigation privée, stockage bloqué).
 function lire(nom, defaut) {
     try {
-        const v = localStorage.getItem('albert-go.' + nom);
+        const v = stockage(nom).getItem('albert-go.' + nom);
         return v === null ? defaut : v;
     } catch (e) { return defaut; }
 }
 function ecrire(nom, valeur) {
     try {
-        if (valeur === null) localStorage.removeItem('albert-go.' + nom);
-        else localStorage.setItem('albert-go.' + nom, valeur);
+        if (valeur === null) stockage(nom).removeItem('albert-go.' + nom);
+        else stockage(nom).setItem('albert-go.' + nom, valeur);
     } catch (e) { /* le réglage ne vivra que le temps de la page */ }
+}
+
+partage = lire('partage', 'non') === 'oui';
+
+// Bascule du mode partagé : les données sensibles changent de stockage.
+function changerPartage(actif) {
+    const valeurs = SENSIBLES.map(nom => lire(nom, null));
+    SENSIBLES.forEach(nom => ecrire(nom, null));
+    partage = actif;
+    ecrire('partage', actif ? 'oui' : 'non');
+    SENSIBLES.forEach((nom, i) => { if (valeurs[i] !== null) ecrire(nom, valeurs[i]); });
 }
 
 const reglages = {
@@ -51,6 +82,8 @@ function afficherReglages() {
     $('resume-reglages').textContent = modele.nom + ', température ' + reglages.temperature.toFixed(1)
         + ', mémoire ' + (reglages.memoire ? 'activée' : 'désactivée');
     $('memoire-reglage').checked = reglages.memoire;
+    $('partage-accueil').checked = partage;
+    $('partage-reglage').checked = partage;
     $('temperature').value = reglages.temperature;
     $('valeur-temperature').textContent = reglages.temperature.toFixed(1);
     document.querySelector('input[name="modele"][value="' + reglages.modele + '"]').checked = true;
@@ -158,6 +191,8 @@ $('ouvrir-reglages').addEventListener('click', () => $('reglages').showModal());
 $('ouvrir-info').addEventListener('click', () => $('info').showModal());
 $('resume-reglages').addEventListener('click', () => $('reglages').showModal());
 
+$('partage-reglage').addEventListener('change', () => changerPartage($('partage-reglage').checked));
+
 $('changer-cle').addEventListener('click', () => {
     reglages.cle = null;
     ecrire('cle', null);
@@ -185,6 +220,8 @@ $('theme').addEventListener('click', () => {
 
 $('form-cle').addEventListener('submit', (e) => {
     e.preventDefault();
+    changerPartage($('partage-accueil').checked);
+    afficherReglages();
     reglages.cle = $('cle').value.trim();
     ecrire('cle', reglages.cle);
     $('cle').value = '';
