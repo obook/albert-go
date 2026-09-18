@@ -61,8 +61,10 @@ const reglages = {
     cle: lire('cle', null),
     modele: lire('modele', Albert.MODELES[0].id),
     temperature: parseFloat(lire('temperature', '0.2')),
-    memoire: lire('memoire', 'oui') === 'oui'
+    memoire: lire('memoire', 'oui') === 'oui',
+    voixEnLigne: lire('voix-en-ligne', 'non') === 'oui'
 };
+if (typeof Lecture !== 'undefined') Lecture.enLigne = reglages.voixEnLigne;
 
 // Liste de secours tant que /v1/models n'a pas répondu (ou s'il échoue).
 let modelesDispo = Albert.MODELES;
@@ -103,6 +105,7 @@ function afficherReglages() {
     $('jauge-niveau').style.width = (pourcent || 0) + '%';
     $('jauge-niveau').classList.toggle('pleine', pourcent !== null && pourcent >= 80);
     $('memoire-reglage').checked = reglages.memoire;
+    $('voix-en-ligne').checked = reglages.voixEnLigne;
     $('partage-accueil').checked = partage;
     $('partage-reglage').checked = partage;
     $('temperature').value = reglages.temperature;
@@ -158,7 +161,8 @@ function ajouter(role, texte) {
             const lire = boutonAction(ICONES.lire, 'Lire à voix haute');
             lire.addEventListener('click', () => {
                 if (!Lecture.disponible()) {
-                    etat('Aucune voix française installée sur cet appareil. Les voix en ligne ne sont pas utilisées : elles envoient le texte à un tiers.', true);
+                    etat(Lecture.enLigne ? 'Aucune voix française disponible dans ce navigateur.'
+                        : 'Aucune voix française installée sur cet appareil. Les voix en ligne ne sont pas utilisées.', true);
                     return;
                 }
                 Lecture.basculer(lire, contenu);
@@ -279,6 +283,12 @@ $('memoire-reglage').addEventListener('change', () => {
     reglages.memoire = $('memoire-reglage').checked;
     ecrire('memoire', reglages.memoire ? 'oui' : 'non');
     afficherReglages();
+});
+
+$('voix-en-ligne').addEventListener('change', () => {
+    reglages.voixEnLigne = $('voix-en-ligne').checked;
+    Lecture.enLigne = reglages.voixEnLigne;
+    ecrire('voix-en-ligne', reglages.voixEnLigne ? 'oui' : 'non');
 });
 
 $('ouvrir-reglages').addEventListener('click', () => $('reglages').showModal());

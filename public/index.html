@@ -114,6 +114,15 @@
             </fieldset>
 
             <fieldset>
+                <legend>Lecture à voix haute</legend>
+                <label class="interrupteur">
+                    <input type="checkbox" id="voix-en-ligne" role="switch" aria-describedby="aide-voix">
+                    <span>Autoriser les voix en ligne</span>
+                </label>
+                <p id="aide-voix" class="note">Utilisées seulement si aucune voix française n'est installée sur l'appareil. Le texte lu part alors chez l'éditeur du navigateur (Google, Microsoft...).</p>
+            </fieldset>
+
+            <fieldset>
                 <legend>Clé API</legend>
                 <p class="note">Une clé est enregistrée dans ce navigateur.</p>
                 <label class="interrupteur">
@@ -138,7 +147,7 @@
                     <li>Par défaut, votre clé et vos questions sont oubliées à la fermeture de l'onglet. Sur un poste personnel, désactivez "Effacer la clé et supprimer mes questions à la fermeture de l'onglet" pour les garder dans ce navigateur. "Changer de clé" efface la clé.</li>
                     <li>Vos questions partent vers Albert, hébergé en France, par un relais n8n de la plateforme interministérielle, qui n'enregistre rien.</li>
                     <li>Un fichier texte joint est lu dans ce navigateur et envoyé avec votre question. Une image jointe est envoyée à Albert pour en extraire le texte.</li>
-                    <li>Aucun compte, aucun cookie, aucune bibliothèque chargée depuis un site tiers. La lecture à voix haute n'utilise que les voix installées sur l'appareil.</li>
+                    <li>Aucun compte, aucun cookie, aucune bibliothèque chargée depuis un site tiers. La lecture à voix haute utilise les voix installées sur l'appareil, et les voix en ligne seulement si vous les autorisez dans les réglages.</li>
                 </ul>
             </section>
 

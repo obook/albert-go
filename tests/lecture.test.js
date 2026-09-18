@@ -17,6 +17,20 @@ test('ordinaux : suffixe collé seulement', () => {
     assert.strictEqual(Lecture.ordinaux('2 de ces exemples'), '2 de ces exemples');
 });
 
+test('voix : locale d\'abord, en ligne seulement si autorisée', () => {
+    const google = { name: 'Google français', lang: 'fr-FR', localService: false };
+    const piper = { name: 'Piper', lang: 'fr-FR', localService: true };
+    global.speechSynthesis = { getVoices: () => [google] };
+    Lecture.enLigne = false;
+    assert.strictEqual(Lecture.voix(), null);
+    Lecture.enLigne = true;
+    assert.strictEqual(Lecture.voix(), google);
+    global.speechSynthesis = { getVoices: () => [google, piper] };
+    assert.strictEqual(Lecture.voix(), piper);
+    Lecture.enLigne = false;
+    delete global.speechSynthesis;
+});
+
 test('decouper : morceaux bornés, coupés aux phrases', () => {
     const morceaux = Lecture.decouper('Une phrase. Une autre phrase. Encore une.', 20);
     assert.deepStrictEqual(morceaux, ['Une phrase.', 'Une autre phrase.', 'Encore une.']);

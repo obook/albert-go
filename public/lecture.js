@@ -81,10 +81,16 @@ const Lecture = {
         return texte;
     },
 
-    // Voix installées sur le poste uniquement : les voix en ligne envoient le texte à un tiers.
+    // Voix en ligne (le texte lu part chez Google, Microsoft...) : seulement si l'utilisateur l'autorise.
+    enLigne: false,
+
+    // Voix installée sur l'appareil d'abord ; voix en ligne en dernier recours, si autorisée.
     voix() {
-        const francaises = speechSynthesis.getVoices().filter(v => v.lang.startsWith('fr') && v.localService);
-        return francaises.find(v => !/espeak/i.test(v.name)) || francaises[0] || null;
+        const francaises = speechSynthesis.getVoices().filter(v => v.lang.startsWith('fr'));
+        const locales = francaises.filter(v => v.localService);
+        const locale = locales.find(v => !/espeak/i.test(v.name)) || locales[0];
+        if (locale) return locale;
+        return this.enLigne ? francaises[0] || null : null;
     },
 
     disponible() {
