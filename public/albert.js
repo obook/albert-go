@@ -5,13 +5,57 @@ const Albert = {
     BASE: 'https://n8n.incubateur.education.gouv.fr/webhook/albert-go/v1',
     DELAI_MS: 120000,
 
-    // Alias stables de l'API Albert pour la conversation (docs/MODELES.md d'albert-atelier).
+    // Liste de secours si /v1/models ne répond pas, d'après l'annuaire BidouIAge (1er août 2026).
+    // Albert peut changer le modèle derrière un alias : la liste chargée par modeles() fait foi.
     MODELES: [
-        { id: 'openweight-medium', nom: 'Medium', description: 'Équilibré entre qualité et rapidité.' },
-        { id: 'openweight-large', nom: 'Large', description: 'Le plus capable, pour les raisonnements longs. Plus lent.' },
-        { id: 'openweight-small', nom: 'Small', description: 'Le plus rapide, pour les questions simples.' },
-        { id: 'openweight-code', nom: 'Code', description: 'Spécialisé en programmation.' }
+        { id: 'openweight-medium', nom: 'Medium', reel: 'mistral-small-3-2-24b-instruct-2506', description: 'Équilibré entre qualité et rapidité. Accepte les images.' },
+        { id: 'openweight-large', nom: 'Large', reel: 'openai/gpt-oss-120b', description: 'Le plus capable, pour les raisonnements longs. Plus lent.' },
+        { id: 'openweight-small', nom: 'Small', reel: 'ministral-3-8b-instruct-2512', description: 'Le plus rapide, pour les questions simples. Accepte les images.' },
+        { id: 'openweight-code', nom: 'Code', reel: 'qwen3-coder-30b-A3b-instruct', description: 'Spécialisé en programmation.' },
+        { id: 'openweight-code-2', nom: 'Code 2', reel: 'deepseek-v4-flash', description: 'Programmation, contexte très long.' }
     ],
+
+    async modeles(cle) {
+        const res = await fetch(this.BASE + '/models', {
+            headers: { 'Authorization': 'Bearer ' + cle },
+            signal: AbortSignal.timeout(20000)
+        });
+        const corps = await res.json().catch(() => null);
+        if (!res.ok) throw new Error(this.messageErreur(res.status, corps));
+        return this.conversation((corps && corps.data) || []);
+    },
+
+    // Modèles de conversation (avec ou sans images), sans les modèles OCR ; alias openweight-* en priorité.
+    // Le type est dans "type", ou dans "model_type" derrière certains proxys (albert-atelier).
+    conversation(liste) {
+        const ordre = this.MODELES.map(m => m.id);
+        return liste
+            .filter(m => ['text-generation', 'image-text-to-text'].includes(m.model_type || m.type))
+            .filter(m => ![m.id, ...(m.aliases || [])].some(n => /ocr/i.test(n)))
+            .map(m => {
+                const alias = (m.aliases || []).find(a => a.startsWith('openweight-')) || m.id;
+                const connu = this.MODELES.find(c => c.id === alias);
+                const vision = (m.model_type || m.type) === 'image-text-to-text';
+                return {
+                    id: alias,
+                    nom: connu ? connu.nom : this.nomCourt(alias),
+                    reel: m.id,
+                    description: connu ? connu.description : (vision ? 'Accepte les images.' : 'Modèle de conversation.'),
+                    contexte: m.max_context_length || null
+                };
+            })
+            .sort((a, b) => {
+                const ia = ordre.indexOf(a.id), ib = ordre.indexOf(b.id);
+                if (ia >= 0 || ib >= 0) return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib);
+                return a.id.localeCompare(b.id);
+            });
+    },
+
+    // openweight-code-2 -> Code 2
+    nomCourt(alias) {
+        return alias.replace(/^openweight-/, '').split('-')
+            .map(mot => mot.charAt(0).toUpperCase() + mot.slice(1)).join(' ');
+    },
 
     async repondre(cle, requete, annulation) {
         const res = await fetch(this.BASE + '/chat/completions', {
@@ -29,7 +73,7 @@ const Albert = {
 
     HISTORIQUE_MAX: 30,
 
-    // Modèle multimodal d'après docs/MODELES.md d'albert-atelier (non vérifié avec l'alias).
+    // Multimodal (image-text-to-text) d'après l'annuaire BidouIAge du 1er août 2026.
     MODELE_VISION: 'openweight-medium',
     CONSIGNE_IMAGE: 'Transcris fidèlement tout le texte visible dans cette image, en Markdown. '
         + 'Écris les formules en LaTeX entre $. Si l\'image contient une figure ou un schéma, '

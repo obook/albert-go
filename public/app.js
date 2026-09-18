@@ -63,7 +63,12 @@ const reglages = {
     temperature: parseFloat(lire('temperature', '0.2')),
     memoire: lire('memoire', 'oui') === 'oui'
 };
-if (!Albert.MODELES.some(m => m.id === reglages.modele)) reglages.modele = Albert.MODELES[0].id;
+
+// Liste de secours tant que /v1/models n'a pas répondu (ou s'il échoue).
+let modelesDispo = Albert.MODELES;
+function modeleActuel() {
+    return modelesDispo.find(m => m.id === reglages.modele) || modelesDispo[0];
+}
 
 let conversation = [];
 
@@ -83,12 +88,11 @@ function afficher() {
     $('saisie-zone').hidden = !connecte;
     $('ouvrir-reglages').hidden = !connecte;
     $('nouvelle').hidden = !connecte;
-    $('vide').hidden = conversation.length > 0;
     (connecte ? $('saisie') : $('cle')).focus();
 }
 
 function afficherReglages() {
-    const modele = Albert.MODELES.find(m => m.id === reglages.modele);
+    const modele = modeleActuel();
     $('resume-reglages').textContent = modele.nom + ', température ' + reglages.temperature.toFixed(1)
         + ', mémoire ' + (reglages.memoire ? 'activée' : 'désactivée');
     $('memoire-reglage').checked = reglages.memoire;
@@ -96,7 +100,8 @@ function afficherReglages() {
     $('partage-reglage').checked = partage;
     $('temperature').value = reglages.temperature;
     $('valeur-temperature').textContent = reglages.temperature.toFixed(1);
-    document.querySelector('input[name="modele"][value="' + reglages.modele + '"]').checked = true;
+    const radio = [...document.querySelectorAll('input[name="modele"]')].find(r => r.value === modele.id);
+    if (radio) radio.checked = true;
 }
 
 // Icônes fixes (jamais de contenu du modèle), insérées par innerHTML.
@@ -171,7 +176,6 @@ function ajouter(role, texte) {
         li.append(qui, texte);
     }
     $('fil').append(li);
-    $('vide').hidden = true;
     li.scrollIntoView({ block: 'end' });
     return li;
 }
@@ -218,22 +222,39 @@ function etat(texte, erreur) {
 
 /* Réglages */
 
-$('modeles').append(...Albert.MODELES.map(m => {
-    const label = document.createElement('label');
-    const radio = document.createElement('input');
-    radio.type = 'radio';
-    radio.name = 'modele';
-    radio.value = m.id;
-    const nom = document.createElement('strong');
-    nom.textContent = m.nom;
-    const alias = document.createElement('code');
-    alias.className = 'alias';
-    alias.textContent = m.id;
-    const desc = document.createElement('span');
-    desc.textContent = m.description;
-    label.append(radio, nom, alias, desc);
-    return label;
-}));
+function afficherModeles() {
+    $('modeles').replaceChildren(...modelesDispo.map(m => {
+        const label = document.createElement('label');
+        const radio = document.createElement('input');
+        radio.type = 'radio';
+        radio.name = 'modele';
+        radio.value = m.id;
+        const nom = document.createElement('strong');
+        nom.textContent = m.nom;
+        const alias = document.createElement('code');
+        alias.className = 'alias';
+        alias.textContent = m.id;
+        alias.title = 'Modèle réel : ' + m.reel;
+        const desc = document.createElement('span');
+        desc.textContent = m.description;
+        label.append(radio, nom, alias, desc);
+        return label;
+    }));
+}
+
+// Liste réelle des modèles par le relais n8n ; en cas d'échec, la liste de secours reste.
+async function chargerModeles() {
+    if (!reglages.cle) return;
+    try {
+        const liste = await Albert.modeles(reglages.cle);
+        if (!liste.length) return;
+        modelesDispo = liste;
+        afficherModeles();
+        afficherReglages();
+    } catch (e) { /* liste de secours */ }
+}
+
+afficherModeles();
 
 $('modeles').addEventListener('change', (e) => {
     reglages.modele = e.target.value;
@@ -292,6 +313,7 @@ $('form-cle').addEventListener('submit', (e) => {
     ecrire('cle', reglages.cle);
     $('cle').value = '';
     afficher();
+    chargerModeles();
 });
 
 $('nouvelle').addEventListener('click', () => {
@@ -473,7 +495,7 @@ $('form-question').addEventListener('submit', async (e) => {
     etat('Albert réfléchit...');
     try {
         const reponse = await Albert.repondre(reglages.cle, {
-            model: reglages.modele,
+            model: modeleActuel().id,
             temperature: reglages.temperature,
             messages: Albert.messagesAEnvoyer(conversation, reglages.memoire)
         }, annulation.signal);
@@ -486,7 +508,6 @@ $('form-question').addEventListener('submit', async (e) => {
         // La question non répondue sort du fil pour pouvoir la reposer.
         conversation.pop();
         bulle.remove();
-        $('vide').hidden = conversation.length > 0;
         $('saisie').value = question;
         if (piece) afficherPiece(piece);
         if (err.name === 'AbortError') etat('Question annulée.');
@@ -501,3 +522,4 @@ $('form-question').addEventListener('submit', async (e) => {
 afficherReglages();
 afficherTheme();
 afficher();
+chargerModeles();

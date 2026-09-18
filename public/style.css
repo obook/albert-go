@@ -230,12 +230,6 @@ input[type="password"], textarea {
     color: var(--texte-doux);
 }
 
-.vide {
-    margin-top: 20vh;
-    text-align: center;
-    font-size: 1.25rem;
-    color: var(--texte-doux);
-}
 
 /* Fil de conversation */
 
@@ -677,6 +671,7 @@ fieldset .bouton-texte { justify-self: start; }
     font-family: ui-monospace, "Cascadia Mono", "DejaVu Sans Mono", monospace;
     font-size: 0.75rem;
     color: var(--texte-doux);
+    cursor: help;
 }
 .modeles span { grid-column: 2 / 4; font-size: 0.875rem; color: var(--texte-doux); }
 
