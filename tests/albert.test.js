@@ -4,6 +4,16 @@ const { test } = require('node:test');
 const assert = require('node:assert');
 const Albert = require('../public/albert.js');
 
+test('messagesAEnvoyer : mémoire active ou non', () => {
+    const conv = [
+        { role: 'user', content: 'a' },
+        { role: 'assistant', content: 'b' },
+        { role: 'user', content: 'c' }
+    ];
+    assert.deepStrictEqual(Albert.messagesAEnvoyer(conv, true), conv);
+    assert.deepStrictEqual(Albert.messagesAEnvoyer(conv, false), [{ role: 'user', content: 'c' }]);
+});
+
 test('messageErreur : clé refusée', () => {
     assert.match(Albert.messageErreur(401, { detail: 'Not authenticated' }), /Clé refusée/);
 });

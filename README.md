@@ -15,6 +15,8 @@ Navigateur -> webhook n8n -> API Albert
 - `public/` : la page (HTML, CSS, JavaScript sans dépendance), publiée sur Pages.
 - `n8n/albert-proxy.json` : le workflow n8n, à importer dans une instance n8n puis publier.
 
+Réglages : modèle (Medium, Large, Small, Code), température et mémoire de la conversation. Mémoire désactivée, seule la dernière question part.
+
 Pour obtenir une clé Albert : [demande d'accès](https://albert.sites.beta.gouv.fr/access/).
 
 ## Développement
@@ -28,7 +30,7 @@ Le webhook n'accepte que deux origines : l'adresse Pages du projet et `http://lo
 
 ## Sécurité
 
-- La clé est stockée dans le `localStorage` du navigateur. Le bouton "Changer de clé" l'efface.
+- La clé est stockée dans le `localStorage` du navigateur. Le bouton "Changer de clé" des réglages l'efface.
 - Elle part dans l'en-tête `Authorization`, jamais dans l'URL.
 - Elle transite par l'instance n8n : l'administrateur de cette instance peut techniquement la voir. Le workflow n'enregistre aucune exécution, donc aucun en-tête.
 - Le webhook appelle uniquement l'API Albert, dont l'adresse est fixée dans le workflow.

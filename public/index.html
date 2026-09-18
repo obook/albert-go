@@ -7,43 +7,94 @@
           content="default-src 'self'; connect-src https://n8n.incubateur.education.gouv.fr; base-uri 'none'; form-action 'none'">
     <title>Albert Chat</title>
     <link rel="stylesheet" href="style.css">
+    <script src="theme.js"></script>
 </head>
 <body>
-    <header>
-        <h1>Albert Chat</h1>
-        <div id="outils" hidden>
-            <label for="modele">Modèle</label>
-            <select id="modele"></select>
-            <button type="button" id="nouvelle">Nouvelle conversation</button>
-            <button type="button" id="changer-cle">Changer de clé</button>
+    <header class="entete">
+        <h1 class="marque">Albert Cha<span class="rouge">t</span></h1>
+        <p class="sous-titre">Discuter avec l'IA de l'État</p>
+        <div class="actions">
+            <button type="button" class="bouton-texte" id="nouvelle" hidden>Nouvelle conversation</button>
+            <button type="button" class="bouton-icone" id="theme" aria-label="Passer en thème sombre">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg>
+            </button>
+            <button type="button" class="bouton-icone" id="ouvrir-reglages" aria-label="Réglages" hidden>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg>
+            </button>
         </div>
     </header>
 
-    <main>
-        <form id="form-cle" hidden>
-            <h2>Votre clé API Albert</h2>
-            <p>La clé reste dans ce navigateur. Elle passe par le relais n8n de l'Éducation nationale pour joindre Albert, qui n'accepte pas les appels directs depuis une page web.</p>
+    <main id="principal">
+        <form id="form-cle" class="accueil" hidden>
+            <h2>Entrez votre clé API Albert</h2>
+            <p>Elle reste enregistrée dans ce navigateur. Pour joindre Albert, elle passe par le relais n8n de l'Éducation nationale, qui n'enregistre rien.</p>
             <label for="cle">Clé API</label>
-            <input type="password" id="cle" autocomplete="off" required>
-            <button type="submit">Enregistrer</button>
-            <p><a href="https://albert.sites.beta.gouv.fr/access/">Demander une clé Albert</a></p>
+            <input type="password" id="cle" autocomplete="off" spellcheck="false" required>
+            <button type="submit" class="bouton-principal">Enregistrer la clé</button>
+            <p class="note">Pas encore de clé ? <a href="https://albert.sites.beta.gouv.fr/access/">Demander un accès à Albert</a>, réservé aux agents publics.</p>
         </form>
 
-        <section id="chat" hidden aria-label="Conversation">
-            <ol id="fil" role="log" aria-live="polite"></ol>
-            <p id="etat" role="status"></p>
-            <form id="form-question">
-                <label for="saisie">Votre question</label>
-                <textarea id="saisie" rows="3" required></textarea>
-                <p class="aide">Entrée pour envoyer, Maj+Entrée pour aller à la ligne.</p>
-                <button type="submit" id="envoyer">Envoyer</button>
-            </form>
+        <section id="chat" class="chat" hidden aria-label="Conversation">
+            <p id="vide" class="vide">Posez votre première question.</p>
+            <ol id="fil" class="fil" role="log" aria-live="polite"></ol>
         </section>
     </main>
 
-    <footer>
-        <p>Les réponses de l'IA peuvent contenir des erreurs. Vérifiez-les.</p>
+    <footer id="saisie-zone" class="saisie-zone" hidden>
+        <form id="form-question" class="saisie">
+            <label for="saisie" class="visuellement-cache">Votre question</label>
+            <textarea id="saisie" rows="2" placeholder="Votre question" required></textarea>
+            <button type="submit" id="envoyer" class="bouton-principal">Envoyer</button>
+        </form>
+        <div class="statut">
+            <label class="interrupteur">
+                <input type="checkbox" id="memoire" role="switch">
+                <span>Mémoire de la conversation</span>
+            </label>
+            <button type="button" class="bouton-lien" id="resume-reglages"></button>
+        </div>
+        <p id="etat" class="etat" role="status"></p>
+        <p class="avertissement">L'IA peut se tromper. Vérifiez ses réponses.</p>
     </footer>
+
+    <dialog id="reglages" class="reglages" aria-labelledby="titre-reglages">
+        <form method="dialog">
+            <h2 id="titre-reglages">Réglages</h2>
+
+            <fieldset>
+                <legend>Modèle</legend>
+                <div id="modeles" class="modeles"></div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Température</legend>
+                <div class="temperature">
+                    <span aria-hidden="true">Précis</span>
+                    <input type="range" id="temperature" min="0" max="1" step="0.1" aria-describedby="aide-temperature">
+                    <span aria-hidden="true">Créatif</span>
+                    <output id="valeur-temperature" for="temperature"></output>
+                </div>
+                <p id="aide-temperature" class="note">Bas : réponses stables et factuelles. Haut : réponses plus variées.</p>
+            </fieldset>
+
+            <fieldset>
+                <legend>Mémoire</legend>
+                <label class="interrupteur">
+                    <input type="checkbox" id="memoire-reglage" role="switch" aria-describedby="aide-memoire">
+                    <span>Envoyer toute la conversation</span>
+                </label>
+                <p id="aide-memoire" class="note">Désactivée, seule la dernière question part : l'IA ne se souvient pas des échanges précédents.</p>
+            </fieldset>
+
+            <fieldset>
+                <legend>Clé API</legend>
+                <p class="note">Une clé est enregistrée dans ce navigateur.</p>
+                <button type="button" class="bouton-texte" id="changer-cle">Changer de clé</button>
+            </fieldset>
+
+            <button type="submit" class="bouton-principal">Fermer</button>
+        </form>
+    </dialog>
 
     <script src="albert.js"></script>
     <script src="app.js"></script>
