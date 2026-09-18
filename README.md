@@ -32,7 +32,7 @@ Le webhook n'accepte que deux origines : l'adresse Pages du projet et `http://lo
 
 Audit interne et externe, modèle de menaces et plan d'action : [SECURITE.md](SECURITE.md).
 
-- La clé est stockée dans le `localStorage` du navigateur. Le bouton "Changer de clé" des réglages l'efface. Avec l'option "Poste partagé", la clé et l'historique des questions sont oubliés à la fermeture de l'onglet.
+- Par défaut (option "Poste partagé" cochée), la clé et l'historique des questions sont gardés dans `sessionStorage` et effacés à la fermeture de l'onglet. Option décochée, ils restent dans `localStorage`. Le bouton "Changer de clé" des réglages efface la clé.
 - Elle part dans l'en-tête `Authorization`, jamais dans l'URL.
 - Elle transite par l'instance n8n : l'administrateur de cette instance peut techniquement la voir. Le workflow n'enregistre aucune exécution, donc aucun en-tête.
 - Le webhook appelle uniquement l'API Albert, dont l'adresse est fixée dans le workflow.

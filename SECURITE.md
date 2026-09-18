@@ -21,7 +21,7 @@ Navigateur (Pages) -> webhook n8n -> https://albert.api.etalab.gouv.fr
 
 ### Stockage dans le navigateur (préfixe `albert-go.`)
 
-- Clé API et historique des 30 dernières questions, en clair : dans `localStorage`, ou dans `sessionStorage` si l'option "Poste partagé" est cochée. Dans ce cas, ils sont effacés explicitement à la fermeture de l'onglet (`pagehide`), car le navigateur restaure `sessionStorage` quand on rouvre un onglet fermé. Un rechargement de la page redemande donc la clé.
+- Clé API et historique des 30 dernières questions, en clair : dans `sessionStorage` si l'option "Poste partagé" est cochée (par défaut), dans `localStorage` sinon. Avec l'option, ils sont effacés explicitement à la fermeture de l'onglet (`pagehide`), car le navigateur restaure `sessionStorage` quand on rouvre un onglet fermé. Un rechargement de la page redemande donc la clé.
 - Réglages dans `localStorage` : modèle, température, mémoire, thème, option "Poste partagé".
 
 ### Relais n8n
@@ -42,7 +42,7 @@ Navigateur (Pages) -> webhook n8n -> https://albert.api.etalab.gouv.fr
 | Conservation de la clé côté serveur | Sauvegarde des exécutions n8n désactivée, vérifiée après un appel réel. |
 | Bibliothèque compromise | Fichiers embarqués comparés aux paquets officiels (voir audit interne). |
 | Ouverture d'un lien piégé dans une réponse | Liens ouverts avec `rel="noopener noreferrer"`. |
-| Clé ou questions lues par l'utilisateur suivant d'un poste partagé | Option "Poste partagé" : clé et historique en `sessionStorage`. |
+| Clé ou questions lues par l'utilisateur suivant d'un poste partagé | Option "Poste partagé", cochée par défaut : clé et historique en `sessionStorage`, effacés à la fermeture de l'onglet. |
 | Intégration de la page dans le cadre d'un autre site | La page détecte le cadre et n'affiche qu'un lien vers elle-même. |
 
 ## Audit interne
@@ -98,7 +98,7 @@ Tests en boîte noire depuis un poste extérieur, le 2026-09-18, avec `curl` et 
 | N° | État au 2026-09-18 |
 |---|---|
 | I1, I4 | Corrigé : Mermaid 11.17.2, identique au paquet npm. `npm audit` ne signale plus de vulnérabilité. |
-| I2, I3 | Corrigé : option "Poste partagé" sur l'écran de la clé et dans les réglages, avec effacement à la fermeture de l'onglet. |
+| I2, I3 | Corrigé : option "Poste partagé", cochée par défaut, sur l'écran de la clé et dans les réglages, avec effacement à la fermeture de l'onglet. |
 | I5 | Accepté : exigé par KaTeX et Mermaid. |
 | I6 | Corrigé : KaTeX 0.16.47 et `mhchem` de la même version, identiques au paquet npm. |
 | I7 | Corrigé : webhook `/v1/models` retiré du workflow. |
@@ -120,6 +120,6 @@ Tests en boîte noire depuis un poste extérieur, le 2026-09-18, avec `curl` et 
 - Aucun compte, aucun cookie, aucune collecte de données par Albert Go.
 - Données transmises : questions et clé, vers le relais n8n puis vers l'API Albert (DINUM).
 - Hébergement de l'instance n8n et durée de conservation des requêtes par Albert : non vérifiés.
-- Données conservées dans le navigateur : clé, historique des questions et réglages, sans limite de durée sauf avec l'option "Poste partagé".
+- Données conservées dans le navigateur : réglages sans limite de durée. Clé et historique des questions jusqu'à la fermeture de l'onglet par défaut, sans limite de durée si l'utilisateur décoche "Poste partagé".
 
 Pour signaler une vulnérabilité, ouvrez un ticket confidentiel sur la Forge : <https://forge.apps.education.fr/booklageolivier/albert-go/-/issues>

@@ -36,7 +36,10 @@ function ecrire(nom, valeur) {
     } catch (e) { /* le réglage ne vivra que le temps de la page */ }
 }
 
-partage = lire('partage', 'non') === 'oui';
+// Par défaut, effacement à la fermeture : l'utilisateur d'un poste personnel décoche.
+partage = lire('partage', 'oui') === 'oui';
+// Clé enregistrée avant que l'option soit cochée par défaut : ne pas la laisser dans localStorage.
+if (partage) SENSIBLES.forEach(nom => { try { localStorage.removeItem('albert-go.' + nom); } catch (e) { /* stockage bloqué */ } });
 
 // Le navigateur restaure sessionStorage quand on rouvre un onglet fermé : effacement explicite.
 // pagehide couvre aussi le rechargement, qui redemande donc la clé en mode partagé.
