@@ -42,9 +42,10 @@ partage = lire('partage', 'oui') === 'oui';
 if (partage) SENSIBLES.forEach(nom => { try { localStorage.removeItem('albert-go.' + nom); } catch (e) { /* stockage bloqué */ } });
 
 // Le navigateur restaure sessionStorage quand on rouvre un onglet fermé : effacement explicite.
+// Page masquée : probablement un onglet gelé par le navigateur ou une extension, la clé reste.
 // pagehide couvre aussi le rechargement, qui redemande donc la clé en mode partagé.
 window.addEventListener('pagehide', () => {
-    if (partage) SENSIBLES.forEach(nom => ecrire(nom, null));
+    if (partage && document.visibilityState === 'visible') SENSIBLES.forEach(nom => ecrire(nom, null));
 });
 
 // Bascule du mode partagé : les données sensibles changent de stockage.
