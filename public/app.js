@@ -161,8 +161,8 @@ function ajouter(role, texte) {
             const lire = boutonAction(ICONES.lire, 'Lire à voix haute');
             lire.addEventListener('click', () => {
                 if (!Lecture.disponible()) {
-                    etat(Lecture.enLigne ? 'Aucune voix française disponible dans ce navigateur.'
-                        : 'Aucune voix française installée sur cet appareil. Les voix en ligne ne sont pas utilisées.', true);
+                    toast(Lecture.enLigne ? 'Aucune voix française disponible dans ce navigateur.'
+                        : 'Aucune voix française installée sur cet appareil. Les voix en ligne ne sont pas utilisées.');
                     return;
                 }
                 Lecture.basculer(lire, contenu);
@@ -223,7 +223,8 @@ function toast(texte) {
     $('toast').textContent = texte;
     $('toast').classList.add('visible');
     clearTimeout(minuteurToast);
-    minuteurToast = setTimeout(() => $('toast').classList.remove('visible'), 2000);
+    // Durée selon la longueur : le temps de lire le message.
+    minuteurToast = setTimeout(() => $('toast').classList.remove('visible'), Math.max(2000, texte.length * 60));
 }
 
 function etat(texte, erreur) {

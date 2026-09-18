@@ -601,6 +601,9 @@ input[type="password"], textarea {
     left: 50%;
     top: 5.5rem;
     z-index: 10;
+    width: max-content;
+    max-width: min(32rem, calc(100% - 2rem));
+    text-align: center;
     padding: 0.5rem 1rem;
     border-radius: 0.5rem;
     background: var(--texte);
@@ -708,6 +711,7 @@ fieldset .bouton-texte { justify-self: start; }
     .sous-titre { display: none; }
     .accueil { margin-top: 1rem; padding: 1.25rem; }
     .fil .user { max-width: 90%; }
+    .toast { top: 7rem; }
     #nouvelle { padding: 0.25rem 0.5rem; font-size: 0.875rem; }
 }
 
