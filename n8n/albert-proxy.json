@@ -13,7 +13,7 @@
         "path": "albert-go/v1/chat/completions",
         "responseMode": "responseNode",
         "options": {
-          "allowedOrigins": "https://booklageolivier.forge.apps.education.fr,http://localhost:8000"
+          "allowedOrigins": "https://booklageolivier.forge.apps.education.fr,http://localhost:8642"
         }
       }
     },
@@ -57,7 +57,7 @@
           "responseHeaders": {
             "entries": [
               { "name": "Content-Type", "value": "application/json" },
-              { "name": "Access-Control-Allow-Origin", "value": "={{ ['https://booklageolivier.forge.apps.education.fr', 'http://localhost:8000'].includes($('Webhook chat').item.json.headers.origin) ? $('Webhook chat').item.json.headers.origin : 'null' }}" },
+              { "name": "Access-Control-Allow-Origin", "value": "={{ ['https://booklageolivier.forge.apps.education.fr', 'http://localhost:8642'].includes($('Webhook chat').item.json.headers.origin) ? $('Webhook chat').item.json.headers.origin : 'null' }}" },
               { "name": "Vary", "value": "Origin" }
             ]
           }
@@ -76,7 +76,7 @@
         "path": "albert-go/v1/models",
         "responseMode": "responseNode",
         "options": {
-          "allowedOrigins": "https://booklageolivier.forge.apps.education.fr,http://localhost:8000"
+          "allowedOrigins": "https://booklageolivier.forge.apps.education.fr,http://localhost:8642"
         }
       }
     },
@@ -117,7 +117,7 @@
           "responseHeaders": {
             "entries": [
               { "name": "Content-Type", "value": "application/json" },
-              { "name": "Access-Control-Allow-Origin", "value": "={{ ['https://booklageolivier.forge.apps.education.fr', 'http://localhost:8000'].includes($('Webhook modèles').item.json.headers.origin) ? $('Webhook modèles').item.json.headers.origin : 'null' }}" },
+              { "name": "Access-Control-Allow-Origin", "value": "={{ ['https://booklageolivier.forge.apps.education.fr', 'http://localhost:8642'].includes($('Webhook modèles').item.json.headers.origin) ? $('Webhook modèles').item.json.headers.origin : 'null' }}" },
               { "name": "Vary", "value": "Origin" }
             ]
           }
