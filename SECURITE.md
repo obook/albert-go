@@ -15,7 +15,7 @@ Navigateur (Pages) -> webhook n8n -> https://albert.api.etalab.gouv.fr
 ### Réseau
 
 - **Destination unique de la page :** `https://n8n.incubateur.education.gouv.fr`, imposée par la CSP (`connect-src`).
-- **Destination unique du relais :** `https://albert.api.etalab.gouv.fr/v1/chat/completions`, adresse fixée dans le workflow.
+- **Destinations uniques du relais :** `https://albert.api.etalab.gouv.fr/v1/chat/completions` et `/v1/models`, adresses fixées dans le workflow.
 - **Clé API :** en-tête `Authorization: Bearer <clé>`, jamais dans l'URL.
 - **Aucun CDN, aucun service tiers, aucune télémétrie.** Marked, KaTeX et Mermaid sont servis depuis Pages.
 
@@ -26,7 +26,7 @@ Navigateur (Pages) -> webhook n8n -> https://albert.api.etalab.gouv.fr
 
 ### Relais n8n
 
-- Un webhook public, `POST .../albert-go/v1/chat/completions`. Une requête sans en-tête `Authorization: Bearer` reçoit un 401 sans être relayée.
+- Deux webhooks publics, `POST .../albert-go/v1/chat/completions` et `GET .../albert-go/v1/models` (liste des modèles affichée dans les réglages). Une requête sans en-tête `Authorization: Bearer` reçoit un 401 sans être relayée.
 - Origines CORS autorisées : l'adresse Pages et `http://localhost:8642`.
 - Sauvegarde des exécutions désactivée, réussies comme échouées : n8n n'enregistre ni les en-têtes ni la clé.
 - La clé transite par l'instance : son administrateur peut techniquement la voir.
@@ -103,7 +103,7 @@ Tests en boîte noire depuis un poste extérieur, le 2026-09-18, avec `curl` et 
 | I2, I3 | Corrigé : interrupteur "Effacer la clé et supprimer mes questions à la fermeture de l'onglet", activé par défaut, sur l'écran de la clé et dans les réglages. |
 | I5 | Accepté : exigé par KaTeX et Mermaid. |
 | I6 | Corrigé : KaTeX 0.16.47 et `mhchem` de la même version, identiques au paquet npm. |
-| I7 | Corrigé : webhook `/v1/models` retiré du workflow. |
+| I7 | Sans objet : le webhook `/v1/models` a été rétabli pour lister les modèles réellement disponibles, avec la même vérification de clé (I8). |
 | I8 | Corrigé dans le workflow du dépôt : nœud "Clé présente ?". Effectif après réimport (E4). |
 | E1 | En partie : I8 évite de solliciter Albert sans clé. Limite de débit à demander aux administrateurs de la plateforme. |
 | E2 | Corrigé : affichage bloqué dans un cadre. |
