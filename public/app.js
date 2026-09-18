@@ -26,6 +26,13 @@ if (!Albert.MODELES.some(m => m.id === reglages.modele)) reglages.modele = Alber
 
 let conversation = [];
 
+// Questions posées, la plus récente en premier, gardées entre les sessions.
+let historique = [];
+try { historique = JSON.parse(lire('historique', '[]')); } catch (e) { /* historique vide */ }
+if (!Array.isArray(historique)) historique = [];
+let position = -1;
+let brouillon = '';
+
 /* Affichage */
 
 function afficher() {
@@ -167,16 +174,37 @@ $('nouvelle').addEventListener('click', () => {
 });
 
 $('saisie').addEventListener('keydown', (e) => {
+    const champ = $('saisie');
     if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) {
         e.preventDefault();
         $('form-question').requestSubmit();
+        return;
     }
+    // Les flèches ne rappellent l'historique que depuis la première ou la dernière ligne.
+    const premiereLigne = !champ.value.slice(0, champ.selectionStart).includes('\n');
+    const derniereLigne = !champ.value.slice(champ.selectionEnd).includes('\n');
+    const sens = e.key === 'ArrowUp' && premiereLigne ? 'haut'
+        : e.key === 'ArrowDown' && derniereLigne && position >= 0 ? 'bas' : null;
+    if (!sens || e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
+
+    const nouvelle = Albert.naviguer(historique, position, sens);
+    if (nouvelle === position) return;
+    e.preventDefault();
+    if (position === -1) brouillon = champ.value;
+    position = nouvelle;
+    champ.value = position === -1 ? brouillon : historique[position];
+    champ.setSelectionRange(champ.value.length, champ.value.length);
 });
 
 $('form-question').addEventListener('submit', async (e) => {
     e.preventDefault();
     const question = $('saisie').value.trim();
     if (!question || $('envoyer').disabled) return;
+
+    historique = [question, ...historique.filter(q => q !== question)].slice(0, Albert.HISTORIQUE_MAX);
+    ecrire('historique', JSON.stringify(historique));
+    position = -1;
+    brouillon = '';
 
     conversation.push({ role: 'user', content: question });
     const bulle = ajouter('user', question);

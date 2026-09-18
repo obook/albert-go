@@ -14,6 +14,15 @@ test('messagesAEnvoyer : mémoire active ou non', () => {
     assert.deepStrictEqual(Albert.messagesAEnvoyer(conv, false), [{ role: 'user', content: 'c' }]);
 });
 
+test('naviguer : bornes de l\'historique', () => {
+    const h = ['c', 'b', 'a'];
+    assert.strictEqual(Albert.naviguer(h, -1, 'haut'), 0);
+    assert.strictEqual(Albert.naviguer(h, 2, 'haut'), 2);
+    assert.strictEqual(Albert.naviguer(h, 0, 'bas'), -1);
+    assert.strictEqual(Albert.naviguer(h, -1, 'bas'), -1);
+    assert.strictEqual(Albert.naviguer([], -1, 'haut'), -1);
+});
+
 test('messageErreur : clé refusée', () => {
     assert.match(Albert.messageErreur(401, { detail: 'Not authenticated' }), /Clé refusée/);
 });

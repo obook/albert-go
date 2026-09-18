@@ -27,6 +27,14 @@ const Albert = {
         return corps.choices[0].message.content;
     },
 
+    HISTORIQUE_MAX: 30,
+
+    // Position dans l'historique des questions : -1 = saisie libre, 0 = la plus récente.
+    naviguer(historique, index, sens) {
+        const suivant = index + (sens === 'haut' ? 1 : -1);
+        return Math.max(-1, Math.min(suivant, historique.length - 1));
+    },
+
     // Mémoire désactivée : seule la dernière question part.
     messagesAEnvoyer(conversation, memoire) {
         return memoire ? conversation : conversation.slice(-1);

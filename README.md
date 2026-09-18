@@ -1,4 +1,4 @@
-# Albert Chat
+# Albert Go
 
 Chatbot minimal pour [Albert](https://albert.api.etalab.gouv.fr), l'IA de l'État portée par la DINUM. Chaque utilisateur saisit sa propre clé API.
 

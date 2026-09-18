@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Security-Policy"
           content="default-src 'self'; connect-src https://n8n.incubateur.education.gouv.fr; base-uri 'none'; form-action 'none'">
-    <title>Albert Chat</title>
+    <title>Albert Go</title>
     <link rel="stylesheet" href="style.css">
     <script src="theme.js"></script>
 </head>
 <body>
     <header class="entete">
-        <h1 class="marque">Albert Cha<span class="rouge">t</span></h1>
-        <p class="sous-titre">Discuter avec l'IA de l'État</p>
+        <h1 class="marque">Alber<span class="rouge">t</span> Go</h1>
+        <p class="sous-titre">Discuter avec le chat de l'État</p>
         <div class="actions">
             <button type="button" class="bouton-texte" id="nouvelle" hidden>Nouvelle conversation</button>
             <button type="button" class="bouton-icone" id="theme" aria-label="Passer en thème sombre">
@@ -43,7 +43,7 @@
     <footer id="saisie-zone" class="saisie-zone" hidden>
         <form id="form-question" class="saisie">
             <label for="saisie" class="visuellement-cache">Votre question</label>
-            <textarea id="saisie" rows="2" placeholder="Votre question" required></textarea>
+            <textarea id="saisie" rows="2" placeholder="Votre question" aria-describedby="aide-saisie" required></textarea>
             <button type="submit" id="envoyer" class="bouton-principal">Envoyer</button>
         </form>
         <div class="statut">
@@ -54,7 +54,7 @@
             <button type="button" class="bouton-lien" id="resume-reglages"></button>
         </div>
         <p id="etat" class="etat" role="status"></p>
-        <p class="avertissement">L'IA peut se tromper. Vérifiez ses réponses.</p>
+        <p id="aide-saisie" class="avertissement">Entrée pour envoyer, Maj+Entrée pour aller à la ligne, flèches haut et bas pour rappeler une question. L'IA peut se tromper : vérifiez ses réponses.</p>
     </footer>
 
     <dialog id="reglages" class="reglages" aria-labelledby="titre-reglages">
