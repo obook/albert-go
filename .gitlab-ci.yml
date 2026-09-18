@@ -1,0 +1,10 @@
+# Publie public/ sur Pages : https://booklageolivier.forge.apps.education.fr/albert-go/
+pages:
+  image: alpine:latest
+  script:
+    - echo "Publication de public/"
+  artifacts:
+    paths:
+      - public
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'

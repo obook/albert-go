@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Security-Policy"
+          content="default-src 'self'; connect-src https://n8n.incubateur.education.gouv.fr; base-uri 'none'; form-action 'none'">
+    <title>Albert Chat</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Albert Chat</h1>
+        <div id="outils" hidden>
+            <label for="modele">Modèle</label>
+            <select id="modele"></select>
+            <button type="button" id="nouvelle">Nouvelle conversation</button>
+            <button type="button" id="changer-cle">Changer de clé</button>
+        </div>
+    </header>
+
+    <main>
+        <form id="form-cle" hidden>
+            <h2>Votre clé API Albert</h2>
+            <p>La clé reste dans ce navigateur. Elle passe par le relais n8n de l'Éducation nationale pour joindre Albert, qui n'accepte pas les appels directs depuis une page web.</p>
+            <label for="cle">Clé API</label>
+            <input type="password" id="cle" autocomplete="off" required>
+            <button type="submit">Enregistrer</button>
+            <p><a href="https://albert.sites.beta.gouv.fr/access/">Demander une clé Albert</a></p>
+        </form>
+
+        <section id="chat" hidden aria-label="Conversation">
+            <ol id="fil" role="log" aria-live="polite"></ol>
+            <p id="etat" role="status"></p>
+            <form id="form-question">
+                <label for="saisie">Votre question</label>
+                <textarea id="saisie" rows="3" required></textarea>
+                <p class="aide">Entrée pour envoyer, Maj+Entrée pour aller à la ligne.</p>
+                <button type="submit" id="envoyer">Envoyer</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>Les réponses de l'IA peuvent contenir des erreurs. Vérifiez-les.</p>
+    </footer>
+
+    <script src="albert.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
