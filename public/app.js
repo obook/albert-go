@@ -48,8 +48,8 @@ function afficher() {
 
 function afficherReglages() {
     const modele = Albert.MODELES.find(m => m.id === reglages.modele);
-    $('resume-reglages').textContent = modele.nom + ', température ' + reglages.temperature.toFixed(1);
-    $('memoire').checked = reglages.memoire;
+    $('resume-reglages').textContent = modele.nom + ', température ' + reglages.temperature.toFixed(1)
+        + ', mémoire ' + (reglages.memoire ? 'activée' : 'désactivée');
     $('memoire-reglage').checked = reglages.memoire;
     $('temperature').value = reglages.temperature;
     $('valeur-temperature').textContent = reglages.temperature.toFixed(1);
@@ -122,12 +122,6 @@ function etat(texte, erreur) {
 
 /* Réglages */
 
-function changerMemoire(active) {
-    reglages.memoire = active;
-    ecrire('memoire', active ? 'oui' : 'non');
-    afficherReglages();
-}
-
 $('modeles').append(...Albert.MODELES.map(m => {
     const label = document.createElement('label');
     const radio = document.createElement('input');
@@ -154,8 +148,11 @@ $('temperature').addEventListener('input', () => {
     afficherReglages();
 });
 
-$('memoire').addEventListener('change', () => changerMemoire($('memoire').checked));
-$('memoire-reglage').addEventListener('change', () => changerMemoire($('memoire-reglage').checked));
+$('memoire-reglage').addEventListener('change', () => {
+    reglages.memoire = $('memoire-reglage').checked;
+    ecrire('memoire', reglages.memoire ? 'oui' : 'non');
+    afficherReglages();
+});
 
 $('ouvrir-reglages').addEventListener('click', () => $('reglages').showModal());
 $('ouvrir-info').addEventListener('click', () => $('info').showModal());
