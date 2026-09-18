@@ -12,7 +12,7 @@ L'API Albert n'accepte pas les appels directs depuis une page web (pas d'en-têt
 Navigateur -> webhook n8n -> API Albert
 ```
 
-- `public/` : la page (HTML, CSS, JavaScript sans dépendance), publiée sur Pages.
+- `public/` : la page (HTML, CSS, JavaScript), publiée sur Pages. Les réponses gèrent le Markdown, les formules LaTeX et les diagrammes Mermaid, avec des bibliothèques embarquées dans `public/vendor/`.
 - `n8n/albert-proxy.json` : le workflow n8n, à importer dans une instance n8n puis publier.
 
 Réglages : modèle (Medium, Large, Small, Code), température et mémoire de la conversation. Mémoire désactivée, seule la dernière question part.
@@ -34,8 +34,14 @@ Le webhook n'accepte que deux origines : l'adresse Pages du projet et `http://lo
 - Elle part dans l'en-tête `Authorization`, jamais dans l'URL.
 - Elle transite par l'instance n8n : l'administrateur de cette instance peut techniquement la voir. Le workflow n'enregistre aucune exécution, donc aucun en-tête.
 - Le webhook appelle uniquement l'API Albert, dont l'adresse est fixée dans le workflow.
-- La page ne charge aucun script externe. Une politique CSP limite les connexions à l'instance n8n.
-- Les réponses d'Albert sont affichées comme du texte, jamais interprétées comme du HTML.
+- La page ne charge aucun script externe. Une politique CSP limite les connexions à l'instance n8n et les scripts au site lui-même.
+- Le HTML produit à partir des réponses d'Albert est assaini avant affichage : scripts, gestionnaires d'événements et liens `javascript:` sont retirés.
+
+## Licences
+
+| Composant | Licence |
+|---|---|
+| [Marked](https://github.com/markedjs/marked), [KaTeX](https://katex.org/), [Mermaid](https://mermaid.js.org/) | MIT (détail dans `public/vendor/README.md`) |
 
 ## Accessibilité
 

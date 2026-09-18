@@ -65,8 +65,8 @@ function ajouter(role, texte) {
         pastille.textContent = 'IA';
         const bloc = document.createElement('div');
         const contenu = document.createElement('div');
-        contenu.className = 'texte';
-        contenu.textContent = texte;
+        contenu.className = 'texte rendu';
+        Rendu.afficher(contenu, texte);
         const copier = document.createElement('button');
         copier.type = 'button';
         copier.className = 'bouton-lien';
