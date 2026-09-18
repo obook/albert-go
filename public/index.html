@@ -53,20 +53,23 @@
     <footer id="saisie-zone" class="saisie-zone" hidden>
         <form id="form-question" class="saisie">
             <label for="saisie" class="visuellement-cache">Votre question</label>
-            <textarea id="saisie" rows="2" placeholder="Votre question" aria-describedby="aide-saisie"></textarea>
-            <button type="button" class="bouton-icone fleche" id="question-precedente" aria-label="Question précédente">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
-            </button>
-            <button type="button" class="bouton-icone fleche" id="question-suivante" aria-label="Question suivante">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
-            </button>
-            <button type="submit" id="envoyer" class="bouton-principal">Envoyer</button>
+            <textarea id="saisie" rows="2" placeholder="Posez votre question à Albert" aria-describedby="aide-saisie"></textarea>
+            <div class="barre">
+                <button type="button" class="puce" id="resume-reglages" aria-haspopup="dialog"></button>
+                <button type="button" class="bouton-icone fleche" id="question-precedente" aria-label="Question précédente">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg>
+                </button>
+                <button type="button" class="bouton-icone fleche" id="question-suivante" aria-label="Question suivante">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+                </button>
+                <button type="submit" id="envoyer" class="envoyer" aria-label="Envoyer">
+                    <svg class="icone-envoyer" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+                    <svg class="icone-arreter" viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="7" width="10" height="10" rx="1.5"/></svg>
+                </button>
+            </div>
         </form>
-        <div class="statut">
-            <button type="button" class="bouton-lien" id="resume-reglages" aria-haspopup="dialog"></button>
-        </div>
         <p id="etat" class="etat" role="status"></p>
-        <p id="aide-saisie" class="avertissement">Entrée pour envoyer, Maj+Entrée pour aller à la ligne, flèches haut et bas (ou boutons ↑ ↓ sur écran tactile) pour rappeler une question. L'IA peut se tromper : vérifiez ses réponses.</p>
+        <p id="aide-saisie" class="avertissement">Entrée pour envoyer, Maj+Entrée pour aller à la ligne, flèches haut et bas (ou chevrons sur écran tactile) pour rappeler une question. L'IA peut se tromper : vérifiez ses réponses.</p>
     </footer>
 
     <dialog id="reglages" class="reglages" aria-labelledby="titre-reglages">

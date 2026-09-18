@@ -107,6 +107,7 @@ function ajouter(role, texte) {
         pastille.className = 'pastille';
         pastille.textContent = 'IA';
         const bloc = document.createElement('div');
+        bloc.className = 'carte';
         const contenu = document.createElement('div');
         contenu.className = 'texte rendu';
         Rendu.afficher(contenu, texte);
@@ -140,7 +141,7 @@ function ajouterAttente() {
     pastille.className = 'pastille';
     pastille.textContent = 'IA';
     const attente = document.createElement('div');
-    attente.className = 'attente';
+    attente.className = 'carte attente';
     const points = document.createElement('span');
     points.className = 'points';
     points.append(document.createElement('span'), document.createElement('span'), document.createElement('span'));
@@ -247,6 +248,12 @@ $('nouvelle').addEventListener('click', () => {
 
 let annulation = null;
 
+// Pendant une requête, le bouton rond passe de la flèche d'envoi au carré d'arrêt.
+function boutonEnvoi(enCours) {
+    $('envoyer').classList.toggle('en-cours', enCours);
+    $('envoyer').setAttribute('aria-label', enCours ? 'Arrêter' : 'Envoyer');
+}
+
 $('saisie').addEventListener('keydown', (e) => {
     const champ = $('saisie');
     if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) {
@@ -297,7 +304,7 @@ $('form-question').addEventListener('submit', async (e) => {
     const bulle = ajouter('user', question);
     $('saisie').value = '';
     annulation = new AbortController();
-    $('envoyer').textContent = 'Arrêter';
+    boutonEnvoi(true);
     const retirerAttente = ajouterAttente();
     etat('Albert réfléchit...');
     try {
@@ -327,7 +334,7 @@ $('form-question').addEventListener('submit', async (e) => {
         }
     } finally {
         annulation = null;
-        $('envoyer').textContent = 'Envoyer';
+        boutonEnvoi(false);
         $('saisie').focus();
     }
 });
