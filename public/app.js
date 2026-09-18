@@ -15,7 +15,7 @@ if (window.top !== window.self) {
     throw new Error('Albert Go ne s\'affiche pas dans le cadre d\'un autre site.');
 }
 
-// Poste partagé : clé et historique en sessionStorage, effacés à la fermeture de l'onglet.
+// Option "Effacer la clé et supprimer mes questions" : clé et historique en sessionStorage, effacés à la fermeture de l'onglet.
 const SENSIBLES = ['cle', 'historique'];
 let partage = false;
 function stockage(nom) {
@@ -36,9 +36,9 @@ function ecrire(nom, valeur) {
     } catch (e) { /* le réglage ne vivra que le temps de la page */ }
 }
 
-// Par défaut, effacement à la fermeture : l'utilisateur d'un poste personnel décoche.
+// Par défaut, effacement à la fermeture : l'utilisateur d'un poste personnel désactive l'option.
 partage = lire('partage', 'oui') === 'oui';
-// Clé enregistrée avant que l'option soit cochée par défaut : ne pas la laisser dans localStorage.
+// Clé enregistrée avant que l'option soit active par défaut : ne pas la laisser dans localStorage.
 if (partage) SENSIBLES.forEach(nom => { try { localStorage.removeItem('albert-go.' + nom); } catch (e) { /* stockage bloqué */ } });
 
 // Le navigateur restaure sessionStorage quand on rouvre un onglet fermé : effacement explicite.

@@ -36,9 +36,9 @@
             <p>Votre clé reste enregistrée dans ce navigateur. Pour joindre Albert, elle passe par le relais de la plateforme interministérielle n8n qui n'enregistre rien.</p>
             <label for="cle">Clé API</label>
             <input type="password" id="cle" autocomplete="off" spellcheck="false" required>
-            <label class="case">
-                <input type="checkbox" id="partage-accueil">
-                <span>Poste partagé : oublier la clé et mes questions à la fermeture de l'onglet</span>
+            <label class="interrupteur">
+                <input type="checkbox" id="partage-accueil" role="switch">
+                <span>Effacer la clé et supprimer mes questions à la fermeture de l'onglet</span>
             </label>
             <button type="submit" class="bouton-principal">Enregistrer la clé</button>
             <p class="note">Pas encore de clé ? <a href="https://albert.sites.beta.gouv.fr/access/" target="_blank" rel="noopener noreferrer">Demander un accès à Albert</a>, réservé aux agents publics.</p>
@@ -101,9 +101,9 @@
             <fieldset>
                 <legend>Clé API</legend>
                 <p class="note">Une clé est enregistrée dans ce navigateur.</p>
-                <label class="case">
-                    <input type="checkbox" id="partage-reglage">
-                    <span>Poste partagé : oublier la clé et mes questions à la fermeture de l'onglet</span>
+                <label class="interrupteur">
+                    <input type="checkbox" id="partage-reglage" role="switch">
+                    <span>Effacer la clé et supprimer mes questions à la fermeture de l'onglet</span>
                 </label>
                 <button type="button" class="bouton-texte" id="changer-cle">Changer de clé</button>
             </fieldset>
@@ -120,7 +120,7 @@
             <section>
                 <h3>Vos données</h3>
                 <ul>
-                    <li>Par défaut, votre clé et vos questions sont oubliées à la fermeture de l'onglet. Sur un poste personnel, décochez "Poste partagé" pour les garder dans ce navigateur. "Changer de clé" efface la clé.</li>
+                    <li>Par défaut, votre clé et vos questions sont oubliées à la fermeture de l'onglet. Sur un poste personnel, désactivez "Effacer la clé et supprimer mes questions à la fermeture de l'onglet" pour les garder dans ce navigateur. "Changer de clé" efface la clé.</li>
                     <li>Vos questions partent vers Albert, hébergé en France, par un relais n8n de la plateforme interministérielle, qui n'enregistre rien.</li>
                     <li>Aucun compte, aucun cookie, aucune bibliothèque chargée depuis un site tiers.</li>
                 </ul>
