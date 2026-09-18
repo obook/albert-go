@@ -338,7 +338,11 @@ let annulation = null;
 
 // Panne réseau et refus CORS donnent la même TypeError : le navigateur ne dit pas lequel.
 function messageEchec(err) {
-    if (err instanceof TypeError) return 'Relais n8n injoignable, ou adresse de la page non autorisée par le relais.';
+    if (err instanceof TypeError && !Albert.ORIGINES.includes(location.origin)) {
+        return 'Le relais n8n n\'accepte pas l\'adresse ' + location.origin + '. Ouvrez Albert Go depuis '
+            + Albert.ORIGINES.join(' ou ') + '.';
+    }
+    if (err instanceof TypeError) return 'Relais n8n injoignable. Vérifiez la connexion.';
     if (err.name === 'TimeoutError') return 'Albert ne répond pas. Réessayez.';
     return err.message;
 }

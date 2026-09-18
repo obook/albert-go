@@ -3,6 +3,8 @@
 
 const Albert = {
     BASE: 'https://n8n.incubateur.education.gouv.fr/webhook/albert-go/v1',
+    // Origines autorisées par le relais (allowedOrigins du workflow n8n) : les deux listes doivent rester identiques.
+    ORIGINES: ['https://booklageolivier.forge.apps.education.fr', 'http://localhost:8642'],
     DELAI_MS: 120000,
 
     // Liste de secours si /v1/models ne répond pas, d'après l'annuaire BidouIAge (1er août 2026).
