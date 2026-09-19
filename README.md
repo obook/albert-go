@@ -47,6 +47,7 @@ Audit interne et externe, modèle de menaces et plan d'action : [SECURITE.md](SE
 
 | Composant | Licence |
 |---|---|
+| Albert Go | [Licence Ouverte 2.0](https://www.etalab.gouv.fr/licence-ouverte-open-licence/) (Etalab), texte dans `LICENSE` |
 | [Marked](https://github.com/markedjs/marked), [KaTeX](https://katex.org/), [Mermaid](https://mermaid.js.org/) | MIT (détail dans `public/vendor/README.md`) |
 
 ## Accessibilité
