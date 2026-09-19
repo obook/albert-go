@@ -127,11 +127,12 @@ function afficherReglages() {
  *
  * @param {string} role - "user" pour une question, "assistant" pour une réponse.
  * @param {string} texte - Texte du message (Markdown pour une réponse).
+ * @param {string} [langue] - Langue d'une réponse de Traduire ("ru"...), pour la lecture.
  * @returns {HTMLLIElement} L'élément ajouté (la première bulle pour des variantes).
  */
-function ajouter(role, texte) {
+function ajouter(role, texte, langue) {
     if (role === 'assistant') {
-        return ajouterReponse(texte);
+        return ajouterReponse(texte, langue);
     }
     const li = document.createElement('li');
     li.className = role;

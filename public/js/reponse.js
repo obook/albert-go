@@ -50,23 +50,36 @@ function boutonCopier(texte) {
 }
 
 /**
+ * Nom d'une langue en minuscules à partir de son code : "ru" donne "russe".
+ *
+ * @param {string} code - Code de langue.
+ * @returns {string} Nom de la langue, ou le code s'il est inconnu.
+ */
+function nomLangue(code) {
+    const nom = Object.keys(Albert.CODES_LANGUES).find(n => Albert.CODES_LANGUES[n] === code);
+    return nom ? nom.toLowerCase() : code;
+}
+
+/**
  * Crée le bouton "Lire à voix haute".
  *
  * @param {HTMLElement} contenu - Réponse affichée à lire.
+ * @param {string} langue - Code de la langue de la réponse ("fr", "ru"...).
  * @returns {HTMLButtonElement} Le bouton.
  */
-function boutonLire(contenu) {
+function boutonLire(contenu, langue) {
     const bouton = boutonAction(ICONES.lire, 'Lire à voix haute');
     bouton.addEventListener('click', () => {
-        if (!Lecture.disponible()) {
+        if (!Lecture.disponible(langue)) {
+            const nom = nomLangue(langue);
             if (Lecture.enLigne) {
-                toast('Aucune voix française disponible dans ce navigateur.');
+                toast('Aucune voix en ' + nom + ' disponible dans ce navigateur.');
             } else {
-                toast('Aucune voix française installée sur cet appareil. Les voix en ligne ne sont pas utilisées.');
+                toast('Aucune voix en ' + nom + ' installée sur cet appareil. Les voix en ligne ne sont pas utilisées.');
             }
             return;
         }
-        Lecture.basculer(bouton, contenu);
+        Lecture.basculer(bouton, contenu, langue);
     });
     bouton.addEventListener('lecture-debut', () => {
         bouton.innerHTML = ICONES.arreter;
@@ -95,10 +108,11 @@ function pastilleIA() {
  * Crée la bulle d'une réponse, ou d'une variante si un titre est donné.
  *
  * @param {string} texte - Texte en Markdown.
- * @param {string} [titre] - Titre de la variante ("Plus courte"...).
+ * @param {?string} titre - Titre de la variante ("Plus courte"...), ou null.
+ * @param {string} langue - Code de la langue, pour la lecture à voix haute.
  * @returns {HTMLLIElement} La bulle, pas encore ajoutée au fil.
  */
-function bulleReponse(texte, titre) {
+function bulleReponse(texte, titre, langue) {
     const li = document.createElement('li');
     li.className = 'assistant';
     const carte = document.createElement('div');
@@ -117,7 +131,7 @@ function bulleReponse(texte, titre) {
     actions.className = 'actions-reponse';
     actions.append(boutonCopier(texte));
     if (typeof speechSynthesis !== 'undefined') {
-        actions.append(boutonLire(contenu));
+        actions.append(boutonLire(contenu, langue));
     }
     carte.append(contenu, actions);
     li.append(pastilleIA(), carte);
@@ -128,20 +142,21 @@ function bulleReponse(texte, titre) {
  * Ajoute une réponse au fil : une bulle, ou une par variante avec Reformuler.
  *
  * @param {string} texte - Réponse du modèle.
+ * @param {string} [langue] - Code de la langue de la réponse ; français par défaut.
  * @returns {HTMLLIElement} La première bulle ajoutée.
  */
-function ajouterReponse(texte) {
+function ajouterReponse(texte, langue = 'fr') {
     let variantes = null;
     if (outilActuel === 'reformuler') {
         variantes = Albert.decouperVariantes(texte);
     }
     if (!variantes) {
-        const li = bulleReponse(texte);
+        const li = bulleReponse(texte, null, langue);
         $('fil').append(li);
         li.scrollIntoView({ block: 'end' });
         return li;
     }
-    const bulles = variantes.map(v => bulleReponse(v.texte, v.titre));
+    const bulles = variantes.map(v => bulleReponse(v.texte, v.titre, langue));
     $('fil').append(...bulles);
     /* Montrer le début de la première variante, pas la fin de la dernière. */
     bulles[0].scrollIntoView({ block: 'start' });

@@ -106,23 +106,31 @@ const Lecture = {
     /**
      * Texte à lire pour une réponse affichée.
      *
-     * Les formules sont traduites ; le code et les diagrammes sont sautés.
+     * Le code et les diagrammes sont sautés. En français, les formules et
+     * les ordinaux sont dits en toutes lettres ; dans une autre langue
+     * (réponse de Traduire), les formules sont sautées.
      *
      * @param {HTMLElement} element - Contenu rendu de la réponse.
+     * @param {string} [langue] - Code de la langue du texte ("fr", "ru"...).
      * @returns {string} Texte à lire.
      */
-    texte(element) {
+    texte(element, langue = 'fr') {
+        const francais = langue === 'fr';
         const copie = element.cloneNode(true);
         copie.querySelectorAll('pre, .diagramme, button').forEach(el => el.remove());
         copie.querySelectorAll('.katex').forEach(el => {
             const tex = el.querySelector('annotation[encoding="application/x-tex"]');
-            el.replaceWith(' ' + (tex ? this.formuleParlee(tex.textContent) : '') + ' ');
+            const parle = tex && francais ? this.formuleParlee(tex.textContent) : '';
+            el.replaceWith(' ' + parle + ' ');
         });
         /* Une pause après chaque bloc et chaque cellule. */
         copie.querySelectorAll('p, li, h1, h2, h3, h4, blockquote, tr').forEach(el => el.append('. '));
         copie.querySelectorAll('td, th').forEach(el => el.append(', '));
-        return this.ordinaux(copie.textContent)
-            .replace(/&/g, ' et ')
+        let texte = copie.textContent;
+        if (francais) {
+            texte = this.ordinaux(texte).replace(/&/g, ' et ');
+        }
+        return texte
             .replace(/\s+/g, ' ')
             .replace(/\s+([.,!?])/g, '$1')
             .replace(/([.!?])(\s*[.,])+/g, '$1')
@@ -130,31 +138,35 @@ const Lecture = {
     },
 
     /**
-     * Choisit la voix française à utiliser.
+     * Choisit la voix à utiliser pour une langue.
      *
+     * @param {string} [langue] - Code de langue ("fr", "ru"...).
      * @returns {?SpeechSynthesisVoice} Voix locale, sinon voix en ligne si autorisée, sinon null.
      */
-    voix() {
-        const francaises = speechSynthesis.getVoices().filter(v => v.lang.startsWith('fr'));
-        const locales = francaises.filter(v => v.localService);
+    voix(langue = 'fr') {
+        /* Les navigateurs écrivent "ru-RU" ou "ru_RU". */
+        const deLaLangue = speechSynthesis.getVoices()
+            .filter(v => v.lang.toLowerCase().replace('_', '-').split('-')[0] === langue);
+        const locales = deLaLangue.filter(v => v.localService);
         /* eSpeak en dernier : sa voix est peu naturelle. */
         const locale = locales.find(v => !/espeak/i.test(v.name)) || locales[0];
         if (locale) {
             return locale;
         }
         if (this.enLigne) {
-            return francaises[0] || null;
+            return deLaLangue[0] || null;
         }
         return null;
     },
 
     /**
-     * Indique si une lecture est possible dans ce navigateur.
+     * Indique si une lecture est possible dans cette langue.
      *
+     * @param {string} [langue] - Code de langue ("fr", "ru"...).
      * @returns {boolean} true si une voix utilisable existe.
      */
-    disponible() {
-        return typeof speechSynthesis !== 'undefined' && this.voix() !== null;
+    disponible(langue = 'fr') {
+        return typeof speechSynthesis !== 'undefined' && this.voix(langue) !== null;
     },
 
     /**
@@ -175,15 +187,16 @@ const Lecture = {
      *
      * @param {HTMLButtonElement} bouton - Bouton cliqué.
      * @param {HTMLElement} element - Contenu rendu de la réponse.
+     * @param {string} [langue] - Code de la langue du texte ("fr", "ru"...).
      */
-    basculer(bouton, element) {
+    basculer(bouton, element, langue = 'fr') {
         const memeBouton = this._bouton === bouton;
         this.arreter();
         if (memeBouton) {
             return;
         }
-        const voix = this.voix();
-        const morceaux = this.decouper(this.texte(element), 250);
+        const voix = this.voix(langue);
+        const morceaux = this.decouper(this.texte(element, langue), 250);
         if (!voix || !morceaux.length) {
             return;
         }

@@ -137,8 +137,10 @@ async function envoyer() {
         if (conversation !== courante) {
             return;
         }
-        conversation.push({ role: 'assistant', content: reponse.texte });
-        ajouter('assistant', reponse.texte);
+        /* Réponse de Traduire : dans la langue cible, gardée pour la lecture à voix haute. */
+        const langue = outil === 'traduire' ? Albert.CODES_LANGUES[langueCible] : 'fr';
+        conversation.push({ role: 'assistant', content: reponse.texte, langue: langue });
+        ajouter('assistant', reponse.texte, langue);
         sauverConversation();
         dernierUsage = reponse.usage;
         afficherReglages();

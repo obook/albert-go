@@ -42,6 +42,17 @@ test('voix : locale d\'abord, en ligne seulement si autorisée', () => {
     delete global.speechSynthesis;
 });
 
+test('voix : langue demandée, "ru-RU" comme "ru_RU", jamais une voix française pour du russe', () => {
+    const francaise = { name: 'Piper fr', lang: 'fr-FR', localService: true };
+    const russe = { name: 'Piper ru', lang: 'ru_RU', localService: true };
+    global.speechSynthesis = { getVoices: () => [francaise, russe] };
+    assert.strictEqual(Lecture.voix('ru'), russe);
+    assert.strictEqual(Lecture.voix(), francaise);
+    global.speechSynthesis = { getVoices: () => [francaise] };
+    assert.strictEqual(Lecture.voix('ru'), null);
+    delete global.speechSynthesis;
+});
+
 test('decouper : morceaux bornés, coupés aux phrases', () => {
     const morceaux = Lecture.decouper('Une phrase. Une autre phrase. Encore une.', 20);
     assert.deepStrictEqual(morceaux, ['Une phrase.', 'Une autre phrase.', 'Encore une.']);

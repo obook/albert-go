@@ -154,7 +154,7 @@ function rouvrirConversation(entree) {
     conversationId = entree.id;
     retenirCourante(conversationId);
     for (const message of conversation) {
-        ajouter(message.role, message.affiche || message.content);
+        ajouter(message.role, message.affiche || message.content, message.langue);
     }
 }
 

@@ -61,6 +61,13 @@ const Albert = {
     LANGUES: ['Français', 'Anglais', 'Allemand', 'Espagnol', 'Italien', 'Portugais',
         'Néerlandais', 'Russe', 'Chinois', 'Japonais', 'Arabe', 'Latin'],
 
+    /** Code de chaque langue, pour choisir la voix de lecture. */
+    CODES_LANGUES: {
+        'Français': 'fr', 'Anglais': 'en', 'Allemand': 'de', 'Espagnol': 'es',
+        'Italien': 'it', 'Portugais': 'pt', 'Néerlandais': 'nl', 'Russe': 'ru',
+        'Chinois': 'zh', 'Japonais': 'ja', 'Arabe': 'ar', 'Latin': 'la'
+    },
+
     /** Réglages conseillés, aussi utilisés au premier lancement. */
     CONSEILLES: { modele: 'openweight-large', temperature: 0.2, memoire: true },
 
