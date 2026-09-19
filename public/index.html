@@ -24,12 +24,15 @@
     <link rel="manifest" href="manifest.webmanifest">
     <meta name="theme-color" content="#000091">
     <link rel="stylesheet" href="vendor/katex/katex.min.css">
+    <!-- Pico : champs de formulaire, seulement dans les éléments .pico. -->
+    <link rel="stylesheet" href="vendor/pico/pico.conditional.min.css">
     <link rel="stylesheet" href="styles/base.css">
     <link rel="stylesheet" href="styles/entete.css">
     <link rel="stylesheet" href="styles/conversation.css">
     <link rel="stylesheet" href="styles/rendu.css">
     <link rel="stylesheet" href="styles/saisie.css">
     <link rel="stylesheet" href="styles/reglages.css">
+    <link rel="stylesheet" href="styles/pico.css">
     <script src="js/theme.js"></script>
 </head>
 <body>
@@ -100,7 +103,7 @@
     </dialog>
 
     <main id="principal">
-        <form id="form-cle" class="accueil" hidden>
+        <form id="form-cle" class="accueil pico" hidden>
             <h2>Entrez votre clé Albert</h2>
             <p>Votre clé reste dans ce navigateur. Elle passe par le relais n8n interministériel, qui n'enregistre rien.</p>
             <label for="cle">Clé API</label>
@@ -128,7 +131,7 @@
                     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
                 </button>
             </div>
-            <div id="langues" class="langues" hidden>
+            <div id="langues" class="langues pico" hidden>
                 <label for="langue-source">De</label>
                 <select id="langue-source"></select>
                 <label for="langue-cible">vers</label>
@@ -159,7 +162,7 @@
 
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
-    <dialog id="reglages" class="reglages" aria-labelledby="titre-reglages">
+    <dialog id="reglages" class="reglages pico" aria-labelledby="titre-reglages">
         <form method="dialog">
             <h2 id="titre-reglages">Réglages</h2>
             <p class="note">Conseillé : modèle Large, température 0,2, toute la conversation envoyée.</p>
@@ -210,24 +213,24 @@
             </fieldset>
 
             <div class="boutons-dialogue">
-                <button type="button" class="bouton-texte" id="reglages-conseilles">Réglages conseillés</button>
+                <button type="button" class="bouton-texte outline" id="reglages-conseilles">Réglages conseillés</button>
                 <button type="submit" class="bouton-principal">Fermer</button>
             </div>
         </form>
     </dialog>
 
-    <dialog id="confirmer-cle" class="reglages" aria-labelledby="titre-confirmer-cle" aria-describedby="texte-confirmer-cle">
+    <dialog id="confirmer-cle" class="reglages pico" aria-labelledby="titre-confirmer-cle" aria-describedby="texte-confirmer-cle">
         <form method="dialog">
             <h2 id="titre-confirmer-cle">Changer de clé ?</h2>
             <p id="texte-confirmer-cle">La clé enregistrée sera effacée de ce navigateur. Il faudra en saisir une pour continuer.</p>
             <div class="boutons-dialogue">
-                <button type="submit" value="non" class="bouton-texte" autofocus>Non</button>
+                <button type="submit" value="non" class="bouton-texte outline" autofocus>Non</button>
                 <button type="submit" value="oui" class="bouton-principal">Oui</button>
             </div>
         </form>
     </dialog>
 
-    <dialog id="partage" class="reglages partage" aria-labelledby="titre-partage" aria-describedby="texte-partage">
+    <dialog id="partage" class="reglages partage pico" aria-labelledby="titre-partage" aria-describedby="texte-partage">
         <form method="dialog">
             <h2 id="titre-partage">Partager Albert Go</h2>
             <p id="texte-partage">Scannez le QR code ou copiez l'adresse. Votre clé n'est pas partagée : chacun utilise la sienne.</p>
@@ -235,7 +238,7 @@
             <div class="adresse-partage">
                 <label for="adresse-partage" class="visuellement-cache">Adresse d'Albert Go</label>
                 <input type="text" id="adresse-partage" readonly>
-                <button type="button" class="bouton-texte" id="copier-adresse">Copier</button>
+                <button type="button" class="bouton-texte outline" id="copier-adresse">Copier</button>
             </div>
             <button type="submit" class="bouton-principal">Fermer</button>
         </form>

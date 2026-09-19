@@ -1,0 +1,70 @@
+/*
+ * pico.css
+ * Réglage de Pico (vendor/pico) aux couleurs d'Albert Go.
+ *
+ * Pico ne s'applique qu'à l'intérieur des éléments .pico (formulaires et
+ * boîtes de dialogue). Ses variables sont redéfinies sur .pico : elles
+ * l'emportent ainsi sur celles de Pico, posées sur :root.
+ *
+ * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
+ * Auteur : O. Booklage
+ * Date : Septembre 2026
+ * Licence : Licence Ouverte 2.0 (Etalab), SPDX etalab-2.0
+ */
+
+.pico {
+    --pico-font-family: inherit;
+    --pico-font-size: 1rem;
+    --pico-line-height: 1.5;
+    --pico-color: var(--texte);
+    --pico-muted-color: var(--texte-doux);
+    --pico-background-color: var(--surface);
+    --pico-primary: var(--bleu);
+    --pico-primary-background: var(--bleu);
+    --pico-primary-border: var(--bleu);
+    --pico-primary-hover: var(--bleu-survol);
+    --pico-primary-hover-background: var(--bleu-survol);
+    --pico-primary-hover-border: var(--bleu-survol);
+    --pico-primary-inverse: var(--sur-bleu);
+    --pico-primary-focus: var(--bleu-clair);
+    --pico-form-element-background-color: var(--surface);
+    --pico-form-element-border-color: var(--bord-champ);
+    --pico-form-element-color: var(--texte);
+    --pico-form-element-active-border-color: var(--bleu);
+    --pico-form-element-focus-color: var(--bleu-clair);
+    --pico-switch-background-color: var(--bord-champ);
+    --pico-switch-checked-background-color: var(--bleu);
+    --pico-range-thumb-color: var(--bleu);
+    --pico-range-active-border-color: var(--bleu-clair);
+    --pico-h2-color: var(--texte);
+    --pico-h3-color: var(--bleu);
+}
+
+/*
+Nos mises en page espacent déjà les blocs (grilles avec gap) : on retire
+les marges basses de Pico. Mêmes sélecteurs que Pico pour l'emporter.
+*/
+.pico input:not([type=checkbox], [type=radio]),
+.pico select,
+.pico textarea,
+.pico fieldset {
+    margin-bottom: 0;
+}
+.pico label { margin-bottom: 0; }
+.pico fieldset legend { font-weight: 700; }
+
+/* Traduire : "De [langue] vers [langue]" sur une ligne, pas en pile. */
+.langues.pico label { display: inline; }
+.langues.pico select {
+    flex: 1 1 8rem;
+    width: auto;
+    min-width: 0;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+}
+
+/* Boîtes de dialogue : "Fermer", "Oui"... à la largeur du texte (Pico les met en pleine largeur). */
+.reglages.pico button[type=submit] {
+    width: auto;
+    margin-bottom: 0;
+}
