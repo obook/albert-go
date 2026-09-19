@@ -112,6 +112,13 @@
     stroke-linejoin: round;
 }
 .entree.danger { color: var(--rouge); }
+/* Outil actif (Discuter, Reformuler, Traduire). */
+.entree[aria-current="true"] {
+    background: var(--bleu-clair);
+    color: var(--bleu);
+    font-weight: 700;
+}
+.outils { display: grid; gap: 0.125rem; }
 summary.entree { list-style: none; }
 summary.entree::-webkit-details-marker { display: none; }
 

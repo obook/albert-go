@@ -14,7 +14,7 @@ Navigateur (Pages) -> webhook n8n -> https://albert.api.etalab.gouv.fr
 
 ### Réseau
 
-- **Destination unique de la page :** `https://n8n.incubateur.education.gouv.fr`, imposée par la CSP (`connect-src`).
+- **Destination unique de la page :** `https://n8n.incubateur.education.gouv.fr`, imposée par la CSP (`connect-src`). La page lit aussi ses propres consignes (`prompts/*.txt`, même origine, `connect-src 'self'`).
 - **Destinations uniques du relais :** `https://albert.api.etalab.gouv.fr/v1/chat/completions` et `/v1/models`, adresses fixées dans le workflow.
 - **Clé API :** en-tête `Authorization: Bearer <clé>`, jamais dans l'URL.
 - **Aucun CDN, aucun service tiers, aucune télémétrie.** Marked, KaTeX et Mermaid sont servis depuis Pages.
@@ -36,7 +36,7 @@ Navigateur (Pages) -> webhook n8n -> https://albert.api.etalab.gouv.fr
 | Menace | Mesure |
 |---|---|
 | Vol de la clé par injection de script (XSS) | CSP `script-src 'self'`, aucun script en ligne. Questions insérées par `textContent`. HTML des réponses assaini avant insertion : balises actives, gestionnaires `on*`, attributs `style` et URL `javascript:` retirés. KaTeX en mode `trust: false`. Mermaid en `securityLevel: 'strict'`. |
-| Exfiltration par la page | `connect-src` limité à n8n, `img-src 'self' data:`, `form-action 'none'`, `base-uri 'none'`. |
+| Exfiltration par la page | `connect-src` limité à n8n et à la page elle-même, `img-src 'self' data:`, `form-action 'none'`, `base-uri 'none'`. |
 | Interception réseau | HTTPS de bout en bout, HSTS sur Pages, TLS 1.3 sur Pages et n8n. |
 | Détournement du relais vers un autre service | URL cible fixée dans le workflow, chemins limités à deux webhooks. |
 | Conservation de la clé côté serveur | Sauvegarde des exécutions n8n désactivée, vérifiée après un appel réel. |

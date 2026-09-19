@@ -119,11 +119,6 @@ $('partage-reglage').addEventListener('change', () => {
     afficherReglages();
 });
 
-/* Écran de la clé : le choix ne s'applique qu'à l'enregistrement, seul le texte suit. */
-$('partage-accueil').addEventListener('change', () => {
-    $('texte-partage-accueil').textContent = textePartage($('partage-accueil').checked);
-});
-
 $('reglages-conseilles').addEventListener('click', () => {
     reglages.modele = Albert.CONSEILLES.modele;
     reglages.temperature = Albert.CONSEILLES.temperature;

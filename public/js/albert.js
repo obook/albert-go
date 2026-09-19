@@ -44,6 +44,23 @@ const Albert = {
         { id: 'openweight-code-2', nom: 'Code 2', reel: 'deepseek-v4-flash', type: 'Texte', contexte: 393216, description: 'Programmation, contexte très long.' }
     ],
 
+    /*
+    Outils du menu, repris d'albert-droid. Reformuler et Traduire envoient
+    une seule demande, sans les échanges précédents, avec leur consigne système.
+    */
+    OUTILS: {
+        discuter: { nom: 'Discuter', consigne: null, invite: 'Poser votre question...' },
+        reformuler: { nom: 'Reformuler', consigne: 'prompts/reformuler.txt', invite: 'Collez le texte à reformuler...' },
+        traduire: { nom: 'Traduire', consigne: 'prompts/traduire.txt', invite: 'Collez le texte à traduire...' }
+    },
+
+    /** Langue source qui laisse le modèle détecter la langue du texte. */
+    LANGUE_AUTO: 'Automatique',
+
+    /** Langues proposées par Traduire (liste d'albert-droid). */
+    LANGUES: ['Français', 'Anglais', 'Allemand', 'Espagnol', 'Italien', 'Portugais',
+        'Néerlandais', 'Russe', 'Chinois', 'Japonais', 'Arabe', 'Latin'],
+
     /** Réglages conseillés, aussi utilisés au premier lancement. */
     CONSEILLES: { modele: 'openweight-large', temperature: 0.2, memoire: true },
 
@@ -192,6 +209,29 @@ const Albert = {
             return question;
         }
         return (question ? question + '\n\n' : '') + 'Contenu du fichier "' + piece.nom + '" :\n\n' + piece.texte;
+    },
+
+    /**
+     * Ajoute à la saisie l'instruction propre à l'outil (comme albert-droid).
+     *
+     * @param {string} outil - "discuter", "reformuler" ou "traduire".
+     * @param {string} texte - Saisie, fichier joint compris.
+     * @param {string} source - Langue source, ou LANGUE_AUTO.
+     * @param {string} cible - Langue cible.
+     * @returns {string} Demande à envoyer au modèle.
+     */
+    construireDemande(outil, texte, source, cible) {
+        if (outil === 'reformuler') {
+            return 'Reformule ce texte :\n\n' + texte;
+        }
+        if (outil === 'traduire') {
+            /* "Traduis du Anglais" serait incorrect : la langue source va entre parenthèses. */
+            if (source === this.LANGUE_AUTO) {
+                return 'Traduis ce texte en ' + cible + ' :\n\n' + texte;
+            }
+            return 'Traduis ce texte en ' + cible + ' (langue source : ' + source + ') :\n\n' + texte;
+        }
+        return texte;
     },
 
     /**

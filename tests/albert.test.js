@@ -65,6 +65,13 @@ test('joindre : question seule, fichier seul, les deux', () => {
     assert.strictEqual(Albert.joindre('Résume', piece), 'Résume\n\nContenu du fichier "notes.txt" :\n\nLigne 1');
 });
 
+test('construireDemande : instruction selon l\'outil', () => {
+    assert.strictEqual(Albert.construireDemande('discuter', 'Bonjour', 'Automatique', 'Anglais'), 'Bonjour');
+    assert.strictEqual(Albert.construireDemande('reformuler', 'Texte', 'Automatique', 'Anglais'), 'Reformule ce texte :\n\nTexte');
+    assert.strictEqual(Albert.construireDemande('traduire', 'Texte', 'Automatique', 'Anglais'), 'Traduis ce texte en Anglais :\n\nTexte');
+    assert.strictEqual(Albert.construireDemande('traduire', 'Text', 'Anglais', 'Français'), 'Traduis ce texte en Français (langue source : Anglais) :\n\nText');
+});
+
 test('naviguer : bornes de l\'historique', () => {
     const h = ['c', 'b', 'a'];
     assert.strictEqual(Albert.naviguer(h, -1, 'haut'), 0);

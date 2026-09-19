@@ -38,7 +38,7 @@ function afficher() {
     $('form-cle').hidden = connecte;
     $('chat').hidden = !connecte;
     $('saisie-zone').hidden = !connecte;
-    for (const id of ['ouvrir-reglages', 'nouvelle', 'nouvelle-entete', 'resume-reglages', 'menu-historique', 'changer-cle']) {
+    for (const id of ['ouvrir-reglages', 'nouvelle', 'nouvelle-entete', 'resume-reglages', 'menu-outils', 'menu-historique', 'changer-cle']) {
         $(id).hidden = !connecte;
     }
     if (connecte) {

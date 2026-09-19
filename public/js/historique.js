@@ -110,6 +110,7 @@ function sauverConversation() {
     }
     const entree = {
         id: conversationId,
+        outil: outilActuel,
         titre: premiere.affiche || premiere.content,
         date: Date.now(),
         /* Copie : la conversation en cours continue de changer. */
@@ -145,6 +146,10 @@ function sauverConversation() {
  */
 function rouvrirConversation(entree) {
     nouvelleConversation();
+    /* Les conversations enregistrées avant les outils n'ont pas de champ outil. */
+    outilActuel = entree.outil || 'discuter';
+    ecrire('outil', outilActuel);
+    afficherOutil();
     conversation = entree.messages.slice();
     conversationId = entree.id;
     retenirCourante(conversationId);
@@ -162,8 +167,13 @@ function afficherHistorique() {
         const li = document.createElement('li');
         const bouton = document.createElement('button');
         bouton.type = 'button';
-        bouton.textContent = entree.titre;
-        bouton.title = entree.titre + '\n' + format.format(entree.date);
+        /* L'outil devant le titre, sauf pour Discuter. */
+        let libelle = entree.titre;
+        if (entree.outil && entree.outil !== 'discuter') {
+            libelle = Albert.OUTILS[entree.outil].nom + ' : ' + entree.titre;
+        }
+        bouton.textContent = libelle;
+        bouton.title = libelle + '\n' + format.format(entree.date);
         bouton.addEventListener('click', () => {
             rouvrirConversation(entree);
         });

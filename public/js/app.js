@@ -1,6 +1,6 @@
 /*
  * app.js
- * Dernier script de l'interface : clé, envoi des questions, historique, démarrage.
+ * Dernier script de l'interface : envoi des questions, historique, démarrage.
  *
  * Point d'entrée : branche la saisie, envoie les questions à Albert
  * (albert.js) et affiche les réponses (affichage.js). Les dernières
@@ -97,13 +97,15 @@ async function envoyer() {
     position = -1;
     brouillon = '';
 
+    const outil = outilActuel;
     /* Albert n'a pas accès au web : il inventerait le contenu de la page. */
-    if (/https?:\/\/|www\./i.test(question)) {
+    if (outil === 'discuter' && /https?:\/\/|www\./i.test(question)) {
         toast('Albert n\'ouvre pas les liens. Pour une page web, collez son texte ou joignez-le en fichier.');
     }
 
     const affiche = question + (piece ? (question ? '\n' : '') + 'Fichier joint : ' + piece.nom : '');
-    conversation.push({ role: 'user', content: Albert.joindre(question, piece), affiche: affiche });
+    const demande = Albert.construireDemande(outil, Albert.joindre(question, piece), langueSource, langueCible);
+    conversation.push({ role: 'user', content: demande, affiche: affiche });
     /* Pour ignorer la réponse si on change de conversation pendant l'attente. */
     const courante = conversation;
     const bulle = ajouter('user', affiche);
@@ -115,10 +117,16 @@ async function envoyer() {
     etat('Albert réfléchit...');
 
     try {
+        /* Reformuler et Traduire : la demande seule, précédée de leur consigne. */
+        const texteConsigne = await consigne(outil);
+        let messages = Albert.messagesAEnvoyer(conversation, reglages.memoire && outil === 'discuter');
+        if (texteConsigne) {
+            messages = [{ role: 'system', content: texteConsigne }, ...messages];
+        }
         const reponse = await Albert.repondre(reglages.cle, {
             model: modeleActuel().id,
             temperature: reglages.temperature,
-            messages: Albert.messagesAEnvoyer(conversation, reglages.memoire)
+            messages: messages
         }, annulation.signal);
         retirerAttente();
         if (conversation !== courante) {
@@ -153,44 +161,6 @@ async function envoyer() {
         $('saisie').focus();
     }
 }
-
-/**
- * Vérifie la clé saisie auprès d'Albert, puis l'enregistre si elle est acceptée.
- *
- * Une clé refusée n'est pas enregistrée : l'écran de la clé reste affiché.
- *
- * @returns {Promise<void>}
- */
-async function validerCle() {
-    const cle = $('cle').value.trim();
-    const bouton = $('form-cle').querySelector('button[type="submit"]');
-    bouton.disabled = true;
-    messageCle('Vérification de la clé...', false);
-    try {
-        const liste = await Albert.modeles(cle);
-        if (liste.length) {
-            modelesDispo = liste;
-            afficherModeles();
-        }
-    } catch (err) {
-        messageCle(messageEchec(err), true);
-        return;
-    } finally {
-        bouton.disabled = false;
-    }
-    messageCle('', false);
-    changerPartage($('partage-accueil').checked);
-    reglages.cle = cle;
-    ecrire('cle', reglages.cle);
-    $('cle').value = '';
-    afficherReglages();
-    afficher();
-}
-
-$('form-cle').addEventListener('submit', (e) => {
-    e.preventDefault();
-    validerCle();
-});
 
 /**
  * Vide le fil et repart d'une conversation vide.
@@ -271,6 +241,7 @@ $('form-question').addEventListener('submit', (e) => {
 /* Démarrage. */
 afficherReglages();
 afficherTheme();
+afficherOutil();
 afficher();
 if (reglages.cle) {
     rouvrirCourante();

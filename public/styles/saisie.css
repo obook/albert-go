@@ -63,6 +63,26 @@
 }
 .saisie textarea:focus-visible { outline: none; }
 
+/* Traduire : langues source et cible au-dessus du champ. */
+.langues {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.25rem 0.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--texte-doux);
+}
+.langues select {
+    max-width: 100%;
+    padding: 0.125rem 0.25rem;
+    border: 1px solid var(--bord-champ);
+    border-radius: 0.25rem;
+    background: var(--surface);
+    color: var(--texte);
+    font: inherit;
+}
+
 .barre {
     display: flex;
     align-items: center;
