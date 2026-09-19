@@ -65,6 +65,44 @@ les marges basses de Pico. Mêmes sélecteurs que Pico pour l'emporter.
     background-position: center right 0.375rem;
 }
 
+/*
+Liste ouverte des langues à notre style (select personnalisable, Chrome 135 et plus).
+Ailleurs (Firefox, Safari), la liste du système reste affichée.
+*/
+@supports (appearance: base-select) {
+    .langues.pico select,
+    .langues.pico select::picker(select) {
+        appearance: base-select;
+    }
+    /* Le chevron de Pico suffit : on masque celui du navigateur. */
+    .langues.pico select::picker-icon { display: none; }
+    .langues.pico select::picker(select) {
+        max-height: 60dvh;
+        margin-top: 0.25rem;
+        padding: 0.25rem;
+        border: 1px solid var(--bord-champ);
+        border-radius: 0.75rem;
+        background: var(--surface);
+        color: var(--texte);
+        box-shadow: 0 6px 20px rgb(0 0 0 / 0.2);
+    }
+    .langues.pico option {
+        padding: 0.375rem 0.75rem;
+        border-radius: 0.5rem;
+        font-size: 0.875rem;
+    }
+    .langues.pico option::checkmark { color: var(--bleu); }
+    .langues.pico option:hover,
+    .langues.pico option:focus-visible {
+        background: var(--bleu-clair);
+        outline: none;
+    }
+    .langues.pico option:checked {
+        color: var(--bleu);
+        font-weight: 700;
+    }
+}
+
 /* Boîtes de dialogue : "Fermer", "Oui"... à la largeur du texte (Pico les met en pleine largeur). */
 .reglages.pico button[type=submit] {
     width: auto;
