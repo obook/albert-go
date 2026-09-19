@@ -80,7 +80,7 @@ function texteMemoire(actif) {
 }
 
 /**
- * Met à jour les réglages affichés, le résumé sous le titre et la jauge.
+ * Met à jour les réglages affichés, le résumé du menu et la jauge.
  */
 function afficherReglages() {
     const modele = modeleActuel();
