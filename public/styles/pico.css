@@ -56,14 +56,11 @@ les marges basses de Pico. Mêmes sélecteurs que Pico pour l'emporter.
 .pico label { margin-bottom: 0; }
 .pico fieldset legend { font-weight: 700; }
 
-/* Traduire : "De [langue] vers [langue]" sur une ligne, pas en pile. */
-.langues.pico label { display: inline; }
+/* Traduire : listes plus compactes que celles de Pico, pour garder le nom de la langue lisible. */
 .langues.pico select {
-    flex: 1 1 8rem;
-    width: auto;
-    min-width: 0;
-    padding-top: 0.25rem;
-    padding-bottom: 0.25rem;
+    font-size: 0.875rem;
+    padding: 0.25rem 1.75rem 0.25rem 0.5rem;
+    background-position: center right 0.375rem;
 }
 
 /* Boîtes de dialogue : "Fermer", "Oui"... à la largeur du texte (Pico les met en pleine largeur). */
