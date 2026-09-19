@@ -1,0 +1,173 @@
+/*
+ * base.css
+ * Couleurs, mise en page générale et boutons.
+ *
+ * Chargée en premier : les autres feuilles utilisent ses variables.
+ * Couleurs reprises d'albert-atelier (bleu France, rouge Marianne).
+ *
+ * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
+ * Auteur : O. Booklage
+ * Date : Septembre 2026
+ * Licence : Licence Ouverte 2.0 (Etalab), SPDX etalab-2.0
+ */
+
+/* Thème clair par défaut. */
+:root {
+    --fond: #f6f6f6;
+    --surface: #ffffff;
+    --texte: #161616;
+    --texte-doux: #3a3a3a;
+    --bord: #dddddd;
+    --bord-champ: #6a6a6a;
+    --bleu: #000091;
+    --bleu-survol: #1212ff;
+    --sur-bleu: #ffffff;
+    --bleu-clair: #e3e3fd;
+    --rouge: #e1000f;
+    --erreur: #ce0500;
+    color-scheme: light;
+}
+
+/* Thème sombre choisi dans le menu. */
+:root[data-theme="dark"] {
+    --fond: #161616;
+    --surface: #1e1e2e;
+    --texte: #eeeeee;
+    --texte-doux: #c8c8c8;
+    --bord: #3a3a3a;
+    --bord-champ: #929292;
+    --bleu: #8585f6;
+    --bleu-survol: #a0a0ff;
+    --sur-bleu: #161616;
+    --bleu-clair: #2a2a40;
+    --rouge: #ff6b7a;
+    --erreur: #ff7a6e;
+    color-scheme: dark;
+}
+
+/* Thème du système, quand il est sombre. */
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        --fond: #161616;
+        --surface: #1e1e2e;
+        --texte: #eeeeee;
+        --texte-doux: #c8c8c8;
+        --bord: #3a3a3a;
+        --bord-champ: #929292;
+        --bleu: #8585f6;
+        --bleu-survol: #a0a0ff;
+        --sur-bleu: #161616;
+        --bleu-clair: #2a2a40;
+        --rouge: #ff6b7a;
+        --erreur: #ff7a6e;
+        color-scheme: dark;
+    }
+}
+
+* { box-sizing: border-box; }
+
+/*
+Seule la zone centrale (main) défile.
+minmax(0, 1fr) l'empêche de grandir avec son contenu.
+*/
+html, body {
+    height: 100%;
+    height: 100dvh;
+}
+
+body {
+    margin: 0;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", sans-serif;
+    font-size: 1rem;
+    line-height: 1.5;
+    background: var(--fond);
+    color: var(--texte);
+}
+
+h1, h2, p { margin: 0; }
+
+a { color: var(--bleu); }
+a:hover { color: var(--bleu-survol); }
+
+:focus-visible {
+    outline: 3px solid var(--bleu);
+    outline-offset: 2px;
+}
+
+/* Texte lu par les lecteurs d'écran, invisible à l'écran. */
+.visuellement-cache {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+[hidden] { display: none !important; }
+
+/* Boutons */
+
+button {
+    font: inherit;
+    cursor: pointer;
+}
+
+.bouton-principal {
+    padding: 0.5rem 1.25rem;
+    border: 2px solid var(--bleu);
+    border-radius: 0.25rem;
+    background: var(--bleu);
+    color: var(--sur-bleu);
+    font-weight: 700;
+}
+.bouton-principal:hover { background: var(--bleu-survol); border-color: var(--bleu-survol); }
+.bouton-principal:disabled { opacity: 0.6; cursor: progress; }
+
+.bouton-texte {
+    padding: 0.375rem 0.875rem;
+    border: 2px solid var(--bleu);
+    border-radius: 0.25rem;
+    background: transparent;
+    color: var(--bleu);
+    font-weight: 700;
+}
+.bouton-texte:hover { background: var(--bleu-clair); }
+
+.bouton-icone {
+    display: grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0;
+    border: 2px solid var(--bord);
+    border-radius: 50%;
+    background: transparent;
+    color: var(--texte);
+}
+.bouton-icone:hover { border-color: var(--bleu); color: var(--bleu); }
+.bouton-icone svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.bouton-lien {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--bleu);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+    font-size: 0.875rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+}

@@ -1,0 +1,205 @@
+/*
+ * saisie.css
+ * Zone de saisie en bas de page, ligne d'état et toast.
+ *
+ * Comportement dans app.js et piece-jointe.js.
+ *
+ * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
+ * Auteur : O. Booklage
+ * Date : Septembre 2026
+ * Licence : Licence Ouverte 2.0 (Etalab), SPDX etalab-2.0
+ */
+
+.saisie-zone { padding: 0.5rem 1rem 0.5rem; }
+
+.saisie, .etat, .avertissement {
+    max-width: 56rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Le contour de la carte montre le focus du champ. */
+.saisie {
+    position: relative;
+    overflow: hidden;
+    padding: 0.75rem 0.75rem 0.5rem 1rem;
+    background: var(--surface);
+    border: 1px solid var(--bord);
+    border-radius: 1rem;
+    box-shadow: 0 2px 10px rgb(0 0 145 / 0.08);
+}
+
+/* Jauge de contexte en bas de la carte, rouge au-delà de 80 %. */
+.jauge {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 3px;
+}
+.jauge span {
+    display: block;
+    width: 0;
+    height: 100%;
+    background: var(--bleu);
+    transition: width 0.4s;
+}
+.jauge span.pleine { background: var(--erreur); }
+.saisie:focus-within {
+    border-color: var(--bleu);
+    box-shadow: 0 0 0 3px var(--bleu-clair);
+}
+.saisie textarea {
+    display: block;
+    width: 100%;
+    min-height: 2.75rem;
+    max-height: 12rem;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    resize: none;
+    field-sizing: content;
+}
+.saisie textarea:focus-visible { outline: none; }
+
+.barre {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.25rem;
+}
+
+.puce {
+    margin-right: auto;
+    padding: 0.25rem 0.75rem;
+    border: 0;
+    border-radius: 1rem;
+    background: var(--bleu-clair);
+    color: var(--bleu);
+    font-size: 0.8125rem;
+}
+.puce:hover { text-decoration: underline; }
+
+.envoyer {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: var(--bleu);
+    color: var(--sur-bleu);
+}
+.envoyer:hover { background: var(--bleu-survol); }
+.envoyer svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+.envoyer .icone-arreter { display: none; fill: currentColor; }
+.envoyer.en-cours .icone-envoyer { display: none; }
+.envoyer.en-cours .icone-arreter { display: block; }
+
+.saisie .fleche { display: none; flex: none; width: 2.25rem; height: 2.25rem; }
+.saisie .joindre { flex: none; width: 2.25rem; height: 2.25rem; }
+
+/* Fichier glissé au-dessus de la carte. */
+.saisie.depot {
+    border-style: dashed;
+    border-color: var(--bleu);
+    background: var(--bleu-clair);
+}
+
+.piece-jointe {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    max-width: 100%;
+    margin-bottom: 0.5rem;
+    padding: 0.25rem 0.25rem 0.25rem 0.75rem;
+    border: 1px solid var(--bord);
+    border-radius: 1rem;
+    font-size: 0.8125rem;
+}
+.piece-jointe span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.piece-jointe button {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--texte-doux);
+}
+.piece-jointe button:hover { background: var(--bleu-clair); color: var(--bleu); }
+.piece-jointe svg {
+    width: 0.875rem;
+    height: 0.875rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.4;
+    stroke-linecap: round;
+}
+.piece-jointe[hidden] { display: none; }
+
+/* Écran tactile : boutons à la place des flèches du clavier. */
+@media (pointer: coarse) {
+    .saisie .fleche { display: grid; }
+}
+
+.etat {
+    min-height: 1.5rem;
+    margin-top: 0.25rem;
+    font-size: 0.875rem;
+    text-align: center;
+    color: var(--texte-doux);
+}
+.etat.erreur { color: var(--erreur); font-weight: 700; }
+
+.avertissement {
+    font-size: 0.75rem;
+    text-align: center;
+    color: var(--texte-doux);
+}
+
+/* Toast : court message sous l'en-tête. */
+.toast {
+    position: fixed;
+    left: 50%;
+    top: 5.5rem;
+    z-index: 10;
+    width: max-content;
+    max-width: min(32rem, calc(100% - 2rem));
+    text-align: center;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    background: var(--texte);
+    color: var(--fond);
+    font-size: 0.875rem;
+    transform: translate(-50%, -0.5rem);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s, transform 0.2s;
+}
+.toast.visible {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+
+@media (max-width: 40rem) {
+    .toast { top: 7rem; }
+}

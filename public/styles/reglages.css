@@ -1,0 +1,180 @@
+/*
+ * reglages.css
+ * Boîtes de dialogue, interrupteurs, choix du modèle, température.
+ *
+ * Sert aux boîtes "Réglages", "À propos" et "Changer de clé ?".
+ *
+ * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
+ * Auteur : O. Booklage
+ * Date : Septembre 2026
+ * Licence : Licence Ouverte 2.0 (Etalab), SPDX etalab-2.0
+ */
+
+/* Interrupteur : case à cocher dessinée en glissière. */
+
+.interrupteur {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    cursor: pointer;
+}
+.interrupteur input {
+    flex: none;
+    appearance: none;
+    margin: 0;
+    width: 2.25rem;
+    height: 1.25rem;
+    border-radius: 1rem;
+    background: var(--bord-champ);
+    position: relative;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+.interrupteur input::after {
+    content: "";
+    position: absolute;
+    top: 0.1875rem;
+    left: 0.1875rem;
+    width: 0.875rem;
+    height: 0.875rem;
+    border-radius: 50%;
+    background: var(--surface);
+    transition: transform 0.15s;
+}
+.interrupteur input:checked { background: var(--bleu); }
+.interrupteur input:checked::after { transform: translateX(1rem); }
+
+.reglages {
+    width: min(32rem, calc(100% - 2rem));
+    padding: 1.5rem;
+    border: 0;
+    border-top: 4px solid var(--bleu);
+    background: var(--surface);
+    color: var(--texte);
+}
+.reglages::backdrop { background: rgb(0 0 0 / 0.5); }
+.reglages form { display: grid; gap: 1.25rem; }
+.reglages h2 { font-size: 1.375rem; }
+.reglages .bouton-principal { justify-self: end; }
+.boutons-dialogue { display: flex; justify-content: flex-end; gap: 0.75rem; }
+
+/* Boîte "Partager" : QR code sur fond blanc, même en thème sombre, pour rester lisible. */
+.partage .qr {
+    justify-self: center;
+    width: 15rem;
+    height: 15rem;
+    background: #ffffff;
+    image-rendering: pixelated;
+}
+.adresse-partage {
+    display: flex;
+    gap: 0.5rem;
+}
+.adresse-partage input {
+    flex: 1;
+    min-width: 0;
+    padding: 0.375rem 0.75rem;
+    border: 1px solid var(--bord-champ);
+    border-radius: 0.25rem;
+    background: var(--surface);
+    color: var(--texte);
+    font: inherit;
+    font-size: 0.875rem;
+}
+
+.info h3 {
+    margin: 0 0 0.375rem;
+    font-size: 1.0625rem;
+    color: var(--bleu);
+}
+.info ul {
+    margin: 0;
+    padding-left: 1.25rem;
+    display: grid;
+    gap: 0.375rem;
+}
+
+fieldset {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    display: grid;
+    gap: 0.5rem;
+}
+legend {
+    padding: 0;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+}
+fieldset .bouton-texte { justify-self: start; }
+
+.choix-modele summary {
+    padding: 0.5rem 0.75rem;
+    background: var(--surface);
+    border: 1px solid var(--bord-champ);
+    border-bottom: 2px solid var(--bleu);
+    border-radius: 0.25rem 0.25rem 0 0;
+    cursor: pointer;
+}
+.choix-modele summary:focus-visible {
+    outline: 3px solid var(--bleu);
+    outline-offset: 2px;
+}
+.choix-modele[open] summary { margin-bottom: 0.25rem; }
+
+.modeles {
+    display: grid;
+    gap: 0.25rem;
+    max-height: 18rem;
+    overflow-y: auto;
+    padding: 4px;
+}
+.modeles label {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 0 0.625rem;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--bord);
+    border-radius: 0.25rem;
+    cursor: pointer;
+}
+.modeles label:has(:checked) {
+    border-color: var(--bleu);
+    background: var(--bleu-clair);
+}
+.modeles label:has(:focus-visible) {
+    outline: 3px solid var(--bleu);
+    outline-offset: 2px;
+}
+.modeles input {
+    grid-row: span 4;
+    align-self: start;
+    margin: 0.3rem 0 0;
+    accent-color: var(--bleu);
+    outline: none;
+}
+.modeles .nom { font-weight: 700; }
+.modeles .type {
+    align-self: start;
+    padding: 0 0.375rem;
+    border: 1px solid var(--bord);
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+}
+.modeles .description, .modeles .detail { grid-column: 2 / 4; font-size: 0.875rem; color: var(--texte-doux); }
+.modeles .detail {
+    font-family: ui-monospace, "Cascadia Mono", "DejaVu Sans Mono", monospace;
+    font-size: 0.75rem;
+    overflow-wrap: anywhere;
+}
+
+.temperature {
+    display: grid;
+    grid-template-columns: auto 1fr auto 2.5rem;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.875rem;
+}
+.temperature input { accent-color: var(--bleu); }
+.temperature output { font-weight: 700; text-align: right; }

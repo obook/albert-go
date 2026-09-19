@@ -1,8 +1,19 @@
+/*
+ * lecture.test.js
+ * Tests de public/js/lecture.js : formules parlées, ordinaux, voix, découpage.
+ *
+ * Lancement : node --test
+ *
+ * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
+ * Auteur : O. Booklage
+ * Date : Septembre 2026
+ * Licence : Licence Ouverte 2.0 (Etalab), SPDX etalab-2.0
+ */
 'use strict';
 
 const { test } = require('node:test');
 const assert = require('node:assert');
-const Lecture = require('../public/lecture.js');
+const Lecture = require('../public/js/lecture.js');
 
 test('formuleParlee : fractions, puissances, racines, chimie', () => {
     assert.strictEqual(Lecture.formuleParlee('\\frac{2}{3} \\times \\frac{4}{5}'), '2 sur 3 fois 4 sur 5');

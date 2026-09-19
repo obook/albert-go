@@ -1,8 +1,19 @@
+/*
+ * albert.test.js
+ * Tests de public/js/albert.js : modèles, contexte, historique, erreurs.
+ *
+ * Lancement : node --test
+ *
+ * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
+ * Auteur : O. Booklage
+ * Date : Septembre 2026
+ * Licence : Licence Ouverte 2.0 (Etalab), SPDX etalab-2.0
+ */
 'use strict';
 
 const { test } = require('node:test');
 const assert = require('node:assert');
-const Albert = require('../public/albert.js');
+const Albert = require('../public/js/albert.js');
 
 test('messagesAEnvoyer : mémoire active ou non', () => {
     const conv = [
@@ -14,8 +25,13 @@ test('messagesAEnvoyer : mémoire active ou non', () => {
     assert.deepStrictEqual(Albert.messagesAEnvoyer(conv, false), [{ role: 'user', content: 'c' }]);
 });
 
+test('messagesAEnvoyer : le texte de la bulle ne part pas', () => {
+    const conv = [{ role: 'user', content: 'Résume\n\nContenu du fichier', affiche: 'Résume\nFichier joint : a.txt' }];
+    assert.deepStrictEqual(Albert.messagesAEnvoyer(conv, true), [{ role: 'user', content: 'Résume\n\nContenu du fichier' }]);
+});
+
 test('conversation : filtre, alias, ordre, nom court', () => {
-    // Extrait au format de /v1/models (annuaire BidouIAge du 1er août 2026).
+    /* Extrait au format de /v1/models (annuaire BidouIAge du 1er août 2026). */
     const liste = [
         { id: 'bge-m3', type: 'text-embeddings-inference', aliases: ['openweight-embeddings'] },
         { id: 'deepseek-v4-flash', type: 'text-generation', aliases: ['deepseek-ai/DeepSeek-V4-Flash', 'openweight-code-2'], max_context_length: 393216 },
@@ -31,6 +47,8 @@ test('conversation : filtre, alias, ordre, nom court', () => {
     assert.strictEqual(modeles[1].contexte, 131072);
     assert.strictEqual(modeles[2].nom, 'Code 2');
     assert.strictEqual(modeles[3].description, 'Modèle de conversation.');
+    assert.strictEqual(modeles[0].type, 'Texte et images');
+    assert.strictEqual(modeles[1].type, 'Texte');
 });
 
 test('occupation : pourcentage du contexte, borné, inconnu', () => {

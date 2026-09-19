@@ -1,0 +1,170 @@
+/*
+ * conversation.css
+ * Zone centrale : écran de la clé, fil de conversation, attente.
+ *
+ * Le contenu des réponses est mis en forme par rendu.css.
+ *
+ * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
+ * Auteur : O. Booklage
+ * Date : Septembre 2026
+ * Licence : Licence Ouverte 2.0 (Etalab), SPDX etalab-2.0
+ */
+
+main {
+    /* Garde les textes .visuellement-cache dans main, sinon la page s'allonge. */
+    position: relative;
+    overflow-y: auto;
+    padding: 1.5rem 1rem;
+}
+
+.accueil, .chat { margin: 0 auto; }
+.accueil { max-width: 46rem; }
+.chat { max-width: 56rem; }
+
+.accueil {
+    margin-top: 8vh;
+    padding: 2rem;
+    background: var(--surface);
+    border: 1px solid var(--bord);
+    border-top: 4px solid var(--bleu);
+    display: grid;
+    gap: 0.75rem;
+}
+.accueil h2 { font-size: 1.375rem; }
+.accueil label { font-weight: 700; margin-top: 0.5rem; }
+.accueil .bouton-principal { justify-self: start; }
+
+input[type="password"], textarea {
+    width: 100%;
+    font: inherit;
+    color: var(--texte);
+    background: var(--surface);
+    border: 1px solid var(--bord-champ);
+    border-bottom: 2px solid var(--bleu);
+    border-radius: 0.25rem 0.25rem 0 0;
+    padding: 0.5rem 0.75rem;
+}
+
+.accueil .interrupteur { margin-top: 0; font-weight: 400; }
+
+.hors-cadre { padding: 2rem; text-align: center; }
+
+.note {
+    font-size: 0.875rem;
+    color: var(--texte-doux);
+}
+
+/* Fil de conversation */
+
+.fil {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1.5rem;
+}
+
+.fil li { overflow-wrap: anywhere; }
+
+.fil .user {
+    white-space: pre-wrap;
+    justify-self: end;
+    max-width: 80%;
+    padding: 0.625rem 1rem;
+    border-radius: 1rem 1rem 0.25rem 1rem;
+    background: var(--bleu);
+    color: var(--sur-bleu);
+}
+
+.fil .assistant {
+    display: grid;
+    grid-template-columns: 2rem 1fr;
+    gap: 0.75rem;
+}
+
+.pastille {
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 0.25rem;
+    background: var(--bleu-clair);
+    color: var(--bleu);
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+/* Réponse d'Albert : coin haut gauche carré, du côté de la pastille IA. */
+.fil .carte {
+    min-width: 0;
+    padding: 0.75rem 1rem;
+    background: var(--surface);
+    border: 1px solid var(--bord);
+    border-radius: 0.25rem 0.75rem 0.75rem 0.75rem;
+}
+.actions-reponse {
+    display: flex;
+    gap: 0.375rem;
+    margin-top: 0.625rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--bord);
+}
+.bouton-action {
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    border: 1px solid var(--bord);
+    border-radius: 0.375rem;
+    background: transparent;
+    color: var(--texte-doux);
+}
+.bouton-action:hover { border-color: var(--bleu); color: var(--bleu); }
+.bouton-action svg {
+    width: 1.0625rem;
+    height: 1.0625rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+.bouton-action svg.plein { fill: currentColor; }
+
+/* Attente de la réponse */
+
+.attente {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 2rem;
+}
+.points { display: inline-flex; gap: 0.3rem; }
+.points span {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: var(--bleu);
+    animation: clignote 1.2s infinite ease-in-out;
+}
+.points span:nth-child(2) { animation-delay: 0.2s; }
+.points span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes clignote {
+    0%, 80%, 100% { opacity: 0.25; }
+    40% { opacity: 1; }
+}
+.duree {
+    font-size: 0.875rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--texte-doux);
+}
+
+@media (max-width: 40rem) {
+    .accueil { margin-top: 1rem; padding: 1.25rem; }
+    .fil .user { max-width: 90%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .points span { animation: none; opacity: 0.6; }
+}
