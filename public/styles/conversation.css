@@ -106,6 +106,13 @@ input[type="password"], textarea {
     border: 1px solid var(--bord);
     border-radius: 0.25rem 0.75rem 0.75rem 0.75rem;
 }
+/* Reformuler : titre de chaque variante ("Plus courte"...). */
+.titre-variante {
+    margin-bottom: 0.375rem;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: var(--bleu);
+}
 .actions-reponse {
     display: flex;
     gap: 0.375rem;

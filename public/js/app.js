@@ -199,8 +199,6 @@ function repartirDeZero() {
     }
 }
 
-/* Deux accès : le bouton "+" de l'en-tête et l'entrée du menu. */
-$('nouvelle-entete').addEventListener('click', repartirDeZero);
 $('nouvelle').addEventListener('click', repartirDeZero);
 
 $('saisie').addEventListener('keydown', (e) => {

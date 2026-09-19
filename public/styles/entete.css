@@ -10,7 +10,7 @@
  * Licence : Licence Ouverte 2.0 (Etalab), SPDX etalab-2.0
  */
 
-/* Burger, titre, bouton "+". */
+/* Burger et titre. */
 .entete {
     display: flex;
     align-items: center;
@@ -44,7 +44,7 @@
 }
 
 
-.burger, .plus { flex: none; }
+.burger { flex: none; }
 
 /*
 Traduire : carte des langues sous l'en-tête, fixe pendant le défilement.
@@ -108,6 +108,19 @@ carte est trop étroite. Seuil en rem : un texte agrandi passe plus tôt en colo
     padding: 1rem 0.5rem;
 }
 .volet h2 { padding: 0.25rem 0.75rem 0; }
+
+/* Titre du menu et petit bouton de fermeture en haut à droite. */
+.volet-titre {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+.fermer-menu {
+    flex: none;
+    width: 2.25rem;
+    height: 2.25rem;
+}
 
 /* Résumé des réglages sous le titre du menu ; un clic ouvre les réglages. */
 .resume {

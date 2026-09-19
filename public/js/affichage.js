@@ -38,7 +38,7 @@ function afficher() {
     $('form-cle').hidden = connecte;
     $('chat').hidden = !connecte;
     $('saisie-zone').hidden = !connecte;
-    for (const id of ['ouvrir-reglages', 'nouvelle', 'nouvelle-entete', 'resume-reglages', 'menu-outils', 'menu-historique', 'changer-cle']) {
+    for (const id of ['ouvrir-reglages', 'nouvelle', 'resume-reglages', 'menu-outils', 'menu-historique', 'changer-cle']) {
         $(id).hidden = !connecte;
     }
     if (connecte) {
@@ -123,115 +123,22 @@ function afficherReglages() {
 }
 
 /**
- * Crée un petit bouton d'icône sous une réponse.
- *
- * @param {string} icone - SVG pris dans ICONES.
- * @param {string} libelle - Texte lu par les lecteurs d'écran et info-bulle.
- * @returns {HTMLButtonElement} Le bouton.
- */
-function boutonAction(icone, libelle) {
-    const bouton = document.createElement('button');
-    bouton.type = 'button';
-    bouton.className = 'bouton-action';
-    bouton.innerHTML = icone;
-    bouton.setAttribute('aria-label', libelle);
-    bouton.title = libelle;
-    return bouton;
-}
-
-/**
- * Crée le bouton "Copier la réponse".
- *
- * @param {string} texte - Texte brut de la réponse.
- * @returns {HTMLButtonElement} Le bouton.
- */
-function boutonCopier(texte) {
-    const bouton = boutonAction(ICONES.copier, 'Copier la réponse');
-    bouton.addEventListener('click', () => {
-        navigator.clipboard.writeText(texte).then(() => {
-            bouton.innerHTML = ICONES.copie;
-            toast('Réponse copiée.');
-            setTimeout(() => {
-                bouton.innerHTML = ICONES.copier;
-            }, 1500);
-        });
-    });
-    return bouton;
-}
-
-/**
- * Crée le bouton "Lire à voix haute".
- *
- * @param {HTMLElement} contenu - Réponse affichée à lire.
- * @returns {HTMLButtonElement} Le bouton.
- */
-function boutonLire(contenu) {
-    const bouton = boutonAction(ICONES.lire, 'Lire à voix haute');
-    bouton.addEventListener('click', () => {
-        if (!Lecture.disponible()) {
-            if (Lecture.enLigne) {
-                toast('Aucune voix française disponible dans ce navigateur.');
-            } else {
-                toast('Aucune voix française installée sur cet appareil. Les voix en ligne ne sont pas utilisées.');
-            }
-            return;
-        }
-        Lecture.basculer(bouton, contenu);
-    });
-    bouton.addEventListener('lecture-debut', () => {
-        bouton.innerHTML = ICONES.arreter;
-        bouton.setAttribute('aria-label', 'Arrêter la lecture');
-    });
-    bouton.addEventListener('lecture-fin', () => {
-        bouton.innerHTML = ICONES.lire;
-        bouton.setAttribute('aria-label', 'Lire à voix haute');
-    });
-    return bouton;
-}
-
-/**
- * Crée la pastille "IA" placée à gauche d'une réponse.
- *
- * @returns {HTMLSpanElement} La pastille.
- */
-function pastilleIA() {
-    const pastille = document.createElement('span');
-    pastille.className = 'pastille';
-    pastille.textContent = 'IA';
-    return pastille;
-}
-
-/**
  * Ajoute un message au fil de conversation.
  *
  * @param {string} role - "user" pour une question, "assistant" pour une réponse.
  * @param {string} texte - Texte du message (Markdown pour une réponse).
- * @returns {HTMLLIElement} L'élément ajouté.
+ * @returns {HTMLLIElement} L'élément ajouté (la première bulle pour des variantes).
  */
 function ajouter(role, texte) {
+    if (role === 'assistant') {
+        return ajouterReponse(texte);
+    }
     const li = document.createElement('li');
     li.className = role;
-    if (role === 'assistant') {
-        const carte = document.createElement('div');
-        carte.className = 'carte';
-        const contenu = document.createElement('div');
-        contenu.className = 'texte rendu';
-        Rendu.afficher(contenu, texte);
-
-        const actions = document.createElement('div');
-        actions.className = 'actions-reponse';
-        actions.append(boutonCopier(texte));
-        if (typeof speechSynthesis !== 'undefined') {
-            actions.append(boutonLire(contenu));
-        }
-        carte.append(contenu, actions);
-        li.append(pastilleIA(), carte);
-    } else {
-        const qui = document.createElement('span');
-        qui.className = 'visuellement-cache';
-        qui.textContent = 'Vous : ';
-        li.append(qui, texte);
-    }
+    const qui = document.createElement('span');
+    qui.className = 'visuellement-cache';
+    qui.textContent = 'Vous : ';
+    li.append(qui, texte);
     $('fil').append(li);
     li.scrollIntoView({ block: 'end' });
     return li;

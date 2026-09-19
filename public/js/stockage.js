@@ -4,7 +4,7 @@
  *
  * Les scripts de l'interface sont des scripts classiques qui partagent
  * leurs variables globales. Ordre de chargement (index.html) :
- *   stockage.js -> affichage.js -> reglages.js -> historique.js
+ *   stockage.js -> affichage.js -> reponse.js -> reglages.js -> historique.js
  *   -> outils.js -> menu.js -> piece-jointe.js -> cle.js -> app.js
  * Ce fichier définit $, lire, ecrire, reglages, conversation et historique.
  *

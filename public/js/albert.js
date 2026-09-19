@@ -235,6 +235,29 @@ const Albert = {
     },
 
     /**
+     * Sépare les variantes d'une réponse de Reformuler ("### Titre" puis le texte).
+     *
+     * @param {string} texte - Réponse du modèle.
+     * @returns {?Array<{titre: string, texte: string}>} Les variantes, ou null
+     *     si la réponse n'en contient pas au moins deux (on l'affiche alors d'un bloc).
+     */
+    decouperVariantes(texte) {
+        const variantes = [];
+        for (const bloc of texte.split(/^###[ \t]+/m).slice(1)) {
+            const fin = bloc.indexOf('\n');
+            const titre = (fin < 0 ? bloc : bloc.slice(0, fin)).trim();
+            const corps = fin < 0 ? '' : bloc.slice(fin + 1).trim();
+            if (titre && corps) {
+                variantes.push({ titre: titre, texte: corps });
+            }
+        }
+        if (variantes.length < 2) {
+            return null;
+        }
+        return variantes;
+    },
+
+    /**
      * Nouvelle position dans l'historique des questions.
      *
      * @param {string[]} historique - Questions, la plus récente en premier.

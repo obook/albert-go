@@ -72,6 +72,17 @@ test('construireDemande : instruction selon l\'outil', () => {
     assert.strictEqual(Albert.construireDemande('traduire', 'Text', 'Anglais', 'Français'), 'Traduis ce texte en Français (langue source : Anglais) :\n\nText');
 });
 
+test('decouperVariantes : trois variantes, ou null si le format manque', () => {
+    const reponse = '### Plus courte\nCourt.\n\n### Même longueur\nMoyen, plus fluide.\n\n### Plus soutenue\nTexte soutenu.\n\nSecond paragraphe.';
+    assert.deepStrictEqual(Albert.decouperVariantes(reponse), [
+        { titre: 'Plus courte', texte: 'Court.' },
+        { titre: 'Même longueur', texte: 'Moyen, plus fluide.' },
+        { titre: 'Plus soutenue', texte: 'Texte soutenu.\n\nSecond paragraphe.' }
+    ]);
+    assert.strictEqual(Albert.decouperVariantes('Une seule reformulation.'), null);
+    assert.strictEqual(Albert.decouperVariantes('### Seule\nUne variante.'), null);
+});
+
 test('naviguer : bornes de l\'historique', () => {
     const h = ['c', 'b', 'a'];
     assert.strictEqual(Albert.naviguer(h, -1, 'haut'), 0);
