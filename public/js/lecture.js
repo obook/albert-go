@@ -190,7 +190,21 @@ const Lecture = {
      * @returns {boolean} true si une voix utilisable existe.
      */
     disponible(langue = 'fr') {
-        return typeof speechSynthesis !== 'undefined' && this.voix(langue) !== null;
+        if (typeof speechSynthesis === 'undefined') {
+            return false;
+        }
+        return this.voix(langue) !== null || this.voixSysteme();
+    },
+
+    /**
+     * Cas de Chrome Android : liste des voix vide, mais lecture possible avec
+     * la voix du système. On ignore alors si elle est locale ou en ligne :
+     * seulement si l'utilisateur autorise les voix en ligne.
+     *
+     * @returns {boolean} true si on peut lire avec la voix du système.
+     */
+    voixSysteme() {
+        return this.enLigne && speechSynthesis.getVoices().length === 0;
     },
 
     /**
@@ -221,7 +235,7 @@ const Lecture = {
         }
         const voix = this.voix(langue);
         const morceaux = this.decouper(this.texte(element, langue), 250);
-        if (!voix || !morceaux.length) {
+        if ((!voix && !this.voixSysteme()) || !morceaux.length) {
             return;
         }
         this._bouton = bouton;
@@ -234,8 +248,13 @@ const Lecture = {
         };
         morceaux.forEach((morceau, i) => {
             const enonce = new SpeechSynthesisUtterance(morceau);
-            enonce.voice = voix;
-            enonce.lang = voix.lang;
+            if (voix) {
+                enonce.voice = voix;
+                enonce.lang = voix.lang;
+            } else {
+                /* Voix du système : on donne seulement la langue. */
+                enonce.lang = langue;
+            }
             enonce.rate = 0.95;
             if (i === morceaux.length - 1) {
                 enonce.onend = finir;

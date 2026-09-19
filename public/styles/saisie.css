@@ -195,6 +195,8 @@
     opacity: 1;
     transform: translate(-50%, 0);
 }
+/* Traduire : sous la carte des langues, pour ne pas la cacher. */
+.barre-langues:not([hidden]) ~ .toast { top: 9rem; }
 
 /* Téléphone : champ d'une ligne au départ, il grandit avec le texte. */
 @media (max-width: 40rem) {

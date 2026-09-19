@@ -154,7 +154,12 @@ function rouvrirConversation(entree) {
     conversationId = entree.id;
     retenirCourante(conversationId);
     for (const message of conversation) {
-        ajouter(message.role, message.affiche || message.content, message.langue);
+        /* Traduction enregistrée avant qu'on garde la langue : on prend la langue cible actuelle. */
+        let langue = message.langue;
+        if (!langue && outilActuel === 'traduire') {
+            langue = Albert.CODES_LANGUES[langueCible];
+        }
+        ajouter(message.role, message.affiche || message.content, langue);
     }
 }
 

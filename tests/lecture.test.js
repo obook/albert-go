@@ -71,6 +71,16 @@ test('voixPretes : attend voiceschanged quand la liste est encore vide (Chrome A
     delete global.speechSynthesis;
 });
 
+test('disponible : liste vide (Chrome Android), voix du système seulement si les voix en ligne sont permises', () => {
+    global.speechSynthesis = { getVoices: () => [] };
+    Lecture.enLigne = false;
+    assert.strictEqual(Lecture.disponible('ru'), false);
+    Lecture.enLigne = true;
+    assert.strictEqual(Lecture.disponible('ru'), true);
+    Lecture.enLigne = false;
+    delete global.speechSynthesis;
+});
+
 test('decouper : morceaux bornés, coupés aux phrases', () => {
     const morceaux = Lecture.decouper('Une phrase. Une autre phrase. Encore une.', 20);
     assert.deepStrictEqual(morceaux, ['Une phrase.', 'Une autre phrase.', 'Encore une.']);
