@@ -44,6 +44,9 @@ function afficher() {
     if (connecte) {
         focusSaisie();
     } else {
+        /* Écran de la clé : effacement à la fermeture toujours proposé par défaut. */
+        $('partage-accueil').checked = true;
+        $('texte-partage-accueil').textContent = textePartage(true);
         $('cle').focus();
     }
 }
@@ -109,8 +112,6 @@ function afficherReglages() {
     $('memoire-reglage').checked = reglages.memoire;
     $('texte-memoire').textContent = texteMemoire(reglages.memoire);
     $('voix-en-ligne').checked = reglages.voixEnLigne;
-    $('partage-accueil').checked = partage;
-    $('texte-partage-accueil').textContent = textePartage(partage);
     $('partage-reglage').checked = partage;
     $('texte-partage-reglage').textContent = textePartage(partage);
     $('temperature').value = reglages.temperature;

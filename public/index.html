@@ -118,12 +118,12 @@
     <main id="principal">
         <form id="form-cle" class="accueil pico" hidden>
             <h2>Entrez votre clé Albert</h2>
-            <p>Votre clé reste dans ce navigateur. Elle passe par le relais n8n interministériel, qui n'enregistre rien.</p>
             <label for="cle">Clé API</label>
             <input type="password" id="cle" autocomplete="off" spellcheck="false" required>
             <p id="message-cle" class="message-cle" role="status"></p>
+            <p>Votre clé reste stockée dans ce navigateur.<br/>Elle passe par l'incubateur interministériel education.gouv.fr sans être enregistrée.</p>
             <label class="interrupteur">
-                <input type="checkbox" id="partage-accueil" role="switch">
+                <input type="checkbox" id="partage-accueil" role="switch" checked>
                 <span id="texte-partage-accueil"></span>
             </label>
             <button type="submit" class="bouton-principal">Enregistrer la clé</button>
