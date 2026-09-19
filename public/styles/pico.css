@@ -12,6 +12,9 @@
  * Licence : Licence Ouverte 2.0 (Etalab), SPDX etalab-2.0
  */
 
+/* Pico agrandit la police de <html> sur grand écran (jusqu'à 131 %) : on garde 100 %. */
+:root { --pico-font-size: 100%; }
+
 .pico {
     --pico-font-family: inherit;
     --pico-font-size: 1rem;
