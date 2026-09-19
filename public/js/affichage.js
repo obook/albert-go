@@ -42,9 +42,19 @@ function afficher() {
         $(id).hidden = !connecte;
     }
     if (connecte) {
-        $('saisie').focus();
+        focusSaisie();
     } else {
         $('cle').focus();
+    }
+}
+
+/**
+ * Remet le curseur dans le champ de saisie, sauf sur écran tactile :
+ * le clavier virtuel s'ouvrirait et cacherait la réponse.
+ */
+function focusSaisie() {
+    if (!matchMedia('(pointer: coarse)').matches) {
+        $('saisie').focus();
     }
 }
 

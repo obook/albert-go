@@ -117,7 +117,7 @@ async function joindreFichier(fichier) {
             etat(messageEchec(err), true);
         }
     }
-    $('saisie').focus();
+    focusSaisie();
 }
 
 $('joindre').addEventListener('click', () => {
@@ -136,7 +136,7 @@ $('fichier').addEventListener('change', () => {
 $('piece-retirer').addEventListener('click', () => {
     retirerPiece();
     etat('');
-    $('saisie').focus();
+    focusSaisie();
 });
 
 /* Glisser-déposer sur la carte de saisie. */

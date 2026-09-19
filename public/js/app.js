@@ -97,6 +97,11 @@ async function envoyer() {
     position = -1;
     brouillon = '';
 
+    /* Écran tactile : fermer le clavier virtuel pour laisser voir la réponse. */
+    if (matchMedia('(pointer: coarse)').matches) {
+        $('saisie').blur();
+    }
+
     const outil = outilActuel;
     /* Albert n'a pas accès au web : il inventerait le contenu de la page. */
     if (outil === 'discuter' && /https?:\/\/|www\./i.test(question)) {
@@ -158,7 +163,7 @@ async function envoyer() {
     } finally {
         annulation = null;
         boutonEnvoi(false);
-        $('saisie').focus();
+        focusSaisie();
     }
 }
 
@@ -228,12 +233,12 @@ $('saisie').addEventListener('keydown', (e) => {
 /* Boutons pour écran tactile, à la place des flèches (saisie.css). */
 $('question-precedente').addEventListener('click', () => {
     rappeler('haut');
-    $('saisie').focus();
+    focusSaisie();
 });
 
 $('question-suivante').addEventListener('click', () => {
     rappeler('bas');
-    $('saisie').focus();
+    focusSaisie();
 });
 
 $('form-question').addEventListener('submit', (e) => {
