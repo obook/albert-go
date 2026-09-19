@@ -28,6 +28,42 @@ if (!Array.isArray(conversations)) {
 /** Identifiant de la conversation affichée, ou null si elle n'est pas encore enregistrée. */
 let conversationId = null;
 
+/* Propre à l'onglet (sessionStorage) : retrouver la conversation après un rechargement. */
+const CLE_COURANTE = 'albert-go.conversation-courante';
+
+/**
+ * Retient l'identifiant de la conversation affichée dans cet onglet.
+ *
+ * @param {?string} id - Identifiant, ou null quand on repart d'une conversation vide.
+ */
+function retenirCourante(id) {
+    try {
+        if (id === null) {
+            sessionStorage.removeItem(CLE_COURANTE);
+        } else {
+            sessionStorage.setItem(CLE_COURANTE, id);
+        }
+    } catch (e) {
+        /* Stockage bloqué : la conversation ne sera pas réaffichée. */
+    }
+}
+
+/**
+ * Réaffiche la conversation de cet onglet après un rechargement.
+ */
+function rouvrirCourante() {
+    let id = null;
+    try {
+        id = sessionStorage.getItem(CLE_COURANTE);
+    } catch (e) {
+        return;
+    }
+    const entree = conversations.find(c => c.id === id);
+    if (entree) {
+        rouvrirConversation(entree);
+    }
+}
+
 /**
  * Écrit une liste de conversations dans le stockage.
  *
@@ -99,6 +135,7 @@ function sauverConversation() {
         toast('Mémoire du navigateur pleine : ' + supprimees + ' ancienne(s) conversation(s) supprimée(s).');
     }
     conversations = ecrite;
+    retenirCourante(conversationId);
 }
 
 /**
@@ -110,6 +147,7 @@ function rouvrirConversation(entree) {
     nouvelleConversation();
     conversation = entree.messages.slice();
     conversationId = entree.id;
+    retenirCourante(conversationId);
     for (const message of conversation) {
         ajouter(message.role, message.affiche || message.content);
     }

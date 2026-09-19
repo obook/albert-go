@@ -112,17 +112,46 @@ if (partage) {
 }
 
 /*
-Le navigateur restaure sessionStorage quand on rouvre un onglet : on efface.
-Onglet masqué : sans doute gelé par une extension, on garde la clé.
-Un rechargement redemande la clé : c'est voulu.
+Mode partagé. Le navigateur restaure sessionStorage quand on rouvre un onglet
+fermé : il faut effacer. Mais pagehide ne distingue pas fermeture et
+rechargement. Donc pagehide pose seulement une marque, et le chargement
+suivant décide : rechargement, on garde tout ; sinon, on efface.
+Onglet masqué au pagehide : sans doute gelé par une extension, pas de marque.
 */
+const MARQUE_FERMETURE = 'albert-go.fermeture';
+
 window.addEventListener('pagehide', () => {
     if (partage && document.visibilityState === 'visible') {
-        for (const nom of SENSIBLES) {
-            ecrire(nom, null);
+        try {
+            sessionStorage.setItem(MARQUE_FERMETURE, 'oui');
+        } catch (e) {
+            /* Stockage bloqué : rien à effacer plus tard. */
         }
     }
 });
+
+/**
+ * Indique si la page vient d'être rechargée (F5, Ctrl+R, tirer pour rafraîchir).
+ *
+ * @returns {boolean} true pour un rechargement.
+ */
+function estRechargement() {
+    const navigation = performance.getEntriesByType('navigation')[0];
+    return !!navigation && navigation.type === 'reload';
+}
+
+try {
+    if (sessionStorage.getItem(MARQUE_FERMETURE)) {
+        sessionStorage.removeItem(MARQUE_FERMETURE);
+        if (partage && !estRechargement()) {
+            for (const nom of SENSIBLES) {
+                ecrire(nom, null);
+            }
+        }
+    }
+} catch (e) {
+    /* Stockage bloqué. */
+}
 
 /**
  * Active ou désactive le mode partagé, en déplaçant les données sensibles.

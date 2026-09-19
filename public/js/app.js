@@ -205,6 +205,7 @@ function nouvelleConversation() {
     retirerPiece();
     conversation = [];
     conversationId = null;
+    retenirCourante(null);
     dernierUsage = null;
     afficherReglages();
     $('fil').replaceChildren();
@@ -271,4 +272,7 @@ $('form-question').addEventListener('submit', (e) => {
 afficherReglages();
 afficherTheme();
 afficher();
+if (reglages.cle) {
+    rouvrirCourante();
+}
 chargerModeles();
