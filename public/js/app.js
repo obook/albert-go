@@ -183,9 +183,20 @@ function nouvelleConversation() {
     afficher();
 }
 
+/**
+ * Bouton "Nouvelle conversation" : fil vide, et retour à Discuter.
+ */
+function repartirDeZero() {
+    if (outilActuel === 'discuter') {
+        nouvelleConversation();
+    } else {
+        choisirOutil('discuter');
+    }
+}
+
 /* Deux accès : le bouton "+" de l'en-tête et l'entrée du menu. */
-$('nouvelle-entete').addEventListener('click', nouvelleConversation);
-$('nouvelle').addEventListener('click', nouvelleConversation);
+$('nouvelle-entete').addEventListener('click', repartirDeZero);
+$('nouvelle').addEventListener('click', repartirDeZero);
 
 $('saisie').addEventListener('keydown', (e) => {
     const champ = $('saisie');
