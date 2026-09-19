@@ -38,7 +38,7 @@ function afficher() {
     $('form-cle').hidden = connecte;
     $('chat').hidden = !connecte;
     $('saisie-zone').hidden = !connecte;
-    for (const id of ['ouvrir-reglages', 'nouvelle', 'nouvelle-entete', 'menu-historique', 'changer-cle']) {
+    for (const id of ['ouvrir-reglages', 'nouvelle', 'nouvelle-entete', 'resume-reglages', 'menu-historique', 'changer-cle']) {
         $(id).hidden = !connecte;
     }
     if (connecte) {
@@ -48,8 +48,39 @@ function afficher() {
     }
 }
 
+/*
+Texte des interrupteurs : il décrit l'état actuel. Le début reste le même
+pour que le lecteur d'écran annonce toujours le même nom, suivi de l'état.
+*/
+
 /**
- * Met à jour les réglages affichés, le résumé sous la saisie et la jauge.
+ * Texte de l'interrupteur d'effacement à la fermeture.
+ *
+ * @param {boolean} actif - Interrupteur activé.
+ * @returns {string} Texte à afficher.
+ */
+function textePartage(actif) {
+    if (actif) {
+        return 'À la fermeture de l\'onglet, la clé et les conversations seront effacées.';
+    }
+    return 'À la fermeture de l\'onglet, la clé et les conversations seront conservées.';
+}
+
+/**
+ * Texte de l'interrupteur de contexte.
+ *
+ * @param {boolean} actif - Interrupteur activé.
+ * @returns {string} Texte à afficher.
+ */
+function texteMemoire(actif) {
+    if (actif) {
+        return 'Envoyé à Albert : toute la conversation.';
+    }
+    return 'Envoyé à Albert : la dernière question seulement.';
+}
+
+/**
+ * Met à jour les réglages affichés, le résumé sous le titre et la jauge.
  */
 function afficherReglages() {
     const modele = modeleActuel();
@@ -59,16 +90,21 @@ function afficherReglages() {
     if (reglages.memoire) {
         contexte = pourcent === null ? 'contexte complet' : 'contexte ' + pourcent + ' %';
     }
-    $('resume-reglages').textContent = modele.nom + ', ' + reglages.temperature.toFixed(1) + ', ' + contexte;
+    /* Virgule décimale : 0,2 et non 0.2. */
+    const temperature = reglages.temperature.toFixed(1).replace('.', ',');
+    $('resume-reglages').textContent = modele.nom + ', température ' + temperature + ', ' + contexte;
     $('jauge-niveau').style.width = (pourcent || 0) + '%';
     $('jauge-niveau').classList.toggle('pleine', pourcent !== null && pourcent >= 80);
 
     $('memoire-reglage').checked = reglages.memoire;
+    $('texte-memoire').textContent = texteMemoire(reglages.memoire);
     $('voix-en-ligne').checked = reglages.voixEnLigne;
     $('partage-accueil').checked = partage;
+    $('texte-partage-accueil').textContent = textePartage(partage);
     $('partage-reglage').checked = partage;
+    $('texte-partage-reglage').textContent = textePartage(partage);
     $('temperature').value = reglages.temperature;
-    $('valeur-temperature').textContent = reglages.temperature.toFixed(1);
+    $('valeur-temperature').textContent = temperature;
     $('modele-choisi').textContent = modele.nom + ' (' + modele.id + ')';
     const radio = [...document.querySelectorAll('input[name="modele"]')].find(r => r.value === modele.id);
     if (radio) {
@@ -236,6 +272,17 @@ function toast(texte) {
     minuteurToast = setTimeout(() => {
         $('toast').classList.remove('visible');
     }, duree);
+}
+
+/**
+ * Écrit un message sous le champ de la clé.
+ *
+ * @param {string} texte - Message, ou chaîne vide pour effacer.
+ * @param {boolean} erreur - true pour l'afficher comme une erreur.
+ */
+function messageCle(texte, erreur) {
+    $('message-cle').textContent = texte;
+    $('message-cle').classList.toggle('erreur', erreur);
 }
 
 /**

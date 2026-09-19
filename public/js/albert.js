@@ -44,6 +44,9 @@ const Albert = {
         { id: 'openweight-code-2', nom: 'Code 2', reel: 'deepseek-v4-flash', type: 'Texte', contexte: 393216, description: 'Programmation, contexte très long.' }
     ],
 
+    /** Réglages conseillés, aussi utilisés au premier lancement. */
+    CONSEILLES: { modele: 'openweight-large', temperature: 0.2, memoire: true },
+
     /* Modèle qui lit les images (annuaire BidouIAge, 1er août 2026). */
     MODELE_VISION: 'openweight-medium',
 
@@ -57,7 +60,7 @@ const Albert = {
      *
      * @param {string} cle - Clé API de l'utilisateur.
      * @returns {Promise<Object[]>} Les modèles de conversation, triés.
-     * @throws {Error} Si Albert refuse la requête.
+     * @throws {Error} Si Albert refuse la requête ; err.status donne le code HTTP.
      */
     async modeles(cle) {
         const res = await fetch(this.BASE + '/models', {
@@ -66,7 +69,9 @@ const Albert = {
         });
         const corps = await res.json().catch(() => null);
         if (!res.ok) {
-            throw new Error(this.messageErreur(res.status, corps));
+            const erreur = new Error(this.messageErreur(res.status, corps));
+            erreur.status = res.status;
+            throw erreur;
         }
         return this.conversation((corps && corps.data) || []);
     },

@@ -20,6 +20,9 @@
     <title>Albert Go</title>
     <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <!-- Ajoutée à l'écran d'accueil, la page s'ouvre sans barre du navigateur. -->
+    <link rel="manifest" href="manifest.webmanifest">
+    <meta name="theme-color" content="#000091">
     <link rel="stylesheet" href="vendor/katex/katex.min.css">
     <link rel="stylesheet" href="styles/base.css">
     <link rel="stylesheet" href="styles/entete.css">
@@ -34,8 +37,13 @@
         <button type="button" class="bouton-icone burger" id="ouvrir-menu" aria-label="Menu" aria-haspopup="dialog" aria-controls="menu">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
-        <h1 class="marque">Alber<span class="rouge">t</span> Go</h1>
-        <p class="sous-titre">Discuter avec le chat de l'État</p>
+        <div class="titre">
+            <div class="titre-ligne">
+                <h1 class="marque">Alber<span class="rouge">t</span> Go</h1>
+                <p class="sous-titre">Discuter avec le chat de l'État</p>
+            </div>
+            <button type="button" class="resume" id="resume-reglages" aria-haspopup="dialog" title="Ouvrir les réglages" hidden></button>
+        </div>
         <button type="button" class="bouton-icone plus" id="nouvelle-entete" aria-label="Nouvelle conversation" title="Nouvelle conversation" hidden>
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
         </button>
@@ -85,9 +93,10 @@
             <p>Votre clé reste dans ce navigateur. Elle passe par le relais n8n interministériel, qui n'enregistre rien.</p>
             <label for="cle">Clé API</label>
             <input type="password" id="cle" autocomplete="off" spellcheck="false" required>
+            <p id="message-cle" class="message-cle" role="status"></p>
             <label class="interrupteur">
                 <input type="checkbox" id="partage-accueil" role="switch">
-                <span>Effacer la clé et supprimer mes questions à la fermeture de l'onglet</span>
+                <span id="texte-partage-accueil"></span>
             </label>
             <button type="submit" class="bouton-principal">Enregistrer la clé</button>
             <p class="note">Pas encore de clé ? <a href="https://albert.sites.beta.gouv.fr/access/" target="_blank" rel="noopener noreferrer">Demander un accès à Albert</a>, réservé aux agents publics.</p>
@@ -107,13 +116,12 @@
                     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
                 </button>
             </div>
-            <textarea id="saisie" rows="2" placeholder="Poser votre question..." aria-describedby="aide-saisie"></textarea>
+            <textarea id="saisie" rows="1" placeholder="Poser votre question..." aria-describedby="aide-saisie"></textarea>
             <div class="barre">
                 <input type="file" id="fichier" accept="image/*,.txt,.md,.csv,.tsv,.json,.xml,.html,.css,.js,.py,.tex,.sql" hidden>
                 <button type="button" class="bouton-icone joindre" id="joindre" aria-label="Joindre une image ou un fichier texte" title="Joindre une image ou un fichier texte">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5l-8.6 8.6a5 5 0 0 1-7.1-7.1l8.6-8.6a3.3 3.3 0 0 1 4.7 4.7l-8.6 8.6a1.7 1.7 0 0 1-2.4-2.4l7.9-7.9"/></svg>
                 </button>
-                <button type="button" class="puce" id="resume-reglages" aria-haspopup="dialog"></button>
                 <button type="button" class="bouton-icone fleche" id="question-precedente" aria-label="Question précédente">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg>
                 </button>
@@ -128,7 +136,7 @@
             <div class="jauge" aria-hidden="true"><span id="jauge-niveau"></span></div>
         </form>
         <p id="etat" class="etat" role="status"></p>
-        <p id="aide-saisie" class="avertissement">Entrée : envoyer. Maj+Entrée : nouvelle ligne. Flèches haut et bas : questions précédentes. L'IA peut se tromper, vérifiez ses réponses.</p>
+        <p id="aide-saisie" class="avertissement">Une IA peut se tromper : vérifiez ses réponses.</p>
     </footer>
 
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
@@ -136,6 +144,7 @@
     <dialog id="reglages" class="reglages" aria-labelledby="titre-reglages">
         <form method="dialog">
             <h2 id="titre-reglages">Réglages</h2>
+            <p class="note">Conseillé : modèle Large, température 0,2, toute la conversation envoyée.</p>
 
             <fieldset>
                 <legend>Modèle</legend>
@@ -159,10 +168,9 @@
             <fieldset>
                 <legend>Contexte</legend>
                 <label class="interrupteur">
-                    <input type="checkbox" id="memoire-reglage" role="switch" aria-describedby="aide-memoire">
-                    <span>Envoyer toute la conversation</span>
+                    <input type="checkbox" id="memoire-reglage" role="switch">
+                    <span id="texte-memoire"></span>
                 </label>
-                <p id="aide-memoire" class="note">Désactivé : seule la dernière question part, sans les échanges précédents.</p>
             </fieldset>
 
             <fieldset>
@@ -179,11 +187,14 @@
                 <p class="note">Une clé est enregistrée dans ce navigateur.</p>
                 <label class="interrupteur">
                     <input type="checkbox" id="partage-reglage" role="switch">
-                    <span>Effacer la clé et supprimer mes questions à la fermeture de l'onglet</span>
+                    <span id="texte-partage-reglage"></span>
                 </label>
             </fieldset>
 
-            <button type="submit" class="bouton-principal">Fermer</button>
+            <div class="boutons-dialogue">
+                <button type="button" class="bouton-texte" id="reglages-conseilles">Réglages conseillés</button>
+                <button type="submit" class="bouton-principal">Fermer</button>
+            </div>
         </form>
     </dialog>
 
@@ -230,6 +241,11 @@
             <section>
                 <h3>Les réponses</h3>
                 <p>L'IA peut se tromper ou inventer. Vérifiez ses réponses avant de les utiliser, et ne lui confiez pas de données personnelles.</p>
+            </section>
+
+            <section>
+                <h3>Clavier</h3>
+                <p>Entrée : envoyer. Maj+Entrée : nouvelle ligne. Flèches haut et bas : questions précédentes.</p>
             </section>
 
             <section>

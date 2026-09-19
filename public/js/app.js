@@ -154,15 +154,42 @@ async function envoyer() {
     }
 }
 
-$('form-cle').addEventListener('submit', (e) => {
-    e.preventDefault();
+/**
+ * Vérifie la clé saisie auprès d'Albert, puis l'enregistre si elle est acceptée.
+ *
+ * Une clé refusée n'est pas enregistrée : l'écran de la clé reste affiché.
+ *
+ * @returns {Promise<void>}
+ */
+async function validerCle() {
+    const cle = $('cle').value.trim();
+    const bouton = $('form-cle').querySelector('button[type="submit"]');
+    bouton.disabled = true;
+    messageCle('Vérification de la clé...', false);
+    try {
+        const liste = await Albert.modeles(cle);
+        if (liste.length) {
+            modelesDispo = liste;
+            afficherModeles();
+        }
+    } catch (err) {
+        messageCle(messageEchec(err), true);
+        return;
+    } finally {
+        bouton.disabled = false;
+    }
+    messageCle('', false);
     changerPartage($('partage-accueil').checked);
-    afficherReglages();
-    reglages.cle = $('cle').value.trim();
+    reglages.cle = cle;
     ecrire('cle', reglages.cle);
     $('cle').value = '';
+    afficherReglages();
     afficher();
-    chargerModeles();
+}
+
+$('form-cle').addEventListener('submit', (e) => {
+    e.preventDefault();
+    validerCle();
 });
 
 /**

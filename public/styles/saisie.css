@@ -70,16 +70,6 @@
     margin-top: 0.25rem;
 }
 
-.puce {
-    margin-right: auto;
-    padding: 0.25rem 0.75rem;
-    border: 0;
-    border-radius: 1rem;
-    background: var(--bleu-clair);
-    color: var(--bleu);
-    font-size: 0.8125rem;
-}
-.puce:hover { text-decoration: underline; }
 
 .envoyer {
     flex: none;
@@ -108,7 +98,8 @@
 .envoyer.en-cours .icone-arreter { display: block; }
 
 .saisie .fleche { display: none; flex: none; width: 2.25rem; height: 2.25rem; }
-.saisie .joindre { flex: none; width: 2.25rem; height: 2.25rem; }
+/* Le trombone à gauche, les autres boutons à droite. */
+.saisie .joindre { flex: none; width: 2.25rem; height: 2.25rem; margin-right: auto; }
 
 /* Fichier glissé au-dessus de la carte. */
 .saisie.depot {
@@ -161,19 +152,24 @@
     .saisie .fleche { display: grid; }
 }
 
+/* Vide, la ligne d'état ne prend pas de place mais reste lue par les lecteurs d'écran. */
 .etat {
-    min-height: 1.5rem;
     margin-top: 0.25rem;
     font-size: 0.875rem;
     text-align: center;
     color: var(--texte-doux);
 }
+.etat:empty { margin-top: 0; }
 .etat.erreur { color: var(--erreur); font-weight: 700; }
 
 .avertissement {
+    margin-top: 0.25rem;
     font-size: 0.75rem;
     text-align: center;
     color: var(--texte-doux);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* Toast : court message sous l'en-tête. */
@@ -200,6 +196,9 @@
     transform: translate(-50%, 0);
 }
 
+/* Téléphone : champ d'une ligne au départ, il grandit avec le texte. */
 @media (max-width: 40rem) {
-    .toast { top: 7rem; }
+    .saisie-zone { padding: 0.375rem 0.5rem; }
+    .saisie { padding: 0.5rem 0.5rem 0.375rem 0.75rem; }
+    .saisie textarea { min-height: 1.5rem; }
 }

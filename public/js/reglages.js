@@ -1,6 +1,7 @@
 /*
  * reglages.js
- * Boîte de réglages : modèle, température, contexte, voix, mode partagé.
+ * Boîte de réglages : modèle, température, contexte, voix, mode partagé,
+ * bouton "Réglages conseillés".
  *
  * Chaque changement est enregistré tout de suite (ecrire, stockage.js)
  * et répercuté par afficherReglages (affichage.js).
@@ -49,7 +50,10 @@ function afficherModeles() {
 }
 
 /**
- * Charge la liste réelle des modèles. En cas d'échec, la liste de secours reste.
+ * Charge la liste réelle des modèles au démarrage.
+ *
+ * Clé refusée (révoquée, expirée) : elle est effacée et l'écran de la clé
+ * revient. Relais injoignable : la liste de secours reste.
  *
  * @returns {Promise<void>}
  */
@@ -65,8 +69,13 @@ async function chargerModeles() {
         modelesDispo = liste;
         afficherModeles();
         afficherReglages();
-    } catch (e) {
-        /* On garde la liste de secours. */
+    } catch (err) {
+        if (err.status === 401 || err.status === 403) {
+            reglages.cle = null;
+            ecrire('cle', null);
+            afficher();
+            messageCle(err.message, true);
+        }
     }
 }
 
@@ -107,6 +116,22 @@ $('voix-en-ligne').addEventListener('change', () => {
 
 $('partage-reglage').addEventListener('change', () => {
     changerPartage($('partage-reglage').checked);
+    afficherReglages();
+});
+
+/* Écran de la clé : le choix ne s'applique qu'à l'enregistrement, seul le texte suit. */
+$('partage-accueil').addEventListener('change', () => {
+    $('texte-partage-accueil').textContent = textePartage($('partage-accueil').checked);
+});
+
+$('reglages-conseilles').addEventListener('click', () => {
+    reglages.modele = Albert.CONSEILLES.modele;
+    reglages.temperature = Albert.CONSEILLES.temperature;
+    reglages.memoire = Albert.CONSEILLES.memoire;
+    ecrire('modele', reglages.modele);
+    ecrire('temperature', String(reglages.temperature));
+    ecrire('memoire', reglages.memoire ? 'oui' : 'non');
+    afficherReglages();
 });
 
 $('ouvrir-reglages').addEventListener('click', () => {

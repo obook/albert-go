@@ -146,9 +146,9 @@ function changerPartage(actif) {
 /** Réglages de l'utilisateur, lus au démarrage. */
 const reglages = {
     cle: lire('cle', null),
-    modele: lire('modele', Albert.MODELES[0].id),
-    temperature: parseFloat(lire('temperature', '0.2')),
-    memoire: lire('memoire', 'oui') === 'oui',
+    modele: lire('modele', Albert.CONSEILLES.modele),
+    temperature: parseFloat(lire('temperature', String(Albert.CONSEILLES.temperature))),
+    memoire: lire('memoire', Albert.CONSEILLES.memoire ? 'oui' : 'non') === 'oui',
     voixEnLigne: lire('voix-en-ligne', 'non') === 'oui'
 };
 if (typeof Lecture !== 'undefined') {

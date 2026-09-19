@@ -10,19 +10,32 @@
  * Licence : Licence Ouverte 2.0 (Etalab), SPDX etalab-2.0
  */
 
+/* Burger, titre (avec le résumé des réglages dessous), bouton "+". */
 .entete {
     display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: 0.25rem 1rem;
+    align-items: center;
+    gap: 1rem;
     padding: 0.75rem 1.5rem;
     background: var(--surface);
     border-bottom: 4px solid var(--bleu);
 }
 
+.titre {
+    flex: 1;
+    min-width: 0;
+    display: grid;
+}
+.titre-ligne {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0 1rem;
+}
+
 .marque {
     font-size: 1.5rem;
     font-weight: 700;
+    line-height: 1.15;
     letter-spacing: -0.01em;
     color: var(--bleu);
 }
@@ -33,13 +46,24 @@
     color: var(--texte-doux);
 }
 
-.burger { align-self: center; }
-
-/* Bouton "+" (nouvelle conversation), poussé à droite. */
-.plus {
-    align-self: center;
-    margin-left: auto;
+/* Résumé des réglages : petit, sur une ligne, sous le titre ; ouvre les réglages. */
+.resume {
+    justify-self: start;
+    max-width: 100%;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--texte-doux);
+    font-size: 0.75rem;
+    line-height: 1.3;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
+.resume:hover { color: var(--bleu); text-decoration: underline; }
+
+.burger, .plus { flex: none; }
 
 /* Menu latéral */
 
@@ -123,6 +147,6 @@ summary.entree::-webkit-details-marker { display: none; }
 .historique .note { padding: 0.25rem 0.75rem 0.25rem 3.25rem; }
 
 @media (max-width: 40rem) {
-    .entete { padding: 0.5rem 1rem; }
+    .entete { padding: 0.5rem 1rem; gap: 0.75rem; }
     .sous-titre { display: none; }
 }
