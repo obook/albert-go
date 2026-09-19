@@ -69,7 +69,8 @@ function nomLangue(code) {
  */
 function boutonLire(contenu, langue) {
     const bouton = boutonAction(ICONES.lire, 'Lire à voix haute');
-    bouton.addEventListener('click', () => {
+    bouton.addEventListener('click', async () => {
+        await Lecture.voixPretes();
         if (!Lecture.disponible(langue)) {
             const nom = nomLangue(langue);
             if (Lecture.enLigne) {

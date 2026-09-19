@@ -53,6 +53,24 @@ test('voix : langue demandée, "ru-RU" comme "ru_RU", jamais une voix française
     delete global.speechSynthesis;
 });
 
+test('voixPretes : attend voiceschanged quand la liste est encore vide (Chrome Android)', async () => {
+    let voix = [];
+    let ecouteur = null;
+    global.speechSynthesis = {
+        getVoices: () => voix,
+        addEventListener: (nom, f) => { ecouteur = f; },
+        removeEventListener: () => { ecouteur = null; }
+    };
+    const attente = Lecture.voixPretes();
+    voix = [{ name: 'Google русский', lang: 'ru-RU', localService: false }];
+    ecouteur();
+    await attente;
+    Lecture.enLigne = true;
+    assert.strictEqual(Lecture.voix('ru').name, 'Google русский');
+    Lecture.enLigne = false;
+    delete global.speechSynthesis;
+});
+
 test('decouper : morceaux bornés, coupés aux phrases', () => {
     const morceaux = Lecture.decouper('Une phrase. Une autre phrase. Encore une.', 20);
     assert.deepStrictEqual(morceaux, ['Une phrase.', 'Une autre phrase.', 'Encore une.']);

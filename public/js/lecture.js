@@ -160,6 +160,30 @@ const Lecture = {
     },
 
     /**
+     * Attend que la liste des voix soit chargée.
+     *
+     * Chrome Android renvoie une liste vide tant que l'évènement
+     * "voiceschanged" n'est pas arrivé. On l'attend, 2 secondes au plus.
+     *
+     * @returns {Promise<void>}
+     */
+    voixPretes() {
+        if (speechSynthesis.getVoices().length) {
+            return Promise.resolve();
+        }
+        return new Promise(resoudre => {
+            let minuteur = null;
+            const fin = () => {
+                clearTimeout(minuteur);
+                speechSynthesis.removeEventListener('voiceschanged', fin);
+                resoudre();
+            };
+            speechSynthesis.addEventListener('voiceschanged', fin);
+            minuteur = setTimeout(fin, 2000);
+        });
+    },
+
+    /**
      * Indique si une lecture est possible dans cette langue.
      *
      * @param {string} [langue] - Code de langue ("fr", "ru"...).
@@ -221,6 +245,11 @@ const Lecture = {
         });
     }
 };
+
+/* Lance le chargement des voix dès l'ouverture (Chrome Android les charge en différé). */
+if (typeof speechSynthesis !== 'undefined') {
+    speechSynthesis.getVoices();
+}
 
 /* Export pour les tests Node ; ignoré dans le navigateur. */
 if (typeof module !== 'undefined') {
