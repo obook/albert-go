@@ -46,6 +46,33 @@
 
 .burger, .plus { flex: none; }
 
+/*
+Traduire : carte des langues sous l'en-tête, fixe pendant le défilement.
+"De [source] vers [cible]" sur une ligne ; sur deux lignes alignées si la
+carte est trop étroite. Seuil en rem : un texte agrandi passe plus tôt sur deux lignes.
+*/
+.barre-langues {
+    container: langues / inline-size;
+    padding: 0.5rem 1rem 0;
+}
+.langues {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
+    gap: 0.375rem 0.5rem;
+    max-width: 56rem;
+    margin: 0 auto;
+    padding: 0.5rem 0.75rem;
+    background: var(--surface);
+    border: 1px solid var(--bord);
+    border-radius: 0.75rem;
+    font-size: 0.875rem;
+    color: var(--texte-doux);
+}
+@container langues (max-width: 22rem) {
+    .langues { grid-template-columns: auto minmax(0, 1fr); }
+}
+
 /* Menu latéral */
 
 .volet {

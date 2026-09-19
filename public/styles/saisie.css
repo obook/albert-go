@@ -63,25 +63,6 @@
 }
 .saisie textarea:focus-visible { outline: none; }
 
-/*
-Traduire : "De [source] vers [cible]" sur une ligne ; sur deux lignes alignées
-si la carte est trop étroite (téléphone, texte agrandi). Seuil en rem : un
-texte agrandi fait passer plus tôt sur deux lignes.
-*/
-.saisie { container: saisie / inline-size; }
-.langues {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto minmax(0, 1fr);
-    align-items: center;
-    gap: 0.375rem 0.5rem;
-    margin-bottom: 0.5rem;
-    font-size: 0.875rem;
-    color: var(--texte-doux);
-}
-@container saisie (max-width: 22rem) {
-    .langues { grid-template-columns: auto minmax(0, 1fr); }
-}
-
 .barre {
     display: flex;
     align-items: center;

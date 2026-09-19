@@ -49,6 +49,16 @@
         </button>
     </header>
 
+    <!-- Traduire : langues dans une carte fixe sous l'en-tête. -->
+    <div id="langues" class="barre-langues" hidden>
+        <div class="langues pico">
+            <span aria-hidden="true">De</span>
+            <select id="langue-source" aria-label="Langue source"></select>
+            <span aria-hidden="true">vers</span>
+            <select id="langue-cible" aria-label="Langue cible"></select>
+        </div>
+    </div>
+
     <!-- Menu latéral, comme albert-droid. -->
     <dialog id="menu" class="volet" aria-labelledby="titre-menu">
         <div class="volet-contenu">
@@ -130,12 +140,6 @@
                 <button type="button" id="piece-retirer" aria-label="Retirer le fichier">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
                 </button>
-            </div>
-            <div id="langues" class="langues pico" hidden>
-                <span aria-hidden="true">De</span>
-                <select id="langue-source" aria-label="Langue source"></select>
-                <span aria-hidden="true">vers</span>
-                <select id="langue-cible" aria-label="Langue cible"></select>
             </div>
             <textarea id="saisie" rows="1" placeholder="Poser votre question..." aria-describedby="aide-saisie"></textarea>
             <div class="barre">
