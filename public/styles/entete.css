@@ -64,8 +64,10 @@ carte est trop étroite. Seuil en rem : un texte agrandi passe plus tôt sur deu
     margin: 0 auto;
     padding: 0.5rem 0.75rem;
     background: var(--surface);
-    border: 1px solid var(--bord);
-    border-radius: 0.75rem;
+    /* Même contour et même ombre que la carte de saisie, visibles aussi en thème sombre. */
+    border: 1px solid var(--bord-champ);
+    border-radius: 1rem;
+    box-shadow: 0 2px 10px rgb(0 0 145 / 0.08);
     font-size: 0.875rem;
     color: var(--texte-doux);
 }

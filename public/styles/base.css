@@ -75,6 +75,9 @@ html, body {
     height: 100dvh;
 }
 
+/* Pas de zoom au double appui (tapes rapides sur les boutons). Le zoom à deux doigts reste permis (RGAA). */
+html { touch-action: manipulation; }
+
 body {
     margin: 0;
     display: grid;
