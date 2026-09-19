@@ -86,7 +86,21 @@ $('adresse-partage').addEventListener('focus', () => {
     $('adresse-partage').select();
 });
 
+/**
+ * Texte de la version pour "À propos" : commit et date en français.
+ *
+ * @returns {string} Par exemple "96941b9 du 19/09/2026 13:20".
+ */
+function texteVersion() {
+    if (!VERSION.date) {
+        return VERSION.commit;
+    }
+    const date = new Intl.DateTimeFormat('fr-FR', { dateStyle: 'short', timeStyle: 'short' }).format(new Date(VERSION.date));
+    return VERSION.commit + ' du ' + date;
+}
+
 $('ouvrir-info').addEventListener('click', () => {
+    $('version').textContent = texteVersion();
     $('info').showModal();
 });
 
