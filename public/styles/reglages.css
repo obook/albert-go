@@ -114,6 +114,9 @@ fieldset .bouton-texte { justify-self: start; }
     overflow-y: auto;
     padding: 4px;
 }
+/* Pico met width: fit-content aux label contenant une radio : les cartes
+n'avaient pas la même largeur. Le préfixe .pico passe devant son sélecteur. */
+.pico .modeles label { width: auto; }
 .modeles label {
     display: grid;
     grid-template-columns: auto minmax(0, 1fr) auto;
