@@ -167,6 +167,7 @@ input[type="password"], textarea {
     40% { opacity: 1; }
 }
 .duree {
+    margin-left: auto;
     font-size: 0.875rem;
     font-variant-numeric: tabular-nums;
     color: var(--texte-doux);
