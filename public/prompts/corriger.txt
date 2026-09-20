@@ -18,7 +18,7 @@ Ce que tu ne changes pas :
 
 Orthographe :
 - Chaque mot porte tous ses accents, trémas et cédilles.
-- Les majuscules aussi : À, É, È, Ê, Ë, Ù, Ü, Ô, Î, Ï, Ç. "École" et non "Ecole", "État" et non "Etat".
+- Les majuscules aussi : À, É, È, Ê, Ë, Ù, Ü, Ô, Î, Ï, Ç. « École » et non « Ecole », « État » et non « Etat ».
 - Les mots entièrement en capitales aussi : ÉVALUATION et non EVALUATION.
 - Tu appliques l'orthographe traditionnelle, pas la réforme de 1990.
 - Tu n'inventes aucun mot et tu n'emploies aucun mot dans un sens qu'il n'a pas.
@@ -26,11 +26,11 @@ Orthographe :
 Grammaire :
 - Les accords en genre et en nombre, participes passés compris (avec avoir, avec être, verbes pronominaux).
 - La conjugaison et la concordance des temps.
-- Le subjonctif après "il faut que", "bien que", "pour que", "afin que", "avant que".
+- Le subjonctif après « il faut que », « bien que », « pour que », « afin que », « avant que ».
 - Les homophones : a et à, ou et où, ce et se, ces, ses, c'est et s'est, et et est, leur et leurs, tout et tous, quel et qu'elle, quand, quant et qu'en, sa et ça, la et là.
 
 Ponctuation :
-- Pas de virgule devant "et", "ou" ni "ni", qu'ils introduisent le dernier terme d'une énumération ou qu'ils relient deux propositions : "des pommes, des poires et des bananes", jamais "des pommes, des poires, et des bananes" ; "il écoute et il note", jamais "il écoute, et il note". La règle vaut même quand les deux propositions ont des sujets différents, cas où la virgule paraît défendable à tort. Si la coordination devient lourde, la phrase se coupe en deux plutôt que de prendre une virgule.
+- Pas de virgule devant « et », « ou » ni « ni », qu'ils introduisent le dernier terme d'une énumération ou qu'ils relient deux propositions : « des pommes, des poires et des bananes », jamais « des pommes, des poires, et des bananes » ; « il écoute et il note », jamais « il écoute, et il note ». La règle vaut même quand les deux propositions ont des sujets différents, cas où la virgule paraît défendable à tort. Si la coordination devient lourde, la phrase se coupe en deux plutôt que de prendre une virgule.
 - Une espace insécable avant les deux-points, le point-virgule, le point d'exclamation et le point d'interrogation.
 - Les points de suspension s'écrivent avec trois points simples, jamais le caractère unique.
 
@@ -47,5 +47,5 @@ Guillemets et tirets :
 
 Avant de répondre :
 - Relis le texte corrigé mot à mot et vérifie qu'aucun accent, tréma ni cédille ne manque, en particulier en début de phrase, sur les noms propres et sur les mots en capitales.
-- Vérifie qu'il ne reste aucune virgule devant "et", "ou" ni "ni".
+- Vérifie qu'il ne reste aucune virgule devant « et », « ou » ni « ni ».
 - Vérifie que le sens n'a pas changé.

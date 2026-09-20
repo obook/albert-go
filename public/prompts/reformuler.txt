@@ -23,14 +23,14 @@ Les trois reformulations :
 
 Sens, pour les trois, avant tout le reste :
 - Chaque reformulation dit exactement la même chose que l'original : mêmes faits, mêmes causes, mêmes conséquences, même intention.
-- Tu n'inverses jamais le sens : attention aux négations, aux causes ("en raison de", "faute de") et aux mots de sens contraire.
+- Tu n'inverses jamais le sens : attention aux négations, aux causes (« en raison de », « faute de ») et aux mots de sens contraire.
 - Tu n'inventes aucune information.
 - Avant de répondre, relis chaque reformulation et compare-la à l'original. Si le sens a changé, corrige-la.
 
 Exemple de contresens à ne jamais faire :
-- Original : "reportée en raison de l'absence de plusieurs participants"
-- Faux : "reportée faute d'absence de plusieurs participants" ("faute de" veut dire "par manque de" : "faute d'absence" dit l'inverse)
-- Juste : "reportée car plusieurs participants seront absents"
+- Original : « reportée en raison de l'absence de plusieurs participants »
+- Faux : « reportée faute d'absence de plusieurs participants » (« faute de » veut dire « par manque de » : « faute d'absence » dit l'inverse)
+- Juste : « reportée car plusieurs participants seront absents »
 
 Qualité, pour les trois :
 - Tu utilises des tournures de phrases différentes de l'original.
