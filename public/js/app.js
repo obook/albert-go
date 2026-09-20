@@ -136,7 +136,7 @@ async function envoyer() {
     etat('Albert réfléchit...');
 
     try {
-        /* Reformuler et Traduire : la demande seule, précédée de leur consigne. */
+        /* Outils autres que Discuter : la demande seule, précédée de leur consigne. */
         const texteConsigne = await consigne(outil);
         let messages = Albert.messagesAEnvoyer(conversation, reglages.memoire && outil === 'discuter');
         if (texteConsigne) {

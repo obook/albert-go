@@ -51,7 +51,8 @@ const Albert = {
     OUTILS: {
         discuter: { nom: 'Discuter', consigne: null, invite: 'Poser votre question...' },
         reformuler: { nom: 'Reformuler', consigne: 'prompts/reformuler.txt', invite: 'Collez le texte à reformuler...' },
-        traduire: { nom: 'Traduire', consigne: 'prompts/traduire.txt', invite: 'Collez le texte à traduire...' }
+        traduire: { nom: 'Traduire', consigne: 'prompts/traduire.txt', invite: 'Collez le texte à traduire...' },
+        corriger: { nom: 'Corriger', consigne: 'prompts/corriger.txt', invite: 'Collez le texte à corriger...' }
     },
 
     /** Langue source qui laisse le modèle détecter la langue du texte. */
@@ -221,7 +222,7 @@ const Albert = {
     /**
      * Ajoute à la saisie l'instruction propre à l'outil (comme albert-droid).
      *
-     * @param {string} outil - "discuter", "reformuler" ou "traduire".
+     * @param {string} outil - Clé de OUTILS.
      * @param {string} texte - Saisie, fichier joint compris.
      * @param {string} source - Langue source, ou LANGUE_AUTO.
      * @param {string} cible - Langue cible.
@@ -230,6 +231,9 @@ const Albert = {
     construireDemande(outil, texte, source, cible) {
         if (outil === 'reformuler') {
             return 'Reformule ce texte :\n\n' + texte;
+        }
+        if (outil === 'corriger') {
+            return 'Corrige ce texte :\n\n' + texte;
         }
         if (outil === 'traduire') {
             /* "Traduis du Anglais" serait incorrect : la langue source va entre parenthèses. */

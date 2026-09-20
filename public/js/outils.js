@@ -1,6 +1,6 @@
 /*
  * outils.js
- * Outils du menu : Discuter, Reformuler, Traduire (repris d'albert-droid).
+ * Outils du menu : Discuter, Reformuler, Traduire (repris d'albert-droid), Corriger.
  *
  * Garde l'outil actif et les langues de Traduire. Les consignes système
  * sont dans public/prompts/*.txt, lues au premier usage puis gardées en

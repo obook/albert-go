@@ -68,6 +68,7 @@ test('joindre : question seule, fichier seul, les deux', () => {
 test('construireDemande : instruction selon l\'outil', () => {
     assert.strictEqual(Albert.construireDemande('discuter', 'Bonjour', 'Automatique', 'Anglais'), 'Bonjour');
     assert.strictEqual(Albert.construireDemande('reformuler', 'Texte', 'Automatique', 'Anglais'), 'Reformule ce texte :\n\nTexte');
+    assert.strictEqual(Albert.construireDemande('corriger', 'Texte', 'Automatique', 'Anglais'), 'Corrige ce texte :\n\nTexte');
     assert.strictEqual(Albert.construireDemande('traduire', 'Texte', 'Automatique', 'Anglais'), 'Traduis ce texte en Anglais :\n\nTexte');
     assert.strictEqual(Albert.construireDemande('traduire', 'Text', 'Anglais', 'Français'), 'Traduis ce texte en Français (langue source : Anglais) :\n\nText');
 });
