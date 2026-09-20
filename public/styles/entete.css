@@ -89,9 +89,10 @@ carte est trop étroite. Seuil en rem : un texte agrandi passe plus tôt en colo
 /* Menu latéral */
 
 /*
-Hauteur donnée par inset, pas par height: 100%. Sur Chrome Android, le
-pourcentage d'un élément fixe se résout sur la hauteur barre d'URL masquée,
-donc plus grande que l'écran visible.
+Cause non établie. Sur Chrome Android, l'ouverture du volet cassait la mise
+en page : page plus haute, puis volet très large. Largeur en pourcentage au
+lieu de 85vw, hauteur par inset au lieu de height: 100%. Mesuré correct sur
+Pixel 8 après coup ; l'état cassé n'a pas été reproduit.
 */
 .volet {
     position: fixed;
