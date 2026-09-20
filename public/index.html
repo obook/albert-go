@@ -227,7 +227,9 @@
                 </select>
                 <label for="cle-recherche">Clé du moteur</label>
                 <input type="password" id="cle-recherche" autocomplete="off" spellcheck="false">
-                <p id="aide-recherche" class="note">Le modèle cherche s'il le juge utile. Les mots cherchés partent chez le moteur choisi avec votre clé, et Albert reçoit les titres, adresses et extraits trouvés, pas le texte des pages. Clé Google : en libre service dans la console Google Cloud. Clé Mojeek : sur devis.</p>
+                <label for="cx-recherche">Identifiant du moteur Google</label>
+                <input type="text" id="cx-recherche" autocomplete="off" spellcheck="false">
+                <p id="aide-recherche" class="note">Le modèle cherche s'il le juge utile. Les mots cherchés partent chez le moteur choisi avec votre clé, et Albert reçoit les titres, adresses et extraits trouvés, pas le texte des pages. Créez votre moteur et sa liste de sites sur <a href="https://programmablesearchengine.google.com" target="_blank" rel="noopener noreferrer">programmablesearchengine.google.com</a>, puis sa clé dans la <a href="https://console.cloud.google.com/apis/library/customsearch.googleapis.com" target="_blank" rel="noopener noreferrer">console Google Cloud</a>. Google ne permet plus de chercher sur tout le Web : le moteur ne couvre que les sites que vous y inscrivez. Clé Mojeek : sur devis, tout le Web.</p>
             </fieldset>
 
             <fieldset>
@@ -326,10 +328,11 @@
     <script src="js/lecture.js?v=dev"></script>
     <script src="js/version.js?v=dev"></script>
     <script src="js/albert.js?v=dev"></script>
+    <!-- avant stockage.js : le réglage cx part de Recherche.CX -->
+    <script src="js/recherche.js?v=dev"></script>
     <script src="js/stockage.js?v=dev"></script>
     <script src="js/affichage.js?v=dev"></script>
     <script src="js/reponse.js?v=dev"></script>
-    <script src="js/recherche.js?v=dev"></script>
     <script src="js/reglages.js?v=dev"></script>
     <script src="js/historique.js?v=dev"></script>
     <script src="js/outils.js?v=dev"></script>

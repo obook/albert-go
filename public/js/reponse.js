@@ -97,6 +97,19 @@ function boutonLire(contenu, langue) {
 }
 
 /**
+ * Crée la ligne grise placée sous une réponse.
+ *
+ * @param {string} texte - Texte de la ligne.
+ * @returns {HTMLParagraphElement} La ligne.
+ */
+function elementNote(texte) {
+    const note = document.createElement('p');
+    note.className = 'note recherches';
+    note.textContent = texte;
+    return note;
+}
+
+/**
  * Crée la pastille "IA" placée à gauche d'une réponse.
  *
  * @returns {HTMLSpanElement} La pastille.
@@ -141,9 +154,10 @@ async function devoiler(element, texte) {
  * @param {?string} titre - Titre de la variante ("Plus courte"...), ou null.
  * @param {string} langue - Code de la langue, pour la lecture à voix haute.
  * @param {boolean} [animer] - true pour dévoiler le texte au lieu de l'afficher d'un coup.
+ * @param {Array<string>} [recherches] - Mots cherchés sur le web pour cette réponse.
  * @returns {HTMLLIElement} La bulle, pas encore ajoutée au fil.
  */
-function bulleReponse(texte, titre, langue, animer = false) {
+function bulleReponse(texte, titre, langue, animer = false, recherches = null) {
     const li = document.createElement('li');
     li.className = 'assistant';
     const carte = document.createElement('div');
@@ -168,7 +182,11 @@ function bulleReponse(texte, titre, langue, animer = false) {
     if (typeof speechSynthesis !== 'undefined') {
         actions.append(boutonLire(contenu, langue));
     }
-    carte.append(contenu, actions);
+    carte.append(contenu);
+    if (recherches && recherches.length) {
+        carte.append(elementNote('Recherche web : ' + recherches.join(' ; ')));
+    }
+    carte.append(actions);
     li.append(pastilleIA(), carte);
     return li;
 }
@@ -179,15 +197,16 @@ function bulleReponse(texte, titre, langue, animer = false) {
  * @param {string} texte - Réponse du modèle.
  * @param {string} [langue] - Code de la langue de la réponse ; français par défaut.
  * @param {boolean} [animer] - true pour une réponse qui vient d'arriver ; false à la relecture.
+ * @param {Array<string>} [recherches] - Mots cherchés sur le web pour cette réponse.
  * @returns {HTMLLIElement} La première bulle ajoutée.
  */
-function ajouterReponse(texte, langue = 'fr', animer = false) {
+function ajouterReponse(texte, langue = 'fr', animer = false, recherches = null) {
     let variantes = null;
     if (outilActuel === 'reformuler') {
         variantes = Albert.decouperVariantes(texte);
     }
     if (!variantes) {
-        const li = bulleReponse(texte, null, langue, animer);
+        const li = bulleReponse(texte, null, langue, animer, recherches);
         $('fil').append(li);
         li.scrollIntoView({ block: 'end' });
         return li;

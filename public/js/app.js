@@ -155,8 +155,8 @@ async function envoyer() {
         }
         /* Réponse de Traduire : dans la langue cible, gardée pour la lecture à voix haute. */
         const langue = outil === 'traduire' ? Albert.CODES_LANGUES[langueCible] : 'fr';
-        conversation.push({ role: 'assistant', content: reponse.texte, langue: langue });
-        ajouter('assistant', reponse.texte, langue, true);
+        conversation.push({ role: 'assistant', content: reponse.texte, langue: langue, recherches: reponse.recherches });
+        ajouter('assistant', reponse.texte, langue, true, reponse.recherches);
         sauverConversation();
         dernierUsage = reponse.usage;
         afficherReglages();

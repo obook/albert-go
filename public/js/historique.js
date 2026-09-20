@@ -159,7 +159,7 @@ function rouvrirConversation(entree) {
         if (!langue && outilActuel === 'traduire') {
             langue = Albert.CODES_LANGUES[langueCible];
         }
-        ajouter(message.role, message.affiche || message.content, langue);
+        ajouter(message.role, message.affiche || message.content, langue, false, message.recherches);
     }
 }
 

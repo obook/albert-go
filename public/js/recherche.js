@@ -42,7 +42,8 @@ const Recherche = {
             name: 'recherche_web',
             description: 'Cherche des pages web et renvoie leurs titres, adresses et extraits. '
                 + 'À appeler pour une actualité, un fait postérieur à ton entraînement, '
-                + 'un chiffre à vérifier ou une source à citer. Ne renvoie pas le texte des pages.',
+                + 'un chiffre à vérifier ou une source à citer. Ne renvoie pas le texte des pages. '
+                + 'Le moteur peut ne couvrir qu\'une sélection de sites de référence.',
             parameters: {
                 type: 'object',
                 properties: { q: { type: 'string', description: 'Les mots à chercher.' } },
@@ -109,9 +110,10 @@ const Recherche = {
  *
  * @param {Object} appel - Entrée de tool_calls renvoyée par le modèle.
  * @param {AbortSignal} signal - Pour annuler avec la question.
+ * @param {Array<string>} faites - Mots cherchés, complétés ici pour la trace sous la réponse.
  * @returns {Promise<string>} Contenu du message de rôle "tool".
  */
-async function executerOutil(appel, signal) {
+async function executerOutil(appel, signal, faites) {
     let mots = '';
     try {
         mots = JSON.parse(appel.function.arguments || '{}').q || '';
@@ -124,6 +126,7 @@ async function executerOutil(appel, signal) {
     etat('Recherche de « ' + mots +' »...');
     try {
         const resultats = await Recherche.chercher(reglages.fournisseur, reglages.cleRecherche, mots, signal);
+        faites.push(mots);
         return Recherche.formater(resultats) || 'Aucun résultat.';
     } catch (err) {
         return 'Recherche impossible : ' + err.message;
@@ -164,26 +167,28 @@ async function repondreAvecRecherche(cle, requete, signal) {
         return Albert.repondre(cle, requete, signal);
     }
     const messages = [...requete.messages];
+    /* Mots cherchés, rendus avec la réponse pour la trace sous la bulle. */
+    const faites = [];
     for (let tour = 0; tour < TOURS_MAX; tour++) {
         let reponse;
         try {
             reponse = await Albert.repondre(cle, { ...requete, messages: avecRappel(messages), tools: [Recherche.OUTIL] }, signal);
         } catch (err) {
             toast('Recherche web indisponible avec ce modèle.');
-            return Albert.repondre(cle, { ...requete, messages: messages }, signal);
+            return { ...await Albert.repondre(cle, { ...requete, messages: messages }, signal), recherches: faites };
         }
         const appels = (reponse.message && reponse.message.tool_calls) || [];
         if (!appels.length) {
-            return reponse;
+            return { ...reponse, recherches: faites };
         }
         messages.push(reponse.message);
         for (const appel of appels) {
-            messages.push({ role: 'tool', tool_call_id: appel.id, content: await executerOutil(appel, signal) });
+            messages.push({ role: 'tool', tool_call_id: appel.id, content: await executerOutil(appel, signal, faites) });
         }
         etat('Albert réfléchit...');
     }
     /* Dernier tour sans outil : le modèle doit rédiger avec ce qu'il a. */
-    return Albert.repondre(cle, { ...requete, messages: messages }, signal);
+    return { ...await Albert.repondre(cle, { ...requete, messages: messages }, signal), recherches: faites };
 }
 
 /* Export pour les tests Node ; ignoré dans le navigateur. */

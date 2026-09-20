@@ -131,11 +131,12 @@ function afficherReglages() {
  * @param {string} texte - Texte du message (Markdown pour une réponse).
  * @param {string} [langue] - Langue d'une réponse de Traduire ("ru"...), pour la lecture.
  * @param {boolean} [animer] - true pour dévoiler une réponse qui vient d'arriver.
+ * @param {Array<string>} [recherches] - Mots cherchés sur le web pour cette réponse.
  * @returns {HTMLLIElement} L'élément ajouté (la première bulle pour des variantes).
  */
-function ajouter(role, texte, langue, animer = false) {
+function ajouter(role, texte, langue, animer = false, recherches = null) {
     if (role === 'assistant') {
-        return ajouterReponse(texte, langue, animer);
+        return ajouterReponse(texte, langue, animer, recherches);
     }
     const li = document.createElement('li');
     li.className = role;

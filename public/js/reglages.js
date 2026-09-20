@@ -117,6 +117,16 @@ $('voix-en-ligne').addEventListener('change', () => {
 $('recherche-reglage').checked = reglages.recherche;
 $('fournisseur-recherche').value = reglages.fournisseur;
 $('cle-recherche').value = reglages.cleRecherche || '';
+/* Le moteur choisi par l'utilisateur remplace celui du code. */
+$('cx-recherche').value = reglages.cx;
+Recherche.CX = reglages.cx;
+
+$('cx-recherche').addEventListener('change', () => {
+    reglages.cx = $('cx-recherche').value.trim() || Recherche.CX;
+    Recherche.CX = reglages.cx;
+    $('cx-recherche').value = reglages.cx;
+    ecrire('cx', reglages.cx);
+});
 
 $('recherche-reglage').addEventListener('change', () => {
     reglages.recherche = $('recherche-reglage').checked;

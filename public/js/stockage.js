@@ -181,6 +181,7 @@ const reglages = {
     voixEnLigne: lire('voix-en-ligne', 'non') === 'oui',
     recherche: lire('recherche', 'non') === 'oui',
     fournisseur: lire('fournisseur', 'google'),
+    cx: lire('cx', Recherche.CX),
     cleRecherche: lire('cle-recherche', null)
 };
 if (typeof Lecture !== 'undefined') {
