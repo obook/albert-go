@@ -23,6 +23,20 @@ Sous chaque réponse : copier le texte, ou le lire à voix haute avec une voix i
 
 Pour obtenir une clé Albert : [demande d'accès](https://albert.sites.beta.gouv.fr/access/).
 
+## Recherche web
+
+Le code existe (`public/js/recherche.js`) mais la fonction est masquée et sans effet : aucun moteur n'est utilisable depuis un navigateur.
+
+Le modèle reçoit un outil de recherche et décide seul de l'appeler. Il obtient titres, adresses et extraits, jamais le texte des pages. Les mots cherchés s'affichent sous la réponse.
+
+Moteurs essayés le 20 septembre 2026 :
+
+- Google Programmable Search : API JSON fermée aux nouveaux projets (403), arrêt annoncé le 1er janvier 2027.
+- Mojeek : appels navigateur acceptés, API sur devis.
+- Qwant : 403. Marginalia, SearXNG public, MetaGer : pas d'en-têtes CORS. Stract : CORS figé sur `localhost:8000`.
+
+Pour rouvrir : `RECHERCHE_OUVERTE` à `true` dans `recherche.js`, et retirer `hidden` du bloc "Recherche web" dans `index.html`.
+
 ## Développement
 
 ```bash

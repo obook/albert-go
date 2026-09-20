@@ -214,7 +214,8 @@
                 <p id="aide-voix" class="note">Seulement si aucune voix française n'est installée. Le texte lu part alors chez Google, Microsoft...</p>
             </fieldset>
 
-            <fieldset>
+            <!-- Masqué tant qu'aucun moteur n'est utilisable : voir RECHERCHE_OUVERTE dans js/recherche.js -->
+            <fieldset hidden>
                 <legend>Recherche web</legend>
                 <label class="interrupteur">
                     <input type="checkbox" id="recherche-reglage" role="switch" aria-describedby="aide-recherche">
@@ -225,9 +226,9 @@
                     <option value="google">Google Programmable Search</option>
                     <option value="mojeek">Mojeek</option>
                 </select>
-                <label for="cle-recherche">Clé du moteur</label>
+                <label for="cle-recherche">Clé API</label>
                 <input type="password" id="cle-recherche" autocomplete="off" spellcheck="false">
-                <label for="cx-recherche">Identifiant du moteur Google</label>
+                <label for="cx-recherche">ID du moteur de recherche</label>
                 <input type="text" id="cx-recherche" autocomplete="off" spellcheck="false">
                 <p id="aide-recherche" class="note">Le modèle cherche s'il le juge utile. Les mots cherchés partent chez le moteur choisi avec votre clé, et Albert reçoit les titres, adresses et extraits trouvés, pas le texte des pages. Créez votre moteur et sa liste de sites sur <a href="https://programmablesearchengine.google.com" target="_blank" rel="noopener noreferrer">programmablesearchengine.google.com</a>, puis sa clé dans la <a href="https://console.cloud.google.com/apis/library/customsearch.googleapis.com" target="_blank" rel="noopener noreferrer">console Google Cloud</a>. Google ne permet plus de chercher sur tout le Web : le moteur ne couvre que les sites que vous y inscrivez. Clé Mojeek : sur devis, tout le Web.</p>
             </fieldset>

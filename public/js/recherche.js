@@ -21,6 +21,10 @@
  */
 'use strict';
 
+/* Aucun moteur utilisable : Google a fermé son API JSON, Mojeek est sur devis. */
+/* Pour rouvrir : true ici, et retirer hidden du bloc "Recherche web". */
+const RECHERCHE_OUVERTE = false;
+
 /* Appels d'outil enchaînés avant d'exiger une réponse rédigée. */
 const TOURS_MAX = 2;
 
@@ -163,7 +167,7 @@ function avecRappel(messages) {
  * @returns {Promise<Object>} Réponse d'Albert.repondre.
  */
 async function repondreAvecRecherche(cle, requete, signal) {
-    if (!reglages.recherche || !reglages.cleRecherche) {
+    if (!RECHERCHE_OUVERTE || !reglages.recherche || !reglages.cleRecherche) {
         return Albert.repondre(cle, requete, signal);
     }
     const messages = [...requete.messages];
