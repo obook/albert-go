@@ -175,6 +175,10 @@ input[type="password"], textarea {
 @media (max-width: 40rem) {
     .accueil { margin-top: 1rem; padding: 1.25rem; }
     .fil .user { max-width: 90%; }
+    /* La pastille passe au-dessus : la réponse prend toute la largeur. */
+    .fil .assistant { grid-template-columns: minmax(0, 1fr); gap: 0.375rem; }
+    main { padding: 1.5rem 0.75rem; }
+    .fil .carte { padding: 0.75rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {
