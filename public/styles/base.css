@@ -23,6 +23,9 @@
     --bleu-survol: #1212ff;
     --sur-bleu: #ffffff;
     --bleu-clair: #e3e3fd;
+    /* Bulle de la question : fond et texte, séparés du bleu des liens et titres. */
+    --bulle: #000091;
+    --sur-bulle: #ffffff;
     --rouge: #e1000f;
     --erreur: #ce0500;
     color-scheme: light;
@@ -40,6 +43,8 @@
     --bleu-survol: #a0a0ff;
     --sur-bleu: #161616;
     --bleu-clair: #2a2a40;
+    --bulle: #3a3aa8;
+    --sur-bulle: #eeeeee;
     --rouge: #ff6b7a;
     --erreur: #ff7a6e;
     color-scheme: dark;
@@ -58,6 +63,8 @@
         --bleu-survol: #a0a0ff;
         --sur-bleu: #161616;
         --bleu-clair: #2a2a40;
+        --bulle: #3a3aa8;
+        --sur-bulle: #eeeeee;
         --rouge: #ff6b7a;
         --erreur: #ff7a6e;
         color-scheme: dark;
