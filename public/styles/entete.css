@@ -111,8 +111,11 @@ large vient sans doute de la même valeur, lue par l'ancien 85vw. Non mesuré.
     overflow-y: auto;
 }
 .volet::backdrop { background: rgb(0 0 0 / 0.5); }
+/* minmax(0, 1fr) : sans lui, un titre de conversation long élargit la
+colonne au-delà du volet et décale tout le menu vers la droite. */
 .volet-contenu {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     align-content: start;
     gap: 0.125rem;
     padding: 1rem 0.5rem;
