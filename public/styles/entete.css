@@ -89,10 +89,10 @@ carte est trop étroite. Seuil en rem : un texte agrandi passe plus tôt en colo
 /* Menu latéral */
 
 /*
-Cause non établie. Sur Chrome Android, l'ouverture du volet cassait la mise
-en page : page plus haute, puis volet très large. Largeur en pourcentage au
-lieu de 85vw, hauteur par inset au lieu de height: 100%. Mesuré correct sur
-Pixel 8 après coup ; l'état cassé n'a pas été reproduit.
+Ni vw ni dvh ici : le volet suit le bloc conteneur initial.
+Chrome Android gardait une valeur de viewport périmée après une actualisation
+(mesuré le 2026-09-20, voir base.css), d'où la page trop haute. Le volet trop
+large vient sans doute de la même valeur, lue par l'ancien 85vw. Non mesuré.
 */
 .volet {
     position: fixed;
