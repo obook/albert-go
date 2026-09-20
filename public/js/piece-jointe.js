@@ -114,7 +114,7 @@ async function joindreFichier(fichier) {
         }
         retirerPiece();
         if (err.name !== 'AbortError') {
-            etat(messageEchec(err), true);
+            etat(messageEchec(err).texte, true);
         }
     }
     focusSaisie();

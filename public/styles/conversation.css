@@ -48,7 +48,8 @@ input[type="password"], textarea {
 .accueil .interrupteur { margin-top: 0; font-weight: 400; }
 
 /* Vérification de la clé, ou refus d'Albert. */
-.message-cle { font-size: 0.875rem; color: var(--texte-doux); }
+/* anywhere : le message d'origine refusée contient des adresses sans espace. */
+.message-cle { font-size: 0.875rem; color: var(--texte-doux); overflow-wrap: anywhere; }
 .message-cle.erreur { color: var(--erreur); font-weight: 700; }
 
 .hors-cadre { padding: 2rem; text-align: center; }

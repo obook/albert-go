@@ -31,7 +31,8 @@ async function validerCle() {
             afficherModeles();
         }
     } catch (err) {
-        messageCle(messageEchec(err), true);
+        const echec = messageEchec(err);
+        messageCle(echec.texte, true, echec.lien);
         return;
     } finally {
         bouton.disabled = false;

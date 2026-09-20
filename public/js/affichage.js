@@ -196,11 +196,22 @@ function toast(texte) {
 /**
  * Écrit un message sous le champ de la clé.
  *
+ * Le lien est ajouté à la fin, sous le nom "Albert Go", suivi du point final.
+ *
  * @param {string} texte - Message, ou chaîne vide pour effacer.
  * @param {boolean} erreur - true pour l'afficher comme une erreur.
+ * @param {string} [lien] - Adresse d'un lien ajouté après le texte.
  */
-function messageCle(texte, erreur) {
+function messageCle(texte, erreur, lien) {
     $('message-cle').textContent = texte;
+    if (lien) {
+        const ancre = document.createElement('a');
+        ancre.href = lien;
+        ancre.textContent = 'Albert Go';
+        ancre.target = '_blank';
+        ancre.rel = 'noopener noreferrer';
+        $('message-cle').append(ancre, '.');
+    }
     $('message-cle').classList.toggle('erreur', erreur);
 }
 

@@ -17,26 +17,40 @@
 let annulation = null;
 
 /**
+ * Message affiché quand le relais refuse l'origine de la page.
+ *
+ * @returns {{texte: string, lien: string}} Message, et adresse du lien final.
+ */
+function messageOrigine() {
+    return {
+        texte: 'Le relais n8n n\'accepte pas l\'adresse ' + location.origin + '. Ouvrez ',
+        lien: Albert.URL_PUBLIQUE
+    };
+}
+
+/**
  * Message d'erreur à afficher après un échec d'envoi.
  *
  * Réseau coupé et CORS refusé donnent la même TypeError :
  * le navigateur ne dit pas lequel.
  *
+ * Le lien remplace l'adresse publique écrite en entier, trop longue pour
+ * l'écran d'un téléphone.
+ *
  * @param {Error} err - Erreur reçue.
- * @returns {string} Message pour l'utilisateur.
+ * @returns {{texte: string, lien: ?string}} Message, et adresse du lien final.
  */
 function messageEchec(err) {
     if (err instanceof TypeError && !Albert.ORIGINES.includes(location.origin)) {
-        return 'Le relais n8n n\'accepte pas l\'adresse ' + location.origin + '. Ouvrez Albert Go depuis '
-            + Albert.ORIGINES.join(' ou ') + '.';
+        return messageOrigine();
     }
     if (err instanceof TypeError) {
-        return 'Relais n8n injoignable. Vérifiez la connexion.';
+        return { texte: 'Relais n8n injoignable. Vérifiez la connexion.', lien: null };
     }
     if (err.name === 'TimeoutError') {
-        return 'Albert ne répond pas. Réessayez.';
+        return { texte: 'Albert ne répond pas. Réessayez.', lien: null };
     }
-    return err.message;
+    return { texte: err.message, lien: null };
 }
 
 /**
@@ -160,7 +174,7 @@ async function envoyer() {
         if (err.name === 'AbortError') {
             etat('Question annulée.');
         } else {
-            etat(messageEchec(err), true);
+            etat(messageEchec(err).texte, true);
         }
     } finally {
         annulation = null;
@@ -259,6 +273,11 @@ afficherReglages();
 afficherTheme();
 afficherOutil();
 afficher();
+/* Origine refusée : le dire avant la saisie de la clé, pas après un échec. */
+if (!Albert.ORIGINES.includes(location.origin)) {
+    const origine = messageOrigine();
+    messageCle(origine.texte, true, origine.lien);
+}
 if (reglages.cle) {
     rouvrirCourante();
 }
