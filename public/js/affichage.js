@@ -90,7 +90,7 @@ function texteMemoire(actif) {
     if (actif) {
         return 'Envoyé à Albert : toute la conversation.';
     }
-    return 'Envoyé à Albert : la dernière question seulement.';
+    return 'Envoyé à Albert : une question seulement.';
 }
 
 /**
