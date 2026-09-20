@@ -192,9 +192,14 @@ summary.entree::-webkit-details-marker { display: none; }
     padding: 0 0 0 2.5rem;
     list-style: none;
 }
-.liste-historique button {
-    display: block;
-    width: 100%;
+.liste-historique li {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+.titre-conversation {
+    flex: 1;
+    min-width: 0;
     padding: 0.375rem 0.75rem;
     border: 0;
     border-radius: 0.25rem;
@@ -206,7 +211,30 @@ summary.entree::-webkit-details-marker { display: none; }
     overflow: hidden;
     text-overflow: ellipsis;
 }
-.liste-historique button:hover { background: var(--bleu-clair); }
+.titre-conversation:hover { background: var(--bleu-clair); }
+
+/* Cible d'au moins 24 px de côté (RGAA 12.11, taille des cibles tactiles). */
+.supprimer-conversation {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--texte-doux);
+}
+.supprimer-conversation:hover { background: var(--bleu-clair); color: var(--rouge); }
+.supprimer-conversation svg {
+    width: 1rem;
+    height: 1rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+}
 .historique .note { padding: 0.25rem 0.75rem 0.25rem 3.25rem; }
 
 @media (max-width: 40rem) {

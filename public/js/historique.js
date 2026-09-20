@@ -164,6 +164,39 @@ function rouvrirConversation(entree) {
 }
 
 /**
+ * Supprime une conversation, après confirmation.
+ *
+ * La conversation affichée reste à l'écran ; seul son enregistrement part.
+ *
+ * @param {Object} entree - Conversation enregistrée.
+ * @param {string} libelle - Titre affiché dans la boîte de confirmation.
+ */
+function demanderSuppression(entree, libelle) {
+    $('texte-confirmer-suppression').textContent = libelle;
+    /* Sinon Échap reprendrait la réponse précédente. */
+    $('confirmer-suppression').returnValue = '';
+    $('confirmer-suppression').addEventListener('close', () => {
+        if ($('confirmer-suppression').returnValue !== 'oui') {
+            return;
+        }
+        const restantes = conversations.filter(c => c.id !== entree.id);
+        try {
+            ecrireConversations(restantes);
+        } catch (e) {
+            /* Stockage bloqué : la liste en mémoire suffit. */
+        }
+        conversations = restantes;
+        if (conversationId === entree.id) {
+            conversationId = null;
+            retenirCourante(null);
+        }
+        afficherHistorique();
+        toast('Conversation supprimée.');
+    }, { once: true });
+    $('confirmer-suppression').showModal();
+}
+
+/**
  * Remplit la liste des conversations dans le menu.
  */
 function afficherHistorique() {
@@ -172,6 +205,7 @@ function afficherHistorique() {
         const li = document.createElement('li');
         const bouton = document.createElement('button');
         bouton.type = 'button';
+        bouton.className = 'titre-conversation';
         /* L'outil devant le titre, sauf pour Discuter. */
         let libelle = entree.titre;
         if (entree.outil && entree.outil !== 'discuter') {
@@ -182,7 +216,16 @@ function afficherHistorique() {
         bouton.addEventListener('click', () => {
             rouvrirConversation(entree);
         });
-        li.append(bouton);
+        const supprimer = document.createElement('button');
+        supprimer.type = 'button';
+        supprimer.className = 'supprimer-conversation';
+        supprimer.innerHTML = ICONES.croix;
+        supprimer.setAttribute('aria-label', 'Supprimer la conversation : ' + libelle);
+        supprimer.title = 'Supprimer';
+        supprimer.addEventListener('click', () => {
+            demanderSuppression(entree, libelle);
+        });
+        li.append(bouton, supprimer);
         return li;
     });
     $('liste-historique').replaceChildren(...elements);

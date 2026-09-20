@@ -46,12 +46,16 @@ $('ouvrir-menu').addEventListener('click', () => {
 /*
 Phase de capture : le menu se ferme avant l'action.
 Sinon, en se fermant, il reprendrait le focus à la boîte qui s'ouvre.
-Le thème le laisse ouvert, pour enchaîner les clics.
+Le thème et la suppression d'une conversation le laissent ouvert, pour
+enchaîner les clics ; leur boîte s'ouvre par-dessus le volet.
 */
+const GARDENT_LE_VOLET = ['theme', 'supprimer-conversation'];
+
 $('menu').addEventListener('click', (e) => {
     const bouton = e.target.closest('button');
     const clicSurLeFond = e.target === $('menu');
-    if (clicSurLeFond || (bouton && bouton.id !== 'theme')) {
+    const garde = bouton && GARDENT_LE_VOLET.some(nom => bouton.id === nom || bouton.classList.contains(nom));
+    if (clicSurLeFond || (bouton && !garde)) {
         $('menu').close();
     }
 }, true);
