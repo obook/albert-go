@@ -115,11 +115,21 @@ $('voix-en-ligne').addEventListener('change', () => {
 });
 
 $('recherche-reglage').checked = reglages.recherche;
+$('fournisseur-recherche').value = reglages.fournisseur;
 $('cle-recherche').value = reglages.cleRecherche || '';
 
 $('recherche-reglage').addEventListener('change', () => {
     reglages.recherche = $('recherche-reglage').checked;
     ecrire('recherche', reglages.recherche ? 'oui' : 'non');
+});
+
+/* Chaque moteur a sa clé : on efface celle de l'autre en changeant. */
+$('fournisseur-recherche').addEventListener('change', () => {
+    reglages.fournisseur = $('fournisseur-recherche').value;
+    reglages.cleRecherche = null;
+    $('cle-recherche').value = '';
+    ecrire('fournisseur', reglages.fournisseur);
+    ecrire('cle-recherche', null);
 });
 
 $('cle-recherche').addEventListener('change', () => {

@@ -180,6 +180,7 @@ const reglages = {
     memoire: lire('memoire', Albert.CONSEILLES.memoire ? 'oui' : 'non') === 'oui',
     voixEnLigne: lire('voix-en-ligne', 'non') === 'oui',
     recherche: lire('recherche', 'non') === 'oui',
+    fournisseur: lire('fournisseur', 'google'),
     cleRecherche: lire('cle-recherche', null)
 };
 if (typeof Lecture !== 'undefined') {

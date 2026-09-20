@@ -7,9 +7,10 @@
  * renvoyés pour qu'il rédige sa réponse (function calling, comme
  * albert-atelier le fait pour l'OCR).
  *
- * Mojeek est le seul moteur européen testé qui accepte un appel direct
- * du navigateur : il renvoie les en-têtes CORS. Sa clé voyage dans
- * l'adresse, c'est ainsi que l'API la lit.
+ * Deux moteurs au choix, les seuls testés qui acceptent un appel direct
+ * du navigateur : Google Programmable Search, clé en libre service, et
+ * Mojeek, européen mais sur offre payante. La clé voyage dans l'adresse,
+ * c'est ainsi que les deux API la lisent.
  * Les résultats donnent un titre, une adresse et un extrait, jamais le
  * texte des pages.
  *
@@ -24,8 +25,12 @@
 const TOURS_MAX = 2;
 
 const Recherche = {
-    /** Point d'entrée de l'API Mojeek. */
-    URL: 'https://www.mojeek.com/search',
+    /** Points d'entrée des deux moteurs. */
+    MOJEEK: 'https://www.mojeek.com/search',
+    GOOGLE: 'https://www.googleapis.com/customsearch/v1',
+
+    /** Moteur Programmable Search interrogé chez Google ; identifiant public. */
+    CX: 'e3354509904334408',
 
     /** Nombre de résultats demandés. */
     NOMBRE: 5,
@@ -47,28 +52,35 @@ const Recherche = {
     },
 
     /**
-     * Interroge Mojeek.
+     * Interroge le moteur choisi.
      *
-     * Une clé refusée donne un code 200, un `status` en clair et aucun
-     * résultat : ce cas est renvoyé comme une erreur.
+     * Mojeek refuse une clé par un code 200, un `status` en clair et aucun
+     * résultat ; Google répond un code d'erreur et un message.
      *
-     * @param {string} cle - Clé de l'API Mojeek.
+     * @param {string} fournisseur - "google" ou "mojeek".
+     * @param {string} cle - Clé de l'utilisateur chez ce moteur.
      * @param {string} question - Texte cherché.
      * @param {AbortSignal} [signal] - Pour annuler avec la question.
-     * @returns {Promise<Array<Object>>} Résultats de l'API.
+     * @returns {Promise<Array<Object>>} Résultats du moteur.
      */
-    async chercher(cle, question, signal) {
-        const adresse = this.URL + '?fmt=json&t=' + this.NOMBRE
-            + '&api_key=' + encodeURIComponent(cle)
-            + '&q=' + encodeURIComponent(question);
+    async chercher(fournisseur, cle, question, signal) {
+        const mojeek = fournisseur === 'mojeek';
+        const adresse = mojeek
+            ? this.MOJEEK + '?fmt=json&t=' + this.NOMBRE + '&api_key=' + encodeURIComponent(cle)
+                + '&q=' + encodeURIComponent(question)
+            : this.GOOGLE + '?num=' + this.NOMBRE + '&cx=' + this.CX + '&key=' + encodeURIComponent(cle)
+                + '&q=' + encodeURIComponent(question);
         const reponse = await fetch(adresse, { signal: signal });
+        const corps = await reponse.json().catch(() => ({}));
         if (!reponse.ok) {
-            throw new Error('moteur injoignable (' + reponse.status + ').');
+            throw new Error((corps.error && corps.error.message) || 'moteur injoignable (' + reponse.status + ').');
         }
-        const corps = (await reponse.json()).response || {};
-        const resultats = corps.results || [];
-        if (!resultats.length && corps.status) {
-            throw new Error(corps.status);
+        if (!mojeek) {
+            return corps.items || [];
+        }
+        const resultats = (corps.response && corps.response.results) || [];
+        if (!resultats.length && corps.response && corps.response.status) {
+            throw new Error(corps.response.status);
         }
         return resultats;
     },
@@ -76,15 +88,15 @@ const Recherche = {
     /**
      * Met les résultats en texte pour le modèle.
      *
-     * @param {Array<Object>} resultats - Résultats de l'API.
+     * @param {Array<Object>} resultats - Résultats du moteur.
      * @returns {string} Une ligne par résultat, vide s'il n'y en a aucun.
      */
     formater(resultats) {
-        /* Noms de champs non vérifiés sur une réponse valide : on prend le premier présent. */
+        /* Mojeek dit url et desc, Google dit link et snippet. */
         return resultats.map((r) => {
-            const titre = r.title || r.url || '';
+            const adresse = r.url || r.link || '';
             const extrait = r.desc || r.snippet || '';
-            return '- ' + titre + ' (' + (r.url || '') + ') : ' + extrait;
+            return '- ' + (r.title || adresse) + ' (' + adresse + ') : ' + extrait;
         }).join('\n');
     }
 };
@@ -111,10 +123,29 @@ async function executerOutil(appel, signal) {
     }
     etat('Recherche de « ' + mots +' »...');
     try {
-        return Recherche.formater(await Recherche.chercher(reglages.cleRecherche, mots, signal)) || 'Aucun résultat.';
+        const resultats = await Recherche.chercher(reglages.fournisseur, reglages.cleRecherche, mots, signal);
+        return Recherche.formater(resultats) || 'Aucun résultat.';
     } catch (err) {
         return 'Recherche impossible : ' + err.message;
     }
+}
+
+/**
+ * Ajoute à la consigne système le rappel que l'outil est disponible.
+ *
+ * Interrogé sur ses capacités, un modèle répond souvent qu'il ne sait pas
+ * chercher, sans regarder les outils qu'on lui a passés.
+ *
+ * @param {Array<Object>} messages - Messages de la demande.
+ * @returns {Array<Object>} Copie avec le rappel, sans toucher l'original.
+ */
+function avecRappel(messages) {
+    const rappel = 'Tu disposes de l\'outil recherche_web : tu peux chercher sur le web, '
+        + 'et tu le dis si on te le demande.';
+    if (messages[0] && messages[0].role === 'system') {
+        return [{ role: 'system', content: messages[0].content + '\n' + rappel }, ...messages.slice(1)];
+    }
+    return [{ role: 'system', content: rappel }, ...messages];
 }
 
 /**
@@ -136,7 +167,7 @@ async function repondreAvecRecherche(cle, requete, signal) {
     for (let tour = 0; tour < TOURS_MAX; tour++) {
         let reponse;
         try {
-            reponse = await Albert.repondre(cle, { ...requete, messages: messages, tools: [Recherche.OUTIL] }, signal);
+            reponse = await Albert.repondre(cle, { ...requete, messages: avecRappel(messages), tools: [Recherche.OUTIL] }, signal);
         } catch (err) {
             toast('Recherche web indisponible avec ce modèle.');
             return Albert.repondre(cle, { ...requete, messages: messages }, signal);
