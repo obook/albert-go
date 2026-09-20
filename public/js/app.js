@@ -23,7 +23,7 @@ let annulation = null;
  */
 function messageOrigine() {
     return {
-        texte: 'Le relais n8n n\'accepte pas l\'adresse ' + location.origin + '. Ouvrez ',
+        texte: 'Le relais n8n n\'acceptera pas l\'adresse ' + location.origin + '. Ouvrez ',
         lien: Albert.URL_PUBLIQUE
     };
 }
@@ -273,10 +273,12 @@ afficherReglages();
 afficherTheme();
 afficherOutil();
 afficher();
-/* Origine refusée : le dire avant la saisie de la clé, pas après un échec. */
+/* Origine refusée : le dire avant la saisie, et fermer le champ, elle ne servirait à rien. */
 if (!Albert.ORIGINES.includes(location.origin)) {
     const origine = messageOrigine();
     messageCle(origine.texte, true, origine.lien);
+    $('cle').disabled = true;
+    $('form-cle').querySelector('button[type="submit"]').disabled = true;
 }
 if (reglages.cle) {
     rouvrirCourante();
