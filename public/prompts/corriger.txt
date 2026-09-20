@@ -38,7 +38,7 @@ Nombres :
 - Le symbole monétaire suit le nombre : 50 € et non €50.
 
 Guillemets et tirets :
-- Tu utilises les guillemets droits "..." et non les guillemets français « » ni les guillemets courbes.
+- Tu utilises les guillemets français « », comme les autres outils d'Albert Go.
 - N'utilise JAMAIS le tiret cadratin (—), ni le tiret demi-cadratin (–), ni le double tiret (--). Un tiret qui encadre une incise devient une virgule ou une parenthèse.
 - Le tiret simple (-) reste pour les mots composés et les intervalles : pages 12-15, 2020-2025.
 
