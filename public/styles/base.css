@@ -76,10 +76,14 @@
 /*
 Seule la zone centrale (main) défile.
 minmax(0, 1fr) l'empêche de grandir avec son contenu.
+Pas de 100dvh : mesuré le 2026-09-20 sur Pixel 8, dans l'application
+installée, après une actualisation au pouce, dvh restait à 821 alors que le
+viewport valait 765, et le bas de la saisie passait sous l'écran. Le
+pourcentage suit le bloc conteneur initial, qui lui était juste. La page ne
+défile jamais, donc dvh n'apportait rien.
 */
 html, body {
     height: 100%;
-    height: 100dvh;
 }
 
 /* Pas de zoom au double appui (tapes rapides sur les boutons). Le zoom à deux doigts reste permis (RGAA). */
