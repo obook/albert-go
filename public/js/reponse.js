@@ -12,6 +12,9 @@
  */
 'use strict';
 
+/* Dévoilement d'une réponse : durée totale et intervalle entre deux tranches. */
+const DUREE_DEVOILEMENT = 600, INTERVALLE_DEVOILEMENT = 25;
+
 /**
  * Crée un petit bouton d'icône sous une réponse.
  *
@@ -106,14 +109,41 @@ function pastilleIA() {
 }
 
 /**
+ * Dévoile le texte d'une réponse par tranches, puis affiche le rendu.
+ *
+ * Albert renvoie tout d'un bloc : seul l'affichage est étalé. La coupe
+ * suit le temps écoulé, car un onglet en arrière-plan bride setTimeout à
+ * une seconde. `aria-busy` évite au lecteur d'écran de relire à chaque pas.
+ *
+ * @param {HTMLElement} element - Conteneur de la réponse.
+ * @param {string} texte - Réponse en Markdown.
+ * @returns {Promise<void>} Terminée après le rendu final.
+ */
+async function devoiler(element, texte) {
+    if (texte.length < 40 || matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        return Rendu.afficher(element, texte);
+    }
+    element.setAttribute('aria-busy', 'true');
+    let part = 0, debut = performance.now();
+    while (part < 1) {
+        element.textContent = texte.slice(0, Math.ceil(texte.length * part));
+        await new Promise(resoudre => setTimeout(resoudre, INTERVALLE_DEVOILEMENT));
+        part = (performance.now() - debut) / DUREE_DEVOILEMENT;
+    }
+    await Rendu.afficher(element, texte);
+    element.removeAttribute('aria-busy');
+}
+
+/**
  * Crée la bulle d'une réponse, ou d'une variante si un titre est donné.
  *
  * @param {string} texte - Texte en Markdown.
  * @param {?string} titre - Titre de la variante ("Plus courte"...), ou null.
  * @param {string} langue - Code de la langue, pour la lecture à voix haute.
+ * @param {boolean} [animer] - true pour dévoiler le texte au lieu de l'afficher d'un coup.
  * @returns {HTMLLIElement} La bulle, pas encore ajoutée au fil.
  */
-function bulleReponse(texte, titre, langue) {
+function bulleReponse(texte, titre, langue, animer = false) {
     const li = document.createElement('li');
     li.className = 'assistant';
     const carte = document.createElement('div');
@@ -126,7 +156,11 @@ function bulleReponse(texte, titre, langue) {
     }
     const contenu = document.createElement('div');
     contenu.className = 'texte rendu';
-    Rendu.afficher(contenu, texte);
+    if (animer) {
+        devoiler(contenu, texte);
+    } else {
+        Rendu.afficher(contenu, texte);
+    }
 
     const actions = document.createElement('div');
     actions.className = 'actions-reponse';
@@ -144,20 +178,21 @@ function bulleReponse(texte, titre, langue) {
  *
  * @param {string} texte - Réponse du modèle.
  * @param {string} [langue] - Code de la langue de la réponse ; français par défaut.
+ * @param {boolean} [animer] - true pour une réponse qui vient d'arriver ; false à la relecture.
  * @returns {HTMLLIElement} La première bulle ajoutée.
  */
-function ajouterReponse(texte, langue = 'fr') {
+function ajouterReponse(texte, langue = 'fr', animer = false) {
     let variantes = null;
     if (outilActuel === 'reformuler') {
         variantes = Albert.decouperVariantes(texte);
     }
     if (!variantes) {
-        const li = bulleReponse(texte, null, langue);
+        const li = bulleReponse(texte, null, langue, animer);
         $('fil').append(li);
         li.scrollIntoView({ block: 'end' });
         return li;
     }
-    const bulles = variantes.map(v => bulleReponse(v.texte, v.titre, langue));
+    const bulles = variantes.map(v => bulleReponse(v.texte, v.titre, langue, animer));
     $('fil').append(...bulles);
     /* Montrer le début de la première variante, pas la fin de la dernière. */
     bulles[0].scrollIntoView({ block: 'start' });
