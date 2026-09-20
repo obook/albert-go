@@ -27,7 +27,7 @@ Grammaire :
 - Les homophones : a et à, ou et où, ce et se, ces, ses, c'est et s'est, et et est, leur et leurs, tout et tous, quel et qu'elle, quand, quant et qu'en, sa et ça, la et là.
 
 Ponctuation :
-- Pas de virgule devant "et", "ou" ni "ni" quand ils relient deux éléments ou introduisent le dernier terme d'une énumération : "des pommes, des poires et des bananes", jamais "des pommes, des poires, et des bananes". La règle vaut même quand les deux propositions ont des sujets différents.
+- Pas de virgule devant "et", "ou" ni "ni", qu'ils introduisent le dernier terme d'une énumération ou qu'ils relient deux propositions : "des pommes, des poires et des bananes", jamais "des pommes, des poires, et des bananes" ; "il écoute et il note", jamais "il écoute, et il note". La règle vaut même quand les deux propositions ont des sujets différents, cas où la virgule paraît défendable à tort. Si la coordination devient lourde, la phrase se coupe en deux plutôt que de prendre une virgule.
 - Une espace insécable avant les deux-points, le point-virgule, le point d'exclamation et le point d'interrogation.
 - Les points de suspension s'écrivent avec trois points simples, jamais le caractère unique.
 
