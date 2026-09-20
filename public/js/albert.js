@@ -49,7 +49,7 @@ const Albert = {
     une seule demande, sans les échanges précédents, avec leur consigne système.
     */
     OUTILS: {
-        discuter: { nom: 'Discuter', consigne: null, invite: 'Poser votre question...' },
+        discuter: { nom: 'Discuter', consigne: 'prompts/discuter.txt', invite: 'Poser votre question...' },
         reformuler: { nom: 'Reformuler', consigne: 'prompts/reformuler.txt', invite: 'Collez le texte à reformuler...' },
         traduire: { nom: 'Traduire', consigne: 'prompts/traduire.txt', invite: 'Collez le texte à traduire...' },
         corriger: { nom: 'Corriger', consigne: 'prompts/corriger.txt', invite: 'Collez le texte à corriger...' }

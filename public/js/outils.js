@@ -30,7 +30,7 @@ const consignesLues = {};
  * Consigne système de l'outil, lue dans son fichier au premier appel.
  *
  * @param {string} outil - Clé de Albert.OUTILS.
- * @returns {Promise<?string>} Texte de la consigne, ou null pour Discuter.
+ * @returns {Promise<?string>} Texte de la consigne, ou null si l'outil n'en a pas.
  * @throws {Error} Si le fichier ne peut pas être lu.
  */
 async function consigne(outil) {
