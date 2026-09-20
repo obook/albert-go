@@ -196,6 +196,70 @@ function demanderSuppression(entree, libelle) {
     $('confirmer-suppression').showModal();
 }
 
+/** Durée d'un appui long, en millisecondes. */
+const APPUI_LONG = 600;
+
+/** Glissement au-delà duquel l'appui devient un défilement de la liste. */
+const TOLERANCE_APPUI = 10;
+
+/** Vrai entre le déclenchement d'un appui long et le clic qu'il provoque. */
+let appuiLongDeclenche = false;
+
+/*
+Enregistré avant celui de menu.js (ordre des scripts d'index.html) : il le
+court-circuite, sinon le clic qui suit un appui long fermerait le volet et
+rouvrirait la conversation.
+*/
+$('menu').addEventListener('click', (e) => {
+    if (appuiLongDeclenche) {
+        appuiLongDeclenche = false;
+        e.stopImmediatePropagation();
+        e.preventDefault();
+    }
+}, true);
+
+/**
+ * Arme l'appui long et le clic droit sur un élément.
+ *
+ * @param {HTMLElement} element - Élément qui reçoit le geste.
+ * @param {Function} action - Appelée au bout du délai, ou au clic droit.
+ */
+function armerAppuiLong(element, action) {
+    let minuteur = null;
+    let depart = null;
+    const arreter = () => {
+        clearTimeout(minuteur);
+        minuteur = null;
+    };
+    element.addEventListener('pointerdown', (e) => {
+        appuiLongDeclenche = false;
+        depart = { x: e.clientX, y: e.clientY };
+        minuteur = setTimeout(() => {
+            appuiLongDeclenche = true;
+            action();
+        }, APPUI_LONG);
+    });
+    element.addEventListener('pointermove', (e) => {
+        if (!depart) {
+            return;
+        }
+        const ecart = Math.hypot(e.clientX - depart.x, e.clientY - depart.y);
+        if (ecart > TOLERANCE_APPUI) {
+            arreter();
+        }
+    });
+    for (const nom of ['pointerup', 'pointercancel', 'pointerleave']) {
+        element.addEventListener(nom, arreter);
+    }
+    /* Clic droit sur ordinateur ; sur téléphone, empêche le menu du système. */
+    element.addEventListener('contextmenu', (e) => {
+        e.preventDefault();
+        if (!appuiLongDeclenche) {
+            action();
+        }
+    });
+}
+
 /**
  * Remplit la liste des conversations dans le menu.
  */
@@ -216,10 +280,13 @@ function afficherHistorique() {
         bouton.addEventListener('click', () => {
             rouvrirConversation(entree);
         });
+        armerAppuiLong(bouton, () => {
+            demanderSuppression(entree, libelle);
+        });
         const supprimer = document.createElement('button');
         supprimer.type = 'button';
         supprimer.className = 'supprimer-conversation';
-        supprimer.innerHTML = ICONES.croix;
+        supprimer.innerHTML = ICONES.points;
         supprimer.setAttribute('aria-label', 'Supprimer la conversation : ' + libelle);
         supprimer.title = 'Supprimer';
         supprimer.addEventListener('click', () => {

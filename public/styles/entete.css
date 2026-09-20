@@ -231,13 +231,14 @@ summary.entree::-webkit-details-marker { display: none; }
 }
 .supprimer-conversation:hover { background: var(--bleu-clair); color: var(--rouge); }
 .supprimer-conversation svg {
-    width: 1rem;
-    height: 1rem;
+    width: 1.25rem;
+    height: 1.25rem;
     fill: none;
     stroke: currentColor;
     stroke-width: 2;
     stroke-linecap: round;
 }
+.supprimer-conversation svg.plein { fill: currentColor; stroke: none; }
 .historique .note { padding: 0.25rem 0.75rem 0.25rem 3.25rem; }
 
 @media (max-width: 40rem) {
