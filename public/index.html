@@ -16,7 +16,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Security-Policy"
-          content="default-src 'self'; connect-src 'self' https://n8n.incubateur.education.gouv.fr; style-src 'self' 'unsafe-inline'; img-src 'self' data:; base-uri 'none'; form-action 'none'">
+          content="default-src 'self'; connect-src 'self' https://n8n.incubateur.education.gouv.fr https://www.mojeek.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; base-uri 'none'; form-action 'none'">
     <title>Albert Go</title>
     <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
@@ -215,6 +215,17 @@
             </fieldset>
 
             <fieldset>
+                <legend>Recherche web</legend>
+                <label class="interrupteur">
+                    <input type="checkbox" id="recherche-reglage" role="switch" aria-describedby="aide-recherche">
+                    <span>Chercher sur le web avant de répondre</span>
+                </label>
+                <label for="cle-recherche">Clé de l'API Mojeek</label>
+                <input type="password" id="cle-recherche" autocomplete="off" spellcheck="false">
+                <p id="aide-recherche" class="note">La question part chez Mojeek (Royaume-Uni) avec votre clé. Albert reçoit les titres, adresses et extraits trouvés, pas le texte des pages.</p>
+            </fieldset>
+
+            <fieldset>
                 <legend>Clé API</legend>
                 <p class="note">Une clé est enregistrée dans ce navigateur.</p>
                 <label class="interrupteur">
@@ -313,6 +324,7 @@
     <script src="js/stockage.js?v=dev"></script>
     <script src="js/affichage.js?v=dev"></script>
     <script src="js/reponse.js?v=dev"></script>
+    <script src="js/recherche.js?v=dev"></script>
     <script src="js/reglages.js?v=dev"></script>
     <script src="js/historique.js?v=dev"></script>
     <script src="js/outils.js?v=dev"></script>

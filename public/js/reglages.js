@@ -114,6 +114,19 @@ $('voix-en-ligne').addEventListener('change', () => {
     ecrire('voix-en-ligne', reglages.voixEnLigne ? 'oui' : 'non');
 });
 
+$('recherche-reglage').checked = reglages.recherche;
+$('cle-recherche').value = reglages.cleRecherche || '';
+
+$('recherche-reglage').addEventListener('change', () => {
+    reglages.recherche = $('recherche-reglage').checked;
+    ecrire('recherche', reglages.recherche ? 'oui' : 'non');
+});
+
+$('cle-recherche').addEventListener('change', () => {
+    reglages.cleRecherche = $('cle-recherche').value.trim() || null;
+    ecrire('cle-recherche', reglages.cleRecherche);
+});
+
 $('partage-reglage').addEventListener('change', () => {
     changerPartage($('partage-reglage').checked);
     afficherReglages();

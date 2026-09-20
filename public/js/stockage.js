@@ -41,7 +41,7 @@ if (window.top !== window.self) {
 }
 
 /* Données effacées à la fermeture de l'onglet en mode partagé. */
-const SENSIBLES = ['cle', 'historique', 'conversations'];
+const SENSIBLES = ['cle', 'cle-recherche', 'historique', 'conversations'];
 
 /** Mode partagé : clé, questions et conversations en sessionStorage. */
 let partage = false;
@@ -178,7 +178,9 @@ const reglages = {
     modele: lire('modele', Albert.CONSEILLES.modele),
     temperature: parseFloat(lire('temperature', String(Albert.CONSEILLES.temperature))),
     memoire: lire('memoire', Albert.CONSEILLES.memoire ? 'oui' : 'non') === 'oui',
-    voixEnLigne: lire('voix-en-ligne', 'non') === 'oui'
+    voixEnLigne: lire('voix-en-ligne', 'non') === 'oui',
+    recherche: lire('recherche', 'non') === 'oui',
+    cleRecherche: lire('cle-recherche', null)
 };
 if (typeof Lecture !== 'undefined') {
     Lecture.enLigne = reglages.voixEnLigne;

@@ -142,7 +142,9 @@ async function envoyer() {
         if (texteConsigne) {
             messages = [{ role: 'system', content: texteConsigne }, ...messages];
         }
-        const reponse = await Albert.repondre(reglages.cle, {
+        /* Seul Discuter propose l'outil de recherche : les autres outils rendent un texte. */
+        const envoi = outil === 'discuter' ? repondreAvecRecherche : Albert.repondre.bind(Albert);
+        const reponse = await envoi(reglages.cle, {
             model: modeleActuel().id,
             temperature: reglages.temperature,
             messages: messages
@@ -154,7 +156,7 @@ async function envoyer() {
         /* Réponse de Traduire : dans la langue cible, gardée pour la lecture à voix haute. */
         const langue = outil === 'traduire' ? Albert.CODES_LANGUES[langueCible] : 'fr';
         conversation.push({ role: 'assistant', content: reponse.texte, langue: langue });
-        ajouter('assistant', reponse.texte, langue);
+        ajouter('assistant', reponse.texte, langue, true);
         sauverConversation();
         dernierUsage = reponse.usage;
         afficherReglages();
