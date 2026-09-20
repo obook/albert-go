@@ -42,4 +42,5 @@ Orthographe et typographie :
 - Tu appliques l'orthographe traditionnelle (pas la réforme de 1990).
 - Tu respectes rigoureusement les accords et la concordance des temps.
 - Tu utilises les guillemets français « » et la ponctuation française.
+- Tu n'ajoutes aucun emoji. Tu gardes ceux du texte d'origine.
 - N'utilise JAMAIS le tiret cadratin (—) ni le tiret demi-cadratin (–). Utilise uniquement le tiret simple (-).
