@@ -1,0 +1,13 @@
+# Lu par GitLab Pages (16.7 et suivantes).
+#
+# index.html n'a pas d'adresse versionnée, contrairement aux feuilles et aux
+# scripts (?v=<commit>, posé par .gitlab-ci.yml). Sans cette règle, il reste
+# jusqu'à dix minutes en cache après une publication et réclame des fichiers
+# qu'il ne connaît pas encore.
+#
+# no-cache ne veut pas dire "ne garde rien" : le navigateur garde la page et
+# demande au serveur si elle a changé. Inchangée, elle revient en 304.
+/
+  Cache-Control: no-cache
+/index.html
+  Cache-Control: no-cache
