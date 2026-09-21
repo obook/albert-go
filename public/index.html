@@ -16,7 +16,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Security-Policy"
-          content="default-src 'self'; connect-src 'self' https://n8n.incubateur.education.gouv.fr https://fr.wikipedia.org https://en.wikipedia.org https://www.mojeek.com https://www.googleapis.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; base-uri 'none'; form-action 'none'">
+          content="default-src 'self'; connect-src 'self' https://n8n.incubateur.education.gouv.fr https://fr.wikipedia.org https://en.wikipedia.org https://es.wikipedia.org https://de.wikipedia.org https://www.mojeek.com https://www.googleapis.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; base-uri 'none'; form-action 'none'">
     <title>Albert Go</title>
     <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
@@ -52,6 +52,8 @@
             <div class="langues-choix">
                 <button type="button" data-langue="fr"><svg class="drapeau" viewBox="0 0 24 16" aria-hidden="true"><rect width="8" height="16" fill="#002395"/><rect x="8" width="8" height="16" fill="#ffffff"/><rect x="16" width="8" height="16" fill="#ed2939"/></svg><span>Français</span></button>
                 <button type="button" data-langue="en"><svg class="drapeau" viewBox="0 0 24 16" aria-hidden="true"><rect width="24" height="16" fill="#012169"/><path d="M0 0l24 16M24 0L0 16" stroke="#ffffff" stroke-width="3.2"/><path d="M0 0l24 16M24 0L0 16" stroke="#c8102e" stroke-width="1.8"/><path d="M12 0v16M0 8h24" stroke="#ffffff" stroke-width="5.4"/><path d="M12 0v16M0 8h24" stroke="#c8102e" stroke-width="3.2"/></svg><span>English</span></button>
+                <button type="button" data-langue="es"><svg class="drapeau" viewBox="0 0 24 16" aria-hidden="true"><rect width="24" height="16" fill="#aa151b"/><rect y="4" width="24" height="8" fill="#f1bf00"/></svg><span>Español</span></button>
+                <button type="button" data-langue="de"><svg class="drapeau" viewBox="0 0 24 16" aria-hidden="true"><rect width="24" height="16" fill="#000000"/><rect y="5.33" width="24" height="5.34" fill="#dd0000"/><rect y="10.67" width="24" height="5.33" fill="#ffce00"/></svg><span>Deutsch</span></button>
             </div>
         </details>
     </header>
@@ -250,6 +252,8 @@
                 <select id="langue-interface">
                     <option value="fr">Français</option>
                     <option value="en">English</option>
+                    <option value="es">Español</option>
+                    <option value="de">Deutsch</option>
                 </select>
             </fieldset>
 

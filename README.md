@@ -50,13 +50,13 @@ Deux moteurs web restent proposés, avec une clé, et ne rendent que titres, adr
 
 ## Langues
 
-Interface en français et en anglais. Au premier lancement, la langue du navigateur ; ensuite, celle choisie dans Réglages, gardée dans le navigateur.
+Interface en français, anglais, espagnol et allemand. Au premier lancement, la langue du navigateur ; ensuite, celle choisie par les drapeaux de l'en-tête ou dans Réglages, gardée dans le navigateur.
 
 - `public/js/i18n.js` : tout le texte visible, dans les deux langues, plus les phrases envoyées au modèle (demandes des outils, description de l'outil de recherche). Dans `index.html`, un texte porte `data-t`, `data-t-html` (texte avec un lien) ou `data-t-attr` (`aria-label`, `title`, `placeholder`...), relus par `I18n.appliquer()`.
 - `public/prompts/<langue>/*.txt` : les consignes système, une par outil et par langue.
-- La langue suit aussi le reste : Wikipédia interrogé sur `fr` ou `en`, dates et nombres au format local, formules lues à voix haute dans la langue de la réponse.
+- La langue suit aussi le reste : Wikipédia interrogé sur le domaine de la langue, dates et nombres au format local, formules lues à voix haute dans la langue de la réponse.
 
-Ajouter une langue : un code dans `I18n.LANGUES`, sa table dans `I18n.TEXTES`, un dossier dans `public/prompts/`, une option dans le sélecteur des réglages, et le domaine Wikipédia dans la CSP d'`index.html`.
+Ajouter une langue : un code dans `I18n.LANGUES`, sa table dans `I18n.TEXTES`, un dossier dans `public/prompts/`, sa table dans `Lecture.FORMULES`, son drapeau et son option dans `index.html`, et le domaine Wikipédia dans la CSP.
 
 ## Développement
 

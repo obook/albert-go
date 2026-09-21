@@ -16,7 +16,7 @@
 
 const I18n = {
     /** Langues de l'interface. La première sert de secours. */
-    LANGUES: ['fr', 'en'],
+    LANGUES: ['fr', 'en', 'es', 'de'],
 
     /** Langue affichée. */
     langue: 'fr',
@@ -311,6 +311,222 @@ const I18n = {
             'recherche.wikipedia-refus': 'requête refusée par Wikipédia.'
         },
 
+        es: {
+            /* Cabecera y menu. */
+            'entete.sous-titre': 'Charlar con la IA del Estado francés',
+            'menu.ouvrir': 'Menú',
+            'menu.fermer': 'Cerrar el menú',
+            'menu.resume': 'Abrir los ajustes',
+            'menu.nouvelle': 'Nueva conversación',
+            'menu.outils': 'Herramientas',
+            'menu.historique': 'Historial de conversaciones',
+            'menu.reglages': 'Ajustes',
+            'menu.partager': 'Compartir',
+            'menu.apropos': 'Acerca de',
+            'menu.changer-cle': 'Cambiar de clave',
+            'historique.vide': 'Ninguna conversación por ahora.',
+            'historique.supprimer': 'Eliminar',
+            'historique.supprimer-aria': 'Eliminar la conversación: {titre}',
+
+            /* Temas. */
+            'theme.light': 'Tema claro',
+            'theme.dark': 'Tema oscuro',
+            'theme.system': 'Tema del sistema',
+            'theme.light.aria': 'Tema claro. Pasar al tema oscuro.',
+            'theme.dark.aria': 'Tema oscuro. Pasar al tema del sistema.',
+            'theme.system.aria': 'Tema del sistema. Pasar al tema claro.',
+
+            /* Herramientas. */
+            'outil.discuter': 'Charlar',
+            'outil.corriger': 'Corregir',
+            'outil.reformuler': 'Reformular',
+            'outil.traduire': 'Traducir',
+            'invite.discuter': 'Haga su pregunta...',
+            'invite.reformuler': 'Pegue el texto que reformular...',
+            'invite.traduire': 'Pegue el texto que traducir...',
+            'invite.corriger': 'Pegue el texto que corregir...',
+
+            /* Idiomas de Traducir. */
+            'langue.choisir': 'Cambiar de idioma',
+            'langue.auto': 'Automático',
+            'langue.source': 'Idioma de origen',
+            'langue.cible': 'Idioma de destino',
+            'langue.fr': 'Francés',
+            'langue.en': 'Inglés',
+            'langue.de': 'Alemán',
+            'langue.es': 'Español',
+            'langue.it': 'Italiano',
+            'langue.pt': 'Portugués',
+            'langue.nl': 'Neerlandés',
+            'langue.ru': 'Ruso',
+            'langue.zh': 'Chino',
+            'langue.ja': 'Japonés',
+            'langue.ar': 'Árabe',
+            'langue.la': 'Latín',
+
+            /* Pantalla de la clave. */
+            'cle.titre': 'Introduzca su clave Albert',
+            'cle.label': 'Clave API',
+            'cle.stockee': 'Su clave se queda en este navegador.<br/>Pasa por la <a href="https://n8n.incubateur.education.gouv.fr" target="_blank" rel="noopener noreferrer">incubadora interministerial</a>, que no la guarda.',
+            'cle.enregistrer': 'Guardar la clave',
+            'cle.demander': '¿Todavía sin clave? <a href="https://albert.sites.beta.gouv.fr/access/" target="_blank" rel="noopener noreferrer">Solicitar acceso a Albert</a>, reservado a los empleados públicos.',
+            'cle.verification': 'Comprobando la clave...',
+
+            /* Entrada. */
+            'chat.aria': 'Conversación',
+            'saisie.label': 'Su pregunta',
+            'saisie.joindre': 'Adjuntar una imagen o un archivo de texto',
+            'saisie.precedente': 'Pregunta anterior',
+            'saisie.suivante': 'Pregunta siguiente',
+            'saisie.envoyer': 'Enviar',
+            'saisie.arreter': 'Detener',
+            'saisie.avertissement': 'Una IA puede equivocarse: compruebe sus respuestas.',
+            'piece.retirer': 'Quitar el archivo',
+            'piece.lecture': '{nom}: leyendo...',
+            'piece.image-collee': 'imagen pegada',
+            'fichier.joint': 'Archivo adjunto: {nom}',
+            'vous': 'Usted: ',
+            'duree': '{secondes} s',
+
+            /* Ajustes. */
+            'reglages.titre': 'Ajustes',
+            'reglages.conseil': 'Recomendado: modelo Large, temperatura 0,2, toda la conversación enviada.',
+            'reglages.modele': 'Modelo',
+            'reglages.alias': 'Alias: {id}',
+            'reglages.modele-reel': 'Modelo: {reel}',
+            'reglages.temperature': 'Temperatura',
+            'reglages.precis': 'Preciso',
+            'reglages.creatif': 'Creativo',
+            'reglages.aide-temperature': 'Baja: respuestas estables y factuales. Alta: respuestas más variadas.',
+            'reglages.contexte': 'Contexto',
+            'reglages.lecture': 'Lectura en voz alta',
+            'reglages.voix-en-ligne': 'Permitir las voces en línea',
+            'reglages.aide-voix': 'Solo si no hay ninguna voz local instalada. El texto leído va entonces a Google, Microsoft...',
+            'reglages.recherche': 'Búsqueda',
+            'reglages.recherche-active': 'Incluir la búsqueda en Internet',
+            'reglages.moteur': 'Buscador',
+            'reglages.cle-recherche': 'Clave API',
+            'reglages.cx': 'ID del buscador',
+            'reglages.aide-recherche': 'Cada pregunta lanza una búsqueda. Para Google, cree el <a href="https://programmablesearchengine.google.com" target="_blank" rel="noopener noreferrer">buscador</a> y su <a href="https://console.cloud.google.com/apis/library/customsearch.googleapis.com" target="_blank" rel="noopener noreferrer">clave API</a>. Mojeek es de pago, con presupuesto a medida.',
+            'reglages.cle': 'Clave API',
+            'reglages.cle-note': 'Hay una clave guardada en este navegador.',
+            'reglages.langue': 'Idioma',
+            'reglages.conseilles': 'Ajustes recomendados',
+            'reglages.resume': '{modele}, temperatura {temperature}, {contexte}',
+            'contexte.sans': 'sin contexto',
+            'contexte.complet': 'contexto completo',
+            'contexte.pourcent': 'contexto {pourcent} %',
+            'partage.actif': 'Al cerrar la pestaña, la clave y las conversaciones se borrarán.',
+            'partage.inactif': 'Al cerrar la pestaña, la clave y las conversaciones se conservarán.',
+            'memoire.actif': 'Enviado a Albert: toda la conversación.',
+            'memoire.inactif': 'Enviado a Albert: una sola pregunta.',
+
+            /* Modelos. */
+            'modele.type.texte': 'Texto',
+            'modele.type.texte-images': 'Texto e imágenes',
+            'modele.openweight-medium': 'Equilibrio entre calidad y rapidez.',
+            'modele.openweight-large': 'El más capaz, para razonamientos largos. Más lento.',
+            'modele.openweight-small': 'El más rápido, para preguntas sencillas.',
+            'modele.openweight-code': 'Especializado en programación.',
+            'modele.openweight-code-2': 'Programación, contexto muy largo.',
+            'modele.inconnu': 'Modelo de conversación.',
+
+            /* Cuadros de diálogo. */
+            'dialogue.fermer': 'Cerrar',
+            'dialogue.oui': 'Sí',
+            'dialogue.non': 'No',
+            'confirmer-cle.titre': '¿Cambiar de clave?',
+            'confirmer-cle.texte': 'La clave guardada se borrará de este navegador. Habrá que introducir otra para continuar.',
+            'confirmer-suppression.titre': '¿Eliminar esta conversación?',
+            'partage.titre': 'Compartir Albert Go',
+            'partage.texte': 'Escanee el código QR o copie la dirección. Su clave no se comparte: cada cual usa la suya.',
+            'partage.qr': 'Código QR de la dirección de Albert Go',
+            'partage.adresse': 'Dirección de Albert Go',
+            'partage.copier': 'Copiar',
+
+            /* Acerca de. */
+            'info.titre': 'Acerca de Albert Go',
+            'info.intro': 'Albert Go permite charlar con <a href="https://albert.sites.beta.gouv.fr/" target="_blank" rel="noopener noreferrer">Albert</a>, la IA del Estado francés dirigida por la DINUM, con su propia clave API.',
+            'info.donnees': 'Sus datos',
+            'info.donnees.effacement': 'Por defecto, su clave, sus preguntas y sus conversaciones se borran al cerrar la pestaña. Puede desactivar esta opción en los ajustes. "Cambiar de clave", en el menú, borra la clave.',
+            'info.donnees.relais': 'Sus preguntas pasan por un relé n8n interministerial, que no guarda nada, y van luego directamente a Albert API, alojado en Francia.',
+            'info.donnees.fichiers': 'Un archivo de texto adjunto se lee en este navegador y se envía con su pregunta. Una imagen adjunta se envía a Albert para extraer su texto.',
+            'info.donnees.traceurs': 'Ninguna cuenta, ninguna cookie, ninguna biblioteca cargada desde un sitio ajeno. La lectura en voz alta usa las voces del aparato, y las voces en línea solo si usted las permite.',
+            'info.clavier': 'Teclado',
+            'info.clavier.texte': 'Intro: enviar. Mayús+Intro: nueva línea. Flechas arriba y abajo: preguntas anteriores.',
+            'info.reponses': 'Las respuestas',
+            'info.reponses.texte': 'La IA puede equivocarse o inventar. Compruebe sus respuestas antes de usarlas, y no le confíe datos personales.',
+            'info.projet': 'El proyecto',
+            'info.projet.texte': 'Hecho por Olivier Booklage. <a href="https://forge.apps.education.fr/booklageolivier/albert-go" target="_blank" rel="noopener noreferrer">Código fuente en la Forge des communs numériques éducatifs</a>.',
+            'info.version': 'Versión: ',
+            'version.format': '{commit} del {date}',
+
+            /* Respuestas. */
+            'reponse.copier': 'Copiar la respuesta',
+            'reponse.lire': 'Leer en voz alta',
+            'reponse.arreter-lecture': 'Detener la lectura',
+            'reponse.recherches': 'Ver las búsquedas hechas',
+            'reponse.recherches-wikipedia': 'Ver las búsquedas hechas en Wikipedia',
+            'reponse.note-recherche': 'Búsqueda: {mots}',
+
+            /* Mensajes. */
+            'toast.adresse-copiee': 'Dirección copiada.',
+            'toast.reponse-copiee': 'Respuesta copiada.',
+            'toast.conversation-supprimee': 'Conversación eliminada.',
+            'toast.conversation-longue': 'Conversación demasiado larga para guardarla. Se queda en pantalla hasta cerrar la pestaña.',
+            'toast.memoire-pleine': 'Memoria del navegador llena: {nombre} conversación(es) antigua(s) eliminada(s).',
+            'toast.liens': 'Albert no abre los enlaces. Para una página web, pegue su texto o adjúntelo como archivo.',
+            'toast.recherche-indisponible': 'La búsqueda no está disponible con este modelo.',
+            'toast.voix-absente-en-ligne': 'Ninguna voz en {langue} disponible en este navegador.',
+            'toast.voix-absente': 'Ninguna voz en {langue} instalada en este aparato. Las voces en línea no se usan.',
+            'etat.reflechit': 'Albert está pensando...',
+            'etat.annulee': 'Pregunta cancelada.',
+            'etat.attendre-lecture': 'Espere a que termine la lectura del archivo.',
+            'etat.lecture-image': 'Albert está leyendo la imagen...',
+            'etat.recherche': 'Buscando "{mots}"...',
+
+            /* Errores. */
+            'erreur.cle-refusee': 'Clave rechazada por Albert. Compruébela o cámbiela.',
+            'erreur.quota': 'Cuota alcanzada. Inténtelo dentro de un minuto.',
+            'erreur.http': 'Error {status}.',
+            'erreur.http-detail': 'Error {status}: {detail}',
+            'erreur.relais': 'No se puede contactar con el relé n8n. Compruebe la conexión.',
+            'erreur.timeout': 'Albert no responde. Inténtelo de nuevo.',
+            'erreur.origine': 'El relé n8n no aceptará la dirección {origine}. Abra ',
+            'erreur.consigne': 'Falta la consigna de la herramienta {outil}.',
+            'erreur.format': 'Formato no admitido: solo imágenes y archivos de texto.',
+            'erreur.fichier-long': 'Archivo demasiado largo: 200 kB como máximo.',
+            'erreur.hors-cadre': 'Abrir Albert Go en su propia pestaña',
+
+            /* Textos enviados al modelo. */
+            'demande.reformuler': 'Reformula este texto:\n\n{texte}',
+            'demande.corriger': 'Corrige este texto:\n\n{texte}',
+            'demande.traduire': 'Traduce este texto al {cible}:\n\n{texte}',
+            'demande.traduire-source': 'Traduce este texto al {cible} (idioma de origen: {source}):\n\n{texte}',
+            'demande.fichier': 'Contenido del archivo "{nom}":\n\n{texte}',
+            'demande.image': 'Transcribe fielmente todo el texto visible en esta imagen, en Markdown. '
+                + 'Escribe las fórmulas en LaTeX entre $. Si la imagen contiene una figura o un esquema, '
+                + 'descríbelo en unas frases. No respondas nada más.',
+            'recherche.description': 'Busca información y devuelve extractos con su fuente. '
+                + 'Llámala para un dato que comprobar, una fecha, una cifra, una etimología, '
+                + 'una noticia o una fuente que citar, y cada vez que responderías de memoria '
+                + 'sobre un tema preciso. El buscador es Wikipedia o un buscador web según el '
+                + 'ajuste: lo que recibes es todo lo que tienes, dilo si no basta.',
+            'recherche.parametre': 'Las palabras que buscar.',
+            'recherche.source-wikipedia': 'en Wikipedia',
+            'recherche.source-web': 'en la web',
+            'recherche.rappel': 'Dispones de la herramienta recherche_web: puedes buscar {source}, '
+                + 'y lo dices si te lo preguntan. Úsala en cuanto una respuesta necesite un dato preciso '
+                + 'que no estés seguro de saber.',
+            'recherche.resultats': 'Resultados de búsqueda:\n{extraits}\n\nResponde ahora a la pregunta a partir de estos extractos.',
+            'recherche.aucun-mot': 'Ninguna palabra que buscar.',
+            'recherche.aucun-resultat': 'Ningún resultado.',
+            'recherche.impossible': 'Búsqueda imposible: {message}',
+            'recherche.moteur-injoignable': 'buscador inalcanzable ({status}).',
+            'recherche.wikipedia-injoignable': 'Wikipedia inalcanzable ({status}).',
+            'recherche.wikipedia-refus': 'petición rechazada por Wikipedia.'
+        },
+
         en: {
             /* Header and menu. */
             'entete.sous-titre': 'Chat with the French State AI',
@@ -525,6 +741,223 @@ const I18n = {
             'recherche.moteur-injoignable': 'engine unreachable ({status}).',
             'recherche.wikipedia-injoignable': 'Wikipedia unreachable ({status}).',
             'recherche.wikipedia-refus': 'request refused by Wikipedia.'
+        },
+
+        de: {
+            /* Kopfzeile und Menü. */
+            'entete.sous-titre': 'Mit der KI des französischen Staates chatten',
+            'menu.ouvrir': 'Menü',
+            'menu.fermer': 'Menü schließen',
+            'menu.resume': 'Einstellungen öffnen',
+            'menu.nouvelle': 'Neues Gespräch',
+            'menu.outils': 'Werkzeuge',
+            'menu.historique': 'Gesprächsverlauf',
+            'menu.reglages': 'Einstellungen',
+            'menu.partager': 'Teilen',
+            'menu.apropos': 'Über',
+            'menu.changer-cle': 'Schlüssel wechseln',
+            'historique.vide': 'Noch kein Gespräch.',
+            'historique.supprimer': 'Löschen',
+            'historique.supprimer-aria': 'Gespräch löschen: {titre}',
+
+            /* Themen. */
+            'theme.light': 'Helles Thema',
+            'theme.dark': 'Dunkles Thema',
+            'theme.system': 'Thema des Systems',
+            'theme.light.aria': 'Helles Thema. Zum dunklen Thema wechseln.',
+            'theme.dark.aria': 'Dunkles Thema. Zum Thema des Systems wechseln.',
+            'theme.system.aria': 'Thema des Systems. Zum hellen Thema wechseln.',
+
+            /* Werkzeuge. */
+            'outil.discuter': 'Chatten',
+            'outil.corriger': 'Korrigieren',
+            'outil.reformuler': 'Umformulieren',
+            'outil.traduire': 'Übersetzen',
+            'invite.discuter': 'Stellen Sie Ihre Frage...',
+            'invite.reformuler': 'Fügen Sie den umzuformulierenden Text ein...',
+            'invite.traduire': 'Fügen Sie den zu übersetzenden Text ein...',
+            'invite.corriger': 'Fügen Sie den zu korrigierenden Text ein...',
+
+            /* Sprachen von Übersetzen. */
+            'langue.choisir': 'Sprache wechseln',
+            'langue.auto': 'Automatisch',
+            'langue.source': 'Ausgangssprache',
+            'langue.cible': 'Zielsprache',
+            'langue.fr': 'Französisch',
+            'langue.en': 'Englisch',
+            'langue.de': 'Deutsch',
+            'langue.es': 'Spanisch',
+            'langue.it': 'Italienisch',
+            'langue.pt': 'Portugiesisch',
+            'langue.nl': 'Niederländisch',
+            'langue.ru': 'Russisch',
+            'langue.zh': 'Chinesisch',
+            'langue.ja': 'Japanisch',
+            'langue.ar': 'Arabisch',
+            'langue.la': 'Latein',
+
+            /* Schlüsselbildschirm. */
+            'cle.titre': 'Geben Sie Ihren Albert-Schlüssel ein',
+            'cle.label': 'API-Schlüssel',
+            'cle.stockee': 'Ihr Schlüssel bleibt in diesem Browser.<br/>Er läuft über den <a href="https://n8n.incubateur.education.gouv.fr" target="_blank" rel="noopener noreferrer">interministeriellen Inkubator</a>, der ihn nicht speichert.',
+            'cle.enregistrer': 'Schlüssel speichern',
+            'cle.demander': 'Noch keinen Schlüssel? <a href="https://albert.sites.beta.gouv.fr/access/" target="_blank" rel="noopener noreferrer">Zugang zu Albert beantragen</a>, nur für Beschäftigte des öffentlichen Dienstes.',
+            'cle.verification': 'Schlüssel wird geprüft...',
+
+            /* Eingabe. */
+            'chat.aria': 'Gespräch',
+            'saisie.label': 'Ihre Frage',
+            'saisie.joindre': 'Ein Bild oder eine Textdatei anhängen',
+            'saisie.precedente': 'Vorherige Frage',
+            'saisie.suivante': 'Nächste Frage',
+            'saisie.envoyer': 'Senden',
+            'saisie.arreter': 'Anhalten',
+            'saisie.avertissement': 'Eine KI kann sich irren: prüfen Sie ihre Antworten.',
+            'piece.retirer': 'Datei entfernen',
+            'piece.lecture': '{nom}: wird gelesen...',
+            'piece.image-collee': 'eingefügtes Bild',
+            'fichier.joint': 'Angehängte Datei: {nom}',
+            'vous': 'Sie: ',
+            'duree': '{secondes} s',
+
+            /* Einstellungen. */
+            'reglages.titre': 'Einstellungen',
+            'reglages.conseil': 'Empfohlen: Modell Large, Temperatur 0,2, ganzes Gespräch gesendet.',
+            'reglages.modele': 'Modell',
+            'reglages.alias': 'Alias: {id}',
+            'reglages.modele-reel': 'Modell: {reel}',
+            'reglages.temperature': 'Temperatur',
+            'reglages.precis': 'Genau',
+            'reglages.creatif': 'Kreativ',
+            'reglages.aide-temperature': 'Niedrig: stabile, sachliche Antworten. Hoch: vielfältigere Antworten.',
+            'reglages.contexte': 'Kontext',
+            'reglages.lecture': 'Vorlesen',
+            'reglages.voix-en-ligne': 'Online-Stimmen erlauben',
+            'reglages.aide-voix': 'Nur wenn keine lokale Stimme installiert ist. Der vorgelesene Text geht dann zu Google, Microsoft...',
+            'reglages.recherche': 'Suche',
+            'reglages.recherche-active': 'Internetsuche einbeziehen',
+            'reglages.moteur': 'Suchmaschine',
+            'reglages.cle-recherche': 'API-Schlüssel',
+            'reglages.cx': 'ID der Suchmaschine',
+            'reglages.aide-recherche': 'Jede Frage löst eine Suche aus. Für Google die <a href="https://programmablesearchengine.google.com" target="_blank" rel="noopener noreferrer">Suchmaschine</a> und ihren <a href="https://console.cloud.google.com/apis/library/customsearch.googleapis.com" target="_blank" rel="noopener noreferrer">API-Schlüssel</a> anlegen. Mojeek ist kostenpflichtig, Preis auf Anfrage.',
+            'reglages.cle': 'API-Schlüssel',
+            'reglages.cle-note': 'In diesem Browser ist ein Schlüssel gespeichert.',
+            'reglages.langue': 'Sprache',
+            'reglages.conseilles': 'Empfohlene Einstellungen',
+            'reglages.resume': '{modele}, Temperatur {temperature}, {contexte}',
+            'contexte.sans': 'ohne Kontext',
+            'contexte.complet': 'voller Kontext',
+            'contexte.pourcent': 'Kontext {pourcent} %',
+            'partage.actif': 'Beim Schließen des Tabs werden Schlüssel und Gespräche gelöscht.',
+            'partage.inactif': 'Beim Schließen des Tabs bleiben Schlüssel und Gespräche erhalten.',
+            'memoire.actif': 'An Albert gesendet: das ganze Gespräch.',
+            'memoire.inactif': 'An Albert gesendet: nur eine Frage.',
+
+            /* Modelle. */
+            'modele.type.texte': 'Text',
+            'modele.type.texte-images': 'Text und Bilder',
+            'modele.openweight-medium': 'Ausgewogen zwischen Qualität und Tempo.',
+            'modele.openweight-large': 'Das fähigste, für lange Überlegungen. Langsamer.',
+            'modele.openweight-small': 'Das schnellste, für einfache Fragen.',
+            'modele.openweight-code': 'Auf Programmierung spezialisiert.',
+            'modele.openweight-code-2': 'Programmierung, sehr langer Kontext.',
+            'modele.inconnu': 'Gesprächsmodell.',
+
+            /* Dialoge. */
+            'dialogue.fermer': 'Schließen',
+            'dialogue.oui': 'Ja',
+            'dialogue.non': 'Nein',
+            'confirmer-cle.titre': 'Schlüssel wechseln?',
+            'confirmer-cle.texte': 'Der gespeicherte Schlüssel wird aus diesem Browser gelöscht. Zum Weitermachen ist ein neuer nötig.',
+            'confirmer-suppression.titre': 'Dieses Gespräch löschen?',
+            'partage.titre': 'Albert Go teilen',
+            'partage.texte': 'Scannen Sie den QR-Code oder kopieren Sie die Adresse. Ihr Schlüssel wird nicht geteilt: jeder nutzt seinen eigenen.',
+            'partage.qr': 'QR-Code der Adresse von Albert Go',
+            'partage.adresse': 'Adresse von Albert Go',
+            'partage.copier': 'Kopieren',
+
+            /* Über. */
+            'info.titre': 'Über Albert Go',
+            'info.intro': 'Mit Albert Go chatten Sie mit <a href="https://albert.sites.beta.gouv.fr/" target="_blank" rel="noopener noreferrer">Albert</a>, der KI des französischen Staates unter der DINUM, mit Ihrem eigenen API-Schlüssel.',
+            'info.donnees': 'Ihre Daten',
+            'info.donnees.effacement': 'Standardmäßig werden Ihr Schlüssel, Ihre Fragen und Ihre Gespräche beim Schließen des Tabs gelöscht. Sie können das in den Einstellungen abschalten. "Schlüssel wechseln" im Menü löscht den Schlüssel.',
+            'info.donnees.relais': 'Ihre Fragen laufen über ein interministerielles n8n-Relais, das nichts speichert, und gehen dann direkt an Albert API, gehostet in Frankreich.',
+            'info.donnees.fichiers': 'Eine angehängte Textdatei wird in diesem Browser gelesen und mit Ihrer Frage gesendet. Ein angehängtes Bild geht an Albert, um seinen Text zu gewinnen.',
+            'info.donnees.traceurs': 'Kein Konto, kein Cookie, keine Bibliothek von einer fremden Seite. Das Vorlesen nutzt die Stimmen des Geräts, Online-Stimmen nur mit Ihrer Erlaubnis.',
+            'info.clavier': 'Tastatur',
+            'info.clavier.texte': 'Eingabe: senden. Umschalt+Eingabe: neue Zeile. Pfeil auf und ab: vorherige Fragen.',
+            'info.reponses': 'Die Antworten',
+            'info.reponses.texte': 'Die KI kann sich irren oder erfinden. Prüfen Sie ihre Antworten, bevor Sie sie nutzen, und geben Sie ihr keine personenbezogenen Daten.',
+            'info.projet': 'Das Projekt',
+            'info.projet.texte': 'Gemacht von Olivier Booklage. <a href="https://forge.apps.education.fr/booklageolivier/albert-go" target="_blank" rel="noopener noreferrer">Quellcode auf der Forge des communs numériques éducatifs</a>.',
+            'info.version': 'Version: ',
+            'version.format': '{commit} vom {date}',
+
+            /* Antworten. */
+            'reponse.copier': 'Antwort kopieren',
+            'reponse.lire': 'Vorlesen',
+            'reponse.arreter-lecture': 'Vorlesen anhalten',
+            'reponse.recherches': 'Die gemachten Suchen anzeigen',
+            'reponse.recherches-wikipedia': 'Die gemachten Suchen in Wikipedia anzeigen',
+            'reponse.note-recherche': 'Suche: {mots}',
+
+            /* Meldungen. */
+            'toast.adresse-copiee': 'Adresse kopiert.',
+            'toast.reponse-copiee': 'Antwort kopiert.',
+            'toast.conversation-supprimee': 'Gespräch gelöscht.',
+            'toast.conversation-longue': 'Gespräch zu lang zum Speichern. Es bleibt am Bildschirm, bis der Tab geschlossen wird.',
+            'toast.memoire-pleine': 'Browserspeicher voll: {nombre} alte(s) Gespräch(e) gelöscht.',
+            'toast.liens': 'Albert öffnet keine Links. Bei einer Webseite den Text einfügen oder als Datei anhängen.',
+            'toast.recherche-indisponible': 'Suche mit diesem Modell nicht verfügbar.',
+            'toast.voix-absente-en-ligne': 'Keine Stimme für {langue} in diesem Browser verfügbar.',
+            'toast.voix-absente': 'Keine Stimme für {langue} auf diesem Gerät installiert. Online-Stimmen werden nicht genutzt.',
+            'etat.reflechit': 'Albert denkt nach...',
+            'etat.annulee': 'Frage abgebrochen.',
+            'etat.attendre-lecture': 'Warten Sie, bis die Datei gelesen ist.',
+            'etat.lecture-image': 'Albert liest das Bild...',
+            'etat.recherche': 'Suche nach "{mots}"...',
+
+            /* Fehler. */
+            'erreur.cle-refusee': 'Schlüssel von Albert abgelehnt. Prüfen oder wechseln Sie ihn.',
+            'erreur.quota': 'Kontingent erreicht. Versuchen Sie es in einer Minute erneut.',
+            'erreur.http': 'Fehler {status}.',
+            'erreur.http-detail': 'Fehler {status}: {detail}',
+            'erreur.relais': 'Das n8n-Relais ist nicht erreichbar. Prüfen Sie die Verbindung.',
+            'erreur.timeout': 'Albert antwortet nicht. Versuchen Sie es erneut.',
+            'erreur.origine': 'Das n8n-Relais akzeptiert die Adresse {origine} nicht. Öffnen Sie ',
+            'erreur.consigne': 'Die Systemanweisung des Werkzeugs {outil} fehlt.',
+            'erreur.format': 'Format nicht unterstützt: nur Bilder und Textdateien.',
+            'erreur.fichier-long': 'Datei zu lang: höchstens 200 kB.',
+            'erreur.hors-cadre': 'Albert Go in einem eigenen Tab öffnen',
+
+            /* An das Modell gesendete Texte. */
+            'demande.reformuler': 'Formuliere diesen Text um:\n\n{texte}',
+            'demande.corriger': 'Korrigiere diesen Text:\n\n{texte}',
+            'demande.traduire': 'Übersetze diesen Text ins {cible}:\n\n{texte}',
+            'demande.traduire-source': 'Übersetze diesen Text ins {cible} (Ausgangssprache: {source}):\n\n{texte}',
+            'demande.fichier': 'Inhalt der Datei "{nom}":\n\n{texte}',
+            'demande.image': 'Übertrage getreu den gesamten sichtbaren Text dieses Bildes, in Markdown. '
+                + 'Schreibe Formeln in LaTeX zwischen $. Enthält das Bild eine Abbildung oder ein Schema, '
+                + 'beschreibe es in wenigen Sätzen. Antworte sonst nichts.',
+            'recherche.description': 'Sucht eine Information und liefert Auszüge mit Quelle. '
+                + 'Aufzurufen für einen zu prüfenden Fakt, ein Datum, eine Zahl, eine Etymologie, '
+                + 'eine Nachricht oder eine zu zitierende Quelle, und jedes Mal, wenn du sonst aus '
+                + 'dem Gedächtnis zu einem genauen Thema antworten würdest. Die Suchmaschine ist je '
+                + 'nach Einstellung Wikipedia oder eine Websuche: was du bekommst, ist alles, was du '
+                + 'hast, sage es, wenn das nicht reicht.',
+            'recherche.parametre': 'Die zu suchenden Wörter.',
+            'recherche.source-wikipedia': 'in Wikipedia',
+            'recherche.source-web': 'im Web',
+            'recherche.rappel': 'Du verfügst über das Werkzeug recherche_web: du kannst {source} suchen, '
+                + 'und du sagst es, wenn man dich fragt. Nutze es, sobald eine Antwort einen genauen Fakt '
+                + 'braucht, den du nicht sicher kennst.',
+            'recherche.resultats': 'Suchergebnisse:\n{extraits}\n\nBeantworte die Frage jetzt anhand dieser Auszüge.',
+            'recherche.aucun-mot': 'Keine Wörter zum Suchen.',
+            'recherche.aucun-resultat': 'Kein Ergebnis.',
+            'recherche.impossible': 'Suche fehlgeschlagen: {message}',
+            'recherche.moteur-injoignable': 'Suchmaschine nicht erreichbar ({status}).',
+            'recherche.wikipedia-injoignable': 'Wikipedia nicht erreichbar ({status}).',
+            'recherche.wikipedia-refus': 'Anfrage von Wikipedia abgelehnt.'
         }
     }
 };
