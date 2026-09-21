@@ -43,6 +43,7 @@ const Recherche = {
 
     /** Articles lus par recherche, et taille gardée de chaque morceau. */
     ARTICLES: 2,
+    TAILLE_FICHE: 800,
     TAILLE_RESUME: 600,
     TAILLE_SECTION: 1500,
 
@@ -138,6 +139,10 @@ const Recherche = {
      * texte entier que d'un article à la fois, les autres reviennent vides.
      * Un article pèse des milliers de jetons, d'où le découpage par `passages`.
      *
+     * Le texte brut laisse de côté l'infobox, où se trouvent justement les
+     * faits chiffrés (superficie, population, dates) : le wikitexte de la
+     * tête d'article part avec, dans la même requête.
+     *
      * @param {string} question - Texte cherché.
      * @param {AbortSignal} [signal] - Pour annuler avec la question.
      * @returns {Promise<Array<Object>>} Articles { title, url, desc }.
@@ -149,17 +154,86 @@ const Recherche = {
             + '&srsearch=' + encodeURIComponent(question), signal);
         const titres = ((trouves.query && trouves.query.search) || []).map(r => r.title);
         const corps = await Promise.all(titres.map(titre => this.interroger(base
-            + '&prop=extracts|info&inprop=url&explaintext=1'
+            + '&prop=extracts|info|revisions&inprop=url&explaintext=1'
+            + '&rvprop=content&rvslots=main&rvsection=0'
             + '&titles=' + encodeURIComponent(titre), signal)));
         return corps.map((corpsPage, rang) => {
             const pages = (corpsPage.query && corpsPage.query.pages) || {};
             const page = Object.keys(pages).map(id => pages[id])[0] || {};
+            const revision = (page.revisions || [])[0];
+            const wikitexte = (revision && revision.slots && revision.slots.main && revision.slots.main['*']) || '';
             return {
                 title: page.title || titres[rang],
                 url: page.fullurl,
-                desc: this.passages(page.extract || '', question)
+                desc: this.avecFiche(this.fiche(wikitexte), this.passages(page.extract || '', question))
             };
         });
+    },
+
+    /**
+     * Champs de l'infobox, en "nom : valeur" séparés par des points-virgules.
+     *
+     * Une ligne de l'infobox commence par une barre verticale et porte un
+     * seul champ. Un champ écrit sur plusieurs lignes est ignoré.
+     *
+     * @param {string} wikitexte - Wikitexte de la tête d'article.
+     * @returns {string} Champs renseignés, vide si l'article n'a pas d'infobox.
+     */
+    fiche(wikitexte) {
+        const champs = [];
+        for (const ligne of wikitexte.split('\n')) {
+            const champ = ligne.match(/^\|\s*([^=|{}\[\]]+?)\s*=\s*(.*)$/);
+            if (!champ) {
+                continue;
+            }
+            const valeur = this.nettoyerWiki(champ[2]);
+            if (valeur) {
+                champs.push(champ[1] + ' : ' + valeur);
+            }
+        }
+        return champs.join(' ; ').slice(0, this.TAILLE_FICHE);
+    },
+
+    /**
+     * Retire le balisage wiki d'une valeur de champ.
+     *
+     * ponytail : remplacement à plat, un modèle de modèle imbriqué reste tel
+     * quel. Passer par un analyseur de wikitexte si cela se voit dans les
+     * réponses.
+     *
+     * @param {string} texte - Valeur brute du champ.
+     * @returns {string} Valeur lisible.
+     */
+    nettoyerWiki(texte) {
+        return texte
+            .replace(/<!--[\s\S]*?-->/g, '')
+            .replace(/<ref[^>]*\/>/g, '')
+            .replace(/<ref[^>]*>[\s\S]*?<\/ref>/g, '')
+            /* {{unité|2363.1|km|2}} donne "2363.1 km 2" ; {{Canada}} donne "Canada". */
+            .replace(/\{\{([^{}]*)\}\}/g, (tout, contenu) => {
+                const parts = contenu.split('|');
+                return (parts.slice(1).join(' ').trim() || parts[0]);
+            })
+            .replace(/\[\[[^\]|]*\|([^\]]*)\]\]/g, '$1')
+            .replace(/\[\[([^\]]*)\]\]/g, '$1')
+            .replace(/'{2,}/g, '')
+            .replace(/<[^>]+>/g, ' ')
+            .replace(/\s+/g, ' ')
+            .trim();
+    },
+
+    /**
+     * Assemble la fiche et le texte de l'article.
+     *
+     * @param {string} fiche - Champs de l'infobox.
+     * @param {string} texte - Passages gardés de l'article.
+     * @returns {string} Extrait à donner au modèle.
+     */
+    avecFiche(fiche, texte) {
+        if (!fiche) {
+            return texte;
+        }
+        return 'Fiche : ' + fiche + '\n' + texte;
     },
 
     /**

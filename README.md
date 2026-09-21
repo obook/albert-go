@@ -27,7 +27,7 @@ Pour obtenir une clé Albert : [demande d'accès](https://albert.sites.beta.gouv
 
 Désactivée par défaut : à allumer dans Réglages. Une fois allumée, le modèle reçoit un outil de recherche et décide seul de l'appeler. Les mots cherchés s'affichent sous la réponse.
 
-**Wikipédia**, moteur par défaut : aucune clé, CORS ouvert, et Albert reçoit le résumé de l'article plus la section qui contient les mots de la question, soit le texte lui-même et non une liste de liens. C'est ce qui l'empêche d'inventer une date ou une étymologie.
+**Wikipédia**, moteur par défaut : aucune clé, CORS ouvert, et Albert reçoit le résumé de l'article plus la section qui contient les mots de la question, soit le texte lui-même et non une liste de liens. C'est ce qui l'empêche d'inventer une date ou une étymologie. Les champs de l'infobox (superficie, population, dates) partent aussi : le texte brut de MediaWiki les laisse de côté, alors que ce sont justement les chiffres qu'on lui demande.
 
 Le premier appel impose la recherche, par précaution. Essai du 21 septembre 2026, question dont la réponse n'est pas dans les poids, outil imposé puis outil libre, trois essais par modèle en libre :
 

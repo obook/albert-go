@@ -140,3 +140,27 @@ test('chercherWikipedia : une erreur de l\'API remonte', async () => {
     await assert.rejects(Recherche.chercherWikipedia('test'), /paramètre inconnu/);
 });
 
+test('fiche : les champs chiffrés de l\'infobox, que le texte brut perd', () => {
+    const wikitexte = '{{Infobox Aire protégée\n'
+        + '|nom=Parc provincial de Clearwater River\n'
+        + '|pays={{Canada}}\n'
+        + '|latitude=<!-- Sur Wikidata -->\n'
+        + '|superficie={{unité|2363.1|km|2}}\n'
+        + '|site web=\n'
+        + '}}\n'
+        + 'Le \'\'\'parc\'\'\' est en [[Saskatchewan|Saskatchewan]].';
+    const fiche = Recherche.fiche(wikitexte);
+    assert.ok(fiche.includes('superficie : 2363.1 km 2'));
+    assert.ok(fiche.includes('pays : Canada'));
+    /* Champ vide ou réduit à un commentaire : rien à dire au modèle. */
+    assert.ok(!fiche.includes('site web'));
+    assert.ok(!fiche.includes('latitude'));
+    /* Le texte de l'article n'est pas une ligne d'infobox. */
+    assert.ok(!fiche.includes('Saskatchewan'));
+});
+
+test('fiche : pas d\'infobox, pas de fiche', () => {
+    assert.strictEqual(Recherche.fiche('Un article sans infobox.'), '');
+    assert.strictEqual(Recherche.avecFiche('', 'Résumé.'), 'Résumé.');
+    assert.strictEqual(Recherche.avecFiche('a : b', 'Résumé.'), 'Fiche : a : b\nRésumé.');
+});
