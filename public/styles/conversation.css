@@ -145,6 +145,8 @@ input[type="password"], textarea {
     stroke-linejoin: round;
 }
 .bouton-action svg.plein { fill: currentColor; }
+/* Icône lettre : pleine, sans trait. */
+.bouton-action svg.lettre { fill: currentColor; stroke: none; }
 
 /* Attente de la réponse */
 

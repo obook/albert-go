@@ -62,7 +62,10 @@ function boutonCopier(texte) {
  * @returns {HTMLButtonElement} Le bouton.
  */
 function boutonRecherches(note) {
-    const bouton = boutonAction(ICONES.chercher, 'Voir les recherches faites');
+    /* Le bouton dit où on a cherché : W pour Wikipédia, globe pour le web. */
+    const wiki = reglages.fournisseur === 'wikipedia';
+    const bouton = boutonAction(wiki ? ICONES.wikipedia : ICONES.globe,
+        wiki ? 'Voir les recherches faites dans Wikipédia' : 'Voir les recherches faites');
     bouton.setAttribute('aria-expanded', 'false');
     bouton.addEventListener('click', () => {
         note.hidden = !note.hidden;
