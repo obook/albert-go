@@ -128,12 +128,12 @@ function sauverConversation() {
     }
     if (ecrite === null) {
         /* Rien n'a changé dans le stockage : on garde l'ancienne liste. */
-        toast('Conversation trop longue pour être enregistrée. Elle reste affichée jusqu\'à la fermeture de l\'onglet.');
+        toast(t('toast.conversation-longue'));
         return;
     }
     const supprimees = voulue.length - ecrite.length;
     if (supprimees > 0) {
-        toast('Mémoire du navigateur pleine : ' + supprimees + ' ancienne(s) conversation(s) supprimée(s).');
+        toast(t('toast.memoire-pleine', { nombre: supprimees }));
     }
     conversations = ecrite;
     retenirCourante(conversationId);
@@ -157,7 +157,7 @@ function rouvrirConversation(entree) {
         /* Traduction enregistrée avant qu'on garde la langue : on prend la langue cible actuelle. */
         let langue = message.langue;
         if (!langue && outilActuel === 'traduire') {
-            langue = Albert.CODES_LANGUES[langueCible];
+            langue = langueCible;
         }
         ajouter(message.role, message.affiche || message.content, langue, false, message.recherches);
     }
@@ -191,7 +191,7 @@ function demanderSuppression(entree, libelle) {
             retenirCourante(null);
         }
         afficherHistorique();
-        toast('Conversation supprimée.');
+        toast(t('toast.conversation-supprimee'));
     }, { once: true });
     $('confirmer-suppression').showModal();
 }
@@ -264,7 +264,7 @@ function armerAppuiLong(element, action) {
  * Remplit la liste des conversations dans le menu.
  */
 function afficherHistorique() {
-    const format = new Intl.DateTimeFormat('fr-FR', { dateStyle: 'short', timeStyle: 'short' });
+    const format = new Intl.DateTimeFormat(I18n.langue, { dateStyle: 'short', timeStyle: 'short' });
     const elements = conversations.map(entree => {
         const li = document.createElement('li');
         const bouton = document.createElement('button');
@@ -273,7 +273,7 @@ function afficherHistorique() {
         /* L'outil devant le titre, sauf pour Discuter. */
         let libelle = entree.titre;
         if (entree.outil && entree.outil !== 'discuter') {
-            libelle = Albert.OUTILS[entree.outil].nom + ' : ' + entree.titre;
+            libelle = t('outil.' + entree.outil) + ' : ' + entree.titre;
         }
         bouton.textContent = libelle;
         bouton.title = libelle + '\n' + format.format(entree.date);
@@ -287,8 +287,8 @@ function afficherHistorique() {
         supprimer.type = 'button';
         supprimer.className = 'supprimer-conversation';
         supprimer.innerHTML = ICONES.points;
-        supprimer.setAttribute('aria-label', 'Supprimer la conversation : ' + libelle);
-        supprimer.title = 'Supprimer';
+        supprimer.setAttribute('aria-label', t('historique.supprimer-aria', { titre: libelle }));
+        supprimer.title = t('historique.supprimer');
         supprimer.addEventListener('click', () => {
             demanderSuppression(entree, libelle);
         });

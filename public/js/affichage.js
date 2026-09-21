@@ -82,10 +82,7 @@ pour que le lecteur d'écran annonce toujours le même nom, suivi de l'état.
  * @returns {string} Texte à afficher.
  */
 function textePartage(actif) {
-    if (actif) {
-        return 'À la fermeture de l\'onglet, la clé et les conversations seront effacées.';
-    }
-    return 'À la fermeture de l\'onglet, la clé et les conversations seront conservées.';
+    return t(actif ? 'partage.actif' : 'partage.inactif');
 }
 
 /**
@@ -95,10 +92,7 @@ function textePartage(actif) {
  * @returns {string} Texte à afficher.
  */
 function texteMemoire(actif) {
-    if (actif) {
-        return 'Envoyé à Albert : toute la conversation.';
-    }
-    return 'Envoyé à Albert : une question seulement.';
+    return t(actif ? 'memoire.actif' : 'memoire.inactif');
 }
 
 /**
@@ -108,13 +102,14 @@ function afficherReglages() {
     const modele = modeleActuel();
     const pourcent = Albert.occupation(dernierUsage, modele.contexte);
 
-    let contexte = 'sans contexte';
+    let contexte = t('contexte.sans');
     if (reglages.memoire) {
-        contexte = pourcent === null ? 'contexte complet' : 'contexte ' + pourcent + ' %';
+        contexte = pourcent === null ? t('contexte.complet') : t('contexte.pourcent', { pourcent: pourcent });
     }
-    /* Virgule décimale : 0,2 et non 0.2. */
-    const temperature = reglages.temperature.toFixed(1).replace('.', ',');
-    $('resume-reglages').textContent = modele.nom + ', température ' + temperature + ', ' + contexte;
+    /* Virgule décimale en français, point en anglais. */
+    const temperature = reglages.temperature.toLocaleString(I18n.langue, { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+    $('resume-reglages').textContent = t('reglages.resume',
+        { modele: modele.nom, temperature: temperature, contexte: contexte });
     $('jauge-niveau').style.width = (pourcent || 0) + '%';
     $('jauge-niveau').classList.toggle('pleine', pourcent !== null && pourcent >= 80);
 
@@ -150,7 +145,7 @@ function ajouter(role, texte, langue, animer = false, recherches = null) {
     li.className = role;
     const qui = document.createElement('span');
     qui.className = 'visuellement-cache';
-    qui.textContent = 'Vous : ';
+    qui.textContent = t('vous');
     li.append(qui, texte);
     $('fil').append(li);
     li.scrollIntoView({ block: 'end' });
@@ -180,7 +175,7 @@ function ajouterAttente() {
 
     const debut = Date.now();
     const minuteur = setInterval(() => {
-        duree.textContent = Math.round((Date.now() - debut) / 1000) + ' s';
+        duree.textContent = t('duree', { secondes: Math.round((Date.now() - debut) / 1000) });
     }, 1000);
     return () => {
         clearInterval(minuteur);

@@ -39,11 +39,11 @@ function boutonAction(icone, libelle) {
  * @returns {HTMLButtonElement} Le bouton.
  */
 function boutonCopier(texte) {
-    const bouton = boutonAction(ICONES.copier, 'Copier la réponse');
+    const bouton = boutonAction(ICONES.copier, t('reponse.copier'));
     bouton.addEventListener('click', () => {
         navigator.clipboard.writeText(texte).then(() => {
             bouton.innerHTML = ICONES.copie;
-            toast('Réponse copiée.');
+            toast(t('toast.reponse-copiee'));
             setTimeout(() => {
                 bouton.innerHTML = ICONES.copier;
             }, 1500);
@@ -65,7 +65,7 @@ function boutonRecherches(note) {
     /* Le bouton dit où on a cherché : W pour Wikipédia, globe pour le web. */
     const wiki = reglages.fournisseur === 'wikipedia';
     const bouton = boutonAction(wiki ? ICONES.wikipedia : ICONES.globe,
-        wiki ? 'Voir les recherches faites dans Wikipédia' : 'Voir les recherches faites');
+        t(wiki ? 'reponse.recherches-wikipedia' : 'reponse.recherches'));
     bouton.setAttribute('aria-expanded', 'false');
     bouton.addEventListener('click', () => {
         note.hidden = !note.hidden;
@@ -81,8 +81,7 @@ function boutonRecherches(note) {
  * @returns {string} Nom de la langue, ou le code s'il est inconnu.
  */
 function nomLangue(code) {
-    const nom = Object.keys(Albert.CODES_LANGUES).find(n => Albert.CODES_LANGUES[n] === code);
-    return nom ? nom.toLowerCase() : code;
+    return I18n.existe('langue.' + code) ? t('langue.' + code).toLowerCase() : code;
 }
 
 /**
@@ -93,27 +92,23 @@ function nomLangue(code) {
  * @returns {HTMLButtonElement} Le bouton.
  */
 function boutonLire(contenu, langue) {
-    const bouton = boutonAction(ICONES.lire, 'Lire à voix haute');
+    const bouton = boutonAction(ICONES.lire, t('reponse.lire'));
     bouton.addEventListener('click', async () => {
         await Lecture.voixPretes();
         if (!Lecture.disponible(langue)) {
             const nom = nomLangue(langue);
-            if (Lecture.enLigne) {
-                toast('Aucune voix en ' + nom + ' disponible dans ce navigateur.');
-            } else {
-                toast('Aucune voix en ' + nom + ' installée sur cet appareil. Les voix en ligne ne sont pas utilisées.');
-            }
+            toast(t(Lecture.enLigne ? 'toast.voix-absente-en-ligne' : 'toast.voix-absente', { langue: nom }));
             return;
         }
         Lecture.basculer(bouton, contenu, langue);
     });
     bouton.addEventListener('lecture-debut', () => {
         bouton.innerHTML = ICONES.arreter;
-        bouton.setAttribute('aria-label', 'Arrêter la lecture');
+        bouton.setAttribute('aria-label', t('reponse.arreter-lecture'));
     });
     bouton.addEventListener('lecture-fin', () => {
         bouton.innerHTML = ICONES.lire;
-        bouton.setAttribute('aria-label', 'Lire à voix haute');
+        bouton.setAttribute('aria-label', t('reponse.lire'));
     });
     return bouton;
 }
@@ -206,7 +201,7 @@ function bulleReponse(texte, titre, langue, animer = false, recherches = null) {
     }
     carte.append(contenu);
     if (recherches && recherches.length) {
-        const note = elementNote('Recherche : ' + recherches.join(' ; '));
+        const note = elementNote(t('reponse.note-recherche', { mots: recherches.join(' ; ') }));
         note.hidden = true;
         carte.append(note);
         actions.append(boutonRecherches(note));

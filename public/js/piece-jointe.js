@@ -36,7 +36,7 @@ let lecturePiece = null;
  */
 function afficherPiece(piece, enCours) {
     pieceJointe = enCours ? null : piece;
-    $('piece-nom').textContent = piece.nom + (enCours ? ' : lecture en cours...' : '');
+    $('piece-nom').textContent = enCours ? t('piece.lecture', { nom: piece.nom }) : piece.nom;
     $('piece-jointe').hidden = false;
 }
 
@@ -83,21 +83,21 @@ async function joindreFichier(fichier) {
     const image = fichier.type.startsWith('image/');
     const texte = fichier.type.startsWith('text/') || EXTENSIONS_TEXTE.test(fichier.name);
     if (!image && !texte) {
-        etat('Format non pris en charge : images et fichiers texte uniquement.', true);
+        etat(t('erreur.format'), true);
         return;
     }
 
-    const piece = { nom: fichier.name || 'image collée', texte: '' };
+    const piece = { nom: fichier.name || t('piece.image-collee'), texte: '' };
     afficherPiece(piece, true);
     const controle = new AbortController();
     lecturePiece = controle;
     try {
         if (image) {
-            etat('Lecture de l\'image par Albert...');
+            etat(t('etat.lecture-image'));
             piece.texte = await Albert.transcrire(reglages.cle, await imageEnDataUrl(fichier), controle.signal);
         } else {
             if (fichier.size > TEXTE_MAX) {
-                throw new Error('Fichier trop long : 200 Ko au plus.');
+                throw new Error(t('erreur.fichier-long'));
             }
             piece.texte = await fichier.text();
         }

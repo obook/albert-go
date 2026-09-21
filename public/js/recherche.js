@@ -29,7 +29,17 @@ const Recherche = {
     /** Points d'entrée des trois moteurs. */
     MOJEEK: 'https://www.mojeek.com/search',
     GOOGLE: 'https://www.googleapis.com/customsearch/v1',
-    WIKIPEDIA: 'https://fr.wikipedia.org/w/api.php',
+
+    /**
+     * Point d'entrée de Wikipédia, dans la langue de l'interface.
+     *
+     * Les domaines possibles sont listés dans la CSP (index.html).
+     *
+     * @returns {string} Adresse de l'API MediaWiki.
+     */
+    wikipedia() {
+        return 'https://' + I18n.langue + '.wikipedia.org/w/api.php';
+    },
 
     /** Articles lus par recherche, et taille gardée de chaque morceau. */
     ARTICLES: 2,
@@ -42,22 +52,26 @@ const Recherche = {
     /** Nombre de résultats demandés. */
     NOMBRE: 5,
 
-    /** Outil proposé au modèle, au format "tools" de l'API. */
-    OUTIL: {
-        type: 'function',
-        function: {
-            name: 'recherche_web',
-            description: 'Cherche une information et renvoie des extraits sourcés. '
-                + 'À appeler pour un fait à vérifier, une date, un chiffre, une étymologie, '
-                + 'une actualité ou une source à citer, et chaque fois que tu répondrais de mémoire '
-                + 'sur un sujet précis. Le moteur est soit Wikipédia, soit un moteur web selon le '
-                + 'réglage : ce que tu reçois est tout ce dont tu disposes, dis-le si cela ne suffit pas.',
-            parameters: {
-                type: 'object',
-                properties: { q: { type: 'string', description: 'Les mots à chercher.' } },
-                required: ['q']
+    /**
+     * Outil proposé au modèle, au format "tools" de l'API.
+     *
+     * Décrit dans la langue de l'interface, comme la consigne système.
+     *
+     * @returns {Object} Entrée du champ tools.
+     */
+    outil() {
+        return {
+            type: 'function',
+            function: {
+                name: 'recherche_web',
+                description: t('recherche.description'),
+                parameters: {
+                    type: 'object',
+                    properties: { q: { type: 'string', description: t('recherche.parametre') } },
+                    required: ['q']
+                }
             }
-        }
+        };
     },
 
     /**
@@ -85,7 +99,8 @@ const Recherche = {
         const reponse = await fetch(adresse, { signal: signal });
         const corps = await reponse.json().catch(() => ({}));
         if (!reponse.ok) {
-            throw new Error((corps.error && corps.error.message) || 'moteur injoignable (' + reponse.status + ').');
+            throw new Error((corps.error && corps.error.message)
+                || t('recherche.moteur-injoignable', { status: reponse.status }));
         }
         if (!mojeek) {
             return corps.items || [];
@@ -108,10 +123,10 @@ const Recherche = {
         const reponse = await fetch(adresse, { signal: signal });
         const corps = await reponse.json().catch(() => ({}));
         if (!reponse.ok) {
-            throw new Error('Wikipédia injoignable (' + reponse.status + ').');
+            throw new Error(t('recherche.wikipedia-injoignable', { status: reponse.status }));
         }
         if (corps.error) {
-            throw new Error(corps.error.info || 'requête refusée par Wikipédia.');
+            throw new Error(corps.error.info || t('recherche.wikipedia-refus'));
         }
         return corps;
     },
@@ -129,7 +144,7 @@ const Recherche = {
      */
     async chercherWikipedia(question, signal) {
         /* origin=* : c'est ainsi que MediaWiki ouvre CORS aux appels anonymes. */
-        const base = this.WIKIPEDIA + '?action=query&format=json&origin=*&redirects=1';
+        const base = this.wikipedia() + '?action=query&format=json&origin=*&redirects=1';
         const trouves = await this.interroger(base + '&list=search&srlimit=' + this.ARTICLES
             + '&srsearch=' + encodeURIComponent(question), signal);
         const titres = ((trouves.query && trouves.query.search) || []).map(r => r.title);
@@ -209,15 +224,15 @@ async function executerOutil(appel, signal, faites) {
         mots = '';
     }
     if (!mots) {
-        return 'Aucun mot à chercher.';
+        return t('recherche.aucun-mot');
     }
-    etat('Recherche de « ' + mots +' »...');
+    etat(t('etat.recherche', { mots: mots }));
     try {
         const resultats = await Recherche.chercher(reglages.fournisseur, reglages.cleRecherche, mots, signal);
         faites.push(mots);
-        return Recherche.formater(resultats) || 'Aucun résultat.';
+        return Recherche.formater(resultats) || t('recherche.aucun-resultat');
     } catch (err) {
-        return 'Recherche impossible : ' + err.message;
+        return t('recherche.impossible', { message: err.message });
     }
 }
 
@@ -231,10 +246,8 @@ async function executerOutil(appel, signal, faites) {
  * @returns {Array<Object>} Copie avec le rappel, sans toucher l'original.
  */
 function avecRappel(messages) {
-    const source = reglages.fournisseur === 'wikipedia' ? 'dans Wikipédia' : 'sur le web';
-    const rappel = 'Tu disposes de l\'outil recherche_web : tu peux chercher ' + source + ', '
-        + 'et tu le dis si on te le demande. Sers-t\'en dès qu\'une réponse demande un fait précis '
-        + 'que tu n\'es pas certain de connaître.';
+    const source = t(reglages.fournisseur === 'wikipedia' ? 'recherche.source-wikipedia' : 'recherche.source-web');
+    const rappel = t('recherche.rappel', { source: source });
     if (messages[0] && messages[0].role === 'system') {
         return [{ role: 'system', content: messages[0].content + '\n' + rappel }, ...messages.slice(1)];
     }
@@ -271,11 +284,11 @@ async function repondreAvecRecherche(cle, requete, signal) {
             reponse = await Albert.repondre(cle, {
                 ...requete,
                 messages: avecRappel(messages),
-                tools: [Recherche.OUTIL],
+                tools: [Recherche.outil()],
                 tool_choice: tour === 0 ? 'required' : 'auto'
             }, signal);
         } catch (err) {
-            toast('Recherche indisponible avec ce modèle.');
+            toast(t('toast.recherche-indisponible'));
             return { ...await Albert.repondre(cle, { ...requete, messages: messages }, signal), recherches: faites };
         }
         const appels = (reponse.message && reponse.message.tool_calls) || [];
@@ -288,13 +301,12 @@ async function repondreAvecRecherche(cle, requete, signal) {
             extraits.push(trouve);
             messages.push({ role: 'tool', tool_call_id: appel.id, content: trouve });
         }
-        etat('Albert réfléchit...');
+        etat(t('etat.reflechit'));
     }
     /* Dernier tour sans outil ni message "tool" : gpt-oss rappellerait l'outil
        et ne rédigerait rien. Les extraits repartent en texte. */
     const dernier = extraits.length
-        ? [...requete.messages, { role: 'user', content: 'Résultats de recherche :\n' + extraits.join('\n')
-            + '\n\nRéponds maintenant à la question à partir de ces extraits.' }]
+        ? [...requete.messages, { role: 'user', content: t('recherche.resultats', { extraits: extraits.join('\n') }) }]
         : requete.messages;
     return { ...await Albert.repondre(cle, { ...requete, messages: dernier }, signal), recherches: faites };
 }

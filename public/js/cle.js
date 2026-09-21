@@ -23,7 +23,7 @@ async function validerCle() {
     const cle = $('cle').value.trim();
     const bouton = $('form-cle').querySelector('button[type="submit"]');
     bouton.disabled = true;
-    messageCle('Vérification de la clé...', false);
+    messageCle(t('cle.verification'), false);
     try {
         const liste = await Albert.modeles(cle);
         if (liste.length) {

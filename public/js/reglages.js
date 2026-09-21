@@ -38,12 +38,14 @@ function afficherModeles() {
         radio.type = 'radio';
         radio.name = 'modele';
         radio.value = m.id;
+        /* Un modèle hors de la liste connue n'a pas de description à lui. */
+        const description = I18n.existe('modele.' + m.id) ? t('modele.' + m.id) : t('modele.inconnu');
         label.append(radio,
             elementTexte('strong', 'nom', m.nom),
-            elementTexte('span', 'type', m.type),
-            elementTexte('span', 'description', m.description),
-            elementTexte('span', 'detail', 'Alias : ' + m.id),
-            elementTexte('span', 'detail', 'Modèle : ' + m.reel));
+            elementTexte('span', 'type', t('modele.type.' + m.type)),
+            elementTexte('span', 'description', description),
+            elementTexte('span', 'detail', t('reglages.alias', { id: m.id })),
+            elementTexte('span', 'detail', t('reglages.modele-reel', { reel: m.reel })));
         return label;
     });
     $('modeles').replaceChildren(...cartes);
@@ -166,6 +168,25 @@ $('reglages-conseilles').addEventListener('click', () => {
     ecrire('temperature', String(reglages.temperature));
     ecrire('memoire', reglages.memoire ? 'oui' : 'non');
     afficherReglages();
+});
+
+$('langue-interface').value = reglages.langue;
+
+/* Changement de langue : la page entière est relue, listes comprises. */
+$('langue-interface').addEventListener('change', () => {
+    const quittee = I18n.langue;
+    reglages.langue = $('langue-interface').value;
+    ecrire('langue', reglages.langue);
+    I18n.definir(reglages.langue);
+    ajusterLangueCible(quittee);
+    I18n.appliquer();
+    afficherModeles();
+    afficherReglages();
+    afficherLangues();
+    afficherOutil();
+    afficherTheme();
+    afficherHistorique();
+    /* Consignes système et Wikipédia suivent la langue au prochain envoi. */
 });
 
 $('ouvrir-reglages').addEventListener('click', () => {

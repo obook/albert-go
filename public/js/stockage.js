@@ -23,6 +23,14 @@
  */
 const $ = (id) => document.getElementById(id);
 
+/* Langue de l'interface, avant le premier texte affiché : celle du
+   navigateur au premier lancement, puis celle choisie dans les réglages. */
+try {
+    I18n.definir(localStorage.getItem('albert-go.langue') || I18n.defaut());
+} catch (e) {
+    I18n.definir(I18n.defaut());
+}
+
 /*
 Dans le cadre d'un autre site : un lien seul, puis arrêt (SECURITE.md, E2).
 Pages ne permet pas l'en-tête X-Frame-Options.
@@ -32,7 +40,7 @@ if (window.top !== window.self) {
     const lien = document.createElement('a');
     lien.href = location.href;
     lien.target = '_top';
-    lien.textContent = 'Ouvrir Albert Go dans son propre onglet';
+    lien.textContent = t('erreur.hors-cadre');
     const paragraphe = document.createElement('p');
     paragraphe.className = 'hors-cadre';
     paragraphe.append(lien);
@@ -192,6 +200,7 @@ const reglages = {
     /* Une valeur illisible donnerait NaN, envoyé en "temperature": null. */
     temperature: temperatureLue(),
     memoire: lire('memoire', Albert.CONSEILLES.memoire ? 'oui' : 'non') === 'oui',
+    langue: I18n.langue,
     voixEnLigne: lire('voix-en-ligne', 'non') === 'oui',
     recherche: lire('recherche', 'non') === 'oui',
     fournisseur: lire('fournisseur', 'wikipedia'),

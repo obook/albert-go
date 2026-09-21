@@ -4,6 +4,7 @@
  *
  * Albert ne gère pas CORS : toutes les requêtes passent par le relais n8n.
  * Aucun accès au DOM, pour pouvoir être testé sous Node (tests/albert.test.js).
+ * Les textes visibles et ceux envoyés au modèle viennent de i18n.js (t).
  * Utilisé par stockage.js, reglages.js, piece-jointe.js et app.js.
  *
  * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
@@ -37,48 +38,37 @@ const Albert = {
     Albert peut changer le modèle derrière un alias : /v1/models fait foi.
     */
     MODELES: [
-        { id: 'openweight-medium', nom: 'Medium', reel: 'mistral-small-3-2-24b-instruct-2506', type: 'Texte et images', contexte: 128000, description: 'Équilibré entre qualité et rapidité.' },
-        { id: 'openweight-large', nom: 'Large', reel: 'openai/gpt-oss-120b', type: 'Texte', contexte: 131072, description: 'Le plus capable, pour les raisonnements longs. Plus lent.' },
-        { id: 'openweight-small', nom: 'Small', reel: 'ministral-3-8b-instruct-2512', type: 'Texte et images', contexte: 262144, description: 'Le plus rapide, pour les questions simples.' },
-        { id: 'openweight-code', nom: 'Code', reel: 'qwen3-coder-30b-A3b-instruct', type: 'Texte', contexte: 262144, description: 'Spécialisé en programmation.' },
-        { id: 'openweight-code-2', nom: 'Code 2', reel: 'deepseek-v4-flash', type: 'Texte', contexte: 393216, description: 'Programmation, contexte très long.' }
+        { id: 'openweight-medium', nom: 'Medium', reel: 'mistral-small-3-2-24b-instruct-2506', type: 'texte-images', contexte: 128000 },
+        { id: 'openweight-large', nom: 'Large', reel: 'openai/gpt-oss-120b', type: 'texte', contexte: 131072 },
+        { id: 'openweight-small', nom: 'Small', reel: 'ministral-3-8b-instruct-2512', type: 'texte-images', contexte: 262144 },
+        { id: 'openweight-code', nom: 'Code', reel: 'qwen3-coder-30b-A3b-instruct', type: 'texte', contexte: 262144 },
+        { id: 'openweight-code-2', nom: 'Code 2', reel: 'deepseek-v4-flash', type: 'texte', contexte: 393216 }
     ],
 
     /*
     Outils du menu, repris d'albert-droid. Reformuler et Traduire envoient
     une seule demande, sans les échanges précédents, avec leur consigne système.
+    Le nom et l'invite sont dans i18n.js ; la consigne est le fichier de
+    public/prompts/<langue>/ (outils.js).
     */
     OUTILS: {
-        discuter: { nom: 'Discuter', consigne: 'prompts/discuter.txt', invite: 'Poser votre question...' },
-        reformuler: { nom: 'Reformuler', consigne: 'prompts/reformuler.txt', invite: 'Collez le texte à reformuler...' },
-        traduire: { nom: 'Traduire', consigne: 'prompts/traduire.txt', invite: 'Collez le texte à traduire...' },
-        corriger: { nom: 'Corriger', consigne: 'prompts/corriger.txt', invite: 'Collez le texte à corriger...' }
+        discuter: { consigne: 'discuter.txt' },
+        reformuler: { consigne: 'reformuler.txt' },
+        traduire: { consigne: 'traduire.txt' },
+        corriger: { consigne: 'corriger.txt' }
     },
 
     /** Langue source qui laisse le modèle détecter la langue du texte. */
-    LANGUE_AUTO: 'Automatique',
+    LANGUE_AUTO: 'auto',
 
-    /** Langues proposées par Traduire (liste d'albert-droid). */
-    LANGUES: ['Français', 'Anglais', 'Allemand', 'Espagnol', 'Italien', 'Portugais',
-        'Néerlandais', 'Russe', 'Chinois', 'Japonais', 'Arabe', 'Latin'],
-
-    /** Code de chaque langue, pour choisir la voix de lecture. */
-    CODES_LANGUES: {
-        'Français': 'fr', 'Anglais': 'en', 'Allemand': 'de', 'Espagnol': 'es',
-        'Italien': 'it', 'Portugais': 'pt', 'Néerlandais': 'nl', 'Russe': 'ru',
-        'Chinois': 'zh', 'Japonais': 'ja', 'Arabe': 'ar', 'Latin': 'la'
-    },
+    /** Langues proposées par Traduire (liste d'albert-droid), en codes ISO 639-1. */
+    LANGUES: ['fr', 'en', 'de', 'es', 'it', 'pt', 'nl', 'ru', 'zh', 'ja', 'ar', 'la'],
 
     /** Réglages conseillés, aussi utilisés au premier lancement. */
     CONSEILLES: { modele: 'openweight-large', temperature: 0.2, memoire: true },
 
     /* Modèle qui lit les images (annuaire BidouIAge, 1er août 2026). */
     MODELE_VISION: 'openweight-medium',
-
-    /** Consigne envoyée avec une image jointe. */
-    CONSIGNE_IMAGE: 'Transcris fidèlement tout le texte visible dans cette image, en Markdown. '
-        + 'Écris les formules en LaTeX entre $. Si l\'image contient une figure ou un schéma, '
-        + 'décris-le en quelques phrases. Ne réponds rien d\'autre.',
 
     /**
      * Demande la liste des modèles à Albert.
@@ -107,7 +97,7 @@ const Albert = {
      * Le type est dans "type", ou dans "model_type" derrière certains proxys.
      *
      * @param {Object[]} liste - Modèles bruts renvoyés par /v1/models.
-     * @returns {Object[]} Modèles { id, nom, reel, type, description, contexte }.
+     * @returns {Object[]} Modèles { id, nom, reel, type, contexte }.
      */
     conversation(liste) {
         const ordre = this.MODELES.map(m => m.id);
@@ -121,8 +111,7 @@ const Albert = {
                     id: alias,
                     nom: connu ? connu.nom : this.nomCourt(alias),
                     reel: m.id,
-                    type: (m.model_type || m.type) === 'image-text-to-text' ? 'Texte et images' : 'Texte',
-                    description: connu ? connu.description : 'Modèle de conversation.',
+                    type: (m.model_type || m.type) === 'image-text-to-text' ? 'texte-images' : 'texte',
                     contexte: m.max_context_length || (connu && connu.contexte) || null
                 };
             })
@@ -201,7 +190,7 @@ const Albert = {
             model: this.MODELE_VISION,
             temperature: 0,
             messages: [{ role: 'user', content: [
-                { type: 'text', text: this.CONSIGNE_IMAGE },
+                { type: 'text', text: t('demande.image') },
                 { type: 'image_url', image_url: { url: dataUrl } }
             ] }]
         }, annulation).then(r => r.texte);
@@ -218,7 +207,8 @@ const Albert = {
         if (!piece) {
             return question;
         }
-        return (question ? question + '\n\n' : '') + 'Contenu du fichier "' + piece.nom + '" :\n\n' + piece.texte;
+        const fichier = t('demande.fichier', { nom: piece.nom, texte: piece.texte });
+        return (question ? question + '\n\n' : '') + fichier;
     },
 
     /**
@@ -226,23 +216,18 @@ const Albert = {
      *
      * @param {string} outil - Clé de OUTILS.
      * @param {string} texte - Saisie, fichier joint compris.
-     * @param {string} source - Langue source, ou LANGUE_AUTO.
-     * @param {string} cible - Langue cible.
+     * @param {string} source - Code de la langue source, ou LANGUE_AUTO.
+     * @param {string} cible - Code de la langue cible.
      * @returns {string} Demande à envoyer au modèle.
      */
     construireDemande(outil, texte, source, cible) {
-        if (outil === 'reformuler') {
-            return 'Reformule ce texte :\n\n' + texte;
-        }
-        if (outil === 'corriger') {
-            return 'Corrige ce texte :\n\n' + texte;
+        if (outil === 'reformuler' || outil === 'corriger') {
+            return t('demande.' + outil, { texte: texte });
         }
         if (outil === 'traduire') {
             /* "Traduis du Anglais" serait incorrect : la langue source va entre parenthèses. */
-            if (source === this.LANGUE_AUTO) {
-                return 'Traduis ce texte en ' + cible + ' :\n\n' + texte;
-            }
-            return 'Traduis ce texte en ' + cible + ' (langue source : ' + source + ') :\n\n' + texte;
+            const valeurs = { texte: texte, cible: t('langue.' + cible), source: t('langue.' + source) };
+            return t(source === this.LANGUE_AUTO ? 'demande.traduire' : 'demande.traduire-source', valeurs);
         }
         return texte;
     },
@@ -306,13 +291,16 @@ const Albert = {
      */
     messageErreur(status, corps) {
         if (status === 401 || status === 403) {
-            return 'Clé refusée par Albert. Vérifiez-la ou changez-la.';
+            return t('erreur.cle-refusee');
         }
         if (status === 429) {
-            return 'Quota atteint. Réessayez dans une minute.';
+            return t('erreur.quota');
         }
         const detail = corps && (typeof corps.detail === 'string' ? corps.detail : corps.message);
-        return 'Erreur ' + status + (detail ? ' : ' + String(detail).slice(0, 200) : '.');
+        if (!detail) {
+            return t('erreur.http', { status: status });
+        }
+        return t('erreur.http-detail', { status: status, detail: String(detail).slice(0, 200) });
     }
 };
 

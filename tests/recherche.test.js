@@ -13,6 +13,7 @@
 
 const { test } = require('node:test');
 const assert = require('node:assert');
+require('../public/js/i18n.js');
 const Recherche = require('../public/js/recherche.js');
 
 test('formater : les deux jeux de champs, Mojeek et Google', () => {
@@ -36,10 +37,20 @@ test('formater : une ligne par résultat, rien sans résultat', () => {
     assert.strictEqual(Recherche.formater([]), '');
 });
 
-test('OUTIL : format attendu par le champ tools de l\'API', () => {
-    assert.strictEqual(Recherche.OUTIL.type, 'function');
-    assert.strictEqual(Recherche.OUTIL.function.name, 'recherche_web');
-    assert.deepStrictEqual(Recherche.OUTIL.function.parameters.required, ['q']);
+test('outil : format attendu par le champ tools de l\'API', () => {
+    const outil = Recherche.outil();
+    assert.strictEqual(outil.type, 'function');
+    assert.strictEqual(outil.function.name, 'recherche_web');
+    assert.deepStrictEqual(outil.function.parameters.required, ['q']);
+    assert.ok(outil.function.description.length > 40);
+});
+
+test('wikipedia : le domaine suit la langue de l\'interface', () => {
+    I18n.definir = (langue) => { I18n.langue = langue; };
+    I18n.definir('en');
+    assert.strictEqual(Recherche.wikipedia(), 'https://en.wikipedia.org/w/api.php');
+    I18n.definir('fr');
+    assert.strictEqual(Recherche.wikipedia(), 'https://fr.wikipedia.org/w/api.php');
 });
 
 test('chercher : clé refusée, le message de Mojeek remonte', async () => {
@@ -113,7 +124,7 @@ test('chercherWikipedia : sans clé, articles dans l\'ordre de la recherche', as
         } } } }) };
     };
     const resultats = await Recherche.chercherWikipedia('chat de l\'État');
-    assert.ok(vues[0].startsWith(Recherche.WIKIPEDIA + '?'));
+    assert.ok(vues[0].startsWith(Recherche.wikipedia() + '?'));
     assert.ok(vues.every(adresse => adresse.includes('origin=*')));
     assert.ok(vues.every(adresse => !adresse.includes('key=')));
     /* Jamais deux titres dans la même requête. */
@@ -128,3 +139,4 @@ test('chercherWikipedia : une erreur de l\'API remonte', async () => {
     global.fetch = async () => ({ ok: true, json: async () => ({ error: { info: 'paramètre inconnu' } }) });
     await assert.rejects(Recherche.chercherWikipedia('test'), /paramètre inconnu/);
 });
+

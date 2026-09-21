@@ -15,9 +15,9 @@
 
 /* Clair, puis sombre, puis système (sans data-theme : la CSS suit le système). */
 const THEMES = {
-    light: { icone: 'lune', nom: 'clair', suivant: 'dark' },
-    dark: { icone: 'soleil', nom: 'sombre', suivant: 'system' },
-    system: { icone: 'systeme', nom: 'du système', suivant: 'light' }
+    light: { cle: 'light', icone: 'lune', suivant: 'dark' },
+    dark: { cle: 'dark', icone: 'soleil', suivant: 'system' },
+    system: { cle: 'system', icone: 'systeme', suivant: 'light' }
 };
 
 /**
@@ -34,8 +34,11 @@ function themeActuel() {
  */
 function afficherTheme() {
     const actuel = themeActuel();
-    $('theme').innerHTML = ICONES[actuel.icone] + '<span>Thème ' + actuel.nom + '</span>';
-    $('theme').setAttribute('aria-label', 'Thème ' + actuel.nom + '. Passer en thème ' + THEMES[actuel.suivant].nom);
+    const libelle = document.createElement('span');
+    libelle.textContent = t('theme.' + actuel.cle);
+    $('theme').innerHTML = ICONES[actuel.icone];
+    $('theme').append(libelle);
+    $('theme').setAttribute('aria-label', t('theme.' + actuel.cle + '.aria'));
 }
 
 $('ouvrir-menu').addEventListener('click', () => {
@@ -82,7 +85,7 @@ $('ouvrir-partage').addEventListener('click', ouvrirPartage);
 
 $('copier-adresse').addEventListener('click', () => {
     navigator.clipboard.writeText($('adresse-partage').value).then(() => {
-        toast('Adresse copiée.');
+        toast(t('toast.adresse-copiee'));
     });
 });
 
@@ -91,7 +94,7 @@ $('adresse-partage').addEventListener('focus', () => {
 });
 
 /**
- * Texte de la version pour "À propos" : commit et date en français.
+ * Texte de la version pour "À propos" : commit et date dans la langue affichée.
  *
  * @returns {string} Par exemple "96941b9 du 19/09/2026 13:20".
  */
@@ -99,8 +102,8 @@ function texteVersion() {
     if (!VERSION.date) {
         return VERSION.commit;
     }
-    const date = new Intl.DateTimeFormat('fr-FR', { dateStyle: 'short', timeStyle: 'short' }).format(new Date(VERSION.date));
-    return VERSION.commit + ' du ' + date;
+    const date = new Intl.DateTimeFormat(I18n.langue, { dateStyle: 'short', timeStyle: 'short' }).format(new Date(VERSION.date));
+    return t('version.format', { commit: VERSION.commit, date: date });
 }
 
 $('ouvrir-info').addEventListener('click', () => {

@@ -2,6 +2,8 @@
  * albert.test.js
  * Tests de public/js/albert.js : modèles, contexte, historique, erreurs.
  *
+ * i18n.js d'abord : albert.js lit ses textes avec t, variable globale.
+ *
  * Lancement : node --test
  *
  * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
@@ -13,6 +15,7 @@
 
 const { test } = require('node:test');
 const assert = require('node:assert');
+require('../public/js/i18n.js');
 const Albert = require('../public/js/albert.js');
 
 test('messagesAEnvoyer : mémoire active ou non', () => {
@@ -46,9 +49,9 @@ test('conversation : filtre, alias, ordre, nom court', () => {
     assert.strictEqual(modeles[1].reel, 'openai/gpt-oss-120b');
     assert.strictEqual(modeles[1].contexte, 131072);
     assert.strictEqual(modeles[2].nom, 'Code 2');
-    assert.strictEqual(modeles[3].description, 'Modèle de conversation.');
-    assert.strictEqual(modeles[0].type, 'Texte et images');
-    assert.strictEqual(modeles[1].type, 'Texte');
+    /* Le type est un code : i18n.js en donne le nom affiché. */
+    assert.strictEqual(modeles[0].type, 'texte-images');
+    assert.strictEqual(modeles[1].type, 'texte');
 });
 
 test('occupation : pourcentage du contexte, borné, inconnu', () => {
@@ -66,11 +69,12 @@ test('joindre : question seule, fichier seul, les deux', () => {
 });
 
 test('construireDemande : instruction selon l\'outil', () => {
-    assert.strictEqual(Albert.construireDemande('discuter', 'Bonjour', 'Automatique', 'Anglais'), 'Bonjour');
-    assert.strictEqual(Albert.construireDemande('reformuler', 'Texte', 'Automatique', 'Anglais'), 'Reformule ce texte :\n\nTexte');
-    assert.strictEqual(Albert.construireDemande('corriger', 'Texte', 'Automatique', 'Anglais'), 'Corrige ce texte :\n\nTexte');
-    assert.strictEqual(Albert.construireDemande('traduire', 'Texte', 'Automatique', 'Anglais'), 'Traduis ce texte en Anglais :\n\nTexte');
-    assert.strictEqual(Albert.construireDemande('traduire', 'Text', 'Anglais', 'Français'), 'Traduis ce texte en Français (langue source : Anglais) :\n\nText');
+    assert.strictEqual(Albert.construireDemande('discuter', 'Bonjour', 'auto', 'en'), 'Bonjour');
+    assert.strictEqual(Albert.construireDemande('reformuler', 'Texte', 'auto', 'en'), 'Reformule ce texte :\n\nTexte');
+    assert.strictEqual(Albert.construireDemande('corriger', 'Texte', 'auto', 'en'), 'Corrige ce texte :\n\nTexte');
+    /* Les codes de langue deviennent leur nom dans la langue de l'interface. */
+    assert.strictEqual(Albert.construireDemande('traduire', 'Texte', 'auto', 'en'), 'Traduis ce texte en Anglais :\n\nTexte');
+    assert.strictEqual(Albert.construireDemande('traduire', 'Text', 'en', 'fr'), 'Traduis ce texte en Français (langue source : Anglais) :\n\nText');
 });
 
 test('decouperVariantes : trois variantes, ou null si le format manque', () => {

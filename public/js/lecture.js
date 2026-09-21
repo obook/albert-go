@@ -14,35 +14,70 @@
 'use strict';
 
 const Lecture = {
-    /* Motifs composés avant les symboles simples : l'ordre compte. */
-    FORMULES: [
-        [/\\ce\s*\{([^}]*)\}/g, ' $1 '],
-        [/\\d?frac\s*\{([^}]*)\}\s*\{([^}]*)\}/g, ' $1 sur $2 '],
-        [/\\sqrt\s*\[([^\]]*)\]\s*\{([^}]*)\}/g, ' racine $1-ième de $2 '],
-        [/\\sqrt\s*\{([^}]*)\}/g, ' racine carrée de $1 '],
-        [/\^\s*\{?2\}?(?!\d)/g, ' au carré '],
-        [/\^\s*\{?3\}?(?!\d)/g, ' au cube '],
-        [/\^\s*\{([^}]*)\}/g, ' puissance $1 '],
-        [/\^\s*(\w)/g, ' puissance $1 '],
-        [/_\s*\{([^}]*)\}/g, ' indice $1 '],
-        [/_\s*(\w)/g, ' indice $1 '],
-        [/\\(times|cdot)/g, ' fois '],
-        [/\\div/g, ' divisé par '],
-        [/\\pm/g, ' plus ou moins '],
-        [/\\(leq|le)\b/g, ' inférieur ou égal à '],
-        [/\\(geq|ge)\b/g, ' supérieur ou égal à '],
-        [/\\(neq|ne)\b/g, ' différent de '],
-        [/\\approx/g, ' environ égal à '],
-        [/\\infty/g, ' infini '],
-        [/\\(rightarrow|to|longrightarrow)\b/g, ' donne '],
-        [/->/g, ' donne '],
-        [/</g, ' inférieur à '],
-        [/>/g, ' supérieur à '],
-        [/=/g, ' égale '],
-        [/\\(alpha|beta|gamma|delta|pi|theta|lambda|mu|sigma|omega)\b/g, ' $1 '],
-        [/\\[a-zA-Z]+/g, ' '],
-        [/[{}\\]/g, ' ']
-    ],
+    /* Motifs composés avant les symboles simples : l'ordre compte.
+       Une langue sans table (réponse de Traduire en russe) fait sauter
+       les formules plutôt que de les lire en français. */
+    FORMULES: {
+        fr: [
+            [/\\ce\s*\{([^}]*)\}/g, ' $1 '],
+            [/\\d?frac\s*\{([^}]*)\}\s*\{([^}]*)\}/g, ' $1 sur $2 '],
+            [/\\sqrt\s*\[([^\]]*)\]\s*\{([^}]*)\}/g, ' racine $1-ième de $2 '],
+            [/\\sqrt\s*\{([^}]*)\}/g, ' racine carrée de $1 '],
+            [/\^\s*\{?2\}?(?!\d)/g, ' au carré '],
+            [/\^\s*\{?3\}?(?!\d)/g, ' au cube '],
+            [/\^\s*\{([^}]*)\}/g, ' puissance $1 '],
+            [/\^\s*(\w)/g, ' puissance $1 '],
+            [/_\s*\{([^}]*)\}/g, ' indice $1 '],
+            [/_\s*(\w)/g, ' indice $1 '],
+            [/\\(times|cdot)/g, ' fois '],
+            [/\\div/g, ' divisé par '],
+            [/\\pm/g, ' plus ou moins '],
+            [/\\(leq|le)\b/g, ' inférieur ou égal à '],
+            [/\\(geq|ge)\b/g, ' supérieur ou égal à '],
+            [/\\(neq|ne)\b/g, ' différent de '],
+            [/\\approx/g, ' environ égal à '],
+            [/\\infty/g, ' infini '],
+            [/\\(rightarrow|to|longrightarrow)\b/g, ' donne '],
+            [/->/g, ' donne '],
+            [/</g, ' inférieur à '],
+            [/>/g, ' supérieur à '],
+            [/=/g, ' égale '],
+            [/\\(alpha|beta|gamma|delta|pi|theta|lambda|mu|sigma|omega)\b/g, ' $1 '],
+            [/\\[a-zA-Z]+/g, ' '],
+            [/[{}\\]/g, ' ']
+        ],
+        en: [
+            [/\\ce\s*\{([^}]*)\}/g, ' $1 '],
+            [/\\d?frac\s*\{([^}]*)\}\s*\{([^}]*)\}/g, ' $1 over $2 '],
+            [/\\sqrt\s*\[([^\]]*)\]\s*\{([^}]*)\}/g, ' the $1-th root of $2 '],
+            [/\\sqrt\s*\{([^}]*)\}/g, ' the square root of $1 '],
+            [/\^\s*\{?2\}?(?!\d)/g, ' squared '],
+            [/\^\s*\{?3\}?(?!\d)/g, ' cubed '],
+            [/\^\s*\{([^}]*)\}/g, ' to the power of $1 '],
+            [/\^\s*(\w)/g, ' to the power of $1 '],
+            [/_\s*\{([^}]*)\}/g, ' subscript $1 '],
+            [/_\s*(\w)/g, ' subscript $1 '],
+            [/\\(times|cdot)/g, ' times '],
+            [/\\div/g, ' divided by '],
+            [/\\pm/g, ' plus or minus '],
+            [/\\(leq|le)\b/g, ' less than or equal to '],
+            [/\\(geq|ge)\b/g, ' greater than or equal to '],
+            [/\\(neq|ne)\b/g, ' not equal to '],
+            [/\\approx/g, ' approximately equal to '],
+            [/\\infty/g, ' infinity '],
+            [/\\(rightarrow|to|longrightarrow)\b/g, ' gives '],
+            [/->/g, ' gives '],
+            [/</g, ' less than '],
+            [/>/g, ' greater than '],
+            [/=/g, ' equals '],
+            [/\\(alpha|beta|gamma|delta|pi|theta|lambda|mu|sigma|omega)\b/g, ' $1 '],
+            [/\\[a-zA-Z]+/g, ' '],
+            [/[{}\\]/g, ' ']
+        ]
+    },
+
+    /** Lecture de l'esperluette, par langue. */
+    ET: { fr: ' et ', en: ' and ' },
 
     /** Autorise les voix en ligne (réglage de l'utilisateur). */
     enLigne: false,
@@ -51,14 +86,19 @@ const Lecture = {
     _bouton: null,
 
     /**
-     * Traduit une formule LaTeX en français parlé.
+     * Traduit une formule LaTeX en mots.
      *
      * @param {string} tex - Source LaTeX de la formule.
-     * @returns {string} Texte à lire.
+     * @param {string} [langue] - Code de la langue de lecture.
+     * @returns {string} Texte à lire, vide si la langue n'a pas de table.
      */
-    formuleParlee(tex) {
+    formuleParlee(tex, langue = 'fr') {
+        const table = this.FORMULES[langue];
+        if (!table) {
+            return '';
+        }
         let texte = tex;
-        for (const [motif, remplacement] of this.FORMULES) {
+        for (const [motif, remplacement] of table) {
             texte = texte.replace(motif, remplacement);
         }
         return texte.replace(/\s+/g, ' ').trim();
@@ -68,9 +108,13 @@ const Lecture = {
      * Lit 1er, 2de, 3e comme des ordinaux. "2 de ces" n'est pas touché.
      *
      * @param {string} texte - Texte à transformer.
+     * @param {string} [langue] - Code de la langue ; seul le français est concerné.
      * @returns {string} Texte avec les ordinaux en toutes lettres.
      */
-    ordinaux(texte) {
+    ordinaux(texte, langue = 'fr') {
+        if (langue !== 'fr') {
+            return texte;
+        }
         return texte
             .replace(/\b1(?:er|ère|re)\b/gi, 'premier')
             .replace(/\b2(?:nde|de|nd)\b/gi, 'seconde')
@@ -106,29 +150,29 @@ const Lecture = {
     /**
      * Texte à lire pour une réponse affichée.
      *
-     * Le code et les diagrammes sont sautés. En français, les formules et
-     * les ordinaux sont dits en toutes lettres ; dans une autre langue
-     * (réponse de Traduire), les formules sont sautées.
+     * Le code et les diagrammes sont sautés. Dans une langue qui a sa table
+     * (FORMULES), les formules sont dites en toutes lettres ; dans les
+     * autres (réponse de Traduire en russe), elles sont sautées.
      *
      * @param {HTMLElement} element - Contenu rendu de la réponse.
      * @param {string} [langue] - Code de la langue du texte ("fr", "ru"...).
      * @returns {string} Texte à lire.
      */
     texte(element, langue = 'fr') {
-        const francais = langue === 'fr';
+        const connue = !!this.FORMULES[langue];
         const copie = element.cloneNode(true);
         copie.querySelectorAll('pre, .diagramme, button').forEach(el => el.remove());
         copie.querySelectorAll('.katex').forEach(el => {
             const tex = el.querySelector('annotation[encoding="application/x-tex"]');
-            const parle = tex && francais ? this.formuleParlee(tex.textContent) : '';
+            const parle = tex ? this.formuleParlee(tex.textContent, langue) : '';
             el.replaceWith(' ' + parle + ' ');
         });
         /* Une pause après chaque bloc et chaque cellule. */
         copie.querySelectorAll('p, li, h1, h2, h3, h4, blockquote, tr').forEach(el => el.append('. '));
         copie.querySelectorAll('td, th').forEach(el => el.append(', '));
         let texte = copie.textContent;
-        if (francais) {
-            texte = this.ordinaux(texte).replace(/&/g, ' et ');
+        if (connue) {
+            texte = this.ordinaux(texte, langue).replace(/&/g, this.ET[langue]);
         }
         return texte
             .replace(/\s+/g, ' ')

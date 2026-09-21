@@ -23,7 +23,7 @@ let annulation = null;
  */
 function messageOrigine() {
     return {
-        texte: 'Le relais n8n n\'acceptera pas l\'adresse ' + location.origin + '. Ouvrez ',
+        texte: t('erreur.origine', { origine: location.origin }),
         lien: Albert.URL_PUBLIQUE
     };
 }
@@ -45,10 +45,10 @@ function messageEchec(err) {
         return messageOrigine();
     }
     if (err instanceof TypeError) {
-        return { texte: 'Relais n8n injoignable. Vérifiez la connexion.', lien: null };
+        return { texte: t('erreur.relais'), lien: null };
     }
     if (err.name === 'TimeoutError') {
-        return { texte: 'Albert ne répond pas. Réessayez.', lien: null };
+        return { texte: t('erreur.timeout'), lien: null };
     }
     return { texte: err.message, lien: null };
 }
@@ -60,7 +60,7 @@ function messageEchec(err) {
  */
 function boutonEnvoi(enCours) {
     $('envoyer').classList.toggle('en-cours', enCours);
-    $('envoyer').setAttribute('aria-label', enCours ? 'Arrêter' : 'Envoyer');
+    $('envoyer').setAttribute('aria-label', t(enCours ? 'saisie.arreter' : 'saisie.envoyer'));
 }
 
 /**
@@ -119,10 +119,10 @@ async function envoyer() {
     const outil = outilActuel;
     /* Albert n'a pas accès au web : il inventerait le contenu de la page. */
     if (outil === 'discuter' && /https?:\/\/|www\./i.test(question)) {
-        toast('Albert n\'ouvre pas les liens. Pour une page web, collez son texte ou joignez-le en fichier.');
+        toast(t('toast.liens'));
     }
 
-    const affiche = question + (piece ? (question ? '\n' : '') + 'Fichier joint : ' + piece.nom : '');
+    const affiche = question + (piece ? (question ? '\n' : '') + t('fichier.joint', { nom: piece.nom }) : '');
     const demande = Albert.construireDemande(outil, Albert.joindre(question, piece), langueSource, langueCible);
     conversation.push({ role: 'user', content: demande, affiche: affiche });
     /* Pour ignorer la réponse si on change de conversation pendant l'attente. */
@@ -133,7 +133,7 @@ async function envoyer() {
     annulation = new AbortController();
     boutonEnvoi(true);
     const retirerAttente = ajouterAttente();
-    etat('Albert réfléchit...');
+    etat(t('etat.reflechit'));
 
     try {
         /* Chaque outil a sa consigne système ; seul Discuter envoie aussi la conversation. */
@@ -154,7 +154,7 @@ async function envoyer() {
             return;
         }
         /* Réponse de Traduire : dans la langue cible, gardée pour la lecture à voix haute. */
-        const langue = outil === 'traduire' ? Albert.CODES_LANGUES[langueCible] : 'fr';
+        const langue = outil === 'traduire' ? langueCible : I18n.langue;
         conversation.push({ role: 'assistant', content: reponse.texte, langue: langue, recherches: reponse.recherches });
         ajouter('assistant', reponse.texte, langue, true, reponse.recherches);
         sauverConversation();
@@ -174,7 +174,7 @@ async function envoyer() {
             afficherPiece(piece);
         }
         if (err.name === 'AbortError') {
-            etat('Question annulée.');
+            etat(t('etat.annulee'));
         } else {
             etat(messageEchec(err).texte, true);
         }
@@ -264,13 +264,14 @@ $('form-question').addEventListener('submit', (e) => {
         return;
     }
     if (lecturePiece) {
-        etat('Attendez la fin de la lecture du fichier.');
+        etat(t('etat.attendre-lecture'));
         return;
     }
     envoyer();
 });
 
 /* Démarrage. */
+I18n.appliquer();
 afficherReglages();
 afficherTheme();
 afficherOutil();

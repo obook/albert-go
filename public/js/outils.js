@@ -3,8 +3,8 @@
  * Outils du menu : Discuter, Reformuler, Traduire (repris d'albert-droid), Corriger.
  *
  * Garde l'outil actif et les langues de Traduire. Les consignes système
- * sont dans public/prompts/*.txt, lues au premier usage puis gardées en
- * mémoire. app.js s'en sert pour construire la requête.
+ * sont dans public/prompts/<langue>/*.txt, lues au premier usage puis
+ * gardées en mémoire. app.js s'en sert pour construire la requête.
  *
  * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
  * Auteur : O. Booklage
@@ -19,11 +19,26 @@ if (!Albert.OUTILS[outilActuel]) {
     outilActuel = 'discuter';
 }
 
-/** Langues de Traduire. */
-let langueSource = lire('langue-source', Albert.LANGUE_AUTO);
-let langueCible = lire('langue-cible', 'Anglais');
+/**
+ * Code de langue enregistré, ou le code de secours.
+ *
+ * Une version précédente enregistrait le nom en français ("Anglais") :
+ * il ne fait plus partie des codes, on repart du secours.
+ *
+ * @param {string} nom - Nom de la donnée enregistrée.
+ * @param {string} secours - Code à utiliser si la valeur lue est inconnue.
+ * @returns {string} Code de langue.
+ */
+function langueLue(nom, secours) {
+    const code = lire(nom, secours);
+    return [Albert.LANGUE_AUTO, ...Albert.LANGUES].includes(code) ? code : secours;
+}
 
-/** Consignes déjà lues, par outil. */
+/** Langues de Traduire : vers l'anglais depuis une interface française, et l'inverse. */
+let langueSource = langueLue('langue-source', Albert.LANGUE_AUTO);
+let langueCible = langueLue('langue-cible', I18n.langue === 'fr' ? 'en' : 'fr');
+
+/** Consignes déjà lues, par langue et par outil. */
 const consignesLues = {};
 
 /**
@@ -38,26 +53,49 @@ async function consigne(outil) {
     if (!fichier) {
         return null;
     }
-    if (!consignesLues[outil]) {
-        const res = await fetch(fichier);
+    const chemin = 'prompts/' + I18n.langue + '/' + fichier;
+    if (!consignesLues[chemin]) {
+        const res = await fetch(chemin);
         if (!res.ok) {
-            throw new Error('Consigne de l\'outil ' + Albert.OUTILS[outil].nom + ' introuvable.');
+            throw new Error(t('erreur.consigne', { outil: t('outil.' + outil) }));
         }
-        consignesLues[outil] = await res.text();
+        consignesLues[chemin] = await res.text();
     }
-    return consignesLues[outil];
+    return consignesLues[chemin];
 }
 
 /**
- * Remplit une liste de langues.
+ * Remplit une liste de langues, nommées dans la langue de l'interface.
  *
  * @param {HTMLSelectElement} liste - Liste à remplir.
- * @param {string[]} langues - Langues proposées.
- * @param {string} choisie - Langue sélectionnée.
+ * @param {string[]} langues - Codes des langues proposées.
+ * @param {string} choisie - Code de la langue sélectionnée.
  */
 function remplirLangues(liste, langues, choisie) {
-    const options = langues.map(langue => new Option(langue, langue, false, langue === choisie));
+    const options = langues.map(code => new Option(t('langue.' + code), code, false, code === choisie));
     liste.replaceChildren(...options);
+}
+
+/**
+ * Évite de traduire vers la langue de l'interface, qui est celle du texte
+ * saisi le plus souvent : la cible prend alors la langue quittée.
+ *
+ * @param {string} quittee - Langue de l'interface avant le changement.
+ */
+function ajusterLangueCible(quittee) {
+    if (langueCible !== I18n.langue) {
+        return;
+    }
+    langueCible = quittee;
+    ecrire('langue-cible', langueCible);
+}
+
+/**
+ * Remplit les deux listes de Traduire.
+ */
+function afficherLangues() {
+    remplirLangues($('langue-source'), [Albert.LANGUE_AUTO, ...Albert.LANGUES], langueSource);
+    remplirLangues($('langue-cible'), Albert.LANGUES, langueCible);
 }
 
 /**
@@ -71,7 +109,7 @@ function afficherOutil() {
             bouton.removeAttribute('aria-current');
         }
     }
-    $('saisie').placeholder = Albert.OUTILS[outilActuel].invite;
+    $('saisie').placeholder = t('invite.' + outilActuel);
     $('langues').hidden = outilActuel !== 'traduire';
 }
 
@@ -90,8 +128,7 @@ function choisirOutil(outil) {
     afficherOutil();
 }
 
-remplirLangues($('langue-source'), [Albert.LANGUE_AUTO, ...Albert.LANGUES], langueSource);
-remplirLangues($('langue-cible'), Albert.LANGUES, langueCible);
+afficherLangues();
 
 for (const bouton of document.querySelectorAll('[data-outil]')) {
     bouton.addEventListener('click', () => {

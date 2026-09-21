@@ -48,6 +48,16 @@ Deux moteurs web restent proposés, avec une clé, et ne rendent que titres, adr
 - Mojeek : appels navigateur acceptés, API sur devis.
 - Qwant : 403. Marginalia, SearXNG public, MetaGer : pas d'en-têtes CORS. Stract : CORS figé sur `localhost:8000`.
 
+## Langues
+
+Interface en français et en anglais. Au premier lancement, la langue du navigateur ; ensuite, celle choisie dans Réglages, gardée dans le navigateur.
+
+- `public/js/i18n.js` : tout le texte visible, dans les deux langues, plus les phrases envoyées au modèle (demandes des outils, description de l'outil de recherche). Dans `index.html`, un texte porte `data-t`, `data-t-html` (texte avec un lien) ou `data-t-attr` (`aria-label`, `title`, `placeholder`...), relus par `I18n.appliquer()`.
+- `public/prompts/<langue>/*.txt` : les consignes système, une par outil et par langue.
+- La langue suit aussi le reste : Wikipédia interrogé sur `fr` ou `en`, dates et nombres au format local, formules lues à voix haute dans la langue de la réponse.
+
+Ajouter une langue : un code dans `I18n.LANGUES`, sa table dans `I18n.TEXTES`, un dossier dans `public/prompts/`, une option dans le sélecteur des réglages, et le domaine Wikipédia dans la CSP d'`index.html`.
+
 ## Développement
 
 ```bash
@@ -79,7 +89,7 @@ Audit interne et externe, modèle de menaces et plan d'action : [SECURITE.md](SE
 
 La page vise la conformité [RGAA](https://accessibilite.numerique.gouv.fr/). Aucun audit n'a encore été mené.
 
-- Langue déclarée (`lang="fr"`), chaque champ a une étiquette visible.
+- Langue déclarée sur `<html>` et mise à jour avec la langue choisie, chaque champ a une étiquette visible.
 - Tout se fait au clavier. Le focus est visible et revient dans la zone de saisie après chaque réponse.
 - Les nouveaux messages et l'état ("Albert réfléchit...", erreurs) sont annoncés aux lecteurs d'écran.
 - Thème clair ou sombre selon le réglage du système, contrastes d'au moins 4,5:1 pour le texte.
