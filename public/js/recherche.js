@@ -98,22 +98,13 @@ const Recherche = {
     },
 
     /**
-     * Cherche des articles sur Wikipédia et en rend les passages utiles.
+     * Interroge l'API de MediaWiki et rend son corps.
      *
-     * Une seule requête : `generator=search` trouve les articles, `extracts`
-     * en rend le texte brut. Un article entier pèse des milliers de jetons,
-     * d'où le découpage par `passages`.
-     *
-     * @param {string} question - Texte cherché.
+     * @param {string} adresse - Requête complète.
      * @param {AbortSignal} [signal] - Pour annuler avec la question.
-     * @returns {Promise<Array<Object>>} Articles { title, url, desc }.
+     * @returns {Promise<Object>} Corps de la réponse.
      */
-    async chercherWikipedia(question, signal) {
-        /* origin=* : c'est ainsi que MediaWiki ouvre CORS aux appels anonymes. */
-        const adresse = this.WIKIPEDIA + '?action=query&format=json&origin=*&redirects=1'
-            + '&generator=search&gsrlimit=' + this.ARTICLES
-            + '&gsrsearch=' + encodeURIComponent(question)
-            + '&prop=extracts|info&inprop=url&explaintext=1&exlimit=max';
+    async interroger(adresse, signal) {
         const reponse = await fetch(adresse, { signal: signal });
         const corps = await reponse.json().catch(() => ({}));
         if (!reponse.ok) {
@@ -122,15 +113,38 @@ const Recherche = {
         if (corps.error) {
             throw new Error(corps.error.info || 'requête refusée par Wikipédia.');
         }
-        const pages = (corps.query && corps.query.pages) || {};
-        return Object.keys(pages).map(id => pages[id])
-            /* index : le rang donné par la recherche, que l'objet pages perd. */
-            .sort((a, b) => (a.index || 0) - (b.index || 0))
-            .map(page => ({
-                title: page.title,
+        return corps;
+    },
+
+    /**
+     * Cherche des articles sur Wikipédia et en rend les passages utiles.
+     *
+     * Une requête pour les titres, puis une par titre : MediaWiki ne rend le
+     * texte entier que d'un article à la fois, les autres reviennent vides.
+     * Un article pèse des milliers de jetons, d'où le découpage par `passages`.
+     *
+     * @param {string} question - Texte cherché.
+     * @param {AbortSignal} [signal] - Pour annuler avec la question.
+     * @returns {Promise<Array<Object>>} Articles { title, url, desc }.
+     */
+    async chercherWikipedia(question, signal) {
+        /* origin=* : c'est ainsi que MediaWiki ouvre CORS aux appels anonymes. */
+        const base = this.WIKIPEDIA + '?action=query&format=json&origin=*&redirects=1';
+        const trouves = await this.interroger(base + '&list=search&srlimit=' + this.ARTICLES
+            + '&srsearch=' + encodeURIComponent(question), signal);
+        const titres = ((trouves.query && trouves.query.search) || []).map(r => r.title);
+        const corps = await Promise.all(titres.map(titre => this.interroger(base
+            + '&prop=extracts|info&inprop=url&explaintext=1'
+            + '&titles=' + encodeURIComponent(titre), signal)));
+        return corps.map((corpsPage, rang) => {
+            const pages = (corpsPage.query && corpsPage.query.pages) || {};
+            const page = Object.keys(pages).map(id => pages[id])[0] || {};
+            return {
+                title: page.title || titres[rang],
                 url: page.fullurl,
                 desc: this.passages(page.extract || '', question)
-            }));
+            };
+        });
     },
 
     /**
@@ -249,6 +263,8 @@ async function repondreAvecRecherche(cle, requete, signal) {
     const messages = [...requete.messages];
     /* Mots cherchés, rendus avec la réponse pour la trace sous la bulle. */
     const faites = [];
+    /* Extraits trouvés, pour le dernier tour. */
+    const extraits = [];
     for (let tour = 0; tour < TOURS_MAX; tour++) {
         let reponse;
         try {
@@ -268,12 +284,19 @@ async function repondreAvecRecherche(cle, requete, signal) {
         }
         messages.push(reponse.message);
         for (const appel of appels) {
-            messages.push({ role: 'tool', tool_call_id: appel.id, content: await executerOutil(appel, signal, faites) });
+            const trouve = await executerOutil(appel, signal, faites);
+            extraits.push(trouve);
+            messages.push({ role: 'tool', tool_call_id: appel.id, content: trouve });
         }
         etat('Albert réfléchit...');
     }
-    /* Dernier tour sans outil : le modèle doit rédiger avec ce qu'il a. */
-    return { ...await Albert.repondre(cle, { ...requete, messages: messages }, signal), recherches: faites };
+    /* Dernier tour sans outil ni message "tool" : gpt-oss rappellerait l'outil
+       et ne rédigerait rien. Les extraits repartent en texte. */
+    const dernier = extraits.length
+        ? [...requete.messages, { role: 'user', content: 'Résultats de recherche :\n' + extraits.join('\n')
+            + '\n\nRéponds maintenant à la question à partir de ces extraits.' }]
+        : requete.messages;
+    return { ...await Albert.repondre(cle, { ...requete, messages: dernier }, signal), recherches: faites };
 }
 
 /* Export pour les tests Node ; ignoré dans le navigateur. */

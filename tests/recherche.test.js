@@ -99,20 +99,29 @@ test('passages : aucune section ne répond, le résumé seul', () => {
 });
 
 test('chercherWikipedia : sans clé, articles dans l\'ordre de la recherche', async () => {
-    let vue = '';
+    const vues = [];
+    const textes = { Premier: 'A.', Second: 'B.' };
     global.fetch = async (adresse) => {
-        vue = adresse;
-        return { ok: true, json: async () => ({ query: { pages: {
-            '2': { index: 2, title: 'Second', fullurl: 'https://fr.wikipedia.org/wiki/Second', extract: 'B.' },
-            '1': { index: 1, title: 'Premier', fullurl: 'https://fr.wikipedia.org/wiki/Premier', extract: 'A.' }
-        } } }) };
+        vues.push(adresse);
+        if (adresse.includes('list=search')) {
+            return { ok: true, json: async () => ({ query: { search: [{ title: 'Premier' }, { title: 'Second' }] } }) };
+        }
+        /* Une requête par titre : le corps ne porte qu'une page. */
+        const titre = adresse.includes('Premier') ? 'Premier' : 'Second';
+        return { ok: true, json: async () => ({ query: { pages: { '7': {
+            title: titre, fullurl: 'https://fr.wikipedia.org/wiki/' + titre, extract: textes[titre]
+        } } } }) };
     };
     const resultats = await Recherche.chercherWikipedia('chat de l\'État');
-    assert.ok(vue.startsWith(Recherche.WIKIPEDIA + '?'));
-    assert.ok(vue.includes('origin=*'));
-    assert.ok(!vue.includes('key='));
+    assert.ok(vues[0].startsWith(Recherche.WIKIPEDIA + '?'));
+    assert.ok(vues.every(adresse => adresse.includes('origin=*')));
+    assert.ok(vues.every(adresse => !adresse.includes('key=')));
+    /* Jamais deux titres dans la même requête. */
+    assert.ok(vues.slice(1).every(adresse => adresse.includes('explaintext=1')));
+    assert.strictEqual(vues.length, 3);
     assert.deepStrictEqual(resultats.map(r => r.title), ['Premier', 'Second']);
     assert.strictEqual(resultats[0].desc, 'A.');
+    assert.strictEqual(resultats[1].desc, 'B.');
 });
 
 test('chercherWikipedia : une erreur de l\'API remonte', async () => {
