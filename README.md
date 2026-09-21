@@ -29,16 +29,18 @@ Désactivée par défaut : à allumer dans Réglages. Une fois allumée, le mod�
 
 **Wikipédia**, moteur par défaut : aucune clé, CORS ouvert, et Albert reçoit le résumé de l'article plus la section qui contient les mots de la question, soit le texte lui-même et non une liste de liens. C'est ce qui l'empêche d'inventer une date ou une étymologie.
 
-Le premier appel impose la recherche : laissé libre, un modèle répond souvent de mémoire sans appeler l'outil. Essai du 21 septembre 2026, question dont la réponse n'est pas dans les poids, outil imposé puis outil libre :
+Le premier appel impose la recherche, par précaution. Essai du 21 septembre 2026, question dont la réponse n'est pas dans les poids, outil imposé puis outil libre, trois essais par modèle en libre :
 
 | Modèle | Imposé | Libre |
 |---|---|---|
 | Large (`gpt-oss-120b`) | cherche | cherche |
+| Medium (`mistral-small-3-2-24b`) | cherche | cherche |
 | Small (`ministral-3-8b`) | cherche | cherche |
 | Code (`qwen3-coder-30b`) | cherche | cherche |
-| Code 2 (`deepseek-v4-flash`) | cherche | cherche |
-| Medium (`mistral-small-3-2-24b`) | cherche | répond de mémoire |
-| `gemma-4-31b-it` | ignore l'outil | ignore l'outil |
+| `deepseek-v4-flash-0731` | cherche | cherche |
+| `gemma-4-31b-it` | cherche | cherche |
+
+Les six appellent l'outil, même laissés libres.
 
 Deux moteurs web restent proposés, avec une clé, et ne rendent que titres, adresses et courts extraits. Moteurs essayés le 20 septembre 2026 :
 
@@ -63,7 +65,7 @@ Audit interne et externe, modèle de menaces et plan d'action : [SECURITE.md](SE
 - Elle part dans l'en-tête `Authorization`, jamais dans l'URL.
 - Elle transite par l'instance n8n : l'administrateur de cette instance peut techniquement la voir. Le workflow n'enregistre aucune exécution, donc aucun en-tête.
 - Le webhook appelle uniquement l'API Albert, dont l'adresse est fixée dans le workflow.
-- La page ne charge aucun script externe. Une politique CSP limite les connexions à l'instance n8n et les scripts au site lui-même.
+- La page ne charge aucun script externe. Une politique CSP limite les connexions à l'instance n8n et aux moteurs de recherche, et les scripts au site lui-même.
 - Le HTML produit à partir des réponses d'Albert est assaini avant affichage : scripts, gestionnaires d'événements et liens `javascript:` sont retirés.
 
 ## Licences
