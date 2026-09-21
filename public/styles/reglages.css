@@ -41,6 +41,33 @@
 /* Le préfixe .pico est nécessaire pour passer devant le sélecteur de Pico. */
 .pico .boutons-dialogue button { margin-bottom: 0; }
 
+/* À plat, les réglages faisaient trois écrans sur un téléphone. */
+.carte {
+    border: 1px solid var(--bord);
+    border-radius: 0.25rem;
+    /* Pico recolore le titre quand le details s'ouvre et quand il a le focus :
+       son accordéon, pas le nôtre. Le focus clavier reste marqué plus bas. */
+    --pico-accordion-close-summary-color: var(--texte);
+    --pico-accordion-open-summary-color: var(--texte);
+    --pico-accordion-active-summary-color: var(--texte);
+}
+.carte > summary {
+    padding: 0.625rem 0.75rem;
+    margin-bottom: 0;
+    background: var(--fond);
+    font-weight: 700;
+    cursor: pointer;
+}
+/* .pico devant : sinon Pico gagne la spécificité sur margin-bottom. */
+.pico .carte[open] > summary { margin-bottom: 0; border-bottom: 1px solid var(--bord); }
+/* Corps dans un div : une <details> en display grid montre son contenu fermé. */
+.carte .corps {
+    display: grid;
+    gap: 1.25rem;
+    padding: 0.75rem;
+}
+.carte .corps > .bouton-texte { justify-self: start; }
+
 /* Boîte "Partager" : QR code sur fond blanc, même en thème sombre, pour rester lisible. */
 .partage .qr {
     justify-self: center;
@@ -100,10 +127,6 @@ fieldset .bouton-texte { justify-self: start; }
     border-bottom: 2px solid var(--bleu);
     border-radius: 0.25rem 0.25rem 0 0;
     cursor: pointer;
-}
-.choix-modele summary:focus-visible {
-    outline: 3px solid var(--bleu);
-    outline-offset: 2px;
 }
 .choix-modele[open] summary { margin-bottom: 0.25rem; }
 
