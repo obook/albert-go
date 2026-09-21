@@ -194,7 +194,7 @@ const I18n = {
             'reglages.moteur': 'Moteur de recherche',
             'reglages.cle-recherche': 'Clé API',
             'reglages.cx': 'ID du moteur de recherche',
-            'reglages.aide-recherche': 'Une recherche part à chaque question. Pour Google, créez le <a href="https://programmablesearchengine.google.com" target="_blank" rel="noopener noreferrer">moteur</a> et sa <a href="https://console.cloud.google.com/apis/library/customsearch.googleapis.com" target="_blank" rel="noopener noreferrer">clé API</a>. Pour Mojeek, le service est payant sur devis.',
+            'reglages.aide-recherche': 'Le moteur choisi voit votre adresse IP et les mots cherchés, pas Albert. Wikipédia et Mojeek n\'affichent pas de publicité ciblée ; Google relève du Cloud Act. Une recherche part à chaque question. Pour Google, créez le <a href="https://programmablesearchengine.google.com" target="_blank" rel="noopener noreferrer">moteur</a> et sa <a href="https://console.cloud.google.com/apis/library/customsearch.googleapis.com" target="_blank" rel="noopener noreferrer">clé API</a>. Pour Mojeek, le service est payant sur devis.',
             'reglages.cle-note': 'Une clé est enregistrée dans ce navigateur.',
             'reglages.langue': 'Langue',
             'reglages.conseilles': 'Réglages conseillés',
@@ -254,6 +254,7 @@ const I18n = {
             'reponse.recherches': 'Voir les recherches faites',
             'reponse.recherches-wikipedia': 'Voir les recherches faites dans Wikipédia',
             'reponse.note-recherche': 'Recherche : {mots}',
+            'reponse.sources': 'Pages consultées : ',
 
             /* Messages. */
             'toast.adresse-copiee': 'Adresse copiée.',
@@ -412,7 +413,7 @@ const I18n = {
             'reglages.moteur': 'Motor de búsqueda',
             'reglages.cle-recherche': 'Clave API',
             'reglages.cx': 'ID del buscador',
-            'reglages.aide-recherche': 'Cada pregunta lanza una búsqueda. Para Google, cree el <a href="https://programmablesearchengine.google.com" target="_blank" rel="noopener noreferrer">buscador</a> y su <a href="https://console.cloud.google.com/apis/library/customsearch.googleapis.com" target="_blank" rel="noopener noreferrer">clave API</a>. Mojeek es de pago, con presupuesto a medida.',
+            'reglages.aide-recherche': 'El buscador elegido ve su dirección IP y las palabras buscadas, Albert no. Wikipedia y Mojeek no muestran publicidad personalizada; Google está sujeto a la Cloud Act. Cada pregunta lanza una búsqueda. Para Google, cree el <a href="https://programmablesearchengine.google.com" target="_blank" rel="noopener noreferrer">buscador</a> y su <a href="https://console.cloud.google.com/apis/library/customsearch.googleapis.com" target="_blank" rel="noopener noreferrer">clave API</a>. Mojeek es de pago, con presupuesto a medida.',
             'reglages.cle-note': 'Hay una clave guardada en este navegador.',
             'reglages.langue': 'Idioma',
             'reglages.conseilles': 'Ajustes recomendados',
@@ -472,6 +473,7 @@ const I18n = {
             'reponse.recherches': 'Ver las búsquedas hechas',
             'reponse.recherches-wikipedia': 'Ver las búsquedas hechas en Wikipedia',
             'reponse.note-recherche': 'Búsqueda: {mots}',
+            'reponse.sources': 'Páginas consultadas: ',
 
             /* Mensajes. */
             'toast.adresse-copiee': 'Dirección copiada.',
@@ -630,7 +632,7 @@ const I18n = {
             'reglages.moteur': 'Search engine',
             'reglages.cle-recherche': 'API key',
             'reglages.cx': 'Search engine ID',
-            'reglages.aide-recherche': 'A search is run for every question. For Google, create the <a href="https://programmablesearchengine.google.com" target="_blank" rel="noopener noreferrer">engine</a> and its <a href="https://console.cloud.google.com/apis/library/customsearch.googleapis.com" target="_blank" rel="noopener noreferrer">API key</a>. Mojeek is a paid service, priced on request.',
+            'reglages.aide-recherche': 'The chosen engine sees your IP address and the words searched for, Albert does not. Wikipedia and Mojeek show no targeted advertising; Google falls under the Cloud Act. A search is run for every question. For Google, create the <a href="https://programmablesearchengine.google.com" target="_blank" rel="noopener noreferrer">engine</a> and its <a href="https://console.cloud.google.com/apis/library/customsearch.googleapis.com" target="_blank" rel="noopener noreferrer">API key</a>. Mojeek is a paid service, priced on request.',
             'reglages.cle-note': 'A key is saved in this browser.',
             'reglages.langue': 'Language',
             'reglages.conseilles': 'Recommended settings',
@@ -690,6 +692,7 @@ const I18n = {
             'reponse.recherches': 'Show the searches made',
             'reponse.recherches-wikipedia': 'Show the searches made in Wikipedia',
             'reponse.note-recherche': 'Search: {mots}',
+            'reponse.sources': 'Pages consulted: ',
 
             /* Messages. */
             'toast.adresse-copiee': 'Address copied.',
@@ -848,7 +851,7 @@ const I18n = {
             'reglages.moteur': 'Suchmaschine',
             'reglages.cle-recherche': 'API-Schlüssel',
             'reglages.cx': 'ID der Suchmaschine',
-            'reglages.aide-recherche': 'Jede Frage löst eine Suche aus. Für Google die <a href="https://programmablesearchengine.google.com" target="_blank" rel="noopener noreferrer">Suchmaschine</a> und ihren <a href="https://console.cloud.google.com/apis/library/customsearch.googleapis.com" target="_blank" rel="noopener noreferrer">API-Schlüssel</a> anlegen. Mojeek ist kostenpflichtig, Preis auf Anfrage.',
+            'reglages.aide-recherche': 'Die gewählte Suchmaschine sieht Ihre IP-Adresse und die gesuchten Wörter, Albert nicht. Wikipedia und Mojeek zeigen keine personalisierte Werbung; Google unterliegt dem Cloud Act. Jede Frage löst eine Suche aus. Für Google die <a href="https://programmablesearchengine.google.com" target="_blank" rel="noopener noreferrer">Suchmaschine</a> und ihren <a href="https://console.cloud.google.com/apis/library/customsearch.googleapis.com" target="_blank" rel="noopener noreferrer">API-Schlüssel</a> anlegen. Mojeek ist kostenpflichtig, Preis auf Anfrage.',
             'reglages.cle-note': 'In diesem Browser ist ein Schlüssel gespeichert.',
             'reglages.langue': 'Sprache',
             'reglages.conseilles': 'Empfohlene Einstellungen',
@@ -908,6 +911,7 @@ const I18n = {
             'reponse.recherches': 'Die gemachten Suchen anzeigen',
             'reponse.recherches-wikipedia': 'Die gemachten Suchen in Wikipedia anzeigen',
             'reponse.note-recherche': 'Suche: {mots}',
+            'reponse.sources': 'Aufgerufene Seiten: ',
 
             /* Meldungen. */
             'toast.adresse-copiee': 'Adresse kopiert.',

@@ -56,9 +56,9 @@ function boutonCopier(texte) {
  * Crée le bouton qui montre les recherches faites pour une réponse.
  *
  * Sa seule présence dit que le modèle a cherché : sans lui, il a répondu
- * de mémoire. Le clic déplie les mots cherchés.
+ * de mémoire. Le clic déplie les mots cherchés et les pages consultées.
  *
- * @param {HTMLElement} note - Ligne grise des mots cherchés, repliée au départ.
+ * @param {HTMLElement} note - Ligne grise des recherches, repliée au départ.
  * @returns {HTMLButtonElement} Le bouton.
  */
 function boutonRecherches(note) {
@@ -114,15 +114,43 @@ function boutonLire(contenu, langue) {
 }
 
 /**
- * Crée la ligne grise placée sous une réponse.
+ * Crée la ligne grise placée sous une réponse : mots cherchés, puis sources.
  *
- * @param {string} texte - Texte de la ligne.
+ * Les adresses viennent du moteur, donc d'un tiers : elles passent par le même
+ * contrôle que les liens d'une réponse avant de devenir cliquables.
+ *
+ * @param {Array<Object>} recherches - Recherches { mots, sources }.
  * @returns {HTMLParagraphElement} La ligne.
  */
-function elementNote(texte) {
+function elementRecherches(recherches) {
+    /* Les conversations enregistrées avant les sources n'ont que les mots. */
+    const faites = recherches.map(r => (typeof r === 'string' ? { mots: r, sources: [] } : r));
     const note = document.createElement('p');
     note.className = 'note recherches';
-    note.textContent = texte;
+    note.textContent = t('reponse.note-recherche', { mots: faites.map(r => r.mots).join(' ; ') });
+    const sources = [];
+    for (const recherche of faites) {
+        for (const source of (recherche.sources || [])) {
+            /* Deux recherches ramènent souvent la même page. */
+            if (!Rendu.urlDangereuse('href', source.url) && !sources.some(s => s.url === source.url)) {
+                sources.push(source);
+            }
+        }
+    }
+    if (sources.length) {
+        const ligne = document.createElement('span');
+        ligne.className = 'sources';
+        ligne.append(t('reponse.sources'));
+        for (const source of sources) {
+            const lien = document.createElement('a');
+            lien.href = source.url;
+            lien.target = '_blank';
+            lien.rel = 'noopener noreferrer';
+            lien.textContent = source.titre || source.url;
+            ligne.append(lien);
+        }
+        note.append(ligne);
+    }
     return note;
 }
 
@@ -171,7 +199,7 @@ async function devoiler(element, texte) {
  * @param {?string} titre - Titre de la variante ("Plus courte"...), ou null.
  * @param {string} langue - Code de la langue, pour la lecture à voix haute.
  * @param {boolean} [animer] - true pour dévoiler le texte au lieu de l'afficher d'un coup.
- * @param {Array<string>} [recherches] - Mots cherchés sur le web pour cette réponse.
+ * @param {Array<Object>} [recherches] - Recherches { mots, sources } faites pour cette réponse.
  * @returns {HTMLLIElement} La bulle, pas encore ajoutée au fil.
  */
 function bulleReponse(texte, titre, langue, animer = false, recherches = null) {
@@ -201,7 +229,7 @@ function bulleReponse(texte, titre, langue, animer = false, recherches = null) {
     }
     carte.append(contenu);
     if (recherches && recherches.length) {
-        const note = elementNote(t('reponse.note-recherche', { mots: recherches.join(' ; ') }));
+        const note = elementRecherches(recherches);
         note.hidden = true;
         carte.append(note);
         actions.append(boutonRecherches(note));
@@ -217,7 +245,7 @@ function bulleReponse(texte, titre, langue, animer = false, recherches = null) {
  * @param {string} texte - Réponse du modèle.
  * @param {string} [langue] - Code de la langue de la réponse ; français par défaut.
  * @param {boolean} [animer] - true pour une réponse qui vient d'arriver ; false à la relecture.
- * @param {Array<string>} [recherches] - Mots cherchés sur le web pour cette réponse.
+ * @param {Array<Object>} [recherches] - Recherches { mots, sources } faites pour cette réponse.
  * @returns {HTMLLIElement} La première bulle ajoutée.
  */
 function ajouterReponse(texte, langue = 'fr', animer = false, recherches = null) {

@@ -95,7 +95,7 @@ const Recherche = {
         const adresse = mojeek
             ? this.MOJEEK + '?fmt=json&t=' + this.NOMBRE + '&api_key=' + encodeURIComponent(cle)
                 + '&q=' + encodeURIComponent(question)
-            : this.GOOGLE + '?num=' + this.NOMBRE + '&cx=' + this.CX + '&key=' + encodeURIComponent(cle)
+            : this.GOOGLE + '?num=' + this.NOMBRE + '&cx=' + encodeURIComponent(this.CX) + '&key=' + encodeURIComponent(cle)
                 + '&q=' + encodeURIComponent(question);
         const reponse = await fetch(adresse, { signal: signal });
         const corps = await reponse.json().catch(() => ({}));
@@ -263,6 +263,18 @@ const Recherche = {
     },
 
     /**
+     * Titre et adresse de chaque résultat, pour la trace sous la réponse.
+     *
+     * @param {Array<Object>} resultats - Résultats du moteur.
+     * @returns {Array<{titre: string, url: string}>} Sources consultables.
+     */
+    sources(resultats) {
+        return resultats
+            .map(r => ({ titre: r.title || '', url: r.url || r.link || '' }))
+            .filter(s => s.url);
+    },
+
+    /**
      * Met les résultats en texte pour le modèle.
      *
      * @param {Array<Object>} resultats - Résultats du moteur.
@@ -287,7 +299,7 @@ const Recherche = {
  *
  * @param {Object} appel - Entrée de tool_calls renvoyée par le modèle.
  * @param {AbortSignal} signal - Pour annuler avec la question.
- * @param {Array<string>} faites - Mots cherchés, complétés ici pour la trace sous la réponse.
+ * @param {Array<Object>} faites - Recherches { mots, sources }, complétées ici pour la trace sous la réponse.
  * @returns {Promise<string>} Contenu du message de rôle "tool".
  */
 async function executerOutil(appel, signal, faites) {
@@ -303,7 +315,7 @@ async function executerOutil(appel, signal, faites) {
     etat(t('etat.recherche', { mots: mots }));
     try {
         const resultats = await Recherche.chercher(reglages.fournisseur, reglages.cleRecherche, mots, signal);
-        faites.push(mots);
+        faites.push({ mots: mots, sources: Recherche.sources(resultats) });
         return Recherche.formater(resultats) || t('recherche.aucun-resultat');
     } catch (err) {
         /* Sinon le modèle répond de mémoire sans que rien ne le dise. */
@@ -351,7 +363,7 @@ async function repondreAvecRecherche(cle, requete, signal) {
         return Albert.repondre(cle, requete, signal);
     }
     const messages = [...requete.messages];
-    /* Mots cherchés, rendus avec la réponse pour la trace sous la bulle. */
+    /* Recherches faites, rendues avec la réponse pour la trace sous la bulle. */
     const faites = [];
     /* Extraits trouvés, pour le dernier tour. */
     const extraits = [];
