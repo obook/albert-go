@@ -25,7 +25,7 @@ Pour obtenir une clé Albert : [demande d'accès](https://albert.sites.beta.gouv
 
 ## Recherche web
 
-Le modèle reçoit un outil de recherche et décide seul de l'appeler. Les mots cherchés s'affichent sous la réponse.
+Désactivée par défaut : à allumer dans Réglages. Une fois allumée, le modèle reçoit un outil de recherche et décide seul de l'appeler. Les mots cherchés s'affichent sous la réponse.
 
 **Wikipédia**, moteur par défaut : aucune clé, CORS ouvert, et Albert reçoit le résumé de l'article plus la section qui contient les mots de la question, soit le texte lui-même et non une liste de liens. C'est ce qui l'empêche d'inventer une date ou une étymologie.
 
