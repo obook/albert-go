@@ -58,6 +58,10 @@
     font-weight: 700;
     cursor: pointer;
 }
+/* Sur un summary, le contour est le seul repère de focus : --bleu-clair ne
+   se voit pas. Les champs gardent leur halo pâle, ils ont déjà une bordure. */
+.carte, .choix-modele { --pico-primary-focus: var(--bleu); }
+
 /* .pico devant : sinon Pico gagne la spécificité sur margin-bottom. */
 .pico .carte[open] > summary { margin-bottom: 0; border-bottom: 1px solid var(--bord); }
 /* Corps dans un div : une <details> en display grid montre son contenu fermé. */
