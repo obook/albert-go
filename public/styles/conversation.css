@@ -189,3 +189,7 @@ input[type="password"], textarea {
 @media (prefers-reduced-motion: reduce) {
     .points span { animation: none; opacity: 0.6; }
 }
+
+/* Sources sous une réponse : les liens vont à la ligne sous les mots cherchés. */
+.recherches .sources { display: block; margin-top: 0.25rem; }
+.recherches .sources a { margin-right: 0.75rem; }

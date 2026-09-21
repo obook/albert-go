@@ -164,3 +164,17 @@ test('fiche : pas d\'infobox, pas de fiche', () => {
     assert.strictEqual(Recherche.avecFiche('', 'Résumé.'), 'Résumé.');
     assert.strictEqual(Recherche.avecFiche('a : b', 'Résumé.'), 'Fiche : a : b\nRésumé.');
 });
+
+test('sources : titre et adresse, les deux jeux de champs', () => {
+    const sources = Recherche.sources([
+        { title: 'Eduscol', url: 'https://eduscol.education.fr', desc: 'Portail' },
+        { title: 'Data', link: 'https://data.gouv.fr', snippet: 'Données' },
+        /* Un résultat sans adresse n'est pas consultable. */
+        { title: 'Sans lien', desc: 'Rien à ouvrir' }
+    ]);
+    assert.deepStrictEqual(sources, [
+        { titre: 'Eduscol', url: 'https://eduscol.education.fr' },
+        { titre: 'Data', url: 'https://data.gouv.fr' }
+    ]);
+    assert.deepStrictEqual(Recherche.sources([]), []);
+});
