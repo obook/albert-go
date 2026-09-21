@@ -95,7 +95,7 @@ const Recherche = {
         const adresse = mojeek
             ? this.MOJEEK + '?fmt=json&t=' + this.NOMBRE + '&api_key=' + encodeURIComponent(cle)
                 + '&q=' + encodeURIComponent(question)
-            : this.GOOGLE + '?num=' + this.NOMBRE + '&cx=' + this.CX + '&key=' + encodeURIComponent(cle)
+            : this.GOOGLE + '?num=' + this.NOMBRE + '&cx=' + encodeURIComponent(this.CX) + '&key=' + encodeURIComponent(cle)
                 + '&q=' + encodeURIComponent(question);
         const reponse = await fetch(adresse, { signal: signal });
         const corps = await reponse.json().catch(() => ({}));
