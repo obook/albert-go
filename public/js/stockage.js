@@ -172,11 +172,25 @@ function changerPartage(actif) {
     });
 }
 
+/**
+ * Température enregistrée, ramenée aux bornes du curseur.
+ *
+ * @returns {number} Température entre 0 et 1, ou la valeur conseillée.
+ */
+function temperatureLue() {
+    const valeur = parseFloat(lire('temperature', ''));
+    if (!Number.isFinite(valeur)) {
+        return Albert.CONSEILLES.temperature;
+    }
+    return Math.min(1, Math.max(0, valeur));
+}
+
 /** Réglages de l'utilisateur, lus au démarrage. */
 const reglages = {
     cle: lire('cle', null),
     modele: lire('modele', Albert.CONSEILLES.modele),
-    temperature: parseFloat(lire('temperature', String(Albert.CONSEILLES.temperature))),
+    /* Une valeur illisible donnerait NaN, envoyé en "temperature": null. */
+    temperature: temperatureLue(),
     memoire: lire('memoire', Albert.CONSEILLES.memoire ? 'oui' : 'non') === 'oui',
     voixEnLigne: lire('voix-en-ligne', 'non') === 'oui',
     recherche: lire('recherche', 'non') === 'oui',
