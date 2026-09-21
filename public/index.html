@@ -189,85 +189,103 @@
             <h2 id="titre-reglages" data-t="reglages.titre"></h2>
             <p class="note" data-t="reglages.conseil"></p>
 
-            <fieldset>
-                <legend data-t="reglages.modele"></legend>
-                <details id="choix-modele" class="choix-modele">
-                    <summary id="modele-choisi"></summary>
-                    <div id="modeles" class="modeles"></div>
-                </details>
-            </fieldset>
+            <!-- Quatre cartes dépliables, la première ouverte. -->
+            <details class="carte" open>
+                <summary data-t="reglages.carte-reponse"></summary>
+                <div class="corps">
+                    <fieldset>
+                        <legend data-t="reglages.modele"></legend>
+                        <details id="choix-modele" class="choix-modele">
+                            <summary id="modele-choisi"></summary>
+                            <div id="modeles" class="modeles"></div>
+                        </details>
+                    </fieldset>
 
-            <fieldset>
-                <legend data-t="reglages.temperature"></legend>
-                <div class="temperature">
-                    <span aria-hidden="true" data-t="reglages.precis"></span>
-                    <input type="range" id="temperature" min="0" max="1" step="0.1" aria-describedby="aide-temperature">
-                    <span aria-hidden="true" data-t="reglages.creatif"></span>
-                    <output id="valeur-temperature" for="temperature"></output>
+                    <fieldset>
+                        <legend data-t="reglages.temperature"></legend>
+                        <div class="temperature">
+                            <span aria-hidden="true" data-t="reglages.precis"></span>
+                            <input type="range" id="temperature" min="0" max="1" step="0.1" aria-describedby="aide-temperature">
+                            <span aria-hidden="true" data-t="reglages.creatif"></span>
+                            <output id="valeur-temperature" for="temperature"></output>
+                        </div>
+                        <p id="aide-temperature" class="note" data-t="reglages.aide-temperature"></p>
+                    </fieldset>
+
+                    <fieldset>
+                        <legend data-t="reglages.contexte"></legend>
+                        <label class="interrupteur">
+                            <input type="checkbox" id="memoire-reglage" role="switch">
+                            <span id="texte-memoire"></span>
+                        </label>
+                    </fieldset>
+
+                    <!-- Remet les trois réglages ci-dessus, et eux seuls. -->
+                    <button type="button" class="bouton-texte outline" id="reglages-conseilles" data-t="reglages.conseilles"></button>
                 </div>
-                <p id="aide-temperature" class="note" data-t="reglages.aide-temperature"></p>
-            </fieldset>
+            </details>
 
-            <fieldset>
-                <legend data-t="reglages.contexte"></legend>
-                <label class="interrupteur">
-                    <input type="checkbox" id="memoire-reglage" role="switch">
-                    <span id="texte-memoire"></span>
-                </label>
-            </fieldset>
-
-            <fieldset>
-                <legend data-t="reglages.lecture"></legend>
-                <label class="interrupteur">
-                    <input type="checkbox" id="voix-en-ligne" role="switch" aria-describedby="aide-voix">
-                    <span data-t="reglages.voix-en-ligne"></span>
-                </label>
-                <p id="aide-voix" class="note" data-t="reglages.aide-voix"></p>
-            </fieldset>
-
-            <fieldset>
-                <legend data-t="reglages.recherche"></legend>
-                <label class="interrupteur">
-                    <input type="checkbox" id="recherche-reglage" role="switch" aria-describedby="aide-recherche">
-                    <span data-t="reglages.recherche-active"></span>
-                </label>
-                <label for="fournisseur-recherche" data-t="reglages.moteur"></label>
-                <select id="fournisseur-recherche">
-                    <option value="wikipedia">Wikipédia</option>
-                    <option value="google">Google Programmable Search</option>
-                    <option value="mojeek">Mojeek</option>
-                </select>
-                <div id="cles-recherche">
-                    <label for="cle-recherche" data-t="reglages.cle-recherche"></label>
-                    <input type="password" id="cle-recherche" autocomplete="off" spellcheck="false">
-                    <label for="cx-recherche" data-t="reglages.cx"></label>
-                    <input type="text" id="cx-recherche" autocomplete="off" spellcheck="false">
+            <details class="carte">
+                <summary data-t="reglages.recherche"></summary>
+                <div class="corps">
+                    <label class="interrupteur">
+                        <input type="checkbox" id="recherche-reglage" role="switch" aria-describedby="aide-recherche">
+                        <span data-t="reglages.recherche-active"></span>
+                    </label>
+                    <!-- Le libellé de l'interrupteur finit sur le moteur : ici, juste le nom pour les lecteurs d'écran. -->
+                    <label for="fournisseur-recherche" class="visuellement-cache" data-t="reglages.moteur"></label>
+                    <select id="fournisseur-recherche">
+                        <option value="wikipedia">Wikipédia</option>
+                        <option value="google">Google Programmable Search</option>
+                        <option value="mojeek">Mojeek</option>
+                    </select>
+                    <div id="cles-recherche">
+                        <label for="cle-recherche" data-t="reglages.cle-recherche"></label>
+                        <input type="password" id="cle-recherche" autocomplete="off" spellcheck="false">
+                        <label for="cx-recherche" data-t="reglages.cx"></label>
+                        <input type="text" id="cx-recherche" autocomplete="off" spellcheck="false">
+                    </div>
+                    <p id="aide-recherche" class="note" data-t-html="reglages.aide-recherche"></p>
                 </div>
-                <p id="aide-recherche" class="note" data-t-html="reglages.aide-recherche"></p>
-            </fieldset>
+            </details>
 
-            <fieldset>
-                <legend data-t="reglages.langue"></legend>
-                <label for="langue-interface" class="visuellement-cache" data-t="reglages.langue"></label>
-                <select id="langue-interface">
-                    <option value="fr">Français</option>
-                    <option value="en">English</option>
-                    <option value="es">Español</option>
-                    <option value="de">Deutsch</option>
-                </select>
-            </fieldset>
+            <details class="carte">
+                <summary data-t="reglages.carte-application"></summary>
+                <div class="corps">
+                    <fieldset>
+                        <legend data-t="reglages.langue"></legend>
+                        <label for="langue-interface" class="visuellement-cache" data-t="reglages.langue"></label>
+                        <select id="langue-interface">
+                            <option value="fr">Français</option>
+                            <option value="en">English</option>
+                            <option value="es">Español</option>
+                            <option value="de">Deutsch</option>
+                        </select>
+                    </fieldset>
 
-            <fieldset>
-                <legend data-t="reglages.cle"></legend>
-                <p class="note" data-t="reglages.cle-note"></p>
-                <label class="interrupteur">
-                    <input type="checkbox" id="partage-reglage" role="switch">
-                    <span id="texte-partage-reglage"></span>
-                </label>
-            </fieldset>
+                    <fieldset>
+                        <legend data-t="reglages.lecture"></legend>
+                        <label class="interrupteur">
+                            <input type="checkbox" id="voix-en-ligne" role="switch" aria-describedby="aide-voix">
+                            <span data-t="reglages.voix-en-ligne"></span>
+                        </label>
+                        <p id="aide-voix" class="note" data-t="reglages.aide-voix"></p>
+                    </fieldset>
+                </div>
+            </details>
+
+            <details class="carte">
+                <summary data-t="reglages.carte-donnees"></summary>
+                <div class="corps">
+                    <p class="note" data-t="reglages.cle-note"></p>
+                    <label class="interrupteur">
+                        <input type="checkbox" id="partage-reglage" role="switch">
+                        <span id="texte-partage-reglage"></span>
+                    </label>
+                </div>
+            </details>
 
             <div class="boutons-dialogue">
-                <button type="button" class="bouton-texte outline" id="reglages-conseilles" data-t="reglages.conseilles"></button>
                 <button type="submit" class="bouton-principal" data-t="dialogue.fermer"></button>
             </div>
         </form>

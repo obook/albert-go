@@ -306,8 +306,7 @@ async function executerOutil(appel, signal, faites) {
         faites.push(mots);
         return Recherche.formater(resultats) || t('recherche.aucun-resultat');
     } catch (err) {
-        /* Le modèle répondrait de mémoire sans que rien ne le dise : pare-feu,
-           extension de blocage, moteur en panne. */
+        /* Sinon le modèle répond de mémoire sans que rien ne le dise. */
         const echec = t('recherche.impossible', { message: err.message });
         toast(echec);
         return echec;
