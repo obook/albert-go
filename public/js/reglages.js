@@ -1,7 +1,8 @@
 /*
  * reglages.js
  * Boîte de réglages : modèle, température, contexte, voix, mode partagé,
- * bouton "Réglages conseillés".
+ * bouton "Réglages conseillés". Et le choix de la langue, ici aussi bien
+ * que dans l'en-tête : c'est le même réglage.
  *
  * Chaque changement est enregistré tout de suite (ecrire, stockage.js)
  * et répercuté par afficherReglages (affichage.js).
@@ -170,23 +171,68 @@ $('reglages-conseilles').addEventListener('click', () => {
     afficherReglages();
 });
 
-$('langue-interface').value = reglages.langue;
+/**
+ * Montre la langue affichée : son drapeau dans l'en-tête, sa ligne en gras
+ * dans le menu déroulant, sa valeur dans les réglages.
+ *
+ * Le drapeau du menu est recopié plutôt que réécrit : un seul exemplaire
+ * de chaque dessin, dans index.html.
+ */
+function afficherLangue() {
+    for (const bouton of document.querySelectorAll('[data-langue]')) {
+        const choisie = bouton.dataset.langue === I18n.langue;
+        bouton.setAttribute('aria-current', choisie ? 'true' : 'false');
+        if (choisie) {
+            $('langue-choisie').replaceChildren(bouton.querySelector('.drapeau').cloneNode(true));
+        }
+    }
+    $('langue-interface').value = I18n.langue;
+}
 
-/* Changement de langue : la page entière est relue, listes comprises. */
-$('langue-interface').addEventListener('change', () => {
+/**
+ * Change la langue de l'interface : la page entière est relue, listes comprises.
+ *
+ * Les consignes système et Wikipédia suivent au prochain envoi.
+ *
+ * @param {string} langue - Code de la langue choisie.
+ */
+function choisirLangue(langue) {
+    if (langue === I18n.langue) {
+        return;
+    }
     const quittee = I18n.langue;
-    reglages.langue = $('langue-interface').value;
-    ecrire('langue', reglages.langue);
-    I18n.definir(reglages.langue);
+    reglages.langue = langue;
+    ecrire('langue', langue);
+    I18n.definir(langue);
     ajusterLangueCible(quittee);
     I18n.appliquer();
+    afficherLangue();
     afficherModeles();
     afficherReglages();
     afficherLangues();
     afficherOutil();
     afficherTheme();
     afficherHistorique();
-    /* Consignes système et Wikipédia suivent la langue au prochain envoi. */
+}
+
+afficherLangue();
+
+$('langue-interface').addEventListener('change', () => {
+    choisirLangue($('langue-interface').value);
+});
+
+for (const bouton of document.querySelectorAll('[data-langue]')) {
+    bouton.addEventListener('click', () => {
+        $('choix-langue').open = false;
+        choisirLangue(bouton.dataset.langue);
+    });
+}
+
+/* Un clic ailleurs referme le menu déroulant. */
+document.addEventListener('click', (e) => {
+    if ($('choix-langue').open && !e.target.closest('#choix-langue')) {
+        $('choix-langue').open = false;
+    }
 });
 
 $('ouvrir-reglages').addEventListener('click', () => {

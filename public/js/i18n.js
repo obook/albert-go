@@ -131,6 +131,7 @@ const I18n = {
             'invite.corriger': 'Collez le texte à corriger...',
 
             /* Langues de Traduire. */
+            'langue.choisir': 'Changer de langue',
             'langue.auto': 'Automatique',
             'langue.source': 'Langue source',
             'langue.cible': 'Langue cible',
@@ -346,6 +347,7 @@ const I18n = {
             'invite.corriger': 'Paste the text to proofread...',
 
             /* Translate languages. */
+            'langue.choisir': 'Change language',
             'langue.auto': 'Automatic',
             'langue.source': 'Source language',
             'langue.cible': 'Target language',

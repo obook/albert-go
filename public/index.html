@@ -46,6 +46,14 @@
             <h1 class="marque">Alber<span class="rouge">t</span> Go</h1>
             <p class="sous-titre" data-t="entete.sous-titre"></p>
         </div>
+        <!-- Même motif que le choix du modèle : un <details> qui se déplie. -->
+        <details id="choix-langue" class="choix-langue">
+            <summary id="langue-choisie" data-t-attr="aria-label:langue.choisir;title:langue.choisir"></summary>
+            <div class="langues-choix">
+                <button type="button" data-langue="fr"><svg class="drapeau" viewBox="0 0 24 16" aria-hidden="true"><rect width="8" height="16" fill="#002395"/><rect x="8" width="8" height="16" fill="#ffffff"/><rect x="16" width="8" height="16" fill="#ed2939"/></svg><span>Français</span></button>
+                <button type="button" data-langue="en"><svg class="drapeau" viewBox="0 0 24 16" aria-hidden="true"><rect width="24" height="16" fill="#012169"/><path d="M0 0l24 16M24 0L0 16" stroke="#ffffff" stroke-width="3.2"/><path d="M0 0l24 16M24 0L0 16" stroke="#c8102e" stroke-width="1.8"/><path d="M12 0v16M0 8h24" stroke="#ffffff" stroke-width="5.4"/><path d="M12 0v16M0 8h24" stroke="#c8102e" stroke-width="3.2"/></svg><span>English</span></button>
+            </div>
+        </details>
     </header>
 
     <!-- Traduire : langues dans une carte fixe sous l'en-tête. -->
