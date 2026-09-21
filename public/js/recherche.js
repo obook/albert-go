@@ -7,12 +7,13 @@
  * renvoyés pour qu'il rédige sa réponse (function calling, comme
  * albert-atelier le fait pour l'OCR).
  *
- * Deux moteurs au choix, les seuls testés qui acceptent un appel direct
- * du navigateur : Google Programmable Search, clé en libre service, et
- * Mojeek, européen mais sur offre payante. La clé voyage dans l'adresse,
- * c'est ainsi que les deux API la lisent.
- * Les résultats donnent un titre, une adresse et un extrait, jamais le
- * texte des pages.
+ * Trois moteurs au choix, les seuls testés qui acceptent un appel direct
+ * du navigateur. Wikipédia par défaut : sans clé, CORS ouvert, et il rend
+ * le texte des articles plutôt qu'une liste de liens, ce qui donne au
+ * modèle de quoi répondre au lieu de quoi deviner. Google Programmable
+ * Search et Mojeek cherchent sur le web, avec une clé qui voyage dans
+ * l'adresse, c'est ainsi que leurs API la lisent ; ils ne rendent que des
+ * titres, des adresses et de courts extraits.
  *
  * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
  * Auteur : O. Booklage
@@ -21,17 +22,19 @@
  */
 'use strict';
 
-/* Aucun moteur utilisable : Google a fermé son API JSON, Mojeek est sur devis. */
-/* Pour rouvrir : true ici, et retirer hidden du bloc "Recherche web". */
-const RECHERCHE_OUVERTE = false;
-
 /* Appels d'outil enchaînés avant d'exiger une réponse rédigée. */
 const TOURS_MAX = 2;
 
 const Recherche = {
-    /** Points d'entrée des deux moteurs. */
+    /** Points d'entrée des trois moteurs. */
     MOJEEK: 'https://www.mojeek.com/search',
     GOOGLE: 'https://www.googleapis.com/customsearch/v1',
+    WIKIPEDIA: 'https://fr.wikipedia.org/w/api.php',
+
+    /** Articles lus par recherche, et taille gardée de chaque morceau. */
+    ARTICLES: 2,
+    TAILLE_RESUME: 600,
+    TAILLE_SECTION: 1500,
 
     /** Moteur Programmable Search interrogé chez Google ; identifiant public. */
     CX: 'e3354509904334408',
@@ -44,10 +47,11 @@ const Recherche = {
         type: 'function',
         function: {
             name: 'recherche_web',
-            description: 'Cherche des pages web et renvoie leurs titres, adresses et extraits. '
-                + 'À appeler pour une actualité, un fait postérieur à ton entraînement, '
-                + 'un chiffre à vérifier ou une source à citer. Ne renvoie pas le texte des pages. '
-                + 'Le moteur peut ne couvrir qu\'une sélection de sites de référence.',
+            description: 'Cherche une information et renvoie des extraits sourcés. '
+                + 'À appeler pour un fait à vérifier, une date, un chiffre, une étymologie, '
+                + 'une actualité ou une source à citer, et chaque fois que tu répondrais de mémoire '
+                + 'sur un sujet précis. Le moteur est soit Wikipédia, soit un moteur web selon le '
+                + 'réglage : ce que tu reçois est tout ce dont tu disposes, dis-le si cela ne suffit pas.',
             parameters: {
                 type: 'object',
                 properties: { q: { type: 'string', description: 'Les mots à chercher.' } },
@@ -62,13 +66,16 @@ const Recherche = {
      * Mojeek refuse une clé par un code 200, un `status` en clair et aucun
      * résultat ; Google répond un code d'erreur et un message.
      *
-     * @param {string} fournisseur - "google" ou "mojeek".
-     * @param {string} cle - Clé de l'utilisateur chez ce moteur.
+     * @param {string} fournisseur - "wikipedia", "google" ou "mojeek".
+     * @param {?string} cle - Clé de l'utilisateur, inutile chez Wikipédia.
      * @param {string} question - Texte cherché.
      * @param {AbortSignal} [signal] - Pour annuler avec la question.
      * @returns {Promise<Array<Object>>} Résultats du moteur.
      */
     async chercher(fournisseur, cle, question, signal) {
+        if (fournisseur === 'wikipedia') {
+            return this.chercherWikipedia(question, signal);
+        }
         const mojeek = fournisseur === 'mojeek';
         const adresse = mojeek
             ? this.MOJEEK + '?fmt=json&t=' + this.NOMBRE + '&api_key=' + encodeURIComponent(cle)
@@ -91,6 +98,68 @@ const Recherche = {
     },
 
     /**
+     * Cherche des articles sur Wikipédia et en rend les passages utiles.
+     *
+     * Une seule requête : `generator=search` trouve les articles, `extracts`
+     * en rend le texte brut. Un article entier pèse des milliers de jetons,
+     * d'où le découpage par `passages`.
+     *
+     * @param {string} question - Texte cherché.
+     * @param {AbortSignal} [signal] - Pour annuler avec la question.
+     * @returns {Promise<Array<Object>>} Articles { title, url, desc }.
+     */
+    async chercherWikipedia(question, signal) {
+        /* origin=* : c'est ainsi que MediaWiki ouvre CORS aux appels anonymes. */
+        const adresse = this.WIKIPEDIA + '?action=query&format=json&origin=*&redirects=1'
+            + '&generator=search&gsrlimit=' + this.ARTICLES
+            + '&gsrsearch=' + encodeURIComponent(question)
+            + '&prop=extracts|info&inprop=url&explaintext=1&exlimit=max';
+        const reponse = await fetch(adresse, { signal: signal });
+        const corps = await reponse.json().catch(() => ({}));
+        if (!reponse.ok) {
+            throw new Error('Wikipédia injoignable (' + reponse.status + ').');
+        }
+        if (corps.error) {
+            throw new Error(corps.error.info || 'requête refusée par Wikipédia.');
+        }
+        const pages = (corps.query && corps.query.pages) || {};
+        return Object.keys(pages).map(id => pages[id])
+            /* index : le rang donné par la recherche, que l'objet pages perd. */
+            .sort((a, b) => (a.index || 0) - (b.index || 0))
+            .map(page => ({
+                title: page.title,
+                url: page.fullurl,
+                desc: this.passages(page.extract || '', question)
+            }));
+    },
+
+    /**
+     * Garde d'un article son résumé et la section qui répond à la question.
+     *
+     * Le texte brut de MediaWiki sépare les sections par une ligne "== Titre ==" ;
+     * on note chacune par le nombre de mots de la question qu'elle contient.
+     *
+     * @param {string} texte - Article en texte brut.
+     * @param {string} question - Texte cherché.
+     * @returns {string} Résumé, suivi de la meilleure section s'il y en a une.
+     */
+    passages(texte, question) {
+        const mots = (question.toLowerCase().match(/[^\s,.;:!?"'()]{4,}/g) || []);
+        const note = (bloc) => {
+            const bas = bloc.toLowerCase();
+            return mots.filter(mot => bas.includes(mot)).length;
+        };
+        /* Le premier bloc est le résumé : il précède le premier titre de section. */
+        const blocs = texte.split(/\n(?=\={2}[^=])/);
+        const resume = blocs[0].slice(0, this.TAILLE_RESUME);
+        const sections = blocs.slice(1).sort((a, b) => note(b) - note(a));
+        if (!sections.length || !note(sections[0])) {
+            return resume;
+        }
+        return resume + '\n' + sections[0].slice(0, this.TAILLE_SECTION);
+    },
+
+    /**
      * Met les résultats en texte pour le modèle.
      *
      * @param {Array<Object>} resultats - Résultats du moteur.
@@ -100,7 +169,8 @@ const Recherche = {
         /* Mojeek dit url et desc, Google dit link et snippet. */
         return resultats.map((r) => {
             const adresse = r.url || r.link || '';
-            const extrait = r.desc || r.snippet || '';
+            /* Un extrait Wikipédia tient sur plusieurs lignes : une ligne par résultat. */
+            const extrait = (r.desc || r.snippet || '').replace(/\s+/g, ' ').trim();
             return '- ' + (r.title || adresse) + ' (' + adresse + ') : ' + extrait;
         }).join('\n');
     }
@@ -147,8 +217,10 @@ async function executerOutil(appel, signal, faites) {
  * @returns {Array<Object>} Copie avec le rappel, sans toucher l'original.
  */
 function avecRappel(messages) {
-    const rappel = 'Tu disposes de l\'outil recherche_web : tu peux chercher sur le web, '
-        + 'et tu le dis si on te le demande.';
+    const source = reglages.fournisseur === 'wikipedia' ? 'dans Wikipédia' : 'sur le web';
+    const rappel = 'Tu disposes de l\'outil recherche_web : tu peux chercher ' + source + ', '
+        + 'et tu le dis si on te le demande. Sers-t\'en dès qu\'une réponse demande un fait précis '
+        + 'que tu n\'es pas certain de connaître.';
     if (messages[0] && messages[0].role === 'system') {
         return [{ role: 'system', content: messages[0].content + '\n' + rappel }, ...messages.slice(1)];
     }
@@ -161,13 +233,17 @@ function avecRappel(messages) {
  * Un modèle qui refuse le champ `tools` fait échouer le premier appel :
  * on repart alors sans outil plutôt que de perdre la question.
  *
+ * Le premier tour impose la recherche (`tool_choice`), sinon les modèles
+ * ouverts répondent de mémoire sans jamais appeler l'outil. Les tours
+ * suivants laissent le modèle libre, pour qu'il rédige sa réponse.
+ *
  * @param {string} cle - Clé API Albert.
  * @param {Object} requete - Corps de la demande (model, messages...).
  * @param {AbortSignal} signal - Pour annuler avec la question.
  * @returns {Promise<Object>} Réponse d'Albert.repondre.
  */
 async function repondreAvecRecherche(cle, requete, signal) {
-    if (!RECHERCHE_OUVERTE || !reglages.recherche || !reglages.cleRecherche) {
+    if (!reglages.recherche || (reglages.fournisseur !== 'wikipedia' && !reglages.cleRecherche)) {
         return Albert.repondre(cle, requete, signal);
     }
     const messages = [...requete.messages];
@@ -176,9 +252,14 @@ async function repondreAvecRecherche(cle, requete, signal) {
     for (let tour = 0; tour < TOURS_MAX; tour++) {
         let reponse;
         try {
-            reponse = await Albert.repondre(cle, { ...requete, messages: avecRappel(messages), tools: [Recherche.OUTIL] }, signal);
+            reponse = await Albert.repondre(cle, {
+                ...requete,
+                messages: avecRappel(messages),
+                tools: [Recherche.OUTIL],
+                tool_choice: tour === 0 ? 'required' : 'auto'
+            }, signal);
         } catch (err) {
-            toast('Recherche web indisponible avec ce modèle.');
+            toast('Recherche indisponible avec ce modèle.');
             return { ...await Albert.repondre(cle, { ...requete, messages: messages }, signal), recherches: faites };
         }
         const appels = (reponse.message && reponse.message.tool_calls) || [];

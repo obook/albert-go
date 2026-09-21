@@ -82,3 +82,40 @@ test('chercher : Google renvoie items, avec le moteur cx dans l\'adresse', async
     assert.ok(vue.includes('cx=' + Recherche.CX));
     assert.strictEqual(resultats[0].link, 'https://a');
 });
+
+test('passages : le résumé, puis la section qui répond', () => {
+    const article = 'Résumé de l\'article.\n'
+        + '== Géographie ==\nLa commune borde l\'océan.\n'
+        + '== Toponymie ==\nLe nom est attesté sous la forme Cap Bertou en 1170.';
+    const garde = Recherche.passages(article, 'Quelle est l\'origine du nom, sa toponymie ?');
+    assert.ok(garde.startsWith('Résumé de l\'article.'));
+    assert.ok(garde.includes('Cap Bertou'));
+    assert.ok(!garde.includes('borde l\'océan'));
+});
+
+test('passages : aucune section ne répond, le résumé seul', () => {
+    const article = 'Résumé.\n== Géographie ==\nLa commune borde l\'océan.';
+    assert.strictEqual(Recherche.passages(article, 'toponymie étymologie'), 'Résumé.');
+});
+
+test('chercherWikipedia : sans clé, articles dans l\'ordre de la recherche', async () => {
+    let vue = '';
+    global.fetch = async (adresse) => {
+        vue = adresse;
+        return { ok: true, json: async () => ({ query: { pages: {
+            '2': { index: 2, title: 'Second', fullurl: 'https://fr.wikipedia.org/wiki/Second', extract: 'B.' },
+            '1': { index: 1, title: 'Premier', fullurl: 'https://fr.wikipedia.org/wiki/Premier', extract: 'A.' }
+        } } }) };
+    };
+    const resultats = await Recherche.chercherWikipedia('chat de l\'État');
+    assert.ok(vue.startsWith(Recherche.WIKIPEDIA + '?'));
+    assert.ok(vue.includes('origin=*'));
+    assert.ok(!vue.includes('key='));
+    assert.deepStrictEqual(resultats.map(r => r.title), ['Premier', 'Second']);
+    assert.strictEqual(resultats[0].desc, 'A.');
+});
+
+test('chercherWikipedia : une erreur de l\'API remonte', async () => {
+    global.fetch = async () => ({ ok: true, json: async () => ({ error: { info: 'paramètre inconnu' } }) });
+    await assert.rejects(Recherche.chercherWikipedia('test'), /paramètre inconnu/);
+});

@@ -53,6 +53,25 @@ function boutonCopier(texte) {
 }
 
 /**
+ * Crée le bouton qui montre les recherches faites pour une réponse.
+ *
+ * Sa seule présence dit que le modèle a cherché : sans lui, il a répondu
+ * de mémoire. Le clic déplie les mots cherchés.
+ *
+ * @param {HTMLElement} note - Ligne grise des mots cherchés, repliée au départ.
+ * @returns {HTMLButtonElement} Le bouton.
+ */
+function boutonRecherches(note) {
+    const bouton = boutonAction(ICONES.chercher, 'Voir les recherches faites');
+    bouton.setAttribute('aria-expanded', 'false');
+    bouton.addEventListener('click', () => {
+        note.hidden = !note.hidden;
+        bouton.setAttribute('aria-expanded', String(!note.hidden));
+    });
+    return bouton;
+}
+
+/**
  * Nom d'une langue en minuscules à partir de son code : "ru" donne "russe".
  *
  * @param {string} code - Code de langue.
@@ -184,7 +203,10 @@ function bulleReponse(texte, titre, langue, animer = false, recherches = null) {
     }
     carte.append(contenu);
     if (recherches && recherches.length) {
-        carte.append(elementNote('Recherche web : ' + recherches.join(' ; ')));
+        const note = elementNote('Recherche : ' + recherches.join(' ; '));
+        note.hidden = true;
+        carte.append(note);
+        actions.append(boutonRecherches(note));
     }
     carte.append(actions);
     li.append(pastilleIA(), carte);
