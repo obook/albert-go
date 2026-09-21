@@ -168,8 +168,9 @@ const Albert = {
         if (!res.ok) {
             throw new Error(this.messageErreur(res.status, corps));
         }
-        /* message complet : il porte les tool_calls quand le modèle veut un outil. */
-        return { texte: corps.choices[0].message.content, message: corps.choices[0].message, usage: corps.usage || null };
+        /* message complet : il porte les tool_calls. content est null quand le
+           modèle n'appelle qu'un outil, d'où le '' pour l'affichage. */
+        return { texte: corps.choices[0].message.content || '', message: corps.choices[0].message, usage: corps.usage || null };
     },
 
     /**
