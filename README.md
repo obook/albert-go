@@ -29,6 +29,17 @@ Le modèle reçoit un outil de recherche et décide seul de l'appeler. Les mots 
 
 **Wikipédia**, moteur par défaut : aucune clé, CORS ouvert, et Albert reçoit le résumé de l'article plus la section qui contient les mots de la question, soit le texte lui-même et non une liste de liens. C'est ce qui l'empêche d'inventer une date ou une étymologie.
 
+Le premier appel impose la recherche : laissé libre, un modèle répond souvent de mémoire sans appeler l'outil. Essai du 21 septembre 2026, question dont la réponse n'est pas dans les poids, outil imposé puis outil libre :
+
+| Modèle | Imposé | Libre |
+|---|---|---|
+| Large (`gpt-oss-120b`) | cherche | cherche |
+| Small (`ministral-3-8b`) | cherche | cherche |
+| Code (`qwen3-coder-30b`) | cherche | cherche |
+| Code 2 (`deepseek-v4-flash`) | cherche | cherche |
+| Medium (`mistral-small-3-2-24b`) | cherche | répond de mémoire |
+| `gemma-4-31b-it` | ignore l'outil | ignore l'outil |
+
 Deux moteurs web restent proposés, avec une clé, et ne rendent que titres, adresses et courts extraits. Moteurs essayés le 20 septembre 2026 :
 
 - Google Programmable Search : API JSON fermée aux nouveaux projets (403), arrêt annoncé le 1er janvier 2027.
