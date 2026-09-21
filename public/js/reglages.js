@@ -117,6 +117,11 @@ $('voix-en-ligne').addEventListener('change', () => {
 $('recherche-reglage').checked = reglages.recherche;
 $('fournisseur-recherche').value = reglages.fournisseur;
 $('cle-recherche').value = reglages.cleRecherche || '';
+/* Wikipédia ne demande ni clé ni identifiant de moteur. */
+function afficherCles() {
+    $('cles-recherche').hidden = reglages.fournisseur === 'wikipedia';
+}
+afficherCles();
 /* Le moteur choisi par l'utilisateur remplace celui du code. */
 $('cx-recherche').value = reglages.cx;
 Recherche.CX = reglages.cx;
@@ -140,6 +145,7 @@ $('fournisseur-recherche').addEventListener('change', () => {
     $('cle-recherche').value = '';
     ecrire('fournisseur', reglages.fournisseur);
     ecrire('cle-recherche', null);
+    afficherCles();
 });
 
 $('cle-recherche').addEventListener('change', () => {

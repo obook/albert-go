@@ -194,7 +194,7 @@ const reglages = {
     memoire: lire('memoire', Albert.CONSEILLES.memoire ? 'oui' : 'non') === 'oui',
     voixEnLigne: lire('voix-en-ligne', 'non') === 'oui',
     recherche: lire('recherche', 'non') === 'oui',
-    fournisseur: lire('fournisseur', 'google'),
+    fournisseur: lire('fournisseur', 'wikipedia'),
     cx: lire('cx', Recherche.CX),
     cleRecherche: lire('cle-recherche', null)
 };

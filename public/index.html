@@ -214,23 +214,25 @@
                 <p id="aide-voix" class="note">Seulement si aucune voix française n'est installée. Le texte lu part alors chez Google, Microsoft...</p>
             </fieldset>
 
-            <!-- Masqué tant qu'aucun moteur n'est utilisable : voir RECHERCHE_OUVERTE dans js/recherche.js -->
-            <fieldset hidden>
-                <legend>Recherche web</legend>
+            <fieldset>
+                <legend>Recherche</legend>
                 <label class="interrupteur">
                     <input type="checkbox" id="recherche-reglage" role="switch" aria-describedby="aide-recherche">
-                    <span>Proposer la recherche web au modèle</span>
+                    <span>Proposer la recherche au modèle</span>
                 </label>
                 <label for="fournisseur-recherche">Moteur</label>
                 <select id="fournisseur-recherche">
+                    <option value="wikipedia">Wikipédia</option>
                     <option value="google">Google Programmable Search</option>
                     <option value="mojeek">Mojeek</option>
                 </select>
-                <label for="cle-recherche">Clé API</label>
-                <input type="password" id="cle-recherche" autocomplete="off" spellcheck="false">
-                <label for="cx-recherche">ID du moteur de recherche</label>
-                <input type="text" id="cx-recherche" autocomplete="off" spellcheck="false">
-                <p id="aide-recherche" class="note">Le modèle cherche s'il le juge utile. Les mots cherchés partent chez le moteur choisi avec votre clé, et Albert reçoit les titres, adresses et extraits trouvés, pas le texte des pages. Créez votre moteur et sa liste de sites sur <a href="https://programmablesearchengine.google.com" target="_blank" rel="noopener noreferrer">programmablesearchengine.google.com</a>, puis sa clé dans la <a href="https://console.cloud.google.com/apis/library/customsearch.googleapis.com" target="_blank" rel="noopener noreferrer">console Google Cloud</a>. Google ne permet plus de chercher sur tout le Web : le moteur ne couvre que les sites que vous y inscrivez. Clé Mojeek : sur devis, tout le Web.</p>
+                <div id="cles-recherche">
+                    <label for="cle-recherche">Clé API</label>
+                    <input type="password" id="cle-recherche" autocomplete="off" spellcheck="false">
+                    <label for="cx-recherche">ID du moteur de recherche</label>
+                    <input type="text" id="cx-recherche" autocomplete="off" spellcheck="false">
+                </div>
+                <p id="aide-recherche" class="note">Une recherche est faite à chaque question, y compris sur un simple bonjour : laissé libre, le modèle répond de mémoire sans jamais chercher. La loupe sous la réponse montre les mots cherchés. Wikipédia ne demande aucune clé : Albert reçoit le résumé de l'article et la section qui répond, ce qui lui évite d'inventer. Les deux moteurs web demandent une clé et ne rendent que des titres, des adresses et de courts extraits : créez votre moteur Google et sa liste de sites sur <a href="https://programmablesearchengine.google.com" target="_blank" rel="noopener noreferrer">programmablesearchengine.google.com</a>, puis sa clé dans la <a href="https://console.cloud.google.com/apis/library/customsearch.googleapis.com" target="_blank" rel="noopener noreferrer">console Google Cloud</a> ; la clé Mojeek est sur devis.</p>
             </fieldset>
 
             <fieldset>

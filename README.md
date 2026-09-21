@@ -25,17 +25,15 @@ Pour obtenir une clé Albert : [demande d'accès](https://albert.sites.beta.gouv
 
 ## Recherche web
 
-Le code existe (`public/js/recherche.js`) mais la fonction est masquée et sans effet : aucun moteur n'est utilisable depuis un navigateur.
+Le modèle reçoit un outil de recherche et décide seul de l'appeler. Les mots cherchés s'affichent sous la réponse.
 
-Le modèle reçoit un outil de recherche et décide seul de l'appeler. Il obtient titres, adresses et extraits, jamais le texte des pages. Les mots cherchés s'affichent sous la réponse.
+**Wikipédia**, moteur par défaut : aucune clé, CORS ouvert, et Albert reçoit le résumé de l'article plus la section qui contient les mots de la question, soit le texte lui-même et non une liste de liens. C'est ce qui l'empêche d'inventer une date ou une étymologie.
 
-Moteurs essayés le 20 septembre 2026 :
+Deux moteurs web restent proposés, avec une clé, et ne rendent que titres, adresses et courts extraits. Moteurs essayés le 20 septembre 2026 :
 
 - Google Programmable Search : API JSON fermée aux nouveaux projets (403), arrêt annoncé le 1er janvier 2027.
 - Mojeek : appels navigateur acceptés, API sur devis.
 - Qwant : 403. Marginalia, SearXNG public, MetaGer : pas d'en-têtes CORS. Stract : CORS figé sur `localhost:8000`.
-
-Pour rouvrir : `RECHERCHE_OUVERTE` à `true` dans `recherche.js`, et retirer `hidden` du bloc "Recherche web" dans `index.html`.
 
 ## Développement
 
