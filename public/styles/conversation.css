@@ -205,6 +205,17 @@ main {
 /* Texte brut : chaque retour à la ligne du courrier reste visible. */
 .texte-proposition { flex: 1; overflow-y: auto; white-space: pre-wrap; overflow-wrap: anywhere; }
 .texte-proposition.erreur { color: var(--erreur); }
+/* Points à vérifier après une relecture : ce qu'Albert ne tranche pas seul. */
+.anomalies {
+    max-height: 30%;
+    overflow-y: auto;
+    margin: 0.5rem 0 0;
+    padding: 0.5rem 0.75rem 0.5rem 1.75rem;
+    font-size: 0.875rem;
+    background: var(--jaune-fond);
+    border-left: 3px solid var(--jaune-bord);
+    border-radius: 0.25rem;
+}
 .notes {
     overflow-y: auto;
     width: 100%;

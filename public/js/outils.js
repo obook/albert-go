@@ -63,11 +63,12 @@ const consignesLues = {};
  * Consigne système de l'outil, lue dans son fichier au premier appel.
  *
  * @param {string} outil - Clé de Albert.OUTILS.
+ * @param {string} [champ] - "consigne", ou "revue" pour la relecture de Rédiger.
  * @returns {Promise<?string>} Texte de la consigne, ou null si l'outil n'en a pas.
  * @throws {Error} Si le fichier ne peut pas être lu.
  */
-async function consigne(outil) {
-    const fichier = Albert.OUTILS[outil].consigne;
+async function consigne(outil, champ = 'consigne') {
+    const fichier = Albert.OUTILS[outil][champ];
     if (!fichier) {
         return null;
     }

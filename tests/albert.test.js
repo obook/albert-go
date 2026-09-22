@@ -178,3 +178,16 @@ test('sansMarkdown : gras, italique et titres retirés, lignes gardées', () => 
     assert.strictEqual(Albert.sansMarkdown('Un *mot* important'), 'Un mot important');
     assert.strictEqual(Albert.sansMarkdown('3 * 4 = 12\n- liste gardée'), '3 * 4 = 12\n- liste gardée');
 });
+
+test('separerRevue : courrier puis anomalies après %%%', () => {
+    assert.deepStrictEqual(Albert.separerRevue('**Madame,**\n\nTexte.\n%%%\n- Lundi 30 septembre est un mercredi.\n\n* Heure absente.'),
+        { texte: 'Madame,\n\nTexte.', anomalies: ['Lundi 30 septembre est un mercredi.', 'Heure absente.'] });
+    assert.deepStrictEqual(Albert.separerRevue('Madame,\n\nTexte.\n'), { texte: 'Madame,\n\nTexte.', anomalies: [] });
+});
+
+test('calendrier : un jour par ligne, dans la langue demandée', () => {
+    const jours = Albert.calendrier(new Date(2026, 8, 22), 9, 'fr');
+    assert.strictEqual(jours.length, 9);
+    assert.strictEqual(jours[0], 'mardi 22 septembre 2026');
+    assert.strictEqual(jours[8], 'mercredi 30 septembre 2026');
+});

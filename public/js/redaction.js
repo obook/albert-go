@@ -26,14 +26,21 @@ let dernierEnvoi = '';
  *
  * @param {string} texte - Courrier proposé, ou message d'erreur.
  * @param {boolean} [erreur] - true pour un message d'erreur.
+ * @param {string[]} [anomalies] - Points à vérifier signalés par une relecture.
  */
-function afficherProposition(texte, erreur = false) {
+function afficherProposition(texte, erreur = false, anomalies = []) {
     /* Une lecture en cours lirait l'ancienne proposition. */
     if (typeof speechSynthesis !== 'undefined') {
         Lecture.arreter();
     }
     $('proposition').textContent = texte;
     $('proposition').classList.toggle('erreur', erreur);
+    $('anomalies').replaceChildren(...anomalies.map(anomalie => {
+        const li = document.createElement('li');
+        li.textContent = anomalie;
+        return li;
+    }));
+    $('anomalies').hidden = anomalies.length === 0;
     const boutons = [];
     if (texte && !erreur) {
         boutons.push(boutonCopier(texte));
@@ -41,6 +48,9 @@ function afficherProposition(texte, erreur = false) {
         if (typeof speechSynthesis !== 'undefined') {
             boutons.push(boutonLire($('proposition'), I18n.langue));
         }
+        const revue = boutonAction(ICONES.revoir, t('reponse.revoir'));
+        revue.addEventListener('click', revoir);
+        boutons.push(revue);
     }
     $('actions-redaction').replaceChildren(...boutons);
 }
@@ -59,6 +69,64 @@ function arreterRedaction() {
 }
 
 /**
+ * Interroge Albert pour Rédiger. Une frappe annule la requête ; une erreur
+ * s'affiche à la place de la proposition.
+ *
+ * @param {string} champ - Consigne de Albert.OUTILS.rediger : "consigne" ou "revue".
+ * @param {string} demande - Message envoyé avec la consigne.
+ * @param {string} attente - Clé i18n du statut pendant l'attente.
+ * @returns {Promise<?string>} Réponse, ou null si annulée, dépassée ou en échec.
+ */
+async function demanderRedaction(champ, demande, attente) {
+    const annulation = new AbortController();
+    annulationRedaction = annulation;
+    interroger(true);
+    $('etat-redaction').textContent = t(attente);
+    try {
+        const reponse = await Albert.repondre(reglages.cle, {
+            model: modeleActuel().id,
+            temperature: reglages.temperature,
+            messages: [
+                { role: 'system', content: await consigne('rediger', champ) },
+                { role: 'user', content: demande }
+            ]
+        }, annulation.signal);
+        return annulation === annulationRedaction ? reponse.texte : null;
+    } catch (err) {
+        if (annulation === annulationRedaction) {
+            const message = messageEchec(err).texte;
+            afficherProposition(message, true);
+            /* #proposition n'est pas une région live : le statut annonce l'erreur. */
+            $('etat-redaction').textContent = message;
+        }
+        return null;
+    } finally {
+        if (annulation === annulationRedaction) {
+            annulationRedaction = null;
+            interroger(false);
+        }
+    }
+}
+
+/**
+ * Affiche la proposition et l'enregistre dans l'historique.
+ *
+ * @param {string} notes - Notes saisies.
+ * @param {string} proposition - Courrier à garder.
+ * @param {string[]} anomalies - Points à vérifier, ou [].
+ * @param {string} etat - Clé i18n du statut à annoncer.
+ */
+function garderProposition(notes, proposition, anomalies, etat) {
+    afficherProposition(proposition, false, anomalies);
+    conversation = [
+        { role: 'user', content: Albert.construireDemande('rediger', notes.trim()), affiche: notes.trim() },
+        { role: 'assistant', content: proposition }
+    ];
+    sauverConversation();
+    $('etat-redaction').textContent = t(etat);
+}
+
+/**
  * Envoie les notes si elles ont changé, puis affiche et enregistre la proposition.
  *
  * @returns {Promise<void>}
@@ -68,46 +136,32 @@ async function rediger() {
     if (!Albert.doitEnvoyer(notes, dernierEnvoi)) {
         return;
     }
-    const annulation = new AbortController();
-    annulationRedaction = annulation;
-    interroger(true);
-    $('etat-redaction').textContent = t('etat.redige');
-    const demande = Albert.construireDemande('rediger', notes.trim());
-    try {
-        const reponse = await Albert.repondre(reglages.cle, {
-            model: modeleActuel().id,
-            temperature: reglages.temperature,
-            messages: [
-                { role: 'system', content: await consigne('rediger') },
-                { role: 'user', content: demande }
-            ]
-        }, annulation.signal);
-        if (annulation !== annulationRedaction) {
-            return;
-        }
-        dernierEnvoi = notes;
-        const proposition = Albert.sansMarkdown(reponse.texte);
-        afficherProposition(proposition);
-        conversation = [
-            { role: 'user', content: demande, affiche: notes.trim() },
-            { role: 'assistant', content: proposition }
-        ];
-        sauverConversation();
-        $('etat-redaction').textContent = t('etat.proposition-prete');
-    } catch (err) {
-        if (annulation !== annulationRedaction) {
-            return;
-        }
-        const message = messageEchec(err).texte;
-        afficherProposition(message, true);
-        /* #proposition n'est pas une région live : le statut annonce l'erreur. */
-        $('etat-redaction').textContent = message;
-    } finally {
-        if (annulation === annulationRedaction) {
-            annulationRedaction = null;
-            interroger(false);
-        }
+    const texte = await demanderRedaction('consigne', Albert.construireDemande('rediger', notes.trim()), 'etat.redige');
+    if (texte === null) {
+        return;
     }
+    dernierEnvoi = notes;
+    garderProposition(notes, Albert.sansMarkdown(texte), [], 'etat.proposition-prete');
+}
+
+/**
+ * Bouton Revoir : Albert reconstruit la proposition et signale ce qu'il ne peut trancher.
+ *
+ * @returns {Promise<void>}
+ */
+async function revoir() {
+    const notes = $('notes').value;
+    const actuelle = $('proposition').textContent;
+    arreterRedaction();
+    /* Trois mois de jours nommés : de quoi vérifier "lundi 30 septembre". */
+    const calendrier = Albert.calendrier(new Date(), 92, I18n.langue).join('\n');
+    const demande = t('demande.revoir', { notes: notes.trim(), proposition: actuelle, calendrier: calendrier });
+    const texte = await demanderRedaction('revue', demande, 'etat.relit');
+    if (texte === null) {
+        return;
+    }
+    const revue = Albert.separerRevue(texte);
+    garderProposition(notes, revue.texte, revue.anomalies, 'etat.revue-prete');
 }
 
 /**

@@ -56,7 +56,7 @@ const Albert = {
         reformuler: { consigne: 'reformuler.txt' },
         traduire: { consigne: 'traduire.txt' },
         corriger: { consigne: 'corriger.txt' },
-        rediger: { consigne: 'rediger.txt' }
+        rediger: { consigne: 'rediger.txt', revue: 'revoir.txt' }
     },
 
     /** Rédiger : notes plus courtes non envoyées, pour ne pas payer une requête par mot. */
@@ -292,6 +292,34 @@ const Albert = {
             .replace(/\*\*(.+?)\*\*|__(.+?)__/g, '$1$2')
             .replace(/\*(\S(?:[^*\n]*\S)?)\*/g, '$1')
             .replace(/^#{1,6}[ \t]+/gm, '');
+    },
+
+    /**
+     * Sépare la relecture de Rédiger : le courrier, puis les anomalies après une ligne "%%%".
+     *
+     * @param {string} texte - Réponse du modèle.
+     * @returns {{texte: string, anomalies: string[]}} Courrier sans Markdown, et points à vérifier.
+     */
+    separerRevue(texte) {
+        const [courrier, suite = ''] = texte.split(/^[ \t]*%%%[ \t]*$/m);
+        const anomalies = suite.split('\n')
+            .map(ligne => ligne.replace(/^\s*(?:[-*\u2022]|\d+[.)])\s*/, '').trim())
+            .filter(Boolean);
+        return { texte: this.sansMarkdown(courrier).trim(), anomalies: anomalies };
+    },
+
+    /**
+     * Jours à venir, un par ligne ("mardi 22 septembre 2026") : les modèles calculent mal le jour de la semaine.
+     *
+     * @param {Date} debut - Premier jour.
+     * @param {number} jours - Nombre de jours.
+     * @param {string} langue - Code de langue de l'interface.
+     * @returns {string[]} Les jours, dans la langue demandée.
+     */
+    calendrier(debut, jours, langue) {
+        const format = new Intl.DateTimeFormat(langue, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+        return Array.from({ length: jours }, (_, i) =>
+            format.format(new Date(debut.getFullYear(), debut.getMonth(), debut.getDate() + i)));
     },
 
     /**
