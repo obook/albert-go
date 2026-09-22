@@ -43,6 +43,23 @@ const Rendu = {
         return this.assainir(html);
     },
 
+    /** Balises retirées du HTML du modèle : tout ce qui charge ou exécute. */
+    BALISES_INTERDITES: 'script, style, iframe, object, embed, link, meta, base, form, input, button, textarea, svg',
+
+    /** Balises retirées d'un SVG : le style y sert au rendu, il reste. */
+    BALISES_INTERDITES_SVG: 'script, foreignObject, iframe, object, embed',
+
+    /**
+     * Indique si un attribut doit être retiré du HTML du modèle.
+     *
+     * @param {string} nom - Nom de l'attribut, en minuscules.
+     * @param {string} valeur - Valeur de l'attribut.
+     * @returns {boolean} true pour un gestionnaire, un style ou une adresse exécutable.
+     */
+    attributInterdit(nom, valeur) {
+        return nom.startsWith('on') || nom === 'style' || this.urlDangereuse(nom, valeur);
+    },
+
     /**
      * Retire du HTML tout ce qui peut exécuter du code.
      *
@@ -59,12 +76,10 @@ const Rendu = {
         /* <template> est inerte : rien ne se charge ni ne s'exécute pendant l'analyse. */
         const modele = document.createElement('template');
         modele.innerHTML = html;
-        modele.content.querySelectorAll('script, style, iframe, object, embed, link, meta, base, form, input, button, textarea, svg')
-            .forEach((el) => el.remove());
+        modele.content.querySelectorAll(this.BALISES_INTERDITES).forEach((el) => el.remove());
         modele.content.querySelectorAll('*').forEach((el) => {
             for (const attr of [...el.attributes]) {
-                const nom = attr.name.toLowerCase();
-                if (nom.startsWith('on') || nom === 'style' || this.urlDangereuse(nom, attr.value)) {
+                if (this.attributInterdit(attr.name.toLowerCase(), attr.value)) {
                     el.removeAttribute(attr.name);
                 }
             }
@@ -94,13 +109,12 @@ const Rendu = {
         const modele = document.createElement('template');
         modele.innerHTML = svg;
         /* foreignObject rouvre la porte au HTML au milieu du SVG. */
-        modele.content.querySelectorAll('script, foreignObject, iframe, object, embed')
-            .forEach((el) => el.remove());
+        modele.content.querySelectorAll(this.BALISES_INTERDITES_SVG).forEach((el) => el.remove());
         modele.content.querySelectorAll('*').forEach((el) => {
+            const nom = (attr) => attr.name.toLowerCase();
             for (const attr of [...el.attributes]) {
-                const nom = attr.name.toLowerCase();
                 /* style reste : Mermaid s'en sert pour tout son rendu. */
-                if (nom.startsWith('on') || this.urlDangereuse(nom, attr.value)) {
+                if (nom(attr).startsWith('on') || this.urlDangereuse(nom(attr), attr.value)) {
                     el.removeAttribute(attr.name);
                 }
             }
