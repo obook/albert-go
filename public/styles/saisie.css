@@ -10,7 +10,7 @@
  * Licence : Licence Ouverte 2.0 (Etalab), SPDX etalab-2.0
  */
 
-.saisie-zone { padding: 0.5rem 1rem 0.5rem; }
+.saisie-zone { padding: 0.5rem 1rem; }
 
 .saisie, .etat, .avertissement {
     max-width: 56rem;

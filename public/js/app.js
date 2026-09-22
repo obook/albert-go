@@ -112,7 +112,7 @@ async function envoyer() {
     brouillon = '';
 
     /* Écran tactile : fermer le clavier virtuel pour laisser voir la réponse. */
-    if (matchMedia('(pointer: coarse)').matches) {
+    if (ecranTactile()) {
         $('saisie').blur();
     }
 
@@ -122,7 +122,9 @@ async function envoyer() {
         toast(t('toast.liens'));
     }
 
-    const affiche = question + (piece ? (question ? '\n' : '') + t('fichier.joint', { nom: piece.nom }) : '');
+    /* La pièce jointe s'annonce sous la question, ou seule si rien n'est tapé. */
+    const lignes = [question, piece ? t('fichier.joint', { nom: piece.nom }) : ''];
+    const affiche = lignes.filter(Boolean).join('\n');
     const demande = Albert.construireDemande(outil, Albert.joindre(question, piece), langueSource, langueCible);
     conversation.push({ role: 'user', content: demande, affiche: affiche });
     /* Pour ignorer la réponse si on change de conversation pendant l'attente. */

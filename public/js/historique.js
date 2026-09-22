@@ -18,7 +18,7 @@
 let conversations = [];
 try {
     conversations = JSON.parse(lire('conversations', '[]'));
-} catch (e) {
+} catch (err) {
     /* Données illisibles : on repart de zéro. */
 }
 if (!Array.isArray(conversations)) {
@@ -43,7 +43,7 @@ function retenirCourante(id) {
         } else {
             sessionStorage.setItem(CLE_COURANTE, id);
         }
-    } catch (e) {
+    } catch (err) {
         /* Stockage bloqué : la conversation ne sera pas réaffichée. */
     }
 }
@@ -55,7 +55,7 @@ function rouvrirCourante() {
     let id = null;
     try {
         id = sessionStorage.getItem(CLE_COURANTE);
-    } catch (e) {
+    } catch (err) {
         return;
     }
     const entree = conversations.find(c => c.id === id);
@@ -81,7 +81,7 @@ function ecrireConversations(liste) {
         try {
             stockage('conversations').setItem('albert-go.conversations', JSON.stringify(aEcrire));
             return aEcrire;
-        } catch (e) {
+        } catch (err) {
             if (e.name !== 'QuotaExceededError') {
                 throw e;
             }
@@ -121,7 +121,7 @@ function sauverConversation() {
     let ecrite;
     try {
         ecrite = ecrireConversations(voulue);
-    } catch (e) {
+    } catch (err) {
         /* Stockage bloqué : l'historique ne vit que le temps de la page. */
         conversations = voulue;
         return;
@@ -182,7 +182,7 @@ function demanderSuppression(entree, libelle) {
         const restantes = conversations.filter(c => c.id !== entree.id);
         try {
             ecrireConversations(restantes);
-        } catch (e) {
+        } catch (err) {
             /* Stockage bloqué : la liste en mémoire suffit. */
         }
         conversations = restantes;
@@ -264,7 +264,6 @@ function armerAppuiLong(element, action) {
  * Remplit la liste des conversations dans le menu.
  */
 function afficherHistorique() {
-    const format = new Intl.DateTimeFormat(I18n.langue, { dateStyle: 'short', timeStyle: 'short' });
     const elements = conversations.map(entree => {
         const li = document.createElement('li');
         const bouton = document.createElement('button');
@@ -276,7 +275,7 @@ function afficherHistorique() {
             libelle = t('outil.' + entree.outil) + ' : ' + entree.titre;
         }
         bouton.textContent = libelle;
-        bouton.title = libelle + '\n' + format.format(entree.date);
+        bouton.title = libelle + '\n' + I18n.dateHeure(entree.date);
         bouton.addEventListener('click', () => {
             rouvrirConversation(entree);
         });

@@ -202,7 +202,7 @@ const Recherche = {
         const corps = await reponse.json().catch(() => ({}));
         if (!reponse.ok) {
             throw new Error((corps.error && corps.error.message)
-                || t('recherche.moteur-injoignable', { status: reponse.status }));
+                || t('recherche.moteur-injoignable', { nom: moteur.nom || fournisseur, status: reponse.status }));
         }
         if (!mojeek) {
             return corps.items || [];
@@ -226,10 +226,10 @@ const Recherche = {
         const reponse = await fetch(adresse, { signal: signal });
         const corps = await reponse.json().catch(() => ({}));
         if (!reponse.ok) {
-            throw new Error(t('recherche.wiki-injoignable', { nom: nom, status: reponse.status }));
+            throw new Error(t('recherche.moteur-injoignable', { nom: nom, status: reponse.status }));
         }
         if (corps.error) {
-            throw new Error(corps.error.info || t('recherche.wiki-refus', { nom: nom }));
+            throw new Error(corps.error.info || t('recherche.moteur-refus', { nom: nom }));
         }
         return corps;
     },
@@ -287,7 +287,7 @@ const Recherche = {
             const reponse = await fetch(moteur.adresse(essai, this.NOMBRE), { signal: signal });
             const corps = await reponse.json().catch(() => ({}));
             if (!reponse.ok) {
-                throw new Error(t('recherche.moteur-injoignable', { status: reponse.status }));
+                throw new Error(t('recherche.moteur-injoignable', { nom: moteur.nom || fournisseur, status: reponse.status }));
             }
             const resultats = moteur.extraire(corps).filter(r => r.url).map(r => ({
                 title: r.title || '',
@@ -529,7 +529,7 @@ async function executerOutil(appel, signal, faites) {
     let mots = '';
     try {
         mots = JSON.parse(appel.function.arguments || '{}').q || '';
-    } catch (e) {
+    } catch (err) {
         mots = '';
     }
     if (!mots) {

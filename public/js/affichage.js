@@ -61,11 +61,20 @@ function afficher() {
 }
 
 /**
+ * Indique si l'appareil se pilote au doigt.
+ *
+ * @returns {boolean} true sur un écran tactile.
+ */
+function ecranTactile() {
+    return matchMedia('(pointer: coarse)').matches;
+}
+
+/**
  * Remet le curseur dans le champ de saisie, sauf sur écran tactile :
  * le clavier virtuel s'ouvrirait et cacherait la réponse.
  */
 function focusSaisie() {
-    if (!matchMedia('(pointer: coarse)').matches) {
+    if (!ecranTactile()) {
         $('saisie').focus();
     }
 }
@@ -189,8 +198,9 @@ function ajouterAttente() {
  * @param {string} texte - Message à afficher.
  */
 function toast(texte) {
-    $('toast').textContent = texte;
-    $('toast').classList.add('visible');
+    const boite = $('toast');
+    boite.textContent = texte;
+    boite.classList.add('visible');
     clearTimeout(minuteurToast);
     /* Un message long reste plus longtemps. */
     const duree = Math.max(2000, texte.length * 60);
@@ -228,6 +238,7 @@ function messageCle(texte, erreur, lien) {
  * @param {boolean} [erreur] - true pour l'afficher comme une erreur.
  */
 function etat(texte, erreur) {
-    $('etat').textContent = texte;
-    $('etat').classList.toggle('erreur', !!erreur);
+    const ligne = $('etat');
+    ligne.textContent = texte;
+    ligne.classList.toggle('erreur', !!erreur);
 }

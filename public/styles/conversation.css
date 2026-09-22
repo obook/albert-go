@@ -34,17 +34,6 @@ main {
 .accueil label { font-weight: 700; margin-top: 0.5rem; }
 .accueil .bouton-principal { justify-self: start; }
 
-input[type="password"], textarea {
-    width: 100%;
-    font: inherit;
-    color: var(--texte);
-    background: var(--surface);
-    border: 1px solid var(--bord-champ);
-    border-bottom: 2px solid var(--bleu);
-    border-radius: 0.25rem 0.25rem 0 0;
-    padding: 0.5rem 0.75rem;
-}
-
 .accueil .interrupteur { margin-top: 0; font-weight: 400; }
 
 /* Vérification de la clé, ou refus d'Albert. */

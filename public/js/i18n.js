@@ -74,6 +74,16 @@ const I18n = {
     },
 
     /**
+     * Date et heure au format court de la langue affichée.
+     *
+     * @param {Date|number} date - Date à écrire.
+     * @returns {string} Date et heure, par exemple "22/09/2026 19:40".
+     */
+    dateHeure(date) {
+        return new Intl.DateTimeFormat(this.langue, { dateStyle: 'short', timeStyle: 'short' }).format(date);
+    },
+
+    /**
      * Traduit la page : textes, textes avec lien, et attributs.
      *
      * data-t-html reçoit du HTML écrit ici, jamais du texte du modèle.
@@ -270,6 +280,8 @@ const I18n = {
             /* Messages. */
             'toast.adresse-copiee': 'Adresse copiée.',
             'toast.reponse-copiee': 'Réponse copiée.',
+            'toast.copie-refusee': 'Copie refusée par le navigateur.',
+            'toast.partage-impossible': 'Changement impossible : les données ne tiennent pas dans le nouveau stockage.',
             'toast.conversation-supprimee': 'Conversation supprimée.',
             'toast.conversation-longue': 'Conversation trop longue pour être enregistrée. Elle reste affichée jusqu\'à la fermeture de l\'onglet.',
             'toast.memoire-pleine': 'Mémoire du navigateur pleine : {nombre} ancienne(s) conversation(s) supprimée(s).',
@@ -286,6 +298,7 @@ const I18n = {
             /* Erreurs. */
             'erreur.cle-refusee': 'Clé refusée par Albert. Vérifiez-la ou changez-la.',
             'erreur.quota': 'Quota atteint. Réessayez dans une minute.',
+            'erreur.reponse-illisible': 'Réponse illisible d\'Albert. Réessayez.',
             'erreur.http': 'Erreur {status}.',
             'erreur.http-detail': 'Erreur {status} : {detail}',
             'erreur.relais': 'Relais n8n injoignable. Vérifiez la connexion.',
@@ -321,9 +334,8 @@ const I18n = {
             'recherche.aucun-mot': 'Aucun mot à chercher.',
             'recherche.aucun-resultat': 'Aucun résultat.',
             'recherche.impossible': 'Recherche impossible : {message}',
-            'recherche.moteur-injoignable': 'moteur injoignable ({status}).',
-            'recherche.wiki-injoignable': '{nom} injoignable ({status}).',
-            'recherche.wiki-refus': 'requête refusée par {nom}.'
+            'recherche.moteur-injoignable': '{nom} injoignable ({status}).',
+            'recherche.moteur-refus': 'requête refusée par {nom}.'
         },
 
         es: {
@@ -501,6 +513,8 @@ const I18n = {
             /* Mensajes. */
             'toast.adresse-copiee': 'Dirección copiada.',
             'toast.reponse-copiee': 'Respuesta copiada.',
+            'toast.copie-refusee': 'El navegador ha rechazado la copia.',
+            'toast.partage-impossible': 'Cambio imposible: los datos no caben en el nuevo almacenamiento.',
             'toast.conversation-supprimee': 'Conversación eliminada.',
             'toast.conversation-longue': 'Conversación demasiado larga para guardarla. Se queda en pantalla hasta cerrar la pestaña.',
             'toast.memoire-pleine': 'Memoria del navegador llena: {nombre} conversación(es) antigua(s) eliminada(s).',
@@ -517,6 +531,7 @@ const I18n = {
             /* Errores. */
             'erreur.cle-refusee': 'Clave rechazada por Albert. Compruébela o cámbiela.',
             'erreur.quota': 'Cuota alcanzada. Inténtelo dentro de un minuto.',
+            'erreur.reponse-illisible': 'Respuesta ilegible de Albert. Inténtelo de nuevo.',
             'erreur.http': 'Error {status}.',
             'erreur.http-detail': 'Error {status}: {detail}',
             'erreur.relais': 'No se puede contactar con el relé n8n. Compruebe la conexión.',
@@ -552,9 +567,8 @@ const I18n = {
             'recherche.aucun-mot': 'Ninguna palabra que buscar.',
             'recherche.aucun-resultat': 'Ningún resultado.',
             'recherche.impossible': 'Búsqueda imposible: {message}',
-            'recherche.moteur-injoignable': 'buscador inalcanzable ({status}).',
-            'recherche.wiki-injoignable': '{nom} inalcanzable ({status}).',
-            'recherche.wiki-refus': 'petición rechazada por {nom}.'
+            'recherche.moteur-injoignable': '{nom} inalcanzable ({status}).',
+            'recherche.moteur-refus': 'petición rechazada por {nom}.'
         },
 
         en: {
@@ -732,6 +746,8 @@ const I18n = {
             /* Messages. */
             'toast.adresse-copiee': 'Address copied.',
             'toast.reponse-copiee': 'Answer copied.',
+            'toast.copie-refusee': 'The browser refused the copy.',
+            'toast.partage-impossible': 'Change not possible: the data does not fit in the new storage.',
             'toast.conversation-supprimee': 'Conversation deleted.',
             'toast.conversation-longue': 'Conversation too long to be saved. It stays on screen until the tab closes.',
             'toast.memoire-pleine': 'Browser storage full: {nombre} old conversation(s) deleted.',
@@ -748,6 +764,7 @@ const I18n = {
             /* Errors. */
             'erreur.cle-refusee': 'Key refused by Albert. Check it or change it.',
             'erreur.quota': 'Quota reached. Try again in a minute.',
+            'erreur.reponse-illisible': 'Unreadable answer from Albert. Try again.',
             'erreur.http': 'Error {status}.',
             'erreur.http-detail': 'Error {status}: {detail}',
             'erreur.relais': 'The n8n relay cannot be reached. Check your connection.',
@@ -783,9 +800,8 @@ const I18n = {
             'recherche.aucun-mot': 'No words to search for.',
             'recherche.aucun-resultat': 'No result.',
             'recherche.impossible': 'Search failed: {message}',
-            'recherche.moteur-injoignable': 'engine unreachable ({status}).',
-            'recherche.wiki-injoignable': '{nom} unreachable ({status}).',
-            'recherche.wiki-refus': 'request refused by {nom}.'
+            'recherche.moteur-injoignable': '{nom} unreachable ({status}).',
+            'recherche.moteur-refus': 'request refused by {nom}.'
         },
 
         de: {
@@ -963,6 +979,8 @@ const I18n = {
             /* Meldungen. */
             'toast.adresse-copiee': 'Adresse kopiert.',
             'toast.reponse-copiee': 'Antwort kopiert.',
+            'toast.copie-refusee': 'Der Browser hat das Kopieren abgelehnt.',
+            'toast.partage-impossible': 'Wechsel nicht möglich: die Daten passen nicht in den neuen Speicher.',
             'toast.conversation-supprimee': 'Gespräch gelöscht.',
             'toast.conversation-longue': 'Gespräch zu lang zum Speichern. Es bleibt am Bildschirm, bis der Tab geschlossen wird.',
             'toast.memoire-pleine': 'Browserspeicher voll: {nombre} alte(s) Gespräch(e) gelöscht.',
@@ -979,6 +997,7 @@ const I18n = {
             /* Fehler. */
             'erreur.cle-refusee': 'Schlüssel von Albert abgelehnt. Prüfen oder wechseln Sie ihn.',
             'erreur.quota': 'Kontingent erreicht. Versuchen Sie es in einer Minute erneut.',
+            'erreur.reponse-illisible': 'Unlesbare Antwort von Albert. Versuchen Sie es erneut.',
             'erreur.http': 'Fehler {status}.',
             'erreur.http-detail': 'Fehler {status}: {detail}',
             'erreur.relais': 'Das n8n-Relais ist nicht erreichbar. Prüfen Sie die Verbindung.',
@@ -1014,9 +1033,8 @@ const I18n = {
             'recherche.aucun-mot': 'Keine Wörter zum Suchen.',
             'recherche.aucun-resultat': 'Kein Ergebnis.',
             'recherche.impossible': 'Suche fehlgeschlagen: {message}',
-            'recherche.moteur-injoignable': 'Suchmaschine nicht erreichbar ({status}).',
-            'recherche.wiki-injoignable': '{nom} nicht erreichbar ({status}).',
-            'recherche.wiki-refus': 'Anfrage von {nom} abgelehnt.'
+            'recherche.moteur-injoignable': '{nom} nicht erreichbar ({status}).',
+            'recherche.moteur-refus': 'Anfrage von {nom} abgelehnt.'
         }
     }
 };
