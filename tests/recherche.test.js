@@ -38,9 +38,9 @@ test('outil : format attendu par le champ tools de l\'API', () => {
 test('outil : la description nomme le moteur et prévient pour un catalogue', () => {
     const encyclopedie = Recherche.outil('wikipedia').function.description;
     const catalogue = Recherche.outil('hal').function.description;
-    assert.ok(encyclopedie.includes('Wikip\u00e9dia'));
+    assert.ok(encyclopedie.includes('Wikipédia'));
     assert.ok(catalogue.includes('HAL'));
-    /* Les catalogues ne rendent rien sur une phrase : le mod\u00e8le doit le savoir. */
+    /* Les catalogues ne rendent rien sur une phrase : le modèle doit le savoir. */
     assert.ok(catalogue.length > encyclopedie.length);
     assert.ok(!encyclopedie.includes(t('recherche.description-catalogue')));
 });
@@ -61,16 +61,16 @@ test('wiki : Vikidia ignore les langues qu\'elle n\'a pas', () => {
     I18n.definir('fr');
 });
 
-test('sansCle : seuls Google et Mojeek demandent une cle', () => {
+test('sansCle : seuls Google et Mojeek demandent une clé', () => {
     assert.ok(Recherche.sansCle('wikipedia'));
     assert.ok(Recherche.sansCle('hal'));
     assert.ok(!Recherche.sansCle('google'));
     assert.ok(!Recherche.sansCle('mojeek'));
-    /* Un moteur enregistre puis retire du code. */
+    /* Un moteur enregistré puis retiré du code. */
     assert.ok(!Recherche.sansCle('qwant'));
 });
 
-test('chercherBase : HAL rend ses champs, la description est bornee', async () => {
+test('chercherBase : HAL rend ses champs, la description est bornée', async () => {
     let vue = '';
     global.fetch = async (adresse) => {
         vue = adresse;
@@ -82,28 +82,31 @@ test('chercherBase : HAL rend ses champs, la description est bornee', async () =
     const resultats = await Recherche.chercherBase('hal', 'these');
     assert.ok(vue.includes('q=these'));
     assert.ok(!vue.includes('key='));
-    /* Sans adresse, le resultat ne serait pas consultable sous la reponse. */
+    /* Sans adresse, le résultat ne serait pas consultable sous la réponse. */
     assert.strictEqual(resultats.length, 1);
     assert.strictEqual(resultats[0].title, 'These');
     assert.strictEqual(resultats[0].desc.length, Recherche.TAILLE_RESUME);
 });
 
 test('replis : la phrase, puis ses mots les plus longs dans l\'ordre', () => {
-    assert.deepStrictEqual(Recherche.replis('population fran\u00e7aise 2024 INSEE estimation'), [
-        'population fran\u00e7aise 2024 INSEE estimation',
-        'population fran\u00e7aise estimation',
+    assert.deepStrictEqual(Recherche.replis('population française 2024 INSEE estimation'), [
+        'population française 2024 INSEE estimation',
+        'population française estimation',
         'population estimation',
         'population'
     ]);
     /* Deux mots ou moins : aucun catalogue n'a besoin qu'on raccourcisse. */
     assert.deepStrictEqual(Recherche.replis('population France'), ['population France']);
+    /* À trois mots, le premier repli refaisait la même requête. */
+    assert.deepStrictEqual(Recherche.replis('population française INSEE'),
+        ['population française INSEE', 'population française', 'population']);
 });
 
-test('chercherBase : la requ\u00eate raccourcit tant que rien ne vient', async () => {
+test('chercherBase : la requête raccourcit tant que rien ne vient', async () => {
     const vues = [];
     global.fetch = async (adresse) => {
         vues.push(decodeURIComponent(adresse.split('q=')[1]));
-        /* Ces catalogues exigent tous les mots : seule la requ\u00eate courte r\u00e9pond. */
+        /* Ces catalogues exigent tous les mots : seule la requête courte répond. */
         const trouve = vues[vues.length - 1] === 'population';
         return { ok: true, json: async () => ({ data: trouve
             ? [{ title: 'Recensement', page: 'https://www.data.gouv.fr/datasets/recensement' }] : [] }) };
@@ -119,7 +122,7 @@ test('chercherBase : une base injoignable remonte son code', async () => {
     await assert.rejects(Recherche.chercherBase('openalex', 'test'), /503/);
 });
 
-test('resumeInverse : le resume d\'OpenAlex revient en phrase', () => {
+test('resumeInverse : le résumé d\'OpenAlex revient en phrase', () => {
     assert.strictEqual(Recherche.resumeInverse({ Le: [0], chat: [1], dort: [2] }), 'Le chat dort');
     assert.strictEqual(Recherche.resumeInverse(null), '');
 });

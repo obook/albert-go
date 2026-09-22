@@ -1,19 +1,17 @@
 /*
  * recherche.js
- * Recherche web par l'API Mojeek, proposée au modèle comme un outil.
+ * Recherche documentaire, proposée au modèle comme un outil.
  *
  * Le modèle reçoit la définition de l'outil et décide lui-même s'il
  * cherche. Ses appels sont exécutés ici, puis les résultats lui sont
  * renvoyés pour qu'il rédige sa réponse (function calling, comme
  * albert-atelier le fait pour l'OCR).
  *
- * Trois moteurs au choix, les seuls testés qui acceptent un appel direct
- * du navigateur. Wikipédia par défaut : sans clé, CORS ouvert, et il rend
- * le texte des articles plutôt qu'une liste de liens, ce qui donne au
- * modèle de quoi répondre au lieu de quoi deviner. Google Programmable
- * Search et Mojeek cherchent sur le web, avec une clé qui voyage dans
- * l'adresse, c'est ainsi que leurs API la lisent ; ils ne rendent que des
- * titres, des adresses et de courts extraits.
+ * Neuf moteurs, les seuls testés qui acceptent un appel direct du
+ * navigateur. Sept répondent sans clé. Wikipédia, par défaut, et Vikidia
+ * rendent le texte des articles ; les cinq catalogues n'acceptent que des
+ * mots-clés. Google et Mojeek demandent une clé, qui voyage dans l'adresse
+ * comme leurs API la lisent, et ne rendent que de courts extraits.
  *
  * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
  * Auteur : O. Booklage
@@ -26,7 +24,7 @@
 const TOURS_MAX = 2;
 
 const Recherche = {
-    /** Points d'entrée des trois moteurs. */
+    /** Points d'entrée des deux moteurs web ; les autres sont dans MOTEURS. */
     MOJEEK: 'https://www.mojeek.com/search',
     GOOGLE: 'https://www.googleapis.com/customsearch/v1',
 
@@ -259,7 +257,14 @@ const Recherche = {
             .sort((a, b) => a - b)
             .map(rang => mots[rang])
             .join(' ');
-        return [mots.join(' '), garder(3), garder(2), garder(1)];
+        /* Un repli aussi long que la question referait la même requête. */
+        const essais = [mots.join(' ')];
+        for (const nombre of [3, 2, 1]) {
+            if (nombre < mots.length) {
+                essais.push(garder(nombre));
+            }
+        }
+        return essais;
     },
 
     /**
