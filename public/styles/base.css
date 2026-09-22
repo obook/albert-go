@@ -11,71 +11,33 @@
  * Licence : Licence Ouverte 2.0 (Etalab), SPDX etalab-2.0
  */
 
-/* Thème clair par défaut. */
+/* Les deux thèmes ensemble : light-dark() lit le color-scheme de la racine,
+   posé juste en dessous. Écrire les deux palettes séparément revenait à
+   répéter les mêmes quatorze couleurs pour le menu et pour le système. */
 :root {
-    --fond: #f6f6f6;
-    --surface: #ffffff;
-    --texte: #161616;
-    --texte-doux: #3a3a3a;
-    --bord: #dddddd;
-    --bord-champ: #6a6a6a;
-    --bleu: #000091;
-    --bleu-survol: #1212ff;
-    --sur-bleu: #ffffff;
-    --bleu-clair: #e3e3fd;
+    color-scheme: light dark;
+    --fond: light-dark(#f6f6f6, #161616);
+    --surface: light-dark(#ffffff, #1e1e2e);
+    --texte: light-dark(#161616, #eeeeee);
+    --texte-doux: light-dark(#3a3a3a, #c8c8c8);
+    --bord: light-dark(#dddddd, #3a3a3a);
+    --bord-champ: light-dark(#6a6a6a, #929292);
+    --bleu: light-dark(#000091, #8585f6);
+    --bleu-survol: light-dark(#1212ff, #a0a0ff);
+    --sur-bleu: light-dark(#ffffff, #161616);
+    --bleu-clair: light-dark(#e3e3fd, #2a2a40);
     /* Bulle de la question : fond et texte, séparés du bleu des liens et titres. */
-    --bulle: #000091;
-    --sur-bulle: #ffffff;
-    --rouge: #e1000f;
-    --erreur: #ce0500;
-    --jaune-fond: #fef6e3;
-    --jaune-bord: #b38b00;
-    color-scheme: light;
+    --bulle: light-dark(#000091, #3a3aa8);
+    --sur-bulle: light-dark(#ffffff, #eeeeee);
+    --rouge: light-dark(#e1000f, #ff6b7a);
+    --erreur: light-dark(#ce0500, #ff7a6e);
+    --jaune-fond: light-dark(#fef6e3, #3a3320);
+    --jaune-bord: light-dark(#b38b00, #e0b83c);
 }
 
-/* Thème sombre choisi dans le menu. */
-:root[data-theme="dark"] {
-    --fond: #161616;
-    --surface: #1e1e2e;
-    --texte: #eeeeee;
-    --texte-doux: #c8c8c8;
-    --bord: #3a3a3a;
-    --bord-champ: #929292;
-    --bleu: #8585f6;
-    --bleu-survol: #a0a0ff;
-    --sur-bleu: #161616;
-    --bleu-clair: #2a2a40;
-    --bulle: #3a3aa8;
-    --sur-bulle: #eeeeee;
-    --rouge: #ff6b7a;
-    --erreur: #ff7a6e;
-    --jaune-fond: #3a3320;
-    --jaune-bord: #e0b83c;
-    color-scheme: dark;
-}
-
-/* Thème du système, quand il est sombre. */
-@media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-        --fond: #161616;
-        --surface: #1e1e2e;
-        --texte: #eeeeee;
-        --texte-doux: #c8c8c8;
-        --bord: #3a3a3a;
-        --bord-champ: #929292;
-        --bleu: #8585f6;
-        --bleu-survol: #a0a0ff;
-        --sur-bleu: #161616;
-        --bleu-clair: #2a2a40;
-        --bulle: #3a3aa8;
-        --sur-bulle: #eeeeee;
-        --rouge: #ff6b7a;
-        --erreur: #ff7a6e;
-        --jaune-fond: #3a3320;
-        --jaune-bord: #e0b83c;
-        color-scheme: dark;
-    }
-}
+/* Thème choisi dans le menu ; sans choix, celui du système s'applique. */
+:root[data-theme="light"] { color-scheme: light; }
+:root[data-theme="dark"] { color-scheme: dark; }
 
 * { box-sizing: border-box; }
 
