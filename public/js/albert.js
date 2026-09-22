@@ -300,6 +300,31 @@ const Albert = {
     },
 
     /**
+     * Entrée d'historique pour une conversation en cours.
+     *
+     * Le titre est la première question posée, telle qu'elle est affichée.
+     *
+     * @param {string} id - Identifiant de la conversation.
+     * @param {string} outil - Clé de OUTILS.
+     * @param {Array<Object>} messages - Messages de la conversation.
+     * @returns {?Object} Entrée { id, outil, titre, date, messages }, ou null si rien n'a été demandé.
+     */
+    entreeConversation(id, outil, messages) {
+        const premiere = messages.find(m => m.role === 'user');
+        if (!premiere) {
+            return null;
+        }
+        return {
+            id: id,
+            outil: outil,
+            titre: premiere.affiche || premiere.content,
+            date: Date.now(),
+            /* Copie : la conversation en cours continue de changer. */
+            messages: messages.slice()
+        };
+    },
+
+    /**
      * Messages à envoyer : toute la conversation, ou la dernière question seule.
      *
      * Seuls role et content partent : les autres champs (affiche) restent ici.

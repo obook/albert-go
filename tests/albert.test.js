@@ -68,6 +68,28 @@ test('joindre : question seule, fichier seul, les deux', () => {
     assert.strictEqual(Albert.joindre('Résume', piece), 'Résume\n\nContenu du fichier "notes.txt" :\n\nLigne 1');
 });
 
+test('entreeConversation : titre pris sur la première question affichée', () => {
+    const messages = [
+        { role: 'user', content: 'Corrige ce texte :\n\nBonjour', affiche: 'Bonjour' },
+        { role: 'assistant', content: 'Bonjour.' }
+    ];
+    const entree = Albert.entreeConversation('abc', 'corriger', messages);
+    assert.strictEqual(entree.id, 'abc');
+    assert.strictEqual(entree.outil, 'corriger');
+    assert.strictEqual(entree.titre, 'Bonjour');
+    assert.strictEqual(typeof entree.date, 'number');
+    /* Copie : la conversation en cours continue de changer. */
+    messages.push({ role: 'user', content: 'Encore' });
+    assert.strictEqual(entree.messages.length, 2);
+});
+
+test('entreeConversation : sans question posée, rien à enregistrer', () => {
+    assert.strictEqual(Albert.entreeConversation('abc', 'discuter', []), null);
+    /* Le titre retombe sur le contenu quand rien n'est affiché à part. */
+    const entree = Albert.entreeConversation('abc', 'discuter', [{ role: 'user', content: 'Salut' }]);
+    assert.strictEqual(entree.titre, 'Salut');
+});
+
 test('texteAffiche : la pièce jointe s\'annonce sous la question', () => {
     const piece = { nom: 'notes.txt' };
     assert.strictEqual(Albert.texteAffiche('Bonjour', null), 'Bonjour');

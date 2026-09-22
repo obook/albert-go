@@ -101,42 +101,44 @@ function ecrireConversations(liste) {
  * Si le stockage est plein, un toast dit ce qui a été supprimé ou perdu.
  */
 function sauverConversation() {
-    const premiere = conversation.find(m => m.role === 'user');
-    if (!premiere) {
+    const entree = Albert.entreeConversation(conversationId || Date.now().toString(36), outilActuel, conversation);
+    if (!entree) {
         return;
     }
-    if (!conversationId) {
-        conversationId = Date.now().toString(36);
-    }
-    const entree = {
-        id: conversationId,
-        outil: outilActuel,
-        titre: premiere.affiche || premiere.content,
-        date: Date.now(),
-        /* Copie : la conversation en cours continue de changer. */
-        messages: conversation.slice()
-    };
+    conversationId = entree.id;
     const autres = conversations.filter(c => c.id !== conversationId);
     const voulue = [entree, ...autres].slice(0, Albert.CONVERSATIONS_MAX);
+    if (enregistrerListe(voulue)) {
+        retenirCourante(conversationId);
+    }
+}
+
+/**
+ * Écrit la liste des conversations, en disant ce que le stockage a refusé.
+ *
+ * @param {Array<Object>} voulue - Liste à enregistrer.
+ * @returns {boolean} true si le stockage a pris la liste.
+ */
+function enregistrerListe(voulue) {
     let ecrite;
     try {
         ecrite = ecrireConversations(voulue);
     } catch (err) {
         /* Stockage bloqué : l'historique ne vit que le temps de la page. */
         conversations = voulue;
-        return;
+        return false;
     }
     if (ecrite === null) {
         /* Rien n'a changé dans le stockage : on garde l'ancienne liste. */
         toast(t('toast.conversation-longue'));
-        return;
+        return false;
     }
     const supprimees = voulue.length - ecrite.length;
     if (supprimees > 0) {
         toast(t('toast.memoire-pleine', { nombre: supprimees }));
     }
     conversations = ecrite;
-    retenirCourante(conversationId);
+    return true;
 }
 
 /**
