@@ -162,11 +162,12 @@ test('construireDemande : Rédiger', () => {
 });
 
 test('doitEnvoyer : longueur minimale et texte changé', () => {
-    const vingt = 'a'.repeat(20);
-    assert.strictEqual(Albert.doitEnvoyer('a'.repeat(19), ''), false);
-    assert.strictEqual(Albert.doitEnvoyer('   ' + 'a'.repeat(19) + '\n', ''), false);
-    assert.strictEqual(Albert.doitEnvoyer(vingt, ''), true);
-    assert.strictEqual(Albert.doitEnvoyer(vingt, vingt), false);
-    assert.strictEqual(Albert.doitEnvoyer(vingt + '\n ', vingt), false);
-    assert.strictEqual(Albert.doitEnvoyer(vingt + 'b', vingt), true);
+    const dix = 'a'.repeat(10);
+    assert.strictEqual(Albert.doitEnvoyer('a'.repeat(9), ''), false);
+    assert.strictEqual(Albert.doitEnvoyer('   ' + 'a'.repeat(9) + '\n', ''), false);
+    assert.strictEqual(Albert.doitEnvoyer(dix, ''), true);
+    assert.strictEqual(Albert.doitEnvoyer('absent 3 jours', ''), true);
+    assert.strictEqual(Albert.doitEnvoyer(dix, dix), false);
+    assert.strictEqual(Albert.doitEnvoyer(dix + '\n ', dix), false);
+    assert.strictEqual(Albert.doitEnvoyer(dix + 'b', dix), true);
 });

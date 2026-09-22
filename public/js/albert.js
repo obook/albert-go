@@ -60,7 +60,7 @@ const Albert = {
     },
 
     /** Rédiger : notes plus courtes non envoyées, pour ne pas payer une requête par mot. */
-    LONGUEUR_MIN_NOTES: 20,
+    LONGUEUR_MIN_NOTES: 10,
 
     /** Langue source qui laisse le modèle détecter la langue du texte. */
     LANGUE_AUTO: 'auto',
