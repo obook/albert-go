@@ -155,3 +155,18 @@ test('messageErreur : détail texte repris, détail objet ignoré', () => {
     assert.strictEqual(Albert.messageErreur(404, { detail: 'Model not found' }), 'Erreur 404 : Model not found');
     assert.strictEqual(Albert.messageErreur(422, { detail: [{ msg: 'x' }] }), 'Erreur 422.');
 });
+
+test('construireDemande : Rédiger', () => {
+    assert.strictEqual(Albert.construireDemande('rediger', 'Notes', 'auto', 'en'),
+        'Rédige un courrier à partir de ces notes :\n\nNotes');
+});
+
+test('doitEnvoyer : longueur minimale et texte changé', () => {
+    const vingt = 'a'.repeat(20);
+    assert.strictEqual(Albert.doitEnvoyer('a'.repeat(19), ''), false);
+    assert.strictEqual(Albert.doitEnvoyer('   ' + 'a'.repeat(19) + '\n', ''), false);
+    assert.strictEqual(Albert.doitEnvoyer(vingt, ''), true);
+    assert.strictEqual(Albert.doitEnvoyer(vingt, vingt), false);
+    assert.strictEqual(Albert.doitEnvoyer(vingt + '\n ', vingt), false);
+    assert.strictEqual(Albert.doitEnvoyer(vingt + 'b', vingt), true);
+});

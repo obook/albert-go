@@ -311,6 +311,7 @@ const I18n = {
 
             /* Textes envoyés au modèle. */
             'demande.reformuler': 'Reformule ce texte :\n\n{texte}',
+            'demande.rediger': 'Rédige un courrier à partir de ces notes :\n\n{texte}',
             'demande.corriger': 'Corrige ce texte :\n\n{texte}',
             'demande.traduire': 'Traduis ce texte en {cible} :\n\n{texte}',
             'demande.traduire-source': 'Traduis ce texte en {cible} (langue source : {source}) :\n\n{texte}',
@@ -544,6 +545,7 @@ const I18n = {
 
             /* Textos enviados al modelo. */
             'demande.reformuler': 'Reformula este texto:\n\n{texte}',
+            'demande.rediger': 'Redacta una carta a partir de estas notas:\n\n{texte}',
             'demande.corriger': 'Corrige este texto:\n\n{texte}',
             'demande.traduire': 'Traduce este texto al {cible}:\n\n{texte}',
             'demande.traduire-source': 'Traduce este texto al {cible} (idioma de origen: {source}):\n\n{texte}',
@@ -777,6 +779,7 @@ const I18n = {
 
             /* Text sent to the model. */
             'demande.reformuler': 'Rephrase this text:\n\n{texte}',
+            'demande.rediger': 'Write a letter from these notes:\n\n{texte}',
             'demande.corriger': 'Proofread this text:\n\n{texte}',
             'demande.traduire': 'Translate this text into {cible}:\n\n{texte}',
             'demande.traduire-source': 'Translate this text into {cible} (source language: {source}):\n\n{texte}',
@@ -1010,6 +1013,7 @@ const I18n = {
 
             /* An das Modell gesendete Texte. */
             'demande.reformuler': 'Formuliere diesen Text um:\n\n{texte}',
+            'demande.rediger': 'Verfasse einen Brief aus diesen Notizen:\n\n{texte}',
             'demande.corriger': 'Korrigiere diesen Text:\n\n{texte}',
             'demande.traduire': 'Übersetze diesen Text ins {cible}:\n\n{texte}',
             'demande.traduire-source': 'Übersetze diesen Text ins {cible} (Ausgangssprache: {source}):\n\n{texte}',

@@ -55,8 +55,12 @@ const Albert = {
         discuter: { consigne: 'discuter.txt' },
         reformuler: { consigne: 'reformuler.txt' },
         traduire: { consigne: 'traduire.txt' },
-        corriger: { consigne: 'corriger.txt' }
+        corriger: { consigne: 'corriger.txt' },
+        rediger: { consigne: 'rediger.txt' }
     },
+
+    /** Rédiger : notes plus courtes non envoyées, pour ne pas payer une requête par mot. */
+    LONGUEUR_MIN_NOTES: 20,
 
     /** Langue source qui laisse le modèle détecter la langue du texte. */
     LANGUE_AUTO: 'auto',
@@ -252,7 +256,7 @@ const Albert = {
      * @returns {string} Demande à envoyer au modèle.
      */
     construireDemande(outil, texte, source, cible) {
-        if (outil === 'reformuler' || outil === 'corriger') {
+        if (outil === 'reformuler' || outil === 'corriger' || outil === 'rediger') {
             return t('demande.' + outil, { texte: texte });
         }
         if (outil === 'traduire') {
@@ -261,6 +265,18 @@ const Albert = {
             return t(source === this.LANGUE_AUTO ? 'demande.traduire' : 'demande.traduire-source', valeurs);
         }
         return texte;
+    },
+
+    /**
+     * Indique si les notes de Rédiger méritent une nouvelle proposition.
+     *
+     * @param {string} notes - Notes saisies.
+     * @param {string} dernierEnvoi - Notes de la dernière proposition reçue, ou ''.
+     * @returns {boolean} true si assez longues et changées depuis.
+     */
+    doitEnvoyer(notes, dernierEnvoi) {
+        const texte = notes.trim();
+        return texte.length >= this.LONGUEUR_MIN_NOTES && texte !== dernierEnvoi.trim();
     },
 
     /**
