@@ -82,8 +82,8 @@ function ecrireConversations(liste) {
             stockage('conversations').setItem('albert-go.conversations', JSON.stringify(aEcrire));
             return aEcrire;
         } catch (err) {
-            if (e.name !== 'QuotaExceededError') {
-                throw e;
+            if (err.name !== 'QuotaExceededError') {
+                throw err;
             }
             if (aEcrire.length === 1) {
                 return null;
@@ -212,13 +212,16 @@ Enregistré avant celui de menu.js (ordre des scripts d'index.html) : il le
 court-circuite, sinon le clic qui suit un appui long fermerait le volet et
 rouvrirait la conversation.
 */
-$('menu').addEventListener('click', (e) => {
-    if (appuiLongDeclenche) {
-        appuiLongDeclenche = false;
-        e.stopImmediatePropagation();
-        e.preventDefault();
-    }
-}, true);
+/* Sauté sous Node, où le fichier n'est chargé que pour ses tests. */
+if (typeof document !== 'undefined') {
+    $('menu').addEventListener('click', (e) => {
+        if (appuiLongDeclenche) {
+            appuiLongDeclenche = false;
+            e.stopImmediatePropagation();
+            e.preventDefault();
+        }
+    }, true);
+}
 
 /**
  * Arme l'appui long et le clic droit sur un élément.
@@ -302,4 +305,9 @@ function ligneHistorique(entree) {
     const li = document.createElement('li');
     li.append(bouton, supprimer);
     return li;
+}
+
+/* Export pour les tests Node ; ignoré dans le navigateur. */
+if (typeof module !== 'undefined') {
+    module.exports = { ecrireConversations: ecrireConversations };
 }
