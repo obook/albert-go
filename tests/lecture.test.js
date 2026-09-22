@@ -23,6 +23,23 @@ test('formuleParlee : fractions, puissances, racines, chimie', () => {
     assert.strictEqual(Lecture.formuleParlee('\\ce{2H2 + O2 -> 2H2O}'), '2H2 + O2 donne 2H2O');
 });
 
+test('formuleParlee : les trois autres tables disent la même formule', () => {
+    const formule = '\\frac{2}{3} \\times x^2 + \\sqrt{9} = y^{n}';
+    assert.strictEqual(Lecture.formuleParlee(formule, 'en'),
+        '2 over 3 times x squared + the square root of 9 equals y to the power of n');
+    assert.strictEqual(Lecture.formuleParlee(formule, 'es'),
+        '2 entre 3 por x al cuadrado + raíz cuadrada de 9 igual a y elevado a n');
+    assert.strictEqual(Lecture.formuleParlee(formule, 'de'),
+        '2 durch 3 mal x zum Quadrat + Wurzel aus 9 gleich y hoch n');
+});
+
+test('formuleParlee : la chimie et les langues sans table', () => {
+    assert.strictEqual(Lecture.formuleParlee('\\ce{2H2 + O2 -> 2H2O}', 'en'), '2H2 + O2 gives 2H2O');
+    assert.strictEqual(Lecture.formuleParlee('\\ce{2H2 + O2 -> 2H2O}', 'de'), '2H2 + O2 ergibt 2H2O');
+    /* Réponse de Traduire en russe : rien à lire plutôt qu'une formule en vrac. */
+    assert.strictEqual(Lecture.formuleParlee('\\frac{1}{2}', 'ru'), '');
+});
+
 test('ordinaux : suffixe collé seulement', () => {
     assert.strictEqual(Lecture.ordinaux('En 1re et en 2de, puis en 3e et 4ème.'), 'En premier et en seconde, puis en 3ième et 4ième.');
     assert.strictEqual(Lecture.ordinaux('2 de ces exemples'), '2 de ces exemples');

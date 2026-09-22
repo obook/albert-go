@@ -31,3 +31,41 @@ test('urlDangereuse : schémas exécutables refusés', () => {
     assert.ok(!Rendu.urlDangereuse('src', 'data:image/png;base64,AAAA'));
     assert.ok(!Rendu.urlDangereuse('title', 'javascript:x'));
 });
+
+test('attributInterdit : gestionnaires, styles et adresses exécutables', () => {
+    assert.ok(Rendu.attributInterdit('onclick', 'alert(1)'));
+    assert.ok(Rendu.attributInterdit('onerror', ''));
+    /* style sert aux fonds et aux positions absolues : il ne vient pas du modèle. */
+    assert.ok(Rendu.attributInterdit('style', 'position:fixed'));
+    assert.ok(Rendu.attributInterdit('href', 'javascript:alert(1)'));
+    assert.ok(Rendu.attributInterdit('src', 'data:text/html,<b>'));
+    assert.ok(!Rendu.attributInterdit('href', 'https://eduscol.education.fr'));
+    assert.ok(!Rendu.attributInterdit('class', 'important'));
+    assert.ok(!Rendu.attributInterdit('title', 'onclick'));
+});
+
+test('BALISES_INTERDITES : les balises qui chargent ou exécutent', () => {
+    const interdites = Rendu.BALISES_INTERDITES.split(', ');
+    for (const balise of ['script', 'iframe', 'object', 'embed', 'link', 'meta', 'base', 'form', 'svg', 'style']) {
+        assert.ok(interdites.includes(balise), balise + ' devrait être retirée');
+    }
+    /* Le texte et ses liens restent : sans eux il n'y a plus de réponse. */
+    for (const balise of ['a', 'p', 'code', 'pre', 'table', 'img']) {
+        assert.ok(!interdites.includes(balise), balise + ' ne doit pas être retirée');
+    }
+});
+
+test('BALISES_INTERDITES_SVG : le HTML embarqué, pas le style', () => {
+    const interdites = Rendu.BALISES_INTERDITES_SVG.split(', ');
+    /* foreignObject rouvre la porte au HTML au milieu du SVG. */
+    assert.ok(interdites.includes('foreignObject'));
+    assert.ok(interdites.includes('script'));
+    /* Mermaid dessine avec ses propres styles. */
+    assert.ok(!interdites.includes('style'));
+});
+
+test('assainir : sans DOM, le HTML repart tel quel', () => {
+    /* Sous Node le nettoyage est sauté : c'est le navigateur qui le fait. */
+    assert.strictEqual(typeof document, 'undefined');
+    assert.strictEqual(Rendu.assainir('<p>Texte</p>'), '<p>Texte</p>');
+});
