@@ -8,7 +8,7 @@
 # Licence : Licence Ouverte 2.0 (Etalab), SPDX etalab-2.0
 #
 # Port fixe : le webhook n8n n'accepte que l'origine http://localhost:8642.
-# Pas d'en-tête de cache : après une modification, recharger avec Ctrl+Maj+R.
+# Servi sans cache : un simple rechargement prend les fichiers modifiés.
 #
 set -eu
 
@@ -32,4 +32,15 @@ echo "Page : $URL (Ctrl+C pour arrêter)"
     fi
 ) >/dev/null 2>&1 &
 
-exec python3 -m http.server "$PORT" --bind 127.0.0.1 -d "$DOSSIER"
+# Sans cache : les adresses restent en ?v=dev, un simple rechargement doit prendre les fichiers modifiés.
+exec python3 - "$PORT" "$DOSSIER" <<'PYTHON'
+import functools, http.server, sys
+
+class SansCache(http.server.SimpleHTTPRequestHandler):
+    def end_headers(self):
+        self.send_header('Cache-Control', 'no-store')
+        super().end_headers()
+
+port, dossier = int(sys.argv[1]), sys.argv[2]
+http.server.ThreadingHTTPServer(('127.0.0.1', port), functools.partial(SansCache, directory=dossier)).serve_forever()
+PYTHON
