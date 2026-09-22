@@ -295,13 +295,17 @@ const Albert = {
     },
 
     /**
-     * Sépare la relecture de Rédiger : le courrier, puis les anomalies après une ligne "%%%".
+     * Sépare la relecture de Rédiger : le courrier, puis les anomalies après "%%%".
+     *
+     * Tolérant : les modèles écrivent parfois "%%%%%", ou la première anomalie sur la même ligne.
      *
      * @param {string} texte - Réponse du modèle.
      * @returns {{texte: string, anomalies: string[]}} Courrier sans Markdown, et points à vérifier.
      */
     separerRevue(texte) {
-        const [courrier, suite = ''] = texte.split(/^[ \t]*%%%[ \t]*$/m);
+        const debut = texte.search(/%{3,}/);
+        const courrier = debut < 0 ? texte : texte.slice(0, debut);
+        const suite = debut < 0 ? '' : texte.slice(debut).replace(/%{3,}/g, '\n');
         const anomalies = suite.split('\n')
             .map(ligne => ligne.replace(/^\s*(?:[-*\u2022]|\d+[.)])\s*/, '').trim())
             .filter(Boolean);

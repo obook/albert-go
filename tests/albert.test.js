@@ -183,6 +183,10 @@ test('separerRevue : courrier puis anomalies après %%%', () => {
     assert.deepStrictEqual(Albert.separerRevue('**Madame,**\n\nTexte.\n%%%\n- Lundi 30 septembre est un mercredi.\n\n* Heure absente.'),
         { texte: 'Madame,\n\nTexte.', anomalies: ['Lundi 30 septembre est un mercredi.', 'Heure absente.'] });
     assert.deepStrictEqual(Albert.separerRevue('Madame,\n\nTexte.\n'), { texte: 'Madame,\n\nTexte.', anomalies: [] });
+    assert.deepStrictEqual(Albert.separerRevue('Madame,\n\nTexte.\n\n%%%%%\n- Heure absente.'),
+        { texte: 'Madame,\n\nTexte.', anomalies: ['Heure absente.'] });
+    assert.deepStrictEqual(Albert.separerRevue('Madame,\n\nTexte.\n%%% - Heure absente.\n%%%'),
+        { texte: 'Madame,\n\nTexte.', anomalies: ['Heure absente.'] });
 });
 
 test('calendrier : un jour par ligne, dans la langue demandée', () => {

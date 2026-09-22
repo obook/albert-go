@@ -243,8 +243,9 @@ function rouvrirRedaction(messages) {
     const proposition = messages.find(m => m.role === 'assistant');
     $('notes').value = notes ? notes.affiche || '' : '';
     dernierEnvoi = $('notes').value;
-    /* Les propositions enregistrées avant le nettoyage peuvent contenir du Markdown. */
-    afficherProposition(proposition ? Albert.sansMarkdown(proposition.content) : '');
+    /* Les anciennes propositions peuvent contenir du Markdown ou des anomalies non séparées. */
+    const revue = Albert.separerRevue(proposition ? proposition.content : '');
+    afficherProposition(revue.texte, false, revue.anomalies);
 }
 
 $('notes').addEventListener('input', () => {
