@@ -325,6 +325,21 @@ const Albert = {
     },
 
     /**
+     * Libellé d'une conversation enregistrée : l'outil devant le titre.
+     *
+     * Discuter n'est pas nommé : c'est l'outil par défaut.
+     *
+     * @param {Object} entree - Entrée d'historique { titre, outil }.
+     * @returns {string} Libellé à afficher.
+     */
+    libelleConversation(entree) {
+        if (!entree.outil || entree.outil === 'discuter') {
+            return entree.titre;
+        }
+        return t('outil.' + entree.outil) + ' : ' + entree.titre;
+    },
+
+    /**
      * Messages à envoyer : toute la conversation, ou la dernière question seule.
      *
      * Seuls role et content partent : les autres champs (affiche) restent ici.

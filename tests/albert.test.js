@@ -68,6 +68,13 @@ test('joindre : question seule, fichier seul, les deux', () => {
     assert.strictEqual(Albert.joindre('Résume', piece), 'Résume\n\nContenu du fichier "notes.txt" :\n\nLigne 1');
 });
 
+test('libelleConversation : l\'outil devant le titre, sauf Discuter', () => {
+    assert.strictEqual(Albert.libelleConversation({ titre: 'Bonjour', outil: 'discuter' }), 'Bonjour');
+    assert.strictEqual(Albert.libelleConversation({ titre: 'Bonjour', outil: 'traduire' }), 'Traduire : Bonjour');
+    /* Conversations enregistrées avant que l'outil ne soit noté. */
+    assert.strictEqual(Albert.libelleConversation({ titre: 'Bonjour' }), 'Bonjour');
+});
+
 test('entreeConversation : titre pris sur la première question affichée', () => {
     const messages = [
         { role: 'user', content: 'Corrige ce texte :\n\nBonjour', affiche: 'Bonjour' },

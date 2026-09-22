@@ -266,36 +266,40 @@ function armerAppuiLong(element, action) {
  * Remplit la liste des conversations dans le menu.
  */
 function afficherHistorique() {
-    const elements = conversations.map(entree => {
-        const li = document.createElement('li');
-        const bouton = document.createElement('button');
-        bouton.type = 'button';
-        bouton.className = 'titre-conversation';
-        /* L'outil devant le titre, sauf pour Discuter. */
-        let libelle = entree.titre;
-        if (entree.outil && entree.outil !== 'discuter') {
-            libelle = t('outil.' + entree.outil) + ' : ' + entree.titre;
-        }
-        bouton.textContent = libelle;
-        bouton.title = libelle + '\n' + I18n.dateHeure(entree.date);
-        bouton.addEventListener('click', () => {
-            rouvrirConversation(entree);
-        });
-        armerAppuiLong(bouton, () => {
-            demanderSuppression(entree, libelle);
-        });
-        const supprimer = document.createElement('button');
-        supprimer.type = 'button';
-        supprimer.className = 'supprimer-conversation';
-        supprimer.innerHTML = ICONES.points;
-        supprimer.setAttribute('aria-label', t('historique.supprimer-aria', { titre: libelle }));
-        supprimer.title = t('historique.supprimer');
-        supprimer.addEventListener('click', () => {
-            demanderSuppression(entree, libelle);
-        });
-        li.append(bouton, supprimer);
-        return li;
-    });
-    $('liste-historique').replaceChildren(...elements);
+    $('liste-historique').replaceChildren(...conversations.map(ligneHistorique));
     $('historique-vide').hidden = conversations.length > 0;
+}
+
+/**
+ * Ligne de la liste : le titre qui rouvre, et le bouton qui supprime.
+ *
+ * @param {Object} entree - Conversation enregistrée.
+ * @returns {HTMLLIElement} La ligne.
+ */
+function ligneHistorique(entree) {
+    const libelle = Albert.libelleConversation(entree);
+    const bouton = document.createElement('button');
+    bouton.type = 'button';
+    bouton.className = 'titre-conversation';
+    bouton.textContent = libelle;
+    bouton.title = libelle + '\n' + I18n.dateHeure(entree.date);
+    bouton.addEventListener('click', () => {
+        rouvrirConversation(entree);
+    });
+    /* Appui long ou clic droit : même menu que le bouton de suppression. */
+    armerAppuiLong(bouton, () => {
+        demanderSuppression(entree, libelle);
+    });
+    const supprimer = document.createElement('button');
+    supprimer.type = 'button';
+    supprimer.className = 'supprimer-conversation';
+    supprimer.innerHTML = ICONES.points;
+    supprimer.setAttribute('aria-label', t('historique.supprimer-aria', { titre: libelle }));
+    supprimer.title = t('historique.supprimer');
+    supprimer.addEventListener('click', () => {
+        demanderSuppression(entree, libelle);
+    });
+    const li = document.createElement('li');
+    li.append(bouton, supprimer);
+    return li;
 }
