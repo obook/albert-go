@@ -97,7 +97,6 @@ const I18n = {
     TEXTES: {
         fr: {
             /* En-tête et menu. */
-            'entete.sous-titre': 'Discuter avec le chat de l\'État',
             'menu.ouvrir': 'Menu',
             'menu.fermer': 'Fermer le menu',
             'menu.resume': 'Ouvrir les réglages',
@@ -125,6 +124,10 @@ const I18n = {
             'outil.corriger': 'Corriger',
             'outil.reformuler': 'Reformuler',
             'outil.traduire': 'Traduire',
+            'module.discuter': 'Chat',
+            'module.corriger': 'Ortho',
+            'module.reformuler': 'Style',
+            'module.traduire': 'Trad',
             'invite.discuter': 'Poser votre question...',
             'invite.reformuler': 'Collez le texte à reformuler...',
             'invite.traduire': 'Collez le texte à traduire...',
@@ -316,7 +319,6 @@ const I18n = {
 
         es: {
             /* Cabecera y menu. */
-            'entete.sous-titre': 'Charlar con la IA del Estado francés',
             'menu.ouvrir': 'Menú',
             'menu.fermer': 'Cerrar el menú',
             'menu.resume': 'Abrir los ajustes',
@@ -344,6 +346,10 @@ const I18n = {
             'outil.corriger': 'Corregir',
             'outil.reformuler': 'Reformular',
             'outil.traduire': 'Traducir',
+            'module.discuter': 'Chat',
+            'module.corriger': 'Ortog',
+            'module.reformuler': 'Estilo',
+            'module.traduire': 'Trad',
             'invite.discuter': 'Haga su pregunta...',
             'invite.reformuler': 'Pegue el texto que reformular...',
             'invite.traduire': 'Pegue el texto que traducir...',
@@ -535,7 +541,6 @@ const I18n = {
 
         en: {
             /* Header and menu. */
-            'entete.sous-titre': 'Chat with the French State AI',
             'menu.ouvrir': 'Menu',
             'menu.fermer': 'Close the menu',
             'menu.resume': 'Open settings',
@@ -563,6 +568,10 @@ const I18n = {
             'outil.corriger': 'Proofread',
             'outil.reformuler': 'Rephrase',
             'outil.traduire': 'Translate',
+            'module.discuter': 'Chat',
+            'module.corriger': 'Proof',
+            'module.reformuler': 'Style',
+            'module.traduire': 'Trans',
             'invite.discuter': 'Ask your question...',
             'invite.reformuler': 'Paste the text to rephrase...',
             'invite.traduire': 'Paste the text to translate...',
@@ -754,7 +763,6 @@ const I18n = {
 
         de: {
             /* Kopfzeile und Menü. */
-            'entete.sous-titre': 'Mit der KI des französischen Staates chatten',
             'menu.ouvrir': 'Menü',
             'menu.fermer': 'Menü schließen',
             'menu.resume': 'Einstellungen öffnen',
@@ -782,6 +790,10 @@ const I18n = {
             'outil.corriger': 'Korrigieren',
             'outil.reformuler': 'Umformulieren',
             'outil.traduire': 'Übersetzen',
+            'module.discuter': 'Chat',
+            'module.corriger': 'Ortho',
+            'module.reformuler': 'Stil',
+            'module.traduire': 'Übers',
             'invite.discuter': 'Stellen Sie Ihre Frage...',
             'invite.reformuler': 'Fügen Sie den umzuformulierenden Text ein...',
             'invite.traduire': 'Fügen Sie den zu übersetzenden Text ein...',
