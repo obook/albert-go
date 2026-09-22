@@ -38,7 +38,12 @@ async function validerCle() {
         bouton.disabled = false;
     }
     messageCle('', false);
-    changerPartage($('partage-accueil').checked);
+    /* Cible pleine : le réglage n'a pas bougé, la case doit le dire. */
+    if (!changerPartage($('partage-accueil').checked)) {
+        $('partage-accueil').checked = partage;
+        $('texte-partage-accueil').textContent = textePartage(partage);
+        toast(t('toast.partage-impossible'));
+    }
     reglages.cle = cle;
     ecrire('cle', reglages.cle);
     $('cle').value = '';
