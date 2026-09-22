@@ -42,7 +42,7 @@
 .pico .boutons-dialogue button { margin-bottom: 0; }
 
 /* À plat, les réglages faisaient trois écrans sur un téléphone. */
-.carte {
+#reglages .carte {
     border: 1px solid var(--bord);
     border-radius: 0.25rem;
     /* Pico recolore le titre quand le details s'ouvre et quand il a le focus :
@@ -51,7 +51,7 @@
     --pico-accordion-open-summary-color: var(--texte);
     --pico-accordion-active-summary-color: var(--texte);
 }
-.carte > summary {
+#reglages .carte > summary {
     padding: 0.625rem 0.75rem;
     margin-bottom: 0;
     background: var(--fond);
@@ -60,17 +60,17 @@
 }
 /* Sur un summary, le contour est le seul repère de focus : --bleu-clair ne
    se voit pas. Les champs gardent leur halo pâle, ils ont déjà une bordure. */
-.carte, .choix-liste { --pico-primary-focus: var(--bleu); }
+#reglages .carte, .choix-liste { --pico-primary-focus: var(--bleu); }
 
 /* .pico devant : sinon Pico gagne la spécificité sur margin-bottom. */
-.pico .carte[open] > summary { margin-bottom: 0; border-bottom: 1px solid var(--bord); }
+.pico #reglages .carte[open] > summary { margin-bottom: 0; border-bottom: 1px solid var(--bord); }
 /* Corps dans un div : une <details> en display grid montre son contenu fermé. */
-.carte .corps {
+#reglages .carte .corps {
     display: grid;
     gap: 1.25rem;
     padding: 0.75rem;
 }
-.carte .corps > .bouton-texte { justify-self: start; }
+#reglages .carte .corps > .bouton-texte { justify-self: start; }
 
 /* Boîte "Partager" : QR code sur fond blanc, même en thème sombre, pour rester lisible. */
 .partage .qr {

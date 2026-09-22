@@ -33,6 +33,21 @@ Traduce todo lo demás, incluido:
 - Los mensajes de interfaz
 - Los términos técnicos que tienen un equivalente corriente en la lengua de destino
 
+## Términos técnicos: ¿traducir o no?
+
+Inglés a español - términos que se traducen:
+- "file" -> "archivo", "software" -> "software", "hardware" -> "hardware"
+- "computer" -> "ordenador", "to save" -> "guardar", "to download" -> "descargar"
+- "folder/directory" -> "carpeta/directorio", "settings" -> "ajustes"
+- "feature" -> "funcionalidad", "browser" -> "navegador"
+- "library" -> "biblioteca", "plugin" -> "complemento"
+- "machine learning" -> "aprendizaje automático"
+- "framework" -> "framework" (déjalo en inglés), "cloud" -> "nube" o "cloud", "open source" -> "open source" (déjalo)
+
+Español a inglés - términos que se traducen:
+- "programa" -> "software", "archivo" -> "file", "ordenador" -> "computer"
+- "ajustes" -> "settings", "actualización" -> "update", "biblioteca" -> "library"
+
 ## Falsos amigos - ATENCIÓN
 
 Inglés a español:

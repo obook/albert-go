@@ -33,6 +33,21 @@ Füge kein Emoji hinzu. Behalte die des Originaltexts, ohne sie zu übersetzen o
 - Meldungen der Benutzeroberfläche
 - Fachbegriffe, die in der Zielsprache einen gängigen Ausdruck haben
 
+## Fachbegriffe: übersetzen oder nicht?
+
+Englisch nach Deutsch - zu übersetzende Begriffe:
+- "file" -> "Datei", "software" -> "Software", "hardware" -> "Hardware"
+- "computer" -> "Rechner", "to save" -> "speichern", "to download" -> "herunterladen"
+- "folder/directory" -> "Ordner/Verzeichnis", "settings" -> "Einstellungen"
+- "feature" -> "Funktion", "browser" -> "Browser"
+- "library" -> "Bibliothek", "plugin" -> "Erweiterung"
+- "machine learning" -> "maschinelles Lernen"
+- "framework" -> "Framework" (englisch lassen), "cloud" -> "Cloud" (lassen), "open source" -> "Open Source" (lassen)
+
+Deutsch nach Englisch - zu übersetzende Begriffe:
+- "Programm" -> "software", "Datei" -> "file", "Rechner" -> "computer"
+- "Einstellungen" -> "settings", "Aktualisierung" -> "update", "Bibliothek" -> "library"
+
 ## Falsche Freunde - ACHTUNG
 
 Englisch nach Deutsch:
