@@ -142,6 +142,10 @@ const I18n = {
             'invite.reformuler': 'Collez le texte à reformuler...',
             'invite.traduire': 'Collez le texte à traduire...',
             'invite.corriger': 'Collez le texte à corriger...',
+            'outil.rediger': 'Rédiger',
+            'module.rediger': 'Rédac',
+            'invite.rediger': 'Madame, Monsieur... puis vos idées principales, une par ligne.',
+            'notes.label': 'Notes du courrier',
 
             /* Langues de Traduire. */
             'langue.choisir': 'Changer de langue',
@@ -290,6 +294,8 @@ const I18n = {
             'toast.voix-absente-en-ligne': 'Aucune voix en {langue} disponible dans ce navigateur.',
             'toast.voix-absente': 'Aucune voix en {langue} installée sur cet appareil. Les voix en ligne ne sont pas utilisées.',
             'etat.reflechit': 'Albert réfléchit...',
+            'etat.redige': 'Albert rédige...',
+            'etat.proposition-prete': 'Proposition à jour.',
             'etat.annulee': 'Question annulée.',
             'etat.attendre-lecture': 'Attendez la fin de la lecture du fichier.',
             'etat.lecture-image': 'Lecture de l\'image par Albert...',
@@ -376,6 +382,10 @@ const I18n = {
             'invite.reformuler': 'Pegue el texto que reformular...',
             'invite.traduire': 'Pegue el texto que traducir...',
             'invite.corriger': 'Pegue el texto que corregir...',
+            'outil.rediger': 'Redactar',
+            'module.rediger': 'Carta',
+            'invite.rediger': 'Estimada señora... y luego sus ideas principales, una por línea.',
+            'notes.label': 'Notas de la carta',
 
             /* Idiomas de Traducir. */
             'langue.choisir': 'Cambiar de idioma',
@@ -524,6 +534,8 @@ const I18n = {
             'toast.voix-absente-en-ligne': 'Ninguna voz en {langue} disponible en este navegador.',
             'toast.voix-absente': 'Ninguna voz en {langue} instalada en este aparato. Las voces en línea no se usan.',
             'etat.reflechit': 'Albert está pensando...',
+            'etat.redige': 'Albert está redactando...',
+            'etat.proposition-prete': 'Propuesta actualizada.',
             'etat.annulee': 'Pregunta cancelada.',
             'etat.attendre-lecture': 'Espere a que termine la lectura del archivo.',
             'etat.lecture-image': 'Albert está leyendo la imagen...',
@@ -610,6 +622,10 @@ const I18n = {
             'invite.reformuler': 'Paste the text to rephrase...',
             'invite.traduire': 'Paste the text to translate...',
             'invite.corriger': 'Paste the text to proofread...',
+            'outil.rediger': 'Write',
+            'module.rediger': 'Letter',
+            'invite.rediger': 'Dear Mrs Smith... then your main ideas, one per line.',
+            'notes.label': 'Letter notes',
 
             /* Translate languages. */
             'langue.choisir': 'Change language',
@@ -758,6 +774,8 @@ const I18n = {
             'toast.voix-absente-en-ligne': 'No {langue} voice available in this browser.',
             'toast.voix-absente': 'No {langue} voice installed on this device. Online voices are not used.',
             'etat.reflechit': 'Albert is thinking...',
+            'etat.redige': 'Albert is writing...',
+            'etat.proposition-prete': 'Draft updated.',
             'etat.annulee': 'Question cancelled.',
             'etat.attendre-lecture': 'Wait until the file has been read.',
             'etat.lecture-image': 'Albert is reading the image...',
@@ -844,6 +862,10 @@ const I18n = {
             'invite.reformuler': 'Fügen Sie den umzuformulierenden Text ein...',
             'invite.traduire': 'Fügen Sie den zu übersetzenden Text ein...',
             'invite.corriger': 'Fügen Sie den zu korrigierenden Text ein...',
+            'outil.rediger': 'Verfassen',
+            'module.rediger': 'Brief',
+            'invite.rediger': 'Sehr geehrte Frau Müller... dann Ihre Hauptgedanken, einer pro Zeile.',
+            'notes.label': 'Notizen zum Brief',
 
             /* Sprachen von Übersetzen. */
             'langue.choisir': 'Sprache wechseln',
@@ -992,6 +1014,8 @@ const I18n = {
             'toast.voix-absente-en-ligne': 'Keine Stimme für {langue} in diesem Browser verfügbar.',
             'toast.voix-absente': 'Keine Stimme für {langue} auf diesem Gerät installiert. Online-Stimmen werden nicht genutzt.',
             'etat.reflechit': 'Albert denkt nach...',
+            'etat.redige': 'Albert schreibt...',
+            'etat.proposition-prete': 'Vorschlag aktualisiert.',
             'etat.annulee': 'Frage abgebrochen.',
             'etat.attendre-lecture': 'Warten Sie, bis die Datei gelesen ist.',
             'etat.lecture-image': 'Albert liest das Bild...',

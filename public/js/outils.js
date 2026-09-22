@@ -1,6 +1,6 @@
 /*
  * outils.js
- * Outils du menu : Discuter, Reformuler, Traduire (repris d'albert-droid), Corriger.
+ * Outils du menu : Discuter, Reformuler, Traduire (repris d'albert-droid), Corriger, Rédiger.
  *
  * Garde l'outil actif et les langues de Traduire. Les consignes système
  * sont dans public/prompts/<langue>/*.txt, lues au premier usage puis
@@ -41,7 +41,7 @@ let langueCible = langueLue('langue-cible', I18n.langue === 'fr' ? 'en' : 'fr');
 /**
  * Nom du module, première lettre en rouge comme le "t" de la marque.
  *
- * Les quatre outils se présentent comme une gamme : les noms module.* sont
+ * Les outils se présentent comme une gamme : les noms module.* sont
  * courts, pour tenir sur une ligne d'en-tête de téléphone, là où outil.*
  * garde les verbes complets pour l'historique et les messages d'erreur.
  *
@@ -131,6 +131,7 @@ function afficherOutil() {
     $('outil-actif').replaceChildren(...nomModule(outilActuel));
     $('saisie').placeholder = t('invite.' + outilActuel);
     $('langues').hidden = outilActuel !== 'traduire';
+    afficher();
 }
 
 /**

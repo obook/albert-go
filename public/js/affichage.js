@@ -45,8 +45,10 @@ let minuteurToast = null;
 function afficher() {
     const connecte = !!reglages.cle;
     $('form-cle').hidden = connecte;
-    $('chat').hidden = !connecte;
-    $('saisie-zone').hidden = !connecte;
+    const redaction = outilActuel === 'rediger';
+    $('chat').hidden = !connecte || redaction;
+    $('saisie-zone').hidden = !connecte || redaction;
+    $('redaction').hidden = !connecte || !redaction;
     for (const id of ['ouvrir-reglages', 'nouvelle', 'resume-reglages', 'menu-outils', 'menu-historique', 'changer-cle']) {
         $(id).hidden = !connecte;
     }
@@ -75,7 +77,7 @@ function ecranTactile() {
  */
 function focusSaisie() {
     if (!ecranTactile()) {
-        $('saisie').focus();
+        $(outilActuel === 'rediger' ? 'notes' : 'saisie').focus();
     }
 }
 
