@@ -194,16 +194,19 @@ main {
 }
 .redaction[hidden] { display: none; }
 .proposition, .notes {
-    overflow-y: auto;
     padding: 0.75rem 1rem;
     background: var(--surface);
     border: 1px solid var(--bord);
     border-radius: 0.75rem;
 }
+/* Le texte défile, les boutons Copier et Écouter restent en bas du cadre. */
+.proposition { display: flex; flex-direction: column; min-height: 0; }
+.proposition .actions-reponse:empty { display: none; }
 /* Texte brut : chaque retour à la ligne du courrier reste visible. */
-.proposition { white-space: pre-wrap; overflow-wrap: anywhere; }
-.proposition.erreur { color: var(--erreur); }
+.texte-proposition { flex: 1; overflow-y: auto; white-space: pre-wrap; overflow-wrap: anywhere; }
+.texte-proposition.erreur { color: var(--erreur); }
 .notes {
+    overflow-y: auto;
     width: 100%;
     resize: none;
     font: inherit;

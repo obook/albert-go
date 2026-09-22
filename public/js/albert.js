@@ -280,6 +280,21 @@ const Albert = {
     },
 
     /**
+     * Retire le Markdown qu'un modèle ajoute malgré la consigne de Rédiger.
+     *
+     * Gras, italique et titres seulement : les tirets de liste viennent souvent des notes.
+     *
+     * @param {string} texte - Réponse du modèle.
+     * @returns {string} Texte brut, retours à la ligne gardés.
+     */
+    sansMarkdown(texte) {
+        return texte
+            .replace(/\*\*(.+?)\*\*|__(.+?)__/g, '$1$2')
+            .replace(/\*(\S(?:[^*\n]*\S)?)\*/g, '$1')
+            .replace(/^#{1,6}[ \t]+/gm, '');
+    },
+
+    /**
      * Sépare les variantes d'une réponse de Reformuler ("### Titre" puis le texte).
      *
      * @param {string} texte - Réponse du modèle.

@@ -28,9 +28,21 @@ let dernierEnvoi = '';
  * @param {boolean} [erreur] - true pour un message d'erreur.
  */
 function afficherProposition(texte, erreur = false) {
+    /* Une lecture en cours lirait l'ancienne proposition. */
+    if (typeof speechSynthesis !== 'undefined') {
+        Lecture.arreter();
+    }
     $('proposition').textContent = texte;
     $('proposition').classList.toggle('erreur', erreur);
-    $('actions-redaction').replaceChildren(...(erreur || !texte ? [] : [boutonCopier(texte)]));
+    const boutons = [];
+    if (texte && !erreur) {
+        boutons.push(boutonCopier(texte));
+        /* ponytail: lu dans la langue de l'interface, pas détectée dans le courrier. */
+        if (typeof speechSynthesis !== 'undefined') {
+            boutons.push(boutonLire($('proposition'), I18n.langue));
+        }
+    }
+    $('actions-redaction').replaceChildren(...boutons);
 }
 
 /**
@@ -74,10 +86,11 @@ async function rediger() {
             return;
         }
         dernierEnvoi = notes;
-        afficherProposition(reponse.texte);
+        const proposition = Albert.sansMarkdown(reponse.texte);
+        afficherProposition(proposition);
         conversation = [
             { role: 'user', content: demande, affiche: notes.trim() },
-            { role: 'assistant', content: reponse.texte }
+            { role: 'assistant', content: proposition }
         ];
         sauverConversation();
         $('etat-redaction').textContent = t('etat.proposition-prete');
@@ -117,7 +130,8 @@ function rouvrirRedaction(messages) {
     const proposition = messages.find(m => m.role === 'assistant');
     $('notes').value = notes ? notes.affiche || '' : '';
     dernierEnvoi = $('notes').value;
-    afficherProposition(proposition ? proposition.content : '');
+    /* Les propositions enregistrées avant le nettoyage peuvent contenir du Markdown. */
+    afficherProposition(proposition ? Albert.sansMarkdown(proposition.content) : '');
 }
 
 $('notes').addEventListener('input', () => {

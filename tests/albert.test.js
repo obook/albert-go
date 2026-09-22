@@ -171,3 +171,10 @@ test('doitEnvoyer : longueur minimale et texte changé', () => {
     assert.strictEqual(Albert.doitEnvoyer(dix + '\n ', dix), false);
     assert.strictEqual(Albert.doitEnvoyer(dix + 'b', dix), true);
 });
+
+test('sansMarkdown : gras, italique et titres retirés, lignes gardées', () => {
+    assert.strictEqual(Albert.sansMarkdown('**Madame,**\n\nJe vous __écris__.'), 'Madame,\n\nJe vous écris.');
+    assert.strictEqual(Albert.sansMarkdown('## Objet : absence\nTexte'), 'Objet : absence\nTexte');
+    assert.strictEqual(Albert.sansMarkdown('Un *mot* important'), 'Un mot important');
+    assert.strictEqual(Albert.sansMarkdown('3 * 4 = 12\n- liste gardée'), '3 * 4 = 12\n- liste gardée');
+});
