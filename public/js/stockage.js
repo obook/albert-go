@@ -5,7 +5,7 @@
  * Les scripts de l'interface sont des scripts classiques qui partagent
  * leurs variables globales. Ordre de chargement (index.html) :
  *   stockage.js -> affichage.js -> reponse.js -> reglages.js -> historique.js
- *   -> outils.js -> menu.js -> piece-jointe.js -> cle.js -> app.js
+ *   -> outils.js -> redaction.js -> menu.js -> piece-jointe.js -> cle.js -> app.js
  * Ce fichier définit $, lire, ecrire, reglages, conversation et historique.
  *
  * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go

@@ -224,6 +224,7 @@ function nouvelleConversation() {
         annulation.abort();
     }
     retirerPiece();
+    viderRedaction();
     conversation = [];
     conversationId = null;
     retenirCourante(null);
@@ -235,10 +236,11 @@ function nouvelleConversation() {
 }
 
 /**
- * Bouton "Nouvelle conversation" : fil vide, et retour à Discuter.
+ * Bouton "Nouvelle conversation" : fil vide, et retour à Discuter
+ * (Rédiger reste sur place, avec des notes vides).
  */
 function repartirDeZero() {
-    if (outilActuel === 'discuter') {
+    if (outilActuel === 'discuter' || outilActuel === 'rediger') {
         nouvelleConversation();
     } else {
         choisirOutil('discuter');

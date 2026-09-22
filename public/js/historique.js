@@ -155,6 +155,10 @@ function rouvrirConversation(entree) {
     conversation = entree.messages.slice();
     conversationId = entree.id;
     retenirCourante(conversationId);
+    if (outilActuel === 'rediger') {
+        rouvrirRedaction(conversation);
+        return;
+    }
     for (const message of conversation) {
         /* Traduction enregistrée avant qu'on garde la langue : on prend la langue cible actuelle. */
         let langue = message.langue;
