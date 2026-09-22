@@ -19,6 +19,8 @@ Réglages : modèle (liste des modèles de conversation lue sur l'API Albert, al
 
 Fichiers joints (trombone, glisser-déposer ou Ctrl+V) : un fichier texte est lu dans le navigateur ; une image est transcrite par le modèle Medium, puis son texte part avec la question. Les PDF ne sont pas pris en charge.
 
+Rédiger : on tape la formule d'appel ("Madame,", "Monsieur le directeur,") puis ses idées principales ; à chaque pause de frappe, Albert propose le courrier rédigé et corrigé, dans le registre qu'implique la formule d'appel. Bouton Copier ; la dernière proposition est gardée dans l'historique.
+
 Sous chaque réponse : copier le texte, ou le lire à voix haute avec une voix installée sur l'appareil. Chrome sous Linux n'en voit aucune : le réglage "Autoriser les voix en ligne" permet alors d'utiliser la voix de Google, qui reçoit le texte lu.
 
 Pour obtenir une clé Albert : [demande d'accès](https://albert.sites.beta.gouv.fr/access/).
