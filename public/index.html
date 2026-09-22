@@ -39,7 +39,12 @@
 </head>
 <body>
     <header class="entete">
-        <button type="button" class="bouton-icone burger" id="ouvrir-menu" data-t-attr="aria-label:menu.ouvrir" aria-haspopup="dialog" aria-controls="menu">
+        <button type="button"
+                class="bouton-icone burger"
+                id="ouvrir-menu"
+                data-t-attr="aria-label:menu.ouvrir"
+                aria-haspopup="dialog"
+                aria-controls="menu">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
         <div class="titre">
@@ -77,14 +82,26 @@
                     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
                 </button>
             </div>
-            <button type="button" class="resume" id="resume-reglages" aria-haspopup="dialog" data-t-attr="title:menu.resume" hidden></button>
+            <button type="button"
+                    class="resume"
+                    id="resume-reglages"
+                    aria-haspopup="dialog"
+                    data-t-attr="title:menu.resume"
+                    hidden></button>
             <hr>
-            <button type="button" class="entree" id="nouvelle" hidden>
+            <button type="button"
+                    class="entree"
+                    id="nouvelle"
+                    hidden>
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
                 <span data-t="menu.nouvelle"></span>
             </button>
             <!-- Libellés posés par afficherOutil : des noms de modules, non traduits. -->
-            <div id="menu-outils" class="outils" role="group" data-t-attr="aria-label:menu.outils" hidden>
+            <div id="menu-outils"
+                 class="outils"
+                 role="group"
+                 data-t-attr="aria-label:menu.outils"
+                 hidden>
                 <button type="button" class="entree" data-outil="discuter">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12Z"/></svg>
                     <span></span>
@@ -111,7 +128,10 @@
                 <p id="historique-vide" class="note" data-t="historique.vide"></p>
             </details>
             <hr>
-            <button type="button" class="entree" id="ouvrir-reglages" hidden>
+            <button type="button"
+                    class="entree"
+                    id="ouvrir-reglages"
+                    hidden>
                 <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg>
                 <span data-t="menu.reglages"></span>
             </button>
@@ -124,7 +144,10 @@
                 <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-5M12 8h.01"/></svg>
                 <span data-t="menu.apropos"></span>
             </button>
-            <button type="button" class="entree danger" id="changer-cle" hidden>
+            <button type="button"
+                    class="entree danger"
+                    id="changer-cle"
+                    hidden>
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5M21 12H9"/></svg>
                 <span data-t="menu.changer-cle"></span>
             </button>
@@ -135,19 +158,32 @@
         <form id="form-cle" class="accueil pico" hidden>
             <h2 data-t="cle.titre"></h2>
             <label for="cle" data-t="cle.label"></label>
-            <input type="password" id="cle" autocomplete="off" spellcheck="false" required>
+            <input type="password"
+                   id="cle"
+                   autocomplete="off"
+                   spellcheck="false"
+                   required>
             <p id="message-cle" class="message-cle" role="status"></p>
             <p data-t-html="cle.stockee"></p>
             <label class="interrupteur">
-                <input type="checkbox" id="partage-accueil" role="switch" checked>
+                <input type="checkbox"
+                       id="partage-accueil"
+                       role="switch"
+                       checked>
                 <span id="texte-partage-accueil"></span>
             </label>
             <button type="submit" class="bouton-principal" data-t="cle.enregistrer"></button>
             <p class="note" data-t-html="cle.demander"></p>
         </form>
 
-        <section id="chat" class="chat" hidden data-t-attr="aria-label:chat.aria">
-            <ol id="fil" class="fil" role="log" aria-live="polite"></ol>
+        <section id="chat"
+                 class="chat"
+                 hidden
+                 data-t-attr="aria-label:chat.aria">
+            <ol id="fil"
+                class="fil"
+                role="log"
+                aria-live="polite"></ol>
         </section>
     </main>
 
@@ -162,17 +198,32 @@
             </div>
             <textarea id="saisie" rows="1" aria-describedby="aide-saisie"></textarea>
             <div class="barre">
-                <input type="file" id="fichier" accept="image/*,.txt,.md,.csv,.tsv,.json,.xml,.html,.css,.js,.py,.tex,.sql" hidden>
-                <button type="button" class="bouton-icone joindre" id="joindre" data-t-attr="aria-label:saisie.joindre;title:saisie.joindre">
+                <input type="file"
+                       id="fichier"
+                       accept="image/*,.txt,.md,.csv,.tsv,.json,.xml,.html,.css,.js,.py,.tex,.sql"
+                       hidden>
+                <button type="button"
+                        class="bouton-icone joindre"
+                        id="joindre"
+                        data-t-attr="aria-label:saisie.joindre;title:saisie.joindre">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5l-8.6 8.6a5 5 0 0 1-7.1-7.1l8.6-8.6a3.3 3.3 0 0 1 4.7 4.7l-8.6 8.6a1.7 1.7 0 0 1-2.4-2.4l7.9-7.9"/></svg>
                 </button>
-                <button type="button" class="bouton-icone fleche" id="question-precedente" data-t-attr="aria-label:saisie.precedente">
+                <button type="button"
+                        class="bouton-icone fleche"
+                        id="question-precedente"
+                        data-t-attr="aria-label:saisie.precedente">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg>
                 </button>
-                <button type="button" class="bouton-icone fleche" id="question-suivante" data-t-attr="aria-label:saisie.suivante">
+                <button type="button"
+                        class="bouton-icone fleche"
+                        id="question-suivante"
+                        data-t-attr="aria-label:saisie.suivante">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
                 </button>
-                <button type="submit" id="envoyer" class="envoyer" data-t-attr="aria-label:saisie.envoyer">
+                <button type="submit"
+                        id="envoyer"
+                        class="envoyer"
+                        data-t-attr="aria-label:saisie.envoyer">
                     <svg class="icone-envoyer" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
                     <svg class="icone-arreter" viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="7" width="10" height="10" rx="1.5"/></svg>
                 </button>
@@ -183,7 +234,10 @@
         <p id="aide-saisie" class="avertissement" data-t="saisie.avertissement"></p>
     </footer>
 
-    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <div id="toast"
+         class="toast"
+         role="status"
+         aria-live="polite"></div>
 
     <dialog id="reglages" class="reglages pico" aria-labelledby="titre-reglages">
         <form method="dialog">
@@ -206,7 +260,12 @@
                         <legend data-t="reglages.temperature"></legend>
                         <div class="temperature">
                             <span aria-hidden="true" data-t="reglages.precis"></span>
-                            <input type="range" id="temperature" min="0" max="1" step="0.1" aria-describedby="aide-temperature">
+                            <input type="range"
+                                   id="temperature"
+                                   min="0"
+                                   max="1"
+                                   step="0.1"
+                                   aria-describedby="aide-temperature">
                             <span aria-hidden="true" data-t="reglages.creatif"></span>
                             <output id="valeur-temperature" for="temperature"></output>
                         </div>
@@ -222,7 +281,10 @@
                     </fieldset>
 
                     <!-- Remet les trois réglages ci-dessus, et eux seuls. -->
-                    <button type="button" class="bouton-texte outline" id="reglages-conseilles" data-t="reglages.conseilles"></button>
+                    <button type="button"
+                            class="bouton-texte outline"
+                            id="reglages-conseilles"
+                            data-t="reglages.conseilles"></button>
                 </div>
             </details>
 
@@ -231,7 +293,10 @@
                 <div class="corps">
                     <p id="aide-recherche" class="note mise-en-garde" data-t="reglages.aide-recherche"></p>
                     <label class="interrupteur">
-                        <input type="checkbox" id="recherche-reglage" role="switch" aria-describedby="aide-recherche">
+                        <input type="checkbox"
+                               id="recherche-reglage"
+                               role="switch"
+                               aria-describedby="aide-recherche">
                         <span data-t="reglages.recherche-active"></span>
                     </label>
                     <!-- Une carte par moteur, comme pour les modèles : nom et domaine. -->
@@ -244,9 +309,15 @@
                     </fieldset>
                     <div id="cles-recherche">
                         <label for="cle-recherche" data-t="reglages.cle-recherche"></label>
-                        <input type="password" id="cle-recherche" autocomplete="off" spellcheck="false">
+                        <input type="password"
+                               id="cle-recherche"
+                               autocomplete="off"
+                               spellcheck="false">
                         <label for="cx-recherche" data-t="reglages.cx"></label>
-                        <input type="text" id="cx-recherche" autocomplete="off" spellcheck="false">
+                        <input type="text"
+                               id="cx-recherche"
+                               autocomplete="off"
+                               spellcheck="false">
                     </div>
                 </div>
             </details>
@@ -269,7 +340,10 @@
                         <legend data-t="reglages.lecture"></legend>
                         <p id="aide-voix" class="note mise-en-garde" data-t="reglages.aide-voix"></p>
                         <label class="interrupteur">
-                            <input type="checkbox" id="voix-en-ligne" role="switch" aria-describedby="aide-voix">
+                            <input type="checkbox"
+                                   id="voix-en-ligne"
+                                   role="switch"
+                                   aria-describedby="aide-voix">
                             <span data-t="reglages.voix-en-ligne"></span>
                         </label>
                     </fieldset>
@@ -293,37 +367,67 @@
         </form>
     </dialog>
 
-    <dialog id="confirmer-cle" class="reglages pico" aria-labelledby="titre-confirmer-cle" aria-describedby="texte-confirmer-cle">
+    <dialog id="confirmer-cle"
+            class="reglages pico"
+            aria-labelledby="titre-confirmer-cle"
+            aria-describedby="texte-confirmer-cle">
         <form method="dialog">
             <h2 id="titre-confirmer-cle" data-t="confirmer-cle.titre"></h2>
             <p id="texte-confirmer-cle" data-t="confirmer-cle.texte"></p>
             <div class="boutons-dialogue">
-                <button type="submit" value="non" class="bouton-texte outline" autofocus data-t="dialogue.non"></button>
-                <button type="submit" value="oui" class="bouton-principal" data-t="dialogue.oui"></button>
+                <button type="submit"
+                        value="non"
+                        class="bouton-texte outline"
+                        autofocus
+                        data-t="dialogue.non"></button>
+                <button type="submit"
+                        value="oui"
+                        class="bouton-principal"
+                        data-t="dialogue.oui"></button>
             </div>
         </form>
     </dialog>
 
-    <dialog id="confirmer-suppression" class="reglages pico" aria-labelledby="titre-confirmer-suppression" aria-describedby="texte-confirmer-suppression">
+    <dialog id="confirmer-suppression"
+            class="reglages pico"
+            aria-labelledby="titre-confirmer-suppression"
+            aria-describedby="texte-confirmer-suppression">
         <form method="dialog">
             <h2 id="titre-confirmer-suppression" data-t="confirmer-suppression.titre"></h2>
             <p id="texte-confirmer-suppression"></p>
             <div class="boutons-dialogue">
-                <button type="submit" value="non" class="bouton-texte outline" autofocus data-t="dialogue.non"></button>
-                <button type="submit" value="oui" class="bouton-principal" data-t="dialogue.oui"></button>
+                <button type="submit"
+                        value="non"
+                        class="bouton-texte outline"
+                        autofocus
+                        data-t="dialogue.non"></button>
+                <button type="submit"
+                        value="oui"
+                        class="bouton-principal"
+                        data-t="dialogue.oui"></button>
             </div>
         </form>
     </dialog>
 
-    <dialog id="partage" class="reglages partage pico" aria-labelledby="titre-partage" aria-describedby="texte-partage">
+    <dialog id="partage"
+            class="reglages partage pico"
+            aria-labelledby="titre-partage"
+            aria-describedby="texte-partage">
         <form method="dialog">
             <h2 id="titre-partage" data-t="partage.titre"></h2>
             <p id="texte-partage" data-t="partage.texte"></p>
-            <img id="qr-partage" class="qr" width="240" height="240" data-t-attr="alt:partage.qr">
+            <img id="qr-partage"
+                 class="qr"
+                 width="240"
+                 height="240"
+                 data-t-attr="alt:partage.qr">
             <div class="adresse-partage">
                 <label for="adresse-partage" class="visuellement-cache" data-t="partage.adresse"></label>
                 <input type="text" id="adresse-partage" readonly>
-                <button type="button" class="bouton-texte outline" id="copier-adresse" data-t="partage.copier"></button>
+                <button type="button"
+                        class="bouton-texte outline"
+                        id="copier-adresse"
+                        data-t="partage.copier"></button>
             </div>
             <button type="submit" class="bouton-principal" data-t="dialogue.fermer"></button>
         </form>
