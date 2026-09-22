@@ -217,6 +217,32 @@ const Albert = {
     },
 
     /**
+     * Texte montré dans le fil pour la question posée.
+     *
+     * Le fichier joint s'annonce sous la question, ou seul si rien n'est tapé.
+     *
+     * @param {string} question - Texte saisi, éventuellement vide.
+     * @param {?{nom: string}} piece - Fichier joint, ou null.
+     * @returns {string} Texte de la bulle.
+     */
+    texteAffiche(question, piece) {
+        const lignes = [question, piece ? t('fichier.joint', { nom: piece.nom }) : ''];
+        return lignes.filter(Boolean).join('\n');
+    },
+
+    /**
+     * Indique si le texte contient une adresse web.
+     *
+     * Albert n'a pas accès au web : il inventerait le contenu de la page.
+     *
+     * @param {string} texte - Texte saisi.
+     * @returns {boolean} true si une adresse y figure.
+     */
+    contientLien(texte) {
+        return /https?:\/\/|www\./i.test(texte);
+    },
+
+    /**
      * Ajoute à la saisie l'instruction propre à l'outil (comme albert-droid).
      *
      * @param {string} outil - Clé de OUTILS.

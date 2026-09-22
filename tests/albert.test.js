@@ -68,6 +68,23 @@ test('joindre : question seule, fichier seul, les deux', () => {
     assert.strictEqual(Albert.joindre('Résume', piece), 'Résume\n\nContenu du fichier "notes.txt" :\n\nLigne 1');
 });
 
+test('texteAffiche : la pièce jointe s\'annonce sous la question', () => {
+    const piece = { nom: 'notes.txt' };
+    assert.strictEqual(Albert.texteAffiche('Bonjour', null), 'Bonjour');
+    assert.strictEqual(Albert.texteAffiche('Bonjour', piece), 'Bonjour\nFichier joint : notes.txt');
+    /* Un fichier peut partir sans question. */
+    assert.strictEqual(Albert.texteAffiche('', piece), 'Fichier joint : notes.txt');
+    assert.strictEqual(Albert.texteAffiche('', null), '');
+});
+
+test('contientLien : les adresses qu\'Albert ne peut pas ouvrir', () => {
+    assert.ok(Albert.contientLien('Résume https://exemple.fr/page'));
+    assert.ok(Albert.contientLien('Va voir www.exemple.fr'));
+    assert.ok(Albert.contientLien('HTTP://EXEMPLE.FR'));
+    assert.ok(!Albert.contientLien('Parle-moi du web.'));
+    assert.ok(!Albert.contientLien(''));
+});
+
 test('construireDemande : instruction selon l\'outil', () => {
     assert.strictEqual(Albert.construireDemande('discuter', 'Bonjour', 'auto', 'en'), 'Bonjour');
     assert.strictEqual(Albert.construireDemande('reformuler', 'Texte', 'auto', 'en'), 'Reformule ce texte :\n\nTexte');
