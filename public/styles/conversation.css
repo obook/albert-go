@@ -189,7 +189,7 @@ main {
     max-width: 56rem;
     margin: 0 auto;
     display: grid;
-    grid-template-rows: minmax(0, 1fr) auto minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
     gap: 0.5rem;
 }
 .redaction[hidden] { display: none; }
@@ -205,10 +205,13 @@ main {
 /* Texte brut : chaque retour à la ligne du courrier reste visible. */
 .texte-proposition { flex: 1; overflow-y: auto; white-space: pre-wrap; overflow-wrap: anywhere; }
 .texte-proposition.erreur { color: var(--erreur); }
-/* Statut de Rédiger : hauteur fixe d'une ligne, vide ou non, pour ne pas décaler les deux champs. */
+/* Statut de Rédiger, en tête du cadre : hauteur fixe d'une ligne, vide ou non, pour que le texte ne saute pas. */
 #etat-redaction {
+    flex: none;
     height: 1.5em;
-    margin: 0;
+    margin: 0 0 0.25rem;
+    text-align: left;
+    transform-origin: left center;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
