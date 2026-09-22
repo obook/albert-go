@@ -21,6 +21,59 @@ let annulationRedaction = null;
 /** Notes de la dernière proposition reçue : retenues au succès seulement. */
 let dernierEnvoi = '';
 
+/** Symboles qui défilent dans le statut, à la manière de l'agent Crush. */
+const SYMBOLES = '#%&*+=<>/~^?!$@';
+let minuteurSymboles = null;
+
+/**
+ * Chaîne de symboles tirés au hasard ; les espaces du modèle restent des espaces.
+ *
+ * @param {string} modele - Texte dont on garde la longueur et les espaces.
+ * @returns {string} Symboles.
+ */
+function symboles(modele) {
+    return modele.replace(/\S/g, () => SYMBOLES[Math.floor(Math.random() * SYMBOLES.length)]);
+}
+
+/**
+ * Écrit le statut. "attente" : des symboles défilent après le texte ;
+ * "decode" : le texte se révèle de gauche à droite à partir de symboles.
+ * Le lecteur d'écran ne lit que le texte, jamais les symboles.
+ *
+ * @param {string} texte - Texte du statut, ou '' pour l'effacer.
+ * @param {string} [effet] - "attente", "decode", ou rien pour un texte fixe.
+ */
+function afficherStatut(texte, effet) {
+    clearInterval(minuteurSymboles);
+    const statut = $('etat-redaction');
+    if (!texte || !effet || matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        statut.textContent = texte;
+        return;
+    }
+    const lu = document.createElement('span');
+    lu.className = 'visuellement-cache';
+    lu.textContent = texte;
+    const vu = document.createElement('span');
+    vu.setAttribute('aria-hidden', 'true');
+    statut.replaceChildren(lu, vu);
+    const base = texte.replace(/\.+$/, '');
+    let pas = 0;
+    const dessiner = () => {
+        pas++;
+        if (effet === 'attente') {
+            vu.textContent = base + ' ' + symboles('xxx');
+            return;
+        }
+        const nets = Math.min(texte.length, Math.round(texte.length * pas / 12));
+        vu.textContent = texte.slice(0, nets) + symboles(texte.slice(nets));
+        if (nets === texte.length) {
+            clearInterval(minuteurSymboles);
+        }
+    };
+    dessiner();
+    minuteurSymboles = setInterval(dessiner, 60);
+}
+
 /**
  * Affiche la proposition, ou un message d'erreur à sa place.
  *
@@ -65,7 +118,7 @@ function arreterRedaction() {
         annulationRedaction = null;
         interroger(false);
     }
-    $('etat-redaction').textContent = '';
+    afficherStatut('');
     $('etat-redaction').classList.remove('annonce');
 }
 
@@ -82,7 +135,7 @@ async function demanderRedaction(champ, demande, attente) {
     const annulation = new AbortController();
     annulationRedaction = annulation;
     interroger(true);
-    $('etat-redaction').textContent = t(attente);
+    afficherStatut(t(attente), 'attente');
     try {
         const reponse = await Albert.repondre(reglages.cle, {
             model: modeleActuel().id,
@@ -98,7 +151,7 @@ async function demanderRedaction(champ, demande, attente) {
             const message = messageEchec(err).texte;
             afficherProposition(message, true);
             /* #proposition n'est pas une région live : le statut annonce l'erreur. */
-            $('etat-redaction').textContent = message;
+            afficherStatut(message);
         }
         return null;
     } finally {
@@ -124,8 +177,8 @@ function garderProposition(notes, proposition, anomalies, etat) {
         { role: 'assistant', content: proposition }
     ];
     sauverConversation();
+    afficherStatut(t(etat), 'decode');
     const statut = $('etat-redaction');
-    statut.textContent = t(etat);
     /* Relance l'animation à chaque proposition, même si le texte du statut ne change pas. */
     statut.classList.remove('annonce');
     void statut.offsetWidth;
