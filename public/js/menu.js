@@ -86,7 +86,7 @@ $('ouvrir-partage').addEventListener('click', ouvrirPartage);
 $('copier-adresse').addEventListener('click', () => {
     navigator.clipboard.writeText($('adresse-partage').value).then(() => {
         toast(t('toast.adresse-copiee'));
-    });
+    }).catch(() => toast(t('toast.copie-refusee')));
 });
 
 $('adresse-partage').addEventListener('focus', () => {
@@ -102,7 +102,7 @@ function texteVersion() {
     if (!VERSION.date) {
         return VERSION.commit;
     }
-    const date = new Intl.DateTimeFormat(I18n.langue, { dateStyle: 'short', timeStyle: 'short' }).format(new Date(VERSION.date));
+    const date = I18n.dateHeure(new Date(VERSION.date));
     return t('version.format', { commit: VERSION.commit, date: date });
 }
 

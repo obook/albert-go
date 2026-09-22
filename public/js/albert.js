@@ -88,7 +88,7 @@ const Albert = {
             erreur.status = res.status;
             throw erreur;
         }
-        return this.conversation((corps && corps.data) || []);
+        return this.normaliserModeles((corps && corps.data) || []);
     },
 
     /**
@@ -99,7 +99,7 @@ const Albert = {
      * @param {Object[]} liste - Modèles bruts renvoyés par /v1/models.
      * @returns {Object[]} Modèles { id, nom, reel, type, contexte }.
      */
-    conversation(liste) {
+    normaliserModeles(liste) {
         const ordre = this.MODELES.map(m => m.id);
         return liste
             .filter(m => ['text-generation', 'image-text-to-text'].includes(m.model_type || m.type))
@@ -157,9 +157,14 @@ const Albert = {
         if (!res.ok) {
             throw new Error(this.messageErreur(res.status, corps));
         }
+        /* Un relais en panne peut rendre un corps vide avec un code 200. */
+        const choix = corps && corps.choices && corps.choices[0];
+        if (!choix || !choix.message) {
+            throw new Error(t('erreur.reponse-illisible'));
+        }
         /* message complet : il porte les tool_calls. content est null quand le
            modèle n'appelle qu'un outil, d'où le '' pour l'affichage. */
-        return { texte: corps.choices[0].message.content || '', message: corps.choices[0].message, usage: corps.usage || null };
+        return { texte: choix.message.content || '', message: choix.message, usage: corps.usage || null };
     },
 
     /**

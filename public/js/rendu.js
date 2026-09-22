@@ -77,6 +77,38 @@ const Rendu = {
     },
 
     /**
+     * Nettoie le SVG rendu par Mermaid.
+     *
+     * assainir() retire les <svg> entiers : il ne peut pas servir ici. Le
+     * mode strict de Mermaid empêche déjà le HTML dans les étiquettes, mais
+     * le dépôt ne met aucun contenu issu du modèle dans le DOM sans passage
+     * par une sanitisation à lui.
+     *
+     * @param {string} svg - SVG rendu par Mermaid.
+     * @returns {string} SVG sans script, sans HTML embarqué ni gestionnaire.
+     */
+    assainirSvg(svg) {
+        if (typeof document === 'undefined') {
+            return svg;
+        }
+        const modele = document.createElement('template');
+        modele.innerHTML = svg;
+        /* foreignObject rouvre la porte au HTML au milieu du SVG. */
+        modele.content.querySelectorAll('script, foreignObject, iframe, object, embed')
+            .forEach((el) => el.remove());
+        modele.content.querySelectorAll('*').forEach((el) => {
+            for (const attr of [...el.attributes]) {
+                const nom = attr.name.toLowerCase();
+                /* style reste : Mermaid s'en sert pour tout son rendu. */
+                if (nom.startsWith('on') || this.urlDangereuse(nom, attr.value)) {
+                    el.removeAttribute(attr.name);
+                }
+            }
+        });
+        return modele.innerHTML;
+    },
+
+    /**
      * Indique si un attribut contient une adresse qui exécute du code.
      *
      * @param {string} nom - Nom de l'attribut, en minuscules.
@@ -87,7 +119,8 @@ const Rendu = {
         if (!['href', 'src', 'xlink:href', 'action', 'formaction', 'srcset'].includes(nom)) {
             return false;
         }
-        /* Le navigateur ignore espaces et caractères de contrôle dans le schéma. */
+        /* Le navigateur ignore espaces, caractères de contrôle et tirets dans
+           le schéma : "java-script:" s'exécute comme "javascript:". */
         const url = valeur.replace(/[\s -]/g, '').toLowerCase();
         if (/^(javascript|vbscript):/.test(url)) {
             return true;
@@ -136,7 +169,7 @@ const Rendu = {
         }
         try {
             await this.chargerMermaid();
-        } catch (e) {
+        } catch (err) {
             return;
         }
         for (const bloc of blocs) {
@@ -145,9 +178,9 @@ const Rendu = {
                 const { svg } = await mermaid.render(id, bloc.textContent);
                 const conteneur = document.createElement('div');
                 conteneur.className = 'diagramme';
-                conteneur.innerHTML = svg;
+                conteneur.innerHTML = this.assainirSvg(svg);
                 bloc.parentElement.replaceWith(conteneur);
-            } catch (e) {
+            } catch (err) {
                 /* Diagramme invalide : le code reste affiché. */
             }
         }

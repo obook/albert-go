@@ -27,7 +27,7 @@ const $ = (id) => document.getElementById(id);
    navigateur au premier lancement, puis celle choisie dans les réglages. */
 try {
     I18n.definir(localStorage.getItem('albert-go.langue') || I18n.defaut());
-} catch (e) {
+} catch (err) {
     I18n.definir(I18n.defaut());
 }
 
@@ -82,7 +82,7 @@ function lire(nom, defaut) {
             return defaut;
         }
         return valeur;
-    } catch (e) {
+    } catch (err) {
         return defaut;
     }
 }
@@ -92,6 +92,7 @@ function lire(nom, defaut) {
  *
  * @param {string} nom - Nom de la donnée, sans le préfixe "albert-go.".
  * @param {?string} valeur - Valeur à enregistrer, ou null pour effacer.
+ * @returns {boolean} false si le stockage est bloqué ou plein.
  */
 function ecrire(nom, valeur) {
     try {
@@ -100,8 +101,10 @@ function ecrire(nom, valeur) {
         } else {
             stockage(nom).setItem('albert-go.' + nom, valeur);
         }
-    } catch (e) {
-        /* Stockage bloqué : la valeur est perdue au rechargement. */
+        return true;
+    } catch (err) {
+        /* Stockage bloqué ou plein : la valeur est perdue au rechargement. */
+        return false;
     }
 }
 
@@ -113,7 +116,7 @@ if (partage) {
     for (const nom of SENSIBLES) {
         try {
             localStorage.removeItem('albert-go.' + nom);
-        } catch (e) {
+        } catch (err) {
             /* Stockage bloqué. */
         }
     }
@@ -132,7 +135,7 @@ window.addEventListener('pagehide', () => {
     if (partage && document.visibilityState === 'visible') {
         try {
             sessionStorage.setItem(MARQUE_FERMETURE, 'oui');
-        } catch (e) {
+        } catch (err) {
             /* Stockage bloqué : rien à effacer plus tard. */
         }
     }
@@ -157,27 +160,43 @@ try {
             }
         }
     }
-} catch (e) {
+} catch (err) {
     /* Stockage bloqué. */
 }
 
 /**
  * Active ou désactive le mode partagé, en déplaçant les données sensibles.
  *
+ * Écrit dans la cible avant d'effacer la source : un historique volumineux
+ * peut dépasser le quota de sessionStorage, et il serait alors perdu.
+ *
  * @param {boolean} actif - true pour le mode partagé.
+ * @returns {boolean} false si la cible a refusé les données, rien n'ayant bougé.
  */
 function changerPartage(actif) {
     const valeurs = SENSIBLES.map(nom => lire(nom, null));
-    for (const nom of SENSIBLES) {
-        ecrire(nom, null);
-    }
+    const sources = SENSIBLES.map(nom => stockage(nom));
     partage = actif;
-    ecrire('partage', actif ? 'oui' : 'non');
+    const ecrites = [];
+    for (const [i, nom] of SENSIBLES.entries()) {
+        if (valeurs[i] === null) {
+            continue;
+        }
+        if (!ecrire(nom, valeurs[i])) {
+            /* Retour en arrière : la source a tout, la cible ne garde rien. */
+            ecrites.forEach(rang => ecrire(SENSIBLES[rang], null));
+            partage = !actif;
+            return false;
+        }
+        ecrites.push(i);
+    }
     SENSIBLES.forEach((nom, i) => {
-        if (valeurs[i] !== null) {
-            ecrire(nom, valeurs[i]);
+        if (valeurs[i] !== null && sources[i] !== stockage(nom)) {
+            sources[i].removeItem('albert-go.' + nom);
         }
     });
+    ecrire('partage', actif ? 'oui' : 'non');
+    return true;
 }
 
 /**
@@ -230,7 +249,7 @@ let conversation = [];
 let historique = [];
 try {
     historique = JSON.parse(lire('historique', '[]'));
-} catch (e) {
+} catch (err) {
     /* Historique illisible : on repart de zéro. */
 }
 if (!Array.isArray(historique)) {

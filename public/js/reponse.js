@@ -47,7 +47,8 @@ function boutonCopier(texte) {
             setTimeout(() => {
                 bouton.innerHTML = ICONES.copier;
             }, 1500);
-        });
+        /* Refusée en navigation privée ou hors HTTPS : sans ce toast, rien ne le dit. */
+        }).catch(() => toast(t('toast.copie-refusee')));
     });
     return bouton;
 }
