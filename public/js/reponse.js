@@ -59,13 +59,17 @@ function boutonCopier(texte) {
  * de mémoire. Le clic déplie les mots cherchés et les pages consultées.
  *
  * @param {HTMLElement} note - Ligne grise des recherches, repliée au départ.
+ * @param {Array<Object>} recherches - Recherches { mots, moteur, sources } de cette réponse.
  * @returns {HTMLButtonElement} Le bouton.
  */
-function boutonRecherches(note) {
-    /* Le bouton dit où on a cherché : W pour Wikipédia, globe pour le web. */
-    const wiki = reglages.fournisseur === 'wikipedia';
-    const bouton = boutonAction(wiki ? ICONES.wikipedia : ICONES.globe,
-        t(wiki ? 'reponse.recherches-wikipedia' : 'reponse.recherches'));
+function boutonRecherches(note, recherches) {
+    /* Le moteur de la réponse, pas celui réglé depuis : une conversation
+       rouverte doit citer la source qui a servi. Avant, rien ne le notait. */
+    const choisi = (recherches.find(r => r && r.moteur) || {}).moteur || reglages.fournisseur;
+    /* Le bouton dit où on a cherché : W pour un wiki, globe pour le reste. */
+    const moteur = Recherche.MOTEURS[choisi] || Recherche.MOTEURS.wikipedia;
+    const bouton = boutonAction(moteur.wiki ? ICONES.wikipedia : ICONES.globe,
+        t('reponse.recherches', { nom: moteur.nom }));
     bouton.setAttribute('aria-expanded', 'false');
     bouton.addEventListener('click', () => {
         note.hidden = !note.hidden;
@@ -119,7 +123,7 @@ function boutonLire(contenu, langue) {
  * Les adresses viennent du moteur, donc d'un tiers : elles passent par le même
  * contrôle que les liens d'une réponse avant de devenir cliquables.
  *
- * @param {Array<Object>} recherches - Recherches { mots, sources }.
+ * @param {Array<Object>} recherches - Recherches { mots, moteur, sources }.
  * @returns {HTMLParagraphElement} La ligne.
  */
 function elementRecherches(recherches) {
@@ -146,7 +150,9 @@ function elementRecherches(recherches) {
             lien.href = source.url;
             lien.target = '_blank';
             lien.rel = 'noopener noreferrer';
-            lien.textContent = source.titre || source.url;
+            /* Le numéro est celui cité dans la réponse. Les conversations
+               enregistrées avant la numérotation n'en ont pas. */
+            lien.textContent = (source.numero ? '[' + source.numero + '] ' : '') + (source.titre || source.url);
             ligne.append(lien);
         }
         note.append(ligne);
@@ -199,7 +205,7 @@ async function devoiler(element, texte) {
  * @param {?string} titre - Titre de la variante ("Plus courte"...), ou null.
  * @param {string} langue - Code de la langue, pour la lecture à voix haute.
  * @param {boolean} [animer] - true pour dévoiler le texte au lieu de l'afficher d'un coup.
- * @param {Array<Object>} [recherches] - Recherches { mots, sources } faites pour cette réponse.
+ * @param {Array<Object>} [recherches] - Recherches { mots, moteur, sources } faites pour cette réponse.
  * @returns {HTMLLIElement} La bulle, pas encore ajoutée au fil.
  */
 function bulleReponse(texte, titre, langue, animer = false, recherches = null) {
@@ -232,7 +238,7 @@ function bulleReponse(texte, titre, langue, animer = false, recherches = null) {
         const note = elementRecherches(recherches);
         note.hidden = true;
         carte.append(note);
-        actions.append(boutonRecherches(note));
+        actions.append(boutonRecherches(note, recherches));
     }
     carte.append(actions);
     li.append(pastilleIA(), carte);
@@ -245,7 +251,7 @@ function bulleReponse(texte, titre, langue, animer = false, recherches = null) {
  * @param {string} texte - Réponse du modèle.
  * @param {string} [langue] - Code de la langue de la réponse ; français par défaut.
  * @param {boolean} [animer] - true pour une réponse qui vient d'arriver ; false à la relecture.
- * @param {Array<Object>} [recherches] - Recherches { mots, sources } faites pour cette réponse.
+ * @param {Array<Object>} [recherches] - Recherches { mots, moteur, sources } faites pour cette réponse.
  * @returns {HTMLLIElement} La première bulle ajoutée.
  */
 function ajouterReponse(texte, langue = 'fr', animer = false, recherches = null) {
