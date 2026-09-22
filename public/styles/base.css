@@ -137,6 +137,18 @@ a:hover { color: var(--bleu-survol); }
 
 [hidden] { display: none !important; }
 
+/* Champs de saisie, hors de ceux que Pico habille. */
+input[type="password"], textarea {
+    width: 100%;
+    font: inherit;
+    color: var(--texte);
+    background: var(--surface);
+    border: 1px solid var(--bord-champ);
+    border-bottom: 2px solid var(--bleu);
+    border-radius: 0.25rem 0.25rem 0 0;
+    padding: 0.5rem 0.75rem;
+}
+
 /* Boutons */
 
 button {

@@ -11,11 +11,13 @@
  * Date : Septembre 2026
  * Licence : Licence Ouverte 2.0 (Etalab), SPDX etalab-2.0
  */
+'use strict';
+
 try {
     const theme = localStorage.getItem('albert-go.theme');
     if (theme) {
         document.documentElement.dataset.theme = theme;
     }
-} catch (e) {
+} catch (err) {
     /* Stockage bloqué : on suit le thème du système. */
 }

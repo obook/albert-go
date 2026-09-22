@@ -44,7 +44,7 @@ test('conversation : filtre, alias, ordre, nom court', () => {
         { id: 'whisper-large-v3', type: 'automatic-speech-recognition', aliases: ['openweight-audio'] },
         { id: 'modele-sans-alias', type: 'text-generation' }
     ];
-    const modeles = Albert.conversation(liste);
+    const modeles = Albert.normaliserModeles(liste);
     assert.deepStrictEqual(modeles.map(m => m.id), ['openweight-medium', 'openweight-large', 'openweight-code-2', 'modele-sans-alias']);
     assert.strictEqual(modeles[1].reel, 'openai/gpt-oss-120b');
     assert.strictEqual(modeles[1].contexte, 131072);
