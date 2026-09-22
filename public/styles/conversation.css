@@ -236,8 +236,8 @@ main {
     padding: 0.5rem 0.75rem 0.5rem 1.75rem;
     font-size: 0.875rem;
     background: var(--jaune-fond);
-    border-left: 3px solid var(--jaune-bord);
-    border-radius: 0.25rem;
+    border: 1px solid var(--jaune-bord);
+    border-radius: 0.5rem;
 }
 .notes {
     overflow-y: auto;
