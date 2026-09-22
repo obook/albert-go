@@ -1,6 +1,6 @@
 /*
  * outils.js
- * Outils du menu : Discuter, Reformuler, Traduire (repris d'albert-droid), Corriger.
+ * Outils du menu : Discuter, Reformuler, Traduire (repris d'albert-droid), Corriger, Rédiger.
  *
  * Garde l'outil actif et les langues de Traduire. Les consignes système
  * sont dans public/prompts/<langue>/*.txt, lues au premier usage puis
@@ -41,7 +41,7 @@ let langueCible = langueLue('langue-cible', I18n.langue === 'fr' ? 'en' : 'fr');
 /**
  * Nom du module, première lettre en rouge comme le "t" de la marque.
  *
- * Les quatre outils se présentent comme une gamme : les noms module.* sont
+ * Les outils se présentent comme une gamme : les noms module.* sont
  * courts, pour tenir sur une ligne d'en-tête de téléphone, là où outil.*
  * garde les verbes complets pour l'historique et les messages d'erreur.
  *
@@ -63,11 +63,12 @@ const consignesLues = {};
  * Consigne système de l'outil, lue dans son fichier au premier appel.
  *
  * @param {string} outil - Clé de Albert.OUTILS.
+ * @param {string} [champ] - "consigne", ou "revue" pour la relecture de Rédiger.
  * @returns {Promise<?string>} Texte de la consigne, ou null si l'outil n'en a pas.
  * @throws {Error} Si le fichier ne peut pas être lu.
  */
-async function consigne(outil) {
-    const fichier = Albert.OUTILS[outil].consigne;
+async function consigne(outil, champ = 'consigne') {
+    const fichier = Albert.OUTILS[outil][champ];
     if (!fichier) {
         return null;
     }
@@ -146,6 +147,8 @@ function choisirOutil(outil) {
     outilActuel = outil;
     ecrire('outil', outil);
     afficherOutil();
+    /* Fil ou écran Rédiger. Pas dans afficherOutil : un changement de langue recocherait l'écran de la clé. */
+    afficher();
 }
 
 afficherLangues();

@@ -18,6 +18,7 @@ const ICONES = {
     copier: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h8"/></svg>',
     copie: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>',
     lire: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9Z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg>',
+    revoir: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.3-4.3M8.5 11l1.8 1.8 3.2-3.3"/></svg>',
     arreter: '<svg class="plein" viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="7" width="10" height="10" rx="1.5"/></svg>',
     /* Globe : recherche sur le web. */
     globe: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/>'
@@ -45,8 +46,10 @@ let minuteurToast = null;
 function afficher() {
     const connecte = !!reglages.cle;
     $('form-cle').hidden = connecte;
-    $('chat').hidden = !connecte;
-    $('saisie-zone').hidden = !connecte;
+    const redaction = outilActuel === 'rediger';
+    $('chat').hidden = !connecte || redaction;
+    $('saisie-zone').hidden = !connecte || redaction;
+    $('redaction').hidden = !connecte || !redaction;
     for (const id of ['ouvrir-reglages', 'nouvelle', 'resume-reglages', 'menu-outils', 'menu-historique', 'changer-cle']) {
         $(id).hidden = !connecte;
     }
@@ -58,6 +61,15 @@ function afficher() {
         $('texte-partage-accueil').textContent = textePartage(true);
         $('cle').focus();
     }
+}
+
+/**
+ * Anime l'en-tête pendant qu'Albert est interrogé : le "t" oscille, un reflet parcourt la barre.
+ *
+ * @param {boolean} actif - true pendant une requête.
+ */
+function interroger(actif) {
+    document.body.classList.toggle('interroge', actif);
 }
 
 /**
@@ -75,7 +87,7 @@ function ecranTactile() {
  */
 function focusSaisie() {
     if (!ecranTactile()) {
-        $('saisie').focus();
+        $(outilActuel === 'rediger' ? 'notes' : 'saisie').focus();
     }
 }
 

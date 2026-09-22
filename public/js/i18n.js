@@ -142,6 +142,10 @@ const I18n = {
             'invite.reformuler': 'Collez le texte à reformuler...',
             'invite.traduire': 'Collez le texte à traduire...',
             'invite.corriger': 'Collez le texte à corriger...',
+            'outil.rediger': 'Rédiger',
+            'module.rediger': 'Rédac',
+            'invite.rediger': 'Madame, Monsieur... puis vos idées principales, une par ligne.',
+            'notes.label': 'Notes du courrier',
 
             /* Langues de Traduire. */
             'langue.choisir': 'Changer de langue',
@@ -290,6 +294,12 @@ const I18n = {
             'toast.voix-absente-en-ligne': 'Aucune voix en {langue} disponible dans ce navigateur.',
             'toast.voix-absente': 'Aucune voix en {langue} installée sur cet appareil. Les voix en ligne ne sont pas utilisées.',
             'etat.reflechit': 'Albert réfléchit...',
+            'etat.redige': 'Albert rédige...',
+            'etat.proposition-prete': 'Proposition à jour.',
+            'etat.relit': 'Albert relit...',
+            'etat.revue-prete': 'Courrier revu.',
+            'reponse.revoir': 'Revoir : reconstruire et vérifier',
+            'anomalies.titre': 'Points à vérifier',
             'etat.annulee': 'Question annulée.',
             'etat.attendre-lecture': 'Attendez la fin de la lecture du fichier.',
             'etat.lecture-image': 'Lecture de l\'image par Albert...',
@@ -311,6 +321,8 @@ const I18n = {
 
             /* Textes envoyés au modèle. */
             'demande.reformuler': 'Reformule ce texte :\n\n{texte}',
+            'demande.rediger': 'Rédige un courrier à partir de ces notes :\n\n{texte}',
+            'demande.revoir': 'Notes :\n{notes}\n\nCourrier à revoir :\n{proposition}\n\nCalendrier (le premier jour est aujourd\'hui) :\n{calendrier}',
             'demande.corriger': 'Corrige ce texte :\n\n{texte}',
             'demande.traduire': 'Traduis ce texte en {cible} :\n\n{texte}',
             'demande.traduire-source': 'Traduis ce texte en {cible} (langue source : {source}) :\n\n{texte}',
@@ -375,6 +387,10 @@ const I18n = {
             'invite.reformuler': 'Pegue el texto que reformular...',
             'invite.traduire': 'Pegue el texto que traducir...',
             'invite.corriger': 'Pegue el texto que corregir...',
+            'outil.rediger': 'Redactar',
+            'module.rediger': 'Carta',
+            'invite.rediger': 'Estimada señora... y luego sus ideas principales, una por línea.',
+            'notes.label': 'Notas de la carta',
 
             /* Idiomas de Traducir. */
             'langue.choisir': 'Cambiar de idioma',
@@ -523,6 +539,12 @@ const I18n = {
             'toast.voix-absente-en-ligne': 'Ninguna voz en {langue} disponible en este navegador.',
             'toast.voix-absente': 'Ninguna voz en {langue} instalada en este aparato. Las voces en línea no se usan.',
             'etat.reflechit': 'Albert está pensando...',
+            'etat.redige': 'Albert está redactando...',
+            'etat.proposition-prete': 'Propuesta actualizada.',
+            'etat.relit': 'Albert está revisando...',
+            'etat.revue-prete': 'Carta revisada.',
+            'reponse.revoir': 'Revisar: reconstruir y comprobar',
+            'anomalies.titre': 'Puntos que comprobar',
             'etat.annulee': 'Pregunta cancelada.',
             'etat.attendre-lecture': 'Espere a que termine la lectura del archivo.',
             'etat.lecture-image': 'Albert está leyendo la imagen...',
@@ -544,6 +566,8 @@ const I18n = {
 
             /* Textos enviados al modelo. */
             'demande.reformuler': 'Reformula este texto:\n\n{texte}',
+            'demande.rediger': 'Redacta una carta a partir de estas notas:\n\n{texte}',
+            'demande.revoir': 'Notas:\n{notes}\n\nCarta que revisar:\n{proposition}\n\nCalendario (el primer día es hoy):\n{calendrier}',
             'demande.corriger': 'Corrige este texto:\n\n{texte}',
             'demande.traduire': 'Traduce este texto al {cible}:\n\n{texte}',
             'demande.traduire-source': 'Traduce este texto al {cible} (idioma de origen: {source}):\n\n{texte}',
@@ -608,6 +632,10 @@ const I18n = {
             'invite.reformuler': 'Paste the text to rephrase...',
             'invite.traduire': 'Paste the text to translate...',
             'invite.corriger': 'Paste the text to proofread...',
+            'outil.rediger': 'Write',
+            'module.rediger': 'Letter',
+            'invite.rediger': 'Dear Mrs Smith... then your main ideas, one per line.',
+            'notes.label': 'Letter notes',
 
             /* Translate languages. */
             'langue.choisir': 'Change language',
@@ -756,6 +784,12 @@ const I18n = {
             'toast.voix-absente-en-ligne': 'No {langue} voice available in this browser.',
             'toast.voix-absente': 'No {langue} voice installed on this device. Online voices are not used.',
             'etat.reflechit': 'Albert is thinking...',
+            'etat.redige': 'Albert is writing...',
+            'etat.proposition-prete': 'Draft updated.',
+            'etat.relit': 'Albert is reviewing...',
+            'etat.revue-prete': 'Letter reviewed.',
+            'reponse.revoir': 'Review: rebuild and check',
+            'anomalies.titre': 'Points to check',
             'etat.annulee': 'Question cancelled.',
             'etat.attendre-lecture': 'Wait until the file has been read.',
             'etat.lecture-image': 'Albert is reading the image...',
@@ -777,6 +811,8 @@ const I18n = {
 
             /* Text sent to the model. */
             'demande.reformuler': 'Rephrase this text:\n\n{texte}',
+            'demande.rediger': 'Write a letter from these notes:\n\n{texte}',
+            'demande.revoir': 'Notes:\n{notes}\n\nLetter to review:\n{proposition}\n\nCalendar (the first day is today):\n{calendrier}',
             'demande.corriger': 'Proofread this text:\n\n{texte}',
             'demande.traduire': 'Translate this text into {cible}:\n\n{texte}',
             'demande.traduire-source': 'Translate this text into {cible} (source language: {source}):\n\n{texte}',
@@ -841,6 +877,10 @@ const I18n = {
             'invite.reformuler': 'Fügen Sie den umzuformulierenden Text ein...',
             'invite.traduire': 'Fügen Sie den zu übersetzenden Text ein...',
             'invite.corriger': 'Fügen Sie den zu korrigierenden Text ein...',
+            'outil.rediger': 'Verfassen',
+            'module.rediger': 'Brief',
+            'invite.rediger': 'Sehr geehrte Frau Müller... dann Ihre Hauptgedanken, einer pro Zeile.',
+            'notes.label': 'Notizen zum Brief',
 
             /* Sprachen von Übersetzen. */
             'langue.choisir': 'Sprache wechseln',
@@ -989,6 +1029,12 @@ const I18n = {
             'toast.voix-absente-en-ligne': 'Keine Stimme für {langue} in diesem Browser verfügbar.',
             'toast.voix-absente': 'Keine Stimme für {langue} auf diesem Gerät installiert. Online-Stimmen werden nicht genutzt.',
             'etat.reflechit': 'Albert denkt nach...',
+            'etat.redige': 'Albert schreibt...',
+            'etat.proposition-prete': 'Vorschlag aktualisiert.',
+            'etat.relit': 'Albert prüft...',
+            'etat.revue-prete': 'Brief überarbeitet.',
+            'reponse.revoir': 'Überarbeiten: neu aufbauen und prüfen',
+            'anomalies.titre': 'Zu prüfende Punkte',
             'etat.annulee': 'Frage abgebrochen.',
             'etat.attendre-lecture': 'Warten Sie, bis die Datei gelesen ist.',
             'etat.lecture-image': 'Albert liest das Bild...',
@@ -1010,6 +1056,8 @@ const I18n = {
 
             /* An das Modell gesendete Texte. */
             'demande.reformuler': 'Formuliere diesen Text um:\n\n{texte}',
+            'demande.rediger': 'Verfasse einen Brief aus diesen Notizen:\n\n{texte}',
+            'demande.revoir': 'Notizen:\n{notes}\n\nZu überarbeitender Brief:\n{proposition}\n\nKalender (der erste Tag ist heute):\n{calendrier}',
             'demande.corriger': 'Korrigiere diesen Text:\n\n{texte}',
             'demande.traduire': 'Übersetze diesen Text ins {cible}:\n\n{texte}',
             'demande.traduire-source': 'Übersetze diesen Text ins {cible} (Ausgangssprache: {source}):\n\n{texte}',

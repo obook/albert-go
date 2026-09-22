@@ -38,6 +38,37 @@
 }
 .rouge { color: var(--rouge); }
 
+/* Albert interrogé (affichage.js, interroger) : le "t" oscille, un reflet rouge parcourt la barre bleue. */
+.marque > .rouge { display: inline-block; transform-origin: 50% 90%; }
+.interroge .marque > .rouge { animation: oscille 0.7s ease-in-out infinite; }
+@keyframes oscille {
+    0%, 100% { transform: rotate(0) scale(1); }
+    25% { transform: rotate(-25deg) scale(1.3); }
+    75% { transform: rotate(25deg) scale(1.3); }
+}
+.entete { position: relative; }
+.interroge .entete::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -4px;
+    height: 4px;
+    background: linear-gradient(90deg, transparent, var(--rouge), transparent) no-repeat;
+    background-size: 40% 100%;
+    animation: balaye 1.2s linear infinite;
+}
+@keyframes balaye {
+    from { background-position: -60% 0; }
+    to { background-position: 160% 0; }
+}
+/* Mouvements réduits : des pulsations d'opacité, sans déplacement. */
+@keyframes pulse { 50% { opacity: 0.35; } }
+@media (prefers-reduced-motion: reduce) {
+    .interroge .marque > .rouge, .interroge .entete::after { animation-name: pulse; }
+    .interroge .entete::after { background-size: 100% 100%; }
+}
+
 /* Nom du module : tout de .marque, sauf la taille, moitié de celle du titre. */
 .outil-actif {
     font-size: 0.5em;

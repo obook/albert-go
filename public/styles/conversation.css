@@ -182,3 +182,69 @@ main {
 /* Sources sous une réponse : les liens vont à la ligne sous les mots cherchés. */
 .recherches .sources { display: block; margin-top: 0.25rem; }
 .recherches .sources a { margin-right: 0.75rem; }
+
+/* Rédiger : proposition et notes à parts égales, chacune défile seule. */
+.redaction {
+    height: 100%;
+    max-width: 56rem;
+    margin: 0 auto;
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 0.5rem;
+}
+.redaction[hidden] { display: none; }
+.proposition, .notes {
+    padding: 0.75rem 1rem;
+    background: var(--surface);
+    border: 1px solid var(--bord);
+    border-radius: 0.75rem;
+}
+/* Le texte défile, les boutons Copier et Écouter restent en bas du cadre. */
+.proposition { display: flex; flex-direction: column; min-height: 0; }
+.proposition .actions-reponse:empty { display: none; }
+/* Texte brut : chaque retour à la ligne du courrier reste visible. */
+.texte-proposition { flex: 1; overflow-y: auto; white-space: pre-wrap; overflow-wrap: anywhere; }
+.texte-proposition.erreur { color: var(--erreur); }
+/* Statut de Rédiger, en tête du cadre : hauteur fixe d'une ligne, vide ou non, pour que le texte ne saute pas. */
+#etat-redaction {
+    flex: none;
+    height: 1.5em;
+    margin: 0 0 0.25rem;
+    text-align: left;
+    transform-origin: left center;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+/* Statut "Proposition à jour." : il surgit en bleu puis se fond dans le texte. */
+#etat-redaction.annonce { animation: annonce 1.6s ease-out; }
+@keyframes annonce {
+    0% { opacity: 0; transform: scale(0.9); color: var(--bleu); font-weight: 700; }
+    20% { opacity: 1; transform: scale(1.12); color: var(--bleu); font-weight: 700; }
+    40% { transform: scale(1); }
+    100% { color: inherit; }
+}
+@media (prefers-reduced-motion: reduce) {
+    #etat-redaction.annonce { animation-name: annonce-fixe; }
+    @keyframes annonce-fixe { 0%, 40% { color: var(--bleu); font-weight: 700; } }
+}
+/* Points à vérifier après une relecture : ce qu'Albert ne tranche pas seul. */
+.anomalies {
+    max-height: 30%;
+    overflow-y: auto;
+    margin: 0.5rem 0 0;
+    padding: 0.5rem 0.75rem 0.5rem 1.75rem;
+    font-size: 0.875rem;
+    background: var(--jaune-fond);
+    border: 1px solid var(--jaune-bord);
+    border-radius: 0.5rem;
+}
+.notes {
+    overflow-y: auto;
+    width: 100%;
+    resize: none;
+    font: inherit;
+    color: var(--texte);
+    border-color: var(--bord-champ);
+}
+.notes:focus-visible { outline: 2px solid var(--bleu); outline-offset: 2px; }
