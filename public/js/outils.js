@@ -126,7 +126,7 @@ function afficherOutil() {
         } else {
             bouton.removeAttribute('aria-current');
         }
-        bouton.querySelector('span').replaceChildren(...nomModule(bouton.dataset.outil));
+        bouton.querySelector('span')?.replaceChildren(...nomModule(bouton.dataset.outil));
     }
     $('outil-actif').replaceChildren(...nomModule(outilActuel));
     $('saisie').placeholder = t('invite.' + outilActuel);

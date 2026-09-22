@@ -16,24 +16,14 @@ const assert = require('node:assert');
 require('../public/js/i18n.js');
 const Recherche = require('../public/js/recherche.js');
 
-test('formater : les deux jeux de champs, Mojeek et Google', () => {
-    const bloc = Recherche.formater([
+test('formater : un numéro par résultat, rien sans résultat', () => {
+    const bloc = Recherche.formater(Recherche.numeroter([
         { title: 'Eduscol', url: 'https://eduscol.education.fr', desc: 'Portail' },
         { title: 'Data', link: 'https://data.gouv.fr', snippet: 'Données' }
-    ]);
-    assert.ok(bloc.includes('- Eduscol (https://eduscol.education.fr) : Portail'));
-    assert.ok(bloc.includes('- Data (https://data.gouv.fr) : Données'));
-    assert.strictEqual(Recherche.formater([]), '');
-});
-
-test('formater : une ligne par résultat, rien sans résultat', () => {
-    const bloc = Recherche.formater([
-        { title: 'Eduscol', url: 'https://eduscol.education.fr', desc: 'Portail' },
-        { url: 'https://data.gouv.fr' }
-    ]);
+    ], []));
     assert.strictEqual(bloc.split('\n').length, 2);
-    assert.ok(bloc.includes('- Eduscol (https://eduscol.education.fr) : Portail'));
-    assert.ok(bloc.includes('- https://data.gouv.fr (https://data.gouv.fr) : '));
+    assert.ok(bloc.includes('[1] Eduscol (https://eduscol.education.fr) : Portail'));
+    assert.ok(bloc.includes('[2] Data (https://data.gouv.fr) : Données'));
     assert.strictEqual(Recherche.formater([]), '');
 });
 
@@ -45,12 +35,96 @@ test('outil : format attendu par le champ tools de l\'API', () => {
     assert.ok(outil.function.description.length > 40);
 });
 
-test('wikipedia : le domaine suit la langue de l\'interface', () => {
+test('outil : la description nomme le moteur et prévient pour un catalogue', () => {
+    const encyclopedie = Recherche.outil('wikipedia').function.description;
+    const catalogue = Recherche.outil('hal').function.description;
+    assert.ok(encyclopedie.includes('Wikipédia'));
+    assert.ok(catalogue.includes('HAL'));
+    /* Les catalogues ne rendent rien sur une phrase : le modèle doit le savoir. */
+    assert.ok(catalogue.length > encyclopedie.length);
+    assert.ok(!encyclopedie.includes(t('recherche.description-catalogue')));
+});
+
+test('wiki : le domaine suit la langue de l\'interface', () => {
     I18n.definir = (langue) => { I18n.langue = langue; };
     I18n.definir('en');
-    assert.strictEqual(Recherche.wikipedia(), 'https://en.wikipedia.org/w/api.php');
+    assert.strictEqual(Recherche.wiki('wikipedia'), 'https://en.wikipedia.org/w/api.php');
     I18n.definir('fr');
-    assert.strictEqual(Recherche.wikipedia(), 'https://fr.wikipedia.org/w/api.php');
+    assert.strictEqual(Recherche.wiki('wikipedia'), 'https://fr.wikipedia.org/w/api.php');
+});
+
+test('wiki : Vikidia ignore les langues qu\'elle n\'a pas', () => {
+    I18n.definir('es');
+    assert.strictEqual(Recherche.wiki('vikidia'), 'https://es.vikidia.org/w/api.php');
+    I18n.definir('de');
+    assert.strictEqual(Recherche.wiki('vikidia'), 'https://fr.vikidia.org/w/api.php');
+    I18n.definir('fr');
+});
+
+test('sansCle : seuls Google et Mojeek demandent une clé', () => {
+    assert.ok(Recherche.sansCle('wikipedia'));
+    assert.ok(Recherche.sansCle('hal'));
+    assert.ok(!Recherche.sansCle('google'));
+    assert.ok(!Recherche.sansCle('mojeek'));
+    /* Un moteur enregistré puis retiré du code. */
+    assert.ok(!Recherche.sansCle('qwant'));
+});
+
+test('chercherBase : HAL rend ses champs, la description est bornée', async () => {
+    let vue = '';
+    global.fetch = async (adresse) => {
+        vue = adresse;
+        return { ok: true, json: async () => ({ response: { docs: [
+            { label_s: 'These', uri_s: 'https://hal.science/tel-01', abstract_s: ['x'.repeat(2000)] },
+            { label_s: 'Sans adresse' }
+        ] } }) };
+    };
+    const resultats = await Recherche.chercherBase('hal', 'these');
+    assert.ok(vue.includes('q=these'));
+    assert.ok(!vue.includes('key='));
+    /* Sans adresse, le résultat ne serait pas consultable sous la réponse. */
+    assert.strictEqual(resultats.length, 1);
+    assert.strictEqual(resultats[0].title, 'These');
+    assert.strictEqual(resultats[0].desc.length, Recherche.TAILLE_RESUME);
+});
+
+test('replis : la phrase, puis ses mots les plus longs dans l\'ordre', () => {
+    assert.deepStrictEqual(Recherche.replis('population française 2024 INSEE estimation'), [
+        'population française 2024 INSEE estimation',
+        'population française estimation',
+        'population estimation',
+        'population'
+    ]);
+    /* Deux mots ou moins : aucun catalogue n'a besoin qu'on raccourcisse. */
+    assert.deepStrictEqual(Recherche.replis('population France'), ['population France']);
+    /* À trois mots, le premier repli refaisait la même requête. */
+    assert.deepStrictEqual(Recherche.replis('population française INSEE'),
+        ['population française INSEE', 'population française', 'population']);
+});
+
+test('chercherBase : la requête raccourcit tant que rien ne vient', async () => {
+    const vues = [];
+    global.fetch = async (adresse) => {
+        vues.push(decodeURIComponent(adresse.split('q=')[1]));
+        /* Ces catalogues exigent tous les mots : seule la requête courte répond. */
+        const trouve = vues[vues.length - 1] === 'population';
+        return { ok: true, json: async () => ({ data: trouve
+            ? [{ title: 'Recensement', page: 'https://www.data.gouv.fr/datasets/recensement' }] : [] }) };
+    };
+    const resultats = await Recherche.chercherBase('data-gouv', 'quelle est la population');
+    assert.strictEqual(vues.length, 4);
+    assert.strictEqual(resultats.length, 1);
+    assert.strictEqual(resultats[0].title, 'Recensement');
+});
+
+test('chercherBase : une base injoignable remonte son code', async () => {
+    global.fetch = async () => ({ ok: false, status: 503, json: async () => ({}) });
+    await assert.rejects(Recherche.chercherBase('openalex', 'test'), /503/);
+});
+
+test('resumeInverse : le résumé d\'OpenAlex revient en phrase', () => {
+    assert.strictEqual(Recherche.resumeInverse({ Le: [0], chat: [1], dort: [2] }), 'Le chat dort');
+    assert.strictEqual(Recherche.resumeInverse(null), '');
 });
 
 test('chercher : clé refusée, le message de Mojeek remonte', async () => {
@@ -109,7 +183,7 @@ test('passages : aucune section ne répond, le résumé seul', () => {
     assert.strictEqual(Recherche.passages(article, 'toponymie étymologie'), 'Résumé.');
 });
 
-test('chercherWikipedia : sans clé, articles dans l\'ordre de la recherche', async () => {
+test('chercherMediaWiki : sans clé, articles dans l\'ordre de la recherche', async () => {
     const vues = [];
     const textes = { Premier: 'A.', Second: 'B.' };
     global.fetch = async (adresse) => {
@@ -123,8 +197,8 @@ test('chercherWikipedia : sans clé, articles dans l\'ordre de la recherche', as
             title: titre, fullurl: 'https://fr.wikipedia.org/wiki/' + titre, extract: textes[titre]
         } } } }) };
     };
-    const resultats = await Recherche.chercherWikipedia('chat de l\'État');
-    assert.ok(vues[0].startsWith(Recherche.wikipedia() + '?'));
+    const resultats = await Recherche.chercherMediaWiki('wikipedia', 'chat de l\'État');
+    assert.ok(vues[0].startsWith(Recherche.wiki('wikipedia') + '?'));
     assert.ok(vues.every(adresse => adresse.includes('origin=*')));
     assert.ok(vues.every(adresse => !adresse.includes('key=')));
     /* Jamais deux titres dans la même requête. */
@@ -135,9 +209,9 @@ test('chercherWikipedia : sans clé, articles dans l\'ordre de la recherche', as
     assert.strictEqual(resultats[1].desc, 'B.');
 });
 
-test('chercherWikipedia : une erreur de l\'API remonte', async () => {
+test('chercherMediaWiki : une erreur de l\'API remonte', async () => {
     global.fetch = async () => ({ ok: true, json: async () => ({ error: { info: 'paramètre inconnu' } }) });
-    await assert.rejects(Recherche.chercherWikipedia('test'), /paramètre inconnu/);
+    await assert.rejects(Recherche.chercherMediaWiki('wikipedia', 'test'), /paramètre inconnu/);
 });
 
 test('fiche : les champs chiffrés de l\'infobox, que le texte brut perd', () => {
@@ -165,16 +239,29 @@ test('fiche : pas d\'infobox, pas de fiche', () => {
     assert.strictEqual(Recherche.avecFiche('a : b', 'Résumé.'), 'Fiche : a : b\nRésumé.');
 });
 
-test('sources : titre et adresse, les deux jeux de champs', () => {
-    const sources = Recherche.sources([
+test('numeroter : les deux jeux de champs, sans les résultats sans adresse', () => {
+    const numerotes = Recherche.numeroter([
         { title: 'Eduscol', url: 'https://eduscol.education.fr', desc: 'Portail' },
         { title: 'Data', link: 'https://data.gouv.fr', snippet: 'Données' },
         /* Un résultat sans adresse n'est pas consultable. */
         { title: 'Sans lien', desc: 'Rien à ouvrir' }
+    ], []);
+    assert.deepStrictEqual(numerotes.map(r => [r.numero, r.titre, r.url, r.extrait]), [
+        [1, 'Eduscol', 'https://eduscol.education.fr', 'Portail'],
+        [2, 'Data', 'https://data.gouv.fr', 'Données']
     ]);
-    assert.deepStrictEqual(sources, [
-        { titre: 'Eduscol', url: 'https://eduscol.education.fr' },
-        { titre: 'Data', url: 'https://data.gouv.fr' }
-    ]);
-    assert.deepStrictEqual(Recherche.sources([]), []);
+    assert.deepStrictEqual(Recherche.numeroter([], []), []);
+});
+
+test('numeroter : la deuxième recherche continue, une page garde son numéro', () => {
+    const faites = [{ mots: 'eduscol', sources: [
+        { numero: 1, titre: 'Eduscol', url: 'https://eduscol.education.fr' },
+        { numero: 2, titre: 'Data', url: 'https://data.gouv.fr' }
+    ] }];
+    const numerotes = Recherche.numeroter([
+        /* Déjà vue au tour précédent : le modèle ne doit pas la citer deux fois. */
+        { title: 'Eduscol', url: 'https://eduscol.education.fr', desc: 'Portail' },
+        { title: 'Insee', url: 'https://www.insee.fr', desc: 'Statistiques' }
+    ], faites);
+    assert.deepStrictEqual(numerotes.map(r => [r.numero, r.connue]), [[1, true], [3, false]]);
 });

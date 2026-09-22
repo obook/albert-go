@@ -16,7 +16,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Security-Policy"
-          content="default-src 'self'; connect-src 'self' https://n8n.incubateur.education.gouv.fr https://fr.wikipedia.org https://en.wikipedia.org https://es.wikipedia.org https://de.wikipedia.org https://www.mojeek.com https://www.googleapis.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; base-uri 'none'; form-action 'none'">
+          content="default-src 'self'; connect-src 'self' https://n8n.incubateur.education.gouv.fr https://fr.wikipedia.org https://en.wikipedia.org https://es.wikipedia.org https://de.wikipedia.org https://www.mojeek.com https://www.googleapis.com https://fr.vikidia.org https://es.vikidia.org https://www.data.gouv.fr https://api.archives-ouvertes.fr https://archive.org https://openlibrary.org https://api.openalex.org; style-src 'self' 'unsafe-inline'; img-src 'self' data:; base-uri 'none'; form-action 'none'">
     <title>Albert Go</title>
     <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
@@ -191,14 +191,14 @@
             <p class="note" data-t="reglages.conseil"></p>
 
             <!-- Quatre cartes dépliables, la première ouverte. -->
-            <details class="carte" open>
+            <details class="carte" name="reglages" open>
                 <summary data-t="reglages.carte-reponse"></summary>
                 <div class="corps">
                     <fieldset>
                         <legend data-t="reglages.modele"></legend>
-                        <details id="choix-modele" class="choix-modele">
+                        <details id="choix-modele" class="choix-liste">
                             <summary id="modele-choisi"></summary>
-                            <div id="modeles" class="modeles"></div>
+                            <div id="modeles" class="cartes-choix"></div>
                         </details>
                     </fieldset>
 
@@ -226,31 +226,32 @@
                 </div>
             </details>
 
-            <details class="carte">
+            <details class="carte" name="reglages">
                 <summary data-t="reglages.recherche"></summary>
                 <div class="corps">
+                    <p id="aide-recherche" class="note mise-en-garde" data-t="reglages.aide-recherche"></p>
                     <label class="interrupteur">
                         <input type="checkbox" id="recherche-reglage" role="switch" aria-describedby="aide-recherche">
                         <span data-t="reglages.recherche-active"></span>
                     </label>
-                    <!-- Le libellé de l'interrupteur finit sur le moteur : ici, juste le nom pour les lecteurs d'écran. -->
-                    <label for="fournisseur-recherche" class="visuellement-cache" data-t="reglages.moteur"></label>
-                    <select id="fournisseur-recherche">
-                        <option value="wikipedia">Wikipédia</option>
-                        <option value="google">Google Programmable Search</option>
-                        <option value="mojeek">Mojeek</option>
-                    </select>
+                    <!-- Une carte par moteur, comme pour les modèles : nom et domaine. -->
+                    <fieldset>
+                        <legend data-t="reglages.moteur"></legend>
+                        <details id="choix-moteur" class="choix-liste">
+                            <summary id="moteur-choisi"></summary>
+                            <div id="moteurs" class="cartes-choix"></div>
+                        </details>
+                    </fieldset>
                     <div id="cles-recherche">
                         <label for="cle-recherche" data-t="reglages.cle-recherche"></label>
                         <input type="password" id="cle-recherche" autocomplete="off" spellcheck="false">
                         <label for="cx-recherche" data-t="reglages.cx"></label>
                         <input type="text" id="cx-recherche" autocomplete="off" spellcheck="false">
                     </div>
-                    <p id="aide-recherche" class="note" data-t-html="reglages.aide-recherche"></p>
                 </div>
             </details>
 
-            <details class="carte">
+            <details class="carte" name="reglages">
                 <summary data-t="reglages.carte-application"></summary>
                 <div class="corps">
                     <fieldset>
@@ -266,16 +267,16 @@
 
                     <fieldset>
                         <legend data-t="reglages.lecture"></legend>
+                        <p id="aide-voix" class="note mise-en-garde" data-t="reglages.aide-voix"></p>
                         <label class="interrupteur">
                             <input type="checkbox" id="voix-en-ligne" role="switch" aria-describedby="aide-voix">
                             <span data-t="reglages.voix-en-ligne"></span>
                         </label>
-                        <p id="aide-voix" class="note" data-t="reglages.aide-voix"></p>
                     </fieldset>
                 </div>
             </details>
 
-            <details class="carte">
+            <details class="carte" name="reglages">
                 <summary data-t="reglages.carte-donnees"></summary>
                 <div class="corps">
                     <p class="note" data-t="reglages.cle-note"></p>

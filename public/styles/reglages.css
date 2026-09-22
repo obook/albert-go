@@ -60,7 +60,7 @@
 }
 /* Sur un summary, le contour est le seul repère de focus : --bleu-clair ne
    se voit pas. Les champs gardent leur halo pâle, ils ont déjà une bordure. */
-.carte, .choix-modele { --pico-primary-focus: var(--bleu); }
+.carte, .choix-liste { --pico-primary-focus: var(--bleu); }
 
 /* .pico devant : sinon Pico gagne la spécificité sur margin-bottom. */
 .pico .carte[open] > summary { margin-bottom: 0; border-bottom: 1px solid var(--bord); }
@@ -124,7 +124,20 @@ legend {
 }
 fieldset .bouton-texte { justify-self: start; }
 
-.choix-modele summary {
+/* Mise en garde d'un réglage qui fait sortir des données : elle se lit avant
+   d'actionner l'interrupteur, donc au-dessus de lui. Nom distinct de
+   .avertissement, qui porte déjà la mention sous la saisie. */
+.mise-en-garde {
+    padding: 0.625rem 0.75rem;
+    border: 1px solid var(--jaune-bord);
+    border-radius: 0.25rem;
+    background: var(--jaune-fond);
+    color: var(--texte);
+}
+
+/* Pico met une marge sous toute <details> : ici, la grille du corps espace déjà. */
+.pico .choix-liste { margin-bottom: 0; }
+.choix-liste summary {
     padding: 0.5rem 0.75rem;
     background: var(--surface);
     border: 1px solid var(--bord-champ);
@@ -132,9 +145,9 @@ fieldset .bouton-texte { justify-self: start; }
     border-radius: 0.25rem 0.25rem 0 0;
     cursor: pointer;
 }
-.choix-modele[open] summary { margin-bottom: 0.25rem; }
+.choix-liste[open] summary { margin-bottom: 0.25rem; }
 
-.modeles {
+.cartes-choix {
     display: grid;
     gap: 0.25rem;
     max-height: 18rem;
@@ -143,8 +156,8 @@ fieldset .bouton-texte { justify-self: start; }
 }
 /* Pico met width: fit-content aux label contenant une radio : les cartes
 n'avaient pas la même largeur. Le préfixe .pico passe devant son sélecteur. */
-.pico .modeles label { width: auto; }
-.modeles label {
+.pico .cartes-choix label { width: auto; }
+.cartes-choix label {
     display: grid;
     grid-template-columns: auto minmax(0, 1fr) auto;
     gap: 0 0.625rem;
@@ -153,24 +166,24 @@ n'avaient pas la même largeur. Le préfixe .pico passe devant son sélecteur. *
     border-radius: 0.25rem;
     cursor: pointer;
 }
-.modeles label:has(:checked) {
+.cartes-choix label:has(:checked) {
     border-color: var(--bleu);
     background: var(--bleu-clair);
 }
-.modeles label:has(:focus-visible) {
+.cartes-choix label:has(:focus-visible) {
     outline: 3px solid var(--bleu);
     outline-offset: 2px;
 }
-.modeles input {
+.cartes-choix input {
     grid-row: span 5;
     align-self: start;
     margin: 0.3rem 0 0;
     accent-color: var(--bleu);
     outline: none;
 }
-.modeles .nom { grid-column: 2 / 4; font-weight: 700; }
+.cartes-choix .nom { grid-column: 2 / 4; font-weight: 700; }
 /* Sur sa propre ligne : sur la même ligne que le nom, elle le recouvrait sur écran étroit. */
-.modeles .type {
+.cartes-choix .type {
     grid-column: 2 / 4;
     justify-self: start;
     margin: 0.125rem 0 0.25rem;
@@ -179,8 +192,8 @@ n'avaient pas la même largeur. Le préfixe .pico passe devant son sélecteur. *
     border-radius: 0.25rem;
     font-size: 0.75rem;
 }
-.modeles .description, .modeles .detail { grid-column: 2 / 4; font-size: 0.875rem; color: var(--texte-doux); }
-.modeles .detail {
+.cartes-choix .description, .cartes-choix .detail { grid-column: 2 / 4; font-size: 0.875rem; color: var(--texte-doux); }
+.cartes-choix .detail {
     font-family: ui-monospace, "Cascadia Mono", "DejaVu Sans Mono", monospace;
     font-size: 0.75rem;
     overflow-wrap: anywhere;

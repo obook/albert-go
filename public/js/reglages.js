@@ -118,11 +118,40 @@ $('voix-en-ligne').addEventListener('change', () => {
 });
 
 $('recherche-reglage').checked = reglages.recherche;
-$('fournisseur-recherche').value = reglages.fournisseur;
 $('cle-recherche').value = reglages.cleRecherche || '';
-/* Wikipédia ne demande ni clé ni identifiant de moteur. */
+
+/**
+ * Affiche une carte par moteur : son nom, puis son domaine de recherche.
+ *
+ * L'ordre est celui de Recherche.MOTEURS.
+ */
+function afficherMoteurs() {
+    const cartes = Object.keys(Recherche.MOTEURS).map(id => {
+        const label = document.createElement('label');
+        const radio = document.createElement('input');
+        radio.type = 'radio';
+        radio.name = 'moteur';
+        radio.value = id;
+        radio.checked = id === reglages.fournisseur;
+        label.append(radio,
+            elementTexte('strong', 'nom', Recherche.MOTEURS[id].nom),
+            elementTexte('span', 'description', t('moteur.' + id)));
+        return label;
+    });
+    $('moteurs').replaceChildren(...cartes);
+    $('moteur-choisi').textContent = Recherche.MOTEURS[reglages.fournisseur].nom;
+}
+
+/* Un moteur retiré du code laisserait un réglage enregistré sans carte. */
+if (!Recherche.MOTEURS[reglages.fournisseur]) {
+    reglages.fournisseur = 'wikipedia';
+    ecrire('fournisseur', reglages.fournisseur);
+}
+afficherMoteurs();
+
+/* Seuls Google et Mojeek demandent une clé et un identifiant de moteur. */
 function afficherCles() {
-    $('cles-recherche').hidden = reglages.fournisseur === 'wikipedia';
+    $('cles-recherche').hidden = Recherche.sansCle(reglages.fournisseur);
 }
 afficherCles();
 /* Le moteur choisi par l'utilisateur remplace celui du code. */
@@ -142,13 +171,23 @@ $('recherche-reglage').addEventListener('change', () => {
 });
 
 /* Chaque moteur a sa clé : on efface celle de l'autre en changeant. */
-$('fournisseur-recherche').addEventListener('change', () => {
-    reglages.fournisseur = $('fournisseur-recherche').value;
+$('moteurs').addEventListener('change', (e) => {
+    reglages.fournisseur = e.target.value;
     reglages.cleRecherche = null;
     $('cle-recherche').value = '';
     ecrire('fournisseur', reglages.fournisseur);
     ecrire('cle-recherche', null);
+    afficherMoteurs();
     afficherCles();
+});
+
+/* Un clic referme la liste ; les flèches du clavier (detail 0) la laissent ouverte. */
+$('moteurs').addEventListener('click', (e) => {
+    if (!e.detail || !e.target.closest('label')) {
+        return;
+    }
+    $('choix-moteur').open = false;
+    $('moteur-choisi').focus();
 });
 
 $('cle-recherche').addEventListener('change', () => {
@@ -208,6 +247,7 @@ function choisirLangue(langue) {
     I18n.appliquer();
     afficherLangue();
     afficherModeles();
+    afficherMoteurs();
     afficherReglages();
     afficherLangues();
     afficherOutil();
@@ -242,3 +282,27 @@ $('ouvrir-reglages').addEventListener('click', () => {
 $('resume-reglages').addEventListener('click', () => {
     $('reglages').showModal();
 });
+
+/* La carte ouverte est retrouvée à la réouverture des réglages. La clé est
+   celle du titre : une carte déplacée dans la page garde sa mémoire. */
+const cartesReglages = [...document.querySelectorAll('#reglages .carte')];
+const cleCarte = (carte) => carte.querySelector('summary').dataset.t;
+const carteGardee = lire('carte-reglages', '');
+/* Une carte retirée du code laisserait la boîte entièrement fermée. */
+if (cartesReglages.some(carte => cleCarte(carte) === carteGardee)) {
+    for (const carte of cartesReglages) {
+        carte.open = cleCarte(carte) === carteGardee;
+    }
+}
+for (const carte of cartesReglages) {
+    carte.addEventListener('toggle', () => {
+        if (carte.open) {
+            ecrire('carte-reglages', cleCarte(carte));
+            return;
+        }
+        /* Sinon la liste déroulante rouvre dépliée avec la carte. */
+        for (const liste of carte.querySelectorAll('details[open]')) {
+            liste.open = false;
+        }
+    });
+}

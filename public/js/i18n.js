@@ -178,9 +178,9 @@ const I18n = {
             /* Réglages. */
             'reglages.titre': 'Réglages',
             'reglages.conseil': 'Conseillé : modèle Large, température 0,2, toute la conversation envoyée.',
-            'reglages.carte-reponse': 'La réponse',
-            'reglages.carte-application': 'L\'application',
-            'reglages.carte-donnees': 'Vos données',
+            'reglages.carte-reponse': 'IA',
+            'reglages.carte-application': 'Application',
+            'reglages.carte-donnees': 'Données',
             'reglages.modele': 'Modèle',
             'reglages.alias': 'Alias : {id}',
             'reglages.modele-reel': 'Modèle : {reel}',
@@ -191,13 +191,22 @@ const I18n = {
             'reglages.contexte': 'Contexte',
             'reglages.lecture': 'Lecture à voix haute',
             'reglages.voix-en-ligne': 'Autoriser les voix en ligne',
-            'reglages.aide-voix': 'Seulement si aucune voix française n\'est installée. Le texte lu part alors chez Google, Microsoft...',
+            'reglages.aide-voix': 'Appelé si aucune voix n\'est installée dans la langue à lire. Un moteur de voix externe peut collecter et exploiter les données personnelles de la conversation. Renseignez-vous avant d\'activer cette option.',
             'reglages.recherche': 'Recherche',
             'reglages.recherche-active': 'Brancher l\'IA sur :',
             'reglages.moteur': 'Moteur de recherche',
+            'moteur.wikipedia': 'Encyclopédie généraliste',
+            'moteur.data-gouv': 'Données publiques françaises',
+            'moteur.hal': 'Publications de la recherche française',
+            'moteur.internet-archive': 'Archives du web, livres et documents',
+            'moteur.open-library': 'Livres et éditions',
+            'moteur.openalex': 'Publications scientifiques du monde entier',
+            'moteur.vikidia': 'Encyclopédie pour les 8-13 ans',
+            'moteur.google': 'Tout le web, clé nécessaire, service en fin de vie',
+            'moteur.mojeek': 'Tout le web, index indépendant, clé payante',
             'reglages.cle-recherche': 'Clé API',
             'reglages.cx': 'ID du moteur de recherche',
-            'reglages.aide-recherche': 'Le moteur choisi voit votre adresse IP et les mots cherchés, pas Albert. Wikipédia et Mojeek n\'affichent pas de publicité ciblée ; Google relève du Cloud Act. Une recherche part à chaque question. Pour Google, créez le <a href="https://programmablesearchengine.google.com" target="_blank" rel="noopener noreferrer">moteur</a> et sa <a href="https://console.cloud.google.com/apis/library/customsearch.googleapis.com" target="_blank" rel="noopener noreferrer">clé API</a>. Pour Mojeek, le service est payant sur devis.',
+            'reglages.aide-recherche': 'Un moteur de recherche externe peut collecter et exploiter les données de la conversation. Renseignez-vous avant d\'activer cette option.',
             'reglages.cle-note': 'Une clé est enregistrée dans ce navigateur.',
             'reglages.langue': 'Langue',
             'reglages.conseilles': 'Réglages conseillés',
@@ -254,8 +263,7 @@ const I18n = {
             'reponse.copier': 'Copier la réponse',
             'reponse.lire': 'Lire à voix haute',
             'reponse.arreter-lecture': 'Arrêter la lecture',
-            'reponse.recherches': 'Voir les recherches faites',
-            'reponse.recherches-wikipedia': 'Voir les recherches faites dans Wikipédia',
+            'reponse.recherches': 'Voir les recherches {nom}',
             'reponse.note-recherche': 'Recherche : {mots}',
             'reponse.sources': 'Pages consultées : ',
 
@@ -300,21 +308,22 @@ const I18n = {
             'recherche.description': 'Cherche une information et renvoie des extraits sourcés. '
                 + 'À appeler pour un fait à vérifier, une date, un chiffre, une étymologie, '
                 + 'une actualité ou une source à citer, et chaque fois que tu répondrais de mémoire '
-                + 'sur un sujet précis. Le moteur est soit Wikipédia, soit un moteur web selon le '
-                + 'réglage : ce que tu reçois est tout ce dont tu disposes, dis-le si cela ne suffit pas.',
+                + 'sur un sujet précis. Le moteur est {nom} : ce que tu reçois est tout ce dont '
+                + 'tu disposes, dis-le si cela ne suffit pas.',
             'recherche.parametre': 'Les mots à chercher.',
-            'recherche.source-wikipedia': 'dans Wikipédia',
+            'recherche.description-catalogue': 'Ce moteur est un catalogue : il ne rend un résultat que si tous les mots cherchés y figurent. Cherche donc avec deux ou trois mots-clés, jamais avec une phrase.',
+            'recherche.source-base': 'dans {nom}',
             'recherche.source-web': 'sur le web',
             'recherche.rappel': 'Tu disposes de l\'outil recherche_web : tu peux chercher {source}, '
                 + 'et tu le dis si on te le demande. Sers-t\'en dès qu\'une réponse demande un fait précis '
                 + 'que tu n\'es pas certain de connaître.',
-            'recherche.resultats': 'Résultats de recherche :\n{extraits}\n\nRéponds maintenant à la question à partir de ces extraits.',
+            'recherche.resultats': 'Résultats de recherche :\n{extraits}\n\nRéponds maintenant à la question à partir de ces extraits. Cite chaque fait avec le numéro de sa source entre crochets, par exemple [1].',
             'recherche.aucun-mot': 'Aucun mot à chercher.',
             'recherche.aucun-resultat': 'Aucun résultat.',
             'recherche.impossible': 'Recherche impossible : {message}',
             'recherche.moteur-injoignable': 'moteur injoignable ({status}).',
-            'recherche.wikipedia-injoignable': 'Wikipédia injoignable ({status}).',
-            'recherche.wikipedia-refus': 'requête refusée par Wikipédia.'
+            'recherche.wiki-injoignable': '{nom} injoignable ({status}).',
+            'recherche.wiki-refus': 'requête refusée par {nom}.'
         },
 
         es: {
@@ -400,9 +409,9 @@ const I18n = {
             /* Ajustes. */
             'reglages.titre': 'Ajustes',
             'reglages.conseil': 'Recomendado: modelo Large, temperatura 0,2, toda la conversación enviada.',
-            'reglages.carte-reponse': 'La respuesta',
-            'reglages.carte-application': 'La aplicación',
-            'reglages.carte-donnees': 'Sus datos',
+            'reglages.carte-reponse': 'IA',
+            'reglages.carte-application': 'Aplicación',
+            'reglages.carte-donnees': 'Datos',
             'reglages.modele': 'Modelo',
             'reglages.alias': 'Alias: {id}',
             'reglages.modele-reel': 'Modelo: {reel}',
@@ -413,13 +422,22 @@ const I18n = {
             'reglages.contexte': 'Contexto',
             'reglages.lecture': 'Lectura en voz alta',
             'reglages.voix-en-ligne': 'Permitir las voces en línea',
-            'reglages.aide-voix': 'Solo si no hay ninguna voz local instalada. El texto leído va entonces a Google, Microsoft...',
+            'reglages.aide-voix': 'Se usa si no hay ninguna voz instalada en el idioma que hay que leer. Un motor de voz externo puede recopilar y explotar los datos personales de la conversación. Infórmese antes de activar esta opción.',
             'reglages.recherche': 'Búsqueda',
             'reglages.recherche-active': 'Conectar la IA a:',
             'reglages.moteur': 'Motor de búsqueda',
+            'moteur.wikipedia': 'Enciclopedia generalista',
+            'moteur.data-gouv': 'Datos públicos franceses',
+            'moteur.hal': 'Publicaciones de la investigación francesa',
+            'moteur.internet-archive': 'Archivos de la web, libros y documentos',
+            'moteur.open-library': 'Libros y ediciones',
+            'moteur.openalex': 'Publicaciones científicas del mundo entero',
+            'moteur.vikidia': 'Enciclopedia para niños de 8 a 13 años',
+            'moteur.google': 'Toda la web, se necesita una clave, servicio en fin de vida',
+            'moteur.mojeek': 'Toda la web, índice independiente, clave de pago',
             'reglages.cle-recherche': 'Clave API',
             'reglages.cx': 'ID del buscador',
-            'reglages.aide-recherche': 'El buscador elegido ve su dirección IP y las palabras buscadas, Albert no. Wikipedia y Mojeek no muestran publicidad personalizada; Google está sujeto a la Cloud Act. Cada pregunta lanza una búsqueda. Para Google, cree el <a href="https://programmablesearchengine.google.com" target="_blank" rel="noopener noreferrer">buscador</a> y su <a href="https://console.cloud.google.com/apis/library/customsearch.googleapis.com" target="_blank" rel="noopener noreferrer">clave API</a>. Mojeek es de pago, con presupuesto a medida.',
+            'reglages.aide-recherche': 'Un buscador externo puede recopilar y explotar los datos de la conversación. Infórmese antes de activar esta opción.',
             'reglages.cle-note': 'Hay una clave guardada en este navegador.',
             'reglages.langue': 'Idioma',
             'reglages.conseilles': 'Ajustes recomendados',
@@ -476,8 +494,7 @@ const I18n = {
             'reponse.copier': 'Copiar la respuesta',
             'reponse.lire': 'Leer en voz alta',
             'reponse.arreter-lecture': 'Detener la lectura',
-            'reponse.recherches': 'Ver las búsquedas hechas',
-            'reponse.recherches-wikipedia': 'Ver las búsquedas hechas en Wikipedia',
+            'reponse.recherches': 'Ver las búsquedas {nom}',
             'reponse.note-recherche': 'Búsqueda: {mots}',
             'reponse.sources': 'Páginas consultadas: ',
 
@@ -522,21 +539,22 @@ const I18n = {
             'recherche.description': 'Busca información y devuelve extractos con su fuente. '
                 + 'Llámala para un dato que comprobar, una fecha, una cifra, una etimología, '
                 + 'una noticia o una fuente que citar, y cada vez que responderías de memoria '
-                + 'sobre un tema preciso. El buscador es Wikipedia o un buscador web según el '
-                + 'ajuste: lo que recibes es todo lo que tienes, dilo si no basta.',
+                + 'sobre un tema preciso. El buscador es {nom}: lo que recibes es todo lo que '
+                + 'tienes, dilo si no basta.',
             'recherche.parametre': 'Las palabras que buscar.',
-            'recherche.source-wikipedia': 'en Wikipedia',
+            'recherche.description-catalogue': 'Este buscador es un catálogo: solo devuelve un resultado si todas las palabras buscadas aparecen en él. Busca pues con dos o tres palabras clave, nunca con una frase.',
+            'recherche.source-base': 'en {nom}',
             'recherche.source-web': 'en la web',
             'recherche.rappel': 'Dispones de la herramienta recherche_web: puedes buscar {source}, '
                 + 'y lo dices si te lo preguntan. Úsala en cuanto una respuesta necesite un dato preciso '
                 + 'que no estés seguro de saber.',
-            'recherche.resultats': 'Resultados de búsqueda:\n{extraits}\n\nResponde ahora a la pregunta a partir de estos extractos.',
+            'recherche.resultats': 'Resultados de búsqueda:\n{extraits}\n\nResponde ahora a la pregunta a partir de estos extractos. Cita cada dato con el número de su fuente entre corchetes, por ejemplo [1].',
             'recherche.aucun-mot': 'Ninguna palabra que buscar.',
             'recherche.aucun-resultat': 'Ningún resultado.',
             'recherche.impossible': 'Búsqueda imposible: {message}',
             'recherche.moteur-injoignable': 'buscador inalcanzable ({status}).',
-            'recherche.wikipedia-injoignable': 'Wikipedia inalcanzable ({status}).',
-            'recherche.wikipedia-refus': 'petición rechazada por Wikipedia.'
+            'recherche.wiki-injoignable': '{nom} inalcanzable ({status}).',
+            'recherche.wiki-refus': 'petición rechazada por {nom}.'
         },
 
         en: {
@@ -622,9 +640,9 @@ const I18n = {
             /* Settings. */
             'reglages.titre': 'Settings',
             'reglages.conseil': 'Recommended: Large model, temperature 0.2, whole conversation sent.',
-            'reglages.carte-reponse': 'The answer',
-            'reglages.carte-application': 'The app',
-            'reglages.carte-donnees': 'Your data',
+            'reglages.carte-reponse': 'AI',
+            'reglages.carte-application': 'App',
+            'reglages.carte-donnees': 'Data',
             'reglages.modele': 'Model',
             'reglages.alias': 'Alias: {id}',
             'reglages.modele-reel': 'Model: {reel}',
@@ -635,13 +653,22 @@ const I18n = {
             'reglages.contexte': 'Context',
             'reglages.lecture': 'Read aloud',
             'reglages.voix-en-ligne': 'Allow online voices',
-            'reglages.aide-voix': 'Only if no local voice is installed. The text read out then goes to Google, Microsoft...',
+            'reglages.aide-voix': 'Used if no voice is installed for the language to be read. An external voice engine may collect and use the personal data of the conversation. Find out more before turning this option on.',
             'reglages.recherche': 'Search',
             'reglages.recherche-active': 'Plug the AI into:',
             'reglages.moteur': 'Search engine',
+            'moteur.wikipedia': 'General encyclopedia',
+            'moteur.data-gouv': 'French public data',
+            'moteur.hal': 'French research publications',
+            'moteur.internet-archive': 'Web archives, books and documents',
+            'moteur.open-library': 'Books and editions',
+            'moteur.openalex': 'Scientific publications worldwide',
+            'moteur.vikidia': 'Encyclopedia for ages 8 to 13',
+            'moteur.google': 'The whole web, key required, service being retired',
+            'moteur.mojeek': 'The whole web, independent index, paid key',
             'reglages.cle-recherche': 'API key',
             'reglages.cx': 'Search engine ID',
-            'reglages.aide-recherche': 'The chosen engine sees your IP address and the words searched for, Albert does not. Wikipedia and Mojeek show no targeted advertising; Google falls under the Cloud Act. A search is run for every question. For Google, create the <a href="https://programmablesearchengine.google.com" target="_blank" rel="noopener noreferrer">engine</a> and its <a href="https://console.cloud.google.com/apis/library/customsearch.googleapis.com" target="_blank" rel="noopener noreferrer">API key</a>. Mojeek is a paid service, priced on request.',
+            'reglages.aide-recherche': 'An external search engine may collect and use the data of the conversation. Find out more before turning this option on.',
             'reglages.cle-note': 'A key is saved in this browser.',
             'reglages.langue': 'Language',
             'reglages.conseilles': 'Recommended settings',
@@ -698,8 +725,7 @@ const I18n = {
             'reponse.copier': 'Copy the answer',
             'reponse.lire': 'Read aloud',
             'reponse.arreter-lecture': 'Stop reading',
-            'reponse.recherches': 'Show the searches made',
-            'reponse.recherches-wikipedia': 'Show the searches made in Wikipedia',
+            'reponse.recherches': 'Show the searches {nom}',
             'reponse.note-recherche': 'Search: {mots}',
             'reponse.sources': 'Pages consulted: ',
 
@@ -744,21 +770,22 @@ const I18n = {
             'recherche.description': 'Searches for information and returns sourced extracts. '
                 + 'Call it for a fact to check, a date, a figure, an etymology, a news item or a '
                 + 'source to cite, and every time you would otherwise answer from memory on a '
-                + 'precise subject. The engine is either Wikipedia or a web engine depending on '
-                + 'the setting: what you get is all you have, say so if it is not enough.',
+                + 'precise subject. The engine is {nom}: what you get is all you have, say so '
+                + 'if it is not enough.',
             'recherche.parametre': 'The words to search for.',
-            'recherche.source-wikipedia': 'in Wikipedia',
+            'recherche.description-catalogue': 'This engine is a catalogue: it returns a result only if every word searched for appears in it. So search with two or three keywords, never with a sentence.',
+            'recherche.source-base': 'in {nom}',
             'recherche.source-web': 'on the web',
             'recherche.rappel': 'You have the recherche_web tool: you can search {source}, '
                 + 'and you say so if asked. Use it as soon as an answer needs a precise fact '
                 + 'you are not sure you know.',
-            'recherche.resultats': 'Search results:\n{extraits}\n\nNow answer the question from these extracts.',
+            'recherche.resultats': 'Search results:\n{extraits}\n\nNow answer the question from these extracts. Cite each fact with the number of its source in brackets, for example [1].',
             'recherche.aucun-mot': 'No words to search for.',
             'recherche.aucun-resultat': 'No result.',
             'recherche.impossible': 'Search failed: {message}',
             'recherche.moteur-injoignable': 'engine unreachable ({status}).',
-            'recherche.wikipedia-injoignable': 'Wikipedia unreachable ({status}).',
-            'recherche.wikipedia-refus': 'request refused by Wikipedia.'
+            'recherche.wiki-injoignable': '{nom} unreachable ({status}).',
+            'recherche.wiki-refus': 'request refused by {nom}.'
         },
 
         de: {
@@ -844,9 +871,9 @@ const I18n = {
             /* Einstellungen. */
             'reglages.titre': 'Einstellungen',
             'reglages.conseil': 'Empfohlen: Modell Large, Temperatur 0,2, ganzes Gespräch gesendet.',
-            'reglages.carte-reponse': 'Die Antwort',
-            'reglages.carte-application': 'Die App',
-            'reglages.carte-donnees': 'Ihre Daten',
+            'reglages.carte-reponse': 'KI',
+            'reglages.carte-application': 'App',
+            'reglages.carte-donnees': 'Daten',
             'reglages.modele': 'Modell',
             'reglages.alias': 'Alias: {id}',
             'reglages.modele-reel': 'Modell: {reel}',
@@ -857,13 +884,22 @@ const I18n = {
             'reglages.contexte': 'Kontext',
             'reglages.lecture': 'Vorlesen',
             'reglages.voix-en-ligne': 'Online-Stimmen erlauben',
-            'reglages.aide-voix': 'Nur wenn keine lokale Stimme installiert ist. Der vorgelesene Text geht dann zu Google, Microsoft...',
+            'reglages.aide-voix': 'Wird verwendet, wenn für die vorzulesende Sprache keine Stimme installiert ist. Eine externe Sprachausgabe kann die personenbezogenen Daten der Unterhaltung sammeln und verwerten. Informieren Sie sich, bevor Sie diese Option aktivieren.',
             'reglages.recherche': 'Suche',
             'reglages.recherche-active': 'Die KI verbinden mit:',
             'reglages.moteur': 'Suchmaschine',
+            'moteur.wikipedia': 'Allgemeine Enzyklopädie',
+            'moteur.data-gouv': 'Französische offene Daten',
+            'moteur.hal': 'Französische Forschungspublikationen',
+            'moteur.internet-archive': 'Webarchive, Bücher und Dokumente',
+            'moteur.open-library': 'Bücher und Ausgaben',
+            'moteur.openalex': 'Wissenschaftliche Publikationen weltweit',
+            'moteur.vikidia': 'Enzyklopädie für 8- bis 13-Jährige',
+            'moteur.google': 'Das gesamte Web, Schlüssel erforderlich, Dienst wird eingestellt',
+            'moteur.mojeek': 'Das gesamte Web, unabhängiger Index, kostenpflichtiger Schlüssel',
             'reglages.cle-recherche': 'API-Schlüssel',
             'reglages.cx': 'ID der Suchmaschine',
-            'reglages.aide-recherche': 'Die gewählte Suchmaschine sieht Ihre IP-Adresse und die gesuchten Wörter, Albert nicht. Wikipedia und Mojeek zeigen keine personalisierte Werbung; Google unterliegt dem Cloud Act. Jede Frage löst eine Suche aus. Für Google die <a href="https://programmablesearchengine.google.com" target="_blank" rel="noopener noreferrer">Suchmaschine</a> und ihren <a href="https://console.cloud.google.com/apis/library/customsearch.googleapis.com" target="_blank" rel="noopener noreferrer">API-Schlüssel</a> anlegen. Mojeek ist kostenpflichtig, Preis auf Anfrage.',
+            'reglages.aide-recherche': 'Eine externe Suchmaschine kann die Daten der Unterhaltung sammeln und verwerten. Informieren Sie sich, bevor Sie diese Option aktivieren.',
             'reglages.cle-note': 'In diesem Browser ist ein Schlüssel gespeichert.',
             'reglages.langue': 'Sprache',
             'reglages.conseilles': 'Empfohlene Einstellungen',
@@ -920,8 +956,7 @@ const I18n = {
             'reponse.copier': 'Antwort kopieren',
             'reponse.lire': 'Vorlesen',
             'reponse.arreter-lecture': 'Vorlesen anhalten',
-            'reponse.recherches': 'Die gemachten Suchen anzeigen',
-            'reponse.recherches-wikipedia': 'Die gemachten Suchen in Wikipedia anzeigen',
+            'reponse.recherches': 'Die Suchen {nom} anzeigen',
             'reponse.note-recherche': 'Suche: {mots}',
             'reponse.sources': 'Aufgerufene Seiten: ',
 
@@ -966,22 +1001,22 @@ const I18n = {
             'recherche.description': 'Sucht eine Information und liefert Auszüge mit Quelle. '
                 + 'Aufzurufen für einen zu prüfenden Fakt, ein Datum, eine Zahl, eine Etymologie, '
                 + 'eine Nachricht oder eine zu zitierende Quelle, und jedes Mal, wenn du sonst aus '
-                + 'dem Gedächtnis zu einem genauen Thema antworten würdest. Die Suchmaschine ist je '
-                + 'nach Einstellung Wikipedia oder eine Websuche: was du bekommst, ist alles, was du '
-                + 'hast, sage es, wenn das nicht reicht.',
+                + 'dem Gedächtnis zu einem genauen Thema antworten würdest. Die Suchmaschine ist '
+                + '{nom}: was du bekommst, ist alles, was du hast, sage es, wenn das nicht reicht.',
             'recherche.parametre': 'Die zu suchenden Wörter.',
-            'recherche.source-wikipedia': 'in Wikipedia',
+            'recherche.description-catalogue': 'Diese Suchmaschine ist ein Katalog: Sie liefert nur dann ein Ergebnis, wenn alle gesuchten Wörter darin vorkommen. Suche also mit zwei oder drei Stichwörtern, nie mit einem Satz.',
+            'recherche.source-base': 'in {nom}',
             'recherche.source-web': 'im Web',
             'recherche.rappel': 'Du verfügst über das Werkzeug recherche_web: du kannst {source} suchen, '
                 + 'und du sagst es, wenn man dich fragt. Nutze es, sobald eine Antwort einen genauen Fakt '
                 + 'braucht, den du nicht sicher kennst.',
-            'recherche.resultats': 'Suchergebnisse:\n{extraits}\n\nBeantworte die Frage jetzt anhand dieser Auszüge.',
+            'recherche.resultats': 'Suchergebnisse:\n{extraits}\n\nBeantworte die Frage jetzt anhand dieser Auszüge. Belege jede Angabe mit der Nummer ihrer Quelle in eckigen Klammern, zum Beispiel [1].',
             'recherche.aucun-mot': 'Keine Wörter zum Suchen.',
             'recherche.aucun-resultat': 'Kein Ergebnis.',
             'recherche.impossible': 'Suche fehlgeschlagen: {message}',
             'recherche.moteur-injoignable': 'Suchmaschine nicht erreichbar ({status}).',
-            'recherche.wikipedia-injoignable': 'Wikipedia nicht erreichbar ({status}).',
-            'recherche.wikipedia-refus': 'Anfrage von Wikipedia abgelehnt.'
+            'recherche.wiki-injoignable': '{nom} nicht erreichbar ({status}).',
+            'recherche.wiki-refus': 'Anfrage von {nom} abgelehnt.'
         }
     }
 };
