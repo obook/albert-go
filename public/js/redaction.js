@@ -41,6 +41,7 @@ function arreterRedaction() {
     if (annulationRedaction) {
         annulationRedaction.abort();
         annulationRedaction = null;
+        interroger(false);
     }
     $('etat-redaction').textContent = '';
 }
@@ -57,6 +58,7 @@ async function rediger() {
     }
     const annulation = new AbortController();
     annulationRedaction = annulation;
+    interroger(true);
     $('etat-redaction').textContent = t('etat.redige');
     const demande = Albert.construireDemande('rediger', notes.trim());
     try {
@@ -90,6 +92,7 @@ async function rediger() {
     } finally {
         if (annulation === annulationRedaction) {
             annulationRedaction = null;
+            interroger(false);
         }
     }
 }

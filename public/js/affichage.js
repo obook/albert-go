@@ -63,6 +63,15 @@ function afficher() {
 }
 
 /**
+ * Fait osciller le "t" rouge de la marque pendant qu'Albert est interrogé.
+ *
+ * @param {boolean} actif - true pendant une requête.
+ */
+function interroger(actif) {
+    document.querySelector('.marque').classList.toggle('interroge', actif);
+}
+
+/**
  * Indique si l'appareil se pilote au doigt.
  *
  * @returns {boolean} true sur un écran tactile.

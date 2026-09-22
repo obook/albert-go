@@ -38,6 +38,20 @@
 }
 .rouge { color: var(--rouge); }
 
+/* Albert interrogé : le "t" de la marque oscille (affichage.js, interroger). */
+.marque > .rouge { display: inline-block; transform-origin: 50% 90%; }
+.marque.interroge > .rouge { animation: oscille 0.9s ease-in-out infinite; }
+@keyframes oscille {
+    0%, 100% { transform: rotate(0); }
+    25% { transform: rotate(-14deg); }
+    75% { transform: rotate(14deg); }
+}
+/* Mouvements réduits : une pulsation d'opacité, sans rotation. */
+@keyframes pulse { 50% { opacity: 0.35; } }
+@media (prefers-reduced-motion: reduce) {
+    .marque.interroge > .rouge { animation-name: pulse; }
+}
+
 /* Nom du module : tout de .marque, sauf la taille, moitié de celle du titre. */
 .outil-actif {
     font-size: 0.5em;

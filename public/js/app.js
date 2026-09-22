@@ -60,6 +60,7 @@ function messageEchec(err) {
  */
 function boutonEnvoi(enCours) {
     $('envoyer').classList.toggle('en-cours', enCours);
+    interroger(enCours);
     $('envoyer').setAttribute('aria-label', t(enCours ? 'saisie.arreter' : 'saisie.envoyer'));
 }
 
