@@ -66,6 +66,7 @@ function arreterRedaction() {
         interroger(false);
     }
     $('etat-redaction').textContent = '';
+    $('etat-redaction').classList.remove('annonce');
 }
 
 /**
@@ -123,7 +124,12 @@ function garderProposition(notes, proposition, anomalies, etat) {
         { role: 'assistant', content: proposition }
     ];
     sauverConversation();
-    $('etat-redaction').textContent = t(etat);
+    const statut = $('etat-redaction');
+    statut.textContent = t(etat);
+    /* Relance l'animation à chaque proposition, même si le texte du statut ne change pas. */
+    statut.classList.remove('annonce');
+    void statut.offsetWidth;
+    statut.classList.add('annonce');
 }
 
 /**
