@@ -152,6 +152,7 @@ function rouvrirConversation(entree) {
     outilActuel = entree.outil || 'discuter';
     ecrire('outil', outilActuel);
     afficherOutil();
+    afficher();
     conversation = entree.messages.slice();
     conversationId = entree.id;
     retenirCourante(conversationId);

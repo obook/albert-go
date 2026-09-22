@@ -131,7 +131,6 @@ function afficherOutil() {
     $('outil-actif').replaceChildren(...nomModule(outilActuel));
     $('saisie').placeholder = t('invite.' + outilActuel);
     $('langues').hidden = outilActuel !== 'traduire';
-    afficher();
 }
 
 /**
@@ -147,6 +146,8 @@ function choisirOutil(outil) {
     outilActuel = outil;
     ecrire('outil', outil);
     afficherOutil();
+    /* Fil ou écran Rédiger. Pas dans afficherOutil : un changement de langue recocherait l'écran de la clé. */
+    afficher();
 }
 
 afficherLangues();

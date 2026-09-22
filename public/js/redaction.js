@@ -83,8 +83,10 @@ async function rediger() {
         if (annulation !== annulationRedaction) {
             return;
         }
-        afficherProposition(messageEchec(err).texte, true);
-        $('etat-redaction').textContent = '';
+        const message = messageEchec(err).texte;
+        afficherProposition(message, true);
+        /* #proposition n'est pas une région live : le statut annonce l'erreur. */
+        $('etat-redaction').textContent = message;
     } finally {
         if (annulation === annulationRedaction) {
             annulationRedaction = null;
