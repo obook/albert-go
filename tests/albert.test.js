@@ -68,6 +68,52 @@ test('joindre : question seule, fichier seul, les deux', () => {
     assert.strictEqual(Albert.joindre('Résume', piece), 'Résume\n\nContenu du fichier "notes.txt" :\n\nLigne 1');
 });
 
+test('libelleConversation : l\'outil devant le titre, sauf Discuter', () => {
+    assert.strictEqual(Albert.libelleConversation({ titre: 'Bonjour', outil: 'discuter' }), 'Bonjour');
+    assert.strictEqual(Albert.libelleConversation({ titre: 'Bonjour', outil: 'traduire' }), 'Traduire : Bonjour');
+    /* Conversations enregistrées avant que l'outil ne soit noté. */
+    assert.strictEqual(Albert.libelleConversation({ titre: 'Bonjour' }), 'Bonjour');
+});
+
+test('entreeConversation : titre pris sur la première question affichée', () => {
+    const messages = [
+        { role: 'user', content: 'Corrige ce texte :\n\nBonjour', affiche: 'Bonjour' },
+        { role: 'assistant', content: 'Bonjour.' }
+    ];
+    const entree = Albert.entreeConversation('abc', 'corriger', messages);
+    assert.strictEqual(entree.id, 'abc');
+    assert.strictEqual(entree.outil, 'corriger');
+    assert.strictEqual(entree.titre, 'Bonjour');
+    assert.strictEqual(typeof entree.date, 'number');
+    /* Copie : la conversation en cours continue de changer. */
+    messages.push({ role: 'user', content: 'Encore' });
+    assert.strictEqual(entree.messages.length, 2);
+});
+
+test('entreeConversation : sans question posée, rien à enregistrer', () => {
+    assert.strictEqual(Albert.entreeConversation('abc', 'discuter', []), null);
+    /* Le titre retombe sur le contenu quand rien n'est affiché à part. */
+    const entree = Albert.entreeConversation('abc', 'discuter', [{ role: 'user', content: 'Salut' }]);
+    assert.strictEqual(entree.titre, 'Salut');
+});
+
+test('texteAffiche : la pièce jointe s\'annonce sous la question', () => {
+    const piece = { nom: 'notes.txt' };
+    assert.strictEqual(Albert.texteAffiche('Bonjour', null), 'Bonjour');
+    assert.strictEqual(Albert.texteAffiche('Bonjour', piece), 'Bonjour\nFichier joint : notes.txt');
+    /* Un fichier peut partir sans question. */
+    assert.strictEqual(Albert.texteAffiche('', piece), 'Fichier joint : notes.txt');
+    assert.strictEqual(Albert.texteAffiche('', null), '');
+});
+
+test('contientLien : les adresses qu\'Albert ne peut pas ouvrir', () => {
+    assert.ok(Albert.contientLien('Résume https://exemple.fr/page'));
+    assert.ok(Albert.contientLien('Va voir www.exemple.fr'));
+    assert.ok(Albert.contientLien('HTTP://EXEMPLE.FR'));
+    assert.ok(!Albert.contientLien('Parle-moi du web.'));
+    assert.ok(!Albert.contientLien(''));
+});
+
 test('construireDemande : instruction selon l\'outil', () => {
     assert.strictEqual(Albert.construireDemande('discuter', 'Bonjour', 'auto', 'en'), 'Bonjour');
     assert.strictEqual(Albert.construireDemande('reformuler', 'Texte', 'auto', 'en'), 'Reformule ce texte :\n\nTexte');

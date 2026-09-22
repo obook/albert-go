@@ -217,6 +217,32 @@ const Albert = {
     },
 
     /**
+     * Texte montré dans le fil pour la question posée.
+     *
+     * Le fichier joint s'annonce sous la question, ou seul si rien n'est tapé.
+     *
+     * @param {string} question - Texte saisi, éventuellement vide.
+     * @param {?{nom: string}} piece - Fichier joint, ou null.
+     * @returns {string} Texte de la bulle.
+     */
+    texteAffiche(question, piece) {
+        const lignes = [question, piece ? t('fichier.joint', { nom: piece.nom }) : ''];
+        return lignes.filter(Boolean).join('\n');
+    },
+
+    /**
+     * Indique si le texte contient une adresse web.
+     *
+     * Albert n'a pas accès au web : il inventerait le contenu de la page.
+     *
+     * @param {string} texte - Texte saisi.
+     * @returns {boolean} true si une adresse y figure.
+     */
+    contientLien(texte) {
+        return /https?:\/\/|www\./i.test(texte);
+    },
+
+    /**
      * Ajoute à la saisie l'instruction propre à l'outil (comme albert-droid).
      *
      * @param {string} outil - Clé de OUTILS.
@@ -271,6 +297,46 @@ const Albert = {
     naviguer(historique, index, sens) {
         const suivant = index + (sens === 'haut' ? 1 : -1);
         return Math.max(-1, Math.min(suivant, historique.length - 1));
+    },
+
+    /**
+     * Entrée d'historique pour une conversation en cours.
+     *
+     * Le titre est la première question posée, telle qu'elle est affichée.
+     *
+     * @param {string} id - Identifiant de la conversation.
+     * @param {string} outil - Clé de OUTILS.
+     * @param {Array<Object>} messages - Messages de la conversation.
+     * @returns {?Object} Entrée { id, outil, titre, date, messages }, ou null si rien n'a été demandé.
+     */
+    entreeConversation(id, outil, messages) {
+        const premiere = messages.find(m => m.role === 'user');
+        if (!premiere) {
+            return null;
+        }
+        return {
+            id: id,
+            outil: outil,
+            titre: premiere.affiche || premiere.content,
+            date: Date.now(),
+            /* Copie : la conversation en cours continue de changer. */
+            messages: messages.slice()
+        };
+    },
+
+    /**
+     * Libellé d'une conversation enregistrée : l'outil devant le titre.
+     *
+     * Discuter n'est pas nommé : c'est l'outil par défaut.
+     *
+     * @param {Object} entree - Entrée d'historique { titre, outil }.
+     * @returns {string} Libellé à afficher.
+     */
+    libelleConversation(entree) {
+        if (!entree.outil || entree.outil === 'discuter') {
+            return entree.titre;
+        }
+        return t('outil.' + entree.outil) + ' : ' + entree.titre;
     },
 
     /**

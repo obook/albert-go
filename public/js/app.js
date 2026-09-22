@@ -95,6 +95,67 @@ function memoriser(question) {
 }
 
 /**
+ * Demande la réponse à Albert pour l'outil actif.
+ *
+ * @param {string} outil - Clé de Albert.OUTILS.
+ * @returns {Promise<Object>} Réponse de Albert.repondre.
+ */
+async function demanderReponse(outil) {
+    /* Chaque outil a sa consigne système ; seul Discuter envoie aussi la conversation. */
+    const texteConsigne = await consigne(outil);
+    let messages = Albert.messagesAEnvoyer(conversation, reglages.memoire && outil === 'discuter');
+    if (texteConsigne) {
+        messages = [{ role: 'system', content: texteConsigne }, ...messages];
+    }
+    /* Seul Discuter propose l'outil de recherche : les autres outils rendent un texte. */
+    const envoi = outil === 'discuter' ? repondreAvecRecherche : Albert.repondre.bind(Albert);
+    return envoi(reglages.cle, {
+        model: modeleActuel().id,
+        temperature: reglages.temperature,
+        messages: messages
+    }, annulation.signal);
+}
+
+/**
+ * Ajoute la réponse reçue au fil et l'enregistre.
+ *
+ * @param {Object} reponse - Réponse de Albert.repondre.
+ * @param {string} outil - Clé de Albert.OUTILS.
+ */
+function recevoirReponse(reponse, outil) {
+    /* Réponse de Traduire : dans la langue cible, gardée pour la lecture à voix haute. */
+    const langue = outil === 'traduire' ? langueCible : I18n.langue;
+    conversation.push({ role: 'assistant', content: reponse.texte, langue: langue, recherches: reponse.recherches });
+    ajouter('assistant', reponse.texte, langue, true, reponse.recherches);
+    sauverConversation();
+    dernierUsage = reponse.usage;
+    afficherReglages();
+    etat('');
+}
+
+/**
+ * Remet la question dans le champ après un échec, pour la reposer.
+ *
+ * @param {Error} err - Erreur rencontrée.
+ * @param {string} question - Texte saisi.
+ * @param {?Object} piece - Fichier joint, ou null.
+ * @param {HTMLElement} bulle - Bulle de la question dans le fil.
+ */
+function reposerQuestion(err, question, piece, bulle) {
+    conversation.pop();
+    bulle.remove();
+    $('saisie').value = question;
+    if (piece) {
+        afficherPiece(piece);
+    }
+    if (err.name === 'AbortError') {
+        etat(t('etat.annulee'));
+    } else {
+        etat(messageEchec(err).texte, true);
+    }
+}
+
+/**
  * Envoie la question saisie (et le fichier joint) puis affiche la réponse.
  *
  * @returns {Promise<void>}
@@ -117,14 +178,11 @@ async function envoyer() {
     }
 
     const outil = outilActuel;
-    /* Albert n'a pas accès au web : il inventerait le contenu de la page. */
-    if (outil === 'discuter' && /https?:\/\/|www\./i.test(question)) {
+    if (outil === 'discuter' && Albert.contientLien(question)) {
         toast(t('toast.liens'));
     }
 
-    /* La pièce jointe s'annonce sous la question, ou seule si rien n'est tapé. */
-    const lignes = [question, piece ? t('fichier.joint', { nom: piece.nom }) : ''];
-    const affiche = lignes.filter(Boolean).join('\n');
+    const affiche = Albert.texteAffiche(question, piece);
     const demande = Albert.construireDemande(outil, Albert.joindre(question, piece), langueSource, langueCible);
     conversation.push({ role: 'user', content: demande, affiche: affiche });
     /* Pour ignorer la réponse si on change de conversation pendant l'attente. */
@@ -138,47 +196,15 @@ async function envoyer() {
     etat(t('etat.reflechit'));
 
     try {
-        /* Chaque outil a sa consigne système ; seul Discuter envoie aussi la conversation. */
-        const texteConsigne = await consigne(outil);
-        let messages = Albert.messagesAEnvoyer(conversation, reglages.memoire && outil === 'discuter');
-        if (texteConsigne) {
-            messages = [{ role: 'system', content: texteConsigne }, ...messages];
-        }
-        /* Seul Discuter propose l'outil de recherche : les autres outils rendent un texte. */
-        const envoi = outil === 'discuter' ? repondreAvecRecherche : Albert.repondre.bind(Albert);
-        const reponse = await envoi(reglages.cle, {
-            model: modeleActuel().id,
-            temperature: reglages.temperature,
-            messages: messages
-        }, annulation.signal);
+        const reponse = await demanderReponse(outil);
         retirerAttente();
-        if (conversation !== courante) {
-            return;
+        if (conversation === courante) {
+            recevoirReponse(reponse, outil);
         }
-        /* Réponse de Traduire : dans la langue cible, gardée pour la lecture à voix haute. */
-        const langue = outil === 'traduire' ? langueCible : I18n.langue;
-        conversation.push({ role: 'assistant', content: reponse.texte, langue: langue, recherches: reponse.recherches });
-        ajouter('assistant', reponse.texte, langue, true, reponse.recherches);
-        sauverConversation();
-        dernierUsage = reponse.usage;
-        afficherReglages();
-        etat('');
     } catch (err) {
         retirerAttente();
-        if (conversation !== courante) {
-            return;
-        }
-        /* On retire la question du fil pour pouvoir la reposer. */
-        conversation.pop();
-        bulle.remove();
-        $('saisie').value = question;
-        if (piece) {
-            afficherPiece(piece);
-        }
-        if (err.name === 'AbortError') {
-            etat(t('etat.annulee'));
-        } else {
-            etat(messageEchec(err).texte, true);
+        if (conversation === courante) {
+            reposerQuestion(err, question, piece, bulle);
         }
     } finally {
         annulation = null;

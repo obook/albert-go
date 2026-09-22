@@ -73,6 +73,42 @@ async function imageEnDataUrl(fichier) {
 }
 
 /**
+ * Nature du fichier joint, d'après son type MIME puis son extension.
+ *
+ * @param {File} fichier - Fichier choisi, déposé ou collé.
+ * @returns {?string} "image", "texte", ou null si le format est refusé.
+ */
+function typeFichier(fichier) {
+    if (fichier.type.startsWith('image/')) {
+        return 'image';
+    }
+    if (fichier.type.startsWith('text/') || EXTENSIONS_TEXTE.test(fichier.name)) {
+        return 'texte';
+    }
+    return null;
+}
+
+/**
+ * Contenu du fichier, transcrit par le modèle s'il s'agit d'une image.
+ *
+ * @param {File} fichier - Fichier choisi, déposé ou collé.
+ * @param {string} type - "image" ou "texte".
+ * @param {AbortSignal} signal - Pour annuler avec le fichier.
+ * @returns {Promise<string>} Texte à joindre à la question.
+ * @throws {Error} Si le fichier texte dépasse TEXTE_MAX.
+ */
+async function lireContenu(fichier, type, signal) {
+    if (type === 'image') {
+        etat(t('etat.lecture-image'));
+        return Albert.transcrire(reglages.cle, await imageEnDataUrl(fichier), signal);
+    }
+    if (fichier.size > TEXTE_MAX) {
+        throw new Error(t('erreur.fichier-long'));
+    }
+    return fichier.text();
+}
+
+/**
  * Lit un fichier et le prépare pour la prochaine question.
  *
  * @param {File} fichier - Fichier choisi, déposé ou collé.
@@ -80,9 +116,8 @@ async function imageEnDataUrl(fichier) {
  */
 async function joindreFichier(fichier) {
     retirerPiece();
-    const image = fichier.type.startsWith('image/');
-    const texte = fichier.type.startsWith('text/') || EXTENSIONS_TEXTE.test(fichier.name);
-    if (!image && !texte) {
+    const type = typeFichier(fichier);
+    if (!type) {
         etat(t('erreur.format'), true);
         return;
     }
@@ -92,15 +127,7 @@ async function joindreFichier(fichier) {
     const controle = new AbortController();
     lecturePiece = controle;
     try {
-        if (image) {
-            etat(t('etat.lecture-image'));
-            piece.texte = await Albert.transcrire(reglages.cle, await imageEnDataUrl(fichier), controle.signal);
-        } else {
-            if (fichier.size > TEXTE_MAX) {
-                throw new Error(t('erreur.fichier-long'));
-            }
-            piece.texte = await fichier.text();
-        }
+        piece.texte = await lireContenu(fichier, type, controle.signal);
         /* Un autre fichier a remplacé celui-ci pendant la lecture. */
         if (lecturePiece !== controle) {
             return;

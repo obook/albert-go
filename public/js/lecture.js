@@ -340,12 +340,22 @@ const Lecture = {
         }
         this._bouton = bouton;
         bouton.dispatchEvent(new Event('lecture-debut'));
-
-        const finir = () => {
+        this.enoncer(morceaux, voix, langue, () => {
             if (this._bouton === bouton) {
                 this.arreter();
             }
-        };
+        });
+    },
+
+    /**
+     * Met les morceaux dans la file du navigateur, à la suite.
+     *
+     * @param {Array<string>} morceaux - Texte découpé.
+     * @param {?SpeechSynthesisVoice} voix - Voix choisie, ou null pour celle du système.
+     * @param {string} langue - Code de la langue du texte.
+     * @param {Function} fin - Appelée à la fin du dernier morceau, ou sur erreur.
+     */
+    enoncer(morceaux, voix, langue, fin) {
         morceaux.forEach((morceau, i) => {
             const enonce = new SpeechSynthesisUtterance(morceau);
             if (voix) {
@@ -357,9 +367,9 @@ const Lecture = {
             }
             enonce.rate = 0.95;
             if (i === morceaux.length - 1) {
-                enonce.onend = finir;
+                enonce.onend = fin;
             }
-            enonce.onerror = finir;
+            enonce.onerror = fin;
             speechSynthesis.speak(enonce);
         });
     }
