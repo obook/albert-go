@@ -46,6 +46,7 @@ function symboles(modele) {
 function afficherStatut(texte, effet) {
     clearInterval(minuteurSymboles);
     const statut = $('etat-redaction');
+    delete statut.dataset.t;
     if (!texte || !effet || matchMedia('(prefers-reduced-motion: reduce)').matches) {
         statut.textContent = texte;
         return;
@@ -116,10 +117,8 @@ function arreterRedaction() {
     if (annulationRedaction) {
         annulationRedaction.abort();
         annulationRedaction = null;
-        interroger(false);
     }
     afficherStatut('');
-    $('etat-redaction').classList.remove('annonce');
 }
 
 /**
@@ -134,7 +133,6 @@ function arreterRedaction() {
 async function demanderRedaction(champ, demande, attente) {
     const annulation = new AbortController();
     annulationRedaction = annulation;
-    interroger(true);
     afficherStatut(t(attente), 'attente');
     try {
         const reponse = await Albert.repondre(reglages.cle, {
@@ -157,7 +155,6 @@ async function demanderRedaction(champ, demande, attente) {
     } finally {
         if (annulation === annulationRedaction) {
             annulationRedaction = null;
-            interroger(false);
         }
     }
 }
@@ -168,21 +165,17 @@ async function demanderRedaction(champ, demande, attente) {
  * @param {string} notes - Notes saisies.
  * @param {string} proposition - Courrier à garder.
  * @param {string[]} anomalies - Points à vérifier, ou [].
- * @param {string} etat - Clé i18n du statut à annoncer.
  */
-function garderProposition(notes, proposition, anomalies, etat) {
+function garderProposition(notes, proposition, anomalies) {
     afficherProposition(proposition, false, anomalies);
     conversation = [
         { role: 'user', content: Albert.construireDemande('rediger', notes.trim()), affiche: notes.trim() },
         { role: 'assistant', content: proposition }
     ];
     sauverConversation();
-    afficherStatut(t(etat), 'decode');
-    const statut = $('etat-redaction');
-    /* Relance l'animation à chaque proposition, même si le texte du statut ne change pas. */
-    statut.classList.remove('annonce');
-    void statut.offsetWidth;
-    statut.classList.add('annonce');
+    afficherStatut(t('etat.proposition'), 'decode');
+    /* Retraduit par I18n.appliquer si la langue change. */
+    $('etat-redaction').dataset.t = 'etat.proposition';
 }
 
 /**
@@ -200,7 +193,7 @@ async function rediger() {
         return;
     }
     dernierEnvoi = notes;
-    garderProposition(notes, Albert.sansMarkdown(texte), [], 'etat.proposition-prete');
+    garderProposition(notes, Albert.sansMarkdown(texte), []);
 }
 
 /**
@@ -220,7 +213,7 @@ async function revoir() {
         return;
     }
     const revue = Albert.separerRevue(texte);
-    garderProposition(notes, revue.texte, revue.anomalies, 'etat.revue-prete');
+    garderProposition(notes, revue.texte, revue.anomalies);
 }
 
 /**
