@@ -5,6 +5,7 @@
  * Marked transforme le Markdown en HTML, KaTeX affiche les formules,
  * Mermaid dessine les diagrammes (chargé seulement au premier diagramme),
  * les blocs ```svg du modèle s'affichent après nettoyage.
+ * highlight.js colore le code (chargé au premier bloc de code).
  * Le HTML est assaini avant affichage : la réponse vient d'un modèle.
  * Logique reprise d'albert-board (render.js). Appelé par affichage.js.
  *
@@ -151,11 +152,12 @@ const Rendu = {
     },
 
     /**
-     * Affiche une réponse dans un élément : HTML, formules puis diagrammes.
+     * Affiche une réponse dans un élément : HTML, formules, code, diagrammes.
+     * Chaque bloc de code restant reçoit un bouton de copie.
      *
      * @param {HTMLElement} element - Conteneur de la réponse.
      * @param {string} markdown - Texte de la réponse.
-     * @returns {Promise<void>} Terminée quand les diagrammes sont dessinés.
+     * @returns {Promise<void>} Terminée quand code et diagrammes sont prêts.
      */
     async afficher(element, markdown) {
         element.innerHTML = this.versHtml(markdown);
@@ -168,7 +170,38 @@ const Rendu = {
             ],
             throwOnError: false
         });
-        await this.diagrammes(element);
+        await Promise.all([this.colorerCode(element), this.diagrammes(element)]);
+        for (const pre of element.querySelectorAll('pre')) {
+            const bloc = document.createElement('div');
+            bloc.className = 'bloc-code';
+            pre.replaceWith(bloc);
+            bloc.append(pre, boutonCopier(pre.textContent, t('reponse.copier-code'), t('toast.code-copie')));
+        }
+    },
+
+    /**
+     * Colore les blocs de code dont highlight.js connaît le langage.
+     * Sans langage indiqué, le bloc reste tel quel.
+     *
+     * @param {HTMLElement} element - Conteneur de la réponse.
+     * @returns {Promise<void>}
+     */
+    async colorerCode(element) {
+        const blocs = element.querySelectorAll('pre > code[class*="language-"]');
+        if (!blocs.length) {
+            return;
+        }
+        try {
+            await this.chargerScript('vendor/highlight/highlight.min.js');
+        } catch (err) {
+            return;
+        }
+        for (const bloc of blocs) {
+            const langue = bloc.className.match(/language-(\S+)/)[1];
+            if (hljs.getLanguage(langue)) {
+                hljs.highlightElement(bloc);
+            }
+        }
     },
 
     /**
@@ -319,28 +352,39 @@ const Rendu = {
      */
     chargerMermaid() {
         if (!this._mermaid) {
-            this._mermaid = new Promise((resoudre, rejeter) => {
-                const script = document.createElement('script');
-                script.src = 'vendor/mermaid/mermaid.min.js';
-                script.onload = () => {
-                    /* Thème clair : .diagramme a toujours un fond blanc. Sans
-                       suppressErrorRendering, une erreur laisse sa bombe en haut de la page.
-                       htmlLabels false : étiquettes en <text>, assainirSvg retire les foreignObject. */
-                    mermaid.initialize({
-                        startOnLoad: false,
-                        theme: 'default',
-                        securityLevel: 'strict',
-                        suppressErrorRendering: true,
-                        htmlLabels: false,
-                        flowchart: { htmlLabels: false }
-                    });
-                    resoudre();
-                };
-                script.onerror = rejeter;
-                document.head.append(script);
+            this._mermaid = this.chargerScript('vendor/mermaid/mermaid.min.js').then(() => {
+                /* Thème clair : .diagramme a toujours un fond blanc. Sans
+                   suppressErrorRendering, une erreur laisse sa bombe en haut de la page.
+                   htmlLabels false : étiquettes en <text>, assainirSvg retire les foreignObject. */
+                mermaid.initialize({
+                    startOnLoad: false,
+                    theme: 'default',
+                    securityLevel: 'strict',
+                    suppressErrorRendering: true,
+                    htmlLabels: false,
+                    flowchart: { htmlLabels: false }
+                });
             });
         }
         return this._mermaid;
+    },
+
+    /**
+     * Charge un script de vendor/ une seule fois, à la demande.
+     *
+     * @param {string} adresse - Chemin du script.
+     * @returns {Promise<void>} Résolue quand le script est chargé.
+     */
+    chargerScript(adresse) {
+        this._scripts ??= {};
+        this._scripts[adresse] ??= new Promise((resoudre, rejeter) => {
+            const script = document.createElement('script');
+            script.src = adresse;
+            script.onload = resoudre;
+            script.onerror = rejeter;
+            document.head.append(script);
+        });
+        return this._scripts[adresse];
     }
 };
 

@@ -275,6 +275,7 @@ const I18n = {
 
             /* Réponses. */
             'reponse.copier': 'Copier la réponse',
+            'reponse.copier-code': 'Copier le code',
             'reponse.telecharger-figure': 'Télécharger la figure (SVG)',
             'reponse.erreur-diagramme': 'Diagramme non affiché, erreur de Mermaid : ',
             'reponse.lire': 'Lire à voix haute',
@@ -286,6 +287,7 @@ const I18n = {
             /* Messages. */
             'toast.adresse-copiee': 'Adresse copiée.',
             'toast.reponse-copiee': 'Réponse copiée.',
+            'toast.code-copie': 'Code copié.',
             'toast.copie-refusee': 'Copie refusée par le navigateur.',
             'toast.partage-impossible': 'Changement impossible : les données ne tiennent pas dans le nouveau stockage.',
             'toast.conversation-supprimee': 'Conversation supprimée.',
@@ -521,6 +523,7 @@ const I18n = {
 
             /* Respuestas. */
             'reponse.copier': 'Copiar la respuesta',
+            'reponse.copier-code': 'Copiar el código',
             'reponse.telecharger-figure': 'Descargar la figura (SVG)',
             'reponse.erreur-diagramme': 'Diagrama no mostrado, error de Mermaid: ',
             'reponse.lire': 'Leer en voz alta',
@@ -532,6 +535,7 @@ const I18n = {
             /* Mensajes. */
             'toast.adresse-copiee': 'Dirección copiada.',
             'toast.reponse-copiee': 'Respuesta copiada.',
+            'toast.code-copie': 'Código copiado.',
             'toast.copie-refusee': 'El navegador ha rechazado la copia.',
             'toast.partage-impossible': 'Cambio imposible: los datos no caben en el nuevo almacenamiento.',
             'toast.conversation-supprimee': 'Conversación eliminada.',
@@ -767,6 +771,7 @@ const I18n = {
 
             /* Answers. */
             'reponse.copier': 'Copy the answer',
+            'reponse.copier-code': 'Copy the code',
             'reponse.telecharger-figure': 'Download the figure (SVG)',
             'reponse.erreur-diagramme': 'Diagram not shown, Mermaid error: ',
             'reponse.lire': 'Read aloud',
@@ -778,6 +783,7 @@ const I18n = {
             /* Messages. */
             'toast.adresse-copiee': 'Address copied.',
             'toast.reponse-copiee': 'Answer copied.',
+            'toast.code-copie': 'Code copied.',
             'toast.copie-refusee': 'The browser refused the copy.',
             'toast.partage-impossible': 'Change not possible: the data does not fit in the new storage.',
             'toast.conversation-supprimee': 'Conversation deleted.',
@@ -1013,6 +1019,7 @@ const I18n = {
 
             /* Antworten. */
             'reponse.copier': 'Antwort kopieren',
+            'reponse.copier-code': 'Code kopieren',
             'reponse.telecharger-figure': 'Abbildung herunterladen (SVG)',
             'reponse.erreur-diagramme': 'Diagramm nicht angezeigt, Mermaid-Fehler: ',
             'reponse.lire': 'Vorlesen',
@@ -1024,6 +1031,7 @@ const I18n = {
             /* Meldungen. */
             'toast.adresse-copiee': 'Adresse kopiert.',
             'toast.reponse-copiee': 'Antwort kopiert.',
+            'toast.code-copie': 'Code kopiert.',
             'toast.copie-refusee': 'Der Browser hat das Kopieren abgelehnt.',
             'toast.partage-impossible': 'Wechsel nicht möglich: die Daten passen nicht in den neuen Speicher.',
             'toast.conversation-supprimee': 'Gespräch gelöscht.',

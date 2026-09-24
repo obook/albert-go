@@ -33,17 +33,19 @@ function boutonAction(icone, libelle) {
 }
 
 /**
- * Crée le bouton "Copier la réponse".
+ * Crée un bouton de copie, par défaut "Copier la réponse".
  *
  * @param {string} texte - Texte brut à copier.
+ * @param {string} [libelle] - Libellé du bouton.
+ * @param {string} [message] - Toast affiché après la copie.
  * @returns {HTMLButtonElement} Le bouton.
  */
-function boutonCopier(texte) {
-    const bouton = boutonAction(ICONES.copier, t('reponse.copier'));
+function boutonCopier(texte, libelle = t('reponse.copier'), message = t('toast.reponse-copiee')) {
+    const bouton = boutonAction(ICONES.copier, libelle);
     bouton.addEventListener('click', () => {
         navigator.clipboard.writeText(texte).then(() => {
             bouton.innerHTML = ICONES.copie;
-            toast(t('toast.reponse-copiee'));
+            toast(message);
             setTimeout(() => {
                 bouton.innerHTML = ICONES.copier;
             }, 1500);
