@@ -64,7 +64,7 @@ function afficher() {
 }
 
 /**
- * Anime l'en-tête pendant qu'Albert est interrogé : le "t" oscille, un reflet parcourt la barre.
+ * Anime l'en-tête pendant qu'Albert est interrogé : un reflet parcourt la barre.
  *
  * @param {boolean} actif - true pendant une requête.
  */
