@@ -195,15 +195,33 @@ const Rendu = {
         } catch (err) {
             return;
         }
+        const dessiner = (code) => mermaid.render('mermaid-' + Math.random().toString(36).slice(2), code);
         for (const bloc of mermaids) {
             try {
-                const id = 'mermaid-' + Math.random().toString(36).slice(2);
-                const { svg } = await mermaid.render(id, bloc.textContent);
+                const { svg } = await dessiner(bloc.textContent)
+                    .catch(() => dessiner(this.reparerMermaid(bloc.textContent)));
                 this.remplacerBloc(bloc, this.assainirSvg(svg));
             } catch (err) {
-                /* Diagramme invalide : le code reste affiché. */
+                /* Diagramme invalide même réparé : le code reste affiché. */
             }
         }
+    },
+
+    /**
+     * Met entre guillemets les étiquettes qui contiennent une parenthèse.
+     *
+     * Les modèles écrivent souvent A[Début (x)] : Mermaid y lit une
+     * forme de nœud et refuse le diagramme. A["Début (x)"] passe.
+     * Les formes qui commencent par une parenthèse, A[(base)], restent.
+     *
+     * @param {string} code - Code Mermaid refusé.
+     * @returns {string} Code avec ces étiquettes entre guillemets.
+     */
+    reparerMermaid(code) {
+        return code
+            .replace(/\[([^[\]"()]+\([^[\]"]*)\]/g, '["$1"]')
+            .replace(/\{([^{}"()]+\([^{}"]*)\}/g, '{"$1"}')
+            .replace(/\|([^|"]*[()][^|"]*)\|/g, '|"$1"|');
     },
 
     /**
