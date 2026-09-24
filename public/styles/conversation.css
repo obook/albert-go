@@ -159,6 +159,10 @@ main {
     0%, 80%, 100% { opacity: 0.25; }
     40% { opacity: 1; }
 }
+.palier {
+    font-size: 0.875rem;
+    color: var(--texte-doux);
+}
 .duree {
     margin-left: auto;
     font-size: 0.875rem;

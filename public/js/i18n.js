@@ -188,6 +188,8 @@ const I18n = {
             'fichier.joint': 'Fichier joint : {nom}',
             'vous': 'Vous : ',
             'duree': '{secondes} s',
+            'attente.lente': 'Albert est chargé, la réponse arrive.',
+            'attente.longue': 'Toujours en attente. Vous pouvez cliquer sur Arrêter et réessayer.',
 
             /* Réglages. */
             'reglages.titre': 'Réglages',
@@ -269,7 +271,7 @@ const I18n = {
             'info.reponses': 'Les réponses',
             'info.reponses.texte': 'L\'IA peut se tromper ou inventer. Vérifiez ses réponses avant de les utiliser, et ne lui confiez pas de données personnelles.',
             'info.projet': 'Le projet',
-            'info.projet.texte': 'Réalisé par Olivier Booklage. <a href="https://forge.apps.education.fr/booklageolivier/albert-go" target="_blank" rel="noopener noreferrer">Code source sur la Forge des communs numériques éducatifs</a>.',
+            'info.projet.texte': 'Réalisé par Olivier Booklage (<a href="mailto:olivier.booklage@ac-bordeaux.fr">olivier.booklage@ac-bordeaux.fr</a>). <a href="https://forge.apps.education.fr/booklageolivier/albert-go" target="_blank" rel="noopener noreferrer">Code source sur la Forge des communs numériques éducatifs</a>.',
             'info.version': 'Version : ',
             'version.format': '{commit} du {date}',
 
@@ -441,6 +443,8 @@ const I18n = {
             'fichier.joint': 'Archivo adjunto: {nom}',
             'vous': 'Usted: ',
             'duree': '{secondes} s',
+            'attente.lente': 'Albert está ocupado, la respuesta llega.',
+            'attente.longue': 'Aún en espera. Puede hacer clic en Detener y volver a intentarlo.',
 
             /* Ajustes. */
             'reglages.titre': 'Ajustes',
@@ -522,7 +526,7 @@ const I18n = {
             'info.reponses': 'Las respuestas',
             'info.reponses.texte': 'La IA puede equivocarse o inventar. Compruebe sus respuestas antes de usarlas, y no le confíe datos personales.',
             'info.projet': 'El proyecto',
-            'info.projet.texte': 'Hecho por Olivier Booklage. <a href="https://forge.apps.education.fr/booklageolivier/albert-go" target="_blank" rel="noopener noreferrer">Código fuente en la Forge des communs numériques éducatifs</a>.',
+            'info.projet.texte': 'Hecho por Olivier Booklage (<a href="mailto:olivier.booklage@ac-bordeaux.fr">olivier.booklage@ac-bordeaux.fr</a>). <a href="https://forge.apps.education.fr/booklageolivier/albert-go" target="_blank" rel="noopener noreferrer">Código fuente en la Forge des communs numériques éducatifs</a>.',
             'info.version': 'Versión: ',
             'version.format': '{commit} del {date}',
 
@@ -694,6 +698,8 @@ const I18n = {
             'fichier.joint': 'Attached file: {nom}',
             'vous': 'You: ',
             'duree': '{secondes} s',
+            'attente.lente': 'Albert is busy, the answer is on its way.',
+            'attente.longue': 'Still waiting. You can click Stop and try again.',
 
             /* Settings. */
             'reglages.titre': 'Settings',
@@ -775,7 +781,7 @@ const I18n = {
             'info.reponses': 'The answers',
             'info.reponses.texte': 'An AI can be wrong or make things up. Check its answers before using them, and do not give it personal data.',
             'info.projet': 'The project',
-            'info.projet.texte': 'Built by Olivier Booklage. <a href="https://forge.apps.education.fr/booklageolivier/albert-go" target="_blank" rel="noopener noreferrer">Source code on the Forge des communs numériques éducatifs</a>.',
+            'info.projet.texte': 'Built by Olivier Booklage (<a href="mailto:olivier.booklage@ac-bordeaux.fr">olivier.booklage@ac-bordeaux.fr</a>). <a href="https://forge.apps.education.fr/booklageolivier/albert-go" target="_blank" rel="noopener noreferrer">Source code on the Forge des communs numériques éducatifs</a>.',
             'info.version': 'Version: ',
             'version.format': '{commit} of {date}',
 
@@ -947,6 +953,8 @@ const I18n = {
             'fichier.joint': 'Angehängte Datei: {nom}',
             'vous': 'Sie: ',
             'duree': '{secondes} s',
+            'attente.lente': 'Albert ist ausgelastet, die Antwort kommt.',
+            'attente.longue': 'Noch immer keine Antwort. Sie können auf Anhalten klicken und es erneut versuchen.',
 
             /* Einstellungen. */
             'reglages.titre': 'Einstellungen',
@@ -1028,7 +1036,7 @@ const I18n = {
             'info.reponses': 'Die Antworten',
             'info.reponses.texte': 'Die KI kann sich irren oder erfinden. Prüfen Sie ihre Antworten, bevor Sie sie nutzen, und geben Sie ihr keine personenbezogenen Daten.',
             'info.projet': 'Das Projekt',
-            'info.projet.texte': 'Gemacht von Olivier Booklage. <a href="https://forge.apps.education.fr/booklageolivier/albert-go" target="_blank" rel="noopener noreferrer">Quellcode auf der Forge des communs numériques éducatifs</a>.',
+            'info.projet.texte': 'Gemacht von Olivier Booklage (<a href="mailto:olivier.booklage@ac-bordeaux.fr">olivier.booklage@ac-bordeaux.fr</a>). <a href="https://forge.apps.education.fr/booklageolivier/albert-go" target="_blank" rel="noopener noreferrer">Quellcode auf der Forge des communs numériques éducatifs</a>.',
             'info.version': 'Version: ',
             'version.format': '{commit} vom {date}',
 

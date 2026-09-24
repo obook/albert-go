@@ -177,14 +177,14 @@ function ajouter(role, texte, langue, animer = false, recherches = null) {
 }
 
 /**
- * Affiche l'attente d'une réponse : trois points et secondes écoulées.
+ * Affiche l'attente d'une réponse : trois points, secondes écoulées et,
+ * passé 20 puis 60 s, un message annoncé aux lecteurs d'écran.
  *
  * @returns {Function} Fonction qui retire l'attente.
  */
 function ajouterAttente() {
     const li = document.createElement('li');
     li.className = 'assistant';
-    li.setAttribute('aria-hidden', 'true');
     const attente = document.createElement('div');
     attente.className = 'carte attente';
     const points = document.createElement('span');
@@ -192,14 +192,25 @@ function ajouterAttente() {
     points.append(document.createElement('span'), document.createElement('span'), document.createElement('span'));
     const duree = document.createElement('span');
     duree.className = 'duree';
-    attente.append(points, duree);
-    li.append(pastilleIA(), attente);
+    const palier = document.createElement('span');
+    palier.className = 'palier';
+    palier.setAttribute('aria-live', 'polite');
+    const pastille = pastilleIA();
+    [pastille, points, duree].forEach(e => e.setAttribute('aria-hidden', 'true'));
+    attente.append(points, palier, duree);
+    li.append(pastille, attente);
     $('fil').append(li);
     li.scrollIntoView({ block: 'end' });
 
     const debut = Date.now();
     const minuteur = setInterval(() => {
-        duree.textContent = t('duree', { secondes: Math.round((Date.now() - debut) / 1000) });
+        const secondes = Math.round((Date.now() - debut) / 1000);
+        duree.textContent = t('duree', { secondes });
+        const message = secondes >= 60 ? t('attente.longue') : secondes >= 20 ? t('attente.lente') : '';
+        /* Réécrire le même texte chaque seconde ferait répéter le lecteur d'écran. */
+        if (palier.textContent !== message) {
+            palier.textContent = message;
+        }
     }, 1000);
     return () => {
         clearInterval(minuteur);
