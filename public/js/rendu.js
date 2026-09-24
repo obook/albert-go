@@ -174,7 +174,8 @@ const Rendu = {
     /**
      * Remplace les blocs ```svg et ```mermaid par leur dessin.
      *
-     * Un dessin invalide reste affiché comme bloc de code.
+     * Un dessin invalide reste affiché comme bloc de code, avec l'erreur
+     * de Mermaid en dessous.
      *
      * @param {HTMLElement} element - Conteneur de la réponse.
      * @returns {Promise<void>}
@@ -198,11 +199,20 @@ const Rendu = {
         const dessiner = (code) => mermaid.render('mermaid-' + Math.random().toString(36).slice(2), code);
         for (const bloc of mermaids) {
             const code = this.chimieMermaid(bloc.textContent);
+            let erreur;
             try {
-                const { svg } = await dessiner(code).catch(() => dessiner(this.reparerMermaid(code)));
+                const { svg } = await dessiner(code).catch((err) => {
+                    erreur = err;
+                    return dessiner(this.reparerMermaid(code));
+                });
                 this.remplacerBloc(bloc, this.assainirSvg(svg));
             } catch (err) {
-                /* Diagramme invalide même réparé : le code reste affiché. */
+                /* Diagramme invalide même réparé : le code reste affiché,
+                   suivi de l'erreur sur le code d'origine, pas le réparé. */
+                const note = document.createElement('p');
+                note.className = 'erreur-diagramme';
+                note.textContent = t('reponse.erreur-diagramme') + (erreur?.message ?? String(erreur));
+                bloc.parentElement.after(note);
             }
         }
     },
