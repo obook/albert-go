@@ -222,6 +222,8 @@ const reglages = {
     langue: I18n.langue,
     voixEnLigne: lire('voix-en-ligne', 'non') === 'oui',
     recherche: lire('recherche', 'non') === 'oui',
+    calcul: lire('calcul', 'non') === 'oui',
+    calendrier: lire('calendrier', 'non') === 'oui',
     fournisseur: lire('fournisseur', 'wikipedia'),
     cx: lire('cx', Recherche.CX),
     cleRecherche: lire('cle-recherche', null)

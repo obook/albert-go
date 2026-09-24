@@ -19,6 +19,7 @@
     cursor: pointer;
 }
 .interrupteur input { flex: none; }
+.icone-outil { display: inline-grid; vertical-align: -0.2em; }
 
 /* Texte agrandi (réglage d'Android, suivi par Firefox) : la boîte défile, sans déborder en largeur. */
 .reglages {

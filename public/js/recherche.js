@@ -597,7 +597,7 @@ function avecRappel(messages) {
 }
 
 /**
- * Envoie la demande à Albert avec l'outil de calcul, et celui de recherche si le réglage est actif.
+ * Envoie la demande à Albert avec les outils activés dans les réglages.
  *
  * Un modèle qui refuse le champ `tools` fait échouer le premier appel :
  * on repart alors sans outil plutôt que de perdre la question.
@@ -613,9 +613,13 @@ function avecRappel(messages) {
  */
 async function repondreAvecOutils(cle, requete, signal) {
     const cherche = reglages.recherche && (Recherche.sansCle(reglages.fournisseur) || Boolean(reglages.cleRecherche));
-    const outils = [Calcul.outil(), Calendrier.outil()];
-    if (cherche) {
-        outils.unshift(Recherche.outil(reglages.fournisseur));
+    const outils = [
+        cherche && Recherche.outil(reglages.fournisseur),
+        reglages.calcul && Calcul.outil(),
+        reglages.calendrier && Calendrier.outil()
+    ].filter(Boolean);
+    if (!outils.length) {
+        return Albert.repondre(cle, requete, signal);
     }
     const messages = [...requete.messages];
     /* Recherches faites, rendues avec la réponse pour la trace sous la bulle. */

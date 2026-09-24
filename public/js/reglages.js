@@ -117,6 +117,19 @@ $('voix-en-ligne').addEventListener('change', () => {
     ecrire('voix-en-ligne', reglages.voixEnLigne ? 'oui' : 'non');
 });
 
+/* Outils calcul et calendrier : l'interrupteur porte le nom du réglage, l'icône est celle de la réponse. */
+for (const [outil, icone] of [['calcul', 'calculatrice'], ['calendrier', 'calendrier']]) {
+    const dessin = document.createElement('span');
+    dessin.className = 'icone-outil';
+    dessin.innerHTML = ICONES[icone];
+    $(outil + '-reglage').after(dessin);
+    $(outil + '-reglage').checked = reglages[outil];
+    $(outil + '-reglage').addEventListener('change', () => {
+        reglages[outil] = $(outil + '-reglage').checked;
+        ecrire(outil, reglages[outil] ? 'oui' : 'non');
+    });
+}
+
 $('recherche-reglage').checked = reglages.recherche;
 $('cle-recherche').value = reglages.cleRecherche || '';
 

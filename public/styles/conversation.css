@@ -124,7 +124,8 @@ main {
     color: var(--texte-doux);
 }
 .bouton-action:hover { border-color: var(--bleu); color: var(--bleu); }
-.bouton-action svg {
+.bouton-action svg,
+.icone-outil svg {
     width: 1.0625rem;
     height: 1.0625rem;
     fill: none;
