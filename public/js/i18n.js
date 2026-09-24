@@ -284,6 +284,8 @@ const I18n = {
             'reponse.lire': 'Lire à voix haute',
             'reponse.arreter-lecture': 'Arrêter la lecture',
             'reponse.recherches': 'Voir les recherches {nom}',
+            'reponse.calculs': 'Voir les calculs',
+            'reponse.note-calcul': 'Calculs : {calculs}',
             'reponse.note-recherche': 'Recherche : {mots}',
             'reponse.sources': 'Pages consultées : ',
 
@@ -543,6 +545,8 @@ const I18n = {
             'reponse.lire': 'Leer en voz alta',
             'reponse.arreter-lecture': 'Detener la lectura',
             'reponse.recherches': 'Ver las búsquedas {nom}',
+            'reponse.calculs': 'Ver los cálculos',
+            'reponse.note-calcul': 'Cálculos: {calculs}',
             'reponse.note-recherche': 'Búsqueda: {mots}',
             'reponse.sources': 'Páginas consultadas: ',
 
@@ -802,6 +806,8 @@ const I18n = {
             'reponse.lire': 'Read aloud',
             'reponse.arreter-lecture': 'Stop reading',
             'reponse.recherches': 'Show the searches {nom}',
+            'reponse.calculs': 'Show the calculations',
+            'reponse.note-calcul': 'Calculations: {calculs}',
             'reponse.note-recherche': 'Search: {mots}',
             'reponse.sources': 'Pages consulted: ',
 
@@ -1061,6 +1067,8 @@ const I18n = {
             'reponse.lire': 'Vorlesen',
             'reponse.arreter-lecture': 'Vorlesen anhalten',
             'reponse.recherches': 'Die Suchen {nom} anzeigen',
+            'reponse.calculs': 'Die Berechnungen anzeigen',
+            'reponse.note-calcul': 'Berechnungen: {calculs}',
             'reponse.note-recherche': 'Suche: {mots}',
             'reponse.sources': 'Aufgerufene Seiten: ',
 

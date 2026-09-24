@@ -48,7 +48,7 @@ main {
     color: var(--texte-doux);
 }
 /* Trace sous une réponse : « Recherche web : ... ». */
-.recherches { margin: 0.75rem 0 0; }
+.recherches, .calculs { margin: 0.75rem 0 0; }
 
 /* Fil de conversation */
 
