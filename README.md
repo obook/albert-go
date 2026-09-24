@@ -2,9 +2,9 @@
 
 Chatbot minimal pour [Albert](https://albert.api.etalab.gouv.fr), l'IA de l'État portée par la DINUM.
 
-Chaque utilisateur utilise sa propre clé API. Pour obtenir une clé, consulter la page [demande d'accès](https://albert.sites.beta.gouv.fr/access/).
-
 Essayer Albert Go en ligne : https://booklageolivier.forge.apps.education.fr/albert-go/
+
+Chaque utilisateur utilise sa propre clé API. Pour obtenir une clé, consulter la page [demande d'accès](https://albert.sites.beta.gouv.fr/access/).
 
 ## Fonctionnalités
 
