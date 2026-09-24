@@ -294,7 +294,8 @@ const Rendu = {
      * Mermaid y lit une forme de nœud ; A["Début (x)"] passe. Les formes
      * qui commencent par une parenthèse, A[(base)], restent. Une ligne
      * title "..." avant le type de diagramme devient l'en-tête
-     * --- title: ... --- que Mermaid attend. Repris en partie
+     * --- title: ... --- que Mermaid attend. Une plage d'axe 0 --> 100
+     * seule sur sa ligne rejoint son x-axis ou y-axis. Repris en partie
      * d'albert-board (render.js).
      *
      * @param {string} code - Code Mermaid refusé.
@@ -303,6 +304,7 @@ const Rendu = {
     reparerMermaid(code) {
         return code
             .replace(/^\s*title\s+"?([^"\n]*?)"?\s*\n/, '---\ntitle: $1\n---\n')
+            .replace(/^(\s*[xy]-axis\b.*)\n\s*(-?[\d.]+\s*-->\s*-?[\d.]+\s*)$/gm, '$1 $2')
             .replace(/\\"/g, '"')
             .replace(/"[^"\n]*"|[→⟶⇒⟹]/g, (m) => m.length > 1 ? m : '-->')
             .replace(/\["([^"\n]*)"\}/g, '["$1"]')

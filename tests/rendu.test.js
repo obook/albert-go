@@ -96,6 +96,11 @@ test('reparerMermaid : flèche Unicode gardée dans une étiquette', () => {
     assert.strictEqual(Rendu.reparerMermaid('graph TD\n A["x → y"] → B'), 'graph TD\n A["x → y"] --> B');
 });
 
+test('reparerMermaid : plage d\'axe xychart seule sur sa ligne', () => {
+    assert.strictEqual(Rendu.reparerMermaid('xychart-beta\n y-axis "k€"\n 0 --> 100\n bar [30, 45.5]'),
+        'xychart-beta\n y-axis "k€" 0 --> 100\n bar [30, 45.5]');
+});
+
 test('reparerMermaid : ligne title avant le type de diagramme', () => {
     assert.strictEqual(Rendu.reparerMermaid('title "Relatifs"\ngraph TD\n A --> B'),
         '---\ntitle: Relatifs\n---\ngraph TD\n A --> B');
