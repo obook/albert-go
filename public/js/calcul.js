@@ -155,7 +155,7 @@ const Calendrier = {
 
 const Compteur = {
     /**
-     * Compte les mots (séparés par des espaces) et les caractères d'un texte.
+     * Compte les mots et les caractères d'un texte ; un "?" isolé n'est pas un mot.
      *
      * @param {string} texte - Texte à compter.
      * @returns {Object} { mots, caracteres, sansEspaces }.
@@ -163,7 +163,7 @@ const Compteur = {
     compter(texte) {
         const propre = String(texte).trim();
         return {
-            mots: propre ? propre.split(/\s+/).length : 0,
+            mots: propre.split(/\s+/).filter(m => /[\p{L}\p{N}]/u.test(m)).length,
             caracteres: [...propre].length,
             sansEspaces: [...propre.replace(/\s/g, '')].length
         };

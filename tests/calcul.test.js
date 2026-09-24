@@ -53,6 +53,8 @@ test('evaluer : refuse le code et les expressions fausses', () => {
 test('compteur : mots, caractères, sans espaces', () => {
     assert.deepStrictEqual(Compteur.compter("  L'école est  finie.\n"), { mots: 3, caracteres: 19, sansEspaces: 16 });
     assert.deepStrictEqual(Compteur.compter(''), { mots: 0, caracteres: 0, sansEspaces: 0 });
+    assert.deepStrictEqual(Compteur.compter('Combien de mots dans cette phrase ?'), { mots: 6, caracteres: 35, sansEspaces: 29 });
+    assert.strictEqual(Compteur.compter('Oui - 12 fois !').mots, 3);
 });
 
 test('tirage : tout le monde une fois, groupes égaux à un près', () => {
