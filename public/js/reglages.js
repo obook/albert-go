@@ -278,34 +278,25 @@ document.addEventListener('click', (e) => {
     }
 });
 
-$('ouvrir-reglages').addEventListener('click', () => {
-    $('reglages').showModal();
-});
-
-$('resume-reglages').addEventListener('click', () => {
-    $('reglages').showModal();
-});
-
-/* La carte ouverte est retrouvée à la réouverture des réglages. La clé est
-   celle du titre : une carte déplacée dans la page garde sa mémoire. */
 const cartesReglages = [...document.querySelectorAll('#reglages .carte')];
-const cleCarte = (carte) => carte.querySelector('summary').dataset.t;
-const carteGardee = lire('carte-reglages', '');
-/* Une carte retirée du code laisserait la boîte entièrement fermée. */
-if (cartesReglages.some(carte => cleCarte(carte) === carteGardee)) {
+
+/** Ouvre les réglages, toutes cartes fermées. */
+function ouvrirReglages() {
     for (const carte of cartesReglages) {
-        carte.open = cleCarte(carte) === carteGardee;
+        carte.open = false;
     }
+    $('reglages').showModal();
 }
+
+$('ouvrir-reglages').addEventListener('click', ouvrirReglages);
+$('resume-reglages').addEventListener('click', ouvrirReglages);
+
 for (const carte of cartesReglages) {
     carte.addEventListener('toggle', () => {
         if (carte.open) {
-            ecrire('carte-reglages', cleCarte(carte));
             return;
         }
         /* Sinon la liste déroulante rouvre dépliée avec la carte. */
-        for (const liste of carte.querySelectorAll('details[open]')) {
-            liste.open = false;
-        }
+        carte.querySelectorAll('details[open]').forEach((liste) => { liste.open = false; });
     });
 }
