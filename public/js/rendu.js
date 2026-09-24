@@ -208,17 +208,24 @@ const Rendu = {
     },
 
     /**
-     * Met entre guillemets les étiquettes qui contiennent une parenthèse.
+     * Corrige les fautes de syntaxe Mermaid fréquentes chez les modèles.
      *
-     * Les modèles écrivent souvent A[Début (x)] : Mermaid y lit une
-     * forme de nœud et refuse le diagramme. A["Début (x)"] passe.
-     * Les formes qui commencent par une parenthèse, A[(base)], restent.
+     * Guillemets échappés \", flèches Unicode, fermeture ["..."} au lieu
+     * de ["..."], étiquette vide [""] ou |""|, que Mermaid refuse : le nœud
+     * reprend alors son identifiant. Enfin, A[Début (x)] : Mermaid y lit une
+     * forme de nœud ; A["Début (x)"] passe. Les formes qui commencent par
+     * une parenthèse, A[(base)], restent. Repris d'albert-board (render.js).
      *
      * @param {string} code - Code Mermaid refusé.
-     * @returns {string} Code avec ces étiquettes entre guillemets.
+     * @returns {string} Code corrigé.
      */
     reparerMermaid(code) {
         return code
+            .replace(/\\"/g, '"')
+            .replace(/[→⟶⇒⟹]/g, '-->')
+            .replace(/\["([^"\n]*)"\}/g, '["$1"]')
+            .replace(/(\[\[|\{\{|\(\(|\(\[|\[\(|\[|\(|\{)\s*(""|'')\s*(\]\]|\}\}|\)\)|\]\)|\)\]|\]|\)|\})/g, '')
+            .replace(/\|\s*(""|'')\s*\|/g, '')
             .replace(/\[([^[\]"()]+\([^[\]"]*)\]/g, '["$1"]')
             .replace(/\{([^{}"()]+\([^{}"]*)\}/g, '{"$1"}')
             .replace(/\|([^|"]*[()][^|"]*)\|/g, '|"$1"|');
