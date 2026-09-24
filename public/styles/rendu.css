@@ -75,3 +75,11 @@ laissait les colonnes rétrécir jusqu'à une lettre. Trop large, le tableau dé
 }
 .rendu .diagramme > svg { display: block; max-width: 100%; max-height: 20rem; height: auto; margin: 0 auto; }
 .rendu .diagramme > .bouton-action { position: absolute; top: 0.375rem; right: 0.375rem; background: var(--surface); }
+/* Chasse fixe : le ^ de Mermaid pointe sous le bon caractère. */
+.rendu .erreur-diagramme {
+    margin-top: -0.5rem;
+    color: var(--erreur);
+    font-family: ui-monospace, "Cascadia Mono", "DejaVu Sans Mono", monospace;
+    font-size: 0.8125rem;
+    white-space: pre-wrap;
+}

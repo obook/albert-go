@@ -276,6 +276,7 @@ const I18n = {
             /* Réponses. */
             'reponse.copier': 'Copier la réponse',
             'reponse.telecharger-figure': 'Télécharger la figure (SVG)',
+            'reponse.erreur-diagramme': 'Diagramme non affiché, erreur de Mermaid : ',
             'reponse.lire': 'Lire à voix haute',
             'reponse.arreter-lecture': 'Arrêter la lecture',
             'reponse.recherches': 'Voir les recherches {nom}',
@@ -521,6 +522,7 @@ const I18n = {
             /* Respuestas. */
             'reponse.copier': 'Copiar la respuesta',
             'reponse.telecharger-figure': 'Descargar la figura (SVG)',
+            'reponse.erreur-diagramme': 'Diagrama no mostrado, error de Mermaid: ',
             'reponse.lire': 'Leer en voz alta',
             'reponse.arreter-lecture': 'Detener la lectura',
             'reponse.recherches': 'Ver las búsquedas {nom}',
@@ -766,6 +768,7 @@ const I18n = {
             /* Answers. */
             'reponse.copier': 'Copy the answer',
             'reponse.telecharger-figure': 'Download the figure (SVG)',
+            'reponse.erreur-diagramme': 'Diagram not shown, Mermaid error: ',
             'reponse.lire': 'Read aloud',
             'reponse.arreter-lecture': 'Stop reading',
             'reponse.recherches': 'Show the searches {nom}',
@@ -1011,6 +1014,7 @@ const I18n = {
             /* Antworten. */
             'reponse.copier': 'Antwort kopieren',
             'reponse.telecharger-figure': 'Abbildung herunterladen (SVG)',
+            'reponse.erreur-diagramme': 'Diagramm nicht angezeigt, Mermaid-Fehler: ',
             'reponse.lire': 'Vorlesen',
             'reponse.arreter-lecture': 'Vorlesen anhalten',
             'reponse.recherches': 'Die Suchen {nom} anzeigen',
