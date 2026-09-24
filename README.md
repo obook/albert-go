@@ -36,7 +36,7 @@ Activation dans Réglages. Le modèle reçoit un outil de recherche et décide s
 
 ### Outils
 
-Dans Chat, cinq outils s'activent dans Réglages > Outils, désactivés par défaut. Tout se passe dans le navigateur. Le modèle décide seul de s'en servir ; quand un outil a servi, son icône apparaît sous la réponse et un clic montre ce qu'il a fait.
+Dans Chat, cinq outils sont activés par défaut ; on peut les désactiver dans Réglages > Outils. Tout se passe dans le navigateur. Le modèle décide seul de s'en servir ; quand un outil a servi, son icône apparaît sous la réponse et un clic montre ce qu'il a fait.
 
 | Outil | Rôle |
 |---|---|
