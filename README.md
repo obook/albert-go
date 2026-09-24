@@ -34,9 +34,11 @@ On écrit une formule d'appel ("Madame,", "Monsieur le directeur,") puis les id�
 
 Activation dans Réglages. Le modèle reçoit un outil de recherche et décide seul de l'appeler. Les mots cherchés s'affichent sous la réponse.
 
-### Calcul
+### Calcul et calendrier
 
 Dans Chat, le modèle dispose d'un outil de calcul exact : opérations, puissances, racine carrée, trigonométrie en degrés, logarithmes. Il décide seul de s'en servir s'il en a besoin. Quand l'outil a servi, une icône de calculatrice apparaît sous la réponse.
+
+Un outil de calendrier donne le jour de la semaine d'une date, la date dans N jours ou le nombre de jours entre deux dates. Quand il a servi, une icône de calendrier apparaît à côté.
 
 Chaque demande donne aussi au modèle la date, l'heure locale et son nom.
 

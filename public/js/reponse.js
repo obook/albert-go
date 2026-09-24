@@ -81,14 +81,22 @@ function boutonRecherches(note, recherches) {
     return bouton;
 }
 
+/* Traces des outils calcul et calendrier : clé dans "recherches", icône, libellé du bouton. */
+const TRACES = [
+    { cle: 'calcul', icone: 'calculatrice', libelle: 'reponse.calculs', note: 'reponse.note-calcul' },
+    { cle: 'calendrier', icone: 'calendrier', libelle: 'reponse.dates', note: 'reponse.note-dates' }
+];
+
 /**
- * Crée le bouton qui montre les calculs faits par l'outil de calcul.
+ * Crée le bouton qui déplie la trace d'un outil.
  *
- * @param {HTMLElement} note - Ligne grise des calculs, repliée au départ.
+ * @param {HTMLElement} note - Ligne grise de la trace, repliée au départ.
+ * @param {string} icone - SVG pris dans ICONES.
+ * @param {string} libelle - Libellé du bouton.
  * @returns {HTMLButtonElement} Le bouton.
  */
-function boutonCalculs(note) {
-    const bouton = boutonAction(ICONES.calculatrice, t('reponse.calculs'));
+function boutonTrace(note, icone, libelle) {
+    const bouton = boutonAction(icone, libelle);
     bouton.setAttribute('aria-expanded', 'false');
     bouton.addEventListener('click', () => {
         note.hidden = !note.hidden;
@@ -268,16 +276,18 @@ function bulleReponse(texte, titre, langue, animer = false, recherches = null) {
         actions.append(boutonLire(contenu, langue));
     }
     carte.append(contenu);
-    const calculs = (recherches || []).filter(r => r && r.calcul);
-    const cherchees = (recherches || []).filter(r => !(r && r.calcul));
-    if (calculs.length) {
-        const note = document.createElement('p');
-        note.className = 'note calculs';
-        note.textContent = t('reponse.note-calcul', { calculs: calculs.map(c => c.calcul).join(' ; ') });
-        note.hidden = true;
-        carte.append(note);
-        actions.append(boutonCalculs(note));
+    for (const trace of TRACES) {
+        const lignes = (recherches || []).filter(r => r && r[trace.cle]).map(r => r[trace.cle]);
+        if (lignes.length) {
+            const note = document.createElement('p');
+            note.className = 'note calculs';
+            note.textContent = t(trace.note, { lignes: lignes.join(' ; ') });
+            note.hidden = true;
+            carte.append(note);
+            actions.append(boutonTrace(note, ICONES[trace.icone], t(trace.libelle)));
+        }
     }
+    const cherchees = (recherches || []).filter(r => !TRACES.some(trace => r && r[trace.cle]));
     if (cherchees.length) {
         const note = elementRecherches(cherchees);
         note.hidden = true;
