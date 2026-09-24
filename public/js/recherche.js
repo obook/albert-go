@@ -526,6 +526,14 @@ const Recherche = {
  * @returns {Promise<string>} Contenu du message de rôle "tool".
  */
 async function executerOutil(appel, signal, faites) {
+    if (appel.function.name === 'calcul') {
+        try {
+            const expression = JSON.parse(appel.function.arguments || '{}').expression;
+            return expression + ' = ' + Calcul.evaluer(expression);
+        } catch (err) {
+            return t('calcul.invalide');
+        }
+    }
     let mots = '';
     try {
         mots = JSON.parse(appel.function.arguments || '{}').q || '';
@@ -576,7 +584,7 @@ function avecRappel(messages) {
 }
 
 /**
- * Envoie la demande à Albert, outil de recherche proposé si le réglage est actif.
+ * Envoie la demande à Albert avec l'outil de calcul, et celui de recherche si le réglage est actif.
  *
  * Un modèle qui refuse le champ `tools` fait échouer le premier appel :
  * on repart alors sans outil plutôt que de perdre la question.
@@ -590,10 +598,9 @@ function avecRappel(messages) {
  * @param {AbortSignal} signal - Pour annuler avec la question.
  * @returns {Promise<Object>} Réponse d'Albert.repondre.
  */
-async function repondreAvecRecherche(cle, requete, signal) {
-    if (!reglages.recherche || (!Recherche.sansCle(reglages.fournisseur) && !reglages.cleRecherche)) {
-        return Albert.repondre(cle, requete, signal);
-    }
+async function repondreAvecOutils(cle, requete, signal) {
+    const cherche = reglages.recherche && (Recherche.sansCle(reglages.fournisseur) || Boolean(reglages.cleRecherche));
+    const outils = cherche ? [Recherche.outil(reglages.fournisseur), Calcul.outil()] : [Calcul.outil()];
     const messages = [...requete.messages];
     /* Recherches faites, rendues avec la réponse pour la trace sous la bulle. */
     const faites = [];
@@ -604,12 +611,14 @@ async function repondreAvecRecherche(cle, requete, signal) {
         try {
             reponse = await Albert.repondre(cle, {
                 ...requete,
-                messages: avecRappel(messages),
-                tools: [Recherche.outil(reglages.fournisseur)],
-                tool_choice: tour === 0 ? 'required' : 'auto'
+                messages: cherche ? avecRappel(messages) : messages,
+                tools: outils,
+                tool_choice: cherche && tour === 0 ? 'required' : 'auto'
             }, signal);
         } catch (err) {
-            toast(t('toast.recherche-indisponible'));
+            if (cherche) {
+                toast(t('toast.recherche-indisponible'));
+            }
             return { ...await Albert.repondre(cle, { ...requete, messages: messages }, signal), recherches: faites };
         }
         const appels = (reponse.message && reponse.message.tool_calls) || [];

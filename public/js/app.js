@@ -108,8 +108,8 @@ async function demanderReponse(outil) {
     if (texteConsigne) {
         messages = [{ role: 'system', content: texteConsigne }, ...messages];
     }
-    /* Seul Discuter propose l'outil de recherche : les autres outils rendent un texte. */
-    const envoi = outil === 'discuter' ? repondreAvecRecherche : Albert.repondre.bind(Albert);
+    /* Seul Discuter propose les outils calcul et recherche : les autres rendent un texte. */
+    const envoi = outil === 'discuter' ? repondreAvecOutils : Albert.repondre.bind(Albert);
     return envoi(reglages.cle, {
         model: modeleActuel().id,
         temperature: reglages.temperature,
