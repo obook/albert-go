@@ -188,6 +188,8 @@ const I18n = {
             'fichier.joint': 'Fichier joint : {nom}',
             'vous': 'Vous : ',
             'duree': '{secondes} s',
+            'attente.lente': 'Albert est chargé, la réponse arrive.',
+            'attente.longue': 'Toujours en attente. Vous pouvez cliquer sur Arrêter et réessayer.',
 
             /* Réglages. */
             'reglages.titre': 'Réglages',
@@ -441,6 +443,8 @@ const I18n = {
             'fichier.joint': 'Archivo adjunto: {nom}',
             'vous': 'Usted: ',
             'duree': '{secondes} s',
+            'attente.lente': 'Albert está ocupado, la respuesta llega.',
+            'attente.longue': 'Aún en espera. Puede hacer clic en Detener y volver a intentarlo.',
 
             /* Ajustes. */
             'reglages.titre': 'Ajustes',
@@ -694,6 +698,8 @@ const I18n = {
             'fichier.joint': 'Attached file: {nom}',
             'vous': 'You: ',
             'duree': '{secondes} s',
+            'attente.lente': 'Albert is busy, the answer is on its way.',
+            'attente.longue': 'Still waiting. You can click Stop and try again.',
 
             /* Settings. */
             'reglages.titre': 'Settings',
@@ -947,6 +953,8 @@ const I18n = {
             'fichier.joint': 'Angehängte Datei: {nom}',
             'vous': 'Sie: ',
             'duree': '{secondes} s',
+            'attente.lente': 'Albert ist ausgelastet, die Antwort kommt.',
+            'attente.longue': 'Noch immer keine Antwort. Sie können auf Anhalten klicken und es erneut versuchen.',
 
             /* Einstellungen. */
             'reglages.titre': 'Einstellungen',
