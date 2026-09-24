@@ -1,6 +1,7 @@
 /*
  * rendu.test.js
- * Tests de public/js/rendu.js : formules protégées, adresses dangereuses.
+ * Tests de public/js/rendu.js : formules protégées, adresses dangereuses,
+ * réparation des diagrammes Mermaid.
  *
  * Lancement : node --test
  *
@@ -76,4 +77,10 @@ test('assainir : sans DOM, le HTML repart tel quel', () => {
     /* Sous Node le nettoyage est sauté : c'est le navigateur qui le fait. */
     assert.strictEqual(typeof document, 'undefined');
     assert.strictEqual(Rendu.assainir('<p>Texte</p>'), '<p>Texte</p>');
+});
+
+test('reparerMermaid : guillemets autour des étiquettes à parenthèses', () => {
+    const code = 'graph TD\n A[Début (x)] --> B{Moyenne (sur 20) ?}\n B -->|si (vrai)| C[(Base)]\n C --> D["Déjà (ok)"]';
+    assert.strictEqual(Rendu.reparerMermaid(code),
+        'graph TD\n A["Début (x)"] --> B{"Moyenne (sur 20) ?"}\n B -->|"si (vrai)"| C[(Base)]\n C --> D["Déjà (ok)"]');
 });
