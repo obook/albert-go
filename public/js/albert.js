@@ -38,11 +38,11 @@ const Albert = {
     Albert peut changer le modèle derrière un alias : /v1/models fait foi.
     */
     MODELES: [
-        { id: 'openweight-medium', nom: 'Medium', reel: 'mistral-small-3-2-24b-instruct-2506', type: 'texte-images', contexte: 128000 },
-        { id: 'openweight-large', nom: 'Large', reel: 'openai/gpt-oss-120b', type: 'texte', contexte: 131072 },
-        { id: 'openweight-small', nom: 'Small', reel: 'ministral-3-8b-instruct-2512', type: 'texte-images', contexte: 262144 },
         { id: 'openweight-code', nom: 'Code', reel: 'qwen3-coder-30b-A3b-instruct', type: 'texte', contexte: 262144 },
-        { id: 'openweight-code-2', nom: 'Code 2', reel: 'deepseek-v4-flash', type: 'texte', contexte: 393216 }
+        { id: 'openweight-code-2', nom: 'Code 2', reel: 'deepseek-v4-flash', type: 'texte', contexte: 393216 },
+        { id: 'openweight-large', nom: 'Large', reel: 'openai/gpt-oss-120b', type: 'texte', contexte: 131072 },
+        { id: 'openweight-medium', nom: 'Medium', reel: 'mistral-small-3-2-24b-instruct-2506', type: 'texte-images', contexte: 128000 },
+        { id: 'openweight-small', nom: 'Small', reel: 'ministral-3-8b-instruct-2512', type: 'texte-images', contexte: 262144 }
     ],
 
     /*
@@ -96,7 +96,7 @@ const Albert = {
     },
 
     /**
-     * Garde les modèles de conversation, sans OCR, alias openweight-* d'abord.
+     * Garde les modèles de conversation, sans OCR, triés par alias.
      *
      * Le type est dans "type", ou dans "model_type" derrière certains proxys.
      *
@@ -104,7 +104,6 @@ const Albert = {
      * @returns {Object[]} Modèles { id, nom, reel, type, contexte }.
      */
     normaliserModeles(liste) {
-        const ordre = this.MODELES.map(m => m.id);
         return liste
             .filter(m => ['text-generation', 'image-text-to-text'].includes(m.model_type || m.type))
             .filter(m => ![m.id, ...(m.aliases || [])].some(n => /ocr/i.test(n)))
@@ -119,15 +118,7 @@ const Albert = {
                     contexte: m.max_context_length || (connu && connu.contexte) || null
                 };
             })
-            .sort((a, b) => {
-                const rangA = ordre.indexOf(a.id);
-                const rangB = ordre.indexOf(b.id);
-                /* Les modèles connus d'abord, dans l'ordre de MODELES. */
-                if (rangA >= 0 || rangB >= 0) {
-                    return (rangA < 0 ? 99 : rangA) - (rangB < 0 ? 99 : rangB);
-                }
-                return a.id.localeCompare(b.id);
-            });
+            .sort((a, b) => a.id.localeCompare(b.id, undefined, { numeric: true }));
     },
 
     /**

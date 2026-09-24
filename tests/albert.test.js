@@ -45,13 +45,13 @@ test('conversation : filtre, alias, ordre, nom court', () => {
         { id: 'modele-sans-alias', type: 'text-generation' }
     ];
     const modeles = Albert.normaliserModeles(liste);
-    assert.deepStrictEqual(modeles.map(m => m.id), ['openweight-medium', 'openweight-large', 'openweight-code-2', 'modele-sans-alias']);
-    assert.strictEqual(modeles[1].reel, 'openai/gpt-oss-120b');
-    assert.strictEqual(modeles[1].contexte, 131072);
-    assert.strictEqual(modeles[2].nom, 'Code 2');
+    assert.deepStrictEqual(modeles.map(m => m.id), ['modele-sans-alias', 'openweight-code-2', 'openweight-large', 'openweight-medium']);
+    assert.strictEqual(modeles[2].reel, 'openai/gpt-oss-120b');
+    assert.strictEqual(modeles[2].contexte, 131072);
+    assert.strictEqual(modeles[1].nom, 'Code 2');
     /* Le type est un code : i18n.js en donne le nom affiché. */
-    assert.strictEqual(modeles[0].type, 'texte-images');
-    assert.strictEqual(modeles[1].type, 'texte');
+    assert.strictEqual(modeles[3].type, 'texte-images');
+    assert.strictEqual(modeles[2].type, 'texte');
 });
 
 test('occupation : pourcentage du contexte, borné, inconnu', () => {
