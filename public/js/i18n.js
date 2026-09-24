@@ -176,7 +176,7 @@ const I18n = {
             /* Saisie. */
             'chat.aria': 'Conversation',
             'saisie.label': 'Votre question',
-            'saisie.joindre': 'Joindre une image ou un fichier texte',
+            'saisie.joindre': 'Joindre une image, un document ou un fichier texte',
             'saisie.precedente': 'Question précédente',
             'saisie.suivante': 'Question suivante',
             'saisie.envoyer': 'Envoyer',
@@ -319,8 +319,12 @@ const I18n = {
             'erreur.timeout': 'Albert ne répond pas. Réessayez.',
             'erreur.origine': 'Le relais n8n n\'acceptera pas l\'adresse {origine}. Ouvrez ',
             'erreur.consigne': 'Consigne de l\'outil {outil} introuvable.',
-            'erreur.format': 'Format non pris en charge : images et fichiers texte uniquement.',
+            'erreur.format': 'Format non pris en charge : images, PDF, .docx, .odt et fichiers texte uniquement.',
             'erreur.fichier-long': 'Fichier trop long : 200 Ko au plus.',
+            'erreur.document-lourd': 'Document trop lourd : 20 Mo au plus.',
+            'erreur.document-long': 'Document trop long : 200 000 caractères de texte au plus.',
+            'erreur.document-vide': 'Aucun texte dans ce document. Un PDF scanné se joint comme image.',
+            'erreur.document-illisible': 'Document illisible.',
             'erreur.hors-cadre': 'Ouvrir Albert Go dans son propre onglet',
 
             /* Textes envoyés au modèle. */
@@ -425,7 +429,7 @@ const I18n = {
             /* Entrada. */
             'chat.aria': 'Conversación',
             'saisie.label': 'Su pregunta',
-            'saisie.joindre': 'Adjuntar una imagen o un archivo de texto',
+            'saisie.joindre': 'Adjuntar una imagen, un documento o un archivo de texto',
             'saisie.precedente': 'Pregunta anterior',
             'saisie.suivante': 'Pregunta siguiente',
             'saisie.envoyer': 'Enviar',
@@ -568,8 +572,12 @@ const I18n = {
             'erreur.timeout': 'Albert no responde. Inténtelo de nuevo.',
             'erreur.origine': 'El relé n8n no aceptará la dirección {origine}. Abra ',
             'erreur.consigne': 'Falta la consigna de la herramienta {outil}.',
-            'erreur.format': 'Formato no admitido: solo imágenes y archivos de texto.',
+            'erreur.format': 'Formato no admitido: solo imágenes, PDF, .docx, .odt y archivos de texto.',
             'erreur.fichier-long': 'Archivo demasiado largo: 200 kB como máximo.',
+            'erreur.document-lourd': 'Documento demasiado pesado: 20 MB como máximo.',
+            'erreur.document-long': 'Documento demasiado largo: 200 000 caracteres de texto como máximo.',
+            'erreur.document-vide': 'Este documento no contiene texto. Un PDF escaneado se adjunta como imagen.',
+            'erreur.document-illisible': 'Documento ilegible.',
             'erreur.hors-cadre': 'Abrir Albert Go en su propia pestaña',
 
             /* Textos enviados al modelo. */
@@ -674,7 +682,7 @@ const I18n = {
             /* Input. */
             'chat.aria': 'Conversation',
             'saisie.label': 'Your question',
-            'saisie.joindre': 'Attach an image or a text file',
+            'saisie.joindre': 'Attach an image, a document or a text file',
             'saisie.precedente': 'Previous question',
             'saisie.suivante': 'Next question',
             'saisie.envoyer': 'Send',
@@ -817,8 +825,12 @@ const I18n = {
             'erreur.timeout': 'Albert is not answering. Try again.',
             'erreur.origine': 'The n8n relay will not accept the address {origine}. Open ',
             'erreur.consigne': 'The system prompt of the {outil} tool is missing.',
-            'erreur.format': 'Format not supported: images and text files only.',
+            'erreur.format': 'Format not supported: images, PDF, .docx, .odt and text files only.',
             'erreur.fichier-long': 'File too long: 200 kB at most.',
+            'erreur.document-lourd': 'Document too large: 20 MB at most.',
+            'erreur.document-long': 'Document too long: 200,000 characters of text at most.',
+            'erreur.document-vide': 'This document contains no text. Attach a scanned PDF as an image.',
+            'erreur.document-illisible': 'Unreadable document.',
             'erreur.hors-cadre': 'Open Albert Go in its own tab',
 
             /* Text sent to the model. */
@@ -923,7 +935,7 @@ const I18n = {
             /* Eingabe. */
             'chat.aria': 'Gespräch',
             'saisie.label': 'Ihre Frage',
-            'saisie.joindre': 'Ein Bild oder eine Textdatei anhängen',
+            'saisie.joindre': 'Ein Bild, ein Dokument oder eine Textdatei anhängen',
             'saisie.precedente': 'Vorherige Frage',
             'saisie.suivante': 'Nächste Frage',
             'saisie.envoyer': 'Senden',
@@ -1066,8 +1078,12 @@ const I18n = {
             'erreur.timeout': 'Albert antwortet nicht. Versuchen Sie es erneut.',
             'erreur.origine': 'Das n8n-Relais akzeptiert die Adresse {origine} nicht. Öffnen Sie ',
             'erreur.consigne': 'Die Systemanweisung des Werkzeugs {outil} fehlt.',
-            'erreur.format': 'Format nicht unterstützt: nur Bilder und Textdateien.',
+            'erreur.format': 'Format nicht unterstützt: nur Bilder, PDF, .docx, .odt und Textdateien.',
             'erreur.fichier-long': 'Datei zu lang: höchstens 200 kB.',
+            'erreur.document-lourd': 'Dokument zu groß: höchstens 20 MB.',
+            'erreur.document-long': 'Dokument zu lang: höchstens 200.000 Zeichen Text.',
+            'erreur.document-vide': 'Dieses Dokument enthält keinen Text. Ein gescanntes PDF als Bild anhängen.',
+            'erreur.document-illisible': 'Dokument nicht lesbar.',
             'erreur.hors-cadre': 'Albert Go in einem eigenen Tab öffnen',
 
             /* An das Modell gesendete Texte. */

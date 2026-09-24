@@ -17,7 +17,7 @@ Navigateur -> webhook n8n -> API Albert
 
 Réglages : modèle (liste des modèles de conversation lue sur l'API Albert, alias et nom réel au survol), température et contexte. Contexte désactivé, seule la dernière question part. Un trait en bas de la zone de saisie montre la part du contexte du modèle occupée par la conversation (rouge au-delà de 80 %).
 
-Fichiers joints (trombone, glisser-déposer ou Ctrl+V) : un fichier texte est lu dans le navigateur ; une image est transcrite par le modèle Medium, puis son texte part avec la question. Les PDF ne sont pas pris en charge.
+Fichiers joints (trombone, glisser-déposer ou Ctrl+V) : un fichier texte, un PDF, un .docx ou un .odt est lu dans le navigateur ; une image est transcrite par le modèle Medium, puis son texte part avec la question. Un PDF scanné n'a pas de texte : il se joint comme image.
 
 Rédiger : on tape la formule d'appel ("Madame,", "Monsieur le directeur,") puis ses idées principales ; à chaque pause de frappe, Albert propose le courrier rédigé et corrigé, dans le registre qu'implique la formule d'appel. Boutons Copier, Écouter et Revoir : Revoir reconstruit le courrier, retire les redites et signale ce qu'Albert ne tranche pas seul (un jour de la semaine qui ne correspond pas à la date, une information manquante). La dernière proposition est gardée dans l'historique.
 
