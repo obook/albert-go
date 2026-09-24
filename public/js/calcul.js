@@ -215,7 +215,7 @@ const Statistiques = {
      * Statistiques d'une série, quartiles comme au lycée.
      *
      * @param {Array<number|string>} valeurs - Série, virgule décimale acceptée.
-     * @returns {Object} { effectif, moyenne, mediane, ecartType, min, max, q1, q3 }.
+     * @returns {Object} Effectif, moyenne, médiane, variance, écart-type, extrêmes, quartiles, étendue, écart interquartile.
      */
     calculer(valeurs) {
         const serie = (valeurs || []).map(v => Number(String(v).replace(',', '.'))).sort((a, b) => a - b);
@@ -225,15 +225,21 @@ const Statistiques = {
         const n = serie.length;
         const moyenne = serie.reduce((a, b) => a + b, 0) / n;
         const milieu = Math.floor(n / 2);
+        const variance = serie.reduce((a, v) => a + (v - moyenne) ** 2, 0) / n;
+        const q1 = serie[Math.ceil(n / 4) - 1];
+        const q3 = serie[Math.ceil(3 * n / 4) - 1];
         return {
             effectif: n,
             moyenne: moyenne,
             mediane: n % 2 ? serie[milieu] : (serie[milieu - 1] + serie[milieu]) / 2,
-            ecartType: Math.sqrt(serie.reduce((a, v) => a + (v - moyenne) ** 2, 0) / n),
+            variance: variance,
+            ecartType: Math.sqrt(variance),
             min: serie[0],
             max: serie[n - 1],
-            q1: serie[Math.ceil(n / 4) - 1],
-            q3: serie[Math.ceil(3 * n / 4) - 1]
+            etendue: serie[n - 1] - serie[0],
+            q1: q1,
+            q3: q3,
+            interquartile: q3 - q1
         };
     }
 };
@@ -258,7 +264,7 @@ function definirOutil(nom, proprietes, requis) {
 }
 
 /** Nombre au format de la langue, sans séparateur de milliers. */
-const formaterNombre = (v, langue) => Number(v.toPrecision(12)).toLocaleString(langue, { maximumFractionDigits: 3, useGrouping: false });
+const formaterNombre = (v, langue) => Number(v.toPrecision(12)).toLocaleString(langue, { maximumFractionDigits: 4, useGrouping: false });
 
 /* Le nom sert de réglage, de clé de stockage et de préfixe i18n. */
 const OUTILS_LOCAUX = {
