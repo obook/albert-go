@@ -246,12 +246,13 @@ const Rendu = {
      * Corrige les fautes de syntaxe Mermaid fréquentes chez les modèles.
      *
      * Guillemets échappés \", flèches Unicode hors guillemets, fermeture
-     * ["..."} au lieu de ["..."], étiquette vide [""] ou |""|, que Mermaid refuse : le nœud
-     * reprend alors son identifiant. Enfin, A[Début (x)] : Mermaid y lit une
-     * forme de nœud ; A["Début (x)"] passe. Les formes qui commencent par
-     * une parenthèse, A[(base)], restent. Une ligne title "..." avant le
-     * type de diagramme devient l'en-tête --- title: ... --- que Mermaid
-     * attend. Repris en partie d'albert-board (render.js).
+     * ["..."} au lieu de ["..."], étiquette vide [""] ou |""|, que Mermaid
+     * refuse : le nœud reprend alors son identifiant. Enfin, A[Début (x)] :
+     * Mermaid y lit une forme de nœud ; A["Début (x)"] passe. Les formes
+     * qui commencent par une parenthèse, A[(base)], restent. Une ligne
+     * title "..." avant le type de diagramme devient l'en-tête
+     * --- title: ... --- que Mermaid attend. Repris en partie
+     * d'albert-board (render.js).
      *
      * @param {string} code - Code Mermaid refusé.
      * @returns {string} Code corrigé.
