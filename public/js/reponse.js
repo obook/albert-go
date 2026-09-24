@@ -82,6 +82,22 @@ function boutonRecherches(note, recherches) {
 }
 
 /**
+ * Crée le bouton qui montre les calculs faits par l'outil de calcul.
+ *
+ * @param {HTMLElement} note - Ligne grise des calculs, repliée au départ.
+ * @returns {HTMLButtonElement} Le bouton.
+ */
+function boutonCalculs(note) {
+    const bouton = boutonAction(ICONES.calculatrice, t('reponse.calculs'));
+    bouton.setAttribute('aria-expanded', 'false');
+    bouton.addEventListener('click', () => {
+        note.hidden = !note.hidden;
+        bouton.setAttribute('aria-expanded', String(!note.hidden));
+    });
+    return bouton;
+}
+
+/**
  * Nom d'une langue en minuscules à partir de son code : "ru" donne "russe".
  *
  * @param {string} code - Code de langue.
@@ -252,11 +268,21 @@ function bulleReponse(texte, titre, langue, animer = false, recherches = null) {
         actions.append(boutonLire(contenu, langue));
     }
     carte.append(contenu);
-    if (recherches && recherches.length) {
-        const note = elementRecherches(recherches);
+    const calculs = (recherches || []).filter(r => r && r.calcul);
+    const cherchees = (recherches || []).filter(r => !(r && r.calcul));
+    if (calculs.length) {
+        const note = document.createElement('p');
+        note.className = 'note calculs';
+        note.textContent = t('reponse.note-calcul', { calculs: calculs.map(c => c.calcul).join(' ; ') });
         note.hidden = true;
         carte.append(note);
-        actions.append(boutonRecherches(note, recherches));
+        actions.append(boutonCalculs(note));
+    }
+    if (cherchees.length) {
+        const note = elementRecherches(cherchees);
+        note.hidden = true;
+        carte.append(note);
+        actions.append(boutonRecherches(note, cherchees));
     }
     carte.append(actions);
     li.append(pastilleIA(), carte);

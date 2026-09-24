@@ -529,7 +529,11 @@ async function executerOutil(appel, signal, faites) {
     if (appel.function.name === 'calcul') {
         try {
             const expression = JSON.parse(appel.function.arguments || '{}').expression;
-            return expression + ' = ' + Calcul.evaluer(expression);
+            const resultat = Calcul.evaluer(expression).toLocaleString(I18n.langue, { maximumFractionDigits: 12, useGrouping: false });
+            const ligne = expression + ' = ' + resultat;
+            /* Rangé avec les recherches : il suit la réponse jusqu'à l'historique. */
+            faites.push({ calcul: ligne });
+            return ligne;
         } catch (err) {
             return t('calcul.invalide');
         }
