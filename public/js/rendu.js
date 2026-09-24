@@ -333,18 +333,63 @@ const Rendu = {
         }
         const conteneur = document.createElement('div');
         conteneur.className = 'diagramme';
-        const bouton = boutonAction(ICONES.telecharger, t('reponse.telecharger-figure'));
-        bouton.addEventListener('click', () => {
+        const boutonSvg = boutonAction(ICONES.svg, t('reponse.telecharger-figure'));
+        boutonSvg.addEventListener('click', () => {
             /* XMLSerializer ajoute le xmlns sans lequel le fichier ne s'ouvre pas. */
-            const fichier = new Blob([new XMLSerializer().serializeToString(svg)], { type: 'image/svg+xml' });
-            const lien = document.createElement('a');
-            lien.href = URL.createObjectURL(fichier);
-            lien.download = 'figure.svg';
-            lien.click();
-            setTimeout(() => URL.revokeObjectURL(lien.href), 1000);
+            this.telecharger(new Blob([new XMLSerializer().serializeToString(svg)], { type: 'image/svg+xml' }), 'figure.svg');
         });
-        conteneur.append(svg, bouton);
+        const boutonPng = boutonAction(ICONES.png, t('reponse.telecharger-png'));
+        boutonPng.addEventListener('click', async () => {
+            this.telecharger(await this.enPng(svg), 'figure.png');
+        });
+        const boutons = document.createElement('div');
+        boutons.className = 'boutons-figure';
+        boutons.append(boutonSvg, boutonPng);
+        conteneur.append(svg, boutons);
         bloc.parentElement.replaceWith(conteneur);
+    },
+
+    /**
+     * Dessine un SVG affiché dans une image PNG, en double résolution,
+     * sur fond blanc comme à l'écran.
+     *
+     * @param {SVGSVGElement} svg - Dessin affiché.
+     * @returns {Promise<Blob>} Image PNG.
+     */
+    async enPng(svg) {
+        const { width, height } = svg.getBoundingClientRect();
+        /* Firefox ne dessine pas un SVG sans largeur ni hauteur. */
+        const copie = svg.cloneNode(true);
+        copie.setAttribute('width', width);
+        copie.setAttribute('height', height);
+        /* Hors de la page, le texte perdrait la police héritée. */
+        copie.style.fontFamily = getComputedStyle(svg).fontFamily;
+        /* Adresse data: : la CSP refuse les images blob:. */
+        const image = new Image();
+        image.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(new XMLSerializer().serializeToString(copie));
+        await image.decode();
+        const toile = document.createElement('canvas');
+        toile.width = Math.ceil(width * 2);
+        toile.height = Math.ceil(height * 2);
+        const contexte = toile.getContext('2d');
+        contexte.fillStyle = '#ffffff';
+        contexte.fillRect(0, 0, toile.width, toile.height);
+        contexte.drawImage(image, 0, 0, toile.width, toile.height);
+        return new Promise((resoudre) => toile.toBlob(resoudre, 'image/png'));
+    },
+
+    /**
+     * Enregistre un fichier sur le poste.
+     *
+     * @param {Blob} fichier - Contenu.
+     * @param {string} nom - Nom du fichier.
+     */
+    telecharger(fichier, nom) {
+        const lien = document.createElement('a');
+        lien.href = URL.createObjectURL(fichier);
+        lien.download = nom;
+        lien.click();
+        setTimeout(() => URL.revokeObjectURL(lien.href), 1000);
     },
 
     /**
