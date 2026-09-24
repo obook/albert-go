@@ -268,15 +268,17 @@ const OUTILS_LOCAUX = {
         executer: (a, langue) => a.expression + ' = '
             + Calcul.evaluer(a.expression).toLocaleString(langue, { maximumFractionDigits: 12, useGrouping: false })
     },
-    calendrier: {
-        icone: 'calendrier',
-        outil: () => definirOutil('calendrier', { date: { type: 'string' }, jours: { type: 'integer' }, fin: { type: 'string' } }, ['date']),
-        executer: (a, langue) => Calendrier.repondre(a, langue)
-    },
-    compteur: {
-        icone: 'compteur',
-        outil: () => definirOutil('compteur', { texte: { type: 'string' } }, ['texte']),
-        executer: a => t('compteur.resultat', Compteur.compter(a.texte))
+    statistiques: {
+        icone: 'statistiques',
+        outil: () => definirOutil('statistiques', { valeurs: { type: 'array', items: { type: 'number' } } }, ['valeurs']),
+        executer: (a, langue) => {
+            const s = Statistiques.calculer(a.valeurs);
+            const f = {};
+            for (const [cle, v] of Object.entries(s)) {
+                f[cle] = formaterNombre(v, langue);
+            }
+            return t('statistiques.resultat', f);
+        }
     },
     tirage: {
         icone: 'de',
@@ -300,17 +302,15 @@ const OUTILS_LOCAUX = {
                 : t('tirage.ordre', { liste: ordre.join(', ') });
         }
     },
-    statistiques: {
-        icone: 'statistiques',
-        outil: () => definirOutil('statistiques', { valeurs: { type: 'array', items: { type: 'number' } } }, ['valeurs']),
-        executer: (a, langue) => {
-            const s = Statistiques.calculer(a.valeurs);
-            const f = {};
-            for (const [cle, v] of Object.entries(s)) {
-                f[cle] = formaterNombre(v, langue);
-            }
-            return t('statistiques.resultat', f);
-        }
+    calendrier: {
+        icone: 'calendrier',
+        outil: () => definirOutil('calendrier', { date: { type: 'string' }, jours: { type: 'integer' }, fin: { type: 'string' } }, ['date']),
+        executer: (a, langue) => Calendrier.repondre(a, langue)
+    },
+    compteur: {
+        icone: 'compteur',
+        outil: () => definirOutil('compteur', { texte: { type: 'string' } }, ['texte']),
+        executer: a => t('compteur.resultat', Compteur.compter(a.texte))
     }
 };
 
