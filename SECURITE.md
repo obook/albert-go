@@ -56,8 +56,9 @@ Navigateur (Pages) -> webhook n8n -> https://albert.api.etalab.gouv.fr
 - Sauvegarde des exécutions désactivée : n8n n'enregistre ni en-têtes ni clé.
   Elle y transite quand même, son administrateur peut techniquement la voir.
 - Le corps est relayé tel quel, `stream` forcé à `false`.
-- Albert voit l'adresse IP de n8n, pas celle de l'élève. La recherche, elle, ne
-  passe pas par le relais : le moteur voit l'adresse IP de l'élève.
+- Albert voit l'adresse IP de n8n, pas celle de l'utilisateur. La recherche,
+  elle, ne passe pas par le relais : le moteur voit l'adresse IP de
+  l'utilisateur.
 
 ## Modèle de menaces
 
@@ -119,7 +120,7 @@ Boîte noire depuis un poste extérieur, le 2026-09-21, avec `curl` et `openssl`
 | E1 | Moyenne | Reconduit du 2026-09-18. Pas de limite de débit, et le webhook reste appelable hors navigateur, où CORS ne s'applique pas. Revérifié : cinq requêtes sans clé toutes servies, corps de 2 Mo lu en entier avant le 401. Depuis I8, Albert n'est plus sollicité sans clé : l'abus se limite aux ressources de n8n. | Demander une limite de débit par adresse IP aux administrateurs. |
 | E3 | Faible | Reconduit du 2026-09-18. Pages n'envoie pas `X-Content-Type-Options: nosniff`. Sans effet ici : tous les fichiers sont servis avec leur type exact. | À signaler à l'équipe de la Forge. |
 | E5 | Info | Le HSTS de Pages n'a ni `includeSubDomains` ni `preload`. Pages n'accepte pas d'en-tête sur mesure. | À signaler avec E3. |
-| E6 | Info | Recherche activée, le navigateur appelle le moteur en direct : celui-ci voit l'adresse IP de l'élève et les mots de la requête. Pas un défaut, mais un périmètre nouveau depuis le dernier audit. | Le dire dans l'aide des réglages (I9) et dans la section RGPD. |
+| E6 | Info | Recherche activée, le navigateur appelle le moteur en direct : celui-ci voit l'adresse IP de l'utilisateur et les mots de la requête. Pas un défaut, mais un périmètre nouveau depuis le dernier audit. | Le dire dans l'aide des réglages (I9) et dans la section RGPD. |
 
 ## Suivi des corrections
 
@@ -157,7 +158,7 @@ Boîte noire depuis un poste extérieur, le 2026-09-21, avec `curl` et `openssl`
 
 - Aucun compte, aucun cookie, aucune collecte par Albert Go.
 - **Vers Albert (DINUM) :** questions, fichiers joints et clé, par le relais.
-  Albert voit l'adresse IP de n8n, pas celle de l'élève.
+  Albert voit l'adresse IP de n8n, pas celle de l'utilisateur.
 - **Vers le moteur, seulement si l'utilisateur active la recherche :** les mots
   de la requête, que le modèle tire de la question, plus l'adresse IP et le
   `User-Agent`, que toute requête web révèle. L'appel part du navigateur, sans
@@ -196,7 +197,7 @@ lesquelles il a prise, ou qu'il déplace vers quelqu'un d'autre.
 | R27 Limiter les actions automatiques sur entrées non maîtrisées | Partielle | Le modèle décide seul quand chercher, sur du texte venu du web ouvert (I9). Cette décision ne déclenche qu'un `GET` vers le moteur, et la réponse reste du texte. |
 | R29 Journalisation | Sans objet | Le projet ne journalise rien : pas de serveur applicatif, pas de télémétrie, exécutions n8n non enregistrées. Les journaux d'accès relèvent des hébergeurs. |
 | R30 à R32 Contrôle du code généré par IA | Côté utilisateur | Albert Go affiche du texte, code compris, que l'utilisateur relit et exécute ailleurs s'il le veut. |
-| R33 Durcissement des services grand public | Partielle | Page publique pour des élèves : CSP fermée, pas de cadrage, pas de script en ligne, pas de stockage persistant par défaut. Les en-têtes manquants (E3, E5) ne sont pas à notre main. |
+| R33 Durcissement des services grand public | Partielle | Page publique pour les agents de l'État : CSP fermée, pas de cadrage, pas de script en ligne, pas de stockage persistant par défaut. Les en-têtes manquants (E3, E5) ne sont pas à notre main. |
 | R34 Pas d'IA générative publique sur données sensibles | Favorisée, avec une réserve | Le modèle est Albert, API souveraine hébergée en France. La recherche, si elle est activée, envoie en revanche les mots de la requête à un moteur tiers, Google compris (E6). |
 
 Les recommandations R1, R2, R4, R6, R11, R12, R14 à R19, R21, R28 et R35 portent
