@@ -14,7 +14,7 @@
 const { test } = require('node:test');
 const assert = require('node:assert');
 require('../public/js/i18n.js');
-const Calcul = require('../public/js/calcul.js');
+const { Calcul, Calendrier } = require('../public/js/calcul.js');
 
 test('evaluer : priorités, parenthèses, puissance, virgule', () => {
     assert.strictEqual(Calcul.evaluer('2 + 3 * 4'), 14);
@@ -32,6 +32,16 @@ test('evaluer : fonctions scientifiques, angles en degrés', () => {
     assert.strictEqual(Calcul.evaluer('acos(0,5)'), 60);
     assert.strictEqual(Calcul.evaluer('log(1000) + ln(e)'), 4);
     assert.strictEqual(Calcul.evaluer('round(abs(-2,6))'), 3);
+});
+
+test('calendrier : jour, décalage, écart, date impossible', () => {
+    assert.strictEqual(Calendrier.repondre({ date: '2026-09-24' }, 'fr'), 'jeudi 24 septembre 2026');
+    assert.strictEqual(Calendrier.repondre({ date: '2027-07-14' }, 'en'), 'Wednesday, July 14, 2027');
+    assert.match(Calendrier.repondre({ date: '2026-09-24', jours: 45 }, 'fr'), /dimanche 8 novembre 2026/);
+    /* Traverse le passage à l'heure d'hiver du 25 octobre 2026. */
+    assert.match(Calendrier.repondre({ date: '2026-09-24', fin: '2026-12-19' }, 'fr'), /86/);
+    assert.throws(() => Calendrier.repondre({ date: '2027-02-29' }, 'fr'));
+    assert.throws(() => Calendrier.repondre({ date: 'demain' }, 'fr'));
 });
 
 test('evaluer : refuse le code et les expressions fausses', () => {

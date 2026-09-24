@@ -1,7 +1,7 @@
 /*
  * calcul.js
- * Calcul exact, proposé au modèle comme un outil : les modèles se
- * trompent en arithmétique.
+ * Calcul exact et calendrier, proposés au modèle comme outils : les
+ * modèles se trompent en arithmétique et sur le jour de la semaine.
  *
  * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
  * Auteur : O. Booklage
@@ -132,7 +132,72 @@ const Calcul = {
     }
 };
 
+const Calendrier = {
+    /**
+     * Outil proposé au modèle, au format "tools" de l'API.
+     *
+     * @returns {Object} Entrée du champ tools.
+     */
+    outil() {
+        return {
+            type: 'function',
+            function: {
+                name: 'calendrier',
+                description: t('calendrier.description'),
+                parameters: {
+                    type: 'object',
+                    properties: {
+                        date: { type: 'string', description: t('calendrier.date') },
+                        jours: { type: 'integer', description: t('calendrier.jours') },
+                        fin: { type: 'string', description: t('calendrier.fin') }
+                    },
+                    required: ['date']
+                }
+            }
+        };
+    },
+
+    /**
+     * Lit une date AAAA-MM-JJ ; refuse le 31 février.
+     *
+     * @param {string} texte - Date au format ISO.
+     * @returns {Date} La date, à minuit heure locale.
+     */
+    lire(texte) {
+        const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(texte).trim());
+        const d = m && new Date(Number(m[1]), m[2] - 1, Number(m[3]));
+        if (!d || d.getMonth() !== m[2] - 1 || d.getDate() !== Number(m[3])) {
+            throw new Error(t('calendrier.invalide'));
+        }
+        return d;
+    },
+
+    /**
+     * Répond à un appel : jour de la semaine, date décalée ou écart entre deux dates.
+     *
+     * @param {Object} demande - { date, jours?, fin? }.
+     * @param {string} langue - Code de langue de l'interface.
+     * @returns {string} Une ligne pour le modèle et pour la trace.
+     */
+    repondre(demande, langue) {
+        const format = new Intl.DateTimeFormat(langue, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+        const debut = this.lire(demande.date);
+        if (demande.fin) {
+            const fin = this.lire(demande.fin);
+            /* En UTC : un changement d'heure ne décale pas le compte. */
+            const ecart = (Date.UTC(fin.getFullYear(), fin.getMonth(), fin.getDate())
+                - Date.UTC(debut.getFullYear(), debut.getMonth(), debut.getDate())) / 86400000;
+            return t('calendrier.ecart', { debut: format.format(debut), fin: format.format(fin), jours: ecart });
+        }
+        if (Number.isInteger(demande.jours) && demande.jours !== 0) {
+            const decale = new Date(debut.getFullYear(), debut.getMonth(), debut.getDate() + demande.jours);
+            return t('calendrier.decale', { debut: format.format(debut), jours: demande.jours, date: format.format(decale) });
+        }
+        return format.format(debut);
+    }
+};
+
 /* Export pour les tests Node ; ignoré dans le navigateur. */
 if (typeof module !== 'undefined') {
-    module.exports = Calcul;
+    module.exports = { Calcul, Calendrier };
 }

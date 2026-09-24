@@ -538,6 +538,15 @@ async function executerOutil(appel, signal, faites) {
             return t('calcul.invalide');
         }
     }
+    if (appel.function.name === 'calendrier') {
+        try {
+            const ligne = Calendrier.repondre(JSON.parse(appel.function.arguments || '{}'), I18n.langue);
+            faites.push({ calendrier: ligne });
+            return ligne;
+        } catch (err) {
+            return t('calendrier.invalide');
+        }
+    }
     let mots = '';
     try {
         mots = JSON.parse(appel.function.arguments || '{}').q || '';
@@ -604,7 +613,10 @@ function avecRappel(messages) {
  */
 async function repondreAvecOutils(cle, requete, signal) {
     const cherche = reglages.recherche && (Recherche.sansCle(reglages.fournisseur) || Boolean(reglages.cleRecherche));
-    const outils = cherche ? [Recherche.outil(reglages.fournisseur), Calcul.outil()] : [Calcul.outil()];
+    const outils = [Calcul.outil(), Calendrier.outil()];
+    if (cherche) {
+        outils.unshift(Recherche.outil(reglages.fournisseur));
+    }
     const messages = [...requete.messages];
     /* Recherches faites, rendues avec la réponse pour la trace sous la bulle. */
     const faites = [];
