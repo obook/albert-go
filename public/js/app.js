@@ -188,13 +188,15 @@ async function envoyer() {
     conversation.push({ role: 'user', content: demande, affiche: affiche });
     /* Pour ignorer la réponse si on change de conversation pendant l'attente. */
     const courante = conversation;
-    const bulle = ajouter('user', affiche);
+    /* Saisie vidée et état écrit avant les bulles : la zone de saisie change
+       de hauteur, et le fil défilé trop tôt cachait l'attente dessous. */
     $('saisie').value = '';
     retirerPiece();
+    etat(t('etat.reflechit'));
+    const bulle = ajouter('user', affiche);
     annulation = new AbortController();
     boutonEnvoi(true);
     const retirerAttente = ajouterAttente();
-    etat(t('etat.reflechit'));
 
     try {
         const reponse = await demanderReponse(outil);
