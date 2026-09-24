@@ -92,6 +92,15 @@ test('reparerMermaid : fautes reprises d\'albert-board', () => {
         'flowchart TD\n subgraph L\n A --> B\n end');
 });
 
+test('reparerMermaid : flèche Unicode gardée dans une étiquette', () => {
+    assert.strictEqual(Rendu.reparerMermaid('graph TD\n A["x → y"] → B'), 'graph TD\n A["x → y"] --> B');
+});
+
+test('reparerMermaid : ligne title avant le type de diagramme', () => {
+    assert.strictEqual(Rendu.reparerMermaid('title "Relatifs"\ngraph TD\n A --> B'),
+        '---\ntitle: Relatifs\n---\ngraph TD\n A --> B');
+});
+
 test('chimieMermaid : \\ce{} écrit en texte, indices et charges en Unicode', () => {
     assert.strictEqual(Rendu.chimieMermaid('A["Glycérol, \\ce{C3H8O3}"] --> B["\\ce{SO4^{2-}}"]'),
         'A["Glycérol, C₃H₈O₃"] --> B["SO₄²⁻"]');
