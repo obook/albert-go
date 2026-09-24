@@ -36,7 +36,7 @@ Activation dans Réglages. Le modèle reçoit un outil de recherche et décide s
 
 ### Calcul
 
-Dans Chat, le modèle dispose d'un outil de calcul exact : opérations, puissances, racine carrée, trigonométrie en degrés, logarithmes : il s'en sert au lieu de calculer de tête. Chaque demande lui donne aussi la date du jour et le nom du modèle utilisé.
+Dans Chat, le modèle dispose d'un outil de calcul exact (opérations, puissances, racine carrée, trigonométrie en degrés, logarithmes) : il s'en sert au lieu de calculer de tête. Chaque demande lui donne aussi la date du jour et le nom du modèle utilisé.
 
 ### Réglages
 
