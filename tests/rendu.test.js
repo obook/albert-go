@@ -84,3 +84,10 @@ test('reparerMermaid : guillemets autour des étiquettes à parenthèses', () =>
     assert.strictEqual(Rendu.reparerMermaid(code),
         'graph TD\n A["Début (x)"] --> B{"Moyenne (sur 20) ?"}\n B -->|"si (vrai)"| C[(Base)]\n C --> D["Déjà (ok)"]');
 });
+
+test('reparerMermaid : fautes reprises d\'albert-board', () => {
+    assert.strictEqual(Rendu.reparerMermaid('graph TD\n A[\\"X\\"] → B'), 'graph TD\n A["X"] --> B');
+    assert.strictEqual(Rendu.reparerMermaid('graph TD\n J["Triglycéride"} --> K'), 'graph TD\n J["Triglycéride"] --> K');
+    assert.strictEqual(Rendu.reparerMermaid('flowchart TD\n subgraph L[""]\n A -->|""| B\n end'),
+        'flowchart TD\n subgraph L\n A --> B\n end');
+});
