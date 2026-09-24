@@ -29,7 +29,7 @@ Navigateur (Pages) -> webhook n8n -> https://albert.api.etalab.gouv.fr
   Wikipédia n'en demande aucune.
 - **Sources affichées sous une réponse :** titres et adresses renvoyés par le
   moteur. Rien n'est chargé depuis ces domaines, seulement des liens à cliquer.
-- **Aucun CDN, aucune télémétrie.** Les six bibliothèques sont servies depuis
+- **Aucun CDN, aucune télémétrie.** Les sept bibliothèques sont servies depuis
   Pages, le QR code est calculé dans le navigateur, et la version affichée dans
   "À propos" est écrite au déploiement : aucune requête vers la forge.
 
@@ -69,7 +69,7 @@ Navigateur (Pages) -> webhook n8n -> https://albert.api.etalab.gouv.fr
 | Interception réseau | HTTPS de bout en bout. Pages et n8n en TLS 1.3, repli TLS 1.2 avec AEAD, certificats valides. HSTS de deux ans sur Pages. |
 | Détournement du relais | URL cible fixée dans le workflow, deux chemins seulement, traversée refusée (404). |
 | Conservation de la clé côté serveur | Sauvegarde des exécutions n8n désactivée, vérifiée après un appel réel. |
-| Bibliothèque compromise | Six bibliothèques, aucune dépendance de construction. Cinq identiques octet pour octet au paquet npm, la sixième en I11. `npm audit` : rien. |
+| Bibliothèque compromise | Sept bibliothèques, aucune dépendance de construction. Six identiques octet pour octet au paquet npm, la septième en I11. `npm audit` : rien. |
 | Lien piégé dans une réponse | Liens ouverts avec `rel="noopener noreferrer"`, qui coupe aussi le `Referer` : la page visée ne sait pas d'où vient le clic. |
 | Adresse piégée dans les sources listées sous une réponse | Ces adresses viennent du moteur, pas du modèle. Elles passent par le même contrôle que les liens d'une réponse (`Rendu.urlDangereuse`) avant de devenir cliquables, et leur titre est inséré par `textContent`. |
 | Consigne cachée dans une page trouvée par la recherche | Recherche désactivée par défaut, Wikipédia par défaut, extraits tronqués, aucune capacité hors chercher. Détail en I9. |
@@ -86,8 +86,8 @@ embarquées et de la configuration du dépôt.
 **Intégrité des bibliothèques.** Comparaison octet par octet avec le paquet npm
 officiel, le 2026-09-21 : KaTeX 0.16.47 (`auto-render`, `mhchem`, 20 polices),
 Mermaid 11.17.2, Pico 2.1.1 et qrcode-generator 2.0.4 sont identiques,
-highlight.js 11.12.0 aussi (le 2026-09-24). Marked 17.0.1 ne l'est pas, voir
-I11. `npm audit` sur les six versions, le 2026-09-24 : rien.
+highlight.js 11.12.0 et pdf.js 6.3.289 aussi (le 2026-09-24). Marked 17.0.1 ne
+l'est pas, voir I11. `npm audit` sur les sept versions, le 2026-09-24 : rien.
 
 **Constats**
 
@@ -182,7 +182,7 @@ lesquelles il a prise, ou qu'il déplace vers quelqu'un d'autre.
 
 | Reco | Statut | Ce qu'il en est |
 |------|--------|-----------------|
-| R3 Confiance dans les bibliothèques externes | Partielle | Six bibliothèques embarquées, aucune dépendance de construction, aucun CDN. Cinq vérifiées octet pour octet, la sixième par équivalence de sortie (I11). Vérification manuelle, à refaire à chaque mise à jour. |
+| R3 Confiance dans les bibliothèques externes | Partielle | Sept bibliothèques embarquées, aucune dépendance de construction, aucun CDN. Six vérifiées octet pour octet, la septième par équivalence de sortie (I11). Vérification manuelle, à refaire à chaque mise à jour. |
 | R5 Principes DevSecOps | Partielle | 35 tests à chaque étape, audit rejoué à chaque changement de périmètre. Pas d'analyse automatique avant fusion. |
 | R7 Confidentialité dès la conception | Couverte | Rien ne quitte le navigateur en dehors d'Albert et, sur activation, du moteur. Mode partagé par défaut : tout le sensible s'efface à la fermeture de l'onglet. |
 | R8 Besoin d'en connaître | Couverte | La clé appartient à l'utilisateur, le relais ne la lit pas et n'enregistre rien. Aucun compte, aucun identifiant. |
