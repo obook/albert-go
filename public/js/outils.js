@@ -80,7 +80,10 @@ async function consigne(outil, champ = 'consigne') {
         }
         consignesLues[chemin] = await res.text();
     }
-    return consignesLues[chemin];
+    /* Le modèle ne connaît ni la date du jour ni son propre nom. */
+    const date = new Date().toLocaleDateString(I18n.langue, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+    const modele = modeleActuel();
+    return consignesLues[chemin] + '\n\n' + t('consigne.contexte', { date, nom: modele.nom, reel: modele.reel });
 }
 
 /**
