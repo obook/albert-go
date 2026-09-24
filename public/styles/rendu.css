@@ -63,11 +63,15 @@ laissait les colonnes rétrécir jusqu'à une lettre. Trop large, le tableau dé
 .rendu .katex-display { overflow-x: auto; overflow-y: hidden; }
 /* Fond blanc même en thème sombre : Mermaid dessine en thème clair. */
 .rendu .diagramme {
+    position: relative;
     margin: 0 0 0.75rem;
     padding: 0.75rem;
     border-radius: 0.25rem;
     border: 1px solid var(--bord);
     background: #ffffff;
     overflow-x: auto;
+    /* Un style="position:fixed" du SVG reste dans le cadre. */
+    contain: paint;
 }
-.rendu .diagramme svg { display: block; max-width: 100%; height: auto; margin: 0 auto; }
+.rendu .diagramme > svg { display: block; max-width: 100%; max-height: 20rem; height: auto; margin: 0 auto; }
+.rendu .diagramme > .bouton-action { position: absolute; top: 0.375rem; right: 0.375rem; background: var(--surface); }

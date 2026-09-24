@@ -63,7 +63,7 @@ Navigateur (Pages) -> webhook n8n -> https://albert.api.etalab.gouv.fr
 
 | Menace | Mesure |
 |---|---|
-| Vol de la clé par injection de script (XSS) | CSP `default-src 'self'`, aucun script en ligne. Questions et mots cherchés insérés par `textContent`. HTML des réponses assaini : balises actives retirées, gestionnaires `on*`, attributs `style` et URL `javascript:`, `vbscript:`, `data:` non-image supprimés. KaTeX en `trust: false`, Mermaid en `securityLevel: 'strict'`. |
+| Vol de la clé par injection de script (XSS) | CSP `default-src 'self'`, aucun script en ligne. Questions et mots cherchés insérés par `textContent`. HTML des réponses assaini : balises actives retirées, gestionnaires `on*`, attributs `style` et URL `javascript:`, `vbscript:`, `data:` non-image supprimés. KaTeX en `trust: false`, Mermaid en `securityLevel: 'strict'`. Blocs ```svg du modèle : seul le `<svg>` est gardé, sans `script`, `style`, `foreignObject`, `animate`, `set`, gestionnaire ni URL exécutable ; son cadre a `contain: paint`. |
 | Exfiltration par la page | `connect-src` limité au relais, à Wikipédia et aux deux moteurs. `img-src 'self' data:`, `form-action 'none'`, `base-uri 'none'`. |
 | Interception réseau | HTTPS de bout en bout. Pages et n8n en TLS 1.3, repli TLS 1.2 avec AEAD, certificats valides. HSTS de deux ans sur Pages. |
 | Détournement du relais | URL cible fixée dans le workflow, deux chemins seulement, traversée refusée (404). |
