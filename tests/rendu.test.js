@@ -91,3 +91,11 @@ test('reparerMermaid : fautes reprises d\'albert-board', () => {
     assert.strictEqual(Rendu.reparerMermaid('flowchart TD\n subgraph L[""]\n A -->|""| B\n end'),
         'flowchart TD\n subgraph L\n A --> B\n end');
 });
+
+test('chimieMermaid : \\ce{} écrit en texte, indices et charges en Unicode', () => {
+    assert.strictEqual(Rendu.chimieMermaid('A["Glycérol, \\ce{C3H8O3}"] --> B["\\ce{SO4^{2-}}"]'),
+        'A["Glycérol, C₃H₈O₃"] --> B["SO₄²⁻"]');
+    assert.strictEqual(Rendu.chimieMermaid('A["\\ce{I = \\frac{V}{R}}"]'), 'A["I = (V)/(R)"]');
+    assert.strictEqual(Rendu.chimieMermaid('A["\\ce{C3H8"]'), 'A["\\ce{C3H8"]');
+    assert.strictEqual(Rendu.chimieMermaid('A["Texte { avec } accolades"]'), 'A["Texte { avec } accolades"]');
+});

@@ -197,14 +197,49 @@ const Rendu = {
         }
         const dessiner = (code) => mermaid.render('mermaid-' + Math.random().toString(36).slice(2), code);
         for (const bloc of mermaids) {
+            const code = this.chimieMermaid(bloc.textContent);
             try {
-                const { svg } = await dessiner(bloc.textContent)
-                    .catch(() => dessiner(this.reparerMermaid(bloc.textContent)));
+                const { svg } = await dessiner(code).catch(() => dessiner(this.reparerMermaid(code)));
                 this.remplacerBloc(bloc, this.assainirSvg(svg));
             } catch (err) {
                 /* Diagramme invalide même réparé : le code reste affiché. */
             }
         }
+    },
+
+    /**
+     * Écrit chaque \ce{...} d'un diagramme en texte : C₃H₈O₃, SO₄²⁻.
+     *
+     * Mermaid n'a pas mhchem : \ce{C3H8O3} s'afficherait tel quel. Les
+     * accolades sont comptées, car \ce{I = \frac{V}{R}} en contient
+     * d'autres. Un \ce{ jamais refermé reste intact. Repris d'albert-board.
+     *
+     * @param {string} code - Code Mermaid.
+     * @returns {string} Code sans \ce.
+     */
+    chimieMermaid(code) {
+        const exposants = { '+': '⁺', '-': '⁻' };
+        let sortie = '';
+        let debut;
+        while ((debut = code.indexOf('\\ce{')) !== -1) {
+            let fin = debut + 3;
+            let profondeur = 0;
+            do {
+                profondeur += { '{': 1, '}': -1 }[code[fin]] || 0;
+                fin++;
+            } while (profondeur && fin < code.length);
+            if (profondeur) {
+                break;
+            }
+            const formule = code.slice(debut + 4, fin - 1)
+                .replace(/\\frac\{([^{}]*)\}\{([^{}]*)\}/g, '($1)/($2)')
+                .replace(/\\[a-zA-Z]+|[{}]/g, '')
+                .replace(/\^([0-9+-]+)/g, (_, charge) => charge.replace(/./g, (c) => exposants[c] || '⁰¹²³⁴⁵⁶⁷⁸⁹'[c]))
+                .replace(/([A-Za-z)\]])(\d+)/g, (_, avant, nombre) => avant + nombre.replace(/\d/g, (c) => '₀₁₂₃₄₅₆₇₈₉'[c]));
+            sortie += code.slice(0, debut) + formule;
+            code = code.slice(fin);
+        }
+        return sortie + code;
     },
 
     /**
