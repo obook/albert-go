@@ -28,11 +28,22 @@
     overflow-y: auto;
     padding: 1.5rem;
     border: 0;
-    border-top: 4px solid var(--bleu);
+    /* Mêmes coins et même ombre que la carte de saisie. */
+    border-radius: 1rem;
+    box-shadow: 0 8px 30px rgb(0 0 145 / 0.18);
     background: var(--surface);
     color: var(--texte);
 }
-.reglages::backdrop { background: rgb(0 0 0 / 0.5); }
+.reglages::backdrop {
+    background: rgb(0 0 0 / 0.5);
+    backdrop-filter: blur(4px);
+}
+@media (prefers-reduced-motion: no-preference) {
+    .reglages[open] { animation: apparition 150ms ease-out; }
+}
+@keyframes apparition {
+    from { opacity: 0; transform: scale(0.96); }
+}
 .reglages form { display: grid; gap: 1.25rem; }
 .reglages h2 { font-size: 1.375rem; }
 .reglages .bouton-principal { justify-self: end; }
@@ -44,7 +55,7 @@
 /* À plat, les réglages faisaient trois écrans sur un téléphone. */
 #reglages .carte {
     border: 1px solid var(--bord);
-    border-radius: 0.25rem;
+    border-radius: 0.75rem;
     /* Pico recolore le titre quand le details s'ouvre et quand il a le focus :
        son accordéon, pas le nôtre. Le focus clavier reste marqué plus bas. */
     --pico-accordion-close-summary-color: var(--texte);
@@ -54,6 +65,9 @@
 #reglages .carte > summary {
     padding: 0.625rem 0.75rem;
     margin-bottom: 0;
+    /* Le fond du titre suit les coins de la carte ; pas d'overflow hidden,
+       qui rognerait le contour de focus. */
+    border-radius: calc(0.75rem - 1px);
     background: var(--fond);
     font-weight: 700;
     cursor: pointer;
@@ -63,7 +77,11 @@
 #reglages .carte, .choix-liste { --pico-primary-focus: var(--bleu); }
 
 /* .pico devant : sinon Pico gagne la spécificité sur margin-bottom. */
-.pico #reglages .carte[open] > summary { margin-bottom: 0; border-bottom: 1px solid var(--bord); }
+.pico #reglages .carte[open] > summary {
+    margin-bottom: 0;
+    border-bottom: 1px solid var(--bord);
+    border-radius: calc(0.75rem - 1px) calc(0.75rem - 1px) 0 0;
+}
 /* Corps dans un div : une <details> en display grid montre son contenu fermé. */
 #reglages .carte .corps {
     display: grid;
@@ -130,7 +148,7 @@ fieldset .bouton-texte { justify-self: start; }
 .mise-en-garde {
     padding: 0.625rem 0.75rem;
     border: 1px solid var(--jaune-bord);
-    border-radius: 0.25rem;
+    border-radius: 0.5rem;
     background: var(--jaune-fond);
     color: var(--texte);
 }
