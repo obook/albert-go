@@ -1,7 +1,7 @@
 /*
  * calcul.js
- * Calcul exact et calendrier, proposés au modèle comme outils : les
- * modèles se trompent en arithmétique et sur le jour de la semaine.
+ * Outils locaux du modèle : calcul, calendrier, compteur, tirage, statistiques.
+ * Là où les modèles se trompent ; tout reste dans le navigateur.
  *
  * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
  * Auteur : O. Booklage
@@ -35,26 +35,6 @@ const Calcul = {
 
     /** Constantes acceptées. */
     CONSTANTES: { pi: Math.PI, e: Math.E },
-
-    /**
-     * Outil proposé au modèle, au format "tools" de l'API.
-     *
-     * @returns {Object} Entrée du champ tools.
-     */
-    outil() {
-        return {
-            type: 'function',
-            function: {
-                name: 'calcul',
-                description: t('calcul.description'),
-                parameters: {
-                    type: 'object',
-                    properties: { expression: { type: 'string', description: t('calcul.parametre') } },
-                    required: ['expression']
-                }
-            }
-        };
-    },
 
     /**
      * Évalue une expression : + - * / ^, parenthèses, FONCTIONS et CONSTANTES.
@@ -134,30 +114,6 @@ const Calcul = {
 
 const Calendrier = {
     /**
-     * Outil proposé au modèle, au format "tools" de l'API.
-     *
-     * @returns {Object} Entrée du champ tools.
-     */
-    outil() {
-        return {
-            type: 'function',
-            function: {
-                name: 'calendrier',
-                description: t('calendrier.description'),
-                parameters: {
-                    type: 'object',
-                    properties: {
-                        date: { type: 'string', description: t('calendrier.date') },
-                        jours: { type: 'integer', description: t('calendrier.jours') },
-                        fin: { type: 'string', description: t('calendrier.fin') }
-                    },
-                    required: ['date']
-                }
-            }
-        };
-    },
-
-    /**
      * Lit une date AAAA-MM-JJ ; refuse le 31 février.
      *
      * @param {string} texte - Date au format ISO.
@@ -197,7 +153,168 @@ const Calendrier = {
     }
 };
 
+const Compteur = {
+    /**
+     * Compte les mots (séparés par des espaces) et les caractères d'un texte.
+     *
+     * @param {string} texte - Texte à compter.
+     * @returns {Object} { mots, caracteres, sansEspaces }.
+     */
+    compter(texte) {
+        const propre = String(texte).trim();
+        return {
+            mots: propre ? propre.split(/\s+/).length : 0,
+            caracteres: [...propre].length,
+            sansEspaces: [...propre.replace(/\s/g, '')].length
+        };
+    }
+};
+
+const Tirage = {
+    /**
+     * Entier au hasard dans [0, n[.
+     *
+     * @param {number} n - Borne exclue.
+     * @returns {number} L'entier.
+     */
+    hasard(n) {
+        return Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / 2 ** 32 * n);
+    },
+
+    /**
+     * Mélange une liste (Fisher-Yates), sans toucher l'originale.
+     *
+     * @param {Array} liste - Éléments à mélanger.
+     * @returns {Array} Copie mélangée.
+     */
+    melanger(liste) {
+        const copie = [...liste];
+        for (let i = copie.length - 1; i > 0; i--) {
+            const j = this.hasard(i + 1);
+            [copie[i], copie[j]] = [copie[j], copie[i]];
+        }
+        return copie;
+    },
+
+    /**
+     * Répartit les éléments au hasard en groupes égaux à un près.
+     *
+     * @param {Array} liste - Éléments.
+     * @param {number} groupes - Nombre de groupes.
+     * @returns {Array<Array>} Les groupes.
+     */
+    repartir(liste, groupes) {
+        const resultat = Array.from({ length: groupes }, () => []);
+        this.melanger(liste).forEach((e, i) => resultat[i % groupes].push(e));
+        return resultat;
+    }
+};
+
+const Statistiques = {
+    /**
+     * Statistiques d'une série, quartiles comme au lycée.
+     *
+     * @param {Array<number|string>} valeurs - Série, virgule décimale acceptée.
+     * @returns {Object} { effectif, moyenne, mediane, ecartType, min, max, q1, q3 }.
+     */
+    calculer(valeurs) {
+        const serie = (valeurs || []).map(v => Number(String(v).replace(',', '.'))).sort((a, b) => a - b);
+        if (!serie.length || serie.some(v => !Number.isFinite(v))) {
+            throw new Error(t('statistiques.invalide'));
+        }
+        const n = serie.length;
+        const moyenne = serie.reduce((a, b) => a + b, 0) / n;
+        const milieu = Math.floor(n / 2);
+        return {
+            effectif: n,
+            moyenne: moyenne,
+            mediane: n % 2 ? serie[milieu] : (serie[milieu - 1] + serie[milieu]) / 2,
+            ecartType: Math.sqrt(serie.reduce((a, v) => a + (v - moyenne) ** 2, 0) / n),
+            min: serie[0],
+            max: serie[n - 1],
+            q1: serie[Math.ceil(n / 4) - 1],
+            q3: serie[Math.ceil(3 * n / 4) - 1]
+        };
+    }
+};
+
+/**
+ * Définition d'un outil pour le champ "tools" de l'API.
+ *
+ * @param {string} nom - Nom de l'outil, préfixe de ses textes dans i18n.js.
+ * @param {Object} proprietes - { paramètre: type JSON Schema }.
+ * @param {string[]} requis - Paramètres obligatoires.
+ * @returns {Object} Entrée du champ tools.
+ */
+function definirOutil(nom, proprietes, requis) {
+    const properties = {};
+    for (const [cle, schema] of Object.entries(proprietes)) {
+        properties[cle] = { ...schema, description: t(nom + '.' + cle) };
+    }
+    return {
+        type: 'function',
+        function: { name: nom, description: t(nom + '.description'), parameters: { type: 'object', properties, required: requis } }
+    };
+}
+
+/** Nombre au format de la langue, sans séparateur de milliers. */
+const formaterNombre = (v, langue) => Number(v.toPrecision(12)).toLocaleString(langue, { maximumFractionDigits: 3, useGrouping: false });
+
+/* Le nom sert de réglage, de clé de stockage et de préfixe i18n. */
+const OUTILS_LOCAUX = {
+    calcul: {
+        icone: 'calculatrice',
+        outil: () => definirOutil('calcul', { expression: { type: 'string' } }, ['expression']),
+        executer: (a, langue) => a.expression + ' = '
+            + Calcul.evaluer(a.expression).toLocaleString(langue, { maximumFractionDigits: 12, useGrouping: false })
+    },
+    calendrier: {
+        icone: 'calendrier',
+        outil: () => definirOutil('calendrier', { date: { type: 'string' }, jours: { type: 'integer' }, fin: { type: 'string' } }, ['date']),
+        executer: (a, langue) => Calendrier.repondre(a, langue)
+    },
+    compteur: {
+        icone: 'compteur',
+        outil: () => definirOutil('compteur', { texte: { type: 'string' } }, ['texte']),
+        executer: a => t('compteur.resultat', Compteur.compter(a.texte))
+    },
+    tirage: {
+        icone: 'de',
+        outil: () => definirOutil('tirage', {
+            elements: { type: 'array', items: { type: 'string' } },
+            groupes: { type: 'integer' },
+            nombre: { type: 'integer' }
+        }, ['elements']),
+        executer: (a) => {
+            const elements = (a.elements || []).map(String).filter(Boolean);
+            if (!elements.length) {
+                throw new Error(t('tirage.invalide'));
+            }
+            if (a.groupes > 1) {
+                return Tirage.repartir(elements, Math.min(a.groupes, elements.length))
+                    .map((g, i) => t('tirage.groupe', { numero: i + 1, membres: g.join(', ') })).join(' ; ');
+            }
+            const ordre = Tirage.melanger(elements);
+            return a.nombre > 0
+                ? t('tirage.tires', { liste: ordre.slice(0, a.nombre).join(', ') })
+                : t('tirage.ordre', { liste: ordre.join(', ') });
+        }
+    },
+    statistiques: {
+        icone: 'statistiques',
+        outil: () => definirOutil('statistiques', { valeurs: { type: 'array', items: { type: 'number' } } }, ['valeurs']),
+        executer: (a, langue) => {
+            const s = Statistiques.calculer(a.valeurs);
+            const f = {};
+            for (const [cle, v] of Object.entries(s)) {
+                f[cle] = formaterNombre(v, langue);
+            }
+            return t('statistiques.resultat', f);
+        }
+    }
+};
+
 /* Export pour les tests Node ; ignoré dans le navigateur. */
 if (typeof module !== 'undefined') {
-    module.exports = { Calcul, Calendrier };
+    module.exports = { Calcul, Calendrier, Compteur, Tirage, Statistiques, OUTILS_LOCAUX };
 }

@@ -526,25 +526,15 @@ const Recherche = {
  * @returns {Promise<string>} Contenu du message de rôle "tool".
  */
 async function executerOutil(appel, signal, faites) {
-    if (appel.function.name === 'calcul') {
+    const local = OUTILS_LOCAUX[appel.function.name];
+    if (local) {
         try {
-            const expression = JSON.parse(appel.function.arguments || '{}').expression;
-            const resultat = Calcul.evaluer(expression).toLocaleString(I18n.langue, { maximumFractionDigits: 12, useGrouping: false });
-            const ligne = expression + ' = ' + resultat;
-            /* Rangé avec les recherches : il suit la réponse jusqu'à l'historique. */
-            faites.push({ calcul: ligne });
+            const ligne = local.executer(JSON.parse(appel.function.arguments || '{}'), I18n.langue);
+            /* Gardé avec les recherches, jusqu'à l'historique. */
+            faites.push({ [appel.function.name]: ligne });
             return ligne;
         } catch (err) {
-            return t('calcul.invalide');
-        }
-    }
-    if (appel.function.name === 'calendrier') {
-        try {
-            const ligne = Calendrier.repondre(JSON.parse(appel.function.arguments || '{}'), I18n.langue);
-            faites.push({ calendrier: ligne });
-            return ligne;
-        } catch (err) {
-            return t('calendrier.invalide');
+            return t(appel.function.name + '.invalide');
         }
     }
     let mots = '';
@@ -613,11 +603,10 @@ function avecRappel(messages) {
  */
 async function repondreAvecOutils(cle, requete, signal) {
     const cherche = reglages.recherche && (Recherche.sansCle(reglages.fournisseur) || Boolean(reglages.cleRecherche));
-    const outils = [
-        cherche && Recherche.outil(reglages.fournisseur),
-        reglages.calcul && Calcul.outil(),
-        reglages.calendrier && Calendrier.outil()
-    ].filter(Boolean);
+    const outils = Object.keys(OUTILS_LOCAUX).filter(nom => reglages[nom]).map(nom => OUTILS_LOCAUX[nom].outil());
+    if (cherche) {
+        outils.unshift(Recherche.outil(reglages.fournisseur));
+    }
     if (!outils.length) {
         return Albert.repondre(cle, requete, signal);
     }

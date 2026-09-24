@@ -14,7 +14,7 @@
 const { test } = require('node:test');
 const assert = require('node:assert');
 require('../public/js/i18n.js');
-const { Calcul, Calendrier } = require('../public/js/calcul.js');
+const { Calcul, Calendrier, Compteur, Tirage, Statistiques, OUTILS_LOCAUX } = require('../public/js/calcul.js');
 
 test('evaluer : priorités, parenthèses, puissance, virgule', () => {
     assert.strictEqual(Calcul.evaluer('2 + 3 * 4'), 14);
@@ -48,4 +48,43 @@ test('evaluer : refuse le code et les expressions fausses', () => {
     for (const faux of ['alert(1)', '2 +', '(1', '1 / 0', '1 2', '', 'tan(90)', 'sqrt(-1)', 'constructor(1)']) {
         assert.throws(() => Calcul.evaluer(faux), faux);
     }
+});
+
+test('compteur : mots, caractères, sans espaces', () => {
+    assert.deepStrictEqual(Compteur.compter("  L'école est  finie.\n"), { mots: 3, caracteres: 19, sansEspaces: 16 });
+    assert.deepStrictEqual(Compteur.compter(''), { mots: 0, caracteres: 0, sansEspaces: 0 });
+});
+
+test('tirage : tout le monde une fois, groupes égaux à un près', () => {
+    const noms = ['a', 'b', 'c', 'd', 'e', 'f', 'g'];
+    assert.deepStrictEqual(Tirage.melanger(noms).sort(), noms);
+    const groupes = Tirage.repartir(noms, 3);
+    assert.deepStrictEqual(groupes.map(g => g.length), [3, 2, 2]);
+    assert.deepStrictEqual(groupes.flat().sort(), noms);
+});
+
+test('statistiques : médiane, quartiles du lycée, série invalide', () => {
+    const s = Statistiques.calculer(['12', '8', '15,5', 10, 9, 14, 11, 13]);
+    assert.strictEqual(s.effectif, 8);
+    assert.strictEqual(s.moyenne, 11.5625);
+    assert.strictEqual(s.mediane, 11.5);
+    assert.strictEqual(s.q1, 9);
+    assert.strictEqual(s.q3, 13);
+    assert.throws(() => Statistiques.calculer([]));
+    assert.throws(() => Statistiques.calculer(['douze']));
+});
+
+test('outils locaux : chaque outil a ses textes dans les quatre langues', () => {
+    for (const langue of ['fr', 'es', 'en', 'de']) {
+        I18n.langue = langue;
+        for (const [nom, local] of Object.entries(OUTILS_LOCAUX)) {
+            const def = local.outil().function;
+            const cles = ['reglages.' + nom, 'reponse.' + nom, 'reponse.note-' + nom, nom + '.invalide', nom + '.description',
+                ...Object.keys(def.parameters.properties).map(p => nom + '.' + p)];
+            for (const cle of cles) {
+                assert.ok(I18n.existe(cle), langue + ' ' + cle);
+            }
+        }
+    }
+    I18n.langue = 'fr';
 });

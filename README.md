@@ -34,11 +34,17 @@ On écrit une formule d'appel ("Madame,", "Monsieur le directeur,") puis les id�
 
 Activation dans Réglages. Le modèle reçoit un outil de recherche et décide seul de l'appeler. Les mots cherchés s'affichent sous la réponse.
 
-### Calcul et calendrier
+### Outils
 
-Dans Chat, deux outils s'activent dans Réglages > Outils, désactivés par défaut. Le premier est un outil de calcul exact : opérations, puissances, racine carrée, trigonométrie en degrés, logarithmes. Le modèle décide seul de s'en servir s'il en a besoin. Quand l'outil a servi, une icône de calculatrice apparaît sous la réponse.
+Dans Chat, cinq outils s'activent dans Réglages > Outils, désactivés par défaut. Tout se passe dans le navigateur. Le modèle décide seul de s'en servir ; quand un outil a servi, son icône apparaît sous la réponse et un clic montre ce qu'il a fait.
 
-Un outil de calendrier donne le jour de la semaine d'une date, la date dans N jours ou le nombre de jours entre deux dates. Quand il a servi, une icône de calendrier apparaît à côté.
+| Outil | Rôle |
+|---|---|
+| Calcul | Calcul exact : opérations, puissances, racine carrée, trigonométrie en degrés, logarithmes. |
+| Calendrier | Jour de la semaine d'une date, date dans N jours, nombre de jours entre deux dates. |
+| Compteur | Nombre de mots et de caractères d'un texte. |
+| Tirage au sort | Ordre de passage, éléments tirés ou groupes, avec le générateur aléatoire du navigateur. |
+| Statistiques | Moyenne, médiane, écart-type, minimum, maximum et quartiles d'une série. |
 
 Chaque demande donne aussi au modèle la date, l'heure locale et son nom.
 

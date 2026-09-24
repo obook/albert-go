@@ -117,17 +117,27 @@ $('voix-en-ligne').addEventListener('change', () => {
     ecrire('voix-en-ligne', reglages.voixEnLigne ? 'oui' : 'non');
 });
 
-/* Outils calcul et calendrier : l'interrupteur porte le nom du réglage, l'icône est celle de la réponse. */
-for (const [outil, icone] of [['calcul', 'calculatrice'], ['calendrier', 'calendrier']]) {
+/* Un interrupteur par outil local, avec son icône. */
+for (const [nom, local] of Object.entries(OUTILS_LOCAUX)) {
+    const label = document.createElement('label');
+    label.className = 'interrupteur';
+    const caseOutil = document.createElement('input');
+    caseOutil.type = 'checkbox';
+    caseOutil.setAttribute('role', 'switch');
+    caseOutil.setAttribute('aria-describedby', 'aide-outils');
+    caseOutil.checked = reglages[nom];
+    caseOutil.addEventListener('change', () => {
+        reglages[nom] = caseOutil.checked;
+        ecrire(nom, reglages[nom] ? 'oui' : 'non');
+    });
     const dessin = document.createElement('span');
     dessin.className = 'icone-outil';
-    dessin.innerHTML = ICONES[icone];
-    $(outil + '-reglage').after(dessin);
-    $(outil + '-reglage').checked = reglages[outil];
-    $(outil + '-reglage').addEventListener('change', () => {
-        reglages[outil] = $(outil + '-reglage').checked;
-        ecrire(outil, reglages[outil] ? 'oui' : 'non');
-    });
+    dessin.innerHTML = ICONES[local.icone];
+    const texte = document.createElement('span');
+    texte.dataset.t = 'reglages.' + nom;
+    texte.textContent = t('reglages.' + nom);
+    label.append(caseOutil, dessin, texte);
+    $('outils-locaux').append(label);
 }
 
 $('recherche-reglage').checked = reglages.recherche;

@@ -81,12 +81,6 @@ function boutonRecherches(note, recherches) {
     return bouton;
 }
 
-/* Traces des outils calcul et calendrier : clé dans "recherches", icône, libellé du bouton. */
-const TRACES = [
-    { cle: 'calcul', icone: 'calculatrice', libelle: 'reponse.calculs', note: 'reponse.note-calcul' },
-    { cle: 'calendrier', icone: 'calendrier', libelle: 'reponse.dates', note: 'reponse.note-dates' }
-];
-
 /**
  * Crée le bouton qui déplie la trace d'un outil.
  *
@@ -276,18 +270,19 @@ function bulleReponse(texte, titre, langue, animer = false, recherches = null) {
         actions.append(boutonLire(contenu, langue));
     }
     carte.append(contenu);
-    for (const trace of TRACES) {
-        const lignes = (recherches || []).filter(r => r && r[trace.cle]).map(r => r[trace.cle]);
+    /* Une icône par outil local qui a servi. */
+    for (const [nom, local] of Object.entries(OUTILS_LOCAUX)) {
+        const lignes = (recherches || []).filter(r => r && r[nom]).map(r => r[nom]);
         if (lignes.length) {
             const note = document.createElement('p');
             note.className = 'note calculs';
-            note.textContent = t(trace.note, { lignes: lignes.join(' ; ') });
+            note.textContent = t('reponse.note-' + nom, { lignes: lignes.join(' ; ') });
             note.hidden = true;
             carte.append(note);
-            actions.append(boutonTrace(note, ICONES[trace.icone], t(trace.libelle)));
+            actions.append(boutonTrace(note, ICONES[local.icone], t('reponse.' + nom)));
         }
     }
-    const cherchees = (recherches || []).filter(r => !TRACES.some(trace => r && r[trace.cle]));
+    const cherchees = (recherches || []).filter(r => !Object.keys(OUTILS_LOCAUX).some(nom => r && r[nom]));
     if (cherchees.length) {
         const note = elementRecherches(cherchees);
         note.hidden = true;
