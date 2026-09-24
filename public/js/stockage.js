@@ -222,8 +222,8 @@ const reglages = {
     langue: I18n.langue,
     voixEnLigne: lire('voix-en-ligne', 'non') === 'oui',
     recherche: lire('recherche', 'non') === 'oui',
-    /* Un interrupteur par outil local, désactivé par défaut. */
-    ...Object.fromEntries(Object.keys(OUTILS_LOCAUX).map(nom => [nom, lire(nom, 'non') === 'oui'])),
+    /* Un interrupteur par outil local, activé par défaut. */
+    ...Object.fromEntries(Object.keys(OUTILS_LOCAUX).map(nom => [nom, lire(nom, 'oui') === 'oui'])),
     fournisseur: lire('fournisseur', 'wikipedia'),
     cx: lire('cx', Recherche.CX),
     cleRecherche: lire('cle-recherche', null)
