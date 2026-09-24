@@ -70,6 +70,9 @@ test('statistiques : médiane, quartiles du lycée, série invalide', () => {
     assert.strictEqual(s.mediane, 11.5);
     assert.strictEqual(s.q1, 9);
     assert.strictEqual(s.q3, 13);
+    assert.strictEqual(s.interquartile, 4);
+    assert.strictEqual(s.etendue, 7.5);
+    assert.strictEqual(s.variance, 5.71484375);
     assert.throws(() => Statistiques.calculer([]));
     assert.throws(() => Statistiques.calculer(['douze']));
 });

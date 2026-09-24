@@ -41,7 +41,7 @@ Dans Chat, cinq outils s'activent dans Réglages > Outils, désactivés par déf
 | Outil | Rôle |
 |---|---|
 | Calculatrice | Calcul exact : opérations, puissances, racine carrée, trigonométrie en degrés, logarithmes. |
-| Statistiques | Moyenne, médiane, écart-type, minimum, maximum et quartiles d'une série. |
+| Statistiques | Moyenne, médiane, variance, écart-type, minimum, maximum, étendue, quartiles et écart interquartile d'une série. |
 | Probabilités | Tirage au sort : ordre de passage, éléments tirés ou groupes, avec le générateur aléatoire du navigateur. |
 | Calendrier | Jour de la semaine d'une date, date dans N jours, nombre de jours entre deux dates. |
 | Compteur | Nombre de mots et de caractères d'un texte. |
