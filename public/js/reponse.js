@@ -174,11 +174,24 @@ function pastilleIA() {
 }
 
 /**
+ * Fait défiler le fil jusqu'à la bulle d'un élément.
+ *
+ * "nearest" montre le bas de la bulle tant qu'elle tient à l'écran, puis
+ * garde son début en haut : "end" cachait le début d'une longue réponse.
+ *
+ * @param {HTMLElement} element - Élément de la bulle, ou la bulle elle-même.
+ */
+function suivreBulle(element) {
+    element.closest('li')?.scrollIntoView({ block: 'nearest' });
+}
+
+/**
  * Dévoile le texte d'une réponse par tranches, puis affiche le rendu.
  *
  * Albert renvoie tout d'un bloc : seul l'affichage est étalé. La coupe
  * suit le temps écoulé, car un onglet en arrière-plan bride setTimeout à
  * une seconde. `aria-busy` évite au lecteur d'écran de relire à chaque pas.
+ * Le fil suit la bulle qui grandit, sans jamais cacher son début.
  *
  * @param {HTMLElement} element - Conteneur de la réponse.
  * @param {string} texte - Réponse en Markdown.
@@ -192,10 +205,12 @@ async function devoiler(element, texte) {
     let part = 0, debut = performance.now();
     while (part < 1) {
         element.textContent = texte.slice(0, Math.ceil(texte.length * part));
+        suivreBulle(element);
         await new Promise(resoudre => setTimeout(resoudre, INTERVALLE_DEVOILEMENT));
         part = (performance.now() - debut) / DUREE_DEVOILEMENT;
     }
     await Rendu.afficher(element, texte);
+    suivreBulle(element);
     element.removeAttribute('aria-busy');
 }
 
@@ -263,7 +278,7 @@ function ajouterReponse(texte, langue = 'fr', animer = false, recherches = null)
     if (!variantes) {
         const li = bulleReponse(texte, null, langue, animer, recherches);
         $('fil').append(li);
-        li.scrollIntoView({ block: 'end' });
+        suivreBulle(li);
         return li;
     }
     const bulles = variantes.map(v => bulleReponse(v.texte, v.titre, langue, animer));
