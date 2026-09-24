@@ -10,7 +10,32 @@
  */
 'use strict';
 
+/* Angles en degrés, comme en classe. Le presque zéro est ramené à zéro : sin(180) = 0. */
+const RAD = Math.PI / 180;
+const net = v => (Math.abs(v) < 1e-12 ? 0 : v);
+
 const Calcul = {
+    /** Fonctions acceptées ; log est le logarithme décimal, ln le népérien. */
+    FONCTIONS: {
+        sqrt: Math.sqrt,
+        abs: Math.abs,
+        round: Math.round,
+        floor: Math.floor,
+        ceil: Math.ceil,
+        exp: Math.exp,
+        ln: Math.log,
+        log: Math.log10,
+        sin: x => net(Math.sin(x * RAD)),
+        cos: x => net(Math.cos(x * RAD)),
+        tan: x => net(Math.sin(x * RAD)) / net(Math.cos(x * RAD)),
+        asin: x => Math.asin(x) / RAD,
+        acos: x => Math.acos(x) / RAD,
+        atan: x => Math.atan(x) / RAD
+    },
+
+    /** Constantes acceptées. */
+    CONSTANTES: { pi: Math.PI, e: Math.E },
+
     /**
      * Outil proposé au modèle, au format "tools" de l'API.
      *
@@ -32,7 +57,7 @@ const Calcul = {
     },
 
     /**
-     * Évalue une expression : + - * / ^, parenthèses, sqrt et pi.
+     * Évalue une expression : + - * / ^, parenthèses, FONCTIONS et CONSTANTES.
      *
      * Analyseur à descente récursive, sans eval. La virgule décimale est acceptée.
      *
@@ -85,14 +110,14 @@ const Calcul = {
                 lire(')');
                 return v;
             }
-            if (j === 'pi') {
-                return Math.PI;
+            if (Object.hasOwn(this.CONSTANTES, j)) {
+                return this.CONSTANTES[j];
             }
-            if (j === 'sqrt') {
+            if (Object.hasOwn(this.FONCTIONS, j)) {
                 lire('(');
                 const v = somme();
                 lire(')');
-                return Math.sqrt(v);
+                return this.FONCTIONS[j](v);
             }
             if (/^[\d.]/.test(j || '')) {
                 return Number(j);
