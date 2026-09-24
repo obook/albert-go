@@ -83,7 +83,7 @@ async function consigne(outil, champ = 'consigne') {
     /* Le modèle ne connaît ni la date, ni l'heure, ni son propre nom. */
     const maintenant = new Date();
     const date = maintenant.toLocaleDateString(I18n.langue, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-    const heure = maintenant.toLocaleTimeString(I18n.langue, { hour: '2-digit', minute: '2-digit', timeZoneName: 'short' });
+    const heure = maintenant.toLocaleTimeString(I18n.langue, { hour: '2-digit', minute: '2-digit', second: '2-digit', timeZoneName: 'short' });
     const modele = modeleActuel();
     return consignesLues[chemin] + '\n\n' + t('consigne.contexte', { date, heure, nom: modele.nom, reel: modele.reel });
 }

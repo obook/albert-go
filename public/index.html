@@ -258,8 +258,6 @@
     <dialog id="reglages" class="reglages pico" aria-labelledby="titre-reglages">
         <form method="dialog">
             <h2 id="titre-reglages" data-t="reglages.titre"></h2>
-            <p class="note" data-t="reglages.conseil"></p>
-
             <!-- Quatre cartes dépliables, la première ouverte. -->
             <details class="carte" name="reglages">
                 <summary data-t="reglages.carte-reponse"></summary>
@@ -300,7 +298,8 @@
                     <button type="button"
                             class="bouton-texte outline"
                             id="reglages-conseilles"
-                            data-t="reglages.conseilles"></button>
+                            data-t="reglages.conseilles"
+                            data-t-attr="title:reglages.conseil"></button>
                 </div>
             </details>
 
