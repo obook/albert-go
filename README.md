@@ -34,6 +34,10 @@ On écrit une formule d'appel ("Madame,", "Monsieur le directeur,") puis les id�
 
 Activation dans Réglages. Le modèle reçoit un outil de recherche et décide seul de l'appeler. Les mots cherchés s'affichent sous la réponse.
 
+### Calcul
+
+Dans Chat, le modèle dispose d'un outil de calcul exact (+ - * / ^, parenthèses, racine carrée) : il s'en sert au lieu de calculer de tête. Chaque demande lui donne aussi la date du jour et le nom du modèle utilisé.
+
 ### Réglages
 
 Choix du modèle, température et contexte. Si le contexte est désactivé, seule la dernière question part. Un trait en bas de la zone de saisie montre la part du contexte du modèle occupée par la conversation (rouge au-delà de 80 %).
