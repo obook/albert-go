@@ -3,7 +3,8 @@
  * Affichage des réponses : Markdown, formules et diagrammes.
  *
  * Marked transforme le Markdown en HTML, KaTeX affiche les formules,
- * Mermaid dessine les diagrammes (chargé seulement au premier diagramme).
+ * Mermaid dessine les diagrammes (chargé seulement au premier diagramme),
+ * les blocs ```svg du modèle s'affichent après nettoyage.
  * Le HTML est assaini avant affichage : la réponse vient d'un modèle.
  * Logique reprise d'albert-board (render.js). Appelé par affichage.js.
  *
@@ -49,6 +50,9 @@ const Rendu = {
     /** Balises retirées d'un SVG : le style y sert au rendu, il reste. */
     BALISES_INTERDITES_SVG: 'script, foreignObject, iframe, object, embed',
 
+    /** SVG écrit par le modèle : ni <style>, qui déborde sur la page, ni animation, qui réécrit un href. */
+    BALISES_INTERDITES_SVG_MODELE: 'script, foreignObject, iframe, object, embed, style, animate, set',
+
     /**
      * Indique si un attribut doit être retiré du HTML du modèle.
      *
@@ -92,24 +96,25 @@ const Rendu = {
     },
 
     /**
-     * Nettoie le SVG rendu par Mermaid.
+     * Nettoie un SVG : celui de Mermaid, ou celui du modèle.
      *
      * assainir() retire les <svg> entiers : il ne peut pas servir ici. Le
      * mode strict de Mermaid empêche déjà le HTML dans les étiquettes, mais
      * le dépôt ne met aucun contenu issu du modèle dans le DOM sans passage
      * par une sanitisation à lui.
      *
-     * @param {string} svg - SVG rendu par Mermaid.
+     * @param {string} svg - SVG à nettoyer.
+     * @param {string} [interdites] - Balises à retirer.
      * @returns {string} SVG sans script, sans HTML embarqué ni gestionnaire.
      */
-    assainirSvg(svg) {
+    assainirSvg(svg, interdites = this.BALISES_INTERDITES_SVG) {
         if (typeof document === 'undefined') {
             return svg;
         }
         const modele = document.createElement('template');
         modele.innerHTML = svg;
         /* foreignObject rouvre la porte au HTML au milieu du SVG. */
-        modele.content.querySelectorAll(this.BALISES_INTERDITES_SVG).forEach((el) => el.remove());
+        modele.content.querySelectorAll(interdites).forEach((el) => el.remove());
         modele.content.querySelectorAll('*').forEach((el) => {
             const nom = (attr) => attr.name.toLowerCase();
             for (const attr of [...el.attributes]) {
@@ -167,18 +172,22 @@ const Rendu = {
     },
 
     /**
-     * Remplace les blocs ```mermaid par leur diagramme.
+     * Remplace les blocs ```svg et ```mermaid par leur dessin.
      *
-     * Un diagramme invalide reste affiché comme bloc de code.
+     * Un dessin invalide reste affiché comme bloc de code.
      *
      * @param {HTMLElement} element - Conteneur de la réponse.
      * @returns {Promise<void>}
      */
     async diagrammes(element) {
         /* Marked garde la casse : ```Mermaid donne language-Mermaid. */
-        const blocs = [...element.querySelectorAll('pre > code')]
-            .filter((code) => /(^|\s)language-mermaid(\s|$)/i.test(code.className));
-        if (!blocs.length) {
+        const blocs = (langue) => [...element.querySelectorAll('pre > code')]
+            .filter((code) => new RegExp('(^|\\s)language-' + langue + '(\\s|$)', 'i').test(code.className));
+        for (const bloc of blocs('svg')) {
+            this.remplacerBloc(bloc, this.assainirSvg(bloc.textContent, this.BALISES_INTERDITES_SVG_MODELE));
+        }
+        const mermaids = blocs('mermaid');
+        if (!mermaids.length) {
             return;
         }
         try {
@@ -186,18 +195,47 @@ const Rendu = {
         } catch (err) {
             return;
         }
-        for (const bloc of blocs) {
+        for (const bloc of mermaids) {
             try {
                 const id = 'mermaid-' + Math.random().toString(36).slice(2);
                 const { svg } = await mermaid.render(id, bloc.textContent);
-                const conteneur = document.createElement('div');
-                conteneur.className = 'diagramme';
-                conteneur.innerHTML = this.assainirSvg(svg);
-                bloc.parentElement.replaceWith(conteneur);
+                this.remplacerBloc(bloc, this.assainirSvg(svg));
             } catch (err) {
                 /* Diagramme invalide : le code reste affiché. */
             }
         }
+    },
+
+    /**
+     * Remplace un bloc de code par le premier <svg> d'un HTML déjà assaini.
+     *
+     * Seul le <svg> est gardé : le texte ou le HTML autour ne passe pas.
+     * Un bouton enregistre le dessin en fichier .svg.
+     *
+     * @param {HTMLElement} bloc - Élément <code> du bloc.
+     * @param {string} html - SVG assaini.
+     */
+    remplacerBloc(bloc, html) {
+        const modele = document.createElement('template');
+        modele.innerHTML = html;
+        const svg = modele.content.querySelector('svg');
+        if (!svg) {
+            return;
+        }
+        const conteneur = document.createElement('div');
+        conteneur.className = 'diagramme';
+        const bouton = boutonAction(ICONES.telecharger, t('reponse.telecharger-figure'));
+        bouton.addEventListener('click', () => {
+            /* XMLSerializer ajoute le xmlns sans lequel le fichier ne s'ouvre pas. */
+            const fichier = new Blob([new XMLSerializer().serializeToString(svg)], { type: 'image/svg+xml' });
+            const lien = document.createElement('a');
+            lien.href = URL.createObjectURL(fichier);
+            lien.download = 'figure.svg';
+            lien.click();
+            setTimeout(() => URL.revokeObjectURL(lien.href), 1000);
+        });
+        conteneur.append(svg, bouton);
+        bloc.parentElement.replaceWith(conteneur);
     },
 
     /**
@@ -211,8 +249,17 @@ const Rendu = {
                 const script = document.createElement('script');
                 script.src = 'vendor/mermaid/mermaid.min.js';
                 script.onload = () => {
-                    /* Thème clair : .diagramme a toujours un fond blanc. */
-                    mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'strict' });
+                    /* Thème clair : .diagramme a toujours un fond blanc. Sans
+                       suppressErrorRendering, une erreur laisse sa bombe en haut de la page.
+                       htmlLabels false : étiquettes en <text>, assainirSvg retire les foreignObject. */
+                    mermaid.initialize({
+                        startOnLoad: false,
+                        theme: 'default',
+                        securityLevel: 'strict',
+                        suppressErrorRendering: true,
+                        htmlLabels: false,
+                        flowchart: { htmlLabels: false }
+                    });
                     resoudre();
                 };
                 script.onerror = rejeter;

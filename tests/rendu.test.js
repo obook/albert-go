@@ -64,6 +64,14 @@ test('BALISES_INTERDITES_SVG : le HTML embarqué, pas le style', () => {
     assert.ok(!interdites.includes('style'));
 });
 
+test('BALISES_INTERDITES_SVG_MODELE : ni style global ni animation', () => {
+    const interdites = Rendu.BALISES_INTERDITES_SVG_MODELE.split(', ');
+    /* <style> du modèle restylerait toute la page ; <set> et <animate> réécrivent un href. */
+    for (const balise of ['script', 'foreignObject', 'style', 'animate', 'set']) {
+        assert.ok(interdites.includes(balise), balise + ' devrait être retirée');
+    }
+});
+
 test('assainir : sans DOM, le HTML repart tel quel', () => {
     /* Sous Node le nettoyage est sauté : c'est le navigateur qui le fait. */
     assert.strictEqual(typeof document, 'undefined');
