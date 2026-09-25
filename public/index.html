@@ -304,13 +304,16 @@
             </details>
 
             <details class="carte" name="reglages">
-                <summary data-t="reglages.recherche"></summary>
+                <summary data-t="reglages.outils"></summary>
                 <div class="corps">
+                    <p id="aide-outils" class="note" data-t="reglages.aide-outils"></p>
+                    <!-- Un interrupteur par outil local (reglages.js). -->
+                    <div id="outils-locaux" class="outils-locaux"></div>
                     <label class="interrupteur">
                         <input type="checkbox"
                                id="recherche-reglage"
                                role="switch"
-                               aria-describedby="usage-recherche aide-recherche">
+                               aria-describedby="aide-outils aide-recherche">
                         <span data-t="reglages.recherche-active"></span>
                     </label>
                     <!-- Une carte par moteur, comme pour les modèles : nom et domaine. -->
@@ -320,7 +323,6 @@
                             <div id="moteurs" class="cartes-choix"></div>
                         </details>
                     </fieldset>
-                    <p id="usage-recherche" class="note" data-t="reglages.usage-recherche"></p>
                     <p id="aide-recherche" class="note mise-en-garde" data-t="reglages.aide-recherche"></p>
                     <div id="cles-recherche">
                         <label for="cle-recherche" data-t="reglages.cle-recherche"></label>
@@ -336,16 +338,6 @@
                     </div>
                 </div>
             </details>
-
-            <details class="carte" name="reglages">
-                <summary data-t="reglages.outils"></summary>
-                <div class="corps">
-                    <p id="aide-outils" class="note" data-t="reglages.aide-outils"></p>
-                    <!-- Un interrupteur par outil local (reglages.js). -->
-                    <div id="outils-locaux" class="outils-locaux"></div>
-                </div>
-            </details>
-
             <details class="carte" name="reglages">
                 <summary data-t="reglages.carte-application"></summary>
                 <div class="corps">
