@@ -186,6 +186,36 @@ const Albert = {
     },
 
     /**
+     * Demande au modèle de corriger un schéma Mermaid refusé.
+     *
+     * @param {string} modele - Alias du modèle.
+     * @param {string} code - Code refusé.
+     * @param {string} erreur - Message de Mermaid.
+     * @returns {Object} Corps pour repondre.
+     */
+    demandeCorrectionMermaid(modele, code, erreur) {
+        return {
+            model: modele,
+            temperature: 0,
+            messages: [
+                { role: 'system', content: t('mermaid.corriger') },
+                { role: 'user', content: code + '\n\n' + erreur }
+            ]
+        };
+    },
+
+    /**
+     * Code Mermaid d'une réponse, avec ou sans bloc ```mermaid autour.
+     *
+     * @param {string} texte - Réponse du modèle.
+     * @returns {string} Code seul.
+     */
+    codeMermaid(texte) {
+        const bloc = texte.match(/```[a-z]*\n([\s\S]*?)```/i);
+        return (bloc ? bloc[1] : texte).trim();
+    },
+
+    /**
      * Part du contexte occupée par le dernier échange.
      *
      * @param {?Object} usage - Champ usage de la dernière réponse.
