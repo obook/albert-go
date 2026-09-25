@@ -295,14 +295,15 @@ const Rendu = {
      * qui commencent par une parenthèse, A[(base)], restent. Une ligne
      * title "..." avant le type de diagramme devient l'en-tête
      * --- title: ... --- que Mermaid attend. Une plage d'axe 0 --> 100
-     * seule sur sa ligne rejoint son x-axis ou y-axis. Repris en partie
+     * seule sur sa ligne rejoint son x-axis ou y-axis. A + B devient A & B
+     * dans un flowchart. Repris en partie
      * d'albert-board (render.js).
      *
      * @param {string} code - Code Mermaid refusé.
      * @returns {string} Code corrigé.
      */
     reparerMermaid(code) {
-        return code
+        const corrige = code
             .replace(/^\s*title\s+"?([^"\n]*?)"?\s*\n/, '---\ntitle: $1\n---\n')
             .replace(/^(\s*[xy]-axis\b.*)\n\s*(-?[\d.]+\s*-->\s*-?[\d.]+\s*)$/gm, '$1 $2')
             .replace(/\\"/g, '"')
@@ -313,6 +314,11 @@ const Rendu = {
             .replace(/\[([^[\]"()]+\([^[\]"]*)\]/g, '["$1"]')
             .replace(/\{([^{}"()]+\([^{}"]*)\}/g, '{"$1"}')
             .replace(/\|([^|"]*[()][^|"]*)\|/g, '|"$1"|');
+        /* Flowchart : A + B --> C, Mermaid n'accepte que A & B. */
+        if (!/^\s*(flowchart|graph)\b/m.test(corrige)) {
+            return corrige;
+        }
+        return corrige.replace(/"[^"\n]*"|(\w)[ \t]*\+[ \t]*(?=\w)/g, (m, avant) => avant ? avant + ' & ' : m);
     },
 
     /**
