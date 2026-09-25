@@ -318,7 +318,7 @@ const Rendu = {
         if (!/^\s*(flowchart|graph)\b/m.test(corrige)) {
             return corrige;
         }
-        return corrige.replace(/"[^"\n]*"|(\w)[ \t]*\+[ \t]*(?=\w)/g, (m, avant) => avant ? avant + ' & ' : m);
+        return corrige.replace(/"[^"\n]*"|([\w\])}])[ \t]*\+[ \t]*(?=\w)/g, (m, avant) => avant ? avant + ' & ' : m);
     },
 
     /**
