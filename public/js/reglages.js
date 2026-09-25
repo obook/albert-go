@@ -41,7 +41,12 @@ function afficherModeles() {
         radio.value = m.id;
         /* Un modèle hors de la liste connue n'a pas de description à lui. */
         const description = I18n.existe('modele.' + m.id) ? t('modele.' + m.id) : t('modele.inconnu');
-        label.append(radio,
+        /* Décoratif : le nom du modèle suit juste après. */
+        const logo = document.createElement('img');
+        logo.className = 'logo';
+        logo.src = Albert.logoEditeur(m.reel);
+        logo.alt = '';
+        label.append(radio, logo,
             elementTexte('strong', 'nom', m.nom),
             elementTexte('span', 'type', t('modele.type.' + m.type)),
             elementTexte('span', 'description', description),

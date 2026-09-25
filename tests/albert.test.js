@@ -195,3 +195,12 @@ test('calendrier : un jour par ligne, dans la langue demandée', () => {
     assert.strictEqual(jours[0], 'mardi 22 septembre 2026');
     assert.strictEqual(jours[8], 'mercredi 30 septembre 2026');
 });
+
+test('logoEditeur : éditeur reconnu au nom du modèle, sinon logo neutre', () => {
+    assert.strictEqual(Albert.logoEditeur('openai/gpt-oss-120b'), 'images/editeurs/openai.png');
+    assert.strictEqual(Albert.logoEditeur('deepseek-v4-flash-0731'), 'images/editeurs/deepseek.png');
+    assert.strictEqual(Albert.logoEditeur('ministral-3-8b-instruct-2512'), 'images/editeurs/mistral.png');
+    assert.strictEqual(Albert.logoEditeur('lightonai/LightOnOCR-2-1B'), 'images/editeurs/lighton.jpg');
+    assert.strictEqual(Albert.logoEditeur('llama-4'), 'images/editeurs/inconnu.svg');
+    for (const m of Albert.MODELES) assert.notStrictEqual(Albert.logoEditeur(m.reel), 'images/editeurs/inconnu.svg');
+});

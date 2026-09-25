@@ -183,9 +183,8 @@ fieldset .bouton-texte { justify-self: start; }
 n'avaient pas la même largeur. Le préfixe .pico passe devant son sélecteur. */
 .pico .cartes-choix label { width: auto; }
 .cartes-choix label {
+    position: relative;
     display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto;
-    gap: 0 0.625rem;
     padding: 0.5rem 0.75rem;
     border: 1px solid var(--bord);
     border-radius: 0.25rem;
@@ -199,17 +198,27 @@ n'avaient pas la même largeur. Le préfixe .pico passe devant son sélecteur. *
     outline: 3px solid var(--bleu);
     outline-offset: 2px;
 }
-.cartes-choix input {
-    grid-row: span 5;
-    align-self: start;
-    margin: 0.3rem 0 0;
-    accent-color: var(--bleu);
-    outline: none;
+/* Radio caché à l'œil seulement : le fond bleu montre le choix. */
+.cartes-choix [type=radio] {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: 0;
+    clip-path: inset(50%);
 }
-.cartes-choix .nom { grid-column: 2 / 4; font-weight: 700; }
+/* Carte de modèle : logo de l'éditeur à gauche, sur fond blanc pour les logos noirs. */
+.cartes-choix label:has(.logo) { grid-template-columns: 2rem minmax(0, 1fr); column-gap: 0.75rem; }
+.cartes-choix .logo {
+    grid-row: span 5;
+    width: 2rem;
+    height: 2rem;
+    padding: 0.125rem;
+    background: #ffffff;
+    border-radius: 0.375rem;
+}
+.cartes-choix .nom { font-weight: 700; }
 /* Sur sa propre ligne : sur la même ligne que le nom, elle le recouvrait sur écran étroit. */
 .cartes-choix .type {
-    grid-column: 2 / 4;
     justify-self: start;
     margin: 0.125rem 0 0.25rem;
     padding: 0 0.375rem;
@@ -217,7 +226,7 @@ n'avaient pas la même largeur. Le préfixe .pico passe devant son sélecteur. *
     border-radius: 0.25rem;
     font-size: 0.75rem;
 }
-.cartes-choix .description, .cartes-choix .detail { grid-column: 2 / 4; font-size: 0.875rem; color: var(--texte-doux); }
+.cartes-choix .description, .cartes-choix .detail { font-size: 0.875rem; color: var(--texte-doux); }
 .cartes-choix .detail {
     font-family: ui-monospace, "Cascadia Mono", "DejaVu Sans Mono", monospace;
     font-size: 0.75rem;
