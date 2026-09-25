@@ -303,7 +303,34 @@ $('form-question').addEventListener('submit', (e) => {
     envoyer();
 });
 
+/**
+ * Recharge la page si une version plus récente est en ligne.
+ *
+ * La forge garde index.html 10 minutes en cache, et l'application installée
+ * reprend l'onglet sans le recharger. Rien ne se passe pendant une réponse
+ * ou si la saisie contient du texte.
+ */
+async function verifierVersion() {
+    if (VERSION.commit === 'locale' || annulation || $('saisie').value) {
+        return;
+    }
+    const texte = await fetch('js/version.js', { cache: 'no-store' }).then(r => r.text()).catch(() => '');
+    const enLigne = (texte.match(/commit: '(\w+)'/) || [])[1];
+    /* Un seul essai par version : pas de boucle si la page reste ancienne. */
+    if (enLigne && enLigne !== VERSION.commit && sessionStorage.getItem('recharge') !== enLigne) {
+        sessionStorage.setItem('recharge', enLigne);
+        location.reload();
+    }
+}
+
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') {
+        verifierVersion();
+    }
+});
+
 /* Démarrage. */
+verifierVersion();
 I18n.appliquer();
 afficherReglages();
 afficherTheme();
