@@ -90,7 +90,9 @@
     gap: 1.25rem;
     padding: 0.75rem;
 }
-#reglages .carte .corps > .bouton-texte { justify-self: start; }
+#reglages .carte .corps > .bouton-texte { justify-self: start; margin-bottom: 0; }
+/* La grille espace déjà : la marge de Pico sous un <p> doublerait l'écart. */
+#reglages .carte .corps p { margin-bottom: 0; }
 
 /* Boîte "Partager" : QR code sur fond blanc, même en thème sombre, pour rester lisible. */
 .partage .qr {
