@@ -10,15 +10,17 @@
  * Licence : Licence Ouverte 2.0 (Etalab), SPDX etalab-2.0
  */
 
-/* Interrupteur : dessiné par Pico (role="switch"), ici seulement la mise en ligne. */
-.interrupteur {
+/* Interrupteur : dessiné par Pico (role="switch"), ici seulement la mise en ligne.
+   label devant : sinon ".pico label" impose display block. */
+label.interrupteur {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
     font-size: 0.875rem;
     cursor: pointer;
 }
-.interrupteur input { flex: none; }
+/* Le gap espace déjà : pas de marge Pico en plus. */
+.interrupteur [type=checkbox] { flex: none; margin: 0; }
 .icone-outil { display: inline-grid; vertical-align: -0.2em; }
 .outils-locaux { display: grid; gap: 0.5rem; }
 
