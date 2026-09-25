@@ -43,6 +43,12 @@
     --pico-h3-color: var(--bleu);
 }
 
+/* Interrupteur désactivé : piste vide et rond gris, plutôt qu'un bloc gris plein. */
+.pico [type=checkbox][role=switch]:not(:checked) {
+    --pico-background-color: var(--surface);
+    --pico-color: var(--bord-champ);
+}
+
 /*
 Nos mises en page espacent déjà les blocs (grilles avec gap) : on retire
 les marges basses de Pico. Mêmes sélecteurs que Pico pour l'emporter.
