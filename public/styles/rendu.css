@@ -39,12 +39,12 @@
     border: 1px solid var(--bord);
 }
 /* highlight.js : couleurs de GitHub, thème clair puis sombre. */
-.rendu .hljs-keyword, .rendu .hljs-selector-tag, .rendu .hljs-doctag { color: light-dark(#cf222e, #ff7b72); }
-.rendu .hljs-string, .rendu .hljs-regexp { color: light-dark(#0a3069, #a5d6ff); }
-.rendu .hljs-comment, .rendu .hljs-meta { color: light-dark(#59636e, #9198a1); font-style: italic; }
-.rendu .hljs-number, .rendu .hljs-literal, .rendu .hljs-attr, .rendu .hljs-variable { color: light-dark(#0550ae, #79c0ff); }
-.rendu .hljs-title, .rendu .hljs-section { color: light-dark(#8250df, #d2a8ff); }
-.rendu .hljs-built_in, .rendu .hljs-type, .rendu .hljs-symbol { color: light-dark(#953800, #ffa657); }
+.rendu .hljs-keyword, .rendu .hljs-selector-tag, .rendu .hljs-doctag { color: var(--code-mot); }
+.rendu .hljs-string, .rendu .hljs-regexp { color: var(--code-texte); }
+.rendu .hljs-comment, .rendu .hljs-meta { color: var(--code-commentaire); font-style: italic; }
+.rendu .hljs-number, .rendu .hljs-literal, .rendu .hljs-attr, .rendu .hljs-variable { color: var(--code-nombre); }
+.rendu .hljs-title, .rendu .hljs-section { color: var(--code-titre); }
+.rendu .hljs-built_in, .rendu .hljs-type, .rendu .hljs-symbol { color: var(--code-type); }
 .rendu pre code { padding: 0; background: none; }
 .rendu blockquote {
     padding-left: 1rem;
