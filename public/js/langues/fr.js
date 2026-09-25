@@ -113,7 +113,7 @@ I18n.TEXTES.fr = {
     'reglages.contexte': 'Contexte',
     'reglages.lecture': 'Lecture à voix haute',
     'reglages.voix-en-ligne': 'Autoriser les voix en ligne',
-    'reglages.aide-voix': 'Un moteur de voix en ligne peut collecter et exploiter les données personnelles de la conversation.',
+    'reglages.aide-voix': 'Un moteur de voix en ligne peut collecter et exploiter les données de la conversation.',
     'reglages.outils': 'Outils',
     'reglages.calcul': 'Calculatrice',
     'reglages.calendrier': 'Calendrier',

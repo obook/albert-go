@@ -113,7 +113,7 @@ I18n.TEXTES.de = {
     'reglages.contexte': 'Kontext',
     'reglages.lecture': 'Vorlesen',
     'reglages.voix-en-ligne': 'Online-Stimmen erlauben',
-    'reglages.aide-voix': 'Eine Online-Sprachausgabe kann die personenbezogenen Daten der Unterhaltung sammeln und verwerten.',
+    'reglages.aide-voix': 'Eine Online-Sprachausgabe kann die Daten der Unterhaltung sammeln und verwerten.',
     'reglages.outils': 'Werkzeuge',
     'reglages.calcul': 'Taschenrechner',
     'reglages.calendrier': 'Kalender',
