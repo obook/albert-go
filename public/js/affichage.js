@@ -152,7 +152,11 @@ function afficherReglages() {
     $('texte-partage-reglage').textContent = textePartage(partage);
     $('temperature').value = reglages.temperature;
     $('valeur-temperature').textContent = temperature;
-    $('modele-choisi').textContent = modele.nom + ' (' + modele.id + ')';
+    const logo = document.createElement('img');
+    logo.className = 'logo';
+    logo.src = Albert.logoEditeur(modele.reel);
+    logo.alt = '';
+    $('modele-choisi').replaceChildren(logo, modele.nom + ' (' + modele.id + ')');
     const radio = [...document.querySelectorAll('input[name="modele"]')].find(r => r.value === modele.id);
     if (radio) {
         radio.checked = true;
