@@ -123,3 +123,9 @@ test('chimieMermaid : \\ce{} écrit en texte, indices et charges en Unicode', ()
     assert.strictEqual(Rendu.chimieMermaid('A["\\ce{C3H8"]'), 'A["\\ce{C3H8"]');
     assert.strictEqual(Rendu.chimieMermaid('A["Texte { avec } accolades"]'), 'A["Texte { avec } accolades"]');
 });
+
+test('nomFigure : date et heure locales avec les secondes', () => {
+    const date = new Date(2026, 8, 6, 1, 5, 9);
+    assert.strictEqual(Rendu.nomFigure(date, 'png'), 'figure-2026-09-06-01-05-09.png');
+    assert.strictEqual(Rendu.nomFigure(date, 'svg'), 'figure-2026-09-06-01-05-09.svg');
+});
