@@ -307,15 +307,17 @@
                 <summary data-t="reglages.outils"></summary>
                 <div class="corps">
                     <p id="aide-outils" class="note" data-t="reglages.aide-outils"></p>
-                    <!-- Un interrupteur par outil local (reglages.js). -->
-                    <div id="outils-locaux" class="outils-locaux"></div>
-                    <label class="interrupteur">
-                        <input type="checkbox"
-                               id="recherche-reglage"
-                               role="switch"
-                               aria-describedby="aide-outils aide-recherche">
-                        <span data-t="reglages.recherche-active"></span>
-                    </label>
+                    <!-- Un interrupteur par outil local (reglages.js), puis la recherche web, même espacement. -->
+                    <div class="outils-locaux">
+                        <div id="outils-locaux" class="outils-locaux"></div>
+                        <label class="interrupteur">
+                            <input type="checkbox"
+                                   id="recherche-reglage"
+                                   role="switch"
+                                   aria-describedby="aide-outils aide-recherche">
+                            <span data-t="reglages.recherche-active"></span>
+                        </label>
+                    </div>
                     <!-- Une carte par moteur, comme pour les modèles : nom et domaine. -->
                     <fieldset>
                         <details id="choix-moteur" class="choix-liste">
