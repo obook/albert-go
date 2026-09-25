@@ -121,6 +121,29 @@ const Albert = {
             .sort((a, b) => a.id.localeCompare(b.id, undefined, { numeric: true }));
     },
 
+    /* Logos repris de ia.numerique.gouv.fr, reconnus au nom du modèle réel. */
+    EDITEURS: [
+        ['qwen', /qwen/i],
+        ['deepseek', /deepseek/i],
+        ['openai', /openai|gpt|whisper/i],
+        ['mistral', /mistral|ministral|magistral|codestral|devstral|pixtral/i],
+        ['gemma', /gemma|google/i],
+        ['baai', /baai|bge/i],
+        ['lighton', /lighton/i]
+    ],
+
+    /**
+     * Logo de l'éditeur d'un modèle, ou logo neutre si l'éditeur est inconnu.
+     *
+     * @param {string} reel - Nom du modèle réel, ex. "openai/gpt-oss-120b".
+     * @returns {string} Chemin de l'image.
+     */
+    logoEditeur(reel) {
+        const trouve = this.EDITEURS.find(([, motif]) => motif.test(reel || ''));
+        if (!trouve) return 'images/editeurs/inconnu.svg';
+        return 'images/editeurs/' + trouve[0] + (trouve[0] === 'lighton' ? '.jpg' : '.png');
+    },
+
     /**
      * Nom d'affichage d'un alias inconnu : openweight-code-2 donne "Code 2".
      *
