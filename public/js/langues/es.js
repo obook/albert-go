@@ -74,7 +74,7 @@ I18n.TEXTES.es = {
     /* Pantalla de la clave. */
     'cle.titre': 'Introduzca su clave Albert',
     'cle.label': 'Clave API',
-    'cle.stockee': 'Su clave se queda en este navegador.<br/>Pasa por la <a href="https://n8n.incubateur.education.gouv.fr" target="_blank" rel="noopener noreferrer">incubadora interministerial</a>, que no la guarda.',
+    'cle.stockee': 'Su clave solo se guarda en este navegador.<br/>Pasa por la <a href="https://n8n.incubateur.education.gouv.fr" target="_blank" rel="noopener noreferrer">incubadora interministerial</a>, que no la guarda.',
     'cle.enregistrer': 'Guardar la clave',
     'cle.demander': '¿Todavía sin clave? <a href="https://albert.sites.beta.gouv.fr/access/" target="_blank" rel="noopener noreferrer">Solicitar acceso a Albert</a>, reservado a los empleados públicos.',
     'cle.verification': 'Comprobando la clave...',

@@ -74,7 +74,7 @@ I18n.TEXTES.en = {
     /* Key screen. */
     'cle.titre': 'Enter your Albert key',
     'cle.label': 'API key',
-    'cle.stockee': 'Your key stays in this browser.<br/>It goes through the <a href="https://n8n.incubateur.education.gouv.fr" target="_blank" rel="noopener noreferrer">interministerial incubator</a>, which does not record it.',
+    'cle.stockee': 'Your key is only saved in this browser.<br/>It goes through the <a href="https://n8n.incubateur.education.gouv.fr" target="_blank" rel="noopener noreferrer">interministerial incubator</a>, which does not record it.',
     'cle.enregistrer': 'Save the key',
     'cle.demander': 'No key yet? <a href="https://albert.sites.beta.gouv.fr/access/" target="_blank" rel="noopener noreferrer">Request access to Albert</a>, reserved for public servants.',
     'cle.verification': 'Checking the key...',

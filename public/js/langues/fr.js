@@ -74,7 +74,7 @@ I18n.TEXTES.fr = {
     /* Écran de la clé. */
     'cle.titre': 'Entrez votre clé Albert',
     'cle.label': 'Clé API',
-    'cle.stockee': 'Votre clé reste stockée dans ce navigateur.<br/>Elle passe par l\'<a href="https://n8n.incubateur.education.gouv.fr" target="_blank" rel="noopener noreferrer">incubateur interministériel</a> sans être enregistrée.',
+    'cle.stockee': 'Votre clé est uniquement enregistrée dans ce navigateur.<br/>Elle passe par l\'<a href="https://n8n.incubateur.education.gouv.fr" target="_blank" rel="noopener noreferrer">incubateur interministériel</a> sans être enregistrée.',
     'cle.enregistrer': 'Enregistrer la clé',
     'cle.demander': 'Pas encore de clé ? <a href="https://albert.sites.beta.gouv.fr/access/" target="_blank" rel="noopener noreferrer">Demander un accès à Albert</a>, réservé aux agents publics.',
     'cle.verification': 'Vérification de la clé...',

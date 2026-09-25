@@ -74,7 +74,7 @@ I18n.TEXTES.de = {
     /* Schlüsselbildschirm. */
     'cle.titre': 'Geben Sie Ihren Albert-Schlüssel ein',
     'cle.label': 'API-Schlüssel',
-    'cle.stockee': 'Ihr Schlüssel bleibt in diesem Browser.<br/>Er läuft über den <a href="https://n8n.incubateur.education.gouv.fr" target="_blank" rel="noopener noreferrer">interministeriellen Inkubator</a>, der ihn nicht speichert.',
+    'cle.stockee': 'Ihr Schlüssel wird nur in diesem Browser gespeichert.<br/>Er läuft über den <a href="https://n8n.incubateur.education.gouv.fr" target="_blank" rel="noopener noreferrer">interministeriellen Inkubator</a>, der ihn nicht speichert.',
     'cle.enregistrer': 'Schlüssel speichern',
     'cle.demander': 'Noch keinen Schlüssel? <a href="https://albert.sites.beta.gouv.fr/access/" target="_blank" rel="noopener noreferrer">Zugang zu Albert beantragen</a>, nur für Beschäftigte des öffentlichen Dienstes.',
     'cle.verification': 'Schlüssel wird geprüft...',

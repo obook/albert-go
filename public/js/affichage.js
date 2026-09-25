@@ -204,6 +204,8 @@ function ajouterAttente() {
     points.append(document.createElement('span'), document.createElement('span'), document.createElement('span'));
     const duree = document.createElement('span');
     duree.className = 'duree';
+    /* Écrit dès le début : la carte grandissait à la première seconde, sous la saisie. */
+    duree.textContent = t('duree', { secondes: 0 });
     const palier = document.createElement('span');
     palier.className = 'palier';
     palier.setAttribute('aria-live', 'polite');
