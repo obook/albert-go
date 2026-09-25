@@ -113,7 +113,7 @@ I18n.TEXTES.en = {
     'reglages.contexte': 'Context',
     'reglages.lecture': 'Read aloud',
     'reglages.voix-en-ligne': 'Allow online voices',
-    'reglages.aide-voix': 'An online voice engine may collect and use the personal data of the conversation.',
+    'reglages.aide-voix': 'An online voice engine may collect and use the data of the conversation.',
     'reglages.outils': 'Tools',
     'reglages.calcul': 'Calculator',
     'reglages.calendrier': 'Calendar',
