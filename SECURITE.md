@@ -150,7 +150,7 @@ Boîte noire depuis un poste extérieur, le 2026-09-21, avec `curl` et `openssl`
   `public/vendor/README.md`. Aucun appel à un CDN.
 - Pas de code dynamique : aucun `eval`, aucun script en ligne (interdit par la CSP).
 - Textes insérés par `textContent`. `data-t-html`, seul chemin par `innerHTML`,
-  ne reçoit que du HTML écrit dans `i18n.js`.
+  ne reçoit que du HTML écrit dans `public/js/langues/`.
 - 35 tests `node --test`, tous au vert le 2026-09-21.
 - Publication par la CI sur la branche par défaut seulement, avec le commit et
   sa date dans la page et une chaîne de version sur chaque ressource.

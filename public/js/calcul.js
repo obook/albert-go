@@ -247,7 +247,7 @@ const Statistiques = {
 /**
  * Définition d'un outil pour le champ "tools" de l'API.
  *
- * @param {string} nom - Nom de l'outil, préfixe de ses textes dans i18n.js.
+ * @param {string} nom - Nom de l'outil, préfixe de ses textes dans langues/*.js.
  * @param {Object} proprietes - { paramètre: type JSON Schema }.
  * @param {string[]} requis - Paramètres obligatoires.
  * @returns {Object} Entrée du champ tools.

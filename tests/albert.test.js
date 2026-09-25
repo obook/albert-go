@@ -49,7 +49,7 @@ test('conversation : filtre, alias, ordre, nom court', () => {
     assert.strictEqual(modeles[2].reel, 'openai/gpt-oss-120b');
     assert.strictEqual(modeles[2].contexte, 131072);
     assert.strictEqual(modeles[1].nom, 'Code 2');
-    /* Le type est un code : i18n.js en donne le nom affiché. */
+    /* Le type est un code : langues/*.js en donne le nom affiché. */
     assert.strictEqual(modeles[3].type, 'texte-images');
     assert.strictEqual(modeles[2].type, 'texte');
 });

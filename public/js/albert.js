@@ -4,7 +4,7 @@
  *
  * Albert ne gère pas CORS : toutes les requêtes passent par le relais n8n.
  * Aucun accès au DOM, pour pouvoir être testé sous Node (tests/albert.test.js).
- * Les textes visibles et ceux envoyés au modèle viennent de i18n.js (t).
+ * Les textes visibles et ceux envoyés au modèle viennent de langues/*.js (t).
  * Utilisé par stockage.js, reglages.js, piece-jointe.js et app.js.
  *
  * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
@@ -48,7 +48,7 @@ const Albert = {
     /*
     Outils du menu, repris d'albert-droid. Reformuler et Traduire envoient
     une seule demande, sans les échanges précédents, avec leur consigne système.
-    Le nom et l'invite sont dans i18n.js ; la consigne est le fichier de
+    Le nom et l'invite sont dans langues/*.js ; la consigne est le fichier de
     public/prompts/<langue>/ (outils.js).
     */
     OUTILS: {
