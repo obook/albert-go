@@ -373,11 +373,11 @@ const Rendu = {
         const boutonSvg = boutonAction(ICONES.svg, t('reponse.telecharger-figure'));
         boutonSvg.addEventListener('click', () => {
             /* XMLSerializer ajoute le xmlns sans lequel le fichier ne s'ouvre pas. */
-            this.telecharger(new Blob([new XMLSerializer().serializeToString(svg)], { type: 'image/svg+xml' }), 'figure.svg');
+            this.telecharger(new Blob([new XMLSerializer().serializeToString(svg)], { type: 'image/svg+xml' }), this.nomFigure(new Date(), 'svg'));
         });
         const boutonPng = boutonAction(ICONES.png, t('reponse.telecharger-png'));
         boutonPng.addEventListener('click', async () => {
-            this.telecharger(await this.enPng(svg), 'figure.png');
+            this.telecharger(await this.enPng(svg), this.nomFigure(new Date(), 'png'));
         });
         const boutons = document.createElement('div');
         boutons.className = 'boutons-figure';
@@ -413,6 +413,19 @@ const Rendu = {
         contexte.fillRect(0, 0, toile.width, toile.height);
         contexte.drawImage(image, 0, 0, toile.width, toile.height);
         return new Promise((resoudre) => toile.toBlob(resoudre, 'image/png'));
+    },
+
+    /**
+     * Nom d'une figure enregistrée : figure-2026-09-26-01-45-12.png, heure locale.
+     *
+     * @param {Date} date - Moment de l'enregistrement.
+     * @param {string} extension - svg ou png.
+     * @returns {string} Nom du fichier.
+     */
+    nomFigure(date, extension) {
+        const n = (x) => String(x).padStart(2, '0');
+        return 'figure-' + date.getFullYear() + '-' + n(date.getMonth() + 1) + '-' + n(date.getDate())
+            + '-' + n(date.getHours()) + '-' + n(date.getMinutes()) + '-' + n(date.getSeconds()) + '.' + extension;
     },
 
     /**
