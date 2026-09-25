@@ -106,6 +106,14 @@ test('reparerMermaid : ligne title avant le type de diagramme', () => {
         '---\ntitle: Relatifs\n---\ngraph TD\n A --> B');
 });
 
+test('reparerMermaid : A + B devient A & B dans un flowchart', () => {
+    assert.strictEqual(Rendu.reparerMermaid('flowchart LR\n HA + BOH -->|Transfert (H⁺)| A & BH\n A & BH --> HA + BOH'),
+        'flowchart LR\n HA & BOH -->|"Transfert (H⁺)"| A & BH\n A & BH --> HA & BOH');
+    assert.strictEqual(Rendu.reparerMermaid('flowchart LR\n A["x + y"] --> B'), 'flowchart LR\n A["x + y"] --> B');
+    assert.strictEqual(Rendu.reparerMermaid('classDiagram\n class A {\n  +int age\n  B + C\n }'),
+        'classDiagram\n class A {\n  +int age\n  B + C\n }');
+});
+
 test('chimieMermaid : \\ce{} écrit en texte, indices et charges en Unicode', () => {
     assert.strictEqual(Rendu.chimieMermaid('A["Glycérol, \\ce{C3H8O3}"] --> B["\\ce{SO4^{2-}}"]'),
         'A["Glycérol, C₃H₈O₃"] --> B["SO₄²⁻"]');
