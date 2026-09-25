@@ -129,5 +129,6 @@ Olivier Booklage, [olivier.booklage@ac-bordeaux.fr](mailto:olivier.booklage@ac-b
 | [Marked](https://github.com/markedjs/marked), [KaTeX](https://katex.org/), [Mermaid](https://mermaid.js.org/), [Pico](https://picocss.com/), [qrcode-generator](https://github.com/kazuhikoarase/qrcode-generator) | MIT |
 | [PDF.js](https://mozilla.github.io/pdf.js/) | Apache 2.0 |
 | [highlight.js](https://highlightjs.org/) | BSD 3-Clause |
+| Logos des éditeurs de modèles (`public/images/editeurs/`) | Marques de leurs éditeurs, reprises de la [page des modèles d'Albert API](https://ia.numerique.gouv.fr/outils-ia/albert-api/mod%C3%A8les/) |
 
 Versions et provenance des bibliothèques : `public/vendor/README.md`.
