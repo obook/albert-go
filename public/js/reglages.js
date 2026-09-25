@@ -136,10 +136,12 @@ for (const [nom, local] of Object.entries(OUTILS_LOCAUX)) {
     const texte = document.createElement('span');
     texte.dataset.t = 'reglages.' + nom;
     texte.textContent = t('reglages.' + nom);
-    label.append(caseOutil, dessin, texte);
+    label.append(caseOutil, dessin, ' ', texte);
     $('outils-locaux').append(label);
 }
 
+/* Même globe que sous une réponse qui a cherché sur le web. */
+$('recherche-reglage').insertAdjacentHTML('afterend', '<span class="icone-outil">' + ICONES.globe + '</span>');
 $('recherche-reglage').checked = reglages.recherche;
 $('cle-recherche').value = reglages.cleRecherche || '';
 
