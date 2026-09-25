@@ -98,7 +98,7 @@ Le webhook n'accepte que deux origines : l'adresse Pages du projet et `http://lo
 
 ### Traductions
 
-- `public/js/langues/<langue>.js` : tout le texte visible, un fichier par langue, plus les phrases envoyées au modèle (demandes des outils, description de l'outil de recherche). Dans `index.html`, un texte porte `data-t`, `data-t-html` (texte avec un lien) ou `data-t-attr` (`aria-label`, `title`, `placeholder`...), relus par `I18n.appliquer()` (`public/js/i18n.js`). `tests/i18n.test.js` vérifie que chaque langue a les mêmes clés et les mêmes `{variables}` que le français.
+- `public/js/langues/<langue>.js` : tout le texte visible, un fichier par langue, plus les phrases envoyées au modèle (demandes des outils, description de l'outil de recherche). Dans `index.html`, un texte porte `data-t`, `data-t-html` (texte avec un lien) ou `data-t-attr` (`aria-label`, `title`, `placeholder`...), relus par `I18n.appliquer()` (`public/js/i18n.js`). `tests/i18n.test.js` vérifie qu'aucune langue n'oublie de clé.
 - `public/prompts/<langue>/*.txt` : les consignes système, une par outil et par langue.
 
 Ajouter une langue : un code dans `I18n.LANGUES`, son fichier `public/js/langues/<code>.js` chargé dans `index.html`, un dossier dans `public/prompts/`, sa table dans `Lecture.FORMULES`, son drapeau et son option dans `index.html`, et le domaine Wikipédia dans la CSP.

@@ -2,8 +2,7 @@
  * langues/de.js
  * Textes de l'interface en allemand.
  *
- * Chargé juste après i18n.js. Mêmes clés dans les quatre langues :
- * tests/i18n.test.js le vérifie.
+ * Chargé après i18n.js.
  *
  * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
  * Auteur : O. Booklage

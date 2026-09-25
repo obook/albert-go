@@ -1,6 +1,6 @@
 /*
  * i18n.test.js
- * Tests des traductions : mêmes clés et mêmes {variables} dans chaque langue.
+ * Chaque langue a les clés et les {variables} du français.
  *
  * Lancement : node --test
  *
