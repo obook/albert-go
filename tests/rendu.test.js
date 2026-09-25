@@ -124,8 +124,19 @@ test('chimieMermaid : \\ce{} écrit en texte, indices et charges en Unicode', ()
     assert.strictEqual(Rendu.chimieMermaid('A["Texte { avec } accolades"]'), 'A["Texte { avec } accolades"]');
 });
 
-test('nomFigure : date et heure locales avec les secondes', () => {
+test('nomFigure : date d\'abord, puis le sujet sans rien que Windows refuse', () => {
     const date = new Date(2026, 8, 6, 1, 5, 9);
-    assert.strictEqual(Rendu.nomFigure(date, 'png'), 'figure-2026-09-06-01-05-09.png');
-    assert.strictEqual(Rendu.nomFigure(date, 'svg'), 'figure-2026-09-06-01-05-09.svg');
+    assert.strictEqual(Rendu.nomFigure(date, 'png', 'Réaction acide/base : HA + B⁻ ?'), '2026-09-06-01-05-09-reaction-acide-base-ha-b.png');
+    assert.strictEqual(Rendu.nomFigure(date, 'svg', 'Cœur *"<>|\\'), '2026-09-06-01-05-09-coeur.svg');
+    assert.strictEqual(Rendu.nomFigure(date, 'png', 'En mermaid, fais le schéma de la réaction acide/base'),
+        '2026-09-06-01-05-09-en-mermaid-fais-le-schema-de-la-reaction.png');
+    assert.strictEqual(Rendu.nomFigure(date, 'png', ''), '2026-09-06-01-05-09-figure.png');
+    assert.strictEqual(Rendu.nomFigure(date, 'png', '→ ∑'), '2026-09-06-01-05-09-figure.png');
+});
+
+test('titreFigure : title de Mermaid ou <title> du SVG', () => {
+    assert.strictEqual(Rendu.titreFigure('---\ntitle: Relatifs\n---\ngraph TD\n A --> B'), 'Relatifs');
+    assert.strictEqual(Rendu.titreFigure('xychart-beta\n title "Dépenses"\n bar [1, 2]'), 'Dépenses');
+    assert.strictEqual(Rendu.titreFigure('<svg viewBox="0 0 1 1"><title>Triangle</title></svg>'), 'Triangle');
+    assert.strictEqual(Rendu.titreFigure('graph TD\n A --> B'), '');
 });
