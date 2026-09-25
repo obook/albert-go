@@ -120,7 +120,7 @@ I18n.TEXTES.fr = {
     'reglages.compteur': 'Compteur mots et caractères',
     'reglages.tirage': 'Probabilités',
     'reglages.statistiques': 'Statistiques',
-    'reglages.aide-outils': 'L\'IA décide seule de s\'en servir lorsqu\'elle en a besoin. Une icône sous la réponse montre qu\'un outil a servi.',
+    'reglages.aide-outils': 'L\'IA décide seule de s\'en servir lorsqu\'elle en a besoin. Une icône sous la réponse montre qu\'un outil a été utilisé.',
     'reglages.recherche-active': 'Recherche web :',
     'moteur.wikipedia': 'Encyclopédie généraliste',
     'moteur.data-gouv': 'Données publiques françaises',
