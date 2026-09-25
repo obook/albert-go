@@ -109,6 +109,8 @@ test('reparerMermaid : ligne title avant le type de diagramme', () => {
 test('reparerMermaid : A + B devient A & B dans un flowchart', () => {
     assert.strictEqual(Rendu.reparerMermaid('flowchart LR\n HA + BOH -->|Transfert (H⁺)| A & BH\n A & BH --> HA + BOH'),
         'flowchart LR\n HA & BOH -->|"Transfert (H⁺)"| A & BH\n A & BH --> HA & BOH');
+    assert.strictEqual(Rendu.reparerMermaid('flowchart LR\n A["Acide (HA)"] + B["Base"] --> C'),
+        'flowchart LR\n A["Acide (HA)"] & B["Base"] --> C');
     assert.strictEqual(Rendu.reparerMermaid('flowchart LR\n A["x + y"] --> B'), 'flowchart LR\n A["x + y"] --> B');
     assert.strictEqual(Rendu.reparerMermaid('classDiagram\n class A {\n  +int age\n  B + C\n }'),
         'classDiagram\n class A {\n  +int age\n  B + C\n }');
