@@ -306,22 +306,22 @@
             <details class="carte" name="reglages">
                 <summary data-t="reglages.recherche"></summary>
                 <div class="corps">
-                    <p id="aide-recherche" class="note mise-en-garde" data-t="reglages.aide-recherche"></p>
                     <label class="interrupteur">
                         <input type="checkbox"
                                id="recherche-reglage"
                                role="switch"
-                               aria-describedby="aide-recherche">
+                               aria-describedby="usage-recherche aide-recherche">
                         <span data-t="reglages.recherche-active"></span>
                     </label>
                     <!-- Une carte par moteur, comme pour les modèles : nom et domaine. -->
                     <fieldset>
-                        <legend data-t="reglages.moteur"></legend>
                         <details id="choix-moteur" class="choix-liste">
                             <summary id="moteur-choisi"></summary>
                             <div id="moteurs" class="cartes-choix"></div>
                         </details>
                     </fieldset>
+                    <p id="usage-recherche" class="note" data-t="reglages.usage-recherche"></p>
+                    <p id="aide-recherche" class="note mise-en-garde" data-t="reglages.aide-recherche"></p>
                     <div id="cles-recherche">
                         <label for="cle-recherche" data-t="reglages.cle-recherche"></label>
                         <input type="password"
