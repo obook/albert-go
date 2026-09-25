@@ -218,7 +218,7 @@ const Rendu = {
         const blocs = (langue) => [...element.querySelectorAll('pre > code')]
             .filter((code) => new RegExp('(^|\\s)language-' + langue + '(\\s|$)', 'i').test(code.className));
         for (const bloc of blocs('svg')) {
-            this.remplacerBloc(bloc, this.assainirSvg(bloc.textContent, this.BALISES_INTERDITES_SVG_MODELE));
+            this.remplacerBloc(bloc, this.assainirSvg(bloc.textContent, this.BALISES_INTERDITES_SVG_MODELE), bloc.textContent);
         }
         const mermaids = blocs('mermaid');
         if (!mermaids.length) {
@@ -238,7 +238,7 @@ const Rendu = {
                     erreur = err;
                     return dessiner(this.reparerMermaid(code));
                 });
-                this.remplacerBloc(bloc, this.assainirSvg(svg));
+                this.remplacerBloc(bloc, this.assainirSvg(svg), code);
             } catch (err) {
                 /* Invalide même réparé : le modèle corrige, une seule fois. */
                 const message = erreur?.message ?? String(erreur);
@@ -249,7 +249,7 @@ const Rendu = {
                 try {
                     const { svg } = await dessiner(await this.corrigerMermaid(code, message));
                     note.remove();
-                    this.remplacerBloc(bloc, this.assainirSvg(svg));
+                    this.remplacerBloc(bloc, this.assainirSvg(svg), code);
                 } catch (err) {
                     /* Le code d'origine reste affiché, avec son erreur. */
                     note.textContent = t('reponse.erreur-diagramme') + message;
@@ -360,8 +360,9 @@ const Rendu = {
      *
      * @param {HTMLElement} bloc - Élément <code> du bloc.
      * @param {string} html - SVG assaini.
+     * @param {string} code - Code du bloc, pour nommer le fichier.
      */
-    remplacerBloc(bloc, html) {
+    remplacerBloc(bloc, html, code) {
         const modele = document.createElement('template');
         modele.innerHTML = html;
         const svg = modele.content.querySelector('svg');
@@ -370,14 +371,16 @@ const Rendu = {
         }
         const conteneur = document.createElement('div');
         conteneur.className = 'diagramme';
+        /* Nom calculé au clic : la bulle de la question est alors dans le fil. */
+        const nom = (extension) => this.nomFigure(new Date(), extension, this.titreFigure(code) || this.questionAvant(conteneur));
         const boutonSvg = boutonAction(ICONES.svg, t('reponse.telecharger-figure'));
         boutonSvg.addEventListener('click', () => {
             /* XMLSerializer ajoute le xmlns sans lequel le fichier ne s'ouvre pas. */
-            this.telecharger(new Blob([new XMLSerializer().serializeToString(svg)], { type: 'image/svg+xml' }), this.nomFigure(new Date(), 'svg'));
+            this.telecharger(new Blob([new XMLSerializer().serializeToString(svg)], { type: 'image/svg+xml' }), nom('svg'));
         });
         const boutonPng = boutonAction(ICONES.png, t('reponse.telecharger-png'));
         boutonPng.addEventListener('click', async () => {
-            this.telecharger(await this.enPng(svg), this.nomFigure(new Date(), 'png'));
+            this.telecharger(await this.enPng(svg), nom('png'));
         });
         const boutons = document.createElement('div');
         boutons.className = 'boutons-figure';
@@ -416,16 +419,53 @@ const Rendu = {
     },
 
     /**
-     * Nom d'une figure enregistrée : figure-2026-09-26-01-45-12.png, heure locale.
+     * Nom d'une figure enregistrée : date locale, puis le sujet.
+     *
+     * Le sujet ne garde que a-z, 0-9 et des tirets, sans accents : aucun
+     * caractère que Windows refuse. Coupé vers 40 caractères, entre deux mots.
      *
      * @param {Date} date - Moment de l'enregistrement.
      * @param {string} extension - svg ou png.
-     * @returns {string} Nom du fichier.
+     * @param {string} [sujet] - Titre du schéma ou question posée.
+     * @returns {string} Nom du fichier, ex. 2026-09-26-01-45-12-reaction-acide-base.png.
      */
-    nomFigure(date, extension) {
+    nomFigure(date, extension, sujet = '') {
         const n = (x) => String(x).padStart(2, '0');
-        return 'figure-' + date.getFullYear() + '-' + n(date.getMonth() + 1) + '-' + n(date.getDate())
-            + '-' + n(date.getHours()) + '-' + n(date.getMinutes()) + '-' + n(date.getSeconds()) + '.' + extension;
+        const quand = date.getFullYear() + '-' + n(date.getMonth() + 1) + '-' + n(date.getDate())
+            + '-' + n(date.getHours()) + '-' + n(date.getMinutes()) + '-' + n(date.getSeconds());
+        let mots = sujet.replace(/œ/gi, 'oe').replace(/æ/gi, 'ae').normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+            .toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+        if (mots.length > 40) {
+            mots = mots.slice(0, 41);
+            mots = mots.slice(0, mots.lastIndexOf('-') > 0 ? mots.lastIndexOf('-') : 40);
+        }
+        return quand + '-' + (mots || 'figure') + '.' + extension;
+    },
+
+    /**
+     * Question posée juste avant la réponse qui contient l'élément.
+     *
+     * @param {HTMLElement} element - Élément de la réponse.
+     * @returns {string} Texte de la question, ou '' hors du fil.
+     */
+    questionAvant(element) {
+        let li = element.closest('li');
+        while (li && !li.classList.contains('user')) {
+            li = li.previousElementSibling;
+        }
+        /* Le texte seul : le "Vous" caché aux yeux est dans un <span>. */
+        return li ? [...li.childNodes].filter((n) => n.nodeType === Node.TEXT_NODE).map((n) => n.textContent).join(' ') : '';
+    },
+
+    /**
+     * Titre d'un schéma : title de Mermaid, ou <title> d'un SVG.
+     *
+     * @param {string} code - Code du bloc.
+     * @returns {string} Titre, ou '' s'il n'y en a pas.
+     */
+    titreFigure(code) {
+        const trouve = code.match(/<title>([^<]*)<\/title>/i) || code.match(/^\s*title:?\s+"?([^"\n]*?)"?\s*$/m);
+        return trouve ? trouve[1].trim() : '';
     },
 
     /**
