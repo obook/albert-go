@@ -204,3 +204,17 @@ test('logoEditeur : éditeur reconnu au nom du modèle, sinon logo neutre', () =
     assert.strictEqual(Albert.logoEditeur('llama-4'), 'images/editeurs/inconnu.svg');
     for (const m of Albert.MODELES) assert.notStrictEqual(Albert.logoEditeur(m.reel), 'images/editeurs/inconnu.svg');
 });
+
+test('demandeCorrectionMermaid : code et erreur envoyés, température 0', () => {
+    const demande = Albert.demandeCorrectionMermaid('large', 'A + B --> C', 'Parse error on line 1');
+    assert.strictEqual(demande.model, 'large');
+    assert.strictEqual(demande.temperature, 0);
+    assert.strictEqual(demande.messages[0].role, 'system');
+    assert.match(demande.messages[1].content, /A \+ B --> C[\s\S]*Parse error on line 1/);
+});
+
+test('codeMermaid : bloc ```mermaid retiré s\'il y en a un', () => {
+    assert.strictEqual(Albert.codeMermaid('Voici :\n```mermaid\nflowchart LR\n A --> B\n```\nFin.'), 'flowchart LR\n A --> B');
+    assert.strictEqual(Albert.codeMermaid('```\ngraph TD\n A --> B\n```'), 'graph TD\n A --> B');
+    assert.strictEqual(Albert.codeMermaid('  graph TD\n A --> B\n'), 'graph TD\n A --> B');
+});

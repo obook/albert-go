@@ -207,8 +207,8 @@ const Rendu = {
     /**
      * Remplace les blocs ```svg et ```mermaid par leur dessin.
      *
-     * Un dessin invalide reste affiché comme bloc de code, avec l'erreur
-     * de Mermaid en dessous.
+     * Un Mermaid refusé est corrigé par le modèle ; s'il reste faux, le
+     * code s'affiche avec l'erreur de Mermaid en dessous.
      *
      * @param {HTMLElement} element - Conteneur de la réponse.
      * @returns {Promise<void>}
@@ -240,14 +240,45 @@ const Rendu = {
                 });
                 this.remplacerBloc(bloc, this.assainirSvg(svg));
             } catch (err) {
-                /* Diagramme invalide même réparé : le code reste affiché,
-                   suivi de l'erreur sur le code d'origine, pas le réparé. */
+                /* Invalide même réparé : le modèle corrige, une seule fois. */
+                const message = erreur?.message ?? String(erreur);
                 const note = document.createElement('p');
                 note.className = 'erreur-diagramme';
-                note.textContent = t('reponse.erreur-diagramme') + (erreur?.message ?? String(erreur));
+                note.textContent = t('reponse.correction-diagramme');
                 bloc.parentElement.after(note);
+                try {
+                    const { svg } = await dessiner(await this.corrigerMermaid(code, message));
+                    note.remove();
+                    this.remplacerBloc(bloc, this.assainirSvg(svg));
+                } catch (err) {
+                    /* Le code d'origine reste affiché, avec son erreur. */
+                    note.textContent = t('reponse.erreur-diagramme') + message;
+                }
             }
         }
+    },
+
+    /* ponytail: corrections gardées pour la session seulement ; un rechargement redemande. */
+    _corrections: new Map(),
+
+    /**
+     * Code Mermaid corrigé par le modèle choisi, gardé pour ne pas redemander.
+     *
+     * @param {string} code - Code refusé.
+     * @param {string} erreur - Message de Mermaid.
+     * @returns {Promise<string>} Code corrigé.
+     */
+    corrigerMermaid(code, erreur) {
+        if (!this._corrections.has(code)) {
+            const demande = Albert.demandeCorrectionMermaid(modeleActuel().id, code, erreur);
+            this._corrections.set(code, Albert.repondre(reglages.cle, demande, new AbortController().signal)
+                .then((reponse) => Albert.codeMermaid(reponse.texte))
+                .catch((err) => {
+                    this._corrections.delete(code);
+                    throw err;
+                }));
+        }
+        return this._corrections.get(code);
     },
 
     /**

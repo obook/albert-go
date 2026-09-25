@@ -192,6 +192,8 @@ I18n.TEXTES.de = {
     'reponse.telecharger-figure': 'Abbildung herunterladen (SVG)',
     'reponse.telecharger-png': 'Bild herunterladen (PNG)',
     'reponse.erreur-diagramme': 'Diagramm nicht angezeigt, Mermaid-Fehler: ',
+    'reponse.correction-diagramme': 'Diagramm wird korrigiert...',
+    'mermaid.corriger': 'Korrigiere diesen abgelehnten Mermaid-Code anhand des folgenden Fehlers. Antworte nur mit dem korrigierten Code.',
     'reponse.lire': 'Vorlesen',
     'reponse.arreter-lecture': 'Vorlesen anhalten',
     'reponse.recherches': 'Die Suchen {nom} anzeigen',
