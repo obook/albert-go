@@ -200,9 +200,19 @@ $('cx-recherche').addEventListener('change', () => {
     ecrire('cx', reglages.cx);
 });
 
+/* Recherche désactivée : le choix du moteur est fermé et grisé. */
+function afficherRecherche() {
+    $('choix-moteur').inert = !reglages.recherche;
+    if (!reglages.recherche) {
+        $('choix-moteur').open = false;
+    }
+}
+afficherRecherche();
+
 $('recherche-reglage').addEventListener('change', () => {
     reglages.recherche = $('recherche-reglage').checked;
     ecrire('recherche', reglages.recherche ? 'oui' : 'non');
+    afficherRecherche();
 });
 
 /* Chaque moteur a sa clé : on efface celle de l'autre en changeant. */
