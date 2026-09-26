@@ -98,7 +98,7 @@ function afficherProposition(texte, erreur = false, anomalies = []) {
     const boutons = [];
     if (texte && !erreur) {
         boutons.push(boutonCopier(texte));
-        /* ponytail: lu dans la langue de l'interface, pas détectée dans le courrier. */
+        /* ponytail: lu dans la langue de l'interface ; détecter celle du courrier dès qu'on rédige dans une autre langue. */
         if (typeof speechSynthesis !== 'undefined') {
             boutons.push(boutonLire($('proposition'), I18n.langue));
         }

@@ -289,7 +289,7 @@ const Recherche = {
     /**
      * Garde les images dont le nom ou la description contient chaque nom propre cherché.
      *
-     * ponytail: nom propre = mot à majuscule ; un premier mot capitalisé par habitude filtre aussi.
+     * ponytail: nom propre = mot à majuscule, un prénom ("Pablo") filtre aussi ; n'exiger que le nom de famille si des images justes sont écartées.
      *
      * @param {Array<Object>} images - Résultats de lireImagesTrouvees.
      * @param {string} mots - Texte cherché.
