@@ -270,7 +270,8 @@ const Rendu = {
             const bloc = lien.closest('p, li');
             const placer = (noeud) => bloc && bloc.tagName === 'LI' ? bloc.prepend(noeud) : (bloc || lien).before(noeud);
             const lienSeul = bloc && bloc.textContent.trim() === lien.textContent.trim();
-            const image = await Recherche.imageCommons(titre).catch(() => null);
+            const image = await Recherche.imageCommons(titre).catch(() => null)
+                || await this.imageApprochee(titre).catch(() => null);
             if (!image) {
                 const note = document.createElement('p');
                 note.className = 'image-absente';
@@ -652,6 +653,24 @@ const Rendu = {
     titreFigure(code) {
         const trouve = code.match(/<title>([^<]*)<\/title>/i) || code.match(/^\s*title:?\s+"?([^"\n]*?)"?\s*$/m);
         return trouve ? trouve[1].trim() : '';
+    },
+
+    /**
+     * Fichier inventé par le modèle : première vraie image de Commons pour les mots de son nom.
+     *
+     * @param {string} titre - Titre introuvable, ex. "File:Picasso,_Les_Demoiselles_d'Avignon.jpg".
+     * @returns {Promise<?Object>} Voir Recherche.lireImageCommons.
+     */
+    async imageApprochee(titre) {
+        const mots = titre.replace(/^[^:]+:/, '').replace(/\.[^.]+$/, '').replace(/[_,()]+|\b\d+\b/g, ' ').replace(/\s+/g, ' ').trim();
+        /* Mots d'au moins 4 lettres ; il faut en retrouver la moitié dans le nom du fichier, sinon mieux vaut rien. */
+        const cles = (texte) => texte.toLowerCase().split(/[^\p{L}]+/u).filter(m => m.length >= 4);
+        const voulus = cles(mots);
+        const trouvee = (await Recherche.chercherImages(mots)).find((i) => {
+            const nom = cles(i.titre);
+            return voulus.filter(m => nom.includes(m)).length * 2 >= voulus.length;
+        });
+        return trouvee ? Recherche.imageCommons(trouvee.titre) : null;
     },
 
     /**
