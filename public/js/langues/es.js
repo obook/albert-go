@@ -309,7 +309,7 @@ I18n.TEXTES.es = {
     'recherche.impossible': 'Búsqueda imposible: {message}',
     'recherche.moteur-injoignable': '{nom} inalcanzable ({status}).',
     'recherche.moteur-refus': 'petición rechazada por {nom}.',
-    'reglages.images': 'Imágenes de Wikimedia Commons',
+    'reglages.images': 'Imágenes Wikimedia',
     'images.description': 'Busca imágenes reales en Wikimedia Commons y devuelve el enlace a su página. Úsala cuando se pida una foto o una imagen. Cita después uno de esos enlaces, nunca un nombre de archivo inventado.',
     'images.aucune': 'Ninguna imagen encontrada en Wikimedia Commons.',
     'etat.images': 'Buscando imágenes «{mots}»...',

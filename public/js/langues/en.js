@@ -309,7 +309,7 @@ I18n.TEXTES.en = {
     'recherche.impossible': 'Search failed: {message}',
     'recherche.moteur-injoignable': '{nom} unreachable ({status}).',
     'recherche.moteur-refus': 'request refused by {nom}.',
-    'reglages.images': 'Wikimedia Commons images',
+    'reglages.images': 'Wikimedia images',
     'images.description': 'Searches real images on Wikimedia Commons and returns the link to their page. Use it whenever a photo or an image is asked for. Then cite one of these links, never an invented file name.',
     'images.aucune': 'No image found on Wikimedia Commons.',
     'etat.images': 'Searching images "{mots}"...',

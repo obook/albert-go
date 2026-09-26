@@ -309,7 +309,7 @@ I18n.TEXTES.de = {
     'recherche.impossible': 'Suche fehlgeschlagen: {message}',
     'recherche.moteur-injoignable': '{nom} nicht erreichbar ({status}).',
     'recherche.moteur-refus': 'Anfrage von {nom} abgelehnt.',
-    'reglages.images': 'Bilder von Wikimedia Commons',
+    'reglages.images': 'Wikimedia-Bilder',
     'images.description': 'Sucht echte Bilder auf Wikimedia Commons und gibt den Link zu ihrer Seite zurück. Immer verwenden, wenn ein Foto oder Bild gewünscht wird. Danach einen dieser Links nennen, nie einen erfundenen Dateinamen.',
     'images.aucune': 'Kein Bild auf Wikimedia Commons gefunden.',
     'etat.images': 'Bildsuche "{mots}"...',
