@@ -81,6 +81,14 @@ laissait les colonnes rétrécir jusqu'à une lettre. Trop large, le tableau dé
     contain: paint;
 }
 .rendu .diagramme > svg { display: block; max-width: 100%; max-height: 20rem; height: auto; margin: 0 auto; }
+/* Liens discrets : couleur du texte, soulignement fin ; bleu au survol et au focus. */
+.rendu a {
+    color: inherit;
+    text-decoration-color: var(--bord-champ);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+}
+.rendu a:hover, .rendu a:focus-visible { color: var(--bleu); text-decoration-color: currentColor; }
 /* Toute image d'une réponse tient dans la bulle, même écrite en Markdown par le modèle. */
 .rendu img { max-width: 100%; max-height: 20rem; height: auto; }
 .rendu .image-commons { margin: 0.5rem 0 0.75rem; }

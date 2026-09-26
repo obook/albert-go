@@ -140,3 +140,13 @@ test('titreFigure : title de Mermaid ou <title> du SVG', () => {
     assert.strictEqual(Rendu.titreFigure('<svg viewBox="0 0 1 1"><title>Triangle</title></svg>'), 'Triangle');
     assert.strictEqual(Rendu.titreFigure('graph TD\n A --> B'), '');
 });
+
+test('lienCourt : le site, puis la fin du chemin', () => {
+    assert.strictEqual(Rendu.lienCourt('https://commons.wikimedia.org/wiki/File:Tour_Eiffel_Wikimedia_Commons.jpg'),
+        'commons.wikimedia.org › File:Tour_Eiffel_Wikimedia_Commons.jpg');
+    assert.strictEqual(Rendu.lienCourt('https://www.education.gouv.fr/'), 'education.gouv.fr');
+    assert.strictEqual(Rendu.lienCourt('https://fr.wikipedia.org/wiki/Ch%C3%A2teau_de_Versailles?x=1#Histoire'), 'fr.wikipedia.org › Château_de_Versailles');
+    assert.strictEqual(Rendu.lienCourt('https://exemple.fr/' + 'a'.repeat(60)), 'exemple.fr › ' + 'a'.repeat(40) + '...');
+    assert.strictEqual(Rendu.lienCourt('pas une adresse'), 'pas une adresse');
+    assert.strictEqual(Rendu.lienCourt('https://exemple.fr/100%'), 'exemple.fr › 100%');
+});
