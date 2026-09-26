@@ -287,7 +287,8 @@ const Rendu = {
             credit.href = image.page;
             credit.target = '_blank';
             credit.rel = 'noopener noreferrer';
-            credit.textContent = [image.auteur, image.licence, 'Wikimedia Commons'].filter(Boolean).join(', ');
+            /* Le lien mène à la page Commons : le nom du site ne sert que si rien d'autre n'est connu. */
+            credit.textContent = [image.description, image.auteur, image.licence].filter(Boolean).join(', ') || 'Wikimedia Commons';
             const legende = document.createElement('figcaption');
             legende.append(credit);
             /* Clic : l'image en taille réelle, dans un nouvel onglet. */

@@ -123,7 +123,7 @@ const Recherche = {
      * seuls domaines d'images autorisés par la CSP.
      *
      * @param {Object} corps - Réponse de l'API (prop=imageinfo).
-     * @returns {?Object} { src, original, auteur, licence, page }, ou null.
+     * @returns {?Object} { src, description, original, auteur, licence, page }, ou null.
      */
     lireImageCommons(corps) {
         const page = Object.values((corps && corps.query && corps.query.pages) || {})[0];
@@ -133,9 +133,16 @@ const Recherche = {
             return null;
         }
         const meta = info.extmetadata || {};
-        const texte = (champ) => ((meta[champ] && meta[champ].value) || '').replace(/<[^>]*>/g, '').trim();
+        const texte = (champ) => ((meta[champ] && meta[champ].value) || '').replace(/<[^>]*>/g, '')
+            .replace(/&(amp|quot|#0?39|lt|gt|nbsp);/g, (e, n) => ({ amp: '&', quot: '"', lt: '<', gt: '>', nbsp: ' ' })[n] || "'")
+            .replace(/\s+/g, ' ').trim();
+        let description = texte('ImageDescription');
+        if (description.length > 120) {
+            description = description.slice(0, 120) + '...';
+        }
         return {
             src: info.thumburl,
+            description,
             original: wikimedia.test(info.url || '') ? info.url : info.descriptionurl,
             auteur: texte('Artist'),
             licence: texte('LicenseShortName'),
@@ -151,7 +158,8 @@ const Recherche = {
      */
     async imageCommons(titre) {
         const adresse = 'https://commons.wikimedia.org/w/api.php?action=query&format=json&origin=*'
-            + '&prop=imageinfo&iiprop=url|mime|extmetadata&iiurlwidth=480&titles=' + encodeURIComponent(titre);
+            + '&prop=imageinfo&iiprop=url|mime|extmetadata&iiurlwidth=480&uselang=' + I18n.langue
+            + '&titles=' + encodeURIComponent(titre);
         const reponse = await fetch(adresse);
         return reponse.ok ? this.lireImageCommons(await reponse.json()) : null;
     },
