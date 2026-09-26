@@ -143,8 +143,7 @@ I18n.TEXTES.de = {
     'contexte.pourcent': 'Kontext {pourcent} %',
     'partage.actif': 'Beim Schließen des Tabs werden Schlüssel und Gespräche gelöscht.',
     'partage.inactif': 'Beim Schließen des Tabs bleiben Schlüssel und Gespräche erhalten.',
-    'memoire.actif': 'An Albert gesendet: das ganze Gespräch.',
-    'memoire.inactif': 'An Albert gesendet: nur eine Frage.',
+    'reglages.memoire': 'Die ganze Unterhaltung an die KI senden.',
 
     /* Modelle. */
     'modele.type.texte': 'Text',
