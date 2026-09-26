@@ -49,7 +49,7 @@ const Albert = {
     Outils du menu, repris d'albert-droid. Reformuler et Traduire envoient
     une seule demande, sans les échanges précédents, avec leur consigne système.
     Le nom et l'invite sont dans langues/*.js ; la consigne est le fichier de
-    public/prompts/<langue>/ (outils.js).
+    public/prompts/<langue>/ (modules.js).
     */
     OUTILS: {
         discuter: { consigne: 'discuter.txt' },

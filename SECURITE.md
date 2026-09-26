@@ -141,7 +141,7 @@ Boîte noire depuis un poste extérieur, le 2026-09-21, avec `curl` et `openssl`
 | I6 | Corrigé le 2026-09-18 : KaTeX 0.16.47. Confirmé identique, polices comprises. |
 | I7 | Sans objet : `/v1/models` sert à lister les modèles disponibles, avec la même vérification de clé. |
 | I8 | Corrigé le 2026-09-18 : nœud "Clé présente ?". Revérifié en ligne ce jour. |
-| I9 | En partie le 2026-09-21 : les pages consultées sont listées en liens sous la réponse, avec les mots cherchés. Reste à dire dans l'aide que les extraits ne sont pas vérifiés. |
+| I9 | Corrigé le 2026-09-26 : pages consultées en liens sous la réponse, et l'aide des outils Internet dit que leurs textes ne sont pas vérifiés. |
 | I10 | Corrigé le 2026-09-21 : `encodeURIComponent(this.CX)`. |
 | I11 | Ouvert : prendre le Marked du paquet npm. |
 | I12 | Corrigé le 2026-09-21 : `.gitignore` au dépôt. Le `.env` reste, il sert aux outils du poste. |
