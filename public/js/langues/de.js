@@ -133,7 +133,7 @@ I18n.TEXTES.de = {
     'moteur.mojeek': 'Das gesamte Web, unabhängiger Index, kostenpflichtiger Schlüssel',
     'reglages.cle-recherche': 'API-Schlüssel',
     'reglages.cx': 'ID der Suchmaschine',
-    'reglages.aide-recherche': 'Eine externe Suchmaschine kann die Daten der Unterhaltung sammeln und verwerten.',
+    'reglages.aide-recherche': 'Web- und Bildsuchmaschinen können die Daten der Unterhaltung sammeln und verwerten.',
     'reglages.cle-note': 'In diesem Browser ist ein Schlüssel gespeichert.',
     'reglages.langue': 'Sprache',
     'reglages.conseilles': 'Empfohlene Einstellungen',

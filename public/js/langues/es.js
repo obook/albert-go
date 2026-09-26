@@ -133,7 +133,7 @@ I18n.TEXTES.es = {
     'moteur.mojeek': 'Toda la web, índice independiente, clave de pago',
     'reglages.cle-recherche': 'Clave API',
     'reglages.cx': 'ID del buscador',
-    'reglages.aide-recherche': 'Un buscador externo puede recopilar y explotar los datos de la conversación.',
+    'reglages.aide-recherche': 'Los buscadores web y de imágenes pueden recopilar y explotar los datos de la conversación.',
     'reglages.cle-note': 'Hay una clave guardada en este navegador.',
     'reglages.langue': 'Idioma',
     'reglages.conseilles': 'Ajustes recomendados',
