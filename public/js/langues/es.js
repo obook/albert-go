@@ -169,7 +169,7 @@ I18n.TEXTES.es = {
     'dialogue.oui': 'Sí',
     'dialogue.non': 'No',
     'confirmer-fermer-app.titre': '¿Salir?',
-    'confirmer-fermer-app.texte': 'Volverá a la pantalla de inicio y tendrá que introducir su clave para continuar.',
+    'confirmer-fermer-app.texte': 'Volverá a la pantalla de inicio y tendrá que introducir una clave para volver.',
     'confirmer-changer-cle.titre': '¿Borrar la clave y salir?',
     'confirmer-changer-cle.texte': 'La clave se borrará del almacenamiento del navegador y volverá a la pantalla de inicio.',
     'confirmer-suppression.titre': '¿Eliminar esta conversación?',
