@@ -53,17 +53,18 @@ Object.assign(Rendu, {
             credit.href = image.page;
             credit.target = '_blank';
             credit.rel = 'noopener noreferrer';
-            /* Description en italique : elle contient souvent déjà des guillemets. Le lien mène à
-               la page Commons : le nom du site ne sert que si rien d'autre n'est connu. */
-            const reste = [image.auteur, image.licence].filter(Boolean).join(', ');
-            if (image.description) {
-                const description = document.createElement('i');
-                description.textContent = image.description;
-                credit.append(description, reste ? ', ' + reste : '');
-            } else {
-                credit.textContent = reste || 'Wikimedia Commons';
-            }
+            /* Le lien mène à la page Commons : le nom du site ne sert que si rien d'autre n'est connu. */
+            credit.textContent = [image.auteur, image.date, image.licence].filter(Boolean).join(', ') || 'Wikimedia Commons';
             const legende = document.createElement('figcaption');
+            /* Ligne 1 : le titre, en italique ; <q> met les guillemets de la langue de la page. */
+            if (image.description) {
+                const titreImage = document.createElement('q');
+                const italique = document.createElement('i');
+                italique.textContent = image.description;
+                titreImage.append(italique);
+                legende.append(titreImage);
+            }
+            /* Ligne 2 : auteur, date, licence. */
             legende.append(credit);
             /* Clic : l'image en taille réelle, dans un nouvel onglet. */
             const agrandir = document.createElement('a');

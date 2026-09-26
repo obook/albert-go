@@ -35,7 +35,7 @@ Object.assign(Recherche, {
      * seuls domaines d'images autorisés par la CSP.
      *
      * @param {Object} corps - Réponse de l'API (prop=imageinfo).
-     * @returns {?Object} { src, description, original, auteur, licence, page }, ou null.
+     * @returns {?Object} { src, description, date, original, auteur, licence, page }, ou null.
      */
     lireImageCommons(corps) {
         const page = Object.values((corps && corps.query && corps.query.pages) || {})[0];
@@ -45,16 +45,26 @@ Object.assign(Recherche, {
             return null;
         }
         const meta = info.extmetadata || {};
-        const texte = (champ) => ((meta[champ] && meta[champ].value) || '').replace(/<[^>]*>/g, '')
+        /* Les blocs cachés portent des données Wikidata ("date QS:P571,...") : on les retire avec leur contenu. */
+        const texte = (champ) => ((meta[champ] && meta[champ].value) || '')
+            .replace(/<div style="display: ?none;?">[\s\S]*?<\/div>/g, '').replace(/<[^>]*>/g, '')
             .replace(/&(amp|quot|#0?39|lt|gt|nbsp);/g, (e, n) => ({ amp: '&', quot: '"', lt: '<', gt: '>', nbsp: ' ' })[n] || "'")
             .replace(/\s+/g, ' ').trim();
         let description = texte('ImageDescription');
         if (description.length > 120) {
             description = description.slice(0, 120) + '...';
         }
+        /* Année, ou période : "between 1975 and 1981" donne "1975-1981". */
+        const annees = texte('DateTimeOriginal').match(/\b\d{4}\b/g) || [];
+        let date = annees[0] || '';
+        const derniere = annees[annees.length - 1];
+        if (derniere && derniere !== date) {
+            date += '-' + derniere;
+        }
         return {
             src: info.thumburl,
             description,
+            date,
             original: wikimedia.test(info.url || '') ? info.url : info.descriptionurl,
             auteur: texte('Artist'),
             licence: texte('LicenseShortName'),
