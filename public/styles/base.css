@@ -33,7 +33,7 @@
     --jaune-fond: #fef6e3;
     --jaune-bord: #b38b00;
     /* Réglages : cartes blanches sur fond gris en clair, inchangées en sombre. */
-    --fond-reglages: var(--fond);
+    --fond-reglages: #eeeeee;
     --titre-carte: var(--surface);
     --code-mot: #cf222e;
     --code-texte: #0a3069;
