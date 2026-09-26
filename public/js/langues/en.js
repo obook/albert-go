@@ -143,8 +143,7 @@ I18n.TEXTES.en = {
     'contexte.pourcent': 'context {pourcent} %',
     'partage.actif': 'When the tab closes, the key and the conversations will be erased.',
     'partage.inactif': 'When the tab closes, the key and the conversations will be kept.',
-    'memoire.actif': 'Sent to Albert: the whole conversation.',
-    'memoire.inactif': 'Sent to Albert: one question only.',
+    'reglages.memoire': 'Send the whole conversation to the AI.',
 
     /* Models. */
     'modele.type.texte': 'Text',

@@ -143,8 +143,7 @@ I18n.TEXTES.fr = {
     'contexte.pourcent': 'contexte {pourcent} %',
     'partage.actif': 'À la fermeture de l\'onglet, la clé et les conversations seront effacées.',
     'partage.inactif': 'À la fermeture de l\'onglet, la clé et les conversations seront conservées.',
-    'memoire.actif': 'Envoyé à Albert : toute la conversation.',
-    'memoire.inactif': 'Envoyé à Albert : une question seulement.',
+    'reglages.memoire': 'Envoyer à l\'IA toute la conversation.',
 
     /* Modèles. */
     'modele.type.texte': 'Texte',

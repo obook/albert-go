@@ -143,8 +143,7 @@ I18n.TEXTES.es = {
     'contexte.pourcent': 'contexto {pourcent} %',
     'partage.actif': 'Al cerrar la pestaña, la clave y las conversaciones se borrarán.',
     'partage.inactif': 'Al cerrar la pestaña, la clave y las conversaciones se conservarán.',
-    'memoire.actif': 'Enviado a Albert: toda la conversación.',
-    'memoire.inactif': 'Enviado a Albert: una sola pregunta.',
+    'reglages.memoire': 'Enviar a la IA toda la conversación.',
 
     /* Modelos. */
     'modele.type.texte': 'Texto',

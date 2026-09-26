@@ -118,16 +118,6 @@ function textePartage(actif) {
 }
 
 /**
- * Texte de l'interrupteur de contexte.
- *
- * @param {boolean} actif - Interrupteur activé.
- * @returns {string} Texte à afficher.
- */
-function texteMemoire(actif) {
-    return t(actif ? 'memoire.actif' : 'memoire.inactif');
-}
-
-/**
  * Met à jour les réglages affichés, le résumé du menu et la jauge.
  */
 function afficherReglages() {
@@ -146,7 +136,6 @@ function afficherReglages() {
     $('jauge-niveau').classList.toggle('pleine', pourcent !== null && pourcent >= 80);
 
     $('memoire-reglage').checked = reglages.memoire;
-    $('texte-memoire').textContent = texteMemoire(reglages.memoire);
     $('voix-en-ligne').checked = reglages.voixEnLigne;
     $('partage-reglage').checked = partage;
     $('texte-partage-reglage').textContent = textePartage(partage);
