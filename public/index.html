@@ -166,7 +166,7 @@
         <section id="accueil" class="accueil pico" hidden>
             <h2 data-t="cle.titre"></h2>
             <p data-t="cle.intro"></p>
-            <!-- Deux étapes : obtenir un accès, puis saisir la clé dans une boîte. -->
+            <!-- Trois étapes : obtenir un accès, saisir la clé dans une boîte, commencer. -->
             <ol class="etapes">
                 <li>
                     <strong data-t="cle.etape-acces"></strong>
@@ -175,18 +175,29 @@
                 <li>
                     <strong data-t="cle.label"></strong>
                     <button type="button" id="ouvrir-cle" class="bouton-principal" data-t="cle.saisir"></button>
+                    <span id="etat-cle" class="etat-cle" role="status"></span>
+                </li>
+                <li>
+                    <button type="button" id="commencer" class="bouton-principal" data-t="cle.commencer" disabled></button>
                 </li>
             </ol>
-            <details class="details-cle">
-                <summary data-t="cle.ou-va"></summary>
-                <div data-t-html="cle.stockee"></div>
-            </details>
         </section>
 
         <section id="chat"
                  class="chat"
                  hidden
                  data-t-attr="aria-label:chat.aria">
+            <!-- Chat vide : bienvenue et suggestions, masquées dès la première question (CSS). -->
+            <div class="bienvenue">
+                <h2 data-t="bienvenue.titre"></h2>
+                <p data-t="bienvenue.texte"></p>
+                <div class="suggestions">
+                    <button type="button" class="suggestion" data-module="corriger" data-exemple="bienvenue.exemple-corriger" data-t="bienvenue.corriger"></button>
+                    <button type="button" class="suggestion" data-module="traduire" data-exemple="bienvenue.exemple-traduire" data-t="bienvenue.traduire"></button>
+                    <button type="button" class="suggestion" data-module="rediger" data-exemple="bienvenue.exemple-rediger" data-t="bienvenue.rediger"></button>
+                    <button type="button" class="suggestion" data-exemple="bienvenue.exemple-calcul" data-t="bienvenue.calcul"></button>
+                </div>
+            </div>
             <ol id="fil"
                 class="fil"
                 role="log"
@@ -414,6 +425,10 @@
                        role="switch">
                 <span data-t="cle.souvenir"></span>
             </label>
+            <details class="details-cle">
+                <summary data-t="cle.ou-va"></summary>
+                <div data-t-html="cle.stockee"></div>
+            </details>
             <div class="boutons-dialogue">
                 <button type="button"
                         id="annuler-cle"

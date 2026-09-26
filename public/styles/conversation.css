@@ -67,16 +67,32 @@ main {
     font-weight: 700;
     font-size: 0.875rem;
 }
-.accueil .etapes strong { display: block; }
-/* Étape 2 : "Clé" et le bouton qui ouvre la boîte, sur une ligne. */
-.accueil .etapes > li:last-child { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1rem; }
-.accueil .etapes > li:last-child::before { top: 50%; transform: translateY(-50%); }
+/* Les trois étapes sur le même modèle : une ligne de même hauteur, pastille centrée,
+   donc des séparations identiques. */
+.accueil .etapes > li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.25rem 1rem;
+    min-height: 2.25rem;
+}
+.accueil .etapes > li::before { top: 50%; transform: translateY(-50%); }
+.accueil .etat-cle { color: var(--succes); font-weight: 700; font-size: 0.9375rem; }
+.accueil .etat-cle:empty { display: none; }
 /* Bouton compact : il ne doit pas écraser le mot "Clé" à côté. */
 .accueil .etapes .bouton-principal {
     width: auto;
     margin: 0;
     padding: 0.25rem 1rem;
     font-size: 0.9375rem;
+}
+/* "Commencer" inactif : gris franc plutôt que le bleu pâli de Pico. */
+.accueil .etapes .bouton-principal:disabled {
+    background: var(--bord);
+    border-color: var(--bord);
+    color: var(--texte-doux);
+    opacity: 1;
+    cursor: not-allowed;
 }
 
 /* Boîte de la clé : champ, message, interrupteur, puis Annuler et OK. */
@@ -85,9 +101,9 @@ main {
 .message-cle:empty { display: none; }
 
 /* Détails techniques repliés : pour qui veut savoir, sans effrayer les autres. */
-.accueil .details-cle { margin: 0 0 0 2.5rem; font-size: 0.875rem; color: var(--texte-doux); }
-.accueil .details-cle summary { cursor: pointer; }
-.accueil .details-cle p { margin-top: 0.5rem; }
+#dialogue-cle .details-cle { margin: 0; font-size: 0.875rem; color: var(--texte-doux); }
+#dialogue-cle .details-cle summary { cursor: pointer; }
+#dialogue-cle .details-cle ul { margin: 0.5rem 0 0; }
 
 /* Vérification de la clé, ou refus d'Albert. */
 /* anywhere : le message d'origine refusée contient des adresses sans espace. */
@@ -102,6 +118,32 @@ main {
 }
 /* Trace sous une réponse : « Recherche web : ... ». */
 .recherches, .calculs { margin: 0.75rem 0 0; }
+
+/* Entrée dans le chat : fondu court, sauf si le système demande moins d'animations. */
+@media (prefers-reduced-motion: no-preference) {
+    .chat:not([hidden]), .saisie-zone:not([hidden]) { animation: fondu 300ms ease-out; }
+}
+@keyframes fondu {
+    from { opacity: 0; }
+}
+
+/* Chat vide : bienvenue et suggestions, seulement dans Chat et avant la première question. */
+.bienvenue { display: none; margin: 10vh auto 0; max-width: 36rem; text-align: center; }
+.chat[data-module="discuter"]:has(#fil:empty) .bienvenue { display: grid; gap: 0.75rem; }
+.bienvenue h2 { margin: 0; font-size: 1.375rem; }
+.bienvenue p { margin: 0; color: var(--texte-doux); }
+.suggestions { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; margin-top: 0.5rem; }
+.suggestion {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--bord-champ);
+    border-radius: 999px;
+    background: var(--surface);
+    color: var(--texte);
+    font: inherit;
+    font-size: 0.9375rem;
+    cursor: pointer;
+}
+.suggestion:hover, .suggestion:focus-visible { border-color: var(--bleu); color: var(--bleu); background: var(--bleu-clair); }
 
 /* Fil de conversation */
 

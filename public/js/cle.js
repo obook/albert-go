@@ -12,10 +12,13 @@
  */
 'use strict';
 
+/** Clé acceptée par Albert, en attente du clic sur "Commencer". */
+let cleAcceptee = null;
+
 /**
- * Vérifie la clé saisie auprès d'Albert, puis l'enregistre si elle est acceptée.
+ * Vérifie la clé saisie auprès d'Albert et, si elle est acceptée, active "Commencer".
  *
- * Une clé refusée n'est pas enregistrée : l'écran de la clé reste affiché.
+ * Une clé refusée n'est pas gardée : la boîte reste ouverte avec le message.
  *
  * @returns {Promise<void>}
  */
@@ -38,24 +41,50 @@ async function validerCle() {
         bouton.disabled = false;
     }
     messageCle('', false);
+    cleAcceptee = cle;
+    $('cle').value = '';
+    $('dialogue-cle').close();
+    /* À l'écran une coche seule ; le lecteur d'écran lit "Clé acceptée". */
+    const coche = document.createElement('span');
+    coche.setAttribute('aria-hidden', 'true');
+    coche.textContent = '✓';
+    const texte = document.createElement('span');
+    texte.className = 'visuellement-cache';
+    texte.textContent = t('cle.acceptee');
+    $('etat-cle').replaceChildren(coche, texte);
+    $('commencer').disabled = false;
+}
+
+/**
+ * Enregistre la clé acceptée et ouvre le chat.
+ */
+function commencer() {
+    if (!cleAcceptee) {
+        return;
+    }
     /* Cible pleine : le réglage n'a pas bougé, la case doit le dire. */
     if (!changerPartage(!$('partage-accueil').checked)) {
         $('partage-accueil').checked = !partage;
         toast(t('toast.partage-impossible'));
     }
-    reglages.cle = cle;
+    reglages.cle = cleAcceptee;
+    cleAcceptee = null;
+    /* L'accueil revient ainsi à zéro si on quitte plus tard. */
+    $('commencer').disabled = true;
+    $('etat-cle').textContent = '';
     ecrire('cle', reglages.cle);
-    $('cle').value = '';
     afficherReglages();
     afficher();
 }
+
+$('commencer').addEventListener('click', commencer);
 
 $('form-cle').addEventListener('submit', (e) => {
     e.preventDefault();
     validerCle();
 });
 
-/* La boîte de saisie s'ouvre depuis l'accueil ; afficher() la ferme une fois la clé acceptée. */
+/* La boîte de saisie s'ouvre depuis l'accueil et se ferme une fois la clé acceptée. */
 $('ouvrir-cle').addEventListener('click', () => {
     $('dialogue-cle').showModal();
     $('cle').focus();

@@ -30,6 +30,7 @@
     --sur-bulle: #ffffff;
     --rouge: #e1000f;
     --erreur: #ce0500;
+    --succes: #18753c;
     --jaune-fond: #fef6e3;
     --jaune-bord: #b38b00;
     /* Réglages : cartes blanches sur fond gris en clair, inchangées en sombre. */
@@ -60,6 +61,7 @@
         --sur-bulle: #eeeeee;
         --rouge: #ff6b7a;
         --erreur: #ff7a6e;
+        --succes: #3bea7e;
         --jaune-fond: #3a3320;
         --jaune-bord: #e0b83c;
         --fond-reglages: var(--surface);
@@ -89,6 +91,7 @@
     --sur-bulle: #eeeeee;
     --rouge: #ff6b7a;
     --erreur: #ff7a6e;
+    --succes: #3bea7e;
     --jaune-fond: #3a3320;
     --jaune-bord: #e0b83c;
     --fond-reglages: var(--surface);

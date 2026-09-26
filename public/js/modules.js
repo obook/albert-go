@@ -137,6 +137,8 @@ function afficherOutil() {
     $('outil-actif').replaceChildren(...nomModule(outilActuel));
     $('saisie').placeholder = t('invite.' + outilActuel);
     $('langues').hidden = outilActuel !== 'traduire';
+    /* Le CSS n'affiche la bienvenue que dans Chat. */
+    $('chat').dataset.module = outilActuel;
 }
 
 /* Ce qu'affichait chaque outil dans cet onglet (conversation, saisie, notes de Rédiger), retrouvé au retour. */
@@ -177,6 +179,48 @@ afficherLangues();
 for (const bouton of document.querySelectorAll('[data-outil]')) {
     bouton.addEventListener('click', () => {
         choisirOutil(bouton.dataset.outil);
+    });
+}
+
+/**
+ * Question de calcul tirée au hasard : un pourcentage ou une division.
+ *
+ * Un pourcentage d'un entier tombe juste (deux décimales au plus). Une division
+ * peut ne pas tomber juste : "environ" seulement si le résultat a plus de deux décimales.
+ *
+ * @returns {string} Par exemple "Combien font 35 % de 437 ?" ou "Combien font environ 413 divisé par 7 ?".
+ */
+function exempleCalcul() {
+    if (Math.random() < 0.5) {
+        const pourcent = 5 + 5 * Math.floor(Math.random() * 19);
+        const nombre = 20 + Math.floor(Math.random() * 981);
+        return t('bienvenue.exemple-calcul', { p: pourcent, n: nombre.toLocaleString(I18n.langue) });
+    }
+    const dividende = 100 + Math.floor(Math.random() * 900);
+    const diviseur = 3 + Math.floor(Math.random() * 7);
+    const deuxDecimales = (dividende * 100) % diviseur === 0;
+    return t(deuxDecimales ? 'bienvenue.exemple-division' : 'bienvenue.exemple-division-environ',
+        { a: dividende, b: diviseur });
+}
+
+/* Suggestions du chat vide : ouvrir le module s'il y en a un, puis préremplir un exemple. */
+for (const bouton of document.querySelectorAll('.suggestion')) {
+    bouton.addEventListener('click', () => {
+        if (bouton.dataset.module) {
+            choisirOutil(bouton.dataset.module);
+        }
+        const champ = $(outilActuel === 'rediger' ? 'notes' : 'saisie');
+        champ.value = bouton.dataset.exemple === 'bienvenue.exemple-calcul' ? exempleCalcul() : t(bouton.dataset.exemple);
+        /* Traduire vers la langue de l'interface : l'exemple est pris dans une autre langue. */
+        if (outilActuel === 'traduire' && langueCible === I18n.langue) {
+            const autre = langueCible === 'en' ? 'fr' : 'en';
+            champ.value = I18n.TEXTES[autre][bouton.dataset.exemple];
+        }
+        champ.focus();
+        /* Rédiger propose son courrier à chaque frappe : l'exemple le déclenche tout de suite. */
+        if (outilActuel === 'rediger') {
+            champ.dispatchEvent(new Event('input'));
+        }
     });
 }
 
