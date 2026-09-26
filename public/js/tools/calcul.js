@@ -138,6 +138,20 @@ const Calendrier = {
      * @param {string} langue - Code de langue de l'interface.
      * @returns {string} Une ligne pour le modèle et pour la trace.
      */
+    /**
+     * Date et heure d'un instant, en toutes lettres dans la langue donnée.
+     *
+     * @param {string} langue - Code de langue.
+     * @param {Date} [instant] - Maintenant par défaut.
+     * @returns {{date: string, heure: string}} Par exemple "dimanche 27 septembre 2026" et "00:55:22 UTC+2".
+     */
+    maintenant(langue, instant = new Date()) {
+        return {
+            date: instant.toLocaleDateString(langue, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }),
+            heure: instant.toLocaleTimeString(langue, { hour: '2-digit', minute: '2-digit', second: '2-digit', timeZoneName: 'short' })
+        };
+    },
+
     repondre(demande, langue) {
         const format = new Intl.DateTimeFormat(langue, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
         /* Sans date : aujourd'hui, à minuit comme une date lue. Le modèle ne
@@ -153,13 +167,23 @@ const Calendrier = {
                 - Date.UTC(debut.getFullYear(), debut.getMonth(), debut.getDate())) / 86400000;
             return t('calendrier.ecart', { debut: format.format(debut), fin: format.format(fin), jours: ecart });
         }
+        /* En heures : depuis maintenant, ou depuis minuit de la date donnée. */
+        if (Number.isFinite(demande.heures) && demande.heures !== 0) {
+            const base = demande.date ? debut : maintenant;
+            const clair = (d) => {
+                const m = this.maintenant(langue, d);
+                return m.date + ', ' + m.heure;
+            };
+            return t('calendrier.decale-heures', {
+                debut: clair(base), heures: demande.heures, fin: clair(new Date(base.getTime() + demande.heures * 3600000))
+            });
+        }
         if (Number.isInteger(demande.jours) && demande.jours !== 0) {
             const decale = new Date(debut.getFullYear(), debut.getMonth(), debut.getDate() + demande.jours);
             return t('calendrier.decale', { debut: format.format(debut), jours: demande.jours, date: format.format(decale) });
         }
         if (!demande.date) {
-            const heure = maintenant.toLocaleTimeString(langue, { hour: '2-digit', minute: '2-digit', second: '2-digit', timeZoneName: 'short' });
-            return t('calendrier.maintenant', { date: format.format(debut), heure: heure });
+            return t('calendrier.maintenant', this.maintenant(langue, maintenant));
         }
         return format.format(debut);
     }
@@ -406,7 +430,9 @@ const OUTILS_LOCAUX = {
     },
     calendrier: {
         icone: 'calendrier',
-        outil: () => definirOutil('calendrier', { date: { type: 'string' }, jours: { type: 'integer' }, fin: { type: 'string' } }, []),
+        outil: () => definirOutil('calendrier', {
+            date: { type: 'string' }, jours: { type: 'integer' }, heures: { type: 'number' }, fin: { type: 'string' }
+        }, []),
         executer: (a, langue) => Calendrier.repondre(a, langue)
     },
     compteur: {
