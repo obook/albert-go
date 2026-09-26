@@ -118,17 +118,24 @@ const Recherche = {
      * seuls domaines d'images autorisés par la CSP.
      *
      * @param {Object} corps - Réponse de l'API (prop=imageinfo).
-     * @returns {?Object} { src, auteur, licence, page }, ou null.
+     * @returns {?Object} { src, original, auteur, licence, page }, ou null.
      */
     lireImageCommons(corps) {
         const page = Object.values((corps && corps.query && corps.query.pages) || {})[0];
         const info = page && page.imageinfo && page.imageinfo[0];
-        if (!info || !/^image\//.test(info.mime) || !/^https:\/\/(upload|thumb)\.wikimedia\.org\//.test(info.thumburl || '')) {
+        const wikimedia = /^https:\/\/(upload|thumb)\.wikimedia\.org\//;
+        if (!info || !/^image\//.test(info.mime) || !wikimedia.test(info.thumburl || '')) {
             return null;
         }
         const meta = info.extmetadata || {};
         const texte = (champ) => ((meta[champ] && meta[champ].value) || '').replace(/<[^>]*>/g, '').trim();
-        return { src: info.thumburl, auteur: texte('Artist'), licence: texte('LicenseShortName'), page: info.descriptionurl };
+        return {
+            src: info.thumburl,
+            original: wikimedia.test(info.url || '') ? info.url : info.descriptionurl,
+            auteur: texte('Artist'),
+            licence: texte('LicenseShortName'),
+            page: info.descriptionurl
+        };
     },
 
     /**
