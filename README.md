@@ -72,7 +72,7 @@ Audit interne et externe, modèle de menaces et plan d'action : [SECURITE.md](SE
 - Par défaut, la clé et l'historique des questions sont effacés de `sessionStorage` à la fermeture de l'onglet. Interrupteur activé, ils restent dans `localStorage`.
 - La clé part dans l'en-tête `Authorization`, jamais dans l'URL.
 - Elle transite par l'instance n8n : l'administrateur de cette instance peut techniquement la voir. Le workflow n'enregistre aucune exécution, donc aucun en-tête.
-- Le workflow compte les sessions par jour (page ouverte avec une clé acceptée par Albert) : nombre d'appels, nombre de clés distinctes (empreinte de la clé et du jour, jamais la clé) et origine. Rien d'autre, 90 jours au plus. Le total s'affiche dans "À propos", lu sur `albert-go/stats`, public.
+- Le workflow compte les sessions par jour (page ouverte avec une clé acceptée par Albert) : nombre d'appels, nombre de clés distinctes (empreinte de la clé et du jour, jamais la clé). Rien d'autre, 90 jours au plus. Le total s'affiche dans "À propos", lu sur `albert-go/stats`, public.
 - Le webhook appelle uniquement l'API Albert, dont l'adresse est fixée dans le workflow.
 - La page ne charge aucun script externe. Une politique CSP limite les connexions à l'instance n8n et aux moteurs de recherche, et les scripts au site lui-même.
 - Le HTML produit à partir des réponses d'Albert est assaini avant affichage : scripts, gestionnaires d'événements et liens `javascript:` sont retirés.
@@ -86,6 +86,7 @@ Navigateur -> webhook n8n -> API Albert
 ```
 
 - `public/` : la page (HTML, CSS, JavaScript), publiée sur Pages, avec les bibliothèques embarquées dans `public/vendor/`.
+- `public/js/tools/` : les outils proposés au modèle (calculs, recherche web, images de Commons).
 - `n8n/albert-proxy.json` : le workflow n8n, à importer dans une instance n8n puis publier.
 
 ## Développement

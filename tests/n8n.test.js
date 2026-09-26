@@ -23,7 +23,7 @@ function noeud(nom, stats) {
         () => stats);
 }
 
-test('Compteur : appels, utilisateurs distincts et origines, sans la clé', () => {
+test('Compteur : appels et utilisateurs distincts, sans la clé', () => {
     const stats = {};
     const compter = noeud('Compteur', stats);
     const item = compter({ authorization: 'Bearer cle-secrete-1', origin: 'https://a.fr' });
@@ -36,7 +36,6 @@ test('Compteur : appels, utilisateurs distincts et origines, sans la clé', () =
     const [jours] = noeud('Lire stats', stats)();
     assert.deepStrictEqual(Object.values(jours.json),
         [{ appels: 3, utilisateurs: 2 }]);
-    assert.deepStrictEqual(Object.values(stats)[0].origines, { 'https://a.fr': 2, aucune: 1 });
 });
 
 test('Compteur : garde 90 jours', () => {

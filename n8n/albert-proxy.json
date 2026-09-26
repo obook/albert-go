@@ -218,7 +218,7 @@
       "typeVersion": 2,
       "position": [550, 200],
       "parameters": {
-        "jsCode": "// Sessions par jour, clés acceptées par Albert : empreinte FNV-1a de clé + jour, la clé n'est pas gardée.\nif ($input.first().json.statusCode !== 200) return $input.all();\nconst h = $('Webhook modèles').first().json.headers;\nconst jour = new Date().toISOString().slice(0, 10);\nlet e = 0x811c9dc5;\nfor (const c of h.authorization + jour) e = Math.imul(e ^ c.charCodeAt(0), 0x01000193);\nconst id = (e >>> 0).toString(16);\nconst stats = $getWorkflowStaticData('global');\nconst j = stats[jour] || { appels: 0, empreintes: [], origines: {} };\nj.appels++;\nif (!j.empreintes.includes(id)) j.empreintes.push(id);\nconst o = h.origin || 'aucune';\nj.origines[o] = (j.origines[o] || 0) + 1;\nstats[jour] = j;\n// 90 jours gardés.\nfor (const d of Object.keys(stats).sort().slice(0, -90)) delete stats[d];\nreturn $input.all();"
+        "jsCode": "/* Sessions par jour, clés acceptées par Albert : empreinte FNV-1a de clé + jour, la clé n'est pas gardée. */\nif ($input.first().json.statusCode !== 200) return $input.all();\nconst h = $('Webhook modèles').first().json.headers;\nconst jour = new Date().toISOString().slice(0, 10);\nlet e = 0x811c9dc5;\nfor (const c of h.authorization + jour) e = Math.imul(e ^ c.charCodeAt(0), 0x01000193);\nconst id = (e >>> 0).toString(16);\nconst stats = $getWorkflowStaticData('global');\nconst j = stats[jour] || { appels: 0, empreintes: [] };\nj.appels++;\nif (!j.empreintes.includes(id)) j.empreintes.push(id);\nstats[jour] = j;\n/* 90 jours gardés. */\nfor (const d of Object.keys(stats).sort().slice(0, -90)) delete stats[d];\nreturn $input.all();"
       }
     },
     {
@@ -244,7 +244,7 @@
       "typeVersion": 2,
       "position": [220, 700],
       "parameters": {
-        "jsCode": "// Public : nombres seulement, ni empreintes ni origines.\nconst stats = $getWorkflowStaticData('global');\nconst jours = {};\nfor (const [d, j] of Object.entries(stats)) jours[d] = { appels: j.appels, utilisateurs: j.empreintes.length };\nreturn [{ json: jours }];"
+        "jsCode": "/* Public : nombres seulement, jamais les empreintes. */\nconst stats = $getWorkflowStaticData('global');\nconst jours = {};\nfor (const [d, j] of Object.entries(stats)) jours[d] = { appels: j.appels, utilisateurs: j.empreintes.length };\nreturn [{ json: jours }];"
       }
     },
     {

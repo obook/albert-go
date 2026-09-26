@@ -349,6 +349,8 @@ for (const carte of cartesReglages) {
             return;
         }
         /* Sinon la liste déroulante rouvre dépliée avec la carte. */
-        carte.querySelectorAll('details[open]').forEach((liste) => { liste.open = false; });
+        for (const liste of carte.querySelectorAll('details[open]')) {
+            liste.open = false;
+        }
     });
 }

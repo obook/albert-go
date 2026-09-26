@@ -1,6 +1,6 @@
 /*
  * recherche.test.js
- * Tests de public/js/recherche.js : mise en forme et clé refusée.
+ * Tests de public/js/tools/recherche.js : mise en forme et clé refusée.
  *
  * Lancement : node --test
  *
@@ -14,7 +14,7 @@
 const { test } = require('node:test');
 const assert = require('node:assert');
 require('../public/js/i18n.js');
-const Recherche = require('../public/js/recherche.js');
+const Recherche = require('../public/js/tools/recherche.js');
 
 test('formater : un numéro par résultat, rien sans résultat', () => {
     const bloc = Recherche.formater(Recherche.numeroter([
