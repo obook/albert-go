@@ -70,8 +70,8 @@ function afficher() {
         focusSaisie();
     } else {
         /* Écran de la clé : effacement à la fermeture toujours proposé par défaut. */
-        $('partage-accueil').checked = true;
-        $('texte-partage-accueil').textContent = textePartage(true);
+        $('partage-accueil').checked = false;
+        $('texte-partage-accueil').textContent = textePartage(false);
         $('cle').focus();
     }
 }
@@ -110,7 +110,7 @@ pour que le lecteur d'écran annonce toujours le même nom, suivi de l'état.
 */
 
 /**
- * Texte de l'interrupteur d'effacement à la fermeture.
+ * Texte de l'interrupteur de conservation : activé, clé et conversations restent après la fermeture.
  *
  * @param {boolean} actif - Interrupteur activé.
  * @returns {string} Texte à afficher.
@@ -139,8 +139,8 @@ function afficherReglages() {
 
     $('memoire-reglage').checked = reglages.memoire;
     $('voix-en-ligne').checked = reglages.voixEnLigne;
-    $('partage-reglage').checked = partage;
-    $('texte-partage-reglage').textContent = textePartage(partage);
+    $('partage-reglage').checked = !partage;
+    $('texte-partage-reglage').textContent = textePartage(!partage);
     $('temperature').value = reglages.temperature;
     $('valeur-temperature').textContent = temperature;
     $('modele-choisi').replaceChildren(logo(Albert.logoEditeur(modele.reel)), modele.nom + ' (' + modele.id + ')');

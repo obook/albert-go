@@ -210,6 +210,62 @@
           }
         }
       }
+    },
+    {
+      "id": "0d4c1f52-1a4e-4c3a-9f7e-2b1d6a8e0011",
+      "name": "Compteur",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [550, 200],
+      "parameters": {
+        "jsCode": "// Sessions par jour, clés acceptées par Albert : empreinte FNV-1a de clé + jour, la clé n'est pas gardée.\nif ($input.first().json.statusCode !== 200) return $input.all();\nconst h = $('Webhook modèles').first().json.headers;\nconst jour = new Date().toISOString().slice(0, 10);\nlet e = 0x811c9dc5;\nfor (const c of h.authorization + jour) e = Math.imul(e ^ c.charCodeAt(0), 0x01000193);\nconst id = (e >>> 0).toString(16);\nconst stats = $getWorkflowStaticData('global');\nconst j = stats[jour] || { appels: 0, empreintes: [], origines: {} };\nj.appels++;\nif (!j.empreintes.includes(id)) j.empreintes.push(id);\nconst o = h.origin || 'aucune';\nj.origines[o] = (j.origines[o] || 0) + 1;\nstats[jour] = j;\n// 90 jours gardés.\nfor (const d of Object.keys(stats).sort().slice(0, -90)) delete stats[d];\nreturn $input.all();"
+      }
+    },
+    {
+      "id": "0d4c1f52-1a4e-4c3a-9f7e-2b1d6a8e0012",
+      "name": "Webhook stats",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [0, 700],
+      "webhookId": "5b0f3c1e-7d2a-4e8b-a1c9-3f6e2d4b0003",
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "albert-go/stats",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "https://booklageolivier.forge.apps.education.fr,http://localhost:8642"
+        }
+      }
+    },
+    {
+      "id": "0d4c1f52-1a4e-4c3a-9f7e-2b1d6a8e0013",
+      "name": "Lire stats",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [220, 700],
+      "parameters": {
+        "jsCode": "// Public : nombres seulement, ni empreintes ni origines.\nconst stats = $getWorkflowStaticData('global');\nconst jours = {};\nfor (const [d, j] of Object.entries(stats)) jours[d] = { appels: j.appels, utilisateurs: j.empreintes.length };\nreturn [{ json: jours }];"
+      }
+    },
+    {
+      "id": "0d4c1f52-1a4e-4c3a-9f7e-2b1d6a8e0014",
+      "name": "Réponse stats",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [440, 700],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              { "name": "Content-Type", "value": "application/json" },
+              { "name": "Access-Control-Allow-Origin", "value": "={{ ['https://booklageolivier.forge.apps.education.fr', 'http://localhost:8642'].includes($('Webhook stats').item.json.headers.origin) ? $('Webhook stats').item.json.headers.origin : 'null' }}" },
+              { "name": "Vary", "value": "Origin" }
+            ]
+          }
+        }
+      }
     }
   ],
   "connections": {
@@ -220,7 +276,10 @@
         [{ "node": "Refus sans clé (modèles)", "type": "main", "index": 0 }]
       ]
     },
-    "Albert modèles": { "main": [[{ "node": "Réponse modèles", "type": "main", "index": 0 }]] },
+    "Compteur": { "main": [[{ "node": "Réponse modèles", "type": "main", "index": 0 }]] },
+    "Webhook stats": { "main": [[{ "node": "Lire stats", "type": "main", "index": 0 }]] },
+    "Lire stats": { "main": [[{ "node": "Réponse stats", "type": "main", "index": 0 }]] },
+    "Albert modèles": { "main": [[{ "node": "Compteur", "type": "main", "index": 0 }]] },
     "Webhook chat": { "main": [[{ "node": "Clé présente ?", "type": "main", "index": 0 }]] },
     "Clé présente ?": {
       "main": [

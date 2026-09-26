@@ -106,8 +106,28 @@ function texteVersion() {
     return t('version.format', { commit: VERSION.commit, date: date });
 }
 
+/**
+ * "appel" ou "appels" selon la règle de la langue : 1,3 appel en français, 1.3 calls en anglais.
+ *
+ * @param {number} nombre - Nombre affiché.
+ * @returns {string} Le mot accordé.
+ */
+function motAppel(nombre) {
+    return t(new Intl.PluralRules(I18n.langue).select(nombre) === 'one' ? 'info.appel' : 'info.appels.pluriel');
+}
+
 $('ouvrir-info').addEventListener('click', () => {
     $('version').textContent = texteVersion();
+    Albert.appels().then(({ total, parHeure }) => {
+        const h = Math.round(parHeure * 10) / 10;
+        $('appels').textContent = t('info.appels', {
+            n: total.toLocaleString(I18n.langue),
+            h: h.toLocaleString(I18n.langue),
+            motN: motAppel(total),
+            motH: motAppel(h)
+        });
+        $('appels').hidden = false;
+    }).catch(() => {});
     $('info').showModal();
 });
 

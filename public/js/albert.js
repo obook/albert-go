@@ -96,6 +96,24 @@ const Albert = {
     },
 
     /**
+     * Sessions sur 90 jours (clé acceptée par Albert), comptées par le relais.
+     *
+     * @returns {Promise<{total: number, parHeure: number}>} Somme des jours, et moyenne horaire depuis le premier jour.
+     */
+    async appels() {
+        const res = await fetch(this.BASE.replace('/v1', '/stats'), { signal: AbortSignal.timeout(10000) });
+        if (!res.ok) {
+            throw new Error(res.status);
+        }
+        const jours = await res.json();
+        const total = Object.values(jours).reduce((n, jour) => n + jour.appels, 0);
+        /* ponytail: moyenne depuis minuit UTC du premier jour, compteur par heure si le rythme récent compte. */
+        const debut = Date.parse(Object.keys(jours).sort()[0] + 'T00:00:00Z');
+        const heures = Math.max(1, (Date.now() - debut) / 3600000);
+        return { total, parHeure: total ? total / heures : 0 };
+    },
+
+    /**
      * Garde les modèles de conversation, sans OCR, triés par alias.
      *
      * Le type est dans "type", ou dans "model_type" derrière certains proxys.

@@ -248,8 +248,8 @@ $('cle-recherche').addEventListener('change', () => {
 });
 
 $('partage-reglage').addEventListener('change', () => {
-    if (!changerPartage($('partage-reglage').checked)) {
-        $('partage-reglage').checked = partage;
+    if (!changerPartage(!$('partage-reglage').checked)) {
+        $('partage-reglage').checked = !partage;
         toast(t('toast.partage-impossible'));
     }
     afficherReglages();

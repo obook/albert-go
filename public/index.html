@@ -176,8 +176,7 @@
             <label class="interrupteur">
                 <input type="checkbox"
                        id="partage-accueil"
-                       role="switch"
-                       checked>
+                       role="switch">
                 <span id="texte-partage-accueil"></span>
             </label>
             <button type="submit" class="bouton-principal" data-t="cle.enregistrer"></button>
@@ -471,9 +470,7 @@
             <section>
                 <h3 data-t="info.donnees"></h3>
                 <ul>
-                    <li data-t="info.donnees.effacement"></li>
                     <li data-t="info.donnees.relais"></li>
-                    <li data-t="info.donnees.fichiers"></li>
                     <li data-t="info.donnees.traceurs"></li>
                 </ul>
             </section>
@@ -490,7 +487,8 @@
 
             <section>
                 <h3 data-t="info.projet"></h3>
-                <p data-t-html="info.projet.texte"></p>
+                <p class="note" data-t-html="info.projet.texte"></p>
+                <p class="note" id="appels" hidden></p>
                 <p class="note"><span data-t="info.version"></span><span id="version"></span></p>
             </section>
 
