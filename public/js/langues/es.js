@@ -83,7 +83,7 @@ I18n.TEXTES.es = {
     'cle.acceptee': 'Clave aceptada',
     'cle.commencer': 'Empezar',
     'bienvenue.titre': '¡Hola!',
-    'bienvenue.texte': 'Haga su pregunta abajo, o empiece con una de estas ideas.',
+    'bienvenue.texte': 'Algunas ideas para empezar:',
     'bienvenue.corriger': 'Corregir un texto',
     'bienvenue.traduire': 'Traducir',
     'bienvenue.rediger': 'Redactar una carta',

@@ -83,7 +83,7 @@ I18n.TEXTES.de = {
     'cle.acceptee': 'Schlüssel akzeptiert',
     'cle.commencer': 'Loslegen',
     'bienvenue.titre': 'Hallo!',
-    'bienvenue.texte': 'Stellen Sie unten Ihre Frage, oder beginnen Sie mit einer dieser Ideen.',
+    'bienvenue.texte': 'Ein paar Ideen für den Anfang:',
     'bienvenue.corriger': 'Einen Text korrigieren',
     'bienvenue.traduire': 'Übersetzen',
     'bienvenue.rediger': 'Einen Brief schreiben',
