@@ -170,7 +170,7 @@ I18n.TEXTES.de = {
 
     /* Über. */
     'info.titre': 'Über Albert Go',
-    'info.intro': 'Mit Albert Go chatten Sie mit <a href="https://albert.sites.beta.gouv.fr/" target="_blank" rel="noopener noreferrer">Albert</a>, der souveränen KI des französischen Staates unter der <a href="https://ia.numerique.gouv.fr/outils-ia/albert-api/" target="_blank" rel="noopener noreferrer">DINUM</a>, mit Ihrem persönlichen API-Schlüssel.',
+    'info.intro': 'Mit Albert Go chatten Sie mit der KI der interministeriellen Digitaldirektion (<a href="https://ia.numerique.gouv.fr/outils-ia/albert-api/" target="_blank" rel="noopener noreferrer">DINUM</a>), mit Ihrem persönlichen API-Schlüssel.',
     'info.donnees': 'Ihre Daten',
     'info.donnees.relais': 'Ihr Schlüssel und Ihre Fragen laufen über ein interministerielles n8n-Relais, das nichts speichert, und dann weiter zu Albert API.',
     'info.donnees.traceurs': 'Kein Konto, kein Cookie, keine Bibliothek von einer fremden Seite. Externe Internet-Werkzeuge werden nur mit Ihrer Erlaubnis aufgerufen.',
