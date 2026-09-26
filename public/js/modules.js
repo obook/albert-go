@@ -182,6 +182,19 @@ for (const bouton of document.querySelectorAll('[data-outil]')) {
     });
 }
 
+/**
+ * Question de calcul tirée au hasard : un pourcentage d'un nombre.
+ *
+ * @returns {string} Par exemple "Combien font environ 35 % de 437 ?", "environ" si le résultat n'est pas entier.
+ */
+function exempleCalcul() {
+    const pourcent = 5 + 5 * Math.floor(Math.random() * 19);
+    const nombre = 20 + Math.floor(Math.random() * 981);
+    const entier = (pourcent * nombre) % 100 === 0;
+    return t(entier ? 'bienvenue.exemple-calcul' : 'bienvenue.exemple-calcul-environ',
+        { p: pourcent, n: nombre.toLocaleString(I18n.langue) });
+}
+
 /* Suggestions du chat vide : ouvrir le module s'il y en a un, puis préremplir un exemple. */
 for (const bouton of document.querySelectorAll('.suggestion')) {
     bouton.addEventListener('click', () => {
@@ -189,7 +202,7 @@ for (const bouton of document.querySelectorAll('.suggestion')) {
             choisirOutil(bouton.dataset.module);
         }
         const champ = $(outilActuel === 'rediger' ? 'notes' : 'saisie');
-        champ.value = t(bouton.dataset.exemple);
+        champ.value = bouton.dataset.exemple === 'bienvenue.exemple-calcul' ? exempleCalcul() : t(bouton.dataset.exemple);
         /* Traduire vers la langue de l'interface : l'exemple est pris dans une autre langue. */
         if (outilActuel === 'traduire' && langueCible === I18n.langue) {
             const autre = langueCible === 'en' ? 'fr' : 'en';
