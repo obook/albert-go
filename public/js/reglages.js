@@ -200,9 +200,10 @@ $('cx-recherche').addEventListener('change', () => {
     ecrire('cx', reglages.cx);
 });
 
-/* Recherche désactivée : le choix du moteur est fermé et grisé. */
+/* Recherche désactivée : choix du moteur et clés fermés et grisés. */
 function afficherRecherche() {
     $('choix-moteur').inert = !reglages.recherche;
+    $('cles-recherche').inert = !reglages.recherche;
     if (!reglages.recherche) {
         $('choix-moteur').open = false;
     }
