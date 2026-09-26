@@ -181,3 +181,18 @@ test('telechargerAvecAttente : bouton inactif pendant la préparation, rendu ens
         delete global.toast;
     }
 });
+
+test('imageApprochee : nom inventé, vraie image dont le nom reprend ses mots, sinon rien', async () => {
+    const cherches = [];
+    global.Recherche = {
+        chercherImages: async (mots) => { cherches.push(mots); return [{ titre: 'File:Le Chat de Giacometti.jpg' }, { titre: "File:Les Demoiselles d'Avignon (79).jpg" }]; },
+        imageCommons: async (titre) => ({ page: titre })
+    };
+    try {
+        assert.deepStrictEqual(await Rendu.imageApprochee("File:Picasso,_Les_Demoiselles_d'Avignon_(1907).jpg"), { page: "File:Les Demoiselles d'Avignon (79).jpg" });
+        assert.strictEqual(cherches[0], "Picasso Les Demoiselles d'Avignon");
+        assert.strictEqual(await Rendu.imageApprochee('File:Tour_Eiffel_de_nuit.jpg'), null);
+    } finally {
+        delete global.Recherche;
+    }
+});
