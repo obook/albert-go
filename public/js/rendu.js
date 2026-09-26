@@ -287,8 +287,16 @@ const Rendu = {
             credit.href = image.page;
             credit.target = '_blank';
             credit.rel = 'noopener noreferrer';
-            /* Le lien mène à la page Commons : le nom du site ne sert que si rien d'autre n'est connu. */
-            credit.textContent = [image.description, image.auteur, image.licence].filter(Boolean).join(', ') || 'Wikimedia Commons';
+            /* Description en italique : elle contient souvent déjà des guillemets. Le lien mène à
+               la page Commons : le nom du site ne sert que si rien d'autre n'est connu. */
+            const reste = [image.auteur, image.licence].filter(Boolean).join(', ');
+            if (image.description) {
+                const description = document.createElement('i');
+                description.textContent = image.description;
+                credit.append(description, reste ? ', ' + reste : '');
+            } else {
+                credit.textContent = reste || 'Wikimedia Commons';
+            }
             const legende = document.createElement('figcaption');
             legende.append(credit);
             /* Clic : l'image en taille réelle, dans un nouvel onglet. */
