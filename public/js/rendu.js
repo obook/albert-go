@@ -248,7 +248,7 @@ const Rendu = {
     },
 
     /**
-     * Affiche sous un lien vers Commons l'image qu'il désigne, avec son
+     * Affiche au-dessus d'un lien vers Commons l'image qu'il désigne, avec son
      * crédit. Seulement si l'outil Images est activé : Wikimedia voit
      * alors l'adresse IP.
      *
@@ -266,9 +266,9 @@ const Rendu = {
                 continue;
             }
             vus.add(titre);
-            /* Dans un <li>, la figure va dedans ; sinon après le paragraphe. */
+            /* Image avant le lien : en tête du <li>, sinon avant le paragraphe. */
             const bloc = lien.closest('p, li');
-            const placer = (noeud) => bloc && bloc.tagName === 'LI' ? bloc.append(noeud) : (bloc || lien).after(noeud);
+            const placer = (noeud) => bloc && bloc.tagName === 'LI' ? bloc.prepend(noeud) : (bloc || lien).before(noeud);
             const image = await Recherche.imageCommons(titre).catch(() => null);
             if (!image) {
                 const note = document.createElement('p');
