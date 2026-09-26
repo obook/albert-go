@@ -46,7 +46,6 @@ async function validerCle() {
     $('dialogue-cle').close();
     $('etat-cle').textContent = t('cle.acceptee');
     $('commencer').disabled = false;
-    $('commencer').focus();
 }
 
 /**
