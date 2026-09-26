@@ -221,7 +221,7 @@ n'avaient pas la même largeur. Le préfixe .pico passe devant son sélecteur. *
     border-radius: 0.375rem;
 }
 /* Marge négative : le logo ne grandit pas le menu. */
-#modele-choisi .logo {
+#modele-choisi .logo, #moteur-choisi .logo {
     width: 1.5rem;
     height: 1.5rem;
     flex: none;

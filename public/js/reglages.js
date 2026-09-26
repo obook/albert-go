@@ -30,6 +30,16 @@ function elementTexte(balise, classe, texte) {
 }
 
 /**
+ * Logo d'un moteur, repris de son site.
+ *
+ * @param {string} id - Clé de Recherche.MOTEURS.
+ * @returns {string} Chemin de l'image.
+ */
+function logoMoteur(id) {
+    return 'images/moteurs/' + id + (id === 'data-gouv' ? '.svg' : '.png');
+}
+
+/**
  * Affiche une carte par modèle dans la liste des réglages.
  */
 function afficherModeles() {
@@ -41,12 +51,7 @@ function afficherModeles() {
         radio.value = m.id;
         /* Un modèle hors de la liste connue n'a pas de description à lui. */
         const description = I18n.existe('modele.' + m.id) ? t('modele.' + m.id) : t('modele.inconnu');
-        /* Décoratif : le nom du modèle suit juste après. */
-        const logo = document.createElement('img');
-        logo.className = 'logo';
-        logo.src = Albert.logoEditeur(m.reel);
-        logo.alt = '';
-        label.append(radio, logo,
+        label.append(radio, logo(Albert.logoEditeur(m.reel)),
             elementTexte('strong', 'nom', m.nom),
             elementTexte('span', 'type', t('modele.type.' + m.type)),
             elementTexte('span', 'description', description),
@@ -163,13 +168,13 @@ function afficherMoteurs() {
         radio.name = 'moteur';
         radio.value = id;
         radio.checked = id === reglages.fournisseur;
-        label.append(radio,
+        label.append(radio, logo(logoMoteur(id)),
             elementTexte('strong', 'nom', Recherche.MOTEURS[id].nom),
             elementTexte('span', 'description', t('moteur.' + id)));
         return label;
     });
     $('moteurs').replaceChildren(...cartes);
-    $('moteur-choisi').textContent = Recherche.MOTEURS[reglages.fournisseur].nom;
+    $('moteur-choisi').replaceChildren(logo(logoMoteur(reglages.fournisseur)), Recherche.MOTEURS[reglages.fournisseur].nom);
 }
 
 /* Un moteur retiré du code laisserait un réglage enregistré sans carte. */
