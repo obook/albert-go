@@ -59,7 +59,7 @@ label.interrupteur {
 /* À plat, les réglages faisaient trois écrans sur un téléphone. */
 #reglages { background: var(--fond-reglages); }
 #reglages .carte {
-    border: 1px solid var(--bord);
+    border: 1px solid var(--bord-carte);
     border-radius: 0.75rem;
     background: var(--surface);
     /* Pico recolore le titre quand le details s'ouvre et quand il a le focus :

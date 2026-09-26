@@ -33,8 +33,9 @@
     --jaune-fond: #fef6e3;
     --jaune-bord: #b38b00;
     /* Réglages : cartes blanches sur fond gris en clair, inchangées en sombre. */
-    --fond-reglages: #eeeeee;
+    --fond-reglages: #e0e0e0;
     --titre-carte: var(--surface);
+    --bord-carte: #c8c8c8;
     --code-mot: #cf222e;
     --code-texte: #0a3069;
     --code-commentaire: #59636e;
@@ -63,6 +64,7 @@
         --jaune-bord: #e0b83c;
         --fond-reglages: var(--surface);
         --titre-carte: var(--fond);
+        --bord-carte: var(--bord);
         --code-mot: #ff7b72;
         --code-texte: #a5d6ff;
         --code-commentaire: #9198a1;
@@ -91,6 +93,7 @@
     --jaune-bord: #e0b83c;
     --fond-reglages: var(--surface);
     --titre-carte: var(--fond);
+    --bord-carte: var(--bord);
     --code-mot: #ff7b72;
     --code-texte: #a5d6ff;
     --code-commentaire: #9198a1;
