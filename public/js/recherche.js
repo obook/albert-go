@@ -101,6 +101,50 @@ const Recherche = {
     },
 
     /**
+     * Titre du fichier visé par un lien vers Commons, ex. "File:A.jpg".
+     *
+     * @param {string} adresse - Adresse du lien.
+     * @returns {?string} Titre, ou null si ce n'est pas un fichier de Commons.
+     */
+    fichierCommons(adresse) {
+        const trouve = adresse.match(/^https:\/\/commons\.wikimedia\.org\/wiki\/((?:File|Fichier|Datei|Archivo):[^?#]+)$/);
+        return trouve ? decodeURIComponent(trouve[1]) : null;
+    },
+
+    /**
+     * Miniature d'un fichier de Commons, lue dans la réponse de l'API.
+     *
+     * Seule une image servie par upload ou thumb.wikimedia.org passe,
+     * seuls domaines d'images autorisés par la CSP.
+     *
+     * @param {Object} corps - Réponse de l'API (prop=imageinfo).
+     * @returns {?Object} { src, auteur, licence, page }, ou null.
+     */
+    lireImageCommons(corps) {
+        const page = Object.values((corps && corps.query && corps.query.pages) || {})[0];
+        const info = page && page.imageinfo && page.imageinfo[0];
+        if (!info || !/^image\//.test(info.mime) || !/^https:\/\/(upload|thumb)\.wikimedia\.org\//.test(info.thumburl || '')) {
+            return null;
+        }
+        const meta = info.extmetadata || {};
+        const texte = (champ) => ((meta[champ] && meta[champ].value) || '').replace(/<[^>]*>/g, '').trim();
+        return { src: info.thumburl, auteur: texte('Artist'), licence: texte('LicenseShortName'), page: info.descriptionurl };
+    },
+
+    /**
+     * Demande à Commons la miniature d'un fichier.
+     *
+     * @param {string} titre - Titre du fichier, ex. "File:A.jpg".
+     * @returns {Promise<?Object>} Voir lireImageCommons.
+     */
+    async imageCommons(titre) {
+        const adresse = 'https://commons.wikimedia.org/w/api.php?action=query&format=json&origin=*'
+            + '&prop=imageinfo&iiprop=url|mime|extmetadata&iiurlwidth=480&titles=' + encodeURIComponent(titre);
+        const reponse = await fetch(adresse);
+        return reponse.ok ? this.lireImageCommons(await reponse.json()) : null;
+    },
+
+    /**
      * Indique si le moteur répond sans clé de l'utilisateur.
      *
      * @param {string} fournisseur - Clé de MOTEURS.

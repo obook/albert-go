@@ -265,3 +265,25 @@ test('numeroter : la deuxième recherche continue, une page garde son numéro', 
     ], faites);
     assert.deepStrictEqual(numerotes.map(r => [r.numero, r.connue]), [[1, true], [3, false]]);
 });
+
+test('fichierCommons : titre d\'un lien vers un fichier de Commons', () => {
+    assert.strictEqual(Recherche.fichierCommons('https://commons.wikimedia.org/wiki/File:Amanda_Lear_1979.jpg'), 'File:Amanda_Lear_1979.jpg');
+    assert.strictEqual(Recherche.fichierCommons('https://commons.wikimedia.org/wiki/Fichier:Tour_Eiffel%C3%A9.jpg'), 'Fichier:Tour_Eiffelé.jpg');
+    assert.strictEqual(Recherche.fichierCommons('https://commons.wikimedia.org/wiki/Category:Paris'), null);
+    assert.strictEqual(Recherche.fichierCommons('https://evil.example/wiki/File:x.jpg'), null);
+});
+
+test('lireImageCommons : miniature, auteur et licence, seulement une image', () => {
+    const corps = (mime, thumburl) => ({ query: { pages: { 1: { title: 'File:A.jpg', imageinfo: [{
+        mime, thumburl, descriptionurl: 'https://commons.wikimedia.org/wiki/File:A.jpg',
+        extmetadata: { Artist: { value: '<a href="x">Jean <b>Dupont</b></a>' }, LicenseShortName: { value: 'CC BY-SA 4.0' } }
+    }] } } } });
+    assert.deepStrictEqual(Recherche.lireImageCommons(corps('image/jpeg', 'https://upload.wikimedia.org/a/480px-A.jpg')), {
+        src: 'https://upload.wikimedia.org/a/480px-A.jpg', auteur: 'Jean Dupont', licence: 'CC BY-SA 4.0',
+        page: 'https://commons.wikimedia.org/wiki/File:A.jpg'
+    });
+    assert.strictEqual(Recherche.lireImageCommons(corps('image/png', 'https://thumb.wikimedia.org/b.png')).src, 'https://thumb.wikimedia.org/b.png');
+    assert.strictEqual(Recherche.lireImageCommons(corps('application/pdf', 'https://upload.wikimedia.org/a.jpg')), null);
+    assert.strictEqual(Recherche.lireImageCommons(corps('image/jpeg', 'https://evil.example/a.jpg')), null);
+    assert.strictEqual(Recherche.lireImageCommons({ query: { pages: { '-1': { missing: '' } } } }), null);
+});
