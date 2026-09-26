@@ -75,7 +75,7 @@ I18n.TEXTES.es = {
     'cle.intro': 'La IA del Estado francés para charlar, corregir, reformular, traducir y redactar.',
     'cle.etape-acces': '¿Todavía sin acceso?',
     'cle.exemple': 'sk-...',
-    'cle.souvenir': 'Guardar la clave en este navegador',
+    'cle.souvenir': 'Guardar la clave y las conversaciones en este navegador, borrables en cualquier momento',
     'cle.ou-va': '¿Adónde va mi clave?',
     'cle.titre': 'Bienvenido a Albert Go',
     'cle.label': 'Clave',
