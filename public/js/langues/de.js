@@ -75,7 +75,7 @@ I18n.TEXTES.de = {
     'cle.intro': 'Die KI des französischen Staates zum Chatten, Korrigieren, Umformulieren, Übersetzen und Schreiben.',
     'cle.etape-acces': 'Noch kein Zugang?',
     'cle.exemple': 'sk-...',
-    'cle.souvenir': 'Auf diesem Gerät angemeldet bleiben',
+    'cle.souvenir': 'Schlüssel und Gespräche in diesem Browser behalten',
     'cle.ou-va': 'Wohin geht mein Schlüssel?',
     'cle.titre': 'Willkommen bei Albert Go',
     'cle.label': 'Schlüssel',
