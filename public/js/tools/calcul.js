@@ -1,6 +1,6 @@
 /*
  * tools/calcul.js
- * Outils locaux du modèle : calcul, calendrier, compteur, tirage, statistiques.
+ * Outils locaux du modèle : calcul, calendrier, compteur, tirage, statistiques, facteurs premiers.
  * Là où les modèles se trompent ; tout reste dans le navigateur.
  *
  * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
@@ -210,6 +210,38 @@ const Tirage = {
     }
 };
 
+const Facteurs = {
+    /** Plus grand nombre accepté : sa racine, un million, borne les divisions. */
+    MAX: 1e12,
+
+    /**
+     * Décompose un entier en facteurs premiers, par divisions successives.
+     *
+     * @param {number} n - Entier de 2 à MAX.
+     * @returns {Array<Array<number>>} Couples [premier, exposant], du plus petit au plus grand.
+     */
+    decomposer(n) {
+        if (!Number.isSafeInteger(n) || n < 2 || n > this.MAX) {
+            throw new Error(t('facteurs.invalide'));
+        }
+        const facteurs = [];
+        for (let p = 2; p * p <= n; p += (p === 2 ? 1 : 2)) {
+            let exposant = 0;
+            while (n % p === 0) {
+                n /= p;
+                exposant++;
+            }
+            if (exposant) {
+                facteurs.push([p, exposant]);
+            }
+        }
+        if (n > 1) {
+            facteurs.push([n, 1]);
+        }
+        return facteurs;
+    }
+};
+
 const Statistiques = {
     /**
      * Statistiques d'une série, quartiles comme au lycée.
@@ -317,10 +349,22 @@ const OUTILS_LOCAUX = {
         icone: 'compteur',
         outil: () => definirOutil('compteur', { texte: { type: 'string' } }, ['texte']),
         executer: a => t('compteur.resultat', Compteur.compter(a.texte))
+    },
+    facteurs: {
+        icone: 'facteurs',
+        outil: () => definirOutil('facteurs', { nombre: { type: 'integer' } }, ['nombre']),
+        executer: (a) => {
+            const n = Number(a.nombre);
+            const facteurs = Facteurs.decomposer(n);
+            if (facteurs.length === 1 && facteurs[0][1] === 1) {
+                return t('facteurs.premier', { nombre: n });
+            }
+            return n + ' = ' + facteurs.map(([p, e]) => (e > 1 ? p + '^' + e : String(p))).join(' × ');
+        }
     }
 };
 
 /* Export pour les tests Node ; ignoré dans le navigateur. */
 if (typeof module !== 'undefined') {
-    module.exports = { Calcul, Calendrier, Compteur, Tirage, Statistiques, OUTILS_LOCAUX };
+    module.exports = { Calcul, Calendrier, Compteur, Tirage, Statistiques, Facteurs, OUTILS_LOCAUX };
 }

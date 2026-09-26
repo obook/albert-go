@@ -14,7 +14,7 @@
 const { test } = require('node:test');
 const assert = require('node:assert');
 require('../public/js/i18n.js');
-const { Calcul, Calendrier, Compteur, Tirage, Statistiques, OUTILS_LOCAUX } = require('../public/js/tools/calcul.js');
+const { Calcul, Calendrier, Compteur, Tirage, Statistiques, Facteurs, OUTILS_LOCAUX } = require('../public/js/tools/calcul.js');
 
 test('evaluer : priorités, parenthèses, puissance, virgule', () => {
     assert.strictEqual(Calcul.evaluer('2 + 3 * 4'), 14);
@@ -92,4 +92,14 @@ test('outils locaux : chaque outil a ses textes dans les quatre langues', () => 
         }
     }
     I18n.langue = 'fr';
+});
+
+test('facteurs : décomposition, puissances, nombre premier, bornes', () => {
+    assert.deepStrictEqual(Facteurs.decomposer(477843), [[3, 1], [149, 1], [1069, 1]]);
+    assert.strictEqual(OUTILS_LOCAUX.facteurs.executer({ nombre: 477843 }), '477843 = 3 × 149 × 1069');
+    assert.strictEqual(OUTILS_LOCAUX.facteurs.executer({ nombre: 360 }), '360 = 2^3 × 3^2 × 5');
+    assert.match(OUTILS_LOCAUX.facteurs.executer({ nombre: 1069 }), /1069/);
+    assert.throws(() => Facteurs.decomposer(1));
+    assert.throws(() => Facteurs.decomposer(2.5));
+    assert.throws(() => Facteurs.decomposer(1e13));
 });
