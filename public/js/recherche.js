@@ -297,10 +297,19 @@ const Recherche = {
      */
     garderNomsPropres(images, mots) {
         const noms = this.motsCles(mots.split(/\s+/).filter(m => /^\p{Lu}/u.test(m)).join(' '));
-        return images.filter((i) => {
-            const connus = this.motsCles(i.titre + ' ' + i.desc);
-            return noms.every(n => connus.includes(n));
-        });
+        return images.filter(i => this.contientTout(i, noms));
+    },
+
+    /**
+     * Indique si le nom ou la description d'une image contient tous les mots.
+     *
+     * @param {Object} image - { titre, desc }.
+     * @param {string[]} mots - Mots de motsCles.
+     * @returns {boolean} true si aucun ne manque.
+     */
+    contientTout(image, mots) {
+        const connus = this.motsCles(image.titre + ' ' + image.desc);
+        return mots.every(m => connus.includes(m));
     },
 
     /**

@@ -665,10 +665,7 @@ const Rendu = {
         const mots = titre.replace(/^[^:]+:/, '').replace(/\.[^.]+$/, '').replace(/[_,()]+|\b\d+\b/g, ' ').replace(/\s+/g, ' ').trim();
         /* Tous les mots d'au moins 4 lettres dans le nom ou la description, sinon mieux vaut rien : Picasso ne doit pas donner Munch. */
         const voulus = Recherche.motsCles(mots);
-        const trouvee = (await Recherche.chercherImages(mots)).find((i) => {
-            const connus = Recherche.motsCles(i.titre + ' ' + i.desc);
-            return voulus.every(m => connus.includes(m));
-        });
+        const trouvee = (await Recherche.chercherImages(mots)).find(i => Recherche.contientTout(i, voulus));
         return trouvee ? Recherche.imageCommons(trouvee.titre) : null;
     },
 

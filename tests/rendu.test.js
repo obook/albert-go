@@ -187,6 +187,7 @@ test('imageApprochee : nom inventé, vraie image qui reprend tous ses mots, sino
     require('../public/js/i18n.js');
     global.Recherche = {
         motsCles: require('../public/js/recherche.js').motsCles,
+        contientTout: require('../public/js/recherche.js').contientTout,
         chercherImages: async (mots) => {
             cherches.push(mots);
             return [{ titre: 'File:Munch - Weeping Woman.jpg', desc: '' }, { titre: 'File:Le Chat de Giacometti.jpg', desc: '' },
