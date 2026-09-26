@@ -310,3 +310,12 @@ test('outilImages : outil image_commons avec un paramètre q', () => {
     assert.strictEqual(outil.function.name, 'image_commons');
     assert.deepStrictEqual(outil.function.parameters.required, ['q']);
 });
+
+test('garderNomsPropres : chaque nom propre cherché doit figurer dans le nom ou la description', () => {
+    const images = [
+        { titre: 'File:Mädchen vor Spiegel (Ernst Ludwig Kirchner).jpg', desc: 'Girl in Front of a Mirror' },
+        { titre: 'File:The Blue Room.jpg', desc: 'The Blue Room, by Pablo Picasso' }
+    ];
+    assert.deepStrictEqual(Recherche.garderNomsPropres(images, 'Picasso girl mirror').map(i => i.titre), ['File:The Blue Room.jpg']);
+    assert.strictEqual(Recherche.garderNomsPropres(images, 'girl mirror').length, 2);
+});

@@ -317,7 +317,7 @@ I18n.TEXTES.fr = {
     'etat.images': 'Recherche d\'images « {mots} »...',
     'reponse.images': 'Voir les images cherchées',
     'reponse.note-images': 'Images cherchées : {lignes}',
-    'images.rappel': 'Pour une photo ou une image, utilise l\'outil image_commons, pas recherche_web, puis donne le lien d\'un fichier trouvé.',
+    'images.rappel': 'Pour une photo ou une image, utilise l\'outil image_commons, pas recherche_web, puis donne le lien d\'un fichier trouvé. Ne décris jamais un fichier sans son lien ; si aucun ne correspond, dis-le.',
     'images.absent': 'Tu ne peux ni chercher ni montrer d\'image : si on t\'en demande une, dis qu\'il faut activer « Images Wikimedia » dans Réglages > Outils.',
     'reglages.outils-externes': 'Internet'
 };
