@@ -490,12 +490,14 @@ const Rendu = {
     chargerMermaid() {
         if (!this._mermaid) {
             this._mermaid = this.chargerScript('vendor/mermaid/mermaid.min.js').then(() => {
-                /* Thème clair : .diagramme a toujours un fond blanc. Sans
+                /* Thème neutral, noir et gris : lisible imprimé ; .diagramme a toujours un fond blanc. Sans
                    suppressErrorRendering, une erreur laisse sa bombe en haut de la page.
                    htmlLabels false : étiquettes en <text>, assainirSvg retire les foreignObject. */
                 mermaid.initialize({
                     startOnLoad: false,
-                    theme: 'default',
+                    theme: 'neutral',
+                    /* Barres et courbes : le gris très clair de neutral disparaît à l'impression. */
+                    themeVariables: { xyChart: { plotColorPalette: '#555555, #999999, #222222, #bbbbbb' } },
                     securityLevel: 'strict',
                     suppressErrorRendering: true,
                     htmlLabels: false,
