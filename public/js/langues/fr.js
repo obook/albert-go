@@ -79,7 +79,7 @@ I18n.TEXTES.fr = {
     'cle.ou-va': 'Où va ma clé ?',
     'cle.titre': 'Bienvenue sur Albert Go',
     'cle.label': 'Clé',
-    'cle.stockee': 'Votre clé est uniquement enregistrée dans ce navigateur.<br/>Elle passe par l\'<a href="https://n8n.incubateur.education.gouv.fr" target="_blank" rel="noopener noreferrer">incubateur interministériel</a> sans être enregistrée.',
+    'cle.stockee': 'Votre clé reste dans ce navigateur : en <code>sessionStorage</code> par défaut, effacée à la fermeture de l\'onglet ; en <code>localStorage</code> si vous activez "Garder la clé...", conservée jusqu\'à "Changer de clé".<br/>Elle passe par l\'<a href="https://n8n.incubateur.education.gouv.fr" target="_blank" rel="noopener noreferrer">incubateur interministériel</a> sans y être enregistrée.',
     'cle.enregistrer': 'Commencer',
     'cle.demander': '<a href="https://albert.sites.beta.gouv.fr/access/" target="_blank" rel="noopener noreferrer">Demander un accès à Albert</a>, réservé aux agents publics.',
     'cle.verification': 'Vérification de la clé...',
