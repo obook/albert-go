@@ -240,6 +240,7 @@ I18n.TEXTES.de = {
     'toast.reponse-copiee': 'Antwort kopiert.',
     'toast.code-copie': 'Code kopiert.',
     'toast.copie-refusee': 'Der Browser hat das Kopieren abgelehnt.',
+    'toast.telechargement-impossible': 'Download fehlgeschlagen.',
     'toast.partage-impossible': 'Wechsel nicht möglich: die Daten passen nicht in den neuen Speicher.',
     'toast.conversation-supprimee': 'Gespräch gelöscht.',
     'toast.conversation-longue': 'Gespräch zu lang zum Speichern. Es bleibt am Bildschirm, bis der Tab geschlossen wird.',

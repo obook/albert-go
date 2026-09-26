@@ -301,10 +301,13 @@ const Rendu = {
             /* Un lien download vers un autre site ouvre l'image : on la récupère. */
             if (/^https:\/\/upload\.wikimedia\.org\//.test(image.original)) {
                 const bouton = boutonAction(ICONES.telecharger, t('reponse.telecharger-image'));
-                bouton.addEventListener('click', async () => {
-                    const fichier = await fetch(image.original).then((r) => r.blob());
-                    this.telecharger(fichier, this.nomImage(titre));
-                });
+                bouton.addEventListener('click', () => this.telechargerAvecAttente(bouton,
+                    () => fetch(image.original).then((r) => {
+                        if (!r.ok) {
+                            throw new Error(r.status);
+                        }
+                        return r.blob();
+                    }), this.nomImage(titre)));
                 const boutons = document.createElement('div');
                 boutons.className = 'boutons-figure';
                 boutons.append(bouton);
@@ -490,9 +493,7 @@ const Rendu = {
             this.telecharger(new Blob([new XMLSerializer().serializeToString(this.svgAutonome(svg))], { type: 'image/svg+xml' }), nom('svg'));
         });
         const boutonPng = boutonAction(ICONES.png, t('reponse.telecharger-png'));
-        boutonPng.addEventListener('click', async () => {
-            this.telecharger(await this.enPng(svg), nom('png'));
-        });
+        boutonPng.addEventListener('click', () => this.telechargerAvecAttente(boutonPng, () => this.enPng(svg), nom('png')));
         const boutons = document.createElement('div');
         boutons.className = 'boutons-figure';
         boutons.append(boutonSvg, boutonPng);
@@ -637,6 +638,26 @@ const Rendu = {
     titreFigure(code) {
         const trouve = code.match(/<title>([^<]*)<\/title>/i) || code.match(/^\s*title:?\s+"?([^"\n]*?)"?\s*$/m);
         return trouve ? trouve[1].trim() : '';
+    },
+
+    /**
+     * Télécharge un fichier long à préparer : bouton inactif et clignotant en attendant.
+     *
+     * @param {HTMLButtonElement} bouton - Bouton cliqué.
+     * @param {function(): Promise<Blob>} preparer - Fabrique le contenu.
+     * @param {string} nom - Nom du fichier.
+     */
+    async telechargerAvecAttente(bouton, preparer, nom) {
+        bouton.disabled = true;
+        bouton.classList.add('en-cours');
+        try {
+            this.telecharger(await preparer(), nom);
+        } catch (err) {
+            toast(t('toast.telechargement-impossible'));
+        } finally {
+            bouton.disabled = false;
+            bouton.classList.remove('en-cours');
+        }
     },
 
     /**
