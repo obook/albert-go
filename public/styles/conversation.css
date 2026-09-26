@@ -124,6 +124,8 @@ main {
     color: var(--texte-doux);
 }
 .bouton-action:hover { border-color: var(--bleu); color: var(--bleu); }
+/* Fichier en préparation (image de Commons, PNG). */
+.bouton-action.en-cours { animation: clignote 1.2s infinite ease-in-out; cursor: progress; }
 .bouton-action svg,
 .icone-outil svg {
     width: 1.0625rem;
@@ -182,6 +184,7 @@ main {
 
 @media (prefers-reduced-motion: reduce) {
     .points span { animation: none; opacity: 0.6; }
+    .bouton-action.en-cours { animation: none; opacity: 0.5; }
 }
 
 /* Sources sous une réponse : les liens vont à la ligne sous les mots cherchés. */

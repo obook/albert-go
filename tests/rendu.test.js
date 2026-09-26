@@ -156,3 +156,28 @@ test('nomImage : nom du fichier Commons, sans rien que Windows refuse', () => {
     assert.strictEqual(Rendu.nomImage('File:Château de Versailles ? "vue" *2*.JPEG'), 'chateau-de-versailles-vue-2.jpeg');
     assert.strictEqual(Rendu.nomImage('File:→.png'), 'image.png');
 });
+
+test('telechargerAvecAttente : bouton inactif pendant la préparation, rendu ensuite, même en échec', async () => {
+    const classes = new Set();
+    const bouton = { disabled: false, classList: { add: (c) => classes.add(c), remove: (c) => classes.delete(c) } };
+    const avant = Rendu.telecharger;
+    const recus = [];
+    Rendu.telecharger = (fichier, nom) => recus.push(nom);
+    global.t = (cle) => cle;
+    global.toast = (texte) => recus.push(texte);
+    try {
+        let finir;
+        const attente = Rendu.telechargerAvecAttente(bouton, () => new Promise((r) => { finir = r; }), 'image.jpg');
+        assert.ok(bouton.disabled && classes.has('en-cours'));
+        finir('contenu');
+        await attente;
+        assert.ok(!bouton.disabled && !classes.has('en-cours'));
+        await Rendu.telechargerAvecAttente(bouton, () => Promise.reject(new Error('réseau')), 'x');
+        assert.ok(!bouton.disabled);
+        assert.deepStrictEqual(recus, ['image.jpg', 'toast.telechargement-impossible']);
+    } finally {
+        Rendu.telecharger = avant;
+        delete global.t;
+        delete global.toast;
+    }
+});

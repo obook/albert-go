@@ -240,6 +240,7 @@ I18n.TEXTES.fr = {
     'toast.reponse-copiee': 'Réponse copiée.',
     'toast.code-copie': 'Code copié.',
     'toast.copie-refusee': 'Copie refusée par le navigateur.',
+    'toast.telechargement-impossible': 'Téléchargement impossible.',
     'toast.partage-impossible': 'Changement impossible : les données ne tiennent pas dans le nouveau stockage.',
     'toast.conversation-supprimee': 'Conversation supprimée.',
     'toast.conversation-longue': 'Conversation trop longue pour être enregistrée. Elle reste affichée jusqu\'à la fermeture de l\'onglet.',

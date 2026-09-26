@@ -240,6 +240,7 @@ I18n.TEXTES.es = {
     'toast.reponse-copiee': 'Respuesta copiada.',
     'toast.code-copie': 'Código copiado.',
     'toast.copie-refusee': 'El navegador ha rechazado la copia.',
+    'toast.telechargement-impossible': 'No se pudo descargar.',
     'toast.partage-impossible': 'Cambio imposible: los datos no caben en el nuevo almacenamiento.',
     'toast.conversation-supprimee': 'Conversación eliminada.',
     'toast.conversation-longue': 'Conversación demasiado larga para guardarla. Se queda en pantalla hasta cerrar la pestaña.',

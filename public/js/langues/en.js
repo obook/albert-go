@@ -240,6 +240,7 @@ I18n.TEXTES.en = {
     'toast.reponse-copiee': 'Answer copied.',
     'toast.code-copie': 'Code copied.',
     'toast.copie-refusee': 'The browser refused the copy.',
+    'toast.telechargement-impossible': 'Download failed.',
     'toast.partage-impossible': 'Change not possible: the data does not fit in the new storage.',
     'toast.conversation-supprimee': 'Conversation deleted.',
     'toast.conversation-longue': 'Conversation too long to be saved. It stays on screen until the tab closes.',
