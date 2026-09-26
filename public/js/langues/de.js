@@ -133,7 +133,7 @@ I18n.TEXTES.de = {
     'moteur.mojeek': 'Das gesamte Web, unabhängiger Index, kostenpflichtiger Schlüssel',
     'reglages.cle-recherche': 'API-Schlüssel',
     'reglages.cx': 'ID der Suchmaschine',
-    'reglages.aide-recherche': 'Web- und Bildsuchmaschinen können die Daten der Unterhaltung sammeln und verwerten.',
+    'reglages.aide-recherche': 'Suchmaschinen im Internet können die Daten der Unterhaltung sammeln und verwerten.',
     'reglages.cle-note': 'In diesem Browser ist ein Schlüssel gespeichert.',
     'reglages.langue': 'Sprache',
     'reglages.conseilles': 'Empfohlene Einstellungen',
@@ -317,5 +317,5 @@ I18n.TEXTES.de = {
     'reponse.note-images': 'Gesuchte Bilder: {lignes}',
     'images.rappel': 'Für ein Foto oder Bild nutze das Werkzeug image_commons, nicht recherche_web, und gib den Link einer gefundenen Datei an.',
     'images.absent': 'Du kannst keine Bilder suchen oder zeigen: Wird eines gewünscht, sag, dass man "Wikimedia-Bilder" unter Einstellungen > Werkzeuge aktivieren muss.',
-    'reglages.outils-externes': 'Im Internet'
+    'reglages.outils-externes': 'Internet'
 };

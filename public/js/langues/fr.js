@@ -133,7 +133,7 @@ I18n.TEXTES.fr = {
     'moteur.mojeek': 'Tout le web, index indépendant, clé payante',
     'reglages.cle-recherche': 'Clé API',
     'reglages.cx': 'ID du moteur de recherche',
-    'reglages.aide-recherche': 'Les moteurs de recherche web et d\'images peuvent collecter et exploiter les données de la conversation.',
+    'reglages.aide-recherche': 'Les moteurs de recherche sur Internet peuvent collecter et exploiter les données de la conversation.',
     'reglages.cle-note': 'Une clé est enregistrée dans ce navigateur.',
     'reglages.langue': 'Langue',
     'reglages.conseilles': 'Réglages conseillés',
@@ -317,5 +317,5 @@ I18n.TEXTES.fr = {
     'reponse.note-images': 'Images cherchées : {lignes}',
     'images.rappel': 'Pour une photo ou une image, utilise l\'outil image_commons, pas recherche_web, puis donne le lien d\'un fichier trouvé.',
     'images.absent': 'Tu ne peux ni chercher ni montrer d\'image : si on t\'en demande une, dis qu\'il faut activer « Images Wikimedia » dans Réglages > Outils.',
-    'reglages.outils-externes': 'Sur Internet'
+    'reglages.outils-externes': 'Internet'
 };
