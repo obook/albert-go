@@ -87,9 +87,9 @@ main {
 .message-cle:empty { display: none; }
 
 /* Détails techniques repliés : pour qui veut savoir, sans effrayer les autres. */
-.accueil .details-cle { margin: 0 0 0 2.5rem; font-size: 0.875rem; color: var(--texte-doux); }
-.accueil .details-cle summary { cursor: pointer; }
-.accueil .details-cle p { margin-top: 0.5rem; }
+#dialogue-cle .details-cle { margin: 0; font-size: 0.875rem; color: var(--texte-doux); }
+#dialogue-cle .details-cle summary { cursor: pointer; }
+#dialogue-cle .details-cle ul { margin: 0.5rem 0 0; }
 
 /* Vérification de la clé, ou refus d'Albert. */
 /* anywhere : le message d'origine refusée contient des adresses sans espace. */
