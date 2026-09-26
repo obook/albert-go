@@ -271,6 +271,9 @@ test('fichierCommons : titre d\'un lien vers un fichier de Commons', () => {
     assert.strictEqual(Recherche.fichierCommons('https://commons.wikimedia.org/wiki/Fichier:Tour_Eiffel%C3%A9.jpg'), 'Fichier:Tour_Eiffelé.jpg');
     assert.strictEqual(Recherche.fichierCommons('https://commons.wikimedia.org/wiki/Category:Paris'), null);
     assert.strictEqual(Recherche.fichierCommons('https://evil.example/wiki/File:x.jpg'), null);
+    assert.strictEqual(Recherche.fichierCommons('https://upload.wikimedia.org/wikipedia/commons/a/a8/Tour_Eiffel.jpg'), 'File:Tour_Eiffel.jpg');
+    assert.strictEqual(Recherche.fichierCommons('https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Tour_Eiffel.jpg/480px-Tour_Eiffel.jpg'), 'File:Tour_Eiffel.jpg');
+    assert.strictEqual(Recherche.fichierCommons('https://upload.wikimedia.org/wikipedia/fr/a/a8/Logo.png'), null);
 });
 
 test('lireImageCommons : miniature, auteur et licence, seulement une image', () => {

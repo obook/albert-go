@@ -101,14 +101,19 @@ const Recherche = {
     },
 
     /**
-     * Titre du fichier visé par un lien vers Commons, ex. "File:A.jpg".
+     * Titre du fichier de Commons visé par une adresse, ex. "File:A.jpg" :
+     * sa page sur commons.wikimedia.org, ou l'image sur upload.wikimedia.org.
      *
-     * @param {string} adresse - Adresse du lien.
+     * @param {string} adresse - Adresse du lien ou de l'image.
      * @returns {?string} Titre, ou null si ce n'est pas un fichier de Commons.
      */
     fichierCommons(adresse) {
-        const trouve = adresse.match(/^https:\/\/commons\.wikimedia\.org\/wiki\/((?:File|Fichier|Datei|Archivo):[^?#]+)$/);
-        return trouve ? decodeURIComponent(trouve[1]) : null;
+        const page = adresse.match(/^https:\/\/commons\.wikimedia\.org\/wiki\/((?:File|Fichier|Datei|Archivo):[^?#]+)$/);
+        if (page) {
+            return decodeURIComponent(page[1]);
+        }
+        const image = adresse.match(/^https:\/\/upload\.wikimedia\.org\/wikipedia\/commons\/(?:thumb\/)?\w\/\w\w\/([^/?#]+)/);
+        return image ? 'File:' + decodeURIComponent(image[1]) : null;
     },
 
     /**
