@@ -150,3 +150,9 @@ test('lienCourt : le site, puis la fin du chemin', () => {
     assert.strictEqual(Rendu.lienCourt('pas une adresse'), 'pas une adresse');
     assert.strictEqual(Rendu.lienCourt('https://exemple.fr/100%'), 'exemple.fr › 100%');
 });
+
+test('nomImage : nom du fichier Commons, sans rien que Windows refuse', () => {
+    assert.strictEqual(Rendu.nomImage('File:Tour_Eiffel_Wikimedia_Commons.jpg'), 'tour-eiffel-wikimedia-commons.jpg');
+    assert.strictEqual(Rendu.nomImage('File:Château de Versailles ? "vue" *2*.JPEG'), 'chateau-de-versailles-vue-2.jpeg');
+    assert.strictEqual(Rendu.nomImage('File:→.png'), 'image.png');
+});
