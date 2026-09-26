@@ -57,9 +57,11 @@ label.interrupteur {
 .pico .boutons-dialogue button { margin-bottom: 0; }
 
 /* À plat, les réglages faisaient trois écrans sur un téléphone. */
+#reglages { background: var(--fond-reglages); }
 #reglages .carte {
     border: 1px solid var(--bord);
     border-radius: 0.75rem;
+    background: var(--surface);
     /* Pico recolore le titre quand le details s'ouvre et quand il a le focus :
        son accordéon, pas le nôtre. Le focus clavier reste marqué plus bas. */
     --pico-accordion-close-summary-color: var(--texte);
@@ -72,7 +74,7 @@ label.interrupteur {
     /* Le fond du titre suit les coins de la carte ; pas d'overflow hidden,
        qui rognerait le contour de focus. */
     border-radius: calc(0.75rem - 1px);
-    background: var(--fond);
+    background: var(--titre-carte);
     font-weight: 700;
     cursor: pointer;
 }
