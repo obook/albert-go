@@ -290,3 +290,22 @@ test('lireImageCommons : miniature, auteur et licence, seulement une image', () 
     assert.strictEqual(Recherche.lireImageCommons(corps('image/jpeg', 'https://evil.example/a.jpg')), null);
     assert.strictEqual(Recherche.lireImageCommons({ query: { pages: { '-1': { missing: '' } } } }), null);
 });
+
+test('lireImagesTrouvees : vrais fichiers de Commons, dans l\'ordre, avec leur page', () => {
+    const corps = { query: { pages: {
+        9: { index: 2, title: 'File:Bordeaux nuit.jpg', imageinfo: [{ extmetadata: { ImageDescription: { value: '<p>Quais de la <b>Garonne</b></p>' } } }] },
+        4: { index: 1, title: 'File:Place de la Bourse.jpg', imageinfo: [{}] }
+    } } };
+    assert.deepStrictEqual(Recherche.lireImagesTrouvees(corps), [
+        { titre: 'File:Place de la Bourse.jpg', url: 'https://commons.wikimedia.org/wiki/File:Place_de_la_Bourse.jpg', desc: '' },
+        { titre: 'File:Bordeaux nuit.jpg', url: 'https://commons.wikimedia.org/wiki/File:Bordeaux_nuit.jpg', desc: 'Quais de la Garonne' }
+    ]);
+    assert.strictEqual(Recherche.fichierCommons(Recherche.lireImagesTrouvees(corps)[0].url), 'File:Place_de_la_Bourse.jpg');
+    assert.deepStrictEqual(Recherche.lireImagesTrouvees({}), []);
+});
+
+test('outilImages : outil image_commons avec un paramètre q', () => {
+    const outil = Recherche.outilImages();
+    assert.strictEqual(outil.function.name, 'image_commons');
+    assert.deepStrictEqual(outil.function.parameters.required, ['q']);
+});

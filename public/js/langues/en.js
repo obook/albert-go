@@ -175,7 +175,7 @@ I18n.TEXTES.en = {
     'info.donnees.effacement': 'By default, your key, your questions and your conversations are erased when the tab closes. You can turn that off in the settings. "Change key", in the menu, erases the key.',
     'info.donnees.relais': 'Your questions go through an interministerial n8n relay, which records nothing, then straight to Albert API, hosted in France.',
     'info.donnees.fichiers': 'An attached text file is read in this browser and sent with your question. An attached image is sent to Albert to extract its text.',
-    'info.donnees.traceurs': 'No account, no cookie, no library loaded from a third-party site. Reading aloud uses the voices of the device, and online voices only if you allow them. With web search, a Wikimedia Commons image cited in an answer is loaded from Wikimedia.',
+    'info.donnees.traceurs': 'No account, no cookie, no library loaded from a third-party site. Reading aloud uses the voices of the device, and online voices only if you allow them. With the Images tool, the searched words go to Wikimedia Commons, and the cited images are loaded from it.',
     'info.clavier': 'Keyboard',
     'info.clavier.texte': 'Enter: send. Shift+Enter: new line. Up and down arrows: previous questions.',
     'info.reponses': 'The answers',
@@ -308,5 +308,11 @@ I18n.TEXTES.en = {
     'recherche.aucun-resultat': 'No result.',
     'recherche.impossible': 'Search failed: {message}',
     'recherche.moteur-injoignable': '{nom} unreachable ({status}).',
-    'recherche.moteur-refus': 'request refused by {nom}.'
+    'recherche.moteur-refus': 'request refused by {nom}.',
+    'reglages.images': 'Wikimedia Commons images',
+    'images.description': 'Searches real images on Wikimedia Commons and returns the link to their page. Use it whenever a photo or an image is asked for. Then cite one of these links, never an invented file name.',
+    'images.aucune': 'No image found on Wikimedia Commons.',
+    'etat.images': 'Searching images "{mots}"...',
+    'reponse.images': 'See the image searches',
+    'reponse.note-images': 'Images searched: {lignes}'
 };

@@ -249,14 +249,14 @@ const Rendu = {
 
     /**
      * Affiche sous un lien vers Commons l'image qu'il désigne, avec son
-     * crédit. Seulement si la recherche web est activée : Wikimedia voit
-     * alors l'adresse IP, comme pour une recherche.
+     * crédit. Seulement si l'outil Images est activé : Wikimedia voit
+     * alors l'adresse IP.
      *
      * @param {HTMLElement} element - Conteneur de la réponse.
      * @returns {Promise<void>}
      */
     async imagesCommons(element) {
-        if (!reglages.recherche) {
+        if (!reglages.images) {
             return;
         }
         const vus = new Set();

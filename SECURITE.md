@@ -29,7 +29,8 @@ Navigateur (Pages) -> webhook n8n -> https://albert.api.etalab.gouv.fr
   Wikipédia n'en demande aucune.
 - **Sources affichées sous une réponse :** titres et adresses renvoyés par le
   moteur. Rien n'est chargé depuis ces domaines, seulement des liens à cliquer.
-- **Images de Commons :** si la recherche est activée, un lien vers un fichier
+- **Images de Commons :** si l'outil Images est activé, le modèle cherche des
+  fichiers sur Commons (mots envoyés à `commons.wikimedia.org`), et un lien vers un fichier
   de `commons.wikimedia.org` affiche sa miniature, servie par
   `upload.wikimedia.org` ou `thumb.wikimedia.org`. Wikimedia voit l'adresse IP.
   Le bouton de téléchargement récupère l'original sur `upload.wikimedia.org`
