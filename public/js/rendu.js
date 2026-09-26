@@ -387,7 +387,7 @@ const Rendu = {
         }
     },
 
-    /* ponytail: corrections gardées pour la session seulement ; un rechargement redemande. */
+    /* ponytail: corrections gardées pour la session seulement ; les enregistrer avec la conversation si les rechargements coûtent trop d'appels. */
     _corrections: new Map(),
 
     /**
