@@ -90,7 +90,7 @@ I18n.TEXTES.es = {
     'bienvenue.calcul': 'Hacer un cálculo',
     'bienvenue.exemple-corriger': 'Le agradesco su rapida respuesta y quedo a su dispocición.',
     'bienvenue.exemple-traduire': 'Hola, quisiera pedir cita para la semana que viene.',
-    'bienvenue.exemple-rediger': 'Señora:\nsolicitud vacaciones 3 al 7 de noviembre',
+    'bienvenue.exemple-rediger': 'Señora:\nsolicitud vacaciones 3 al 7 de noviembre\nexpedientes en curso confiados compañero',
     'bienvenue.exemple-calcul': '¿Cuánto es el 15 % de 240?',
     'cle.titre': 'Bienvenido a Albert Go',
     'cle.label': 'Clave',

@@ -90,7 +90,7 @@ I18n.TEXTES.de = {
     'bienvenue.calcul': 'Etwas berechnen',
     'bienvenue.exemple-corriger': 'Vielen dank für ihre schnele Antwort, ich stehe ihnen zur verfügung.',
     'bienvenue.exemple-traduire': 'Hallo, ich möchte nächste Woche einen Termin vereinbaren.',
-    'bienvenue.exemple-rediger': 'Sehr geehrte Frau,\nUrlaubsantrag 3. bis 7. November',
+    'bienvenue.exemple-rediger': 'Sehr geehrte Frau,\nUrlaubsantrag 3. bis 7. November\nlaufende Akten an Kollegen übergeben',
     'bienvenue.exemple-calcul': 'Wie viel sind 15 % von 240?',
     'cle.titre': 'Willkommen bei Albert Go',
     'cle.label': 'Schlüssel',

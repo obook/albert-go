@@ -90,7 +90,7 @@ I18n.TEXTES.fr = {
     'bienvenue.calcul': 'Faire un calcul',
     'bienvenue.exemple-corriger': 'Je vous remerci pour votre réponce rapide et je reste a votre disposition.',
     'bienvenue.exemple-traduire': 'Bonjour, je voudrais prendre rendez-vous la semaine prochaine.',
-    'bienvenue.exemple-rediger': 'Madame,\ndemande congé 3 au 7 novembre',
+    'bienvenue.exemple-rediger': 'Madame,\ndemande congé 3 au 7 novembre\ndossiers en cours confiés collègue',
     'bienvenue.exemple-calcul': 'Combien font 15 % de 240 ?',
     'cle.titre': 'Bienvenue sur Albert Go',
     'cle.label': 'Clé',

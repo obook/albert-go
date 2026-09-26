@@ -90,7 +90,7 @@ I18n.TEXTES.en = {
     'bienvenue.calcul': 'Do a calculation',
     'bienvenue.exemple-corriger': 'Thank you for you quick anwser, i remain at your disposal.',
     'bienvenue.exemple-traduire': 'Hello, I would like to make an appointment next week.',
-    'bienvenue.exemple-rediger': 'Dear Madam,\nleave request 3 to 7 November',
+    'bienvenue.exemple-rediger': 'Dear Madam,\nleave request 3 to 7 November\nongoing files handed to colleague',
     'bienvenue.exemple-calcul': 'What is 15% of 240?',
     'cle.titre': 'Welcome to Albert Go',
     'cle.label': 'Key',
