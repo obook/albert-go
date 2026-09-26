@@ -718,12 +718,14 @@ async function chercherImagesOutil(appel, signal, faites) {
  * @param {Array<Object>} messages - Messages de la demande.
  * @returns {Array<Object>} Copie avec le rappel, sans toucher l'original.
  */
-function avecRappel(messages) {
+function avecRappel(messages, cherche) {
     const moteur = Recherche.MOTEURS[reglages.fournisseur] || {};
     const source = Recherche.sansCle(reglages.fournisseur)
         ? t('recherche.source-base', { nom: moteur.nom })
         : t('recherche.source-web');
-    const rappel = t('recherche.rappel', { source: source });
+    /* Sans ces rappels, une photo demandée partait en recherche web. */
+    const rappel = [cherche ? t('recherche.rappel', { source: source }) : '',
+        t(reglages.images ? 'images.rappel' : 'images.absent')].filter(Boolean).join('\n');
     if (messages[0] && messages[0].role === 'system') {
         return [{ role: 'system', content: messages[0].content + '\n' + rappel }, ...messages.slice(1)];
     }
@@ -767,7 +769,7 @@ async function repondreAvecOutils(cle, requete, signal) {
         try {
             reponse = await Albert.repondre(cle, {
                 ...requete,
-                messages: cherche ? avecRappel(messages) : messages,
+                messages: avecRappel(messages, cherche),
                 tools: outils,
                 tool_choice: cherche && tour === 0 ? 'required' : 'auto'
             }, signal);

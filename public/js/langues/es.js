@@ -314,5 +314,7 @@ I18n.TEXTES.es = {
     'images.aucune': 'Ninguna imagen encontrada en Wikimedia Commons.',
     'etat.images': 'Buscando imágenes «{mots}»...',
     'reponse.images': 'Ver las imágenes buscadas',
-    'reponse.note-images': 'Imágenes buscadas: {lignes}'
+    'reponse.note-images': 'Imágenes buscadas: {lignes}',
+    'images.rappel': 'Para una foto o una imagen, usa la herramienta image_commons, no recherche_web, y da el enlace de un archivo encontrado.',
+    'images.absent': 'No puedes buscar ni mostrar imágenes: si te piden una, di que hay que activar «Imágenes Wikimedia» en Ajustes > Herramientas.'
 };

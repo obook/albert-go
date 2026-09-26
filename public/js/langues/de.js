@@ -314,5 +314,7 @@ I18n.TEXTES.de = {
     'images.aucune': 'Kein Bild auf Wikimedia Commons gefunden.',
     'etat.images': 'Bildsuche "{mots}"...',
     'reponse.images': 'Bildsuchen anzeigen',
-    'reponse.note-images': 'Gesuchte Bilder: {lignes}'
+    'reponse.note-images': 'Gesuchte Bilder: {lignes}',
+    'images.rappel': 'Für ein Foto oder Bild nutze das Werkzeug image_commons, nicht recherche_web, und gib den Link einer gefundenen Datei an.',
+    'images.absent': 'Du kannst keine Bilder suchen oder zeigen: Wird eines gewünscht, sag, dass man "Wikimedia-Bilder" unter Einstellungen > Werkzeuge aktivieren muss.'
 };

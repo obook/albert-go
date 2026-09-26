@@ -314,5 +314,7 @@ I18n.TEXTES.en = {
     'images.aucune': 'No image found on Wikimedia Commons.',
     'etat.images': 'Searching images "{mots}"...',
     'reponse.images': 'See the image searches',
-    'reponse.note-images': 'Images searched: {lignes}'
+    'reponse.note-images': 'Images searched: {lignes}',
+    'images.rappel': 'For a photo or an image, use the image_commons tool, not recherche_web, then give the link of a file found.',
+    'images.absent': 'You can neither search nor show images: if asked for one, say that "Wikimedia images" must be turned on in Settings > Tools.'
 };
