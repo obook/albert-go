@@ -140,7 +140,12 @@ const Calendrier = {
      */
     repondre(demande, langue) {
         const format = new Intl.DateTimeFormat(langue, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-        const debut = this.lire(demande.date);
+        /* Sans date : aujourd'hui, à minuit comme une date lue. Le modèle ne
+           connaît pas la date : elle vient d'ici, et l'icône le montre. */
+        const maintenant = new Date();
+        const debut = demande.date
+            ? this.lire(demande.date)
+            : new Date(maintenant.getFullYear(), maintenant.getMonth(), maintenant.getDate());
         if (demande.fin) {
             const fin = this.lire(demande.fin);
             /* En UTC : un changement d'heure ne décale pas le compte. */
@@ -151,6 +156,10 @@ const Calendrier = {
         if (Number.isInteger(demande.jours) && demande.jours !== 0) {
             const decale = new Date(debut.getFullYear(), debut.getMonth(), debut.getDate() + demande.jours);
             return t('calendrier.decale', { debut: format.format(debut), jours: demande.jours, date: format.format(decale) });
+        }
+        if (!demande.date) {
+            const heure = maintenant.toLocaleTimeString(langue, { hour: '2-digit', minute: '2-digit', second: '2-digit', timeZoneName: 'short' });
+            return t('calendrier.maintenant', { date: format.format(debut), heure: heure });
         }
         return format.format(debut);
     }
@@ -397,7 +406,7 @@ const OUTILS_LOCAUX = {
     },
     calendrier: {
         icone: 'calendrier',
-        outil: () => definirOutil('calendrier', { date: { type: 'string' }, jours: { type: 'integer' }, fin: { type: 'string' } }, ['date']),
+        outil: () => definirOutil('calendrier', { date: { type: 'string' }, jours: { type: 'integer' }, fin: { type: 'string' } }, []),
         executer: (a, langue) => Calendrier.repondre(a, langue)
     },
     compteur: {

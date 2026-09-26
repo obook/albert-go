@@ -80,12 +80,20 @@ async function consigne(outil, champ = 'consigne') {
         }
         consignesLues[chemin] = await res.text();
     }
-    /* Le modèle ne connaît ni la date, ni l'heure, ni son propre nom. */
-    const maintenant = new Date();
-    const date = maintenant.toLocaleDateString(I18n.langue, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-    const heure = maintenant.toLocaleTimeString(I18n.langue, { hour: '2-digit', minute: '2-digit', second: '2-digit', timeZoneName: 'short' });
+    /* Le modèle ne connaît ni la date, ni l'heure, ni son propre nom. Dans
+       Chat, le Calendrier donne la date et l'heure : leur icône sous la réponse
+       prouve qu'elles viennent de l'appareil. Ailleurs, ou Calendrier coupé,
+       elles partent avec la consigne. */
+    const contexte = [];
+    if (outil !== 'discuter' || !reglages.calendrier) {
+        const maintenant = new Date();
+        const date = maintenant.toLocaleDateString(I18n.langue, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+        const heure = maintenant.toLocaleTimeString(I18n.langue, { hour: '2-digit', minute: '2-digit', second: '2-digit', timeZoneName: 'short' });
+        contexte.push(t('consigne.date', { date, heure }));
+    }
     const modele = modeleActuel();
-    return consignesLues[chemin] + '\n\n' + t('consigne.contexte', { date, heure, nom: modele.nom, reel: modele.reel });
+    contexte.push(t('consigne.contexte', { nom: modele.nom, reel: modele.reel }));
+    return consignesLues[chemin] + '\n\n' + contexte.join(' ');
 }
 
 /**
