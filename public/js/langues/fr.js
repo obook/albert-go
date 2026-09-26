@@ -169,7 +169,7 @@ I18n.TEXTES.fr = {
     'dialogue.oui': 'Oui',
     'dialogue.non': 'Non',
     'confirmer-fermer-app.titre': 'Quitter ?',
-    'confirmer-fermer-app.texte': 'La clé sera oubliée, puis vous reviendrez à l\'accueil.',
+    'confirmer-fermer-app.texte': 'Vous reviendrez à l\'accueil et devrez saisir votre clé pour continuer.',
     'confirmer-changer-cle.titre': 'Effacer la clé et quitter ?',
     'confirmer-changer-cle.texte': 'La clé sera effacée du stockage du navigateur, puis vous reviendrez à l\'accueil.',
     'confirmer-suppression.titre': 'Supprimer cette conversation ?',

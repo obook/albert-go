@@ -169,7 +169,7 @@ I18n.TEXTES.de = {
     'dialogue.oui': 'Ja',
     'dialogue.non': 'Nein',
     'confirmer-fermer-app.titre': 'Beenden?',
-    'confirmer-fermer-app.texte': 'Der Schlüssel wird vergessen, danach kehren Sie zur Startseite zurück.',
+    'confirmer-fermer-app.texte': 'Sie kehren zur Startseite zurück und müssen Ihren Schlüssel erneut eingeben, um weiterzumachen.',
     'confirmer-changer-cle.titre': 'Schlüssel löschen und beenden?',
     'confirmer-changer-cle.texte': 'Der Schlüssel wird aus dem Browserspeicher gelöscht, danach kehren Sie zur Startseite zurück.',
     'confirmer-suppression.titre': 'Dieses Gespräch löschen?',

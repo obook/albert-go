@@ -169,7 +169,7 @@ I18n.TEXTES.en = {
     'dialogue.oui': 'Yes',
     'dialogue.non': 'No',
     'confirmer-fermer-app.titre': 'Quit?',
-    'confirmer-fermer-app.texte': 'The key will be forgotten, then you will return to the home screen.',
+    'confirmer-fermer-app.texte': 'You will return to the home screen and will have to enter your key to carry on.',
     'confirmer-changer-cle.titre': 'Erase the key and quit?',
     'confirmer-changer-cle.texte': 'The key will be erased from the browser storage, then you will return to the home screen.',
     'confirmer-suppression.titre': 'Delete this conversation?',
