@@ -190,6 +190,11 @@ for (const bouton of document.querySelectorAll('.suggestion')) {
         }
         const champ = $(outilActuel === 'rediger' ? 'notes' : 'saisie');
         champ.value = t(bouton.dataset.exemple);
+        /* Traduire vers la langue de l'interface : l'exemple est pris dans une autre langue. */
+        if (outilActuel === 'traduire' && langueCible === I18n.langue) {
+            const autre = langueCible === 'en' ? 'fr' : 'en';
+            champ.value = I18n.TEXTES[autre][bouton.dataset.exemple];
+        }
         champ.focus();
         /* Rédiger propose son courrier à chaque frappe : l'exemple le déclenche tout de suite. */
         if (outilActuel === 'rediger') {
