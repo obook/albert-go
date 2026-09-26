@@ -191,6 +191,7 @@ I18n.TEXTES.es = {
     'reponse.telecharger-figure': 'Descargar la figura (SVG)',
     'reponse.telecharger-png': 'Descargar la imagen (PNG)',
     'reponse.erreur-diagramme': 'Diagrama no mostrado, error de Mermaid: ',
+    'reponse.image-absente': 'Imagen no encontrada en Wikimedia Commons.',
     'reponse.correction-diagramme': 'Corrigiendo el diagrama...',
     'mermaid.corriger': 'Corrige este código Mermaid rechazado, según el error que lo sigue. Responde solo con el código corregido.',
     'reponse.lire': 'Leer en voz alta',

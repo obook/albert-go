@@ -223,8 +223,15 @@ const Rendu = {
                 continue;
             }
             vus.add(titre);
+            /* Dans un <li>, la figure va dedans ; sinon après le paragraphe. */
+            const bloc = lien.closest('p, li');
+            const placer = (noeud) => bloc && bloc.tagName === 'LI' ? bloc.append(noeud) : (bloc || lien).after(noeud);
             const image = await Recherche.imageCommons(titre).catch(() => null);
             if (!image) {
+                const note = document.createElement('p');
+                note.className = 'image-absente';
+                note.textContent = t('reponse.image-absente');
+                placer(note);
                 continue;
             }
             const figure = document.createElement('figure');
@@ -240,7 +247,7 @@ const Rendu = {
             const legende = document.createElement('figcaption');
             legende.append(credit);
             figure.append(img, legende);
-            (lien.closest('p, li') || lien).after(figure);
+            placer(figure);
         }
     },
 
