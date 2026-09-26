@@ -316,5 +316,7 @@ I18n.TEXTES.en = {
     'reponse.images': 'See the image searches',
     'reponse.note-images': 'Images searched: {lignes}',
     'images.rappel': 'For a photo or an image, use the image_commons tool, not recherche_web, then give the link of a file found.',
-    'images.absent': 'You can neither search nor show images: if asked for one, say that "Wikimedia images" must be turned on in Settings > Tools.'
+    'images.absent': 'You can neither search nor show images: if asked for one, say that "Wikimedia images" must be turned on in Settings > Tools.',
+    'reglages.outils-locaux': 'In this browser',
+    'reglages.outils-externes': 'On the Internet'
 };

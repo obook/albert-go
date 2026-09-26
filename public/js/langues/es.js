@@ -316,5 +316,7 @@ I18n.TEXTES.es = {
     'reponse.images': 'Ver las imágenes buscadas',
     'reponse.note-images': 'Imágenes buscadas: {lignes}',
     'images.rappel': 'Para una foto o una imagen, usa la herramienta image_commons, no recherche_web, y da el enlace de un archivo encontrado.',
-    'images.absent': 'No puedes buscar ni mostrar imágenes: si te piden una, di que hay que activar «Imágenes Wikimedia» en Ajustes > Herramientas.'
+    'images.absent': 'No puedes buscar ni mostrar imágenes: si te piden una, di que hay que activar «Imágenes Wikimedia» en Ajustes > Herramientas.',
+    'reglages.outils-locaux': 'En este navegador',
+    'reglages.outils-externes': 'En Internet'
 };

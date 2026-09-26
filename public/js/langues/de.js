@@ -316,5 +316,7 @@ I18n.TEXTES.de = {
     'reponse.images': 'Bildsuchen anzeigen',
     'reponse.note-images': 'Gesuchte Bilder: {lignes}',
     'images.rappel': 'Für ein Foto oder Bild nutze das Werkzeug image_commons, nicht recherche_web, und gib den Link einer gefundenen Datei an.',
-    'images.absent': 'Du kannst keine Bilder suchen oder zeigen: Wird eines gewünscht, sag, dass man "Wikimedia-Bilder" unter Einstellungen > Werkzeuge aktivieren muss.'
+    'images.absent': 'Du kannst keine Bilder suchen oder zeigen: Wird eines gewünscht, sag, dass man "Wikimedia-Bilder" unter Einstellungen > Werkzeuge aktivieren muss.',
+    'reglages.outils-locaux': 'In diesem Browser',
+    'reglages.outils-externes': 'Im Internet'
 };
