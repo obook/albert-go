@@ -246,7 +246,13 @@ const Rendu = {
             credit.textContent = [image.auteur, image.licence, 'Wikimedia Commons'].filter(Boolean).join(', ');
             const legende = document.createElement('figcaption');
             legende.append(credit);
-            figure.append(img, legende);
+            /* Clic : l'image en taille réelle, dans un nouvel onglet. */
+            const agrandir = document.createElement('a');
+            agrandir.href = image.original;
+            agrandir.target = '_blank';
+            agrandir.rel = 'noopener noreferrer';
+            agrandir.append(img);
+            figure.append(agrandir, legende);
             placer(figure);
         }
     },

@@ -275,11 +275,11 @@ test('fichierCommons : titre d\'un lien vers un fichier de Commons', () => {
 
 test('lireImageCommons : miniature, auteur et licence, seulement une image', () => {
     const corps = (mime, thumburl) => ({ query: { pages: { 1: { title: 'File:A.jpg', imageinfo: [{
-        mime, thumburl, descriptionurl: 'https://commons.wikimedia.org/wiki/File:A.jpg',
+        mime, thumburl, url: 'https://upload.wikimedia.org/a/A.jpg', descriptionurl: 'https://commons.wikimedia.org/wiki/File:A.jpg',
         extmetadata: { Artist: { value: '<a href="x">Jean <b>Dupont</b></a>' }, LicenseShortName: { value: 'CC BY-SA 4.0' } }
     }] } } } });
     assert.deepStrictEqual(Recherche.lireImageCommons(corps('image/jpeg', 'https://upload.wikimedia.org/a/480px-A.jpg')), {
-        src: 'https://upload.wikimedia.org/a/480px-A.jpg', auteur: 'Jean Dupont', licence: 'CC BY-SA 4.0',
+        src: 'https://upload.wikimedia.org/a/480px-A.jpg', original: 'https://upload.wikimedia.org/a/A.jpg', auteur: 'Jean Dupont', licence: 'CC BY-SA 4.0',
         page: 'https://commons.wikimedia.org/wiki/File:A.jpg'
     });
     assert.strictEqual(Recherche.lireImageCommons(corps('image/png', 'https://thumb.wikimedia.org/b.png')).src, 'https://thumb.wikimedia.org/b.png');
