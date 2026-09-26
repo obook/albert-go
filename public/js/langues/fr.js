@@ -75,7 +75,7 @@ I18n.TEXTES.fr = {
     'cle.intro': 'L\'IA de l\'État pour discuter, corriger, reformuler, traduire et rédiger.',
     'cle.etape-acces': 'Pas encore d\'accès ?',
     'cle.exemple': 'sk-...',
-    'cle.souvenir': 'Garder la clé et les conversations dans ce navigateur',
+    'cle.souvenir': 'Garder la clé dans ce navigateur',
     'cle.ou-va': 'Où va ma clé ?',
     'cle.titre': 'Bienvenue sur Albert Go',
     'cle.label': 'Clé',
