@@ -269,6 +269,7 @@ const Rendu = {
             /* Image avant le lien : en tête du <li>, sinon avant le paragraphe. */
             const bloc = lien.closest('p, li');
             const placer = (noeud) => bloc && bloc.tagName === 'LI' ? bloc.prepend(noeud) : (bloc || lien).before(noeud);
+            const lienSeul = bloc && bloc.textContent.trim() === lien.textContent.trim();
             const image = await Recherche.imageCommons(titre).catch(() => null);
             if (!image) {
                 const note = document.createElement('p');
@@ -315,6 +316,10 @@ const Rendu = {
             }
             figure.append(cadre, legende);
             placer(figure);
+            /* Lien seul : le crédit mène à la même page, il ferait doublon. */
+            if (lienSeul) {
+                (bloc.tagName === 'LI' ? lien : bloc).remove();
+            }
         }
     },
 
