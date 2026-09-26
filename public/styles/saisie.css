@@ -162,6 +162,8 @@
 }
 .etat:empty { margin-top: 0; }
 .etat.erreur { color: var(--erreur); font-weight: 700; }
+/* Une seule ligne sous la saisie : l'état, s'il y en a un, remplace l'avertissement. */
+.etat:not(:empty) + .avertissement { display: none; }
 
 .avertissement {
     margin-top: 0.25rem;
