@@ -152,11 +152,7 @@ function afficherReglages() {
     $('texte-partage-reglage').textContent = textePartage(partage);
     $('temperature').value = reglages.temperature;
     $('valeur-temperature').textContent = temperature;
-    const logo = document.createElement('img');
-    logo.className = 'logo';
-    logo.src = Albert.logoEditeur(modele.reel);
-    logo.alt = '';
-    $('modele-choisi').replaceChildren(logo, modele.nom + ' (' + modele.id + ')');
+    $('modele-choisi').replaceChildren(logo(Albert.logoEditeur(modele.reel)), modele.nom + ' (' + modele.id + ')');
     const radio = [...document.querySelectorAll('input[name="modele"]')].find(r => r.value === modele.id);
     if (radio) {
         radio.checked = true;
@@ -186,6 +182,20 @@ function ajouter(role, texte, langue, animer = false, recherches = null) {
     $('fil').append(li);
     li.scrollIntoView({ block: 'end' });
     return li;
+}
+
+/**
+ * Logo décoratif d'un modèle ou d'un moteur : le nom suit juste après.
+ *
+ * @param {string} src - Chemin de l'image.
+ * @returns {HTMLImageElement} L'image.
+ */
+function logo(src) {
+    const image = document.createElement('img');
+    image.className = 'logo';
+    image.src = src;
+    image.alt = '';
+    return image;
 }
 
 /**
