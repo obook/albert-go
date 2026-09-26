@@ -154,18 +154,8 @@
 }
 
 /* Vide, la ligne d'état ne prend pas de place mais reste lue par les lecteurs d'écran. */
-.etat {
-    margin-top: 0.25rem;
-    font-size: 0.875rem;
-    text-align: center;
-    color: var(--texte-doux);
-}
-.etat:empty { margin-top: 0; }
-.etat.erreur { color: var(--erreur); font-weight: 700; }
-/* Une seule ligne sous la saisie : l'état, s'il y en a un, remplace l'avertissement. */
-.etat:not(:empty) + .avertissement { display: none; }
-
-.avertissement {
+/* Même style pour l'état et l'avertissement : l'un remplace l'autre sur la même ligne. */
+.etat, .avertissement {
     margin-top: 0.25rem;
     font-size: 0.75rem;
     text-align: center;
@@ -174,6 +164,9 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
+.etat:empty { margin-top: 0; }
+.etat.erreur { color: var(--erreur); font-weight: 700; }
+.etat:not(:empty) + .avertissement { display: none; }
 
 /* Toast : court message sous l'en-tête. */
 .toast {
