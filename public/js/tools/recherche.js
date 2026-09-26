@@ -1,5 +1,5 @@
 /*
- * recherche.js
+ * tools/recherche.js
  * Recherche documentaire, proposée au modèle comme un outil.
  *
  * Le modèle reçoit la définition de l'outil et décide lui-même s'il

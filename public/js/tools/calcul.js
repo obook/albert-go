@@ -1,5 +1,5 @@
 /*
- * calcul.js
+ * tools/calcul.js
  * Outils locaux du modèle : calcul, calendrier, compteur, tirage, statistiques.
  * Là où les modèles se trompent ; tout reste dans le navigateur.
  *

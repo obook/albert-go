@@ -1,5 +1,5 @@
 /*
- * recherche/commons.js
+ * tools/recherche/commons.js
  * Images de Wikimedia Commons : outil Images du modèle, miniature et crédit d'un fichier.
  *
  * Complète l'objet Recherche de recherche.js, chargé avant.

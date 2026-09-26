@@ -1,5 +1,5 @@
 /*
- * recherche/extraits.js
+ * tools/recherche/extraits.js
  * Extraits d'articles : fiche d'infobox, nettoyage du wikitexte, passages utiles.
  *
  * Complète l'objet Recherche de recherche.js, chargé avant.

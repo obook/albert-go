@@ -1,5 +1,5 @@
 /*
- * recherche/outils-modele.js
+ * tools/recherche/outils-modele.js
  * Boucle d'appels d'outils : le modèle demande une recherche, une image
  * ou un calcul, la page l'exécute et lui rend le résultat.
  *

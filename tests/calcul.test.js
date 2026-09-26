@@ -1,6 +1,6 @@
 /*
  * calcul.test.js
- * Tests de public/js/calcul.js.
+ * Tests de public/js/tools/calcul.js.
  *
  * Lancement : node --test
  *
@@ -14,7 +14,7 @@
 const { test } = require('node:test');
 const assert = require('node:assert');
 require('../public/js/i18n.js');
-const { Calcul, Calendrier, Compteur, Tirage, Statistiques, OUTILS_LOCAUX } = require('../public/js/calcul.js');
+const { Calcul, Calendrier, Compteur, Tirage, Statistiques, OUTILS_LOCAUX } = require('../public/js/tools/calcul.js');
 
 test('evaluer : priorités, parenthèses, puissance, virgule', () => {
     assert.strictEqual(Calcul.evaluer('2 + 3 * 4'), 14);
