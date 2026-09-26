@@ -25,6 +25,9 @@ test('evaluer : priorités, parenthèses, puissance, point décimal', () => {
     assert.strictEqual(Calcul.evaluer('-2^2'), -4);
     assert.strictEqual(Calcul.evaluer('0.1 + 0.2'), 0.3);
     assert.strictEqual(Calcul.evaluer('sqrt(16) + pi * 0'), 4);
+    /* Dix chiffres significatifs, comme l'affichage de la NumWorks. */
+    assert.strictEqual(Calcul.evaluer('2 / 3'), 0.6666666667);
+    assert.strictEqual(Calcul.evaluer('1 + pi'), 4.141592654);
 });
 
 test('evaluer : fonctions scientifiques, angles en degrés', () => {
@@ -80,6 +83,12 @@ test('statistiques : médiane, quartiles du lycée, série invalide', () => {
     assert.strictEqual(s.variance, 5.71484375);
     assert.throws(() => Statistiques.calculer([]));
     assert.throws(() => Statistiques.calculer(['douze']));
+});
+
+test('calcul avec valeurs : statistiques de la série', async () => {
+    const ligne = await OUTILS_LOCAUX.calcul.executer({ valeurs: [12, 8, 15.5, 10, 9, 14, 11, 13] }, 'fr');
+    assert.match(ligne, /^Effectif 8, moyenne 11,5625, médiane 11,5, variance 5,71484375, écart-type 2,390573937/);
+    await assert.rejects(OUTILS_LOCAUX.calcul.executer({ valeurs: ['douze'] }, 'fr'));
 });
 
 test('outils locaux : chaque outil a ses textes dans les quatre langues', () => {

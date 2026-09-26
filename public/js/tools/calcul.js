@@ -1,6 +1,6 @@
 /*
  * tools/calcul.js
- * Outils locaux du modèle : calcul (math.js, avec facteurs premiers, PGCD, PPCM), calendrier, compteur, tirage, statistiques.
+ * Outils locaux du modèle : calcul (math.js, avec facteurs premiers, PGCD, PPCM et statistiques), calendrier, compteur, tirage.
  * Là où les modèles se trompent ; tout reste dans le navigateur.
  *
  * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
@@ -15,6 +15,9 @@ const RAD = Math.PI / 180;
 const net = v => (Math.abs(v) < 1e-12 ? 0 : v);
 
 const Calcul = {
+    /** Chiffres significatifs des résultats : le maximum affiché par la NumWorks. */
+    CHIFFRES: 10,
+
     /** Adresse de math.js, relative à la page ; chargé au premier calcul. */
     MATHJS: 'vendor/mathjs/math.js',
 
@@ -88,7 +91,7 @@ const Calcul = {
      * séparateur décimal, la virgule sépare les arguments : pgcd(84, 126).
      *
      * @param {string} expression - Par exemple "(12.5 + 3) * sin(30)".
-     * @returns {number|string} Nombre arrondi à 12 chiffres significatifs, ou
+     * @returns {number|string} Nombre arrondi à CHIFFRES chiffres significatifs, ou
      *     texte pour une fraction, une unité, une matrice.
      */
     evaluer(expression) {
@@ -102,13 +105,13 @@ const Calcul = {
             if (!Number.isFinite(resultat)) {
                 throw new Error(t('calcul.invalide'));
             }
-            return Number(resultat.toPrecision(12));
+            return Number(resultat.toPrecision(this.CHIFFRES));
         }
         /* Rien à montrer (expression vide) ou une fonction définie par l'expression. */
         if (resultat === undefined || typeof resultat === 'function') {
             throw new Error(t('calcul.invalide'));
         }
-        return math.format(resultat, { precision: 12 });
+        return math.format(resultat, { precision: this.CHIFFRES });
     }
 };
 
@@ -293,7 +296,7 @@ const Statistiques = {
     calculer(valeurs) {
         const serie = (valeurs || []).map(v => Number(String(v).replace(',', '.'))).sort((a, b) => a - b);
         if (!serie.length || serie.some(v => !Number.isFinite(v))) {
-            throw new Error(t('statistiques.invalide'));
+            throw new Error(t('calcul.invalide'));
         }
         const n = serie.length;
         const moyenne = serie.reduce((a, b) => a + b, 0) / n;
@@ -337,39 +340,37 @@ function definirOutil(nom, proprietes, requis) {
 }
 
 /** Nombre au format de la langue, sans séparateur de milliers. */
-const formaterNombre = (v, langue) => Number(v.toPrecision(12)).toLocaleString(langue, { maximumFractionDigits: 4, useGrouping: false });
+const formaterNombre = (v, langue) => v.toLocaleString(langue, { maximumSignificantDigits: Calcul.CHIFFRES, useGrouping: false });
 
 /* Le nom sert de réglage, de clé de stockage et de préfixe i18n. */
 const OUTILS_LOCAUX = {
-    /* Une expression math.js, ou des entiers à décomposer avec leur PGCD et
-       leur PPCM : math.js n'a pas de décomposition en facteurs premiers. */
+    /* Une expression math.js ; ou des entiers à décomposer avec leur PGCD et
+       leur PPCM, que math.js ne décompose pas ; ou une série statistique,
+       aux conventions du lycée que math.js ne suit pas (écart-type sur n,
+       quartiles pris dans la série). */
     calcul: {
         icone: 'calculatrice',
         outil: () => definirOutil('calcul', {
             expression: { type: 'string' },
-            nombres: { type: 'array', items: { type: 'integer' } }
+            nombres: { type: 'array', items: { type: 'integer' } },
+            valeurs: { type: 'array', items: { type: 'number' } }
         }, []),
         executer: async (a, langue) => {
             if (Array.isArray(a.nombres) && a.nombres.length) {
                 return Facteurs.decrire(a.nombres.map(Number));
             }
+            if (Array.isArray(a.valeurs) && a.valeurs.length) {
+                const f = {};
+                for (const [cle, v] of Object.entries(Statistiques.calculer(a.valeurs))) {
+                    f[cle] = formaterNombre(v, langue);
+                }
+                return t('calcul.statistiques', f);
+            }
             await Calcul.charger();
             const resultat = Calcul.evaluer(a.expression);
             return a.expression + ' = ' + (typeof resultat === 'number'
-                ? resultat.toLocaleString(langue, { maximumFractionDigits: 12, useGrouping: false })
+                ? resultat.toLocaleString(langue, { maximumSignificantDigits: Calcul.CHIFFRES, useGrouping: false })
                 : resultat);
-        }
-    },
-    statistiques: {
-        icone: 'statistiques',
-        outil: () => definirOutil('statistiques', { valeurs: { type: 'array', items: { type: 'number' } } }, ['valeurs']),
-        executer: (a, langue) => {
-            const s = Statistiques.calculer(a.valeurs);
-            const f = {};
-            for (const [cle, v] of Object.entries(s)) {
-                f[cle] = formaterNombre(v, langue);
-            }
-            return t('statistiques.resultat', f);
         }
     },
     tirage: {
