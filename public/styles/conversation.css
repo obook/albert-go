@@ -67,10 +67,16 @@ main {
     font-weight: 700;
     font-size: 0.875rem;
 }
-.accueil .etapes strong { display: block; }
-/* Étapes 2 et 3 : titre, bouton et état sur une ligne. */
-.accueil .etapes > li:not(:first-child) { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1rem; }
-.accueil .etapes > li:not(:first-child)::before { top: 50%; transform: translateY(-50%); }
+/* Les trois étapes sur le même modèle : une ligne de même hauteur, pastille centrée,
+   donc des séparations identiques. */
+.accueil .etapes > li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.25rem 1rem;
+    min-height: 2.25rem;
+}
+.accueil .etapes > li::before { top: 50%; transform: translateY(-50%); }
 .accueil .etat-cle { color: var(--succes); font-weight: 700; font-size: 0.9375rem; }
 .accueil .etat-cle:empty { display: none; }
 /* Bouton compact : il ne doit pas écraser le mot "Clé" à côté. */
