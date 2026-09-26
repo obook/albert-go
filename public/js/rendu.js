@@ -89,6 +89,13 @@ const Rendu = {
                 }
             }
         });
+        /* Image externe du modèle : un simple lien, rien ne se charge sans nous. */
+        modele.content.querySelectorAll('img[src^="http"]').forEach((img) => {
+            const lien = document.createElement('a');
+            lien.href = img.getAttribute('src');
+            lien.textContent = img.getAttribute('alt') || img.getAttribute('src');
+            img.replaceWith(lien);
+        });
         modele.content.querySelectorAll('a[href]').forEach((a) => {
             a.target = '_blank';
             a.rel = 'noopener noreferrer';

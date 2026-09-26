@@ -34,6 +34,8 @@ Navigateur (Pages) -> webhook n8n -> https://albert.api.etalab.gouv.fr
   `upload.wikimedia.org` ou `thumb.wikimedia.org`. Wikimedia voit l'adresse IP.
   Le bouton de téléchargement récupère l'original sur `upload.wikimedia.org`
   (`connect-src`).
+  Une image écrite par le modèle devient un lien : rien ne se charge sans ce
+  contrôle.
 - **Aucun CDN, aucune télémétrie.** Les sept bibliothèques sont servies depuis
   Pages, le QR code est calculé dans le navigateur, et la version affichée dans
   "À propos" est écrite au déploiement : aucune requête vers la forge.
