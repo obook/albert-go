@@ -26,7 +26,7 @@ main {
     padding: 2rem;
     background: var(--surface);
     border: 1px solid var(--bord);
-    border-top: 4px solid var(--bleu);
+    border-radius: 1rem;
     display: grid;
     gap: 0.75rem;
 }
@@ -35,6 +35,50 @@ main {
 .accueil .bouton-principal { justify-self: start; }
 
 .accueil .interrupteur { margin-top: 0; font-weight: 400; }
+.accueil h2, .accueil p { margin-bottom: 0; }
+
+/* Deux étapes numérotées : pastille bleue, texte à droite. */
+.accueil .etapes {
+    list-style: none;
+    counter-reset: etape;
+    margin: 0.5rem 0 0;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+}
+.accueil .etapes > li {
+    counter-increment: etape;
+    position: relative;
+    padding-left: 2.5rem;
+    list-style: none;
+}
+.accueil .etapes > li::before {
+    content: counter(etape);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1.75rem;
+    height: 1.75rem;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--bleu);
+    color: var(--sur-bleu);
+    font-weight: 700;
+    font-size: 0.875rem;
+}
+.accueil .etapes strong { display: block; }
+/* Étape 2 : champ, interrupteur et bouton empilés à la même marge que le texte. */
+.accueil .etapes > li:last-child { display: grid; gap: 0.75rem; }
+.accueil .etapes label { margin: 0; }
+.accueil .etapes input { margin-bottom: 0; }
+.accueil .etapes .bouton-principal { justify-self: stretch; width: auto; margin: 0.25rem 0 0; }
+.accueil .message-cle:empty { display: none; }
+
+/* Détails techniques repliés : pour qui veut savoir, sans effrayer les autres. */
+.accueil .details-cle { margin: 0 0 0 2.5rem; font-size: 0.875rem; color: var(--texte-doux); }
+.accueil .details-cle summary { cursor: pointer; }
+.accueil .details-cle p { margin-top: 0.5rem; }
 
 /* Vérification de la clé, ou refus d'Albert. */
 /* anywhere : le message d'origine refusée contient des adresses sans espace. */

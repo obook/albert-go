@@ -41,7 +41,6 @@ async function validerCle() {
     /* Cible pleine : le réglage n'a pas bougé, la case doit le dire. */
     if (!changerPartage(!$('partage-accueil').checked)) {
         $('partage-accueil').checked = !partage;
-        $('texte-partage-accueil').textContent = textePartage(!partage);
         toast(t('toast.partage-impossible'));
     }
     reglages.cle = cle;
@@ -54,9 +53,4 @@ async function validerCle() {
 $('form-cle').addEventListener('submit', (e) => {
     e.preventDefault();
     validerCle();
-});
-
-/* Le choix ne s'applique qu'à l'enregistrement : seul le texte suit la case. */
-$('partage-accueil').addEventListener('change', () => {
-    $('texte-partage-accueil').textContent = textePartage($('partage-accueil').checked);
 });

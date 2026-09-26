@@ -72,11 +72,16 @@ I18n.TEXTES.de = {
     'langue.la': 'Latein',
 
     /* Schlüsselbildschirm. */
-    'cle.titre': 'Geben Sie Ihren Albert-Schlüssel ein',
-    'cle.label': 'API-Schlüssel',
+    'cle.intro': 'Die KI des französischen Staates zum Chatten, Korrigieren, Umformulieren, Übersetzen und Schreiben.',
+    'cle.etape-acces': 'Noch kein Zugang?',
+    'cle.exemple': 'sk-...',
+    'cle.souvenir': 'Auf diesem Gerät angemeldet bleiben',
+    'cle.ou-va': 'Wohin geht mein Schlüssel?',
+    'cle.titre': 'Willkommen bei Albert Go',
+    'cle.label': 'Fügen Sie Ihren Schlüssel ein',
     'cle.stockee': 'Ihr Schlüssel wird nur in diesem Browser gespeichert.<br/>Er läuft über den <a href="https://n8n.incubateur.education.gouv.fr" target="_blank" rel="noopener noreferrer">interministeriellen Inkubator</a>, der ihn nicht speichert.',
-    'cle.enregistrer': 'Schlüssel speichern',
-    'cle.demander': 'Noch keinen Schlüssel? <a href="https://albert.sites.beta.gouv.fr/access/" target="_blank" rel="noopener noreferrer">Zugang zu Albert beantragen</a>, nur für Beschäftigte des öffentlichen Dienstes.',
+    'cle.enregistrer': 'Loslegen',
+    'cle.demander': '<a href="https://albert.sites.beta.gouv.fr/access/" target="_blank" rel="noopener noreferrer">Zugang zu Albert beantragen</a>, nur für Beschäftigte im öffentlichen Dienst.',
     'cle.verification': 'Schlüssel wird geprüft...',
 
     /* Eingabe. */

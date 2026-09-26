@@ -72,11 +72,16 @@ I18n.TEXTES.fr = {
     'langue.la': 'Latin',
 
     /* Écran de la clé. */
-    'cle.titre': 'Entrez votre clé Albert',
-    'cle.label': 'Clé API',
+    'cle.intro': 'L\'IA de l\'État pour discuter, corriger, reformuler, traduire et rédiger.',
+    'cle.etape-acces': 'Pas encore d\'accès ?',
+    'cle.exemple': 'sk-...',
+    'cle.souvenir': 'Se souvenir de moi sur cet appareil',
+    'cle.ou-va': 'Où va ma clé ?',
+    'cle.titre': 'Bienvenue sur Albert Go',
+    'cle.label': 'Collez votre clé',
     'cle.stockee': 'Votre clé est uniquement enregistrée dans ce navigateur.<br/>Elle passe par l\'<a href="https://n8n.incubateur.education.gouv.fr" target="_blank" rel="noopener noreferrer">incubateur interministériel</a> sans être enregistrée.',
-    'cle.enregistrer': 'Enregistrer la clé',
-    'cle.demander': 'Pas encore de clé ? <a href="https://albert.sites.beta.gouv.fr/access/" target="_blank" rel="noopener noreferrer">Demander un accès à Albert</a>, réservé aux agents publics.',
+    'cle.enregistrer': 'Commencer',
+    'cle.demander': '<a href="https://albert.sites.beta.gouv.fr/access/" target="_blank" rel="noopener noreferrer">Demander un accès à Albert</a>, réservé aux agents publics.',
     'cle.verification': 'Vérification de la clé...',
 
     /* Saisie. */
