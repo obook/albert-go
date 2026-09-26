@@ -182,16 +182,19 @@ for (const bouton of document.querySelectorAll('[data-outil]')) {
     });
 }
 
-/* Suggestions du chat vide : ouvrir un module, ou préremplir une question d'exemple. */
+/* Suggestions du chat vide : ouvrir le module s'il y en a un, puis préremplir un exemple. */
 for (const bouton of document.querySelectorAll('.suggestion')) {
     bouton.addEventListener('click', () => {
         if (bouton.dataset.module) {
             choisirOutil(bouton.dataset.module);
-            focusSaisie();
-            return;
         }
-        $('saisie').value = t(bouton.dataset.exemple);
-        $('saisie').focus();
+        const champ = $(outilActuel === 'rediger' ? 'notes' : 'saisie');
+        champ.value = t(bouton.dataset.exemple);
+        champ.focus();
+        /* Rédiger propose son courrier à chaque frappe : l'exemple le déclenche tout de suite. */
+        if (outilActuel === 'rediger') {
+            champ.dispatchEvent(new Event('input'));
+        }
     });
 }
 
