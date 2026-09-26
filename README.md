@@ -45,7 +45,7 @@ Dans Chat, six outils sont activés par défaut ; on peut les désactiver dans R
 | Probabilités | Tirage au sort : ordre de passage, éléments tirés ou groupes, avec le générateur aléatoire du navigateur. |
 | Calendrier | Jour de la semaine d'une date, date dans N jours, nombre de jours entre deux dates. |
 | Compteur | Nombre de mots et de caractères d'un texte. |
-| Facteurs premiers | Décomposition d'un entier en produit de facteurs premiers, ou nombre premier. |
+| Facteurs premiers | Décomposition en facteurs premiers, nombre premier ou non, PGCD et PPCM de plusieurs nombres. |
 
 Chaque demande donne aussi au modèle la date, l'heure locale et son nom.
 

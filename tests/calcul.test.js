@@ -96,10 +96,19 @@ test('outils locaux : chaque outil a ses textes dans les quatre langues', () => 
 
 test('facteurs : décomposition, puissances, nombre premier, bornes', () => {
     assert.deepStrictEqual(Facteurs.decomposer(477843), [[3, 1], [149, 1], [1069, 1]]);
-    assert.strictEqual(OUTILS_LOCAUX.facteurs.executer({ nombre: 477843 }), '477843 = 3 × 149 × 1069');
-    assert.strictEqual(OUTILS_LOCAUX.facteurs.executer({ nombre: 360 }), '360 = 2^3 × 3^2 × 5');
-    assert.match(OUTILS_LOCAUX.facteurs.executer({ nombre: 1069 }), /1069/);
+    assert.strictEqual(OUTILS_LOCAUX.facteurs.executer({ nombres: [477843] }), '477843 = 3 × 149 × 1069');
+    assert.strictEqual(OUTILS_LOCAUX.facteurs.executer({ nombres: [360] }), '360 = 2^3 × 3^2 × 5');
+    assert.match(OUTILS_LOCAUX.facteurs.executer({ nombres: [1069] }), /1069/);
     assert.throws(() => Facteurs.decomposer(1));
     assert.throws(() => Facteurs.decomposer(2.5));
     assert.throws(() => Facteurs.decomposer(1e13));
+    assert.throws(() => OUTILS_LOCAUX.facteurs.executer({ nombres: [] }));
+});
+
+test('facteurs : PGCD et PPCM de plusieurs nombres', () => {
+    assert.strictEqual(OUTILS_LOCAUX.facteurs.executer({ nombres: [12, 18] }), '12 = 2^2 × 3 ; 18 = 2 × 3^2 ; PGCD 6, PPCM 36.');
+    assert.strictEqual(Facteurs.pgcd(1071, 462), 21);
+    assert.strictEqual(Facteurs.ppcm([4, 6, 10]), '60');
+    /* Au-delà de 2^53 : le PPCM reste exact. */
+    assert.strictEqual(Facteurs.ppcm([999999999989, 999999999959]), '999999999948000000000451');
 });

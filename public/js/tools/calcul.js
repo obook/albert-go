@@ -1,6 +1,6 @@
 /*
  * tools/calcul.js
- * Outils locaux du modèle : calcul, calendrier, compteur, tirage, statistiques, facteurs premiers.
+ * Outils locaux du modèle : calcul, calendrier, compteur, tirage, statistiques, facteurs premiers, PGCD, PPCM.
  * Là où les modèles se trompent ; tout reste dans le navigateur.
  *
  * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
@@ -239,6 +239,27 @@ const Facteurs = {
             facteurs.push([n, 1]);
         }
         return facteurs;
+    },
+
+    /** PGCD par l'algorithme d'Euclide. */
+    pgcd(a, b) {
+        return b ? this.pgcd(b, a % b) : a;
+    },
+
+    /**
+     * PPCM d'une liste, en BigInt : celui de grands nombres dépasse la
+     * précision des nombres ordinaires.
+     *
+     * @param {number[]} nombres - Entiers déjà validés par decomposer.
+     * @returns {string} Le PPCM, en chiffres.
+     */
+    ppcm(nombres) {
+        let m = 1n;
+        for (const n of nombres) {
+            /* pgcd(m, n) = pgcd(m mod n, n), qui tient dans un nombre ordinaire. */
+            m = m / BigInt(this.pgcd(Number(m % BigInt(n)), n)) * BigInt(n);
+        }
+        return m.toString();
     }
 };
 
@@ -352,14 +373,23 @@ const OUTILS_LOCAUX = {
     },
     facteurs: {
         icone: 'facteurs',
-        outil: () => definirOutil('facteurs', { nombre: { type: 'integer' } }, ['nombre']),
+        outil: () => definirOutil('facteurs', { nombres: { type: 'array', items: { type: 'integer' } } }, ['nombres']),
         executer: (a) => {
-            const n = Number(a.nombre);
-            const facteurs = Facteurs.decomposer(n);
-            if (facteurs.length === 1 && facteurs[0][1] === 1) {
-                return t('facteurs.premier', { nombre: n });
+            const nombres = (a.nombres || []).map(Number);
+            if (!nombres.length) {
+                throw new Error(t('facteurs.invalide'));
             }
-            return n + ' = ' + facteurs.map(([p, e]) => (e > 1 ? p + '^' + e : String(p))).join(' × ');
+            const lignes = nombres.map((n) => {
+                const facteurs = Facteurs.decomposer(n);
+                if (facteurs.length === 1 && facteurs[0][1] === 1) {
+                    return t('facteurs.premier', { nombre: n });
+                }
+                return n + ' = ' + facteurs.map(([p, e]) => (e > 1 ? p + '^' + e : String(p))).join(' × ');
+            });
+            if (nombres.length > 1) {
+                lignes.push(t('facteurs.pgcd-ppcm', { pgcd: nombres.reduce((d, n) => Facteurs.pgcd(d, n)), ppcm: Facteurs.ppcm(nombres) }));
+            }
+            return lignes.join(' ; ');
         }
     }
 };
