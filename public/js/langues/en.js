@@ -170,7 +170,7 @@ I18n.TEXTES.en = {
 
     /* About. */
     'info.titre': 'About Albert Go',
-    'info.intro': 'Albert Go lets you chat with <a href="https://albert.sites.beta.gouv.fr/" target="_blank" rel="noopener noreferrer">Albert</a>, the sovereign AI of the French State, run by the <a href="https://ia.numerique.gouv.fr/outils-ia/albert-api/" target="_blank" rel="noopener noreferrer">DINUM</a>, using your personal API key.',
+    'info.intro': 'Albert Go lets you chat with the AI of the French interministerial digital directorate (<a href="https://ia.numerique.gouv.fr/outils-ia/albert-api/" target="_blank" rel="noopener noreferrer">DINUM</a>), using your personal API key.',
     'info.donnees': 'Your data',
     'info.donnees.relais': 'Your key and your questions go through an interministerial n8n relay, which keeps nothing, then on to Albert API.',
     'info.donnees.traceurs': 'No account, no cookie, no library loaded from a third-party site. External Internet tools are called only if you allow them.',
