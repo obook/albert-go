@@ -68,9 +68,11 @@ main {
     font-size: 0.875rem;
 }
 .accueil .etapes strong { display: block; }
-/* Étape 2 : "Clé" et le bouton qui ouvre la boîte, sur une ligne. */
-.accueil .etapes > li:last-child { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1rem; }
-.accueil .etapes > li:last-child::before { top: 50%; transform: translateY(-50%); }
+/* Étapes 2 et 3 : titre, bouton et état sur une ligne. */
+.accueil .etapes > li:not(:first-child) { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1rem; }
+.accueil .etapes > li:not(:first-child)::before { top: 50%; transform: translateY(-50%); }
+.accueil .etat-cle { color: var(--succes); font-weight: 700; font-size: 0.9375rem; }
+.accueil .etat-cle:empty { display: none; }
 /* Bouton compact : il ne doit pas écraser le mot "Clé" à côté. */
 .accueil .etapes .bouton-principal {
     width: auto;

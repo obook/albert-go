@@ -166,7 +166,7 @@
         <section id="accueil" class="accueil pico" hidden>
             <h2 data-t="cle.titre"></h2>
             <p data-t="cle.intro"></p>
-            <!-- Deux étapes : obtenir un accès, puis saisir la clé dans une boîte. -->
+            <!-- Trois étapes : obtenir un accès, saisir la clé dans une boîte, commencer. -->
             <ol class="etapes">
                 <li>
                     <strong data-t="cle.etape-acces"></strong>
@@ -175,6 +175,10 @@
                 <li>
                     <strong data-t="cle.label"></strong>
                     <button type="button" id="ouvrir-cle" class="bouton-principal" data-t="cle.saisir"></button>
+                    <span id="etat-cle" class="etat-cle" role="status"></span>
+                </li>
+                <li>
+                    <button type="button" id="commencer" class="bouton-principal" data-t="cle.commencer" disabled></button>
                 </li>
             </ol>
             <details class="details-cle">
