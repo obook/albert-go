@@ -303,8 +303,7 @@ const Rendu = {
                 const bouton = boutonAction(ICONES.telecharger, t('reponse.telecharger-image'));
                 bouton.addEventListener('click', async () => {
                     const fichier = await fetch(image.original).then((r) => r.blob());
-                    const extension = (titre.match(/\.(\w+)$/) || [, 'jpg'])[1].toLowerCase();
-                    this.telecharger(fichier, this.nomFigure(new Date(), extension, img.alt));
+                    this.telecharger(fichier, this.nomImage(titre));
                 });
                 const boutons = document.createElement('div');
                 boutons.className = 'boutons-figure';
@@ -571,8 +570,7 @@ const Rendu = {
     /**
      * Nom d'une figure enregistrée : date locale, puis le sujet.
      *
-     * Le sujet ne garde que a-z, 0-9 et des tirets, sans accents : aucun
-     * caractère que Windows refuse. Coupé vers 40 caractères, entre deux mots.
+     * Sujet nettoyé par motsFichier, 40 caractères au plus.
      *
      * @param {Date} date - Moment de l'enregistrement.
      * @param {string} extension - svg ou png.
@@ -583,13 +581,36 @@ const Rendu = {
         const n = (x) => String(x).padStart(2, '0');
         const quand = date.getFullYear() + '-' + n(date.getMonth() + 1) + '-' + n(date.getDate())
             + '-' + n(date.getHours()) + '-' + n(date.getMinutes()) + '-' + n(date.getSeconds());
-        let mots = sujet.replace(/œ/gi, 'oe').replace(/æ/gi, 'ae').normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        return quand + '-' + (this.motsFichier(sujet, 40) || 'figure') + '.' + extension;
+    },
+
+    /**
+     * Nom d'une image de Commons enregistrée : son nom sur Commons, nettoyé.
+     *
+     * @param {string} titre - Titre du fichier, ex. "File:Tour_Eiffel.jpg".
+     * @returns {string} Ex. tour-eiffel.jpg.
+     */
+    nomImage(titre) {
+        const [, nom, extension] = titre.replace(/^[^:]+:/, '').match(/^(.*?)(?:\.(\w+))?$/);
+        return (this.motsFichier(nom, 60) || 'image') + '.' + (extension || 'jpg').toLowerCase();
+    },
+
+    /**
+     * Texte réduit à a-z, 0-9 et des tirets, sans accents : rien que
+     * Windows refuse. Coupé entre deux mots au-delà de max caractères.
+     *
+     * @param {string} texte - Texte d'origine.
+     * @param {number} max - Longueur maximale.
+     * @returns {string} Mots séparés par des tirets, ou ''.
+     */
+    motsFichier(texte, max) {
+        let mots = texte.replace(/œ/gi, 'oe').replace(/æ/gi, 'ae').normalize('NFD').replace(/[\u0300-\u036f]/g, '')
             .toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-        if (mots.length > 40) {
-            mots = mots.slice(0, 41);
-            mots = mots.slice(0, mots.lastIndexOf('-') > 0 ? mots.lastIndexOf('-') : 40);
+        if (mots.length > max) {
+            mots = mots.slice(0, max + 1);
+            mots = mots.slice(0, mots.lastIndexOf('-') > 0 ? mots.lastIndexOf('-') : max);
         }
-        return quand + '-' + (mots || 'figure') + '.' + extension;
+        return mots;
     },
 
     /**
