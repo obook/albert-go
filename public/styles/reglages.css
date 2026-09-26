@@ -57,7 +57,18 @@ label.interrupteur {
 .pico .boutons-dialogue button { margin-bottom: 0; }
 
 /* À plat, les réglages faisaient trois écrans sur un téléphone. */
-#reglages { background: var(--fond-reglages); }
+#reglages, #partage, #info { background: var(--fond-reglages); }
+/* Partager et À propos : le texte dans une carte blanche, comme les cartes des réglages. */
+.carte-texte {
+    display: grid;
+    gap: 1.25rem;
+    padding: 1rem;
+    border: 1px solid var(--bord-carte);
+    border-radius: 0.75rem;
+    background: var(--surface);
+}
+/* La grille espace déjà : les marges des paragraphes doubleraient l'écart. */
+.carte-texte p { margin: 0; }
 #reglages .carte {
     border: 1px solid var(--bord-carte);
     border-radius: 0.75rem;
