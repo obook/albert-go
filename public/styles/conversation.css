@@ -80,6 +80,14 @@ main {
     padding: 0.25rem 1rem;
     font-size: 0.9375rem;
 }
+/* "Commencer" inactif : gris franc plutôt que le bleu pâli de Pico. */
+.accueil .etapes .bouton-principal:disabled {
+    background: var(--bord);
+    border-color: var(--bord);
+    color: var(--texte-doux);
+    opacity: 1;
+    cursor: not-allowed;
+}
 
 /* Boîte de la clé : champ, message, interrupteur, puis Annuler et OK. */
 #dialogue-cle input[type="password"] { margin-bottom: 0; }
