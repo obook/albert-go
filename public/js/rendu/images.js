@@ -134,8 +134,11 @@ Object.assign(Rendu, {
     async telechargerAvecAttente(bouton, preparer, nom) {
         bouton.disabled = true;
         bouton.classList.add('en-cours');
+        /* Sur mobile, rien d'autre ne dit que le fichier arrive : le message reste jusqu'au suivant. */
+        toast(t('toast.telechargement-en-cours'), true);
         try {
             this.telecharger(await preparer(), nom);
+            toast(t('toast.telecharge', { nom: nom }));
         } catch (err) {
             toast(t('toast.telechargement-impossible'));
         } finally {
