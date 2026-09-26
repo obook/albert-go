@@ -72,11 +72,16 @@ I18n.TEXTES.en = {
     'langue.la': 'Latin',
 
     /* Key screen. */
-    'cle.titre': 'Enter your Albert key',
-    'cle.label': 'API key',
+    'cle.intro': 'The French State AI to chat, correct, rephrase, translate and write.',
+    'cle.etape-acces': 'No access yet?',
+    'cle.exemple': 'The API key you received from Albert',
+    'cle.souvenir': 'Remember me on this device',
+    'cle.ou-va': 'Where does my key go?',
+    'cle.titre': 'Welcome to Albert Go',
+    'cle.label': 'Paste your access key',
     'cle.stockee': 'Your key is only saved in this browser.<br/>It goes through the <a href="https://n8n.incubateur.education.gouv.fr" target="_blank" rel="noopener noreferrer">interministerial incubator</a>, which does not record it.',
-    'cle.enregistrer': 'Save the key',
-    'cle.demander': 'No key yet? <a href="https://albert.sites.beta.gouv.fr/access/" target="_blank" rel="noopener noreferrer">Request access to Albert</a>, reserved for public servants.',
+    'cle.enregistrer': 'Start',
+    'cle.demander': '<a href="https://albert.sites.beta.gouv.fr/access/" target="_blank" rel="noopener noreferrer">Request access to Albert</a>, reserved for public servants.',
     'cle.verification': 'Checking the key...',
 
     /* Input. */
