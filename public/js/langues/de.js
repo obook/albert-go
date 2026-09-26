@@ -191,6 +191,7 @@ I18n.TEXTES.de = {
     'reponse.telecharger-figure': 'Abbildung herunterladen (SVG)',
     'reponse.telecharger-png': 'Bild herunterladen (PNG)',
     'reponse.erreur-diagramme': 'Diagramm nicht angezeigt, Mermaid-Fehler: ',
+    'reponse.image-absente': 'Bild auf Wikimedia Commons nicht gefunden.',
     'reponse.correction-diagramme': 'Diagramm wird korrigiert...',
     'mermaid.corriger': 'Korrigiere diesen abgelehnten Mermaid-Code anhand des folgenden Fehlers. Antworte nur mit dem korrigierten Code.',
     'reponse.lire': 'Vorlesen',
