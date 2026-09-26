@@ -139,8 +139,12 @@ function afficherOutil() {
     $('langues').hidden = outilActuel !== 'traduire';
 }
 
+/* Ce qu'affichait chaque outil dans cet onglet (conversation, saisie, notes de Rédiger), retrouvé au retour. */
+const laisseParOutil = {};
+
 /**
- * Change d'outil. La conversation en cours est gardée dans l'historique.
+ * Change d'outil. La conversation en cours est gardée dans l'historique,
+ * et celle laissée plus tôt dans l'outil choisi revient.
  *
  * @param {string} outil - Clé de Albert.OUTILS.
  */
@@ -148,12 +152,24 @@ function choisirOutil(outil) {
     if (outil === outilActuel) {
         return;
     }
-    nouvelleConversation();
-    outilActuel = outil;
-    ecrire('outil', outil);
-    afficherOutil();
-    /* Fil ou écran Rédiger. Pas dans afficherOutil : un changement de langue recocherait l'écran de la clé. */
-    afficher();
+    laisseParOutil[outilActuel] = { id: conversationId, saisie: $('saisie').value, notes: $('notes').value };
+    const laisse = laisseParOutil[outil];
+    const entree = laisse && conversations.find(c => c.id === laisse.id);
+    if (entree) {
+        rouvrirConversation(entree);
+    } else {
+        nouvelleConversation();
+        outilActuel = outil;
+        ecrire('outil', outil);
+        afficherOutil();
+        /* Fil ou écran Rédiger. Pas dans afficherOutil : un changement de langue recocherait l'écran de la clé. */
+        afficher();
+    }
+    /* Sans passage précédent, la saisie suit : on peut taper puis choisir l'outil. */
+    if (laisse) {
+        $('saisie').value = laisse.saisie;
+        $('notes').value = laisse.notes;
+    }
 }
 
 afficherLangues();
