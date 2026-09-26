@@ -190,6 +190,7 @@ I18n.TEXTES.de = {
     'reponse.copier-code': 'Code kopieren',
     'reponse.telecharger-figure': 'Abbildung herunterladen (SVG)',
     'reponse.telecharger-png': 'Bild herunterladen (PNG)',
+    'reponse.telecharger-image': 'Originalbild herunterladen',
     'reponse.erreur-diagramme': 'Diagramm nicht angezeigt, Mermaid-Fehler: ',
     'reponse.image-absente': 'Bild auf Wikimedia Commons nicht gefunden.',
     'reponse.correction-diagramme': 'Diagramm wird korrigiert...',

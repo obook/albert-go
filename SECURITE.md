@@ -32,6 +32,8 @@ Navigateur (Pages) -> webhook n8n -> https://albert.api.etalab.gouv.fr
 - **Images de Commons :** si la recherche est activée, un lien vers un fichier
   de `commons.wikimedia.org` affiche sa miniature, servie par
   `upload.wikimedia.org` ou `thumb.wikimedia.org`. Wikimedia voit l'adresse IP.
+  Le bouton de téléchargement récupère l'original sur `upload.wikimedia.org`
+  (`connect-src`).
 - **Aucun CDN, aucune télémétrie.** Les sept bibliothèques sont servies depuis
   Pages, le QR code est calculé dans le navigateur, et la version affichée dans
   "À propos" est écrite au déploiement : aucune requête vers la forge.
