@@ -183,9 +183,11 @@ async function repondreAvecOutils(cle, requete, signal) {
         etat(t('etat.reflechit'));
     }
     /* Dernier tour sans outil ni message "tool" : gpt-oss rappellerait l'outil
-       et ne rédigerait rien. Les extraits repartent en texte. */
+       et ne rédigerait rien. Les extraits repartent en texte ; sans recherche,
+       pas de sources à citer, d'où un texte neutre. */
+    const consigne = faites.some(f => f.mots) ? 'recherche.resultats' : 'outils.resultats';
     const dernier = extraits.length
-        ? [...requete.messages, { role: 'user', content: t('recherche.resultats', { extraits: extraits.join('\n') }) }]
+        ? [...requete.messages, { role: 'user', content: t(consigne, { extraits: extraits.join('\n') }) }]
         : requete.messages;
     return { ...await Albert.repondre(cle, { ...requete, messages: dernier }, signal), recherches: faites };
 }
