@@ -169,7 +169,7 @@ I18n.TEXTES.fr = {
     'partage.copier': 'Copier',
 
     /* À propos. */
-    'info.titre': 'À propos d\'Albert Go',
+    'info.titre': 'À propos',
     'info.intro': 'Albert Go permet de discuter avec les modèles d\'Intelligence Artificielle de la direction interministérielle du numérique (<a href="https://ia.numerique.gouv.fr/outils-ia/albert-api/" target="_blank" rel="noopener noreferrer">DINUM</a>), avec votre clé API personnelle.',
     'info.donnees': 'Vos données',
     'info.donnees.relais': 'Votre clé et vos questions traversent un relais n8n interministériel, qui ne conserve rien, puis vont vers Albert API.',
@@ -240,6 +240,8 @@ I18n.TEXTES.fr = {
     'toast.reponse-copiee': 'Réponse copiée.',
     'toast.code-copie': 'Code copié.',
     'toast.copie-refusee': 'Copie refusée par le navigateur.',
+    'toast.telechargement-en-cours': 'Téléchargement en cours...',
+    'toast.telecharge': 'Fichier téléchargé : {nom}',
     'toast.telechargement-impossible': 'Téléchargement impossible.',
     'toast.partage-impossible': 'Changement impossible : les données ne tiennent pas dans le nouveau stockage.',
     'toast.conversation-supprimee': 'Conversation supprimée.',

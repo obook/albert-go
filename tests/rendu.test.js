@@ -174,7 +174,8 @@ test('telechargerAvecAttente : bouton inactif pendant la préparation, rendu ens
         assert.ok(!bouton.disabled && !classes.has('en-cours'));
         await Rendu.telechargerAvecAttente(bouton, () => Promise.reject(new Error('réseau')), 'x');
         assert.ok(!bouton.disabled);
-        assert.deepStrictEqual(recus, ['image.jpg', 'toast.telechargement-impossible']);
+        assert.deepStrictEqual(recus, ['toast.telechargement-en-cours', 'image.jpg', 'toast.telecharge',
+            'toast.telechargement-en-cours', 'toast.telechargement-impossible']);
     } finally {
         Rendu.telecharger = avant;
         delete global.t;

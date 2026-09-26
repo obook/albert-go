@@ -237,12 +237,16 @@ function ajouterAttente() {
  * Affiche un court message sous l'en-tête.
  *
  * @param {string} texte - Message à afficher.
+ * @param {boolean} [jusquAuSuivant] - Garder le message jusqu'au prochain toast.
  */
-function toast(texte) {
+function toast(texte, jusquAuSuivant) {
     const boite = $('toast');
     boite.textContent = texte;
     boite.classList.add('visible');
     clearTimeout(minuteurToast);
+    if (jusquAuSuivant) {
+        return;
+    }
     /* Un message long reste plus longtemps. */
     const duree = Math.max(2000, texte.length * 60);
     minuteurToast = setTimeout(() => {
