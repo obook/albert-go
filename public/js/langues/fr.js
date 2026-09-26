@@ -121,7 +121,7 @@ I18n.TEXTES.fr = {
     'reglages.tirage': 'Probabilités',
     'reglages.statistiques': 'Statistiques',
     'reglages.aide-outils': 'L\'IA décide seule de s\'en servir lorsqu\'elle en a besoin.',
-    'reglages.recherche-active': 'Recherche web :',
+    'reglages.recherche-active': 'Recherche :',
     'moteur.wikipedia': 'Encyclopédie généraliste',
     'moteur.data-gouv': 'Données publiques françaises',
     'moteur.hal': 'Publications de la recherche française',
