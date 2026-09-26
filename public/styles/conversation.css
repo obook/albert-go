@@ -71,7 +71,13 @@ main {
 /* Étape 2 : "Clé" et le bouton qui ouvre la boîte, sur une ligne. */
 .accueil .etapes > li:last-child { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1rem; }
 .accueil .etapes > li:last-child::before { top: 50%; transform: translateY(-50%); }
-.accueil .etapes .bouton-principal { width: auto; margin: 0; }
+/* Bouton compact : il ne doit pas écraser le mot "Clé" à côté. */
+.accueil .etapes .bouton-principal {
+    width: auto;
+    margin: 0;
+    padding: 0.25rem 1rem;
+    font-size: 0.9375rem;
+}
 
 /* Boîte de la clé : champ, message, interrupteur, puis Annuler et OK. */
 #dialogue-cle input[type="password"] { margin-bottom: 0; }
