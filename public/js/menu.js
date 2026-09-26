@@ -41,8 +41,27 @@ function afficherTheme() {
     $('theme').setAttribute('aria-label', t('theme.' + actuel.cle + '.aria'));
 }
 
+/**
+ * Adapte l'entrée "Effacer la clé API" au réglage de conservation.
+ *
+ * Clé non conservée : rien à effacer du stockage, l'entrée devient "Fermer l'application".
+ */
+function afficherSortie() {
+    const prefixe = partage ? 'fermer-app' : 'changer-cle';
+    const textes = [
+        [$('changer-cle').querySelector('span'), 'menu.' + prefixe],
+        [$('titre-confirmer-cle'), 'confirmer-' + prefixe + '.titre'],
+        [$('texte-confirmer-cle'), 'confirmer-' + prefixe + '.texte']
+    ];
+    for (const [element, cle] of textes) {
+        element.dataset.t = cle;
+        element.textContent = t(cle);
+    }
+}
+
 $('ouvrir-menu').addEventListener('click', () => {
     afficherHistorique();
+    afficherSortie();
     $('menu').showModal();
 });
 
@@ -144,7 +163,10 @@ $('confirmer-cle').addEventListener('close', () => {
     reglages.cle = null;
     ecrire('cle', null);
     afficher();
-    toast(t('toast.cle-effacee'));
+    /* Clé non conservée : elle n'était pas gardée, rien à annoncer. */
+    if (!partage) {
+        toast(t('toast.cle-effacee'));
+    }
 });
 
 $('theme').addEventListener('click', () => {
