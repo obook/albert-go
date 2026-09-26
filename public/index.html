@@ -187,6 +187,17 @@
                  class="chat"
                  hidden
                  data-t-attr="aria-label:chat.aria">
+            <!-- Chat vide : bienvenue et suggestions, masquées dès la première question (CSS). -->
+            <div class="bienvenue">
+                <h2 data-t="bienvenue.titre"></h2>
+                <p data-t="bienvenue.texte"></p>
+                <div class="suggestions">
+                    <button type="button" class="suggestion" data-module="corriger" data-t="bienvenue.corriger"></button>
+                    <button type="button" class="suggestion" data-module="traduire" data-t="bienvenue.traduire"></button>
+                    <button type="button" class="suggestion" data-module="rediger" data-t="bienvenue.rediger"></button>
+                    <button type="button" class="suggestion" data-exemple="bienvenue.exemple-calcul" data-t="bienvenue.calcul"></button>
+                </div>
+            </div>
             <ol id="fil"
                 class="fil"
                 role="log"

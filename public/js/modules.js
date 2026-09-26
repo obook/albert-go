@@ -137,6 +137,8 @@ function afficherOutil() {
     $('outil-actif').replaceChildren(...nomModule(outilActuel));
     $('saisie').placeholder = t('invite.' + outilActuel);
     $('langues').hidden = outilActuel !== 'traduire';
+    /* Le CSS n'affiche la bienvenue que dans Chat. */
+    $('chat').dataset.module = outilActuel;
 }
 
 /* Ce qu'affichait chaque outil dans cet onglet (conversation, saisie, notes de Rédiger), retrouvé au retour. */
@@ -177,6 +179,19 @@ afficherLangues();
 for (const bouton of document.querySelectorAll('[data-outil]')) {
     bouton.addEventListener('click', () => {
         choisirOutil(bouton.dataset.outil);
+    });
+}
+
+/* Suggestions du chat vide : ouvrir un module, ou préremplir une question d'exemple. */
+for (const bouton of document.querySelectorAll('.suggestion')) {
+    bouton.addEventListener('click', () => {
+        if (bouton.dataset.module) {
+            choisirOutil(bouton.dataset.module);
+            focusSaisie();
+            return;
+        }
+        $('saisie').value = t(bouton.dataset.exemple);
+        $('saisie').focus();
     });
 }
 
