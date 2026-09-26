@@ -144,6 +144,7 @@ $('confirmer-cle').addEventListener('close', () => {
     reglages.cle = null;
     ecrire('cle', null);
     afficher();
+    toast(t('toast.cle-effacee'));
 });
 
 $('theme').addEventListener('click', () => {
