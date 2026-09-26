@@ -175,7 +175,7 @@ I18n.TEXTES.es = {
     'info.donnees.effacement': 'Por defecto, su clave, sus preguntas y sus conversaciones se borran al cerrar la pestaña. Puede desactivar esta opción en los ajustes. "Cambiar de clave", en el menú, borra la clave.',
     'info.donnees.relais': 'Sus preguntas pasan por un relé n8n interministerial, que no guarda nada, y van luego directamente a Albert API, alojado en Francia.',
     'info.donnees.fichiers': 'Un archivo de texto adjunto se lee en este navegador y se envía con su pregunta. Una imagen adjunta se envía a Albert para extraer su texto.',
-    'info.donnees.traceurs': 'Ninguna cuenta, ninguna cookie, ninguna biblioteca cargada desde un sitio ajeno. La lectura en voz alta usa las voces del aparato, y las voces en línea solo si usted las permite.',
+    'info.donnees.traceurs': 'Ninguna cuenta, ninguna cookie, ninguna biblioteca cargada desde un sitio ajeno. La lectura en voz alta usa las voces del aparato, y las voces en línea solo si usted las permite. Con la búsqueda web, una imagen de Wikimedia Commons citada en una respuesta se carga desde Wikimedia.',
     'info.clavier': 'Teclado',
     'info.clavier.texte': 'Intro: enviar. Mayús+Intro: nueva línea. Flechas arriba y abajo: preguntas anteriores.',
     'info.reponses': 'Las respuestas',

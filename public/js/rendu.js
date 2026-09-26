@@ -170,7 +170,7 @@ const Rendu = {
             ],
             throwOnError: false
         });
-        await Promise.all([this.colorerCode(element), this.diagrammes(element)]);
+        await Promise.all([this.colorerCode(element), this.diagrammes(element), this.imagesCommons(element)]);
         for (const pre of element.querySelectorAll('pre')) {
             const bloc = document.createElement('div');
             bloc.className = 'bloc-code';
@@ -201,6 +201,46 @@ const Rendu = {
             if (hljs.getLanguage(langue)) {
                 hljs.highlightElement(bloc);
             }
+        }
+    },
+
+    /**
+     * Affiche sous un lien vers Commons l'image qu'il désigne, avec son
+     * crédit. Seulement si la recherche web est activée : Wikimedia voit
+     * alors l'adresse IP, comme pour une recherche.
+     *
+     * @param {HTMLElement} element - Conteneur de la réponse.
+     * @returns {Promise<void>}
+     */
+    async imagesCommons(element) {
+        if (!reglages.recherche) {
+            return;
+        }
+        const vus = new Set();
+        for (const lien of element.querySelectorAll('a[href]')) {
+            const titre = Recherche.fichierCommons(lien.href);
+            if (!titre || vus.has(titre)) {
+                continue;
+            }
+            vus.add(titre);
+            const image = await Recherche.imageCommons(titre).catch(() => null);
+            if (!image) {
+                continue;
+            }
+            const figure = document.createElement('figure');
+            figure.className = 'image-commons';
+            const img = document.createElement('img');
+            img.src = image.src;
+            img.alt = titre.replace(/^[^:]+:/, '').replace(/\.[^.]+$/, '').replace(/_/g, ' ');
+            const credit = document.createElement('a');
+            credit.href = image.page;
+            credit.target = '_blank';
+            credit.rel = 'noopener noreferrer';
+            credit.textContent = [image.auteur, image.licence, 'Wikimedia Commons'].filter(Boolean).join(', ');
+            const legende = document.createElement('figcaption');
+            legende.append(credit);
+            figure.append(img, legende);
+            (lien.closest('p, li') || lien).after(figure);
         }
     },
 
