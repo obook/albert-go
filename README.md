@@ -40,7 +40,7 @@ Dans Chat, cinq outils sont activés par défaut ; on peut les désactiver dans 
 
 | Outil | Rôle |
 |---|---|
-| Calculatrice | Calcul exact : opérations, puissances, racine carrée, trigonométrie en degrés, logarithmes ; décomposition en facteurs premiers, PGCD et PPCM. |
+| Calculatrice | Calcul exact avec [math.js](https://mathjs.org/) : opérations, puissances, racines, trigonométrie en degrés, logarithmes, fractions exactes, factorielles et combinaisons, unités ; décomposition en facteurs premiers, PGCD et PPCM. |
 | Statistiques | Moyenne, médiane, variance, écart-type, minimum, maximum, étendue, quartiles et écart interquartile d'une série. |
 | Probabilités | Tirage au sort : ordre de passage, éléments tirés ou groupes, avec le générateur aléatoire du navigateur. |
 | Calendrier | Jour de la semaine d'une date, date dans N jours, nombre de jours entre deux dates. |
@@ -129,7 +129,7 @@ Olivier Booklage, [olivier.booklage@ac-bordeaux.fr](mailto:olivier.booklage@ac-b
 |---|---|
 | Albert Go | [Licence Ouverte 2.0](https://www.etalab.gouv.fr/licence-ouverte-open-licence/) (Etalab), texte dans `LICENSE` |
 | [Marked](https://github.com/markedjs/marked), [KaTeX](https://katex.org/), [Mermaid](https://mermaid.js.org/), [Pico](https://picocss.com/), [qrcode-generator](https://github.com/kazuhikoarase/qrcode-generator) | MIT |
-| [PDF.js](https://mozilla.github.io/pdf.js/) | Apache 2.0 |
+| [PDF.js](https://mozilla.github.io/pdf.js/), [math.js](https://mathjs.org/) | Apache 2.0 |
 | [highlight.js](https://highlightjs.org/) | BSD 3-Clause |
 | Logos des éditeurs de modèles (`public/images/editeurs/`) | Marques de leurs éditeurs, reprises de la [page des modèles d'Albert API](https://ia.numerique.gouv.fr/outils-ia/albert-api/mod%C3%A8les/) |
 | Logos des moteurs de recherche (`public/images/moteurs/`) | Marques de leurs éditeurs, reprises de leurs sites ; OpenAlex depuis [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:OpenAlex_logo_icon.svg) (MIT) |

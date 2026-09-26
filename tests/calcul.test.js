@@ -13,12 +13,14 @@
 
 const { test } = require('node:test');
 const assert = require('node:assert');
+/* math.js, chargé à la demande dans la page, est déjà là pour les tests. */
+globalThis.math = require('../public/vendor/mathjs/math.js');
 require('../public/js/i18n.js');
 const { Calcul, Calendrier, Compteur, Tirage, Statistiques, Facteurs, OUTILS_LOCAUX } = require('../public/js/tools/calcul.js');
 
-test('evaluer : priorités, parenthèses, puissance, virgule', () => {
+test('evaluer : priorités, parenthèses, puissance, point décimal', () => {
     assert.strictEqual(Calcul.evaluer('2 + 3 * 4'), 14);
-    assert.strictEqual(Calcul.evaluer('(12,5 + 3) * 2^3'), 124);
+    assert.strictEqual(Calcul.evaluer('(12.5 + 3) * 2^3'), 124);
     assert.strictEqual(Calcul.evaluer('2^3^2'), 512);
     assert.strictEqual(Calcul.evaluer('-2^2'), -4);
     assert.strictEqual(Calcul.evaluer('0.1 + 0.2'), 0.3);
@@ -29,9 +31,9 @@ test('evaluer : fonctions scientifiques, angles en degrés', () => {
     assert.strictEqual(Calcul.evaluer('sin(30)'), 0.5);
     assert.strictEqual(Calcul.evaluer('cos(90) + sin(180)'), 0);
     assert.strictEqual(Calcul.evaluer('tan(45)'), 1);
-    assert.strictEqual(Calcul.evaluer('acos(0,5)'), 60);
+    assert.strictEqual(Calcul.evaluer('acos(0.5)'), 60);
     assert.strictEqual(Calcul.evaluer('log(1000) + ln(e)'), 4);
-    assert.strictEqual(Calcul.evaluer('round(abs(-2,6))'), 3);
+    assert.strictEqual(Calcul.evaluer('round(abs(-2.6))'), 3);
 });
 
 test('calendrier : jour, décalage, écart, date impossible', () => {
@@ -45,7 +47,8 @@ test('calendrier : jour, décalage, écart, date impossible', () => {
 });
 
 test('evaluer : refuse le code et les expressions fausses', () => {
-    for (const faux of ['alert(1)', '2 +', '(1', '1 / 0', '1 2', '', 'tan(90)', 'sqrt(-1)', 'constructor(1)']) {
+    for (const faux of ['alert(1)', '2 +', '(1', '1 / 0', '1 2', '', 'tan(90)', 'sqrt(-1)', 'constructor(1)',
+        'import({}, {})', 'evaluate("1")', 'createUnit("x")', 'parse("1")', 'f(x) = x^2', '12,5']) {
         assert.throws(() => Calcul.evaluer(faux), faux);
     }
 });
@@ -94,21 +97,30 @@ test('outils locaux : chaque outil a ses textes dans les quatre langues', () => 
     I18n.langue = 'fr';
 });
 
-test('calcul avec nombres : facteurs premiers, nombre premier, bornes', () => {
+test('evaluer : ce que math.js ajoute', () => {
+    assert.strictEqual(Calcul.evaluer('pgcd(84, 126) + ppcm(84, 126)'), 294);
+    assert.strictEqual(Calcul.evaluer('fraction(1, 3) + fraction(1, 4)'), '7/12');
+    assert.strictEqual(Calcul.evaluer('5! + combinations(5, 2)'), 130);
+    assert.strictEqual(Calcul.evaluer('5 cm + 2 mm'), '5.2 cm');
+    /* Complexes écrits avec i ; sqrt(-1) reste refusé (voir plus haut). */
+    assert.strictEqual(Calcul.evaluer('(1 + 2i) * (3 - i)'), '5 + 5i');
+});
+
+test('calcul avec nombres : facteurs premiers, nombre premier, bornes', async () => {
     const calcul = OUTILS_LOCAUX.calcul.executer;
     assert.deepStrictEqual(Facteurs.decomposer(477843), [[3, 1], [149, 1], [1069, 1]]);
-    assert.strictEqual(calcul({ nombres: [477843] }), '477843 = 3 × 149 × 1069');
-    assert.strictEqual(calcul({ nombres: [360] }), '360 = 2^3 × 3^2 × 5');
-    assert.match(calcul({ nombres: [1069] }), /1069/);
+    assert.strictEqual(await calcul({ nombres: [477843] }), '477843 = 3 × 149 × 1069');
+    assert.strictEqual(await calcul({ nombres: [360] }), '360 = 2^3 × 3^2 × 5');
+    assert.match(await calcul({ nombres: [1069] }), /1069/);
     assert.throws(() => Facteurs.decomposer(1));
     assert.throws(() => Facteurs.decomposer(2.5));
     assert.throws(() => Facteurs.decomposer(1e13));
     /* Sans nombres, l'expression reste la règle. */
-    assert.strictEqual(calcul({ expression: '2 + 3', nombres: [] }, 'fr'), '2 + 3 = 5');
+    assert.strictEqual(await calcul({ expression: '2 + 3', nombres: [] }, 'fr'), '2 + 3 = 5');
 });
 
-test('calcul avec plusieurs nombres : PGCD et PPCM', () => {
-    assert.strictEqual(OUTILS_LOCAUX.calcul.executer({ nombres: [12, 18] }), '12 = 2^2 × 3 ; 18 = 2 × 3^2 ; PGCD 6, PPCM 36.');
+test('calcul avec plusieurs nombres : PGCD et PPCM', async () => {
+    assert.strictEqual(await OUTILS_LOCAUX.calcul.executer({ nombres: [12, 18] }), '12 = 2^2 × 3 ; 18 = 2 × 3^2 ; PGCD 6, PPCM 36.');
     assert.strictEqual(Facteurs.pgcd(1071, 462), 21);
     assert.strictEqual(Facteurs.ppcm([4, 6, 10]), '60');
     /* Au-delà de 2^53 : le PPCM reste exact. */

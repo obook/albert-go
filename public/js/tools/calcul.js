@@ -1,6 +1,6 @@
 /*
  * tools/calcul.js
- * Outils locaux du modèle : calcul (avec facteurs premiers, PGCD, PPCM), calendrier, compteur, tirage, statistiques.
+ * Outils locaux du modèle : calcul (math.js, avec facteurs premiers, PGCD, PPCM), calendrier, compteur, tirage, statistiques.
  * Là où les modèles se trompent ; tout reste dans le navigateur.
  *
  * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
@@ -15,100 +15,100 @@ const RAD = Math.PI / 180;
 const net = v => (Math.abs(v) < 1e-12 ? 0 : v);
 
 const Calcul = {
-    /** Fonctions acceptées ; log est le logarithme décimal, ln le népérien. */
-    FONCTIONS: {
-        sqrt: Math.sqrt,
-        abs: Math.abs,
-        round: Math.round,
-        floor: Math.floor,
-        ceil: Math.ceil,
-        exp: Math.exp,
-        ln: Math.log,
-        log: Math.log10,
-        sin: x => net(Math.sin(x * RAD)),
-        cos: x => net(Math.cos(x * RAD)),
-        tan: x => net(Math.sin(x * RAD)) / net(Math.cos(x * RAD)),
-        asin: x => Math.asin(x) / RAD,
-        acos: x => Math.acos(x) / RAD,
-        atan: x => Math.atan(x) / RAD
-    },
-
-    /** Constantes acceptées. */
-    CONSTANTES: { pi: Math.PI, e: Math.E },
+    /** Adresse de math.js, relative à la page ; chargé au premier calcul. */
+    MATHJS: 'vendor/mathjs/math.js',
 
     /**
-     * Évalue une expression : + - * / ^, parenthèses, FONCTIONS et CONSTANTES.
+     * Charge math.js au premier calcul : 175 ko compressés que la plupart des
+     * questions n'utilisent pas. Déjà là dans les tests Node.
      *
-     * Analyseur à descente récursive, sans eval. La virgule décimale est acceptée.
+     * @returns {Promise<void>} Résolue quand la variable globale math existe.
+     */
+    charger() {
+        if (typeof math !== 'undefined') {
+            return Promise.resolve();
+        }
+        this._chargement ??= new Promise((resoudre, rejeter) => {
+            const script = document.createElement('script');
+            script.src = this.MATHJS;
+            script.onload = resoudre;
+            script.onerror = rejeter;
+            document.head.append(script);
+        });
+        return this._chargement;
+    },
+
+    /**
+     * Instance de math.js réglée pour la classe : angles en degrés, log
+     * décimal et ln népérien, pgcd et ppcm en français, racine d'un négatif
+     * impossible (predictable) ; les complexes restent possibles quand
+     * l'expression écrit i, pour la Terminale. Les fonctions qui touchent
+     * au parseur lui-même sont coupées, comme le demande la page Security de
+     * math.js : l'expression vient du modèle.
      *
-     * @param {string} expression - Par exemple "(12,5 + 3) * 2^3".
-     * @returns {number} Résultat arrondi à 12 chiffres significatifs.
+     * @returns {Function} evaluate de cette instance.
+     */
+    moteur() {
+        if (this._evaluer) {
+            return this._evaluer;
+        }
+        const m = math.create(math.all);
+        m.config({ predictable: true });
+        const evaluer = m.evaluate;
+        const interdit = () => {
+            throw new Error(t('calcul.invalide'));
+        };
+        m.import({
+            sin: x => net(Math.sin(x * RAD)),
+            cos: x => net(Math.cos(x * RAD)),
+            tan: x => net(Math.sin(x * RAD)) / net(Math.cos(x * RAD)),
+            asin: x => Math.asin(x) / RAD,
+            acos: x => Math.acos(x) / RAD,
+            atan: x => Math.atan(x) / RAD,
+            ln: x => Math.log(x),
+            log: x => Math.log10(x),
+            pgcd: m.gcd,
+            ppcm: m.lcm,
+            import: interdit,
+            createUnit: interdit,
+            reviver: interdit,
+            evaluate: interdit,
+            parse: interdit,
+            compile: interdit,
+            simplify: interdit,
+            derivative: interdit,
+            resolve: interdit
+        }, { override: true });
+        this._evaluer = evaluer;
+        return evaluer;
+    },
+
+    /**
+     * Évalue une expression avec math.js (voir moteur). Le point est le
+     * séparateur décimal, la virgule sépare les arguments : pgcd(84, 126).
+     *
+     * @param {string} expression - Par exemple "(12.5 + 3) * sin(30)".
+     * @returns {number|string} Nombre arrondi à 12 chiffres significatifs, ou
+     *     texte pour une fraction, une unité, une matrice.
      */
     evaluer(expression) {
-        const jetons = String(expression).replace(/,/g, '.').match(/\d+\.?\d*|\.\d+|[a-z]+|\S/gi) || [];
-        let i = 0;
-        const lire = attendu => {
-            if (jetons[i] !== attendu) {
-                throw new Error(t('calcul.invalide'));
-            }
-            i++;
-        };
-        const somme = () => {
-            let v = produit();
-            while (jetons[i] === '+' || jetons[i] === '-') {
-                v = jetons[i++] === '+' ? v + produit() : v - produit();
-            }
-            return v;
-        };
-        const produit = () => {
-            let v = unaire();
-            while (jetons[i] === '*' || jetons[i] === '/') {
-                v = jetons[i++] === '*' ? v * unaire() : v / unaire();
-            }
-            return v;
-        };
-        /* Le moins passe après la puissance : -2^2 = -4. */
-        const unaire = () => {
-            if (jetons[i] === '-' || jetons[i] === '+') {
-                return jetons[i++] === '-' ? -unaire() : unaire();
-            }
-            return puissance();
-        };
-        /* ^ associe à droite : 2^3^2 = 2^9. */
-        const puissance = () => {
-            const base = atome();
-            if (jetons[i] === '^') {
-                i++;
-                return base ** unaire();
-            }
-            return base;
-        };
-        const atome = () => {
-            const j = jetons[i++];
-            if (j === '(') {
-                const v = somme();
-                lire(')');
-                return v;
-            }
-            if (Object.hasOwn(this.CONSTANTES, j)) {
-                return this.CONSTANTES[j];
-            }
-            if (Object.hasOwn(this.FONCTIONS, j)) {
-                lire('(');
-                const v = somme();
-                lire(')');
-                return this.FONCTIONS[j](v);
-            }
-            if (/^[\d.]/.test(j || '')) {
-                return Number(j);
-            }
-            throw new Error(t('calcul.invalide'));
-        };
-        const resultat = somme();
-        if (i < jetons.length || !Number.isFinite(resultat)) {
+        let resultat;
+        try {
+            resultat = this.moteur()(String(expression));
+        } catch (err) {
             throw new Error(t('calcul.invalide'));
         }
-        return Number(resultat.toPrecision(12));
+        if (typeof resultat === 'number') {
+            if (!Number.isFinite(resultat)) {
+                throw new Error(t('calcul.invalide'));
+            }
+            return Number(resultat.toPrecision(12));
+        }
+        /* Rien à montrer (expression vide) ou une fonction définie par l'expression. */
+        if (resultat === undefined || typeof resultat === 'function') {
+            throw new Error(t('calcul.invalide'));
+        }
+        return math.format(resultat, { precision: 12 });
     }
 };
 
@@ -341,18 +341,24 @@ const formaterNombre = (v, langue) => Number(v.toPrecision(12)).toLocaleString(l
 
 /* Le nom sert de réglage, de clé de stockage et de préfixe i18n. */
 const OUTILS_LOCAUX = {
-    /* Une expression, ou des entiers à décomposer (avec PGCD et PPCM) :
-       la virgule décimale interdit pgcd(12, 18) dans une expression. */
+    /* Une expression math.js, ou des entiers à décomposer avec leur PGCD et
+       leur PPCM : math.js n'a pas de décomposition en facteurs premiers. */
     calcul: {
         icone: 'calculatrice',
         outil: () => definirOutil('calcul', {
             expression: { type: 'string' },
             nombres: { type: 'array', items: { type: 'integer' } }
         }, []),
-        executer: (a, langue) => (Array.isArray(a.nombres) && a.nombres.length
-            ? Facteurs.decrire(a.nombres.map(Number))
-            : a.expression + ' = '
-                + Calcul.evaluer(a.expression).toLocaleString(langue, { maximumFractionDigits: 12, useGrouping: false }))
+        executer: async (a, langue) => {
+            if (Array.isArray(a.nombres) && a.nombres.length) {
+                return Facteurs.decrire(a.nombres.map(Number));
+            }
+            await Calcul.charger();
+            const resultat = Calcul.evaluer(a.expression);
+            return a.expression + ' = ' + (typeof resultat === 'number'
+                ? resultat.toLocaleString(langue, { maximumFractionDigits: 12, useGrouping: false })
+                : resultat);
+        }
     },
     statistiques: {
         icone: 'statistiques',
