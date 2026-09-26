@@ -175,7 +175,7 @@ I18n.TEXTES.de = {
     'info.donnees.effacement': 'Standardmäßig werden Ihr Schlüssel, Ihre Fragen und Ihre Gespräche beim Schließen des Tabs gelöscht. Sie können das in den Einstellungen abschalten. "Schlüssel wechseln" im Menü löscht den Schlüssel.',
     'info.donnees.relais': 'Ihre Fragen laufen über ein interministerielles n8n-Relais, das nichts speichert, und gehen dann direkt an Albert API, gehostet in Frankreich.',
     'info.donnees.fichiers': 'Eine angehängte Textdatei wird in diesem Browser gelesen und mit Ihrer Frage gesendet. Ein angehängtes Bild geht an Albert, um seinen Text zu gewinnen.',
-    'info.donnees.traceurs': 'Kein Konto, kein Cookie, keine Bibliothek von einer fremden Seite. Das Vorlesen nutzt die Stimmen des Geräts, Online-Stimmen nur mit Ihrer Erlaubnis. Mit der Websuche wird ein in einer Antwort genanntes Bild von Wikimedia Commons von Wikimedia geladen.',
+    'info.donnees.traceurs': 'Kein Konto, kein Cookie, keine Bibliothek von einer fremden Seite. Das Vorlesen nutzt die Stimmen des Geräts, Online-Stimmen nur mit Ihrer Erlaubnis. Mit dem Bilder-Werkzeug gehen die Suchwörter an Wikimedia Commons, und die genannten Bilder werden von dort geladen.',
     'info.clavier': 'Tastatur',
     'info.clavier.texte': 'Eingabe: senden. Umschalt+Eingabe: neue Zeile. Pfeil auf und ab: vorherige Fragen.',
     'info.reponses': 'Die Antworten',
@@ -308,5 +308,11 @@ I18n.TEXTES.de = {
     'recherche.aucun-resultat': 'Kein Ergebnis.',
     'recherche.impossible': 'Suche fehlgeschlagen: {message}',
     'recherche.moteur-injoignable': '{nom} nicht erreichbar ({status}).',
-    'recherche.moteur-refus': 'Anfrage von {nom} abgelehnt.'
+    'recherche.moteur-refus': 'Anfrage von {nom} abgelehnt.',
+    'reglages.images': 'Bilder von Wikimedia Commons',
+    'images.description': 'Sucht echte Bilder auf Wikimedia Commons und gibt den Link zu ihrer Seite zurück. Immer verwenden, wenn ein Foto oder Bild gewünscht wird. Danach einen dieser Links nennen, nie einen erfundenen Dateinamen.',
+    'images.aucune': 'Kein Bild auf Wikimedia Commons gefunden.',
+    'etat.images': 'Bildsuche "{mots}"...',
+    'reponse.images': 'Bildsuchen anzeigen',
+    'reponse.note-images': 'Gesuchte Bilder: {lignes}'
 };

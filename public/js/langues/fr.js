@@ -175,7 +175,7 @@ I18n.TEXTES.fr = {
     'info.donnees.effacement': 'Par défaut, votre clé, vos questions et vos conversations sont effacées à la fermeture de l\'onglet. Vous pouvez désactiver cette option dans les réglages. "Changer de clé", dans le menu, efface la clé.',
     'info.donnees.relais': 'Vos questions passent par un relais n8n interministériel, qui n\'enregistre rien, puis vont directement à Albert API, hébergé en France.',
     'info.donnees.fichiers': 'Un fichier texte joint est lu dans ce navigateur et envoyé avec votre question. Une image jointe est envoyée à Albert pour en extraire le texte.',
-    'info.donnees.traceurs': 'Aucun compte, aucun cookie, aucune bibliothèque chargée depuis un site tiers. La lecture à voix haute utilise les voix de l\'appareil, et les voix en ligne seulement si vous les autorisez. Avec la recherche web, une image de Wikimedia Commons citée dans une réponse est chargée depuis Wikimedia.',
+    'info.donnees.traceurs': 'Aucun compte, aucun cookie, aucune bibliothèque chargée depuis un site tiers. La lecture à voix haute utilise les voix de l\'appareil, et les voix en ligne seulement si vous les autorisez. Avec l\'outil Images, les mots cherchés partent vers Wikimedia Commons, et les images citées en sont chargées.',
     'info.clavier': 'Clavier',
     'info.clavier.texte': 'Entrée : envoyer. Maj+Entrée : nouvelle ligne. Flèches haut et bas : questions précédentes.',
     'info.reponses': 'Les réponses',
@@ -308,5 +308,11 @@ I18n.TEXTES.fr = {
     'recherche.aucun-resultat': 'Aucun résultat.',
     'recherche.impossible': 'Recherche impossible : {message}',
     'recherche.moteur-injoignable': '{nom} injoignable ({status}).',
-    'recherche.moteur-refus': 'requête refusée par {nom}.'
+    'recherche.moteur-refus': 'requête refusée par {nom}.',
+    'reglages.images': 'Images de Wikimedia Commons',
+    'images.description': 'Cherche de vraies images sur Wikimedia Commons et renvoie le lien vers leur page. À utiliser dès qu\'on demande une photo ou une image. Cite ensuite un de ces liens, jamais un nom de fichier inventé.',
+    'images.aucune': 'Aucune image trouvée sur Wikimedia Commons.',
+    'etat.images': 'Recherche d\'images « {mots} »...',
+    'reponse.images': 'Voir les images cherchées',
+    'reponse.note-images': 'Images cherchées : {lignes}'
 };

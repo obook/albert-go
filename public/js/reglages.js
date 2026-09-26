@@ -152,6 +152,12 @@ for (const [nom, local] of Object.entries(OUTILS_LOCAUX)) {
 
 /* Même globe que sous une réponse qui a cherché sur le web. */
 $('recherche-reglage').insertAdjacentHTML('afterend', '<span class="icone-outil">' + ICONES.globe + '</span>');
+$('images-reglage').insertAdjacentHTML('afterend', '<span class="icone-outil">' + ICONES.image + '</span>');
+$('images-reglage').checked = reglages.images;
+$('images-reglage').addEventListener('change', () => {
+    reglages.images = $('images-reglage').checked;
+    ecrire('images', reglages.images ? 'oui' : 'non');
+});
 $('recherche-reglage').checked = reglages.recherche;
 $('cle-recherche').value = reglages.cleRecherche || '';
 

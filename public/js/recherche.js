@@ -229,6 +229,60 @@ const Recherche = {
     },
 
     /**
+     * Outil de recherche d'images sur Wikimedia Commons, pour le modèle.
+     *
+     * @returns {Object} Outil au format "tools" de chat/completions.
+     */
+    outilImages() {
+        return {
+            type: 'function',
+            function: {
+                name: 'image_commons',
+                description: t('images.description'),
+                parameters: {
+                    type: 'object',
+                    properties: { q: { type: 'string', description: t('recherche.parametre') } },
+                    required: ['q']
+                }
+            }
+        };
+    },
+
+    /**
+     * Images trouvées dans une réponse de Commons (generator=search).
+     *
+     * @param {Object} corps - Réponse de l'API.
+     * @returns {Array<Object>} { titre, url, desc }, dans l'ordre du moteur.
+     */
+    lireImagesTrouvees(corps) {
+        return Object.values((corps && corps.query && corps.query.pages) || {})
+            .sort((a, b) => a.index - b.index)
+            .map((page) => {
+                const meta = (page.imageinfo && page.imageinfo[0] && page.imageinfo[0].extmetadata) || {};
+                const desc = ((meta.ImageDescription && meta.ImageDescription.value) || '').replace(/<[^>]*>/g, '').trim();
+                return {
+                    titre: page.title,
+                    url: 'https://commons.wikimedia.org/wiki/' + encodeURI(page.title.replace(/ /g, '_')),
+                    desc: desc.length > 150 ? desc.slice(0, 150) + '...' : desc
+                };
+            });
+    },
+
+    /**
+     * Cherche des images sur Commons.
+     *
+     * @param {string} mots - Texte cherché.
+     * @param {AbortSignal} [signal] - Pour annuler avec la question.
+     * @returns {Promise<Array<Object>>} Voir lireImagesTrouvees.
+     */
+    async chercherImages(mots, signal) {
+        const adresse = 'https://commons.wikimedia.org/w/api.php?action=query&format=json&origin=*'
+            + '&generator=search&gsrnamespace=6&gsrlimit=6&gsrsearch=' + encodeURIComponent(mots + ' filetype:bitmap')
+            + '&prop=imageinfo&iiprop=extmetadata&iiextmetadatafilter=ImageDescription&iiextmetadatalanguage=' + I18n.langue;
+        return this.lireImagesTrouvees(await this.interroger(adresse, signal, 'Wikimedia Commons'));
+    },
+
+    /**
      * Interroge le moteur choisi.
      *
      * Mojeek refuse une clé par un code 200, un `status` en clair et aucun
@@ -582,6 +636,9 @@ const Recherche = {
  * @returns {Promise<string>} Contenu du message de rôle "tool".
  */
 async function executerOutil(appel, signal, faites) {
+    if (appel.function.name === 'image_commons') {
+        return chercherImagesOutil(appel, signal, faites);
+    }
     const local = OUTILS_LOCAUX[appel.function.name];
     if (local) {
         try {
@@ -615,6 +672,37 @@ async function executerOutil(appel, signal, faites) {
         return Recherche.formater(numerotes) || t('recherche.aucun-resultat');
     } catch (err) {
         /* Sinon le modèle répond de mémoire sans que rien ne le dise. */
+        const echec = t('recherche.impossible', { message: err.message });
+        toast(echec);
+        return echec;
+    }
+}
+
+/**
+ * Exécute l'outil image_commons : les vrais fichiers trouvés, pour que le
+ * modèle cite un lien qui existe au lieu d'en inventer un.
+ *
+ * @param {Object} appel - Entrée de tool_calls.
+ * @param {AbortSignal} signal - Pour annuler avec la question.
+ * @param {Array<Object>} faites - Traces, complétées ici.
+ * @returns {Promise<string>} Contenu du message de rôle "tool".
+ */
+async function chercherImagesOutil(appel, signal, faites) {
+    let mots = '';
+    try {
+        mots = JSON.parse(appel.function.arguments || '{}').q || '';
+    } catch (err) {
+        mots = '';
+    }
+    if (!mots) {
+        return t('recherche.aucun-mot');
+    }
+    etat(t('etat.images', { mots: mots }));
+    try {
+        const images = await Recherche.chercherImages(mots, signal);
+        faites.push({ image_commons: mots });
+        return images.map((i) => '- ' + i.url + (i.desc ? ' : ' + i.desc : '')).join('\n') || t('images.aucune');
+    } catch (err) {
         const echec = t('recherche.impossible', { message: err.message });
         toast(echec);
         return echec;
@@ -660,6 +748,9 @@ function avecRappel(messages) {
 async function repondreAvecOutils(cle, requete, signal) {
     const cherche = reglages.recherche && (Recherche.sansCle(reglages.fournisseur) || Boolean(reglages.cleRecherche));
     const outils = Object.keys(OUTILS_LOCAUX).filter(nom => reglages[nom]).map(nom => OUTILS_LOCAUX[nom].outil());
+    if (reglages.images) {
+        outils.unshift(Recherche.outilImages());
+    }
     if (cherche) {
         outils.unshift(Recherche.outil(reglages.fournisseur));
     }
