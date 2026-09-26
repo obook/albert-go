@@ -47,6 +47,9 @@ test('calendrier : jour, décalage, écart, date impossible', () => {
     assert.match(Calendrier.repondre({ date: '2026-09-24', fin: '2026-12-19' }, 'fr'), /86/);
     assert.throws(() => Calendrier.repondre({ date: '2027-02-29' }, 'fr'));
     assert.throws(() => Calendrier.repondre({ date: 'demain' }, 'fr'));
+    /* Sans date : aujourd'hui, avec l'heure de l'appareil. */
+    assert.match(Calendrier.repondre({}, 'fr'), /^Nous sommes le .+, il est \d\d:\d\d:\d\d/);
+    assert.match(Calendrier.repondre({ jours: 1 }, 'fr'), /\+ 1 jours : /);
 });
 
 test('evaluer : refuse le code et les expressions fausses', () => {
