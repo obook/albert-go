@@ -173,7 +173,7 @@ I18n.TEXTES.fr = {
     'info.intro': 'Albert Go permet de discuter avec les modèles d\'Intelligence Artificielle de la direction interministérielle du numérique (<a href="https://ia.numerique.gouv.fr/outils-ia/albert-api/" target="_blank" rel="noopener noreferrer">DINUM</a>), avec votre clé API personnelle.',
     'info.donnees': 'Vos données',
     'info.donnees.relais': 'Votre clé et vos questions traversent un relais n8n interministériel, qui ne conserve rien, puis vont vers Albert API.',
-    'info.donnees.traceurs': 'Aucun compte, aucun cookie, aucune bibliothèque chargée depuis un site tiers. Appels vers les outils Internet externes seulement si vous les autorisez.',
+    'info.donnees.traceurs': 'Aucun compte, aucun cookie, aucune bibliothèque chargée depuis un site tiers. Appels des outils Internet seulement si vous les autorisez.',
     'info.clavier': 'Clavier',
     'info.clavier.texte': 'Entrée : envoyer. Maj+Entrée : nouvelle ligne. Flèches haut et bas : questions précédentes.',
     'info.reponses': 'Les réponses',
