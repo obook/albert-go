@@ -251,6 +251,7 @@ I18n.TEXTES.fr = {
     'toast.telechargement-en-cours': 'Téléchargement en cours...',
     'toast.telecharge': 'Fichier téléchargé : {nom}',
     'toast.telechargement-impossible': 'Téléchargement impossible.',
+    'toast.cle-effacee': 'Clé effacée du navigateur',
     'toast.partage-impossible': 'Changement impossible : les données ne tiennent pas dans le nouveau stockage.',
     'toast.conversation-supprimee': 'Conversation supprimée.',
     'toast.conversation-longue': 'Conversation trop longue pour être enregistrée. Elle reste affichée jusqu\'à la fermeture de l\'onglet.',

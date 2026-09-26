@@ -251,6 +251,7 @@ I18n.TEXTES.en = {
     'toast.telechargement-en-cours': 'Downloading...',
     'toast.telecharge': 'File downloaded: {nom}',
     'toast.telechargement-impossible': 'Download failed.',
+    'toast.cle-effacee': 'Key erased from the browser',
     'toast.partage-impossible': 'Change not possible: the data does not fit in the new storage.',
     'toast.conversation-supprimee': 'Conversation deleted.',
     'toast.conversation-longue': 'Conversation too long to be saved. It stays on screen until the tab closes.',
