@@ -133,7 +133,7 @@ I18n.TEXTES.es = {
     'moteur.mojeek': 'Toda la web, índice independiente, clave de pago',
     'reglages.cle-recherche': 'Clave API',
     'reglages.cx': 'ID del buscador',
-    'reglages.aide-recherche': 'Los buscadores web y de imágenes pueden recopilar y explotar los datos de la conversación.',
+    'reglages.aide-recherche': 'Los buscadores en Internet pueden recopilar y explotar los datos de la conversación.',
     'reglages.cle-note': 'Hay una clave guardada en este navegador.',
     'reglages.langue': 'Idioma',
     'reglages.conseilles': 'Ajustes recomendados',
@@ -317,5 +317,5 @@ I18n.TEXTES.es = {
     'reponse.note-images': 'Imágenes buscadas: {lignes}',
     'images.rappel': 'Para una foto o una imagen, usa la herramienta image_commons, no recherche_web, y da el enlace de un archivo encontrado.',
     'images.absent': 'No puedes buscar ni mostrar imágenes: si te piden una, di que hay que activar «Imágenes Wikimedia» en Ajustes > Herramientas.',
-    'reglages.outils-externes': 'En Internet'
+    'reglages.outils-externes': 'Internet'
 };

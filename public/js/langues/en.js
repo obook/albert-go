@@ -133,7 +133,7 @@ I18n.TEXTES.en = {
     'moteur.mojeek': 'The whole web, independent index, paid key',
     'reglages.cle-recherche': 'API key',
     'reglages.cx': 'Search engine ID',
-    'reglages.aide-recherche': 'Web and image search engines may collect and use the data of the conversation.',
+    'reglages.aide-recherche': 'Search engines on the Internet may collect and use the data of the conversation.',
     'reglages.cle-note': 'A key is saved in this browser.',
     'reglages.langue': 'Language',
     'reglages.conseilles': 'Recommended settings',
@@ -317,5 +317,5 @@ I18n.TEXTES.en = {
     'reponse.note-images': 'Images searched: {lignes}',
     'images.rappel': 'For a photo or an image, use the image_commons tool, not recherche_web, then give the link of a file found.',
     'images.absent': 'You can neither search nor show images: if asked for one, say that "Wikimedia images" must be turned on in Settings > Tools.',
-    'reglages.outils-externes': 'On the Internet'
+    'reglages.outils-externes': 'Internet'
 };
