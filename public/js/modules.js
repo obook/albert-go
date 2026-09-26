@@ -183,16 +183,24 @@ for (const bouton of document.querySelectorAll('[data-outil]')) {
 }
 
 /**
- * Question de calcul tirée au hasard : un pourcentage d'un nombre.
+ * Question de calcul tirée au hasard : un pourcentage ou une division.
  *
- * @returns {string} Par exemple "Combien font environ 35 % de 437 ?", "environ" si le résultat n'est pas entier.
+ * Un pourcentage d'un entier tombe juste (deux décimales au plus). Une division
+ * peut ne pas tomber juste : "environ" seulement si le résultat a plus de deux décimales.
+ *
+ * @returns {string} Par exemple "Combien font 35 % de 437 ?" ou "Combien font environ 413 divisé par 7 ?".
  */
 function exempleCalcul() {
-    const pourcent = 5 + 5 * Math.floor(Math.random() * 19);
-    const nombre = 20 + Math.floor(Math.random() * 981);
-    const entier = (pourcent * nombre) % 100 === 0;
-    return t(entier ? 'bienvenue.exemple-calcul' : 'bienvenue.exemple-calcul-environ',
-        { p: pourcent, n: nombre.toLocaleString(I18n.langue) });
+    if (Math.random() < 0.5) {
+        const pourcent = 5 + 5 * Math.floor(Math.random() * 19);
+        const nombre = 20 + Math.floor(Math.random() * 981);
+        return t('bienvenue.exemple-calcul', { p: pourcent, n: nombre.toLocaleString(I18n.langue) });
+    }
+    const dividende = 100 + Math.floor(Math.random() * 900);
+    const diviseur = 3 + Math.floor(Math.random() * 7);
+    const deuxDecimales = (dividende * 100) % diviseur === 0;
+    return t(deuxDecimales ? 'bienvenue.exemple-division' : 'bienvenue.exemple-division-environ',
+        { a: dividende, b: diviseur });
 }
 
 /* Suggestions du chat vide : ouvrir le module s'il y en a un, puis préremplir un exemple. */
