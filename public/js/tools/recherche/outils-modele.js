@@ -33,7 +33,7 @@ async function executerOutil(appel, signal, faites) {
     const local = OUTILS_LOCAUX[appel.function.name];
     if (local) {
         try {
-            const ligne = local.executer(JSON.parse(appel.function.arguments || '{}'), I18n.langue);
+            const ligne = await local.executer(JSON.parse(appel.function.arguments || '{}'), I18n.langue);
             /* Gardé avec les recherches, jusqu'à l'historique. */
             faites.push({ [appel.function.name]: ligne });
             return ligne;
