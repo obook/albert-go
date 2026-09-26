@@ -82,7 +82,7 @@ I18n.TEXTES.es = {
     'cle.titre-boite': 'Clave API',
     'cle.titre': 'Bienvenido a Albert Go',
     'cle.label': 'Clave',
-    'cle.stockee': '<ul><li>Por defecto, se borra al cerrar la pestaña.</li><li>Si activa "Conservarla", se queda en el almacenamiento <code>localStorage</code> del navegador hasta que elija "Borrar la clave y salir" en el menú.</li><li>Solo sale de este navegador para llegar a Albert, a través del <a href="https://n8n.incubateur.education.gouv.fr" target="_blank" rel="noopener noreferrer">relé interministerial n8n del Estado</a>, que no la guarda.</li></ul>',
+    'cle.stockee': '<ul><li>Por defecto, se borra al cerrar la pestaña.</li><li>Si activa "Conservarla", se queda en el almacenamiento <code>localStorage</code> del navegador hasta que elija "Borrar la clave y salir" en el menú.</li><li>Solo sale de este navegador para llegar a Albert, a través del <a href="https://n8n.incubateur.education.gouv.fr" target="_blank" rel="noopener noreferrer">relé interministerial n8n</a> del Estado, que no la guarda.</li></ul>',
     'cle.demander': '<a href="https://albert.sites.beta.gouv.fr/access/" target="_blank" rel="noopener noreferrer">Solicitar acceso a Albert</a>, reservado a los agentes públicos.',
     'cle.verification': 'Comprobando la clave...',
 
