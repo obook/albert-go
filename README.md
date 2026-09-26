@@ -36,13 +36,12 @@ Activation dans Réglages. Le modèle reçoit un outil de recherche et décide s
 
 ### Outils
 
-Dans Chat, cinq outils sont activés par défaut ; on peut les désactiver dans Réglages > Outils. Tout se passe dans le navigateur. Le modèle décide seul de s'en servir ; quand un outil a servi, son icône apparaît sous la réponse et un clic montre ce qu'il a fait.
+Dans Chat, quatre outils sont activés par défaut ; on peut les désactiver dans Réglages > Outils. Tout se passe dans le navigateur. Le modèle décide seul de s'en servir ; quand un outil a servi, son icône apparaît sous la réponse et un clic montre ce qu'il a fait.
 
 | Outil | Rôle |
 |---|---|
-| Calculatrice | Calcul exact avec [math.js](https://mathjs.org/) : opérations, puissances, racines, trigonométrie en degrés, logarithmes, fractions exactes, factorielles et combinaisons, unités ; décomposition en facteurs premiers, PGCD et PPCM. |
-| Statistiques | Moyenne, médiane, variance, écart-type, minimum, maximum, étendue, quartiles et écart interquartile d'une série. |
-| Probabilités | Tirage au sort : ordre de passage, éléments tirés ou groupes, avec le générateur aléatoire du navigateur. |
+| Calculatrice | Calcul exact avec [math.js](https://mathjs.org/) : opérations, puissances, racines, trigonométrie en degrés, logarithmes, fractions exactes, factorielles et combinaisons, unités ; décomposition en facteurs premiers, PGCD et PPCM ; statistiques d'une série (moyenne, médiane, variance, écart-type, quartiles du lycée). |
+| Tirage au sort | Ordre de passage, éléments tirés ou groupes, avec le générateur aléatoire du navigateur. |
 | Calendrier | Jour de la semaine d'une date, date dans N jours, nombre de jours entre deux dates. |
 | Compteur | Nombre de mots et de caractères d'un texte. |
 

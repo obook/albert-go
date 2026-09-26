@@ -85,6 +85,12 @@ test('statistiques : médiane, quartiles du lycée, série invalide', () => {
     assert.throws(() => Statistiques.calculer(['douze']));
 });
 
+test('calcul avec valeurs : statistiques de la série', async () => {
+    const ligne = await OUTILS_LOCAUX.calcul.executer({ valeurs: [12, 8, 15.5, 10, 9, 14, 11, 13] }, 'fr');
+    assert.match(ligne, /^Effectif 8, moyenne 11,5625, médiane 11,5, variance 5,71484375, écart-type 2,390573937/);
+    await assert.rejects(OUTILS_LOCAUX.calcul.executer({ valeurs: ['douze'] }, 'fr'));
+});
+
 test('outils locaux : chaque outil a ses textes dans les quatre langues', () => {
     for (const langue of ['fr', 'es', 'en', 'de']) {
         I18n.langue = langue;

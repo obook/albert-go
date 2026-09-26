@@ -1,6 +1,6 @@
 /*
  * tools/calcul.js
- * Outils locaux du modèle : calcul (math.js, avec facteurs premiers, PGCD, PPCM), calendrier, compteur, tirage, statistiques.
+ * Outils locaux du modèle : calcul (math.js, avec facteurs premiers, PGCD, PPCM et statistiques), calendrier, compteur, tirage.
  * Là où les modèles se trompent ; tout reste dans le navigateur.
  *
  * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
@@ -296,7 +296,7 @@ const Statistiques = {
     calculer(valeurs) {
         const serie = (valeurs || []).map(v => Number(String(v).replace(',', '.'))).sort((a, b) => a - b);
         if (!serie.length || serie.some(v => !Number.isFinite(v))) {
-            throw new Error(t('statistiques.invalide'));
+            throw new Error(t('calcul.invalide'));
         }
         const n = serie.length;
         const moyenne = serie.reduce((a, b) => a + b, 0) / n;
@@ -344,35 +344,33 @@ const formaterNombre = (v, langue) => v.toLocaleString(langue, { maximumSignific
 
 /* Le nom sert de réglage, de clé de stockage et de préfixe i18n. */
 const OUTILS_LOCAUX = {
-    /* Une expression math.js, ou des entiers à décomposer avec leur PGCD et
-       leur PPCM : math.js n'a pas de décomposition en facteurs premiers. */
+    /* Une expression math.js ; ou des entiers à décomposer avec leur PGCD et
+       leur PPCM, que math.js ne décompose pas ; ou une série statistique,
+       aux conventions du lycée que math.js ne suit pas (écart-type sur n,
+       quartiles pris dans la série). */
     calcul: {
         icone: 'calculatrice',
         outil: () => definirOutil('calcul', {
             expression: { type: 'string' },
-            nombres: { type: 'array', items: { type: 'integer' } }
+            nombres: { type: 'array', items: { type: 'integer' } },
+            valeurs: { type: 'array', items: { type: 'number' } }
         }, []),
         executer: async (a, langue) => {
             if (Array.isArray(a.nombres) && a.nombres.length) {
                 return Facteurs.decrire(a.nombres.map(Number));
+            }
+            if (Array.isArray(a.valeurs) && a.valeurs.length) {
+                const f = {};
+                for (const [cle, v] of Object.entries(Statistiques.calculer(a.valeurs))) {
+                    f[cle] = formaterNombre(v, langue);
+                }
+                return t('calcul.statistiques', f);
             }
             await Calcul.charger();
             const resultat = Calcul.evaluer(a.expression);
             return a.expression + ' = ' + (typeof resultat === 'number'
                 ? resultat.toLocaleString(langue, { maximumSignificantDigits: Calcul.CHIFFRES, useGrouping: false })
                 : resultat);
-        }
-    },
-    statistiques: {
-        icone: 'statistiques',
-        outil: () => definirOutil('statistiques', { valeurs: { type: 'array', items: { type: 'number' } } }, ['valeurs']),
-        executer: (a, langue) => {
-            const s = Statistiques.calculer(a.valeurs);
-            const f = {};
-            for (const [cle, v] of Object.entries(s)) {
-                f[cle] = formaterNombre(v, langue);
-            }
-            return t('statistiques.resultat', f);
         }
     },
     tirage: {
