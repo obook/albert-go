@@ -78,7 +78,7 @@ I18n.TEXTES.de = {
     'cle.souvenir': 'Im Browser behalten, jederzeit löschbar',
     'cle.ou-va': 'Wohin geht mein Schlüssel?',
     'cle.saisir': 'Eingeben',
-    'cle.titre-boite': 'Ihr Schlüssel',
+    'cle.titre-boite': 'API-Schlüssel',
     'cle.titre': 'Willkommen bei Albert Go',
     'cle.label': 'Schlüssel',
     'cle.stockee': '<ul><li>Standardmäßig wird er beim Schließen des Tabs gelöscht.</li><li>Wenn Sie "Im Browser behalten" aktivieren, bleibt er im lokalen Speicher des Browsers <code>localStorage</code>, bis Sie im Menü "Schlüssel löschen" wählen.</li><li>Er verlässt diesen Browser nur, um Albert zu erreichen, über das <a href="https://n8n.incubateur.education.gouv.fr" target="_blank" rel="noopener noreferrer">interministerielle n8n-Relais des Staates</a>, das ihn nicht speichert.</li></ul>',

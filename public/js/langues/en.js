@@ -78,7 +78,7 @@ I18n.TEXTES.en = {
     'cle.souvenir': 'Keep it in this browser, erasable at any time',
     'cle.ou-va': 'Where does my key go?',
     'cle.saisir': 'Enter',
-    'cle.titre-boite': 'Your key',
+    'cle.titre-boite': 'API key',
     'cle.titre': 'Welcome to Albert Go',
     'cle.label': 'Key',
     'cle.stockee': '<ul><li>By default, it is erased when you close the tab.</li><li>If you turn on "Keep it", it stays in the browser\'s local storage <code>localStorage</code> until you choose "Erase the key" in the menu.</li><li>It only leaves this browser to reach Albert, through the <a href="https://n8n.incubateur.education.gouv.fr" target="_blank" rel="noopener noreferrer">State interministerial n8n relay</a>, which does not record it.</li></ul>',

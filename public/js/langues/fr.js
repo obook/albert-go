@@ -78,7 +78,7 @@ I18n.TEXTES.fr = {
     'cle.souvenir': 'La conserver dans ce navigateur, effaçable à tout moment',
     'cle.ou-va': 'Où va ma clé ?',
     'cle.saisir': 'Saisir',
-    'cle.titre-boite': 'Votre clé',
+    'cle.titre-boite': 'Clé API',
     'cle.titre': 'Bienvenue sur Albert Go',
     'cle.label': 'Clé',
     'cle.stockee': '<ul><li>Par défaut, elle est effacée quand vous fermez l\'onglet.</li><li>Si vous activez "La conserver", elle reste dans le stockage local du navigateur <code>localStorage</code> jusqu\'à ce que vous choisissiez "Effacer la clé" dans le menu.</li><li>Elle ne quitte ce navigateur que pour joindre Albert, en passant par le <a href="https://n8n.incubateur.education.gouv.fr" target="_blank" rel="noopener noreferrer">relais n8n interministériel de l\'État</a>, qui ne l\'enregistre pas.</li></ul>',
