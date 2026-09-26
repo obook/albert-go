@@ -121,7 +121,7 @@ I18n.TEXTES.en = {
     'reglages.tirage': 'Probability',
     'reglages.statistiques': 'Statistics',
     'reglages.aide-outils': 'The AI decides on its own to use them when it needs to.',
-    'reglages.recherche-active': 'Web search:',
+    'reglages.recherche-active': 'Search:',
     'moteur.wikipedia': 'General encyclopedia',
     'moteur.data-gouv': 'French public data',
     'moteur.hal': 'French research publications',

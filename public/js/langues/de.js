@@ -121,7 +121,7 @@ I18n.TEXTES.de = {
     'reglages.tirage': 'Wahrscheinlichkeit',
     'reglages.statistiques': 'Statistik',
     'reglages.aide-outils': 'Die KI entscheidet selbst, sie bei Bedarf zu verwenden.',
-    'reglages.recherche-active': 'Websuche:',
+    'reglages.recherche-active': 'Suche:',
     'moteur.wikipedia': 'Allgemeine Enzyklopädie',
     'moteur.data-gouv': 'Französische offene Daten',
     'moteur.hal': 'Französische Forschungspublikationen',
