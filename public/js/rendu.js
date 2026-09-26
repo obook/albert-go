@@ -656,19 +656,19 @@ const Rendu = {
     },
 
     /**
-     * Fichier inventé par le modèle : première vraie image de Commons pour les mots de son nom.
+     * Fichier inventé par le modèle : première vraie image de Commons qui reprend tous les mots de son nom.
      *
      * @param {string} titre - Titre introuvable, ex. "File:Picasso,_Les_Demoiselles_d'Avignon.jpg".
      * @returns {Promise<?Object>} Voir Recherche.lireImageCommons.
      */
     async imageApprochee(titre) {
         const mots = titre.replace(/^[^:]+:/, '').replace(/\.[^.]+$/, '').replace(/[_,()]+|\b\d+\b/g, ' ').replace(/\s+/g, ' ').trim();
-        /* Mots d'au moins 4 lettres ; il faut en retrouver la moitié dans le nom du fichier, sinon mieux vaut rien. */
+        /* Tous les mots d'au moins 4 lettres dans le nom ou la description, sinon mieux vaut rien : Picasso ne doit pas donner Munch. */
         const cles = (texte) => texte.toLowerCase().split(/[^\p{L}]+/u).filter(m => m.length >= 4);
         const voulus = cles(mots);
         const trouvee = (await Recherche.chercherImages(mots)).find((i) => {
-            const nom = cles(i.titre);
-            return voulus.filter(m => nom.includes(m)).length * 2 >= voulus.length;
+            const connus = cles(i.titre + ' ' + i.desc);
+            return voulus.every(m => connus.includes(m));
         });
         return trouvee ? Recherche.imageCommons(trouvee.titre) : null;
     },
