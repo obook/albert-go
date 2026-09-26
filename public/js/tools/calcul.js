@@ -1,6 +1,6 @@
 /*
  * tools/calcul.js
- * Outils locaux du modèle : calcul, calendrier, compteur, tirage, statistiques, facteurs premiers, PGCD, PPCM.
+ * Outils locaux du modèle : calcul (avec facteurs premiers, PGCD, PPCM), calendrier, compteur, tirage, statistiques.
  * Là où les modèles se trompent ; tout reste dans le navigateur.
  *
  * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
@@ -222,7 +222,7 @@ const Facteurs = {
      */
     decomposer(n) {
         if (!Number.isSafeInteger(n) || n < 2 || n > this.MAX) {
-            throw new Error(t('facteurs.invalide'));
+            throw new Error(t('calcul.invalide'));
         }
         const facteurs = [];
         for (let p = 2; p * p <= n; p += (p === 2 ? 1 : 2)) {
@@ -260,6 +260,26 @@ const Facteurs = {
             m = m / BigInt(this.pgcd(Number(m % BigInt(n)), n)) * BigInt(n);
         }
         return m.toString();
+    },
+
+    /**
+     * Décompose chaque nombre ; pour plusieurs nombres, ajoute PGCD et PPCM.
+     *
+     * @param {number[]} nombres - Entiers de 2 à MAX.
+     * @returns {string} Une ligne pour le modèle et pour la trace.
+     */
+    decrire(nombres) {
+        const lignes = nombres.map((n) => {
+            const facteurs = this.decomposer(n);
+            if (facteurs.length === 1 && facteurs[0][1] === 1) {
+                return t('calcul.premier', { nombre: n });
+            }
+            return n + ' = ' + facteurs.map(([p, e]) => (e > 1 ? p + '^' + e : String(p))).join(' × ');
+        });
+        if (nombres.length > 1) {
+            lignes.push(t('calcul.pgcd-ppcm', { pgcd: nombres.reduce((d, n) => this.pgcd(d, n)), ppcm: this.ppcm(nombres) }));
+        }
+        return lignes.join(' ; ');
     }
 };
 
@@ -321,11 +341,18 @@ const formaterNombre = (v, langue) => Number(v.toPrecision(12)).toLocaleString(l
 
 /* Le nom sert de réglage, de clé de stockage et de préfixe i18n. */
 const OUTILS_LOCAUX = {
+    /* Une expression, ou des entiers à décomposer (avec PGCD et PPCM) :
+       la virgule décimale interdit pgcd(12, 18) dans une expression. */
     calcul: {
         icone: 'calculatrice',
-        outil: () => definirOutil('calcul', { expression: { type: 'string' } }, ['expression']),
-        executer: (a, langue) => a.expression + ' = '
-            + Calcul.evaluer(a.expression).toLocaleString(langue, { maximumFractionDigits: 12, useGrouping: false })
+        outil: () => definirOutil('calcul', {
+            expression: { type: 'string' },
+            nombres: { type: 'array', items: { type: 'integer' } }
+        }, []),
+        executer: (a, langue) => (Array.isArray(a.nombres) && a.nombres.length
+            ? Facteurs.decrire(a.nombres.map(Number))
+            : a.expression + ' = '
+                + Calcul.evaluer(a.expression).toLocaleString(langue, { maximumFractionDigits: 12, useGrouping: false }))
     },
     statistiques: {
         icone: 'statistiques',
@@ -370,27 +397,6 @@ const OUTILS_LOCAUX = {
         icone: 'compteur',
         outil: () => definirOutil('compteur', { texte: { type: 'string' } }, ['texte']),
         executer: a => t('compteur.resultat', Compteur.compter(a.texte))
-    },
-    facteurs: {
-        icone: 'facteurs',
-        outil: () => definirOutil('facteurs', { nombres: { type: 'array', items: { type: 'integer' } } }, ['nombres']),
-        executer: (a) => {
-            const nombres = (a.nombres || []).map(Number);
-            if (!nombres.length) {
-                throw new Error(t('facteurs.invalide'));
-            }
-            const lignes = nombres.map((n) => {
-                const facteurs = Facteurs.decomposer(n);
-                if (facteurs.length === 1 && facteurs[0][1] === 1) {
-                    return t('facteurs.premier', { nombre: n });
-                }
-                return n + ' = ' + facteurs.map(([p, e]) => (e > 1 ? p + '^' + e : String(p))).join(' × ');
-            });
-            if (nombres.length > 1) {
-                lignes.push(t('facteurs.pgcd-ppcm', { pgcd: nombres.reduce((d, n) => Facteurs.pgcd(d, n)), ppcm: Facteurs.ppcm(nombres) }));
-            }
-            return lignes.join(' ; ');
-        }
     }
 };
 

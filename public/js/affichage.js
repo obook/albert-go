@@ -33,8 +33,6 @@ const ICONES = {
     de: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3"/>'
         + '<path d="M8.5 8.5h.01M15.5 8.5h.01M12 12h.01M8.5 15.5h.01M15.5 15.5h.01"/></svg>',
     statistiques: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16M7 16v-4M12 16V6M17 16V9"/></svg>',
-    /* Arbre de facteurs : un nombre qui se divise en deux branches. */
-    facteurs: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v5M12 9l-6 6M12 9l6 6M6 15v5M18 15l-3 5M18 15l3 5"/></svg>',
     /* Globe : recherche sur le web. */
     globe: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/>'
         + '<path d="M3 12h18M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18Z"/></svg>',

@@ -94,19 +94,21 @@ test('outils locaux : chaque outil a ses textes dans les quatre langues', () => 
     I18n.langue = 'fr';
 });
 
-test('facteurs : décomposition, puissances, nombre premier, bornes', () => {
+test('calcul avec nombres : facteurs premiers, nombre premier, bornes', () => {
+    const calcul = OUTILS_LOCAUX.calcul.executer;
     assert.deepStrictEqual(Facteurs.decomposer(477843), [[3, 1], [149, 1], [1069, 1]]);
-    assert.strictEqual(OUTILS_LOCAUX.facteurs.executer({ nombres: [477843] }), '477843 = 3 × 149 × 1069');
-    assert.strictEqual(OUTILS_LOCAUX.facteurs.executer({ nombres: [360] }), '360 = 2^3 × 3^2 × 5');
-    assert.match(OUTILS_LOCAUX.facteurs.executer({ nombres: [1069] }), /1069/);
+    assert.strictEqual(calcul({ nombres: [477843] }), '477843 = 3 × 149 × 1069');
+    assert.strictEqual(calcul({ nombres: [360] }), '360 = 2^3 × 3^2 × 5');
+    assert.match(calcul({ nombres: [1069] }), /1069/);
     assert.throws(() => Facteurs.decomposer(1));
     assert.throws(() => Facteurs.decomposer(2.5));
     assert.throws(() => Facteurs.decomposer(1e13));
-    assert.throws(() => OUTILS_LOCAUX.facteurs.executer({ nombres: [] }));
+    /* Sans nombres, l'expression reste la règle. */
+    assert.strictEqual(calcul({ expression: '2 + 3', nombres: [] }, 'fr'), '2 + 3 = 5');
 });
 
-test('facteurs : PGCD et PPCM de plusieurs nombres', () => {
-    assert.strictEqual(OUTILS_LOCAUX.facteurs.executer({ nombres: [12, 18] }), '12 = 2^2 × 3 ; 18 = 2 × 3^2 ; PGCD 6, PPCM 36.');
+test('calcul avec plusieurs nombres : PGCD et PPCM', () => {
+    assert.strictEqual(OUTILS_LOCAUX.calcul.executer({ nombres: [12, 18] }), '12 = 2^2 × 3 ; 18 = 2 × 3^2 ; PGCD 6, PPCM 36.');
     assert.strictEqual(Facteurs.pgcd(1071, 462), 21);
     assert.strictEqual(Facteurs.ppcm([4, 6, 10]), '60');
     /* Au-delà de 2^53 : le PPCM reste exact. */

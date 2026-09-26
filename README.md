@@ -36,16 +36,15 @@ Activation dans Réglages. Le modèle reçoit un outil de recherche et décide s
 
 ### Outils
 
-Dans Chat, six outils sont activés par défaut ; on peut les désactiver dans Réglages > Outils. Tout se passe dans le navigateur. Le modèle décide seul de s'en servir ; quand un outil a servi, son icône apparaît sous la réponse et un clic montre ce qu'il a fait.
+Dans Chat, cinq outils sont activés par défaut ; on peut les désactiver dans Réglages > Outils. Tout se passe dans le navigateur. Le modèle décide seul de s'en servir ; quand un outil a servi, son icône apparaît sous la réponse et un clic montre ce qu'il a fait.
 
 | Outil | Rôle |
 |---|---|
-| Calculatrice | Calcul exact : opérations, puissances, racine carrée, trigonométrie en degrés, logarithmes. |
+| Calculatrice | Calcul exact : opérations, puissances, racine carrée, trigonométrie en degrés, logarithmes ; décomposition en facteurs premiers, PGCD et PPCM. |
 | Statistiques | Moyenne, médiane, variance, écart-type, minimum, maximum, étendue, quartiles et écart interquartile d'une série. |
 | Probabilités | Tirage au sort : ordre de passage, éléments tirés ou groupes, avec le générateur aléatoire du navigateur. |
 | Calendrier | Jour de la semaine d'une date, date dans N jours, nombre de jours entre deux dates. |
 | Compteur | Nombre de mots et de caractères d'un texte. |
-| Facteurs premiers | Décomposition en facteurs premiers, nombre premier ou non, PGCD et PPCM de plusieurs nombres. |
 
 Chaque demande donne aussi au modèle la date, l'heure locale et son nom.
 
