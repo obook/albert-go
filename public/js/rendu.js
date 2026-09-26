@@ -390,18 +390,29 @@ const Rendu = {
     },
 
     /**
-     * Dessine un SVG affiché dans une image PNG, en double résolution,
-     * sur fond blanc comme à l'écran.
+     * Dessine un SVG dans une image PNG, sur fond blanc comme à l'écran.
+     *
+     * Part de la taille propre du dessin (viewBox), pas de la taille
+     * affichée : réduit à l'écran, un grand schéma donnait un PNG flou.
+     * Trois fois plus grand, sans dépasser 4096 px de côté.
      *
      * @param {SVGSVGElement} svg - Dessin affiché.
      * @returns {Promise<Blob>} Image PNG.
      */
     async enPng(svg) {
-        const { width, height } = svg.getBoundingClientRect();
-        /* Firefox ne dessine pas un SVG sans largeur ni hauteur. */
+        const cadre = svg.viewBox.baseVal;
+        const affiche = svg.getBoundingClientRect();
+        const largeur = (cadre && cadre.width) || affiche.width;
+        const hauteur = (cadre && cadre.height) || affiche.height;
+        const echelle = Math.min(3, 4096 / Math.max(largeur, hauteur));
+        const width = Math.ceil(largeur * echelle);
+        const height = Math.ceil(hauteur * echelle);
+        /* Firefox ne dessine pas un SVG sans largeur ni hauteur. Le max-width
+           de Mermaid briderait la taille demandée. */
         const copie = svg.cloneNode(true);
         copie.setAttribute('width', width);
         copie.setAttribute('height', height);
+        copie.style.maxWidth = '';
         /* Hors de la page, le texte perdrait la police héritée. */
         copie.style.fontFamily = getComputedStyle(svg).fontFamily;
         /* Adresse data: : la CSP refuse les images blob:. */
@@ -409,8 +420,8 @@ const Rendu = {
         image.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(new XMLSerializer().serializeToString(copie));
         await image.decode();
         const toile = document.createElement('canvas');
-        toile.width = Math.ceil(width * 2);
-        toile.height = Math.ceil(height * 2);
+        toile.width = width;
+        toile.height = height;
         const contexte = toile.getContext('2d');
         contexte.fillStyle = '#ffffff';
         contexte.fillRect(0, 0, toile.width, toile.height);
