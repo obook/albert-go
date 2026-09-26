@@ -15,6 +15,9 @@ const RAD = Math.PI / 180;
 const net = v => (Math.abs(v) < 1e-12 ? 0 : v);
 
 const Calcul = {
+    /** Chiffres significatifs des résultats : le maximum affiché par la NumWorks. */
+    CHIFFRES: 10,
+
     /** Adresse de math.js, relative à la page ; chargé au premier calcul. */
     MATHJS: 'vendor/mathjs/math.js',
 
@@ -88,7 +91,7 @@ const Calcul = {
      * séparateur décimal, la virgule sépare les arguments : pgcd(84, 126).
      *
      * @param {string} expression - Par exemple "(12.5 + 3) * sin(30)".
-     * @returns {number|string} Nombre arrondi à 12 chiffres significatifs, ou
+     * @returns {number|string} Nombre arrondi à CHIFFRES chiffres significatifs, ou
      *     texte pour une fraction, une unité, une matrice.
      */
     evaluer(expression) {
@@ -102,13 +105,13 @@ const Calcul = {
             if (!Number.isFinite(resultat)) {
                 throw new Error(t('calcul.invalide'));
             }
-            return Number(resultat.toPrecision(12));
+            return Number(resultat.toPrecision(this.CHIFFRES));
         }
         /* Rien à montrer (expression vide) ou une fonction définie par l'expression. */
         if (resultat === undefined || typeof resultat === 'function') {
             throw new Error(t('calcul.invalide'));
         }
-        return math.format(resultat, { precision: 12 });
+        return math.format(resultat, { precision: this.CHIFFRES });
     }
 };
 
@@ -337,7 +340,7 @@ function definirOutil(nom, proprietes, requis) {
 }
 
 /** Nombre au format de la langue, sans séparateur de milliers. */
-const formaterNombre = (v, langue) => Number(v.toPrecision(12)).toLocaleString(langue, { maximumFractionDigits: 4, useGrouping: false });
+const formaterNombre = (v, langue) => v.toLocaleString(langue, { maximumSignificantDigits: Calcul.CHIFFRES, useGrouping: false });
 
 /* Le nom sert de réglage, de clé de stockage et de préfixe i18n. */
 const OUTILS_LOCAUX = {
@@ -356,7 +359,7 @@ const OUTILS_LOCAUX = {
             await Calcul.charger();
             const resultat = Calcul.evaluer(a.expression);
             return a.expression + ' = ' + (typeof resultat === 'number'
-                ? resultat.toLocaleString(langue, { maximumFractionDigits: 12, useGrouping: false })
+                ? resultat.toLocaleString(langue, { maximumSignificantDigits: Calcul.CHIFFRES, useGrouping: false })
                 : resultat);
         }
     },

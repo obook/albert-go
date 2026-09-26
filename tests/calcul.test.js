@@ -25,6 +25,9 @@ test('evaluer : priorités, parenthèses, puissance, point décimal', () => {
     assert.strictEqual(Calcul.evaluer('-2^2'), -4);
     assert.strictEqual(Calcul.evaluer('0.1 + 0.2'), 0.3);
     assert.strictEqual(Calcul.evaluer('sqrt(16) + pi * 0'), 4);
+    /* Dix chiffres significatifs, comme l'affichage de la NumWorks. */
+    assert.strictEqual(Calcul.evaluer('2 / 3'), 0.6666666667);
+    assert.strictEqual(Calcul.evaluer('1 + pi'), 4.141592654);
 });
 
 test('evaluer : fonctions scientifiques, angles en degrés', () => {
