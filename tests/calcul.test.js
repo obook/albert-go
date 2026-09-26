@@ -50,6 +50,9 @@ test('calendrier : jour, décalage, écart, date impossible', () => {
     /* Sans date : aujourd'hui, avec l'heure de l'appareil. */
     assert.match(Calendrier.repondre({}, 'fr'), /^Nous sommes le .+, il est \d\d:\d\d:\d\d/);
     assert.match(Calendrier.repondre({ jours: 1 }, 'fr'), /\+ 1 jours : /);
+    /* En heures : 24 heures après le 24 septembre à minuit, le 25 à minuit. */
+    assert.match(Calendrier.repondre({ date: '2026-09-24', heures: 24 }, 'fr'), /\+ 24 heures : vendredi 25 septembre 2026, 00:00:00/);
+    assert.match(Calendrier.repondre({ heures: -2 }, 'fr'), /\+ -2 heures : /);
 });
 
 test('evaluer : refuse le code et les expressions fausses', () => {

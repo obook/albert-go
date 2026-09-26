@@ -116,11 +116,28 @@ function avecRappel(messages, cherche) {
         : t('recherche.source-web');
     /* Sans ces rappels, une photo demandée partait en recherche web. */
     const rappel = [cherche ? t('recherche.rappel', { source: source }) : '',
-        t(reglages.images ? 'images.rappel' : 'images.absent')].filter(Boolean).join('\n');
+        t(reglages.images ? 'images.rappel' : 'images.absent'),
+        /* Sans lui, le modèle reprenait une heure déjà donnée et se trompait de jour. */
+        reglages.calendrier ? t('calendrier.rappel') : ''].filter(Boolean).join('\n');
     if (messages[0] && messages[0].role === 'system') {
         return [{ role: 'system', content: messages[0].content + '\n' + rappel }, ...messages.slice(1)];
     }
     return [{ role: 'system', content: rappel }, ...messages];
+}
+
+/**
+ * Remet la date et l'heure dans la consigne d'une demande repartie sans outil :
+ * Calendrier actif, la consigne ne les porte pas (voir consigne, modules.js).
+ *
+ * @param {Array<Object>} messages - Messages de la demande.
+ * @returns {Array<Object>} Copie avec la date, ou les messages tels quels.
+ */
+function avecDate(messages) {
+    if (!reglages.calendrier || !messages[0] || messages[0].role !== 'system') {
+        return messages;
+    }
+    const date = t('consigne.date', Calendrier.maintenant(I18n.langue));
+    return [{ role: 'system', content: messages[0].content + '\n' + date }, ...messages.slice(1)];
 }
 
 /**
@@ -168,7 +185,7 @@ async function repondreAvecOutils(cle, requete, signal) {
             if (cherche) {
                 toast(t('toast.recherche-indisponible'));
             }
-            return { ...await Albert.repondre(cle, { ...requete, messages: messages }, signal), recherches: faites };
+            return { ...await Albert.repondre(cle, { ...requete, messages: avecDate(messages) }, signal), recherches: faites };
         }
         const appels = (reponse.message && reponse.message.tool_calls) || [];
         if (!appels.length) {
