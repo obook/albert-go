@@ -141,8 +141,8 @@ I18n.TEXTES.de = {
     'contexte.sans': 'ohne Kontext',
     'contexte.complet': 'voller Kontext',
     'contexte.pourcent': 'Kontext {pourcent} %',
-    'partage.actif': 'Beim Schließen des Tabs werden Schlüssel und Gespräche gelöscht.',
-    'partage.inactif': 'Beim Schließen des Tabs bleiben Schlüssel und Gespräche erhalten.',
+    'partage.actif': 'Beim Schließen werden Schlüssel und Gespräche gelöscht.',
+    'partage.inactif': 'Beim Schließen bleiben Schlüssel und Gespräche erhalten.',
     'reglages.memoire': 'Die ganze Unterhaltung an die KI senden.',
 
     /* Modelle. */

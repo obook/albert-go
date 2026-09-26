@@ -141,8 +141,8 @@ I18n.TEXTES.en = {
     'contexte.sans': 'no context',
     'contexte.complet': 'full context',
     'contexte.pourcent': 'context {pourcent} %',
-    'partage.actif': 'When the tab closes, the key and the conversations will be erased.',
-    'partage.inactif': 'When the tab closes, the key and the conversations will be kept.',
+    'partage.actif': 'On closing, the key and the conversations will be erased.',
+    'partage.inactif': 'On closing, the key and the conversations will be kept.',
     'reglages.memoire': 'Send the whole conversation to the AI.',
 
     /* Models. */
