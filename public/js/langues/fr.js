@@ -74,7 +74,7 @@ I18n.TEXTES.fr = {
     /* Écran de la clé. */
     'cle.intro': 'L\'IA de l\'État pour discuter, corriger, reformuler, traduire et rédiger.',
     'cle.etape-acces': 'Pas encore d\'accès ?',
-    'cle.exemple': 'La clé API créée dans votre compte Albert',
+    'cle.exemple': 'sk-...',
     'cle.souvenir': 'Se souvenir de moi sur cet appareil',
     'cle.ou-va': 'Où va ma clé ?',
     'cle.titre': 'Bienvenue sur Albert Go',

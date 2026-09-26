@@ -74,7 +74,7 @@ I18n.TEXTES.de = {
     /* Schlüsselbildschirm. */
     'cle.intro': 'Die KI des französischen Staates zum Chatten, Korrigieren, Umformulieren, Übersetzen und Schreiben.',
     'cle.etape-acces': 'Noch kein Zugang?',
-    'cle.exemple': 'Der in Ihrem Albert-Konto erstellte API-Schlüssel',
+    'cle.exemple': 'sk-...',
     'cle.souvenir': 'Auf diesem Gerät angemeldet bleiben',
     'cle.ou-va': 'Wohin geht mein Schlüssel?',
     'cle.titre': 'Willkommen bei Albert Go',

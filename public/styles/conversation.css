@@ -26,7 +26,7 @@ main {
     padding: 2rem;
     background: var(--surface);
     border: 1px solid var(--bord);
-    border-top: 4px solid var(--bleu);
+    border-radius: 1rem;
     display: grid;
     gap: 0.75rem;
 }
@@ -68,11 +68,15 @@ main {
     font-size: 0.875rem;
 }
 .accueil .etapes strong { display: block; }
-.accueil .etapes label { margin-top: 0; }
+/* Étape 2 : champ, interrupteur et bouton empilés à la même marge que le texte. */
+.accueil .etapes > li:last-child { display: grid; gap: 0.75rem; }
+.accueil .etapes label { margin: 0; }
 .accueil .etapes input { margin-bottom: 0; }
+.accueil .etapes .bouton-principal { justify-self: stretch; width: auto; margin: 0.25rem 0 0; }
+.accueil .message-cle:empty { display: none; }
 
 /* Détails techniques repliés : pour qui veut savoir, sans effrayer les autres. */
-.accueil .details-cle { margin: 0; font-size: 0.875rem; color: var(--texte-doux); }
+.accueil .details-cle { margin: 0 0 0 2.5rem; font-size: 0.875rem; color: var(--texte-doux); }
 .accueil .details-cle summary { cursor: pointer; }
 .accueil .details-cle p { margin-top: 0.5rem; }
 
