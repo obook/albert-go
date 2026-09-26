@@ -184,7 +184,9 @@ test('telechargerAvecAttente : bouton inactif pendant la préparation, rendu ens
 
 test('imageApprochee : nom inventé, vraie image qui reprend tous ses mots, sinon rien', async () => {
     const cherches = [];
+    require('../public/js/i18n.js');
     global.Recherche = {
+        motsCles: require('../public/js/recherche.js').motsCles,
         chercherImages: async (mots) => {
             cherches.push(mots);
             return [{ titre: 'File:Munch - Weeping Woman.jpg', desc: '' }, { titre: 'File:Le Chat de Giacometti.jpg', desc: '' },

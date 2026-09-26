@@ -277,6 +277,33 @@ const Recherche = {
     },
 
     /**
+     * Mots d'au moins 4 lettres, en minuscules.
+     *
+     * @param {string} texte - Texte quelconque.
+     * @returns {string[]} Mots gardés.
+     */
+    motsCles(texte) {
+        return texte.toLowerCase().split(/[^\p{L}]+/u).filter(m => m.length >= 4);
+    },
+
+    /**
+     * Garde les images dont le nom ou la description contient chaque nom propre cherché.
+     *
+     * ponytail: nom propre = mot à majuscule ; un premier mot capitalisé par habitude filtre aussi.
+     *
+     * @param {Array<Object>} images - Résultats de lireImagesTrouvees.
+     * @param {string} mots - Texte cherché.
+     * @returns {Array<Object>} Images gardées : "Picasso" écarte un Kirchner.
+     */
+    garderNomsPropres(images, mots) {
+        const noms = this.motsCles(mots.split(/\s+/).filter(m => /^\p{Lu}/u.test(m)).join(' '));
+        return images.filter((i) => {
+            const connus = this.motsCles(i.titre + ' ' + i.desc);
+            return noms.every(n => connus.includes(n));
+        });
+    },
+
+    /**
      * Cherche des images sur Commons.
      *
      * @param {string} mots - Texte cherché.
@@ -707,7 +734,7 @@ async function chercherImagesOutil(appel, signal, faites) {
     }
     etat(t('etat.images', { mots: mots }));
     try {
-        const images = await Recherche.chercherImages(mots, signal);
+        const images = Recherche.garderNomsPropres(await Recherche.chercherImages(mots, signal), mots);
         faites.push({ image_commons: mots });
         return images.map((i) => '- ' + i.url + (i.desc ? ' : ' + i.desc : '')).join('\n') || t('images.aucune');
     } catch (err) {

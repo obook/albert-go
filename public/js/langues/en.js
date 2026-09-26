@@ -317,7 +317,7 @@ I18n.TEXTES.en = {
     'etat.images': 'Searching images "{mots}"...',
     'reponse.images': 'See the image searches',
     'reponse.note-images': 'Images searched: {lignes}',
-    'images.rappel': 'For a photo or an image, use the image_commons tool, not recherche_web, then give the link of a file found.',
+    'images.rappel': 'For a photo or an image, use the image_commons tool, not recherche_web, then give the link of a file found. Never describe a file without its link; if none matches, say so.',
     'images.absent': 'You can neither search nor show images: if asked for one, say that "Wikimedia images" must be turned on in Settings > Tools.',
     'reglages.outils-externes': 'Internet'
 };
