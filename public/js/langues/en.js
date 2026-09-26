@@ -133,7 +133,7 @@ I18n.TEXTES.en = {
     'moteur.mojeek': 'The whole web, independent index, paid key',
     'reglages.cle-recherche': 'API key',
     'reglages.cx': 'Search engine ID',
-    'reglages.aide-recherche': 'Search engines on the Internet may collect and use the data of the conversation.',
+    'reglages.aide-recherche': 'Internet tools may collect and use the data of the conversation.',
     'reglages.cle-note': 'A key is saved in this browser.',
     'reglages.langue': 'Language',
     'reglages.conseilles': 'Recommended settings',

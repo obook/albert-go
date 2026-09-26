@@ -133,7 +133,7 @@ I18n.TEXTES.fr = {
     'moteur.mojeek': 'Tout le web, index indépendant, clé payante',
     'reglages.cle-recherche': 'Clé API',
     'reglages.cx': 'ID du moteur de recherche',
-    'reglages.aide-recherche': 'Les moteurs de recherche sur Internet peuvent collecter et exploiter les données de la conversation.',
+    'reglages.aide-recherche': 'Les outils Internet peuvent collecter et exploiter les données de la conversation.',
     'reglages.cle-note': 'Une clé est enregistrée dans ce navigateur.',
     'reglages.langue': 'Langue',
     'reglages.conseilles': 'Réglages conseillés',
