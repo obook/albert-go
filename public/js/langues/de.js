@@ -81,7 +81,7 @@ I18n.TEXTES.de = {
     'cle.titre-boite': 'Ihr Schlüssel',
     'cle.titre': 'Willkommen bei Albert Go',
     'cle.label': 'Schlüssel',
-    'cle.stockee': '<ul><li>Standardmäßig wird er beim Schließen des Tabs gelöscht.</li><li>Wenn Sie "Im Browser behalten" aktivieren, bleibt er im lokalen Speicher des Browsers (<code>localStorage</code>), bis Sie im Menü "Schlüssel wechseln" wählen.</li><li>Er verlässt diesen Browser nur, um Albert zu erreichen, über ein <a href="https://n8n.incubateur.education.gouv.fr" target="_blank" rel="noopener noreferrer">Relais des Staates</a>, das ihn nicht speichert.</li></ul>',
+    'cle.stockee': '<ul><li>Standardmäßig wird er beim Schließen des Tabs gelöscht.</li><li>Wenn Sie "Im Browser behalten" aktivieren, bleibt er im lokalen Speicher des Browsers <code>localStorage</code>, bis Sie im Menü "Schlüssel wechseln" wählen.</li><li>Er verlässt diesen Browser nur, um Albert zu erreichen, über ein <a href="https://n8n.incubateur.education.gouv.fr" target="_blank" rel="noopener noreferrer">Relais des Staates</a>, das ihn nicht speichert.</li></ul>',
     'cle.demander': '<a href="https://albert.sites.beta.gouv.fr/access/" target="_blank" rel="noopener noreferrer">Zugang zu Albert beantragen</a>, nur für Beschäftigte im öffentlichen Dienst.',
     'cle.verification': 'Schlüssel wird geprüft...',
 
