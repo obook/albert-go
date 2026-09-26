@@ -75,7 +75,7 @@ I18n.TEXTES.en = {
     'cle.intro': 'The French State AI to chat, correct, rephrase, translate and write.',
     'cle.etape-acces': 'No access yet?',
     'cle.exemple': 'sk-...',
-    'cle.souvenir': 'Keep the key and conversations in this browser, erasable at any time',
+    'cle.souvenir': 'Keep the key in this browser, erasable at any time',
     'cle.ou-va': 'Where does my key go?',
     'cle.titre': 'Welcome to Albert Go',
     'cle.label': 'Key',
