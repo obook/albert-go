@@ -158,7 +158,9 @@ const Albert = {
      */
     logoEditeur(reel) {
         const trouve = this.EDITEURS.find(([, motif]) => motif.test(reel || ''));
-        if (!trouve) return 'images/editeurs/inconnu.svg';
+        if (!trouve) {
+            return 'images/editeurs/inconnu.svg';
+        }
         return 'images/editeurs/' + trouve[0] + (trouve[0] === 'lighton' ? '.jpg' : '.png');
     },
 

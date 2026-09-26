@@ -126,5 +126,7 @@ if (typeof module !== 'undefined') {
     module.exports = I18n;
     globalThis.t = t;
     globalThis.I18n = I18n;
-    for (const langue of I18n.LANGUES) require('./langues/' + langue + '.js');
+    for (const langue of I18n.LANGUES) {
+        require('./langues/' + langue + '.js');
+    }
 }
