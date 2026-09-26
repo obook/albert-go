@@ -162,7 +162,7 @@ I18n.TEXTES.es = {
     'confirmer-cle.titre': '¿Cambiar de clave?',
     'confirmer-cle.texte': 'La clave guardada se borrará de este navegador. Habrá que introducir otra para continuar.',
     'confirmer-suppression.titre': '¿Eliminar esta conversación?',
-    'partage.titre': 'Compartir Albert Go',
+    'partage.titre': 'Compartir',
     'partage.texte': 'Escanee el código QR o copie la dirección, su clave no se comparte.',
     'partage.qr': 'Código QR de la dirección de Albert Go',
     'partage.adresse': 'Dirección de Albert Go',

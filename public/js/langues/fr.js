@@ -162,7 +162,7 @@ I18n.TEXTES.fr = {
     'confirmer-cle.titre': 'Changer de clé ?',
     'confirmer-cle.texte': 'La clé enregistrée sera effacée de ce navigateur. Il faudra en saisir une pour continuer.',
     'confirmer-suppression.titre': 'Supprimer cette conversation ?',
-    'partage.titre': 'Partager Albert Go',
+    'partage.titre': 'Partager',
     'partage.texte': 'Scannez le QR code ou copiez l\'adresse, votre clé n\'est pas partagée.',
     'partage.qr': 'QR code de l\'adresse d\'Albert Go',
     'partage.adresse': 'Adresse d\'Albert Go',
