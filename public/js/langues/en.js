@@ -81,7 +81,7 @@ I18n.TEXTES.en = {
     'cle.titre-boite': 'Your key',
     'cle.titre': 'Welcome to Albert Go',
     'cle.label': 'Key',
-    'cle.stockee': '<ul><li>By default, it is erased when you close the tab.</li><li>If you turn on "Keep it", it stays in the browser\'s local storage <code>localStorage</code> until you choose "Change key" in the menu.</li><li>It only leaves this browser to reach Albert, through a <a href="https://n8n.incubateur.education.gouv.fr" target="_blank" rel="noopener noreferrer">State relay</a> that does not record it.</li></ul>',
+    'cle.stockee': '<ul><li>By default, it is erased when you close the tab.</li><li>If you turn on "Keep it", it stays in the browser\'s local storage <code>localStorage</code> until you choose "Change key" in the menu.</li><li>It only leaves this browser to reach Albert, through the <a href="https://n8n.incubateur.education.gouv.fr" target="_blank" rel="noopener noreferrer">State interministerial n8n relay</a>, which does not record it.</li></ul>',
     'cle.demander': '<a href="https://albert.sites.beta.gouv.fr/access/" target="_blank" rel="noopener noreferrer">Request access to Albert</a>, reserved for public servants.',
     'cle.verification': 'Checking the key...',
 
