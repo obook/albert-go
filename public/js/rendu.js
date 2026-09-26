@@ -99,8 +99,44 @@ const Rendu = {
         modele.content.querySelectorAll('a[href]').forEach((a) => {
             a.target = '_blank';
             a.rel = 'noopener noreferrer';
+            /* Adresse brute : raccourcie, l'adresse complète en info-bulle. */
+            const href = a.getAttribute('href');
+            if ([href, this.decoder(href)].includes(a.textContent.trim())) {
+                a.title = href;
+                a.textContent = this.lienCourt(href);
+            }
         });
         return modele.innerHTML;
+    },
+
+    /** Adresse décodée, ou telle quelle si un % est mal formé. */
+    decoder(adresse) {
+        try {
+            return decodeURIComponent(adresse);
+        } catch (err) {
+            return adresse;
+        }
+    },
+
+    /**
+     * Adresse raccourcie : le site, puis la fin du chemin.
+     *
+     * @param {string} adresse - Adresse complète.
+     * @returns {string} Ex. "fr.wikipedia.org › Château_de_Versailles".
+     */
+    lienCourt(adresse) {
+        let url;
+        try {
+            url = new URL(adresse);
+        } catch (err) {
+            return adresse;
+        }
+        const site = url.hostname.replace(/^www\./, '');
+        let fin = this.decoder(url.pathname.split('/').filter(Boolean).pop() || '');
+        if (fin.length > 40) {
+            fin = fin.slice(0, 40) + '...';
+        }
+        return fin ? site + ' › ' + fin : site;
     },
 
     /**
