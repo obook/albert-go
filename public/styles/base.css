@@ -159,10 +159,11 @@ input[type="password"], textarea {
     color: var(--texte);
     background: var(--surface);
     border: 1px solid var(--bord-champ);
-    border-bottom: 2px solid var(--bleu);
-    border-radius: 0.25rem 0.25rem 0 0;
+    border-radius: 0.25rem;
     padding: 0.5rem 0.75rem;
 }
+/* Même focus que les notes de Rédac ; .pico pour passer devant Pico. */
+input[type="password"]:focus-visible, .pico input[type="password"]:focus-visible { outline: 2px solid var(--bleu); outline-offset: 2px; }
 
 /* Boutons */
 
