@@ -125,6 +125,8 @@ label.interrupteur {
     font-size: 1.0625rem;
     color: var(--bleu);
 }
+/* Liens de la couleur du texte, le soulignement suffit à les repérer. */
+.info a, .info a:hover { color: inherit; text-decoration: underline; }
 .info ul {
     margin: 0;
     padding-left: 1.25rem;
