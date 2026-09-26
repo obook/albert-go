@@ -78,7 +78,7 @@ I18n.TEXTES.es = {
     'cle.souvenir': 'Recordarme en este dispositivo',
     'cle.ou-va': '¿Adónde va mi clave?',
     'cle.titre': 'Bienvenido a Albert Go',
-    'cle.label': 'Pegue su clave de acceso',
+    'cle.label': 'Pegue su clave',
     'cle.stockee': 'Su clave solo se guarda en este navegador.<br/>Pasa por la <a href="https://n8n.incubateur.education.gouv.fr" target="_blank" rel="noopener noreferrer">incubadora interministerial</a>, que no la guarda.',
     'cle.enregistrer': 'Empezar',
     'cle.demander': '<a href="https://albert.sites.beta.gouv.fr/access/" target="_blank" rel="noopener noreferrer">Solicitar acceso a Albert</a>, reservado a los agentes públicos.',
