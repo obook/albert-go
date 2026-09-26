@@ -75,12 +75,13 @@ I18n.TEXTES.en = {
     'cle.intro': 'The French State AI to chat, correct, rephrase, translate and write.',
     'cle.etape-acces': 'No access yet?',
     'cle.exemple': 'sk-...',
-    'cle.souvenir': 'Keep the key in this browser, erasable at any time',
+    'cle.souvenir': 'Keep it in this browser, erasable at any time',
     'cle.ou-va': 'Where does my key go?',
+    'cle.saisir': 'Enter',
+    'cle.titre-boite': 'Your key',
     'cle.titre': 'Welcome to Albert Go',
     'cle.label': 'Key',
-    'cle.stockee': 'Your key stays in this browser: in <code>sessionStorage</code> by default, erased when the tab closes; in <code>localStorage</code> if you turn on "Keep the key...", kept until "Change key".<br/>It goes through the <a href="https://n8n.incubateur.education.gouv.fr" target="_blank" rel="noopener noreferrer">interministerial incubator</a>, which does not record it.',
-    'cle.enregistrer': 'Start',
+    'cle.stockee': '<ul><li>By default, it is erased when you close the tab.</li><li>If you turn on "Keep it", it stays until you choose "Change key" in the menu.</li><li>It only leaves this browser to reach Albert, through a <a href="https://n8n.incubateur.education.gouv.fr" target="_blank" rel="noopener noreferrer">State relay</a> that does not record it.</li></ul>',
     'cle.demander': '<a href="https://albert.sites.beta.gouv.fr/access/" target="_blank" rel="noopener noreferrer">Request access to Albert</a>, reserved for public servants.',
     'cle.verification': 'Checking the key...',
 
@@ -161,6 +162,8 @@ I18n.TEXTES.en = {
     'modele.inconnu': 'Chat model.',
 
     /* Dialogs. */
+    'dialogue.annuler': 'Cancel',
+    'dialogue.ok': 'OK',
     'dialogue.fermer': 'Close',
     'dialogue.oui': 'Yes',
     'dialogue.non': 'No',

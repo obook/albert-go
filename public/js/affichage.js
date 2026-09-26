@@ -58,7 +58,7 @@ let minuteurToast = null;
  */
 function afficher() {
     const connecte = !!reglages.cle;
-    $('form-cle').hidden = connecte;
+    $('accueil').hidden = connecte;
     const redaction = outilActuel === 'rediger';
     $('chat').hidden = !connecte || redaction;
     $('saisie-zone').hidden = !connecte || redaction;
@@ -67,11 +67,14 @@ function afficher() {
         $(id).hidden = !connecte;
     }
     if (connecte) {
+        if ($('dialogue-cle').open) {
+            $('dialogue-cle').close();
+        }
         focusSaisie();
     } else {
         /* Écran de la clé : effacement à la fermeture toujours proposé par défaut. */
         $('partage-accueil').checked = false;
-        $('cle').focus();
+        $('ouvrir-cle').focus();
     }
 }
 

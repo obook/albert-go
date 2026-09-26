@@ -163,38 +163,25 @@
     </dialog>
 
     <main id="principal">
-        <form id="form-cle" class="accueil pico" hidden>
+        <section id="accueil" class="accueil pico" hidden>
             <h2 data-t="cle.titre"></h2>
             <p data-t="cle.intro"></p>
-            <!-- Deux étapes : obtenir un accès, puis coller la clé. -->
+            <!-- Deux étapes : obtenir un accès, puis saisir la clé dans une boîte. -->
             <ol class="etapes">
                 <li>
                     <strong data-t="cle.etape-acces"></strong>
                     <span data-t-html="cle.demander"></span>
                 </li>
                 <li>
-                    <label for="cle" data-t="cle.label"></label>
-                    <input type="password"
-                           id="cle"
-                           autocomplete="off"
-                           spellcheck="false"
-                           required
-                           data-t-attr="placeholder:cle.exemple">
-                    <p id="message-cle" class="message-cle" role="status"></p>
-                    <label class="interrupteur">
-                        <input type="checkbox"
-                               id="partage-accueil"
-                               role="switch">
-                        <span data-t="cle.souvenir"></span>
-                    </label>
-                    <button type="submit" class="bouton-principal" data-t="cle.enregistrer"></button>
+                    <strong data-t="cle.label"></strong>
+                    <button type="button" id="ouvrir-cle" class="bouton-principal" data-t="cle.saisir"></button>
                 </li>
             </ol>
             <details class="details-cle">
                 <summary data-t="cle.ou-va"></summary>
-                <p data-t-html="cle.stockee"></p>
+                <div data-t-html="cle.stockee"></div>
             </details>
-        </form>
+        </section>
 
         <section id="chat"
                  class="chat"
@@ -405,6 +392,34 @@
 
             <div class="boutons-dialogue">
                 <button type="submit" class="bouton-principal" data-t="dialogue.fermer"></button>
+            </div>
+        </form>
+    </dialog>
+
+    <!-- Saisie de la clé, ouverte depuis l'accueil (cle.js). -->
+    <dialog id="dialogue-cle" class="reglages pico" aria-labelledby="titre-cle">
+        <form id="form-cle">
+            <h2 id="titre-cle" data-t="cle.titre-boite"></h2>
+            <label for="cle" class="visuellement-cache" data-t="cle.label"></label>
+            <input type="password"
+                   id="cle"
+                   autocomplete="off"
+                   spellcheck="false"
+                   required
+                   data-t-attr="placeholder:cle.exemple">
+            <p id="message-cle" class="message-cle" role="status"></p>
+            <label class="interrupteur">
+                <input type="checkbox"
+                       id="partage-accueil"
+                       role="switch">
+                <span data-t="cle.souvenir"></span>
+            </label>
+            <div class="boutons-dialogue">
+                <button type="button"
+                        id="annuler-cle"
+                        class="bouton-texte outline"
+                        data-t="dialogue.annuler"></button>
+                <button type="submit" class="bouton-principal" data-t="dialogue.ok"></button>
             </div>
         </form>
     </dialog>
