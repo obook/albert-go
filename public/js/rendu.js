@@ -376,7 +376,7 @@ const Rendu = {
         const boutonSvg = boutonAction(ICONES.svg, t('reponse.telecharger-figure'));
         boutonSvg.addEventListener('click', () => {
             /* XMLSerializer ajoute le xmlns sans lequel le fichier ne s'ouvre pas. */
-            this.telecharger(new Blob([new XMLSerializer().serializeToString(svg)], { type: 'image/svg+xml' }), nom('svg'));
+            this.telecharger(new Blob([new XMLSerializer().serializeToString(this.svgAutonome(svg))], { type: 'image/svg+xml' }), nom('svg'));
         });
         const boutonPng = boutonAction(ICONES.png, t('reponse.telecharger-png'));
         boutonPng.addEventListener('click', async () => {
@@ -387,6 +387,33 @@ const Rendu = {
         boutons.append(boutonSvg, boutonPng);
         conteneur.append(svg, boutons);
         bloc.parentElement.replaceWith(conteneur);
+    },
+
+    /* Propriétés recopiées sur chaque élément du SVG enregistré. */
+    STYLES_SVG: ['fill', 'fill-opacity', 'stroke', 'stroke-width', 'stroke-opacity', 'stroke-dasharray',
+        'opacity', 'font-family', 'font-size', 'font-weight', 'font-style', 'text-anchor', 'dominant-baseline'],
+
+    /**
+     * Copie d'un SVG sans <style>, que lisent mal Inkscape ou LibreOffice :
+     * chaque élément porte ses couleurs.
+     *
+     * @param {SVGSVGElement} svg - Dessin affiché.
+     * @returns {SVGSVGElement} Copie autonome.
+     */
+    svgAutonome(svg) {
+        const copie = svg.cloneNode(true);
+        const originaux = [svg, ...svg.querySelectorAll('*')];
+        [copie, ...copie.querySelectorAll('*')].forEach((element, i) => {
+            const calcule = getComputedStyle(originaux[i]);
+            if (calcule.display === 'none') {
+                element.setAttribute('display', 'none');
+            }
+            element.setAttribute('style', this.STYLES_SVG.map((nom) => nom + ':' + calcule.getPropertyValue(nom)).join(';'));
+        });
+        copie.querySelectorAll('style').forEach((style) => style.remove());
+        /* Mermaid coupe les mots en <tspan> " mot" : sans preserve, Inkscape perd l'espace. */
+        copie.setAttributeNS('http://www.w3.org/XML/1998/namespace', 'xml:space', 'preserve');
+        return copie;
     },
 
     /**
