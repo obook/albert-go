@@ -141,8 +141,8 @@ I18n.TEXTES.es = {
     'contexte.sans': 'sin contexto',
     'contexte.complet': 'contexto completo',
     'contexte.pourcent': 'contexto {pourcent} %',
-    'partage.actif': 'Al cerrar la pestaña, la clave y las conversaciones se borrarán.',
-    'partage.inactif': 'Al cerrar la pestaña, la clave y las conversaciones se conservarán.',
+    'partage.actif': 'Al cerrar, la clave y las conversaciones se borrarán.',
+    'partage.inactif': 'Al cerrar, la clave y las conversaciones se conservarán.',
     'reglages.memoire': 'Enviar a la IA toda la conversación.',
 
     /* Modelos. */
