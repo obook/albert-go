@@ -120,7 +120,7 @@ I18n.TEXTES.es = {
     'reglages.compteur': 'Contador de palabras y caracteres',
     'reglages.tirage': 'Probabilidades',
     'reglages.statistiques': 'Estadísticas',
-    'reglages.aide-outils': 'La IA decide sola usarlas cuando las necesita. Un icono bajo la respuesta indica que se usó una herramienta.',
+    'reglages.aide-outils': 'La IA decide sola usarlas cuando las necesita.',
     'reglages.recherche-active': 'Búsqueda web:',
     'moteur.wikipedia': 'Enciclopedia generalista',
     'moteur.data-gouv': 'Datos públicos franceses',

@@ -120,7 +120,7 @@ I18n.TEXTES.en = {
     'reglages.compteur': 'Word and character counter',
     'reglages.tirage': 'Probability',
     'reglages.statistiques': 'Statistics',
-    'reglages.aide-outils': 'The AI decides on its own to use them when it needs to. An icon under the answer shows that a tool was used.',
+    'reglages.aide-outils': 'The AI decides on its own to use them when it needs to.',
     'reglages.recherche-active': 'Web search:',
     'moteur.wikipedia': 'General encyclopedia',
     'moteur.data-gouv': 'French public data',

@@ -120,7 +120,7 @@ I18n.TEXTES.de = {
     'reglages.compteur': 'Wort- und Zeichenzähler',
     'reglages.tirage': 'Wahrscheinlichkeit',
     'reglages.statistiques': 'Statistik',
-    'reglages.aide-outils': 'Die KI entscheidet selbst, sie bei Bedarf zu verwenden. Ein Symbol unter der Antwort zeigt, dass ein Werkzeug verwendet wurde.',
+    'reglages.aide-outils': 'Die KI entscheidet selbst, sie bei Bedarf zu verwenden.',
     'reglages.recherche-active': 'Websuche:',
     'moteur.wikipedia': 'Allgemeine Enzyklopädie',
     'moteur.data-gouv': 'Französische offene Daten',
