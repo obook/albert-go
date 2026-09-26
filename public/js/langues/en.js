@@ -74,7 +74,7 @@ I18n.TEXTES.en = {
     /* Key screen. */
     'cle.intro': 'The French State AI to chat, correct, rephrase, translate and write.',
     'cle.etape-acces': 'No access yet?',
-    'cle.exemple': 'The API key you received from Albert',
+    'cle.exemple': 'The API key you created in your Albert account',
     'cle.souvenir': 'Remember me on this device',
     'cle.ou-va': 'Where does my key go?',
     'cle.titre': 'Welcome to Albert Go',

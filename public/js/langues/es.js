@@ -74,7 +74,7 @@ I18n.TEXTES.es = {
     /* Pantalla de la clave. */
     'cle.intro': 'La IA del Estado francés para charlar, corregir, reformular, traducir y redactar.',
     'cle.etape-acces': '¿Todavía sin acceso?',
-    'cle.exemple': 'La clave API recibida de Albert',
+    'cle.exemple': 'La clave API creada en su cuenta Albert',
     'cle.souvenir': 'Recordarme en este dispositivo',
     'cle.ou-va': '¿Adónde va mi clave?',
     'cle.titre': 'Bienvenido a Albert Go',
