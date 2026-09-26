@@ -252,7 +252,23 @@ const Rendu = {
             agrandir.target = '_blank';
             agrandir.rel = 'noopener noreferrer';
             agrandir.append(img);
-            figure.append(agrandir, legende);
+            const cadre = document.createElement('div');
+            cadre.className = 'cadre-image';
+            cadre.append(agrandir);
+            /* Un lien download vers un autre site ouvre l'image : on la récupère. */
+            if (/^https:\/\/upload\.wikimedia\.org\//.test(image.original)) {
+                const bouton = boutonAction(ICONES.telecharger, t('reponse.telecharger-image'));
+                bouton.addEventListener('click', async () => {
+                    const fichier = await fetch(image.original).then((r) => r.blob());
+                    const extension = (titre.match(/\.(\w+)$/) || [, 'jpg'])[1].toLowerCase();
+                    this.telecharger(fichier, this.nomFigure(new Date(), extension, img.alt));
+                });
+                const boutons = document.createElement('div');
+                boutons.className = 'boutons-figure';
+                boutons.append(bouton);
+                cadre.append(boutons);
+            }
+            figure.append(cadre, legende);
             placer(figure);
         }
     },

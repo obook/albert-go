@@ -85,6 +85,7 @@ laissait les colonnes rétrécir jusqu'à une lettre. Trop large, le tableau dé
 .rendu img { max-width: 100%; max-height: 20rem; height: auto; }
 .rendu .image-commons { margin: 0.5rem 0 0.75rem; }
 .rendu .image-commons img { display: block; border-radius: 0.25rem; }
+.rendu .cadre-image { position: relative; width: fit-content; }
 .rendu .image-commons figcaption, .rendu .image-absente { margin-top: 0.25rem; font-size: 0.8125rem; color: var(--texte-doux); }
 .rendu .bloc-code { position: relative; }
 .rendu .bloc-code > pre { padding-right: 3rem; }
