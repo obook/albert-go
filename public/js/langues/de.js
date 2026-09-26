@@ -80,7 +80,7 @@ I18n.TEXTES.de = {
     'cle.ou-va': 'Wohin geht mein Schlüssel?',
     'cle.saisir': 'Eingeben',
     'cle.titre-boite': 'API-Schlüssel',
-    'cle.acceptee': '✓ Schlüssel akzeptiert',
+    'cle.acceptee': 'Schlüssel akzeptiert',
     'cle.commencer': 'Loslegen',
     'bienvenue.titre': 'Hallo!',
     'bienvenue.texte': 'Stellen Sie unten Ihre Frage, oder beginnen Sie mit einer dieser Ideen.',

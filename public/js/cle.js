@@ -44,7 +44,14 @@ async function validerCle() {
     cleAcceptee = cle;
     $('cle').value = '';
     $('dialogue-cle').close();
-    $('etat-cle').textContent = t('cle.acceptee');
+    /* À l'écran une coche seule ; le lecteur d'écran lit "Clé acceptée". */
+    const coche = document.createElement('span');
+    coche.setAttribute('aria-hidden', 'true');
+    coche.textContent = '✓';
+    const texte = document.createElement('span');
+    texte.className = 'visuellement-cache';
+    texte.textContent = t('cle.acceptee');
+    $('etat-cle').replaceChildren(coche, texte);
     $('commencer').disabled = false;
 }
 

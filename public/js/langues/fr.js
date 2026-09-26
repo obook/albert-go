@@ -80,7 +80,7 @@ I18n.TEXTES.fr = {
     'cle.ou-va': 'Où va ma clé ?',
     'cle.saisir': 'Saisir',
     'cle.titre-boite': 'Clé API',
-    'cle.acceptee': '✓ Clé acceptée',
+    'cle.acceptee': 'Clé acceptée',
     'cle.commencer': 'Commencer',
     'bienvenue.titre': 'Bonjour !',
     'bienvenue.texte': 'Posez votre question ci-dessous, ou commencez par une de ces idées.',

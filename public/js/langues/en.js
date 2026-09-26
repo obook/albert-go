@@ -80,7 +80,7 @@ I18n.TEXTES.en = {
     'cle.ou-va': 'Where does my key go?',
     'cle.saisir': 'Enter',
     'cle.titre-boite': 'API key',
-    'cle.acceptee': '✓ Key accepted',
+    'cle.acceptee': 'Key accepted',
     'cle.commencer': 'Start',
     'bienvenue.titre': 'Hello!',
     'bienvenue.texte': 'Ask your question below, or start with one of these ideas.',
