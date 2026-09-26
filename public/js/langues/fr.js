@@ -77,10 +77,11 @@ I18n.TEXTES.fr = {
     'cle.exemple': 'sk-...',
     'cle.souvenir': 'Garder la clé dans ce navigateur, effaçable à tout moment',
     'cle.ou-va': 'Où va ma clé ?',
+    'cle.saisir': 'Saisir ma clé',
+    'cle.titre-boite': 'Votre clé Albert',
     'cle.titre': 'Bienvenue sur Albert Go',
     'cle.label': 'Clé',
     'cle.stockee': 'Votre clé reste dans ce navigateur : en <code>sessionStorage</code> par défaut, effacée à la fermeture de l\'onglet ; en <code>localStorage</code> si vous activez "Garder la clé...", conservée jusqu\'à "Changer de clé".<br/>Elle passe par l\'<a href="https://n8n.incubateur.education.gouv.fr" target="_blank" rel="noopener noreferrer">incubateur interministériel</a> sans y être enregistrée.',
-    'cle.enregistrer': 'Commencer',
     'cle.demander': '<a href="https://albert.sites.beta.gouv.fr/access/" target="_blank" rel="noopener noreferrer">Demander un accès à Albert</a>, réservé aux agents publics.',
     'cle.verification': 'Vérification de la clé...',
 
@@ -161,6 +162,8 @@ I18n.TEXTES.fr = {
     'modele.inconnu': 'Modèle de conversation.',
 
     /* Boîtes de dialogue. */
+    'dialogue.annuler': 'Annuler',
+    'dialogue.ok': 'OK',
     'dialogue.fermer': 'Fermer',
     'dialogue.oui': 'Oui',
     'dialogue.non': 'Non',

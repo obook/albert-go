@@ -68,12 +68,15 @@ main {
     font-size: 0.875rem;
 }
 .accueil .etapes strong { display: block; }
-/* Étape 2 : champ, interrupteur et bouton empilés à la même marge que le texte. */
-.accueil .etapes > li:last-child { display: grid; gap: 0.75rem; }
-.accueil .etapes label { margin: 0; }
-.accueil .etapes input { margin-bottom: 0; }
-.accueil .etapes .bouton-principal { justify-self: stretch; width: auto; margin: 0.25rem 0 0; }
-.accueil .message-cle:empty { display: none; }
+/* Étape 2 : "Clé" et le bouton qui ouvre la boîte, sur une ligne. */
+.accueil .etapes > li:last-child { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1rem; }
+.accueil .etapes > li:last-child::before { top: 50%; transform: translateY(-50%); }
+.accueil .etapes .bouton-principal { width: auto; margin: 0; }
+
+/* Boîte de la clé : champ, message, interrupteur, puis Annuler et OK. */
+#dialogue-cle input[type="password"] { margin-bottom: 0; }
+#dialogue-cle .interrupteur { font-weight: 400; }
+.message-cle:empty { display: none; }
 
 /* Détails techniques repliés : pour qui veut savoir, sans effrayer les autres. */
 .accueil .details-cle { margin: 0 0 0 2.5rem; font-size: 0.875rem; color: var(--texte-doux); }

@@ -54,3 +54,13 @@ $('form-cle').addEventListener('submit', (e) => {
     e.preventDefault();
     validerCle();
 });
+
+/* La boîte de saisie s'ouvre depuis l'accueil ; afficher() la ferme une fois la clé acceptée. */
+$('ouvrir-cle').addEventListener('click', () => {
+    $('dialogue-cle').showModal();
+    $('cle').focus();
+});
+
+$('annuler-cle').addEventListener('click', () => {
+    $('dialogue-cle').close();
+});

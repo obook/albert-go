@@ -77,10 +77,11 @@ I18n.TEXTES.en = {
     'cle.exemple': 'sk-...',
     'cle.souvenir': 'Keep the key in this browser, erasable at any time',
     'cle.ou-va': 'Where does my key go?',
+    'cle.saisir': 'Enter my key',
+    'cle.titre-boite': 'Your Albert key',
     'cle.titre': 'Welcome to Albert Go',
     'cle.label': 'Key',
     'cle.stockee': 'Your key stays in this browser: in <code>sessionStorage</code> by default, erased when the tab closes; in <code>localStorage</code> if you turn on "Keep the key...", kept until "Change key".<br/>It goes through the <a href="https://n8n.incubateur.education.gouv.fr" target="_blank" rel="noopener noreferrer">interministerial incubator</a>, which does not record it.',
-    'cle.enregistrer': 'Start',
     'cle.demander': '<a href="https://albert.sites.beta.gouv.fr/access/" target="_blank" rel="noopener noreferrer">Request access to Albert</a>, reserved for public servants.',
     'cle.verification': 'Checking the key...',
 
@@ -161,6 +162,8 @@ I18n.TEXTES.en = {
     'modele.inconnu': 'Chat model.',
 
     /* Dialogs. */
+    'dialogue.annuler': 'Cancel',
+    'dialogue.ok': 'OK',
     'dialogue.fermer': 'Close',
     'dialogue.oui': 'Yes',
     'dialogue.non': 'No',
