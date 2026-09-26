@@ -162,7 +162,7 @@ I18n.TEXTES.de = {
     'confirmer-cle.titre': 'Schlüssel wechseln?',
     'confirmer-cle.texte': 'Der gespeicherte Schlüssel wird aus diesem Browser gelöscht. Zum Weitermachen ist ein neuer nötig.',
     'confirmer-suppression.titre': 'Dieses Gespräch löschen?',
-    'partage.titre': 'Albert Go teilen',
+    'partage.titre': 'Teilen',
     'partage.texte': 'Scannen Sie den QR-Code oder kopieren Sie die Adresse, Ihr Schlüssel wird nicht geteilt.',
     'partage.qr': 'QR-Code der Adresse von Albert Go',
     'partage.adresse': 'Adresse von Albert Go',

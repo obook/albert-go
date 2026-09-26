@@ -162,7 +162,7 @@ I18n.TEXTES.en = {
     'confirmer-cle.titre': 'Change key?',
     'confirmer-cle.texte': 'The saved key will be erased from this browser. You will have to enter one to carry on.',
     'confirmer-suppression.titre': 'Delete this conversation?',
-    'partage.titre': 'Share Albert Go',
+    'partage.titre': 'Share',
     'partage.texte': 'Scan the QR code or copy the address, your key is not shared.',
     'partage.qr': 'QR code of the Albert Go address',
     'partage.adresse': 'Albert Go address',
