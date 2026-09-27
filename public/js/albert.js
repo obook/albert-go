@@ -68,6 +68,17 @@ const Albert = {
     /** Langues proposées par Traduire (liste d'albert-droid), en codes ISO 639-1. */
     LANGUES: ['fr', 'en', 'de', 'es', 'it', 'pt', 'nl', 'ru', 'zh', 'ja', 'ar', 'la'],
 
+    /* Mots outils les plus courants : de quoi reconnaître la langue d'une réponse de Chat. */
+    MOTS_OUTILS: {
+        fr: 'le la les des est et une un du de que qui dans pour pas vous nous je il au sur avec ce cette sont mais ou votre'.split(' '),
+        en: 'the and is are of to in that it you for with this be was have not on will i would an my your'.split(' '),
+        de: 'der die das und ist nicht ich sie mit zu den ein eine einen auf für es wir von dem'.split(' '),
+        es: 'el la los las de que y es en un una por con para no se del al lo pero su como muy está'.split(' '),
+        it: 'il di che è e la per un una non sono con del della gli le ho mi'.split(' '),
+        pt: 'o a os as de que e é não um uma para com do da em no na você'.split(' '),
+        nl: 'de het een en is van ik je niet dat op te zijn met voor wij u er'.split(' ')
+    },
+
     /** Réglages conseillés, aussi utilisés au premier lancement. */
     CONSEILLES: { modele: 'openweight-large', temperature: 0.2, memoire: true },
 
@@ -464,6 +475,41 @@ const Albert = {
             return entree.titre;
         }
         return t('outil.' + entree.outil) + ' : ' + entree.titre;
+    },
+
+    /**
+     * Langue d'une réponse, pour la lire avec la bonne voix : par l'écriture,
+     * sinon par ses mots outils. Dans le doute, la langue de l'interface.
+     *
+     * @param {string} texte - Réponse en Markdown ; le code ne compte pas.
+     * @param {string} defaut - Langue de l'interface.
+     * @returns {string} Code de langue ("es", "ru"...).
+     */
+    langueDuTexte(texte, defaut) {
+        const prose = texte.replace(/```[\s\S]*?```/g, ' ').replace(/`[^`]*`/g, ' ');
+        const lettres = (prose.match(/\p{L}/gu) || []).length;
+        if (!lettres) {
+            return defaut;
+        }
+        const part = motif => (prose.match(motif) || []).length / lettres;
+        /* Des kana : japonais, même au milieu des idéogrammes. */
+        if (part(/[\u3040-\u30ff]/g) > 0.1) {
+            return 'ja';
+        }
+        for (const [code, motif] of [['zh', /\p{Script=Han}/gu], ['ru', /\p{Script=Cyrillic}/gu], ['ar', /\p{Script=Arabic}/gu]]) {
+            if (part(motif) > 0.3) {
+                return code;
+            }
+        }
+        const mots = prose.toLowerCase().match(/\p{L}+/gu);
+        const score = code => mots.filter(m => this.MOTS_OUTILS[code].includes(m)).length;
+        let meilleure = defaut;
+        for (const code of Object.keys(this.MOTS_OUTILS)) {
+            if (score(code) > score(meilleure)) {
+                meilleure = code;
+            }
+        }
+        return score(meilleure) >= 2 ? meilleure : defaut;
     },
 
     /**

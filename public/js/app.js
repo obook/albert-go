@@ -124,8 +124,8 @@ async function demanderReponse(outil) {
  * @param {string} outil - Clé de Albert.OUTILS.
  */
 function recevoirReponse(reponse, outil) {
-    /* Réponse de Traduire : dans la langue cible, gardée pour la lecture à voix haute. */
-    const langue = outil === 'traduire' ? langueCible : I18n.langue;
+    /* Langue gardée pour la lecture à voix haute : la cible de Traduire, sinon celle du texte. */
+    const langue = outil === 'traduire' ? langueCible : Albert.langueDuTexte(reponse.texte, I18n.langue);
     conversation.push({ role: 'assistant', content: reponse.texte, langue: langue, recherches: reponse.recherches });
     ajouter('assistant', reponse.texte, langue, true, reponse.recherches);
     sauverConversation();
