@@ -492,9 +492,11 @@
                 <div class="adresse-partage">
                     <label for="adresse-partage" class="visuellement-cache" data-t="partage.adresse"></label>
                     <input type="text" id="adresse-partage" readonly>
+                    <!-- autofocus : à l'ouverture, le focus va au bouton, pas à l'adresse. -->
                     <button type="button"
                             class="bouton-texte outline"
                             id="copier-adresse"
+                            autofocus
                             data-t="partage.copier"></button>
                 </div>
             </div>
