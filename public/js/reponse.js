@@ -182,13 +182,13 @@ function elementRecherches(recherches) {
 }
 
 /**
- * Crée la pastille "IA" placée à gauche d'une réponse.
+ * Crée la pastille "IA" d'une réponse, lue seulement par les lecteurs d'écran.
  *
  * @returns {HTMLSpanElement} La pastille.
  */
 function pastilleIA() {
     const pastille = document.createElement('span');
-    pastille.className = 'pastille';
+    pastille.className = 'visuellement-cache';
     pastille.textContent = 'IA';
     return pastille;
 }
