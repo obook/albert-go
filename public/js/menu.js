@@ -42,6 +42,7 @@ function afficherTheme() {
 }
 
 $('ouvrir-menu').addEventListener('click', () => {
+    $('recherche-historique').value = '';
     afficherHistorique();
     $('menu').showModal();
 });

@@ -24,6 +24,8 @@ I18n.TEXTES.en = {
     'menu.apropos': 'About',
     'menu.changer-cle': 'Erase the key and quit',
     'historique.vide': 'No conversation yet.',
+    'historique.rechercher': 'Search conversations',
+    'historique.aucune': 'No conversation found.',
     'historique.supprimer': 'Delete',
     'historique.supprimer-aria': 'Delete the conversation: {titre}',
 

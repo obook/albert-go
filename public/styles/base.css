@@ -166,7 +166,7 @@ a:hover { color: var(--bleu-survol); }
 [hidden] { display: none !important; }
 
 /* Champs de saisie, hors de ceux que Pico habille. */
-input[type="password"], textarea {
+input[type="password"], input[type="search"], textarea {
     width: 100%;
     font: inherit;
     color: var(--texte);
