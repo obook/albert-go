@@ -83,7 +83,6 @@ I18n.TEXTES.en = {
     'cle.titre-boite': 'API key',
     'cle.acceptee': 'Key accepted',
     'cle.commencer': 'Start',
-    'bienvenue.titre': 'Hello!',
     'bienvenue.texte': 'A few ideas to get started:',
     'bienvenue.corriger': 'Proofread a text',
     'bienvenue.traduire': 'Translate',
