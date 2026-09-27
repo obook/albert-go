@@ -96,7 +96,7 @@ const Albert = {
     },
 
     /**
-     * Sessions sur 90 jours (clé acceptée par Albert), comptées par le relais.
+     * Appels sur 90 jours (clé acceptée par Albert), comptés par le relais.
      *
      * @returns {Promise<{total: number, parHeure: number}>} Somme des jours, et moyenne horaire depuis le premier jour.
      */
