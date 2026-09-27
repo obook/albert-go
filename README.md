@@ -53,7 +53,7 @@ Choix du modèle, température et contexte. Si le contexte est désactivé, seul
 
 ### Langues
 
-Interface en français, anglais, espagnol et allemand. Au premier lancement, la langue du navigateur ; ensuite, celle choisie par les drapeaux de l'en-tête ou dans Réglages, gardée dans le navigateur. La langue suit aussi le reste : le moteur de recherche est interrogé sur le domaine de la langue, dates et nombres au format local, formules lues à voix haute dans la langue de la réponse.
+Interface en français, anglais, espagnol et allemand. Au premier lancement, la langue du navigateur ; ensuite, celle choisie par le drapeau du volet, gardée dans le navigateur. La langue suit aussi le reste : le moteur de recherche est interrogé sur le domaine de la langue, dates et nombres au format local, formules lues à voix haute dans la langue de la réponse.
 
 ## Accessibilité
 

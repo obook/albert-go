@@ -157,7 +157,6 @@ I18n.TEXTES.es = {
     'reglages.cx': 'ID del buscador',
     'reglages.aide-recherche': 'Las herramientas de Internet pueden recopilar y explotar los datos de la conversación. Los textos que traen no están verificados.',
     'reglages.cle-note': 'Hay una clave guardada en este navegador.',
-    'reglages.langue': 'Idioma',
     'reglages.conseilles': 'Ajustes recomendados',
     'reglages.resume': '{modele}, temperatura {temperature}, {contexte}',
     'contexte.sans': 'sin contexto',

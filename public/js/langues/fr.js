@@ -157,7 +157,6 @@ I18n.TEXTES.fr = {
     'reglages.cx': 'ID du moteur de recherche',
     'reglages.aide-recherche': 'Les outils Internet peuvent collecter et exploiter les données de la conversation. Les textes qu\'ils rapportent ne sont pas vérifiés.',
     'reglages.cle-note': 'Une clé est enregistrée dans ce navigateur.',
-    'reglages.langue': 'Langue',
     'reglages.conseilles': 'Réglages conseillés',
     'reglages.resume': '{modele}, température {temperature}, {contexte}',
     'contexte.sans': 'sans contexte',

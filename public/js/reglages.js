@@ -267,7 +267,7 @@ $('reglages-conseilles').addEventListener('click', () => {
 
 /**
  * Montre la langue affichée : son drapeau dans le volet, sa ligne en gras
- * dans le menu déroulant, sa valeur dans les réglages.
+ * dans le menu déroulant.
  *
  * Le drapeau du menu est recopié plutôt que réécrit : un seul exemplaire
  * de chaque dessin, dans index.html.
@@ -280,7 +280,6 @@ function afficherLangue() {
             $('langue-choisie').replaceChildren(bouton.querySelector('.drapeau').cloneNode(true));
         }
     }
-    $('langue-interface').value = I18n.langue;
 }
 
 /**
@@ -311,10 +310,6 @@ function choisirLangue(langue) {
 }
 
 afficherLangue();
-
-$('langue-interface').addEventListener('change', () => {
-    choisirLangue($('langue-interface').value);
-});
 
 for (const bouton of document.querySelectorAll('[data-langue]')) {
     bouton.addEventListener('click', () => {
