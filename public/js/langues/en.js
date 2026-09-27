@@ -90,7 +90,7 @@ I18n.TEXTES.en = {
     'bienvenue.rediger': 'Write a letter',
     'bienvenue.calcul': 'Do a calculation',
     'bienvenue.exemple-corriger': 'Fix the mistakes: Thank you for you quick anwser, i remain at your disposal.',
-    'bienvenue.exemple-reformuler': 'Rephrase more simply: Please be advised that, owing to the unavailability of a significant proportion of the participants, the meeting originally scheduled has been postponed to a later date, which will be communicated to you in due course.',
+    'bienvenue.exemple-reformuler': 'Please be advised that, owing to the unavailability of a significant proportion of the participants, the meeting originally scheduled has been postponed to a later date, which will be communicated to you in due course.',
     'bienvenue.exemple-traduire': 'Translate into French: Hello, I would like to make an appointment next week.',
     'bienvenue.exemple-rediger': 'Dear Madam,\nleave request 3 to 7 November\nongoing files handed to colleague',
     'bienvenue.exemple-calcul': 'What is {p}% of {n}?',

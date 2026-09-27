@@ -90,7 +90,7 @@ I18n.TEXTES.fr = {
     'bienvenue.rediger': 'Rédiger un courrier',
     'bienvenue.calcul': 'Faire un calcul',
     'bienvenue.exemple-corriger': 'Corrige les fautes : Je vous remerci pour votre réponce rapide et je reste a votre disposition.',
-    'bienvenue.exemple-reformuler': 'Reformule plus simplement : Nous vous informons que, compte tenu de l\'indisponibilité d\'une partie significative des participants, la tenue de la réunion initialement programmée se trouve reportée à une date ultérieure qui vous sera communiquée dans les meilleurs délais.',
+    'bienvenue.exemple-reformuler': 'Nous vous informons que, compte tenu de l\'indisponibilité d\'une partie significative des participants, la tenue de la réunion initialement programmée se trouve reportée à une date ultérieure qui vous sera communiquée dans les meilleurs délais.',
     'bienvenue.exemple-traduire': 'Traduis en anglais : Bonjour, je voudrais prendre rendez-vous la semaine prochaine.',
     'bienvenue.exemple-rediger': 'Madame,\ndemande congé 3 au 7 novembre\ndossiers en cours confiés collègue',
     'bienvenue.exemple-calcul': 'Combien font {p} % de {n} ?',
