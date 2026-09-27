@@ -111,6 +111,8 @@ function sauverConversation() {
     if (enregistrerListe(voulue)) {
         retenirCourante(conversationId);
     }
+    /* Volet ouvert en permanence sur grand écran : la liste suit. */
+    afficherHistorique();
 }
 
 /**

@@ -42,9 +42,23 @@ function afficherTheme() {
 }
 
 $('ouvrir-menu').addEventListener('click', () => {
+    /* Grand écran : le bouton replie ou déplie la colonne. */
+    if (GRAND_ECRAN.matches) {
+        if ($('menu').open) {
+            $('menu').close();
+        } else {
+            montrerVolet();
+        }
+        return;
+    }
     $('recherche-historique').value = '';
     afficherHistorique();
     $('menu').showModal();
+    $('ouvrir-menu').setAttribute('aria-expanded', 'true');
+});
+
+$('menu').addEventListener('close', () => {
+    $('ouvrir-menu').setAttribute('aria-expanded', 'false');
 });
 
 /*
@@ -55,7 +69,43 @@ enchaîner les clics ; leur boîte s'ouvre par-dessus le volet.
 */
 const GARDENT_LE_VOLET = ['theme', 'supprimer-conversation'];
 
+/* Grand écran : le volet reste ouvert à gauche, sans fond (entete.css). */
+const GRAND_ECRAN = matchMedia('(min-width: 64rem)');
+
+/**
+ * Affiche le volet en colonne, sans lui donner le focus.
+ */
+function montrerVolet() {
+    const avant = document.activeElement;
+    afficherHistorique();
+    $('menu').show();
+    $('ouvrir-menu').setAttribute('aria-expanded', 'true');
+    /* show() prend le focus : on le rend. */
+    if (avant && avant !== document.body) {
+        avant.focus();
+    } else {
+        document.activeElement.blur();
+    }
+}
+
+/**
+ * Ouvre le volet en colonne sur grand écran, le referme sinon.
+ */
+function placerVolet() {
+    if ($('menu').open) {
+        $('menu').close();
+    }
+    if (GRAND_ECRAN.matches) {
+        montrerVolet();
+    }
+}
+GRAND_ECRAN.addEventListener('change', placerVolet);
+placerVolet();
+
 $('menu').addEventListener('click', (e) => {
+    if (GRAND_ECRAN.matches) {
+        return;
+    }
     const bouton = e.target.closest('button');
     const clicSurLeFond = e.target === $('menu');
     const garde = bouton && GARDENT_LE_VOLET.some(nom => bouton.id === nom || bouton.classList.contains(nom));
