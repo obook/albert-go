@@ -15,11 +15,14 @@ const { test } = require('node:test');
 const assert = require('node:assert');
 const workflow = require('../n8n/albert-proxy.json');
 
-function noeud(nom, stats) {
+function noeud(nom, stats, webhook = 'Webhook modèles') {
     const code = workflow.nodes.find(n => n.name === nom).parameters.jsCode;
     return (headers, statusCode = 200) => new Function('$input', '$', '$getWorkflowStaticData', code)(
         { first: () => ({ json: { statusCode } }), all: () => [{ json: { statusCode } }] },
-        () => ({ first: () => ({ json: { headers } }) }),
+        n => {
+            assert.strictEqual(n, webhook);
+            return { first: () => ({ json: { headers } }) };
+        },
         () => stats);
 }
 
@@ -44,4 +47,14 @@ test('Compteur : garde 90 jours', () => {
     noeud('Compteur', stats)({ authorization: 'Bearer x' });
     assert.strictEqual(Object.keys(stats).length, 90);
     assert.ok(stats[new Date().toISOString().slice(0, 10)]);
+});
+
+test('Compteur chat : chaque message compte, avec les sessions', () => {
+    const stats = {};
+    noeud('Compteur', stats)({ authorization: 'Bearer a' });
+    noeud('Compteur chat', stats, 'Webhook chat')({ authorization: 'Bearer a' });
+    assert.strictEqual(workflow.connections['Albert chat'].main[0][0].node, 'Compteur chat');
+    assert.strictEqual(workflow.connections['Compteur chat'].main[0][0].node, 'Réponse chat');
+    const [jours] = noeud('Lire stats', stats)();
+    assert.deepStrictEqual(Object.values(jours.json), [{ appels: 2, utilisateurs: 1 }]);
 });

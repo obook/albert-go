@@ -7,7 +7,7 @@ Ce qui reste à faire, du plus simple au plus long. Le détail des failles est d
 - **I11** : prendre Marked du paquet npm et vérifier qu'il est identique à `public/vendor/marked/`.
 - **E1** : demander aux administrateurs n8n une limite de débit par adresse IP sur le relais.
 - **E3, E5** : signaler à l'équipe de la Forge les en-têtes de sécurité manquants sur Pages.
-- Relire `SECURITE.md` depuis le compteur de sessions : certaines lignes disent encore que le relais ne garde rien.
+- Relire `SECURITE.md` depuis le compteur d'appels : certaines lignes disent encore que le relais ne garde rien.
 
 ## Outils du modèle
 
