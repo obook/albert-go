@@ -16,8 +16,8 @@
     align-items: center;
     gap: 1rem;
     padding: 0.75rem 1.5rem;
-    background: var(--surface);
-    border-bottom: 4px solid var(--bleu);
+    background: var(--fond);
+    border-bottom: 1px solid var(--bord);
 }
 
 .titre {
@@ -38,15 +38,15 @@
 }
 .rouge { color: var(--rouge); }
 
-/* Albert interrogé (affichage.js, interroger) : un reflet rouge parcourt la barre bleue. */
+/* Albert interrogé (affichage.js, interroger) : un reflet rouge parcourt le bas de l'en-tête. */
 .entete { position: relative; }
 .interroge .entete::after {
     content: "";
     position: absolute;
     left: 0;
     right: 0;
-    bottom: -4px;
-    height: 4px;
+    bottom: -1px;
+    height: 2px;
     background: linear-gradient(90deg, transparent, var(--rouge), transparent) no-repeat;
     background-size: 40% 100%;
     animation: balaye 1.2s linear infinite;
@@ -187,7 +187,7 @@ large vient sans doute de la même valeur, lue par l'ancien 85vw. Non mesuré.
     max-height: none;
     padding: 0;
     border: 0;
-    border-right: 4px solid var(--bleu);
+    border-right: 1px solid var(--bord);
     background: var(--surface);
     color: var(--texte);
     overflow-y: auto;
