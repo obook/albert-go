@@ -83,7 +83,6 @@ I18n.TEXTES.fr = {
     'cle.titre-boite': 'Clé API',
     'cle.acceptee': 'Clé acceptée',
     'cle.commencer': 'Commencer',
-    'bienvenue.titre': 'Bonjour !',
     'bienvenue.texte': 'Quelques idées pour commencer :',
     'bienvenue.corriger': 'Corriger un texte',
     'bienvenue.traduire': 'Traduire',

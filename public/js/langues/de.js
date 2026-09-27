@@ -83,7 +83,6 @@ I18n.TEXTES.de = {
     'cle.titre-boite': 'API-Schlüssel',
     'cle.acceptee': 'Schlüssel akzeptiert',
     'cle.commencer': 'Loslegen',
-    'bienvenue.titre': 'Hallo!',
     'bienvenue.texte': 'Ein paar Ideen für den Anfang:',
     'bienvenue.corriger': 'Einen Text korrigieren',
     'bienvenue.traduire': 'Übersetzen',
