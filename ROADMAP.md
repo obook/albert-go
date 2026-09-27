@@ -14,6 +14,10 @@ Ce qui reste à faire, du plus simple au plus long. Le détail des failles est d
 - Tester les outils locaux (groupes, statistiques, compteur) avec un vrai modèle.
 - Wiktionnaire et autres services externes : en réflexion, car les mots cherchés partent chez un tiers.
 
+## Interface
+
+- Grand écran : le titre de la conversation dans le bouton du volet, comme sur L'Assistant de la DINUM. Le titre existe déjà (`Albert.libelleConversation`).
+
 ## À surveiller
 
 - Une conversation Rédac réaffichée en fil Trad après un rechargement forcé, vue une fois. Si elle revient, lancer dans la console du même onglet, avant de le fermer :
