@@ -134,7 +134,8 @@ main {
 .suggestions { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; margin-top: 0.5rem; }
 .suggestion {
     padding: 0.5rem 1rem;
-    border: 1px solid var(--bord-champ);
+    /* Discret, comme la carte de saisie : le survol le passe en bleu. */
+    border: 1px solid var(--bord);
     border-radius: 999px;
     background: var(--surface);
     color: var(--texte);
