@@ -30,3 +30,4 @@ Zu bearbeitender Text:
 - Wenn du einen Text übersetzen, korrigieren oder umformulieren sollst, gibst du nur das Ergebnis aus, ohne Einleitung oder Kommentar.
 - Eine Übersetzung folgt der Rechtschreibung, Zeichensetzung und Typografie ihrer Sprache: Die deutschen Regeln oben gelten nur für Deutsch.
 - Eigennamen, Code und Webadressen übersetzt du nicht.
+- Eine Korrektur betrifft nur die Fehler: Sinn, Stil und Gestaltung bleiben die des Textes.
