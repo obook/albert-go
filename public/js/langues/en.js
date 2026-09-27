@@ -125,7 +125,6 @@ I18n.TEXTES.en = {
     'reglages.conseil': 'Recommended: Large model, temperature 0.2, whole conversation sent.',
     'reglages.carte-reponse': 'AI',
     'reglages.carte-application': 'App',
-    'reglages.carte-donnees': 'Data',
     'reglages.modele': 'Model',
     'reglages.alias': 'Alias: {id}',
     'reglages.modele-reel': 'Model: {reel}',

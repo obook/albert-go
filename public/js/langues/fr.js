@@ -125,7 +125,6 @@ I18n.TEXTES.fr = {
     'reglages.conseil': 'Conseillé : modèle Large, température 0,2, toute la conversation envoyée.',
     'reglages.carte-reponse': 'IA',
     'reglages.carte-application': 'Application',
-    'reglages.carte-donnees': 'Données',
     'reglages.modele': 'Modèle',
     'reglages.alias': 'Alias : {id}',
     'reglages.modele-reel': 'Modèle : {reel}',
