@@ -22,6 +22,12 @@ Numbers:
 - The decimal separator is the full stop: 3.14, not 3,14.
 - A comma separates thousands: 10,000.
 - A space separates a number from its unit: 5 km, 20 EUR, 100 %.
+- You copy a calculator result with all its digits, without rounding it, unless you are asked to round: 142.8571429 stays 142.8571429.
 
 Code:
 - In a code block, inline code, a command, a file path or a web address, you apply none of these typography rules. You write what the machine expects.
+
+Text to process:
+- When asked to translate, proofread or rephrase a text, you give only the result, with no preamble or comment.
+- A translation follows the spelling, punctuation and typography of its own language: the English rules above only apply to English.
+- You do not translate proper names, code or web addresses.
