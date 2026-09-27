@@ -266,7 +266,7 @@ $('reglages-conseilles').addEventListener('click', () => {
 });
 
 /**
- * Montre la langue affichée : son drapeau dans l'en-tête, sa ligne en gras
+ * Montre la langue affichée : son drapeau dans le volet, sa ligne en gras
  * dans le menu déroulant, sa valeur dans les réglages.
  *
  * Le drapeau du menu est recopié plutôt que réécrit : un seul exemplaire

@@ -57,16 +57,6 @@
             <!-- Le nom de l'outil actif suit la marque : afficherOutil le remplit. -->
             <h1 class="marque">Alber<span class="rouge">t</span> Go<span class="outil-actif" id="outil-actif"></span></h1>
         </div>
-        <!-- Même motif que le choix du modèle : un <details> qui se déplie. -->
-        <details id="choix-langue" class="choix-langue">
-            <summary id="langue-choisie" data-t-attr="aria-label:langue.choisir;title:langue.choisir"></summary>
-            <div class="langues-choix">
-                <button type="button" data-langue="fr"><svg class="drapeau" viewBox="0 0 24 16" aria-hidden="true"><rect width="8" height="16" fill="#002395"/><rect x="8" width="8" height="16" fill="#ffffff"/><rect x="16" width="8" height="16" fill="#ed2939"/></svg><span>Français</span></button>
-                <button type="button" data-langue="en"><svg class="drapeau" viewBox="0 0 24 16" aria-hidden="true"><rect width="24" height="16" fill="#012169"/><path d="M0 0l24 16M24 0L0 16" stroke="#ffffff" stroke-width="3.2"/><path d="M0 0l24 16M24 0L0 16" stroke="#c8102e" stroke-width="1.8"/><path d="M12 0v16M0 8h24" stroke="#ffffff" stroke-width="5.4"/><path d="M12 0v16M0 8h24" stroke="#c8102e" stroke-width="3.2"/></svg><span>English</span></button>
-                <button type="button" data-langue="es"><svg class="drapeau" viewBox="0 0 24 16" aria-hidden="true"><rect width="24" height="16" fill="#aa151b"/><rect y="4" width="24" height="8" fill="#f1bf00"/></svg><span>Español</span></button>
-                <button type="button" data-langue="de"><svg class="drapeau" viewBox="0 0 24 16" aria-hidden="true"><rect width="24" height="16" fill="#000000"/><rect y="5.33" width="24" height="5.34" fill="#dd0000"/><rect y="10.67" width="24" height="5.33" fill="#ffce00"/></svg><span>Deutsch</span></button>
-            </div>
-        </details>
     </header>
 
     <!-- Traduire : langues dans une carte fixe sous l'en-tête. -->
@@ -83,8 +73,19 @@
         <div class="volet-contenu">
             <div class="volet-titre">
                 <h2 id="titre-menu" class="marque">Alber<span class="rouge">t</span> Go</h2>
-                <!-- Tout bouton du menu le ferme (menu.js) : pas de code en plus. -->
-                <button type="button" class="bouton-icone fermer-menu" data-t-attr="aria-label:menu.fermer;title:menu.fermer">
+                <!-- Même motif que le choix du modèle : un <details> qui se déplie, à droite du titre. -->
+                <details id="choix-langue" class="choix-langue">
+                    <summary id="langue-choisie" data-t-attr="aria-label:langue.choisir;title:langue.choisir"></summary>
+                    <div class="langues-choix">
+                        <button type="button" data-langue="fr"><svg class="drapeau" viewBox="0 0 24 16" aria-hidden="true"><rect width="8" height="16" fill="#002395"/><rect x="8" width="8" height="16" fill="#ffffff"/><rect x="16" width="8" height="16" fill="#ed2939"/></svg><span>Français</span></button>
+                        <button type="button" data-langue="en"><svg class="drapeau" viewBox="0 0 24 16" aria-hidden="true"><rect width="24" height="16" fill="#012169"/><path d="M0 0l24 16M24 0L0 16" stroke="#ffffff" stroke-width="3.2"/><path d="M0 0l24 16M24 0L0 16" stroke="#c8102e" stroke-width="1.8"/><path d="M12 0v16M0 8h24" stroke="#ffffff" stroke-width="5.4"/><path d="M12 0v16M0 8h24" stroke="#c8102e" stroke-width="3.2"/></svg><span>English</span></button>
+                        <button type="button" data-langue="es"><svg class="drapeau" viewBox="0 0 24 16" aria-hidden="true"><rect width="24" height="16" fill="#aa151b"/><rect y="4" width="24" height="8" fill="#f1bf00"/></svg><span>Español</span></button>
+                        <button type="button" data-langue="de"><svg class="drapeau" viewBox="0 0 24 16" aria-hidden="true"><rect width="24" height="16" fill="#000000"/><rect y="5.33" width="24" height="5.34" fill="#dd0000"/><rect y="10.67" width="24" height="5.33" fill="#ffce00"/></svg><span>Deutsch</span></button>
+                    </div>
+                </details>
+                <!-- Tout bouton du menu le ferme (menu.js) : pas de code en plus.
+                     autofocus : à l'ouverture, le focus va ici, pas au drapeau. -->
+                <button type="button" class="bouton-icone fermer-menu" autofocus data-t-attr="aria-label:menu.fermer;title:menu.fermer">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
                 </button>
             </div>
