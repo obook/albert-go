@@ -234,3 +234,25 @@ test('appels : somme des jours et moyenne horaire depuis le premier jour', async
         Date.now = maintenant;
     }
 });
+
+test('langueDuTexte : traductions faites dans Chat', () => {
+    assert.strictEqual(Albert.langueDuTexte('Hola, quisiera pedir cita para la semana que viene.', 'fr'), 'es');
+    assert.strictEqual(Albert.langueDuTexte('Hello, I would like to make an appointment next week.', 'fr'), 'en');
+    assert.strictEqual(Albert.langueDuTexte('Hallo, ich möchte nächste Woche einen Termin vereinbaren.', 'fr'), 'de');
+    assert.strictEqual(Albert.langueDuTexte('Ciao, vorrei prendere un appuntamento per la settimana prossima.', 'fr'), 'it');
+    assert.strictEqual(Albert.langueDuTexte('Olá, gostaria de marcar uma consulta para a próxima semana.', 'fr'), 'pt');
+    assert.strictEqual(Albert.langueDuTexte('Hallo, ik wil graag een afspraak maken voor volgende week.', 'fr'), 'nl');
+    assert.strictEqual(Albert.langueDuTexte('Здравствуйте, я хотел бы записаться на следующую неделю.', 'fr'), 'ru');
+    assert.strictEqual(Albert.langueDuTexte('您好，我想预约下周的时间。', 'fr'), 'zh');
+    assert.strictEqual(Albert.langueDuTexte('こんにちは、来週の予約をしたいです。', 'fr'), 'ja');
+    assert.strictEqual(Albert.langueDuTexte('مرحبا، أود حجز موعد الأسبوع المقبل.', 'fr'), 'ar');
+});
+
+test('langueDuTexte : dans le doute, la langue de l\'interface', () => {
+    const francais = 'Il suffit de doubler les quantités : 500 g de farine, 8 œufs et 1 litre de lait.';
+    assert.strictEqual(Albert.langueDuTexte(francais, 'fr'), 'fr');
+    /* Le code en anglais ne compte pas. */
+    assert.strictEqual(Albert.langueDuTexte('Voici la boucle :\n```js\nfor (const item of the list) { if (it is not done) return; }\n```\nElle est simple.', 'fr'), 'fr');
+    assert.strictEqual(Albert.langueDuTexte('OK', 'fr'), 'fr');
+    assert.strictEqual(Albert.langueDuTexte('142,8571429', 'es'), 'es');
+});
