@@ -92,7 +92,7 @@ I18n.TEXTES.en = {
     'bienvenue.exemple-corriger': 'Fix the mistakes: Thank you for you quick anwser, i remain at your disposal.',
     'bienvenue.exemple-reformuler': 'Rephrase more simply: Please be advised that, owing to the unavailability of a significant proportion of the participants, the meeting originally scheduled has been postponed to a later date, which will be communicated to you in due course.',
     'bienvenue.exemple-traduire': 'Translate into French: Hello, I would like to make an appointment next week.',
-    'bienvenue.exemple-rediger': 'Write a letter asking for leave from 3 to 7 November; my ongoing files will be handed to a colleague.',
+    'bienvenue.exemple-rediger': 'Dear Madam,\nleave request 3 to 7 November\nongoing files handed to colleague',
     'bienvenue.exemple-calcul': 'What is {p}% of {n}?',
     'bienvenue.exemple-division': 'What is {a} divided by {b}?',
     'bienvenue.exemple-division-environ': 'What is roughly {a} divided by {b}?',

@@ -92,7 +92,7 @@ I18n.TEXTES.es = {
     'bienvenue.exemple-corriger': 'Corrige las faltas: Le agradesco su rapida respuesta y quedo a su dispocición.',
     'bienvenue.exemple-reformuler': 'Reformula de forma más sencilla: Le informamos de que, habida cuenta de la indisponibilidad de una parte significativa de los participantes, la celebración de la reunión inicialmente programada queda aplazada a una fecha posterior que se le comunicará a la mayor brevedad.',
     'bienvenue.exemple-traduire': 'Traduce al inglés: Hola, quisiera pedir cita para la semana que viene.',
-    'bienvenue.exemple-rediger': 'Redacta una carta para pedir vacaciones del 3 al 7 de noviembre; mis expedientes en curso quedarán a cargo de un compañero.',
+    'bienvenue.exemple-rediger': 'Señora:\nsolicitud vacaciones 3 al 7 de noviembre\nexpedientes en curso confiados compañero',
     'bienvenue.exemple-calcul': '¿Cuánto es el {p} % de {n}?',
     'bienvenue.exemple-division': '¿Cuánto es {a} dividido entre {b}?',
     'bienvenue.exemple-division-environ': '¿Cuánto es aproximadamente {a} dividido entre {b}?',
