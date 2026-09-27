@@ -72,10 +72,11 @@
 .burger { flex: none; }
 .burger .icone-volet { display: none; }
 
-/* Choix de la langue, à droite de l'en-tête. */
+/* Choix de la langue, à droite du titre du volet, avant le bouton de fermeture. */
 .choix-langue {
     position: relative;
     flex: none;
+    margin-left: auto;
 }
 .choix-langue summary {
     display: grid;
@@ -346,7 +347,6 @@ input.recherche-historique {
     body:has(> .volet[open]) { grid-template-columns: 20rem minmax(0, 1fr); }
     .entete, .barre-langues, main, .saisie-zone { grid-column: 2; }
     .entete { border-bottom-color: transparent; }
-    .choix-langue { margin-left: auto; }
     .volet {
         position: static;
         grid-column: 1;
