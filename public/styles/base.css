@@ -25,9 +25,9 @@
     --bleu-survol: #1212ff;
     --sur-bleu: #ffffff;
     --bleu-clair: #e3e3fd;
-    /* Bulle de la question : fond et texte, séparés du bleu des liens et titres. */
-    --bulle: #000091;
-    --sur-bulle: #ffffff;
+    /* Bulle de la question : gris, séparée du bleu des liens et titres. */
+    --bulle: #e5e5e5;
+    --sur-bulle: #161616;
     --rouge: #e1000f;
     --erreur: #ce0500;
     --succes: #18753c;
@@ -57,7 +57,7 @@
         --bleu-survol: #a0a0ff;
         --sur-bleu: #161616;
         --bleu-clair: #353b52;
-        --bulle: #3a3aa8;
+        --bulle: #363b4c;
         --sur-bulle: #eeeeee;
         --rouge: #ff6b7a;
         --erreur: #ff7a6e;
@@ -87,7 +87,7 @@
     --bleu-survol: #a0a0ff;
     --sur-bleu: #161616;
     --bleu-clair: #353b52;
-    --bulle: #3a3aa8;
+    --bulle: #363b4c;
     --sur-bulle: #eeeeee;
     --rouge: #ff6b7a;
     --erreur: #ff7a6e;
