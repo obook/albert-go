@@ -37,6 +37,9 @@
     --fond-reglages: #e0e0e0;
     --titre-carte: var(--surface);
     --bord-carte: #c8c8c8;
+    /* Grand écran : conversation et volet de fonds différents, comme L'Assistant. */
+    --fond-conversation: var(--surface);
+    --fond-volet: var(--fond);
     --code-mot: #cf222e;
     --code-texte: #0a3069;
     --code-commentaire: #59636e;
@@ -67,6 +70,8 @@
         --fond-reglages: var(--surface);
         --titre-carte: var(--fond);
         --bord-carte: var(--bord);
+        --fond-conversation: var(--fond);
+        --fond-volet: var(--surface);
         --code-mot: #ff7b72;
         --code-texte: #a5d6ff;
         --code-commentaire: #9198a1;
@@ -97,6 +102,8 @@
     --fond-reglages: var(--surface);
     --titre-carte: var(--fond);
     --bord-carte: var(--bord);
+    --fond-conversation: var(--fond);
+    --fond-volet: var(--surface);
     --code-mot: #ff7b72;
     --code-texte: #a5d6ff;
     --code-commentaire: #9198a1;

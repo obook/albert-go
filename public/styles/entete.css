@@ -345,6 +345,7 @@ input.recherche-historique {
     /* Volet replié par le bouton : sa colonne tombe à zéro. */
     body { grid-template-columns: 0 minmax(0, 1fr); }
     body:has(> .volet[open]) { grid-template-columns: 20rem minmax(0, 1fr); }
+    body, .entete { background: var(--fond-conversation); }
     .entete, .barre-langues, main, .saisie-zone { grid-column: 2; }
     .entete { border-bottom-color: transparent; }
     .volet {
@@ -353,7 +354,7 @@ input.recherche-historique {
         grid-row: 1 / -1;
         width: auto;
         max-width: none;
-        background: var(--fond);
+        background: var(--fond-volet);
     }
     .fermer-menu, .burger .icone-burger { display: none; }
     .burger .icone-volet { display: block; }

@@ -157,7 +157,6 @@ I18n.TEXTES.de = {
     'reglages.cx': 'ID der Suchmaschine',
     'reglages.aide-recherche': 'Internet-Werkzeuge können die Daten der Unterhaltung sammeln und verwerten. Die gelieferten Texte werden nicht geprüft.',
     'reglages.cle-note': 'In diesem Browser ist ein Schlüssel gespeichert.',
-    'reglages.langue': 'Sprache',
     'reglages.conseilles': 'Empfohlene Einstellungen',
     'reglages.resume': '{modele}, Temperatur {temperature}, {contexte}',
     'contexte.sans': 'ohne Kontext',

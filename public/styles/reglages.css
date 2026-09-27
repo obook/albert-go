@@ -175,15 +175,13 @@ fieldset .bouton-texte { justify-self: start; }
 
 /* Pico met une marge sous toute <details> : ici, la grille du corps espace déjà. */
 .pico .choix-liste { min-width: 0; margin-bottom: 0; }
-/* Le menu Langue, natif, prend le même aspect ; l'id passe devant Pico. */
-.choix-liste summary, #langue-interface {
+.choix-liste summary {
     padding: 0.5rem 0.75rem;
     background-color: var(--surface);
     border: 1px solid var(--bord-champ);
     border-radius: 0.25rem;
     cursor: pointer;
 }
-#langue-interface { padding-block: 0.375rem; padding-inline-end: 2.5rem; line-height: 1.25; }
 /* Flex : la flèche de Pico flottait sous un nom sur deux lignes. */
 .pico .choix-liste summary { display: flex; align-items: center; gap: 0.5rem; padding-block: 0.375rem; line-height: 1.25; overflow-wrap: anywhere; }
 .pico .choix-liste summary::after { flex: none; float: none; margin-inline-start: auto; transform: none; }
