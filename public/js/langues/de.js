@@ -104,7 +104,6 @@ I18n.TEXTES.de = {
     'chat.aria': 'Gespräch',
     'saisie.label': 'Ihre Frage',
     'saisie.joindre': 'Ein Bild, ein Dokument oder eine Textdatei anhängen',
-    'saisie.joindre-court': 'Datei anhängen',
     'saisie.precedente': 'Vorherige Frage',
     'saisie.suivante': 'Nächste Frage',
     'saisie.envoyer': 'Senden',

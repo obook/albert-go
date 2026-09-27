@@ -104,7 +104,6 @@ I18n.TEXTES.es = {
     'chat.aria': 'Conversación',
     'saisie.label': 'Su pregunta',
     'saisie.joindre': 'Adjuntar una imagen, un documento o un archivo de texto',
-    'saisie.joindre-court': 'Adjuntar un archivo',
     'saisie.precedente': 'Pregunta anterior',
     'saisie.suivante': 'Pregunta siguiente',
     'saisie.envoyer': 'Enviar',

@@ -104,7 +104,6 @@ I18n.TEXTES.en = {
     'chat.aria': 'Conversation',
     'saisie.label': 'Your question',
     'saisie.joindre': 'Attach an image, a document or a text file',
-    'saisie.joindre-court': 'Attach a file',
     'saisie.precedente': 'Previous question',
     'saisie.suivante': 'Next question',
     'saisie.envoyer': 'Send',
