@@ -24,6 +24,8 @@ I18n.TEXTES.de = {
     'menu.apropos': 'Über',
     'menu.changer-cle': 'Schlüssel löschen und beenden',
     'historique.vide': 'Noch kein Gespräch.',
+    'historique.rechercher': 'Gespräch suchen',
+    'historique.aucune': 'Kein Gespräch gefunden.',
     'historique.supprimer': 'Löschen',
     'historique.supprimer-aria': 'Gespräch löschen: {titre}',
 

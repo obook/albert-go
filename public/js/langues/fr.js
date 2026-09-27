@@ -24,6 +24,8 @@ I18n.TEXTES.fr = {
     'menu.apropos': 'À propos',
     'menu.changer-cle': 'Effacer la clé et quitter',
     'historique.vide': 'Aucune conversation pour l\'instant.',
+    'historique.rechercher': 'Rechercher une conversation',
+    'historique.aucune': 'Aucune conversation trouvée.',
     'historique.supprimer': 'Supprimer',
     'historique.supprimer-aria': 'Supprimer la conversation : {titre}',
 

@@ -1,6 +1,6 @@
 /*
  * historique.test.js
- * Tests de public/js/historique.js : écriture des conversations et quota plein.
+ * Tests de public/js/historique.js : écriture, quota plein et recherche.
  *
  * Lancement : node --test
  *
@@ -31,7 +31,7 @@ global.stockage = () => ({
     removeItem: (nom) => { delete faux.valeurs[nom]; }
 });
 
-const { ecrireConversations } = require('../public/js/historique.js');
+const { ecrireConversations, filtrerConversations } = require('../public/js/historique.js');
 
 /** Remet le faux stockage à neuf entre deux tests. */
 function neuf(refuser, erreur) {
@@ -63,4 +63,22 @@ test('ecrireConversations : une autre erreur remonte telle quelle', () => {
     /* Navigation privée : le stockage refuse tout, ce n'est pas un quota. */
     neuf(1, 'SecurityError');
     assert.throws(() => ecrireConversations(trois), { name: 'SecurityError' });
+});
+
+const archives = [
+    { id: 'a', titre: 'Recette de crêpes', messages: [{ role: 'user', content: 'Recette de crêpes' }] },
+    { id: 'b', titre: 'Pièce jointe', messages: [{ role: 'user', content: '...', affiche: 'Résume ce PDF' }, { role: 'assistant', content: 'Le rapport parle d\'Élysée.' }] }
+];
+
+test('filtrerConversations : sans texte, tout revient', () => {
+    assert.deepStrictEqual(filtrerConversations(archives, '  '), archives);
+});
+
+test('filtrerConversations : ni majuscules ni accents ne comptent', () => {
+    assert.deepStrictEqual(filtrerConversations(archives, 'CREPES').map(c => c.id), ['a']);
+});
+
+test('filtrerConversations : cherche aussi dans les messages', () => {
+    assert.deepStrictEqual(filtrerConversations(archives, 'elysee').map(c => c.id), ['b']);
+    assert.deepStrictEqual(filtrerConversations(archives, 'résume').map(c => c.id), ['b']);
 });

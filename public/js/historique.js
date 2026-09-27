@@ -270,12 +270,41 @@ function armerAppuiLong(element, action) {
     });
 }
 
+/** Minuscules sans accents : "Élysée" et "elysee" se valent. */
+function sansAccents(texte) {
+    return texte.normalize('NFD').replace(/\p{M}/gu, '').toLowerCase();
+}
+
 /**
- * Remplit la liste des conversations dans le menu.
+ * Conversations dont le titre ou un message contient le texte cherché.
+ *
+ * @param {Object[]} liste - Conversations enregistrées.
+ * @param {string} texte - Texte saisi dans la recherche.
+ * @returns {Object[]} Conversations trouvées, dans le même ordre.
+ */
+function filtrerConversations(liste, texte) {
+    const cherche = sansAccents(texte.trim());
+    if (!cherche) {
+        return liste;
+    }
+    return liste.filter(c => [c.titre, ...c.messages.map(m => m.affiche || m.content)]
+        .some(x => typeof x === 'string' && sansAccents(x).includes(cherche)));
+}
+
+/**
+ * Remplit la liste des conversations dans le menu, filtrée par la recherche.
  */
 function afficherHistorique() {
-    $('liste-historique').replaceChildren(...conversations.map(ligneHistorique));
-    $('historique-vide').hidden = conversations.length > 0;
+    const trouvees = filtrerConversations(conversations, $('recherche-historique').value);
+    $('liste-historique').replaceChildren(...trouvees.map(ligneHistorique));
+    $('recherche-historique').hidden = conversations.length === 0;
+    $('historique-vide').hidden = trouvees.length > 0;
+    $('historique-vide').textContent = t(conversations.length > 0 ? 'historique.aucune' : 'historique.vide');
+}
+
+/* Sauté sous Node. */
+if (typeof document !== 'undefined') {
+    $('recherche-historique').addEventListener('input', afficherHistorique);
 }
 
 /**
@@ -314,5 +343,5 @@ function ligneHistorique(entree) {
 
 /* Export pour les tests Node ; ignoré dans le navigateur. */
 if (typeof module !== 'undefined') {
-    module.exports = { ecrireConversations: ecrireConversations };
+    module.exports = { ecrireConversations: ecrireConversations, filtrerConversations: filtrerConversations };
 }
