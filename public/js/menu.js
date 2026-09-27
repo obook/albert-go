@@ -42,12 +42,14 @@ function afficherTheme() {
 }
 
 $('ouvrir-menu').addEventListener('click', () => {
-    /* Grand écran : le bouton replie ou déplie la colonne. */
+    /* Grand écran : le bouton replie ou déplie la colonne, et s'en souvient. */
     if (GRAND_ECRAN.matches) {
         if ($('menu').open) {
             $('menu').close();
+            ecrire('volet', 'replie');
         } else {
             montrerVolet();
+            ecrire('volet', null);
         }
         return;
     }
@@ -95,7 +97,7 @@ function placerVolet() {
     if ($('menu').open) {
         $('menu').close();
     }
-    if (GRAND_ECRAN.matches) {
+    if (GRAND_ECRAN.matches && lire('volet', null) !== 'replie') {
         montrerVolet();
     }
 }
