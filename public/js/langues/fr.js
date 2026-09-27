@@ -104,7 +104,6 @@ I18n.TEXTES.fr = {
     'chat.aria': 'Conversation',
     'saisie.label': 'Votre question',
     'saisie.joindre': 'Joindre une image, un document ou un fichier texte',
-    'saisie.joindre-court': 'Joindre un fichier',
     'saisie.precedente': 'Question précédente',
     'saisie.suivante': 'Question suivante',
     'saisie.envoyer': 'Envoyer',
