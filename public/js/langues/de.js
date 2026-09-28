@@ -75,7 +75,7 @@ I18n.TEXTES.de = {
 
     /* Schlüsselbildschirm. */
     'cle.intro': 'Die KI des französischen Staates zum Chatten, Korrigieren, Umformulieren, Übersetzen und Schreiben.',
-    'cle.etape-acces': 'Noch kein Zugang?',
+    'cle.etape-acces': 'Zugang',
     'cle.exemple': 'sk-...',
     'cle.souvenir': 'Im Browser behalten, jederzeit löschbar',
     'cle.ou-va': 'Wohin geht mein Schlüssel?',
@@ -99,7 +99,8 @@ I18n.TEXTES.de = {
     'cle.titre': 'Willkommen bei Albert Go',
     'cle.label': 'Schlüssel',
     'cle.stockee': '<ul><li>Standardmäßig wird er beim Schließen des Tabs gelöscht.</li><li>Wenn Sie "Im Browser behalten" aktivieren, bleibt er im Speicher <code>localStorage</code> des Browsers, bis Sie im Menü "Schlüssel löschen und beenden" wählen.</li><li>Er verlässt diesen Browser nur, um Albert zu erreichen, über das <a href="https://n8n.incubateur.education.gouv.fr" target="_blank" rel="noopener noreferrer">interministerielle n8n-Relais</a> des Staates, das ihn nicht speichert.</li></ul>',
-    'cle.demander': '<a href="https://albert.sites.beta.gouv.fr/access/" target="_blank" rel="noopener noreferrer">Zugang zu Albert beantragen</a>, nur für Beschäftigte im öffentlichen Dienst.',
+    'cle.demander': 'Beantragen',
+    'cle.reserve': 'nur für Beschäftigte im öffentlichen Dienst',
     'cle.verification': 'Schlüssel wird geprüft...',
 
     /* Eingabe. */
