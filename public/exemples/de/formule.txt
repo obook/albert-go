@@ -1,0 +1,9 @@
+Gib die Formel für den Flächeninhalt eines Kreises und ein Beispiel mit r = 3 cm an.
+
+Gib die Formel des Satzes des Pythagoras und ein Beispiel an.
+
+Gib die Formel für das Volumen einer Kugel und ein Beispiel mit r = 5 cm an.
+
+Gib die Formel für Zinseszinsen und ein Beispiel über 5 Jahre zu 3 % an.
+
+Gib die Formel für die Lösungen einer quadratischen Gleichung und ein Beispiel an.

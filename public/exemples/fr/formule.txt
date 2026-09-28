@@ -1,0 +1,9 @@
+Donne la formule de l'aire d'un disque et un exemple avec r = 3 cm.
+
+Donne la formule du théorème de Pythagore et un exemple.
+
+Donne la formule du volume d'une sphère et un exemple avec r = 5 cm.
+
+Donne la formule des intérêts composés et un exemple sur 5 ans à 3 %.
+
+Donne la formule des solutions d'une équation du second degré et un exemple.

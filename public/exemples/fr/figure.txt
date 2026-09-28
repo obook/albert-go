@@ -1,0 +1,9 @@
+Dessine un triangle rectangle de côtés 3, 4 et 5 cm.
+
+Dessine un cercle de rayon 3 cm avec son centre, un rayon et un diamètre.
+
+Dessine un carré et ses deux diagonales.
+
+Dessine un hexagone régulier inscrit dans un cercle.
+
+Dessine la courbe de la fonction carré entre -3 et 3.

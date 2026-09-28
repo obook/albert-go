@@ -1,0 +1,9 @@
+Dibuja un triángulo rectángulo de lados 3, 4 y 5 cm.
+
+Dibuja un círculo de radio 3 cm con su centro, un radio y un diámetro.
+
+Dibuja un cuadrado y sus dos diagonales.
+
+Dibuja un hexágono regular inscrito en un círculo.
+
+Dibuja la curva de la función cuadrado entre -3 y 3.

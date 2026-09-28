@@ -196,19 +196,69 @@ function exempleCalcul() {
         { a: dividende, b: diviseur });
 }
 
+/**
+ * Entrées d'un cinéma tirées au hasard, mais vraisemblables : creux le lundi,
+ * pics le mercredi (sortie des films) et le samedi.
+ *
+ * @returns {string} Par exemple "... : lundi 85, mardi 120, mercredi 240, jeudi 110, vendredi 150, samedi 310."
+ */
+function exempleGraphique() {
+    const base = 60 + Math.floor(Math.random() * 61);
+    const poids = { lun: 1, mar: 1.4, mer: 2.6, jeu: 1.3, ven: 1.7, sam: 3.2 };
+    const visiteurs = {};
+    for (const [jour, p] of Object.entries(poids)) {
+        visiteurs[jour] = Math.round(base * p * (0.85 + Math.random() * 0.3));
+    }
+    return t('bienvenue.exemple-graphique', visiteurs);
+}
+
+/** Exemples tirés au hasard à chaque clic. */
+const EXEMPLES_ALEATOIRES = {
+    'bienvenue.exemple-calcul': exempleCalcul,
+    'bienvenue.exemple-graphique': exempleGraphique
+};
+
+/** Variantes lues dans public/exemples (promesses, par fichier), et dernière proposée. */
+const exemplesLus = {};
+const dernierExemple = {};
+
+/**
+ * Exemple tiré dans exemples/<langue>/<nom>.txt, jamais deux fois de suite le même.
+ * Fichier absent ou illisible : l'exemple des fichiers de langue.
+ *
+ * @param {string} cle - Clé de l'exemple, "bienvenue.exemple-corriger" par exemple.
+ * @param {string} langue - Code de langue du fichier.
+ * @returns {Promise<string>} Texte à mettre dans la saisie.
+ */
+async function exempleFichier(cle, langue) {
+    const chemin = 'exemples/' + langue + '/' + cle.replace('bienvenue.exemple-', '') + '.txt';
+    if (!exemplesLus[chemin]) {
+        exemplesLus[chemin] = fetch(chemin)
+            .then(res => (res.ok ? res.text() : ''))
+            .then(texte => Albert.variantes(texte))
+            .catch(() => []);
+    }
+    const liste = await exemplesLus[chemin];
+    if (!liste.length) {
+        return I18n.TEXTES[langue][cle];
+    }
+    dernierExemple[chemin] = Albert.autreVariante(liste, dernierExemple[chemin]);
+    return dernierExemple[chemin];
+}
+
 /* Suggestions du chat vide : ouvrir le module s'il y en a un, puis préremplir un exemple. */
 for (const bouton of document.querySelectorAll('.suggestion')) {
-    bouton.addEventListener('click', () => {
+    bouton.addEventListener('click', async () => {
         if (bouton.dataset.module) {
             choisirOutil(bouton.dataset.module);
         }
         const champ = $(outilActuel === 'rediger' ? 'notes' : 'saisie');
-        champ.value = bouton.dataset.exemple === 'bienvenue.exemple-calcul' ? exempleCalcul() : t(bouton.dataset.exemple);
+        const cle = bouton.dataset.exemple;
         /* Traduire vers la langue de l'interface : l'exemple est pris dans une autre langue. */
-        if (outilActuel === 'traduire' && langueCible === I18n.langue) {
-            const autre = langueCible === 'en' ? 'fr' : 'en';
-            champ.value = I18n.TEXTES[autre][bouton.dataset.exemple];
-        }
+        const autreLangue = outilActuel === 'traduire' && langueCible === I18n.langue;
+        const aleatoire = !autreLangue && EXEMPLES_ALEATOIRES[cle];
+        champ.value = aleatoire ? aleatoire()
+            : await exempleFichier(cle, autreLangue ? (langueCible === 'en' ? 'fr' : 'en') : I18n.langue);
         /* "Faire une recherche" allume le globe pour cette question, s'il ne l'est pas déjà. */
         if (bouton.dataset.recherche !== undefined && !reglages.recherche && !rechercheUneFois) {
             $('recherche-web').click();

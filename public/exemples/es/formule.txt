@@ -1,0 +1,9 @@
+Da la fórmula del área de un círculo y un ejemplo con r = 3 cm.
+
+Da la fórmula del teorema de Pitágoras y un ejemplo.
+
+Da la fórmula del volumen de una esfera y un ejemplo con r = 5 cm.
+
+Da la fórmula del interés compuesto y un ejemplo a 5 años al 3 %.
+
+Da la fórmula de las soluciones de una ecuación de segundo grado y un ejemplo.

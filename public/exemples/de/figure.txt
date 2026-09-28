@@ -1,0 +1,9 @@
+Zeichne ein rechtwinkliges Dreieck mit den Seiten 3, 4 und 5 cm.
+
+Zeichne einen Kreis mit dem Radius 3 cm, mit Mittelpunkt, einem Radius und einem Durchmesser.
+
+Zeichne ein Quadrat und seine beiden Diagonalen.
+
+Zeichne ein regelmäßiges Sechseck, das einem Kreis einbeschrieben ist.
+
+Zeichne den Graphen der Quadratfunktion zwischen -3 und 3.
