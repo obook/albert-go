@@ -38,24 +38,6 @@ function langueLue(nom, secours) {
 let langueSource = langueLue('langue-source', Albert.LANGUE_AUTO);
 let langueCible = langueLue('langue-cible', I18n.langue === 'fr' ? 'en' : 'fr');
 
-/**
- * Nom du module, première lettre en rouge comme le "t" de la marque.
- *
- * Les outils se présentent comme une gamme : les noms module.* sont
- * courts, pour tenir sur une ligne d'en-tête de téléphone, là où outil.*
- * garde les verbes complets pour l'historique et les messages d'erreur.
- *
- * @param {string} outil - Clé de Albert.OUTILS.
- * @returns {Node[]} Initiale rouge puis reste du nom, pour replaceChildren.
- */
-function nomModule(outil) {
-    const nom = t('module.' + outil);
-    const initiale = document.createElement('span');
-    initiale.className = 'rouge';
-    initiale.textContent = nom[0];
-    return [initiale, document.createTextNode(nom.slice(1))];
-}
-
 /** Consignes déjà lues, par langue et par outil. */
 const consignesLues = {};
 
@@ -137,9 +119,13 @@ function afficherOutil() {
         } else {
             bouton.removeAttribute('aria-current');
         }
-        bouton.querySelector('span')?.replaceChildren(...nomModule(bouton.dataset.outil));
+        /* Noms courts (module.*), pour tenir sur une ligne d'en-tête de téléphone. */
+        const nom = bouton.querySelector('span');
+        if (nom) {
+            nom.textContent = t('module.' + bouton.dataset.outil);
+        }
     }
-    $('outil-actif').replaceChildren(...nomModule(outilActuel));
+    $('outil-actif').textContent = t('module.' + outilActuel);
     $('saisie').placeholder = t('invite.' + outilActuel);
     $('langues').hidden = outilActuel !== 'traduire';
     /* Le CSS n'affiche la bienvenue que dans Chat. */
