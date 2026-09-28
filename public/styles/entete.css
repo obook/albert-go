@@ -126,8 +126,8 @@
     text-align: left;
     cursor: pointer;
 }
-.langues-choix button:hover { background: var(--bleu-clair); }
-.langues-choix button[aria-current="true"] { color: var(--bleu); font-weight: 700; }
+.langues-choix button:hover { background: var(--bulle); }
+.langues-choix button[aria-current="true"] { font-weight: 700; }
 
 /*
 Traduire : carte des langues sous l'en-tête, fixe pendant le défilement.
