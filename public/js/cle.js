@@ -52,14 +52,16 @@ async function validerCle() {
     texte.className = 'visuellement-cache';
     texte.textContent = t('cle.acceptee');
     $('etat-cle').replaceChildren(coche, texte);
-    $('commencer').disabled = false;
+    $('commencer').setAttribute('aria-disabled', 'false');
 }
 
 /**
  * Enregistre la clé acceptée et ouvre le chat.
  */
 function commencer() {
+    /* aria-disabled et non disabled : un toucher sur téléphone doit pouvoir dire pourquoi. */
     if (!cleAcceptee) {
+        toast(t('toast.cle-d-abord'));
         return;
     }
     /* Cible pleine : le réglage n'a pas bougé, la case doit le dire. */
@@ -70,7 +72,7 @@ function commencer() {
     reglages.cle = cleAcceptee;
     cleAcceptee = null;
     /* L'accueil revient ainsi à zéro si on quitte plus tard. */
-    $('commencer').disabled = true;
+    $('commencer').setAttribute('aria-disabled', 'true');
     $('etat-cle').textContent = '';
     ecrire('cle', reglages.cle);
     afficherReglages();
