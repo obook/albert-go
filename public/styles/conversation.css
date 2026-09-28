@@ -37,7 +37,7 @@ main {
 .accueil .interrupteur { margin-top: 0; font-weight: 400; }
 .accueil h2, .accueil p { margin-bottom: 0; }
 
-/* Deux étapes numérotées : pastille bleue, texte à droite. */
+/* Trois étapes numérotées : pastille grise, texte à droite. */
 .accueil .etapes {
     list-style: none;
     counter-reset: etape;
@@ -62,9 +62,8 @@ main {
     display: grid;
     place-items: center;
     border-radius: 50%;
-    background: var(--bleu);
-    color: var(--sur-bleu);
-    font-weight: 700;
+    background: var(--bulle);
+    color: var(--texte);
     font-size: 0.875rem;
 }
 /* Les trois étapes sur le même modèle : une ligne de même hauteur, pastille centrée,
@@ -79,12 +78,31 @@ main {
 .accueil .etapes > li::before { top: 50%; transform: translateY(-50%); }
 .accueil .etat-cle { color: var(--succes); font-weight: 700; font-size: 0.9375rem; }
 .accueil .etat-cle:empty { display: none; }
-/* Bouton compact : il ne doit pas écraser le mot "Clé" à côté. */
+/* Bouton compact : il ne doit pas écraser le mot "Clé" à côté.
+   Boutons couleur du texte : noirs en clair, clairs en sombre. */
 .accueil .etapes .bouton-principal {
     width: auto;
     margin: 0;
     padding: 0.25rem 1rem;
+    border-color: var(--texte);
+    background: var(--texte);
+    color: var(--surface);
     font-size: 0.9375rem;
+}
+/* Étape 1 : la demande d'accès en bouton au trait, moins appuyé que "Saisir", même hauteur. */
+.accueil .bouton-contour {
+    padding: 0.25rem 1rem;
+    border: 1px solid var(--texte);
+    border-radius: 0.25rem;
+    color: var(--texte);
+    font-size: 0.9375rem;
+    text-decoration: none;
+}
+.accueil .bouton-contour:hover { background: var(--bulle); }
+/* :focus aussi : sinon le bleu de Pico revient sur "Saisir", qui a le focus à l'ouverture. */
+.accueil .etapes .bouton-principal:is(:hover, :focus):not(:disabled) {
+    border-color: var(--texte-doux);
+    background: var(--texte-doux);
 }
 /* "Commencer" inactif : gris franc plutôt que le bleu pâli de Pico. */
 .accueil .etapes .bouton-principal:disabled {
