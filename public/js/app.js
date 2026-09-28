@@ -208,9 +208,6 @@ async function envoyer() {
         if (conversation === courante) {
             recevoirReponse(reponse, outil);
         }
-        /* Le globe ne valait que pour cette question ; après un échec, il reste pour la reposer. */
-        rechercheUneFois = false;
-        afficherRecherche();
     } catch (err) {
         retirerAttente();
         if (conversation === courante) {
@@ -246,15 +243,13 @@ function nouvelleConversation() {
 }
 
 /**
- * Saisie vide et globe éteint : une conversation neuve ou rouverte part sans question en attente.
+ * Saisie vide : une conversation neuve ou rouverte part sans question en attente.
  * Pas dans nouvelleConversation : en changeant de module, la saisie suit.
  */
 function viderSaisie() {
     $('saisie').value = '';
     position = -1;
     brouillon = '';
-    rechercheUneFois = false;
-    afficherRecherche();
 }
 
 /**

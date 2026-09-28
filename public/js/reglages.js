@@ -202,20 +202,20 @@ $('cx-recherche').addEventListener('change', () => {
     ecrire('cx', reglages.cx);
 });
 
-/** Recherche demandée au globe pour la prochaine question seulement (app.js la remet à false). */
-let rechercheUneFois = false;
+/** Globe activé : les questions ont Internet jusqu'à ce qu'on le désactive. */
+let globeActif = false;
 
-/* Réglages autorise la recherche ; le globe s'en sert, question par question.
+/* Réglages autorise la recherche, le globe l'active.
    Sans autorisation, ni globe ni suggestion "Faire une recherche" ; choix du
    moteur et clés fermés et grisés. Le globe n'existe que dans Discussion. */
 function afficherRecherche() {
     if (!reglages.recherche) {
-        rechercheUneFois = false;
+        globeActif = false;
     }
     /* Premier appel avant modules.js, qui déclare outilActuel : la barre suit au démarrage. */
     const discussion = typeof outilActuel === 'undefined' || outilActuel === 'discuter';
     $('recherche-web').hidden = !reglages.recherche || !discussion;
-    $('recherche-web').setAttribute('aria-pressed', String(rechercheUneFois));
+    $('recherche-web').setAttribute('aria-pressed', String(globeActif));
     for (const suggestion of document.querySelectorAll('.suggestion[data-recherche]')) {
         suggestion.hidden = !reglages.recherche;
     }
@@ -230,16 +230,16 @@ afficherRecherche();
 $('recherche-reglage').addEventListener('change', () => {
     reglages.recherche = $('recherche-reglage').checked;
     ecrire('recherche', reglages.recherche ? 'oui' : 'non');
-    /* Recherche tout juste activée : on veut s'en servir, le globe est allumé au retour. */
-    rechercheUneFois = reglages.recherche;
+    /* Recherche tout juste autorisée : on veut s'en servir, le globe est activé au retour. */
+    globeActif = reglages.recherche;
     afficherRecherche();
 });
 
-/* Le globe demande Internet (recherche et images) pour la prochaine question. */
+/* Le globe active ou désactive Internet (recherche et images). */
 $('recherche-web').addEventListener('click', () => {
-    rechercheUneFois = !rechercheUneFois;
+    globeActif = !globeActif;
     afficherRecherche();
-    toast(t(rechercheUneFois ? 'toast.recherche-activee' : 'toast.recherche-desactivee'));
+    toast(t(globeActif ? 'toast.recherche-activee' : 'toast.recherche-desactivee'));
 });
 
 /* Chaque moteur a sa clé : on efface celle de l'autre en changeant. */

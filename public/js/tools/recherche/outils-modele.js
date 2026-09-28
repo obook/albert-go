@@ -116,7 +116,7 @@ function avecRappel(messages, cherche) {
         : t('recherche.source-web');
     /* Sans ces rappels, une photo demandée partait en recherche web. */
     const rappel = [cherche ? t('recherche.rappel', { source: source }) : '',
-        t(reglages.recherche && rechercheUneFois ? 'images.rappel' : 'images.absent'),
+        t(reglages.recherche && globeActif ? 'images.rappel' : 'images.absent'),
         /* Sans lui, le modèle reprenait une heure déjà donnée et se trompait de jour. */
         reglages.calendrier ? t('calendrier.rappel') : ''].filter(Boolean).join('\n');
     if (messages[0] && messages[0].role === 'system') {
@@ -156,9 +156,9 @@ function avecDate(messages) {
  * @returns {Promise<Object>} Réponse d'Albert.repondre.
  */
 async function repondreAvecOutils(cle, requete, signal) {
-    /* Internet autorisé dans Réglages, et demandé au globe pour cette question :
+    /* Internet autorisé dans Réglages et globe activé :
        recherche (si le moteur a sa clé) et images Wikimedia. */
-    const internet = reglages.recherche && rechercheUneFois;
+    const internet = reglages.recherche && globeActif;
     const cherche = internet && (Recherche.sansCle(reglages.fournisseur) || Boolean(reglages.cleRecherche));
     const outils = Object.keys(OUTILS_LOCAUX).filter(nom => reglages[nom]).map(nom => OUTILS_LOCAUX[nom].outil());
     if (internet) {
