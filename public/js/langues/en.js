@@ -105,7 +105,7 @@ I18n.TEXTES.en = {
     /* Input. */
     'chat.aria': 'Conversation',
     'saisie.label': 'Your question',
-    'saisie.joindre': 'Attach an image, a document or a text file',
+    'saisie.joindre': 'Attach an image, an audio recording, a document or a text file',
     'saisie.precedente': 'Previous question',
     'saisie.suivante': 'Next question',
     'saisie.envoyer': 'Send',
@@ -282,6 +282,7 @@ I18n.TEXTES.en = {
     'etat.annulee': 'Question cancelled.',
     'etat.attendre-lecture': 'Wait until the file has been read.',
     'etat.lecture-image': 'Albert is reading the image...',
+    'etat.lecture-audio': 'Albert is transcribing the recording...',
     'etat.recherche': 'Searching for "{mots}"...',
 
     /* Errors. */
@@ -294,12 +295,15 @@ I18n.TEXTES.en = {
     'erreur.timeout': 'Albert is not answering. Try again.',
     'erreur.origine': 'The n8n relay will not accept the address {origine}. Open ',
     'erreur.consigne': 'The system prompt of the {outil} tool is missing.',
-    'erreur.format': 'Format not supported: images, PDF, .docx, .odt and text files only.',
+    'erreur.format': 'Format not supported: images, audio, PDF, .docx, .odt and text files only.',
     'erreur.fichier-long': 'File too long: 200 kB at most.',
     'erreur.document-lourd': 'Document too large: 20 MB at most.',
     'erreur.document-long': 'Document too long: 200,000 characters of text at most.',
     'erreur.document-vide': 'This document contains no text. Attach a scanned PDF as an image.',
     'erreur.document-illisible': 'Unreadable document.',
+    'erreur.audio-long': 'Recording too long: about 8 minutes at most.',
+    'erreur.audio-vide': 'No speech heard in this recording.',
+    'erreur.audio-illisible': 'Unreadable recording.',
     'erreur.hors-cadre': 'Open Albert Go in its own tab',
 
     /* Text sent to the model. */

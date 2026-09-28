@@ -105,7 +105,7 @@ I18n.TEXTES.fr = {
     /* Saisie. */
     'chat.aria': 'Conversation',
     'saisie.label': 'Votre question',
-    'saisie.joindre': 'Joindre une image, un document ou un fichier texte',
+    'saisie.joindre': 'Joindre une image, un enregistrement audio, un document ou un fichier texte',
     'saisie.precedente': 'Question précédente',
     'saisie.suivante': 'Question suivante',
     'saisie.envoyer': 'Envoyer',
@@ -282,6 +282,7 @@ I18n.TEXTES.fr = {
     'etat.annulee': 'Question annulée.',
     'etat.attendre-lecture': 'Attendez la fin de la lecture du fichier.',
     'etat.lecture-image': 'Lecture de l\'image par Albert...',
+    'etat.lecture-audio': 'Transcription de l\'enregistrement par Albert...',
     'etat.recherche': 'Recherche de « {mots} »...',
 
     /* Erreurs. */
@@ -294,12 +295,15 @@ I18n.TEXTES.fr = {
     'erreur.timeout': 'Albert ne répond pas. Réessayez.',
     'erreur.origine': 'Le relais n8n n\'acceptera pas l\'adresse {origine}. Ouvrez ',
     'erreur.consigne': 'Consigne de l\'outil {outil} introuvable.',
-    'erreur.format': 'Format non pris en charge : images, PDF, .docx, .odt et fichiers texte uniquement.',
+    'erreur.format': 'Format non pris en charge : images, audio, PDF, .docx, .odt et fichiers texte uniquement.',
     'erreur.fichier-long': 'Fichier trop long : 200 Ko au plus.',
     'erreur.document-lourd': 'Document trop lourd : 20 Mo au plus.',
     'erreur.document-long': 'Document trop long : 200 000 caractères de texte au plus.',
     'erreur.document-vide': 'Aucun texte dans ce document. Un PDF scanné se joint comme image.',
     'erreur.document-illisible': 'Document illisible.',
+    'erreur.audio-long': 'Enregistrement trop long : environ 8 minutes au plus.',
+    'erreur.audio-vide': 'Aucune parole entendue dans cet enregistrement.',
+    'erreur.audio-illisible': 'Enregistrement illisible.',
     'erreur.hors-cadre': 'Ouvrir Albert Go dans son propre onglet',
 
     /* Textes envoyés au modèle. */

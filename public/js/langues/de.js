@@ -105,7 +105,7 @@ I18n.TEXTES.de = {
     /* Eingabe. */
     'chat.aria': 'Gespräch',
     'saisie.label': 'Ihre Frage',
-    'saisie.joindre': 'Ein Bild, ein Dokument oder eine Textdatei anhängen',
+    'saisie.joindre': 'Ein Bild, eine Audioaufnahme, ein Dokument oder eine Textdatei anhängen',
     'saisie.precedente': 'Vorherige Frage',
     'saisie.suivante': 'Nächste Frage',
     'saisie.envoyer': 'Senden',
@@ -282,6 +282,7 @@ I18n.TEXTES.de = {
     'etat.annulee': 'Frage abgebrochen.',
     'etat.attendre-lecture': 'Warten Sie, bis die Datei gelesen ist.',
     'etat.lecture-image': 'Albert liest das Bild...',
+    'etat.lecture-audio': 'Albert transkribiert die Aufnahme...',
     'etat.recherche': 'Suche nach "{mots}"...',
 
     /* Fehler. */
@@ -294,12 +295,15 @@ I18n.TEXTES.de = {
     'erreur.timeout': 'Albert antwortet nicht. Versuchen Sie es erneut.',
     'erreur.origine': 'Das n8n-Relais akzeptiert die Adresse {origine} nicht. Öffnen Sie ',
     'erreur.consigne': 'Die Systemanweisung des Werkzeugs {outil} fehlt.',
-    'erreur.format': 'Format nicht unterstützt: nur Bilder, PDF, .docx, .odt und Textdateien.',
+    'erreur.format': 'Format nicht unterstützt: nur Bilder, Audio, PDF, .docx, .odt und Textdateien.',
     'erreur.fichier-long': 'Datei zu lang: höchstens 200 kB.',
     'erreur.document-lourd': 'Dokument zu groß: höchstens 20 MB.',
     'erreur.document-long': 'Dokument zu lang: höchstens 200.000 Zeichen Text.',
     'erreur.document-vide': 'Dieses Dokument enthält keinen Text. Ein gescanntes PDF als Bild anhängen.',
     'erreur.document-illisible': 'Dokument nicht lesbar.',
+    'erreur.audio-long': 'Aufnahme zu lang: höchstens etwa 8 Minuten.',
+    'erreur.audio-vide': 'In dieser Aufnahme ist keine Sprache zu hören.',
+    'erreur.audio-illisible': 'Aufnahme nicht lesbar.',
     'erreur.hors-cadre': 'Albert Go in einem eigenen Tab öffnen',
 
     /* An das Modell gesendete Texte. */
