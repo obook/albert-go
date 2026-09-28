@@ -113,7 +113,8 @@ label.interrupteur {
 .partage .qr {
     justify-self: center;
     width: 15rem;
-    height: 15rem;
+    /* auto : la largeur rétrécit si le texte est agrandi, la hauteur suit. */
+    height: auto;
     background: #ffffff;
     image-rendering: pixelated;
 }
