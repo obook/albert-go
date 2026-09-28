@@ -423,9 +423,11 @@ const OUTILS_LOCAUX = {
                     .map((g, i) => t('tirage.groupe', { numero: i + 1, membres: g.join(', ') })).join(' ; ');
             }
             const ordre = Tirage.melanger(elements);
+            /* Sans nombre, le premier tiré est nommé : le modèle oublie souvent
+               nombre pour "un nom parmi", et répondait par toute la liste. */
             return a.nombre > 0
                 ? t('tirage.tires', { liste: ordre.slice(0, a.nombre).join(', ') })
-                : t('tirage.ordre', { liste: ordre.join(', ') });
+                : t('tirage.ordre', { liste: ordre.join(', '), premier: ordre[0] });
         }
     },
     calendrier: {

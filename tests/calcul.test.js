@@ -77,6 +77,16 @@ test('tirage : tout le monde une fois, groupes égaux à un près', () => {
     assert.deepStrictEqual(groupes.flat().sort(), noms);
 });
 
+test('tirage : sans nombre, la liste mélangée nomme le premier tiré', () => {
+    const animaux = ['chat', 'chien', 'lapin', 'cheval', 'tortue'];
+    const ligne = OUTILS_LOCAUX.tirage.executer({ elements: animaux });
+    const ordre = ligne.match(/^Ordre : (.*) \(premier tiré : (\w+)\)$/);
+    assert.ok(ordre, ligne);
+    assert.deepStrictEqual(ordre[1].split(', ').sort(), [...animaux].sort());
+    assert.strictEqual(ordre[2], ordre[1].split(', ')[0]);
+    assert.match(OUTILS_LOCAUX.tirage.executer({ elements: animaux, nombre: 1 }), /^Tirés : \w+$/);
+});
+
 test('statistiques : médiane, quartiles du lycée, série invalide', () => {
     const s = Statistiques.calculer(['12', '8', '15,5', 10, 9, 14, 11, 13]);
     assert.strictEqual(s.effectif, 8);
