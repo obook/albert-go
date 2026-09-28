@@ -177,6 +177,13 @@ Object.assign(Rendu, {
         if (!svg) {
             return;
         }
+        /* Mermaid : réduit à la largeur de la bulle, mais pas sous les trois quarts
+           de sa taille (texte à 12 px) ; au-delà, le cadre défile. */
+        const largeur = Number((svg.getAttribute('viewBox') || '').split(/[\s,]+/)[2]);
+        if (svg.id.startsWith('mermaid-') && largeur > 0) {
+            svg.style.minWidth = Math.ceil(largeur * 0.75) + 'px';
+            svg.classList.add('taille-propre');
+        }
         const conteneur = document.createElement('div');
         conteneur.className = 'diagramme';
         /* Nom calculé au clic : la bulle de la question est alors dans le fil. */
