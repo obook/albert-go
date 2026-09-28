@@ -168,6 +168,8 @@ I18n.TEXTES.en = {
     'reglages.cx': 'Search engine ID',
     'reglages.aide-recherche': 'Internet tools may collect and use the data of the conversation. The texts they bring back are not checked.',
     'reglages.cle-note': 'A key is saved in this browser.',
+    'reglages.nom': 'App name',
+    'reglages.aide-nom': 'Up to 12 characters. The 1st letter is blue, the 6th red.',
     'reglages.conseilles': 'Recommended settings',
     'reglages.resume': '{modele}, temperature {temperature}\n{contexte}',
     'contexte.sans': 'No context',

@@ -55,7 +55,7 @@
         </button>
         <div class="titre">
             <!-- Le nom de l'outil actif suit la marque : afficherOutil le remplit. -->
-            <h1 class="marque">Alber<span class="rouge">t</span>&nbsp;Go<span class="outil-actif" id="outil-actif"></span></h1>
+            <h1 class="marque"><span class="bleu">A</span>lber<span class="rouge">t</span>&nbsp;Go<span class="outil-actif" id="outil-actif"></span></h1>
         </div>
     </header>
 
@@ -72,7 +72,7 @@
     <dialog id="menu" class="volet" aria-labelledby="titre-menu">
         <div class="volet-contenu">
             <div class="volet-titre">
-                <h2 id="titre-menu" class="marque">Alber<span class="rouge">t</span>&nbsp;Go</h2>
+                <h2 id="titre-menu" class="marque"><span class="bleu">A</span>lber<span class="rouge">t</span>&nbsp;Go</h2>
                 <!-- Même motif que le choix du modèle : un <details> qui se déplie, à droite du titre. -->
                 <details id="choix-langue" class="choix-langue">
                     <summary id="langue-choisie" data-t-attr="aria-label:langue.choisir;title:langue.choisir"></summary>
@@ -380,6 +380,19 @@
             <details class="carte" name="reglages">
                 <summary data-t="reglages.carte-application"></summary>
                 <div class="corps">
+                    <fieldset>
+                        <legend data-t="reglages.nom"></legend>
+                        <input type="text"
+                               id="nom-application"
+                               maxlength="12"
+                               placeholder="Albert Go"
+                               autocomplete="off"
+                               spellcheck="false"
+                               aria-describedby="aide-nom"
+                               data-t-attr="aria-label:reglages.nom">
+                        <p id="aide-nom" class="note" data-t="reglages.aide-nom"></p>
+                    </fieldset>
+
                     <fieldset>
                         <legend data-t="cle.label"></legend>
                         <p class="note" data-t="reglages.cle-note"></p>
