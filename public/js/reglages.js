@@ -154,12 +154,6 @@ for (const [nom, local] of Object.entries(OUTILS_LOCAUX)) {
 /* Même globe que sous une réponse qui a cherché sur le web. */
 $('recherche-reglage').insertAdjacentHTML('afterend', '<span class="icone-outil">' + ICONES.globe + '</span>');
 $('recherche-web').innerHTML = ICONES.globe;
-$('images-reglage').insertAdjacentHTML('afterend', '<span class="icone-outil">' + ICONES.image + '</span>');
-$('images-reglage').checked = reglages.images;
-$('images-reglage').addEventListener('change', () => {
-    reglages.images = $('images-reglage').checked;
-    ecrire('images', reglages.images ? 'oui' : 'non');
-});
 $('recherche-reglage').checked = reglages.recherche;
 $('cle-recherche').value = reglages.cleRecherche || '';
 
@@ -241,12 +235,11 @@ $('recherche-reglage').addEventListener('change', () => {
     afficherRecherche();
 });
 
-/* Le globe demande une recherche pour la prochaine question, et dit quel moteur servira. */
+/* Le globe demande Internet (recherche et images) pour la prochaine question. */
 $('recherche-web').addEventListener('click', () => {
     rechercheUneFois = !rechercheUneFois;
     afficherRecherche();
-    const nom = Recherche.MOTEURS[reglages.fournisseur].nom;
-    toast(t(rechercheUneFois ? 'toast.recherche-activee' : 'toast.recherche-desactivee', { nom: nom }));
+    toast(t(rechercheUneFois ? 'toast.recherche-activee' : 'toast.recherche-desactivee'));
 });
 
 /* Chaque moteur a sa clé : on efface celle de l'autre en changeant. */

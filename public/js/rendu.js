@@ -248,9 +248,10 @@ const Rendu = {
      *
      * @param {HTMLElement} element - Conteneur de la réponse.
      * @param {string} markdown - Texte de la réponse.
+     * @param {boolean} [images] - true si la réponse a cherché des images Commons.
      * @returns {Promise<void>} Terminée quand code et diagrammes sont prêts.
      */
-    async afficher(element, markdown) {
+    async afficher(element, markdown, images = false) {
         element.innerHTML = this.versHtml(markdown);
         renderMathInElement(element, {
             delimiters: [
@@ -263,7 +264,7 @@ const Rendu = {
         });
         /* Mesure au prochain dessin : une bulle rouverte n'est pas encore dans la page. */
         requestAnimationFrame(() => this.ajusterFormules(element));
-        await Promise.all([this.colorerCode(element), this.diagrammes(element), this.imagesCommons(element)]);
+        await Promise.all([this.colorerCode(element), this.diagrammes(element), this.imagesCommons(element, images)]);
         for (const pre of element.querySelectorAll('pre')) {
             const bloc = document.createElement('div');
             bloc.className = 'bloc-code';
