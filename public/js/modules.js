@@ -209,6 +209,10 @@ for (const bouton of document.querySelectorAll('.suggestion')) {
             const autre = langueCible === 'en' ? 'fr' : 'en';
             champ.value = I18n.TEXTES[autre][bouton.dataset.exemple];
         }
+        /* "Faire une recherche" allume le globe pour cette question, s'il ne l'est pas déjà. */
+        if (bouton.dataset.recherche !== undefined && !reglages.recherche && !rechercheUneFois) {
+            $('recherche-web').click();
+        }
         champ.focus();
         /* Rédiger propose son courrier à chaque frappe : l'exemple le déclenche tout de suite. */
         if (outilActuel === 'rediger') {
