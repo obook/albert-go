@@ -174,7 +174,7 @@ I18n.TEXTES.de = {
     'reglages.resume': '{modele}, Temperatur {temperature}\n{contexte}',
     'contexte.sans': 'Ohne Kontext',
     'contexte.complet': 'Voller Kontext',
-    'contexte.pourcent': 'Kontext {pourcent} %',
+    'contexte.pourcent': 'Voller Kontext ({pourcent} % belegt)',
     'partage.actif': 'Beim Schließen bleiben Schlüssel und Gespräche erhalten.',
     'partage.inactif': 'Beim Schließen werden Schlüssel und Gespräche gelöscht.',
     'reglages.memoire': 'Die ganze Unterhaltung an die KI senden.',

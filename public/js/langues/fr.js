@@ -174,7 +174,7 @@ I18n.TEXTES.fr = {
     'reglages.resume': '{modele}, température {temperature}\n{contexte}',
     'contexte.sans': 'Sans contexte',
     'contexte.complet': 'Contexte complet',
-    'contexte.pourcent': 'Contexte {pourcent} %',
+    'contexte.pourcent': 'Contexte complet ({pourcent} % utilisé)',
     'partage.actif': 'À la fermeture, la clé et les conversations seront conservées.',
     'partage.inactif': 'À la fermeture, la clé et les conversations seront effacées.',
     'reglages.memoire': 'Envoyer à l\'IA toute la conversation.',

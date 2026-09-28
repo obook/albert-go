@@ -126,10 +126,9 @@ async function demanderReponse(outil) {
 function recevoirReponse(reponse, outil) {
     /* Langue gardée pour la lecture à voix haute : la cible de Traduire, sinon celle du texte. */
     const langue = outil === 'traduire' ? langueCible : Albert.langueDuTexte(reponse.texte, I18n.langue);
-    conversation.push({ role: 'assistant', content: reponse.texte, langue: langue, recherches: reponse.recherches });
+    conversation.push({ role: 'assistant', content: reponse.texte, langue: langue, recherches: reponse.recherches, usage: reponse.usage });
     ajouter('assistant', reponse.texte, langue, true, reponse.recherches);
     sauverConversation();
-    dernierUsage = reponse.usage;
     afficherReglages();
     etat('');
 }
@@ -235,7 +234,6 @@ function nouvelleConversation() {
     conversation = [];
     conversationId = null;
     retenirCourante(null);
-    dernierUsage = null;
     afficherReglages();
     $('fil').replaceChildren();
     etat('');

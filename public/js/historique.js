@@ -158,6 +158,7 @@ function rouvrirConversation(entree) {
     conversation = entree.messages.slice();
     conversationId = entree.id;
     retenirCourante(conversationId);
+    afficherReglages();
     if (outilActuel === 'rediger') {
         rouvrirRedaction(conversation);
         return;
