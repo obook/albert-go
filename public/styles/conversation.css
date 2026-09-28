@@ -263,6 +263,8 @@ main {
     .accueil { margin-top: 1rem; padding: 1.25rem; }
     .fil .user { max-width: 90%; }
     main { padding: 1.5rem 0.75rem; }
+    /* Onze suggestions : en plus petit, elles tiennent sans faire défiler l'accueil. */
+    .suggestion { padding: 0.375rem 0.75rem; font-size: 0.8125rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {
