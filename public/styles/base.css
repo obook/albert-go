@@ -15,18 +15,25 @@
    Sans light-dark(), que Safari ne lit qu'à partir d'iOS 17.5. */
 :root {
     color-scheme: light;
-    --fond: #f6f6f6;
+    /* Gris légèrement bleutés, de la teinte du thème sombre. */
+    --fond: #f5f6f9;
     --surface: #ffffff;
     --texte: #161616;
     --texte-doux: #3a3a3a;
-    --bord: #dddddd;
+    --bord: #dde0e8;
     --bord-champ: #6a6a6a;
     --bleu: #000091;
     --bleu-survol: #1212ff;
     --sur-bleu: #ffffff;
     --bleu-clair: #e3e3fd;
+    /* Boutons de l'accueil : gris en clair, clairs en sombre. */
+    --bouton-fond: var(--bord);
+    --bouton-texte: var(--texte);
+    --bouton-survol: var(--bord-carte);
+    /* Pastilles 1, 2, 3 de l'accueil : cerclées de noir en clair seulement. */
+    --pastille-bord: var(--texte);
     /* Bulle de la question : gris, séparée du bleu des liens et titres. */
-    --bulle: #e5e5e5;
+    --bulle: #e6e8ef;
     --sur-bulle: #161616;
     --rouge: #e1000f;
     --erreur: #ce0500;
@@ -34,9 +41,9 @@
     --jaune-fond: #fef6e3;
     --jaune-bord: #b38b00;
     /* Réglages : cartes blanches sur fond gris en clair, inchangées en sombre. */
-    --fond-reglages: #e0e0e0;
+    --fond-reglages: #e1e4ec;
     --titre-carte: var(--surface);
-    --bord-carte: #c8c8c8;
+    --bord-carte: #c9cdd8;
     /* Grand écran : conversation et volet de fonds différents, comme L'Assistant. */
     --fond-conversation: var(--surface);
     --fond-volet: var(--fond);
@@ -60,6 +67,10 @@
         --bleu-survol: #a0a0ff;
         --sur-bleu: #161616;
         --bleu-clair: #353b52;
+    --bouton-fond: var(--texte);
+    --bouton-texte: var(--surface);
+    --bouton-survol: var(--texte-doux);
+    --pastille-bord: transparent;
         --bulle: #363b4c;
         --sur-bulle: #eeeeee;
         --rouge: #ff6b7a;
@@ -92,6 +103,10 @@
     --bleu-survol: #a0a0ff;
     --sur-bleu: #161616;
     --bleu-clair: #353b52;
+    --bouton-fond: var(--texte);
+    --bouton-texte: var(--surface);
+    --bouton-survol: var(--texte-doux);
+    --pastille-bord: transparent;
     --bulle: #363b4c;
     --sur-bulle: #eeeeee;
     --rouge: #ff6b7a;
