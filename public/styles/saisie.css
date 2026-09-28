@@ -196,8 +196,8 @@
     border-radius: 0.5rem;
     background: var(--texte);
     color: var(--fond);
-    /* Liseré couleur de page et ombre : le toast se détache aussi sur un schéma blanc en thème sombre. */
-    box-shadow: 0 0 0 2px var(--fond), 0 0.25rem 0.75rem rgb(0 0 0 / 0.3);
+    /* Thème sombre : liseré couleur de page, pour se détacher d'un schéma blanc. */
+    box-shadow: 0 0 0 2px light-dark(transparent, var(--fond)), 0 0.25rem 0.75rem rgb(0 0 0 / 0.3);
     font-size: 0.875rem;
     /* Caché au-dessus de la page, ombre comprise : il descend du haut, puis y remonte. */
     transform: translate(-50%, calc(-100% - var(--haut) - 1rem));
