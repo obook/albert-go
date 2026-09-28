@@ -212,6 +212,23 @@ large vient sans doute de la même valeur, lue par l'ancien 85vw. Non mesuré.
     overflow-y: auto;
 }
 .volet::backdrop { background: rgb(0 0 0 / 0.5); }
+/* Fermé, le volet reste affiché mais caché hors de l'écran : Firefox n'anime
+pas le display d'un dialog, sa fermeture n'aurait pas d'effet. Il quitte aussi
+le premier plan dès close(), d'où le z-index pendant qu'il glisse.
+visibility ne s'anime qu'à la fermeture : à l'ouverture, elle partirait de
+hidden et le focus (autofocus, bouton du volet) ne pourrait pas y entrer. */
+.volet { transition: transform 0.2s ease-out, overlay 0.2s allow-discrete; }
+.volet:not([open]) {
+    display: block;
+    visibility: hidden;
+    transform: translateX(-100%);
+    z-index: 1;
+    transition: transform 0.2s ease-out, visibility 0.2s, overlay 0.2s allow-discrete;
+}
+.volet::backdrop { transition: opacity 0.2s ease-out, overlay 0.2s allow-discrete; }
+.volet:not([open])::backdrop { opacity: 0; }
+@starting-style { .volet[open]::backdrop { opacity: 0; } }
+.sans-glisse, .sans-glisse > .volet { transition: none; }
 /* minmax(0, 1fr) : sans lui, un titre de conversation long élargit la
 colonne au-delà du volet et décale tout le menu vers la droite. */
 .volet-contenu {
@@ -354,7 +371,7 @@ input.recherche-historique {
 /* Grand écran : le volet devient une colonne pleine hauteur, l'en-tête reste au-dessus du chat (menu.js, placerVolet). */
 @media (min-width: 64rem) {
     /* Volet replié par le bouton : sa colonne tombe à zéro. */
-    body { grid-template-columns: 0 minmax(0, 1fr); }
+    body { grid-template-columns: 0 minmax(0, 1fr); transition: grid-template-columns 0.2s ease-out; }
     body:has(> .volet[open]) { grid-template-columns: 20rem minmax(0, 1fr); }
     body, .entete { background: var(--fond-conversation); }
     .entete, .barre-langues, main, .saisie-zone { grid-column: 2; }
@@ -363,10 +380,22 @@ input.recherche-historique {
         position: static;
         grid-column: 1;
         grid-row: 1 / -1;
-        width: auto;
+        /* Largeur fixe calée à droite : c'est la colonne qui le fait glisser. */
+        width: 20rem;
         max-width: none;
+        justify-self: end;
         background: var(--fond-volet);
     }
+    .volet:not([open]) { transform: none; }
+    /* Volet ouvert, le bouton passe dans le volet (menu.js, rangerBouton), à
+    gauche du titre et du résumé. L'en-tête vide garde sa hauteur : bouton,
+    marges et bordure basse. */
+    .entete { min-height: calc(4rem + 1px); }
+    .volet-contenu { grid-template-columns: auto minmax(0, 1fr); }
+    .volet-contenu > * { grid-column: 1 / -1; }
+    /* Marges : même place que dans l'en-tête (0.75rem du haut, 1.5rem du bord). */
+    .volet-contenu > .burger { grid-column: 1; grid-row: 1 / span 2; align-self: start; margin: -0.25rem 0 0 1rem; }
+    .volet-titre, .resume { grid-column: 2; }
     .fermer-menu, .burger .icone-burger { display: none; }
     .burger .icone-volet { display: block; }
     /* La marque est dans le volet, le h1 reste pour les lecteurs d'écran. */
