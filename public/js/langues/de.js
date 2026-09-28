@@ -169,7 +169,7 @@ I18n.TEXTES.de = {
     'reglages.aide-recherche': 'Internet-Werkzeuge können die Daten der Unterhaltung sammeln und verwerten. Die gelieferten Texte werden nicht geprüft.',
     'reglages.cle-note': 'In diesem Browser ist ein Schlüssel gespeichert.',
     'reglages.nom': 'Name der App',
-    'reglages.aide-nom': 'Höchstens 12 Zeichen. Der 1. Buchstabe ist blau, der 6. rot.',
+    'reglages.aide-nom': 'Höchstens 12 Zeichen.',
     'reglages.conseilles': 'Empfohlene Einstellungen',
     'reglages.resume': '{modele}, Temperatur {temperature}\n{contexte}',
     'contexte.sans': 'Ohne Kontext',

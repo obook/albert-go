@@ -45,9 +45,6 @@
     letter-spacing: -0.01em;
     color: var(--texte);
 }
-/* A bleu, t rouge : "Albert" aux couleurs du drapeau. */
-.bleu { color: var(--bleu); }
-.rouge { color: var(--rouge); }
 
 /* Albert interrogé (affichage.js, interroger) : un reflet rouge parcourt le bas de l'en-tête. */
 .entete { position: relative; }

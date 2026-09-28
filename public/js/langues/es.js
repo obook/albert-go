@@ -169,7 +169,7 @@ I18n.TEXTES.es = {
     'reglages.aide-recherche': 'Las herramientas de Internet pueden recopilar y explotar los datos de la conversación. Los textos que traen no están verificados.',
     'reglages.cle-note': 'Hay una clave guardada en este navegador.',
     'reglages.nom': 'Nombre de la aplicación',
-    'reglages.aide-nom': 'Hasta 12 caracteres. La 1.ª letra va en azul, la 6.ª en rojo.',
+    'reglages.aide-nom': 'Hasta 12 caracteres.',
     'reglages.conseilles': 'Ajustes recomendados',
     'reglages.resume': '{modele}, temperatura {temperature}\n{contexte}',
     'contexte.sans': 'Sin contexto',
