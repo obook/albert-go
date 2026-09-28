@@ -156,7 +156,8 @@ function avecDate(messages) {
  * @returns {Promise<Object>} Réponse d'Albert.repondre.
  */
 async function repondreAvecOutils(cle, requete, signal) {
-    const cherche = (reglages.recherche || rechercheUneFois)
+    /* Recherche autorisée dans Réglages, et demandée au globe pour cette question. */
+    const cherche = reglages.recherche && rechercheUneFois
         && (Recherche.sansCle(reglages.fournisseur) || Boolean(reglages.cleRecherche));
     const outils = Object.keys(OUTILS_LOCAUX).filter(nom => reglages[nom]).map(nom => OUTILS_LOCAUX[nom].outil());
     if (reglages.images) {

@@ -127,7 +127,7 @@ function afficherOutil() {
     }
     $('outil-actif').textContent = t('module.' + outilActuel);
     /* Seule Discussion a les outils, recherche comprise (outils-modele.js). */
-    $('recherche-web').hidden = outilActuel !== 'discuter';
+    afficherRecherche();
     $('saisie').placeholder = t('invite.' + outilActuel);
     $('langues').hidden = outilActuel !== 'traduire';
     /* Le CSS n'affiche la bienvenue que dans Chat. */
@@ -260,7 +260,7 @@ for (const bouton of document.querySelectorAll('.suggestion')) {
         champ.value = aleatoire ? aleatoire()
             : await exempleFichier(cle, autreLangue ? (langueCible === 'en' ? 'fr' : 'en') : I18n.langue);
         /* "Faire une recherche" allume le globe pour cette question, s'il ne l'est pas déjà. */
-        if (bouton.dataset.recherche !== undefined && !reglages.recherche && !rechercheUneFois) {
+        if (bouton.dataset.recherche !== undefined && !rechercheUneFois) {
             $('recherche-web').click();
         }
         champ.focus();
