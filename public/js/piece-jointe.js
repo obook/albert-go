@@ -33,7 +33,7 @@ const DOCUMENT_MAX = 20000000;
 /** Plus grand côté d'une image envoyée, en pixels. */
 const IMAGE_MAX = 1600;
 
-/** Fichier prêt à partir : { nom, texte }, ou null. */
+/** Fichier prêt à partir : { nom, texte, url, image? }, ou null (url : fichier d'origine, image : miniature). */
 let pieceJointe = null;
 
 /** Lecture en cours (AbortController), ou null. */
@@ -218,13 +218,14 @@ async function lireDocument(fichier) {
  * @param {File} fichier - Fichier choisi, déposé ou collé.
  * @param {string} type - "image", "texte" ou "document".
  * @param {AbortSignal} signal - Pour annuler avec le fichier.
+ * @param {string} [image] - Image réduite en data URL, pour une image.
  * @returns {Promise<string>} Texte à joindre à la question.
  * @throws {Error} Si le fichier est trop long, illisible ou sans texte.
  */
-async function lireContenu(fichier, type, signal) {
+async function lireContenu(fichier, type, signal, image) {
     if (type === 'image') {
         etat(t('etat.lecture-image'));
-        return Albert.transcrire(reglages.cle, await imageEnDataUrl(fichier), signal);
+        return Albert.transcrire(reglages.cle, image, signal);
     }
     if (type === 'document') {
         if (fichier.size > DOCUMENT_MAX) {
@@ -268,12 +269,17 @@ async function joindreFichier(fichier) {
     const controle = new AbortController();
     lecturePiece = controle;
     try {
-        piece.texte = await lireContenu(fichier, type, controle.signal);
+        if (type === 'image') {
+            piece.image = await imageEnDataUrl(fichier);
+        }
+        piece.texte = await lireContenu(fichier, type, controle.signal, piece.image);
         /* Un autre fichier a remplacé celui-ci pendant la lecture. */
         if (lecturePiece !== controle) {
             return;
         }
         lecturePiece = null;
+        /* ponytail: jamais révoquée, le fichier reste en mémoire jusqu'au rechargement. */
+        piece.url = URL.createObjectURL(fichier);
         afficherPiece(piece);
         etat('');
     } catch (err) {
@@ -286,6 +292,37 @@ async function joindreFichier(fichier) {
         }
     }
     focusSaisie();
+}
+
+/**
+ * Fichier joint dans la bulle de question : son nom mène au fichier
+ * d'origine, et une image s'y ajoute en miniature.
+ *
+ * @param {{nom: string, url: string, image?: string}} piece - Fichier envoyé.
+ * @returns {HTMLSpanElement} Ligne du fichier joint.
+ */
+function lignePiece(piece) {
+    const ligne = document.createElement('span');
+    ligne.className = 'ligne-piece';
+    const lien = document.createElement('a');
+    lien.href = piece.url;
+    lien.download = piece.nom;
+    lien.textContent = piece.nom;
+    const [avant, apres] = t('fichier.joint', { nom: '\n' }).split('\n');
+    ligne.append(avant, lien, apres);
+    if (piece.image) {
+        /* Doublon du lien sur le nom : ignoré au clavier et par les lecteurs d'écran. */
+        const miniature = lien.cloneNode(false);
+        miniature.className = 'miniature';
+        miniature.tabIndex = -1;
+        miniature.setAttribute('aria-hidden', 'true');
+        const image = document.createElement('img');
+        image.src = piece.image;
+        image.alt = '';
+        miniature.append(image);
+        ligne.append(miniature);
+    }
+    return ligne;
 }
 
 $('joindre').addEventListener('click', () => {

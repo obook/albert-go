@@ -193,7 +193,11 @@ async function envoyer() {
     $('saisie').value = '';
     retirerPiece();
     etat(t('etat.reflechit'));
-    const bulle = ajouter('user', affiche);
+    /* Lien vers le fichier et miniature : à l'écran seulement, pas dans l'historique. */
+    const bulle = ajouter('user', piece ? question : affiche);
+    if (piece) {
+        bulle.append(lignePiece(piece));
+    }
     annulation = new AbortController();
     boutonEnvoi(true);
     const retirerAttente = ajouterAttente();

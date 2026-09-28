@@ -166,6 +166,17 @@ main {
     background: var(--bulle);
     color: var(--sur-bulle);
 }
+/* Fichier joint : un clic le télécharge. Miniature de hauteur fixe pour ne pas décaler le fil. */
+.fil .ligne-piece { display: block; }
+.fil .ligne-piece a { color: inherit; }
+.fil .miniature { display: block; margin-top: 0.5rem; }
+.fil .miniature img {
+    display: block;
+    height: 6rem;
+    max-width: 100%;
+    object-fit: cover;
+    border-radius: 0.5rem;
+}
 
 /* Réponse d'Albert : sans cadre, en pleine largeur. */
 .fil .assistant { display: grid; grid-template-columns: minmax(0, 1fr); }
