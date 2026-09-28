@@ -140,7 +140,7 @@ I18n.TEXTES.fr = {
     'reglages.calcul': 'Calculatrice',
     'reglages.calendrier': 'Calendrier',
     'reglages.compteur': 'Compteur mots et caractères',
-    'reglages.tirage': 'Tirage au sort',
+    'reglages.tirage': 'Tirage aléatoire',
     'reglages.aide-outils': 'L\'IA décide seule de s\'en servir lorsqu\'elle en a besoin.',
     'reglages.recherche-active': 'Recherche :',
     'moteur.wikipedia': 'Encyclopédie généraliste',
