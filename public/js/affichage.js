@@ -135,8 +135,10 @@ function afficherReglages() {
     const temperature = reglages.temperature.toLocaleString(I18n.langue, { minimumFractionDigits: 1, maximumFractionDigits: 1 });
     $('resume-reglages').textContent = t('reglages.resume',
         { modele: modele.nom, temperature: temperature, contexte: contexte });
+    /* Jauge de contexte mise de côté, à revoir (avec index.html).
     $('jauge-niveau').style.width = (pourcent || 0) + '%';
     $('jauge-niveau').classList.toggle('pleine', pourcent !== null && pourcent >= 80);
+    */
 
     $('memoire-reglage').checked = reglages.memoire;
     $('voix-en-ligne').checked = reglages.voixEnLigne;
