@@ -103,7 +103,7 @@ I18n.TEXTES.en = {
     'bienvenue.exemple-graphique': 'Draw a bar chart of class sizes: Year 7 120, Year 8 115, Year 9 108, Year 10 102.',
     'bienvenue.exemple-figure': 'Draw a right triangle with sides 3, 4 and 5 cm.',
     'bienvenue.exemple-formule': 'Give the formula for the area of a circle and an example with r = 3 cm.',
-    'bienvenue.exemple-tirage': 'Draw lots for the speaking order: Léa, Tom, Inès, Noah, Jade.',
+    'bienvenue.exemple-tirage': 'Draw lots: Léa, Tom, Inès, Noah, Jade.',
     'bienvenue.exemple-recherche': 'Who invented braille, and when?',
     'bienvenue.exemple-division': 'What is {a} divided by {b}?',
     'bienvenue.exemple-division-environ': 'What is roughly {a} divided by {b}?',
