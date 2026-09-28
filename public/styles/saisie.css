@@ -99,16 +99,18 @@
 .envoyer.en-cours .icone-arreter { display: block; }
 
 .saisie .fleche { display: none; flex: none; width: 2.25rem; height: 2.25rem; }
-/* Le trombone à gauche, les autres boutons à droite. */
-.saisie .joindre {
+/* Le trombone et le globe à gauche, les autres boutons à droite. */
+.saisie .joindre, .saisie .recherche-web {
     flex: none;
     width: 2.25rem;
     height: 2.25rem;
-    margin-right: auto;
     border: 0;
     color: var(--texte-doux);
 }
-.saisie .joindre:hover { background: var(--bleu-clair); }
+.saisie .recherche-web, .saisie .joindre:has(+ .recherche-web[hidden]) { margin-right: auto; }
+.saisie .joindre:hover, .saisie .recherche-web:hover { background: var(--bulle); }
+/* Recherche activée : globe foncé sur fond gris. */
+.saisie .recherche-web[aria-pressed="true"] { background: var(--bulle); color: var(--texte); }
 
 /* Fichier glissé au-dessus de la carte. */
 .saisie.depot {
