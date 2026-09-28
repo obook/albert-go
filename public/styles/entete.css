@@ -36,24 +36,16 @@
     font-weight: 400;
     font-display: swap;
 }
-@font-face {
-    font-family: "Luciole";
-    src: url("../vendor/luciole/Luciole-Bold.woff2") format("woff2");
-    font-weight: 700;
-    font-display: swap;
-}
 
 .marque {
     font-family: "Luciole", system-ui, sans-serif;
     font-size: 1.5rem;
-    font-weight: 700;
+    font-weight: 400;
     line-height: 1.15;
     letter-spacing: -0.01em;
     color: var(--texte);
 }
 .rouge { color: var(--rouge); }
-/* Titre du volet sans gras ; celui de l'en-tête le garde. */
-#titre-menu { font-weight: 400; }
 
 /* Albert interrogé (affichage.js, interroger) : un reflet rouge parcourt le bas de l'en-tête. */
 .entete { position: relative; }
