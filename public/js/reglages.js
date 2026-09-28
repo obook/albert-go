@@ -87,7 +87,8 @@ async function chargerModeles() {
             reglages.cle = null;
             ecrire('cle', null);
             afficher();
-            messageCle(err.message, true);
+            placerVolet();
+            toast(err.message);
         }
     }
 }

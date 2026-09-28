@@ -92,12 +92,13 @@ function montrerVolet() {
 
 /**
  * Ouvre le volet en colonne sur grand écran, le referme sinon.
+ * Sans clé, l'accueil s'affiche volet fermé.
  */
 function placerVolet() {
     if ($('menu').open) {
         $('menu').close();
     }
-    if (GRAND_ECRAN.matches && lire('volet', null) !== 'replie') {
+    if (GRAND_ECRAN.matches && reglages.cle && lire('volet', null) !== 'replie') {
         montrerVolet();
     }
 }
@@ -197,6 +198,7 @@ $('confirmer-cle').addEventListener('close', () => {
     reglages.cle = null;
     ecrire('cle', null);
     afficher();
+    placerVolet();
     toast(t('toast.cle-effacee'));
 });
 

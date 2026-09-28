@@ -37,7 +37,7 @@ main {
 .accueil .interrupteur { margin-top: 0; font-weight: 400; }
 .accueil h2, .accueil p { margin-bottom: 0; }
 
-/* Trois étapes numérotées : pastille grise, texte à droite. */
+/* Deux étapes numérotées : pastille grise, texte à droite. */
 .accueil .etapes {
     list-style: none;
     counter-reset: etape;
@@ -68,7 +68,7 @@ main {
     color: var(--texte);
     font-size: 0.875rem;
 }
-/* Les trois étapes sur le même modèle : une ligne de même hauteur, pastille centrée,
+/* Les étapes sur le même modèle : une ligne de même hauteur, pastille centrée,
    donc des séparations identiques. */
 .accueil .etapes > li {
     display: flex;
@@ -78,8 +78,6 @@ main {
     min-height: 2.25rem;
 }
 .accueil .etapes > li::before { top: 50%; transform: translateY(-50%); }
-.accueil .etat-cle { color: var(--succes); font-weight: 700; font-size: 0.9375rem; }
-.accueil .etat-cle:empty { display: none; }
 /* Bouton compact : il ne doit pas écraser le mot "Clé" à côté.
    Couleurs par thème : --bouton-* dans base.css.
    Trait, graisse et soulignement fixés : "Demander" est un lien, que Pico ne met pas en bouton. */
@@ -95,15 +93,13 @@ main {
     font-weight: 400;
     text-decoration: none;
 }
-.accueil .etapes .bouton-principal:hover:not([aria-disabled="true"]) {
+.accueil .etapes .bouton-principal:hover {
     border-color: var(--bouton-survol);
     background: var(--bouton-survol);
 }
 /* Focus : contour net au clavier, rien après un clic (aucun bouton ne paraît choisi). */
 .accueil .etapes .bouton-principal:focus { box-shadow: none; }
 .accueil .etapes .bouton-principal:focus-visible { outline: 2px solid var(--texte); outline-offset: 2px; }
-/* "Commencer" sans clé : même aspect, curseur d'interdiction au survol, toast au clic (cle.js). */
-.accueil .etapes .bouton-principal[aria-disabled="true"] { cursor: not-allowed; }
 
 /* Boîte de la clé : champ, message, interrupteur, puis Annuler et OK. */
 #dialogue-cle input[type="password"] { margin-bottom: 0; }
