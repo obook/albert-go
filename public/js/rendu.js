@@ -216,6 +216,33 @@ const Rendu = {
     },
 
     /**
+     * Formule centrée plus large que la bulle : réduite jusqu'aux trois quarts ;
+     * au-delà, redessinée en ligne pour aller à la ligne après les signes =.
+     * Sur téléphone, le défilement horizontal d'une formule ne répondait pas au doigt.
+     *
+     * @param {HTMLElement} element - Conteneur de la réponse.
+     */
+    ajusterFormules(element) {
+        for (const bloc of element.querySelectorAll('.katex-display')) {
+            const formule = bloc.querySelector('.katex');
+            const largeur = bloc.clientWidth;
+            if (!formule || !largeur || formule.scrollWidth <= largeur) {
+                continue;
+            }
+            const echelle = largeur / formule.scrollWidth;
+            if (echelle >= 0.75) {
+                formule.style.fontSize = echelle + 'em';
+                continue;
+            }
+            const tex = bloc.querySelector('annotation');
+            if (tex && typeof katex !== 'undefined') {
+                bloc.className = 'formule-longue';
+                katex.render(tex.textContent, bloc, { displayMode: false, throwOnError: false });
+            }
+        }
+    },
+
+    /**
      * Affiche une réponse dans un élément : HTML, formules, code, diagrammes.
      * Chaque bloc de code restant reçoit un bouton de copie.
      *
@@ -234,6 +261,8 @@ const Rendu = {
             ],
             throwOnError: false
         });
+        /* Mesure au prochain dessin : une bulle rouverte n'est pas encore dans la page. */
+        requestAnimationFrame(() => this.ajusterFormules(element));
         await Promise.all([this.colorerCode(element), this.diagrammes(element), this.imagesCommons(element)]);
         for (const pre of element.querySelectorAll('pre')) {
             const bloc = document.createElement('div');
