@@ -263,13 +263,8 @@ colonne au-delà du volet et décale tout le menu vers la droite. */
 }
 .entree.danger { color: var(--rouge); }
 /* Outil actif (Discuter, Reformuler, Traduire). */
-.entree[aria-current="true"] {
-    background: var(--bulle);
-    font-weight: 700;
-}
+.entree[aria-current="true"] { background: var(--bulle); }
 .outils { display: grid; gap: 0.125rem; }
-/* Noms de modules : la graisse et l'approche du titre, à la taille du menu. */
-.outils .entree span { font-weight: 700; letter-spacing: -0.01em; }
 summary.entree { list-style: none; }
 summary.entree::-webkit-details-marker { display: none; }
 
