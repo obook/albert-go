@@ -256,3 +256,16 @@ test('langueDuTexte : dans le doute, la langue de l\'interface', () => {
     assert.strictEqual(Albert.langueDuTexte('OK', 'fr'), 'fr');
     assert.strictEqual(Albert.langueDuTexte('142,8571429', 'es'), 'es');
 });
+
+test('wav : en-tête PCM 16 bits mono et échantillons bornés', () => {
+    const wav = new DataView(Albert.wav(new Float32Array([0, 1, -1, 2]), 16000));
+    const texte = (debut, n) => String.fromCharCode(...new Uint8Array(wav.buffer, debut, n));
+    assert.strictEqual(wav.byteLength, 44 + 4 * 2);
+    assert.strictEqual(texte(0, 4) + texte(8, 8) + texte(36, 4), 'RIFFWAVEfmt data');
+    assert.strictEqual(wav.getUint32(4, true), 36 + 8);
+    assert.strictEqual(wav.getUint16(22, true), 1);
+    assert.strictEqual(wav.getUint32(24, true), 16000);
+    assert.strictEqual(wav.getUint32(28, true), 32000);
+    assert.strictEqual(wav.getUint32(40, true), 8);
+    assert.deepStrictEqual([0, 1, 2, 3].map(i => wav.getInt16(44 + i * 2, true)), [0, 32767, -32767, 32767]);
+});

@@ -24,7 +24,7 @@ Les réponses acceptent le Markdown, les formules LaTeX et les diagrammes Mermai
 
 ### Fichiers joints
 
-Trombone, glisser-déposer ou Ctrl+V : un fichier texte, un PDF, un .docx ou un .odt est lu dans le navigateur ; une image est transcrite par le modèle Medium, puis son texte part avec la question. Un PDF scanné n'a pas de texte : il se joint comme image.
+Trombone, glisser-déposer ou Ctrl+V : un fichier texte, un PDF, un .docx ou un .odt est lu dans le navigateur ; une image est transcrite par le modèle Medium, un enregistrement audio par whisper (8 minutes environ au plus), puis le texte part avec la question. Un PDF scanné n'a pas de texte : il se joint comme image.
 
 ### Rédac
 

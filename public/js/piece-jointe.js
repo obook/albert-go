@@ -4,7 +4,7 @@
  *
  * Un fichier texte est lu dans le navigateur, comme le texte d'un PDF
  * (pdf.js) ou d'un .docx ou .odt. Une image est réduite puis
- * transcrite par Albert (albert.js). Le texte obtenu part avec la question
+ * transcrite par Albert (albert.js), un enregistrement audio aussi. Le texte obtenu part avec la question
  * suivante (app.js). Idée reprise d'albert-atelier.
  *
  * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
@@ -32,6 +32,15 @@ const DOCUMENT_MAX = 20000000;
 
 /** Plus grand côté d'une image envoyée, en pixels. */
 const IMAGE_MAX = 1600;
+
+/** Enregistrements reconnus quand le navigateur ne donne pas de type audio/. */
+const EXTENSIONS_AUDIO = /\.(mp3|wav|m4a|aac|ogg|oga|opus|flac|webm)$/i;
+
+/** Taille maximale d'un enregistrement envoyé, en octets : n8n refuse au-delà de 16 Mo. */
+const AUDIO_MAX = 15000000;
+
+/** Fréquence du WAV envoyé : celle de whisper, 16 kHz en mono (environ 8 minutes dans AUDIO_MAX). */
+const TAUX_AUDIO = 16000;
 
 /** Fichier prêt à partir : { nom, texte, url, image? }, ou null (url : fichier d'origine, image : miniature). */
 let pieceJointe = null;
@@ -87,11 +96,14 @@ async function imageEnDataUrl(fichier) {
  * Nature du fichier joint, d'après son type MIME puis son extension.
  *
  * @param {File} fichier - Fichier choisi, déposé ou collé.
- * @returns {?string} "image", "texte", "document", ou null si le format est refusé.
+ * @returns {?string} "image", "audio", "texte", "document", ou null si le format est refusé.
  */
 function typeFichier(fichier) {
     if (fichier.type.startsWith('image/')) {
         return 'image';
+    }
+    if (fichier.type.startsWith('audio/') || EXTENSIONS_AUDIO.test(fichier.name)) {
+        return 'audio';
     }
     if (fichier.type.startsWith('text/') || EXTENSIONS_TEXTE.test(fichier.name)) {
         return 'texte';
@@ -100,6 +112,25 @@ function typeFichier(fichier) {
         return 'document';
     }
     return null;
+}
+
+/**
+ * Réécrit un enregistrement en WAV 16 kHz mono : Albert ne lit que le MP3
+ * et le WAV, et ce format reste léger.
+ *
+ * @param {File} fichier - Enregistrement dans un format lu par le navigateur.
+ * @returns {Promise<Blob>} Fichier WAV.
+ */
+async function audioEnWav(fichier) {
+    /* Le décodage passe au taux du contexte ; le rendu mélange les canaux. */
+    const son = await new OfflineAudioContext(1, 1, TAUX_AUDIO).decodeAudioData(await fichier.arrayBuffer());
+    const contexte = new OfflineAudioContext(1, son.length, TAUX_AUDIO);
+    const source = contexte.createBufferSource();
+    source.buffer = son;
+    source.connect(contexte.destination);
+    source.start();
+    const mono = await contexte.startRendering();
+    return new Blob([Albert.wav(mono.getChannelData(0), TAUX_AUDIO)], { type: 'audio/wav' });
 }
 
 /**
@@ -213,10 +244,10 @@ async function lireDocument(fichier) {
 }
 
 /**
- * Contenu du fichier, transcrit par le modèle s'il s'agit d'une image.
+ * Contenu du fichier, transcrit par le modèle s'il s'agit d'une image ou d'un son.
  *
  * @param {File} fichier - Fichier choisi, déposé ou collé.
- * @param {string} type - "image", "texte" ou "document".
+ * @param {string} type - "image", "audio", "texte" ou "document".
  * @param {AbortSignal} signal - Pour annuler avec le fichier.
  * @param {string} [image] - Image réduite en data URL, pour une image.
  * @returns {Promise<string>} Texte à joindre à la question.
@@ -226,6 +257,25 @@ async function lireContenu(fichier, type, signal, image) {
     if (type === 'image') {
         etat(t('etat.lecture-image'));
         return Albert.transcrire(reglages.cle, image, signal);
+    }
+    if (type === 'audio') {
+        if (fichier.size > AUDIO_MAX) {
+            throw new Error(t('erreur.audio-long'));
+        }
+        /* Le MP3 part tel quel, les autres formats en WAV. */
+        const mp3 = /\.mp3$/i.test(fichier.name);
+        const audio = mp3 ? fichier : await audioEnWav(fichier).catch(() => {
+            throw new Error(t('erreur.audio-illisible'));
+        });
+        if (audio.size > AUDIO_MAX) {
+            throw new Error(t('erreur.audio-long'));
+        }
+        etat(t('etat.lecture-audio'));
+        const texte = await Albert.transcrireAudio(reglages.cle, audio, mp3 ? fichier.name : 'audio.wav', signal);
+        if (!texte.trim()) {
+            throw new Error(t('erreur.audio-vide'));
+        }
+        return texte;
     }
     if (type === 'document') {
         if (fichier.size > DOCUMENT_MAX) {

@@ -85,6 +85,9 @@ const Albert = {
     /* Modèle qui lit les images (annuaire BidouIAge, 1er août 2026). */
     MODELE_VISION: 'openweight-medium',
 
+    /** Modèle de transcription audio (whisper). */
+    MODELE_AUDIO: 'openweight-audio',
+
     /**
      * Demande la liste des modèles à Albert.
      *
@@ -278,6 +281,63 @@ const Albert = {
                 { type: 'image_url', image_url: { url: dataUrl } }
             ] }]
         }, annulation).then(r => r.texte);
+    },
+
+    /**
+     * Fait transcrire un enregistrement par le modèle audio.
+     *
+     * @param {string} cle - Clé API de l'utilisateur.
+     * @param {Blob} audio - Enregistrement MP3 ou WAV.
+     * @param {string} nom - Nom du fichier, avec son extension.
+     * @param {AbortSignal} annulation - Signal pour abandonner la lecture.
+     * @returns {Promise<string>} Texte entendu.
+     * @throws {Error} Si Albert refuse l'enregistrement.
+     */
+    async transcrireAudio(cle, audio, nom, annulation) {
+        const formulaire = new FormData();
+        formulaire.append('file', audio, nom);
+        formulaire.append('model', this.MODELE_AUDIO);
+        const res = await fetch(this.BASE + '/audio/transcriptions', {
+            method: 'POST',
+            headers: { 'Authorization': 'Bearer ' + cle },
+            body: formulaire,
+            signal: AbortSignal.any([annulation, AbortSignal.timeout(this.DELAI_MS)])
+        });
+        const corps = await res.json().catch(() => null);
+        if (!res.ok) {
+            throw new Error(this.messageErreur(res.status, corps));
+        }
+        if (!corps || typeof corps.text !== 'string') {
+            throw new Error(t('erreur.reponse-illisible'));
+        }
+        return corps.text;
+    },
+
+    /**
+     * Fichier WAV (PCM 16 bits, mono) à partir d'échantillons entre -1 et 1.
+     *
+     * @param {Float32Array} echantillons - Son mono.
+     * @param {number} taux - Fréquence d'échantillonnage, en hertz.
+     * @returns {ArrayBuffer} Contenu du fichier.
+     */
+    wav(echantillons, taux) {
+        const vue = new DataView(new ArrayBuffer(44 + echantillons.length * 2));
+        const texte = (position, mot) => [...mot].forEach((c, i) => vue.setUint8(position + i, c.charCodeAt(0)));
+        texte(0, 'RIFF');
+        vue.setUint32(4, 36 + echantillons.length * 2, true);
+        texte(8, 'WAVEfmt ');
+        vue.setUint32(16, 16, true);
+        /* Format 1 (PCM), 1 canal, taux, octets par seconde, octets par échantillon, bits. */
+        vue.setUint16(20, 1, true);
+        vue.setUint16(22, 1, true);
+        vue.setUint32(24, taux, true);
+        vue.setUint32(28, taux * 2, true);
+        vue.setUint16(32, 2, true);
+        vue.setUint16(34, 16, true);
+        texte(36, 'data');
+        vue.setUint32(40, echantillons.length * 2, true);
+        echantillons.forEach((x, i) => vue.setInt16(44 + i * 2, Math.max(-1, Math.min(1, x)) * 0x7fff, true));
+        return vue.buffer;
     },
 
     /**

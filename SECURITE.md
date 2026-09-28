@@ -21,8 +21,8 @@ Navigateur (Pages) -> webhook n8n -> https://albert.api.etalab.gouv.fr
 - **Destinations de la page**, fixées par la CSP `connect-src` (vérifiée en
   ligne) : le relais n8n, et si la recherche est activée
   `{fr,en,es,de}.wikipedia.org`, `www.googleapis.com`, `www.mojeek.com`.
-- **Destinations du relais :** `/v1/chat/completions` et `/v1/models` chez
-  Albert, adresses fixées dans le workflow.
+- **Destinations du relais :** `/v1/chat/completions`, `/v1/models` et
+  `/v1/audio/transcriptions` chez Albert, adresses fixées dans le workflow.
 - **Clé Albert :** en-tête `Authorization: Bearer`, jamais dans l'URL.
 - **Clé de recherche (Google, Mojeek) :** dans la chaîne de requête, c'est ainsi
   que ces API la lisent. Elle part du navigateur vers le moteur, sans relais.
@@ -57,7 +57,8 @@ Navigateur (Pages) -> webhook n8n -> https://albert.api.etalab.gouv.fr
 
 ### Relais n8n
 
-- Deux webhooks publics, `POST .../v1/chat/completions` et `GET .../v1/models`.
+- Trois webhooks publics, `POST .../v1/chat/completions`, `GET .../v1/models`
+  et `POST .../v1/audio/transcriptions`.
   Sans `Authorization: Bearer`, 401 sans relais.
 - CORS : l'adresse Pages et `http://localhost:8642`. Toute autre origine reçoit
   `Access-Control-Allow-Origin: null`.
@@ -84,7 +85,7 @@ Navigateur (Pages) -> webhook n8n -> https://albert.api.etalab.gouv.fr
 | Clé ou questions lues sur un poste partagé | Mode partagé par défaut : tout le sensible en `sessionStorage`, effacé à la fermeture. |
 | Page intégrée dans le cadre d'un autre site | La page détecte le cadre et n'affiche qu'un lien vers elle-même. |
 | Texte envoyé à une synthèse vocale en ligne | Voix de l'appareil en priorité. Voix en ligne seulement si l'utilisateur les autorise (désactivé par défaut) et faute de voix locale. |
-| Fichier joint piégé | Texte lu comme du texte (200 Ko au plus), images redessinées dans un canevas puis converties en JPEG. Le résultat n'apparaît qu'à travers la réponse, donc assaini. |
+| Fichier joint piégé | Texte lu comme du texte (200 Ko au plus), images redessinées dans un canevas puis converties en JPEG, audio décodé par le navigateur puis réécrit en WAV (le MP3 part tel quel, vers Albert seulement). Le résultat n'apparaît qu'à travers la réponse, donc assaini. |
 
 ## Audit interne
 

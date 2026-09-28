@@ -105,7 +105,7 @@ I18n.TEXTES.es = {
     /* Entrada. */
     'chat.aria': 'Conversación',
     'saisie.label': 'Su pregunta',
-    'saisie.joindre': 'Adjuntar una imagen, un documento o un archivo de texto',
+    'saisie.joindre': 'Adjuntar una imagen, una grabación de audio, un documento o un archivo de texto',
     'saisie.precedente': 'Pregunta anterior',
     'saisie.suivante': 'Pregunta siguiente',
     'saisie.envoyer': 'Enviar',
@@ -282,6 +282,7 @@ I18n.TEXTES.es = {
     'etat.annulee': 'Pregunta cancelada.',
     'etat.attendre-lecture': 'Espere a que termine la lectura del archivo.',
     'etat.lecture-image': 'Albert está leyendo la imagen...',
+    'etat.lecture-audio': 'Albert está transcribiendo la grabación...',
     'etat.recherche': 'Buscando "{mots}"...',
 
     /* Errores. */
@@ -294,12 +295,15 @@ I18n.TEXTES.es = {
     'erreur.timeout': 'Albert no responde. Inténtelo de nuevo.',
     'erreur.origine': 'El relé n8n no aceptará la dirección {origine}. Abra ',
     'erreur.consigne': 'Falta la consigna de la herramienta {outil}.',
-    'erreur.format': 'Formato no admitido: solo imágenes, PDF, .docx, .odt y archivos de texto.',
+    'erreur.format': 'Formato no admitido: solo imágenes, audio, PDF, .docx, .odt y archivos de texto.',
     'erreur.fichier-long': 'Archivo demasiado largo: 200 kB como máximo.',
     'erreur.document-lourd': 'Documento demasiado pesado: 20 MB como máximo.',
     'erreur.document-long': 'Documento demasiado largo: 200 000 caracteres de texto como máximo.',
     'erreur.document-vide': 'Este documento no contiene texto. Un PDF escaneado se adjunta como imagen.',
     'erreur.document-illisible': 'Documento ilegible.',
+    'erreur.audio-long': 'Grabación demasiado larga: unos 8 minutos como máximo.',
+    'erreur.audio-vide': 'No se oye ninguna voz en esta grabación.',
+    'erreur.audio-illisible': 'Grabación ilegible.',
     'erreur.hors-cadre': 'Abrir Albert Go en su propia pestaña',
 
     /* Textos enviados al modelo. */
