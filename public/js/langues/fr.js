@@ -16,7 +16,7 @@ I18n.TEXTES.fr = {
     'menu.ouvrir': 'Menu',
     'menu.fermer': 'Fermer le menu',
     'menu.resume': 'Ouvrir les réglages',
-    'menu.nouvelle': 'Nouvelle conversation',
+    'menu.nouvelle': 'Nouvelle discussion',
     'menu.outils': 'Outils',
     'menu.historique': 'Historique des conversations',
     'menu.reglages': 'Réglages',
