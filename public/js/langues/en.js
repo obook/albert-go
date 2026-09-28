@@ -74,8 +74,8 @@ I18n.TEXTES.en = {
     'langue.la': 'Latin',
 
     /* Key screen. */
-    'cle.intro': 'The French State AI to chat, correct, rephrase, translate and write.',
-    'cle.etape-acces': 'Access',
+    'cle.intro': 'The French State AI to chat, correct, rephrase, translate and write. Access reserved for public servants.',
+    'cle.etape-acces': 'No key yet?',
     'cle.exemple': 'sk-...',
     'cle.souvenir': 'Keep it in this browser, erasable at any time',
     'cle.ou-va': 'Where does my key go?',
@@ -100,7 +100,6 @@ I18n.TEXTES.en = {
     'cle.label': 'Key',
     'cle.stockee': '<ul><li>By default, it is erased when you close the tab.</li><li>If you turn on "Keep it", it stays in the browser\'s <code>localStorage</code> storage until you choose "Erase the key and quit" in the menu.</li><li>It only leaves this browser to reach Albert, through the State <a href="https://n8n.incubateur.education.gouv.fr" target="_blank" rel="noopener noreferrer">interministerial n8n relay</a>, which does not record it.</li></ul>',
     'cle.demander': 'Request',
-    'cle.reserve': 'for public servants only',
     'cle.verification': 'Checking the key...',
 
     /* Input. */
