@@ -21,7 +21,8 @@ Object.assign(Rendu, {
      * @returns {Promise<void>}
      */
     async imagesCommons(element) {
-        if (!reglages.images) {
+        /* Image chargée à l'affichage : Internet autorisé suffit, sans le globe. */
+        if (!reglages.recherche) {
             return;
         }
         const vus = new Set();
