@@ -237,9 +237,8 @@ $('recherche-web').addEventListener('click', () => {
     }
     rechercheUneFois = !rechercheUneFois;
     afficherRecherche();
-    toast(rechercheUneFois
-        ? t('toast.recherche-activee', { nom: Recherche.MOTEURS[reglages.fournisseur].nom })
-        : t('toast.recherche-desactivee'));
+    const nom = Recherche.MOTEURS[reglages.fournisseur].nom;
+    toast(t(rechercheUneFois ? 'toast.recherche-activee' : 'toast.recherche-desactivee', { nom: nom }));
 });
 
 /* Chaque moteur a sa clé : on efface celle de l'autre en changeant. */
