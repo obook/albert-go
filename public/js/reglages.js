@@ -275,14 +275,13 @@ $('partage-reglage').addEventListener('change', () => {
     afficherReglages();
 });
 
-/* Nom affiché : 1re lettre bleue, 6e rouge, comme "Albert Go". Espaces insécables : pas de retour à la ligne. */
+/* Nom affiché dans les titres et l'onglet. Espaces insécables : pas de retour à la ligne. */
 function afficherNom() {
     const nom = lire('nom', null) || 'Albert Go';
     document.title = nom;
     for (const titre of document.querySelectorAll('.marque')) {
         const outil = titre.querySelector('.outil-actif');
-        titre.replaceChildren(...[...nom.replace(/ /g, '\u00a0')].map((lettre, i) =>
-            i === 0 || i === 5 ? elementTexte('span', i === 0 ? 'bleu' : 'rouge', lettre) : lettre));
+        titre.replaceChildren(nom.replace(/ /g, '\u00a0'));
         if (outil) {
             titre.append(outil);
         }
