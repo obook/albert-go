@@ -35,14 +35,35 @@ const Rendu = {
             /\$[^\n$]+?\$/g
         ];
         let texte = markdown || '';
+        const langue = typeof I18n !== 'undefined' ? I18n.langue : null;
         for (const motif of motifs) {
             texte = texte.replace(motif, (formule) => {
-                const numero = formules.push(formule) - 1;
+                const numero = formules.push(this.multiplication(formule, langue)) - 1;
                 return 'FORMULEKATEX' + numero + 'FIN';
             });
         }
         const html = marked.parse(texte).replace(/FORMULEKATEX(\d+)FIN/g, (_, numero) => formules[Number(numero)]);
         return this.assainir(html);
+    },
+
+    /**
+     * Signe de multiplication de l'école selon la langue : × en français, ⋅ en
+     * allemand (Malpunkt). Entre deux vecteurs (\vec, \overrightarrow), le signe
+     * reste : produit scalaire ⋅, produit vectoriel ×. Espagnol et anglais : inchangé.
+     *
+     * @param {string} formule - Formule LaTeX.
+     * @param {?string} langue - Langue de l'interface.
+     * @returns {string} Formule avec le signe de la langue.
+     */
+    multiplication(formule, langue) {
+        const vecteur = '(?![a-zA-Z])(?!\\s*\\\\(?:vec|overrightarrow)\\b)';
+        if (langue === 'fr') {
+            return formule.replace(new RegExp('\\\\cdot' + vecteur, 'g'), '\\times');
+        }
+        if (langue === 'de') {
+            return formule.replace(new RegExp('\\\\times' + vecteur, 'g'), '\\cdot');
+        }
+        return formule;
     },
 
     /** Balises retirées du HTML du modèle : tout ce qui charge ou exécute. */

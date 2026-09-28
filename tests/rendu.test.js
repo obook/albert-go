@@ -205,3 +205,17 @@ test('imageApprochee : nom inventé, vraie image qui reprend tous ses mots, sino
         delete global.Recherche;
     }
 });
+
+test('multiplication : × en français, ⋅ en allemand, vecteurs et autres langues inchangés', () => {
+    const fr = (f) => Rendu.multiplication(f, 'fr');
+    const de = (f) => Rendu.multiplication(f, 'de');
+    assert.strictEqual(fr('2 \\cdot 3 = 6'), '2 \\times 3 = 6');
+    assert.strictEqual(fr('A = \\pi \\cdot r^2'), 'A = \\pi \\times r^2');
+    assert.strictEqual(fr('\\vec{u} \\cdot \\vec{v}'), '\\vec{u} \\cdot \\vec{v}');
+    assert.strictEqual(fr('\\overrightarrow{AB}\\cdot\\overrightarrow{AC}'), '\\overrightarrow{AB}\\cdot\\overrightarrow{AC}');
+    assert.strictEqual(fr('1 + 2 + \\cdots + n'), '1 + 2 + \\cdots + n');
+    assert.strictEqual(de('2 \\times 3'), '2 \\cdot 3');
+    assert.strictEqual(de('\\vec{a} \\times \\vec{b}'), '\\vec{a} \\times \\vec{b}');
+    assert.strictEqual(Rendu.multiplication('2 \\cdot 3', 'es'), '2 \\cdot 3');
+    assert.strictEqual(Rendu.multiplication('2 \\times 3', 'en'), '2 \\times 3');
+});
