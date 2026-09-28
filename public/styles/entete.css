@@ -262,6 +262,8 @@ colonne au-delà du volet et décale tout le menu vers la droite. */
     color: var(--texte-doux);
     font-size: 0.8125rem;
     text-align: left;
+    /* Modèle et température, puis le contexte à la ligne (reglages.resume). */
+    white-space: pre-line;
 }
 .resume:hover { color: var(--bleu); text-decoration: underline; }
 .volet hr {
