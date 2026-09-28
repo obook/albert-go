@@ -73,7 +73,6 @@ function afficher() {
     } else {
         /* Écran de la clé : effacement à la fermeture toujours proposé par défaut. */
         $('partage-accueil').checked = false;
-        $('ouvrir-cle').focus();
     }
 }
 
