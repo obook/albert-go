@@ -381,6 +381,19 @@
                 <summary data-t="reglages.carte-application"></summary>
                 <div class="corps">
                     <fieldset>
+                        <legend data-t="reglages.nom"></legend>
+                        <input type="text"
+                               id="nom-application"
+                               maxlength="12"
+                               placeholder="Albert Go"
+                               autocomplete="off"
+                               spellcheck="false"
+                               aria-describedby="aide-nom"
+                               data-t-attr="aria-label:reglages.nom">
+                        <p id="aide-nom" class="note" data-t="reglages.aide-nom"></p>
+                    </fieldset>
+
+                    <fieldset>
                         <legend data-t="cle.label"></legend>
                         <p class="note" data-t="reglages.cle-note"></p>
                         <label class="interrupteur">
