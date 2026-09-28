@@ -113,8 +113,8 @@
 @media (hover: hover) {
     .saisie .joindre:hover, .saisie .recherche-web:hover { background: var(--bulle); }
 }
-/* Recherche activée : globe foncé sur fond gris. */
-.saisie .recherche-web[aria-pressed="true"] { background: var(--bulle); color: var(--texte); }
+/* Recherche activée : globe sur rond bleu, comme le bouton Envoyer. */
+.saisie .recherche-web[aria-pressed="true"] { background: var(--bleu); color: var(--sur-bleu); }
 
 /* Fichier glissé au-dessus de la carte. */
 .saisie.depot {

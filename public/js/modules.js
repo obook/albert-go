@@ -259,8 +259,8 @@ for (const bouton of document.querySelectorAll('.suggestion')) {
         const aleatoire = !autreLangue && EXEMPLES_ALEATOIRES[cle];
         champ.value = aleatoire ? aleatoire()
             : await exempleFichier(cle, autreLangue ? (langueCible === 'en' ? 'fr' : 'en') : I18n.langue);
-        /* "Faire une recherche" allume le globe pour cette question, s'il ne l'est pas déjà. */
-        if (bouton.dataset.recherche !== undefined && !rechercheUneFois) {
+        /* "Faire une recherche" active le globe, s'il ne l'est pas déjà. */
+        if (bouton.dataset.recherche !== undefined && !globeActif) {
             $('recherche-web').click();
         }
         champ.focus();

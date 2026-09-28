@@ -32,7 +32,7 @@ On écrit une formule d'appel ("Madame,", "Monsieur le directeur,") puis les id�
 
 ### Recherche web
 
-Internet s'autorise dans Réglages, avec le choix du moteur. Le globe de la barre de saisie apparaît alors : la question suivante peut chercher et montrer des images Wikimedia. Les mots cherchés et les pages consultées s'affichent sous la réponse.
+Internet s'autorise dans Réglages, avec le choix du moteur. Le globe de la barre de saisie apparaît alors : tant qu'il est activé, les questions peuvent chercher et montrer des images Wikimedia. Les mots cherchés et les pages consultées s'affichent sous la réponse.
 
 ### Outils
 
