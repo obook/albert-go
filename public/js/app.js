@@ -208,6 +208,9 @@ async function envoyer() {
         if (conversation === courante) {
             recevoirReponse(reponse, outil);
         }
+        /* Le globe ne valait que pour cette question ; après un échec, il reste pour la reposer. */
+        rechercheUneFois = false;
+        afficherRecherche();
     } catch (err) {
         retirerAttente();
         if (conversation === courante) {

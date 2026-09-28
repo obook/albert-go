@@ -208,9 +208,12 @@ $('cx-recherche').addEventListener('change', () => {
     ecrire('cx', reglages.cx);
 });
 
-/* Recherche désactivée : choix du moteur et clés fermés et grisés, globe éteint. */
+/** Recherche demandée au globe pour la prochaine question seulement (app.js la remet à false). */
+let rechercheUneFois = false;
+
+/* Recherche désactivée : choix du moteur et clés fermés et grisés. Globe allumé pour une question ou toujours. */
 function afficherRecherche() {
-    $('recherche-web').setAttribute('aria-pressed', String(reglages.recherche));
+    $('recherche-web').setAttribute('aria-pressed', String(reglages.recherche || rechercheUneFois));
     $('choix-moteur').inert = !reglages.recherche;
     $('cles-recherche').inert = !reglages.recherche;
     if (!reglages.recherche) {
@@ -225,13 +228,16 @@ $('recherche-reglage').addEventListener('change', () => {
     afficherRecherche();
 });
 
-/* Le globe de la saisie bascule le même réglage, et dit quel moteur servira. */
+/* Le globe demande une recherche pour la prochaine question, et dit quel moteur servira.
+   "Toujours rechercher" le laisse allumé. */
 $('recherche-web').addEventListener('click', () => {
-    reglages.recherche = !reglages.recherche;
-    $('recherche-reglage').checked = reglages.recherche;
-    ecrire('recherche', reglages.recherche ? 'oui' : 'non');
+    if (reglages.recherche) {
+        toast(t('toast.recherche-toujours'));
+        return;
+    }
+    rechercheUneFois = !rechercheUneFois;
     afficherRecherche();
-    toast(reglages.recherche
+    toast(rechercheUneFois
         ? t('toast.recherche-activee', { nom: Recherche.MOTEURS[reglages.fournisseur].nom })
         : t('toast.recherche-desactivee'));
 });

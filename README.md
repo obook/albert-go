@@ -32,7 +32,7 @@ On écrit une formule d'appel ("Madame,", "Monsieur le directeur,") puis les id�
 
 ### Recherche web
 
-Activation dans Réglages. Le modèle reçoit un outil de recherche et décide seul de l'appeler. Les mots cherchés s'affichent sous la réponse.
+Le globe de la barre de saisie fait passer la question suivante par une recherche ; "Toujours rechercher", dans Réglages, le fait pour chaque question. Le moteur se choisit dans Réglages. Les mots cherchés et les pages consultées s'affichent sous la réponse.
 
 ### Outils
 
@@ -49,7 +49,7 @@ Chaque demande donne aussi au modèle son nom. Dans Discussion, la date et l'heu
 
 ### Réglages
 
-Choix du modèle, température et contexte. Si le contexte est désactivé, seule la dernière question part. Un trait en bas de la zone de saisie montre la part du contexte du modèle occupée par la conversation (rouge au-delà de 80 %).
+Choix du modèle, température et contexte. Si le contexte est désactivé, seule la dernière question part.
 
 ### Langues
 
