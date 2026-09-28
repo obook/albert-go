@@ -1,6 +1,6 @@
 /*
  * cle.js
- * Écran de la clé : vérification auprès d'Albert, puis enregistrement.
+ * Écran de la clé : vérification auprès d'Albert, enregistrement, puis le chat.
  *
  * Une clé refusée n'est jamais enregistrée. La clé déjà enregistrée est
  * revérifiée au démarrage par chargerModeles (reglages.js).
@@ -12,13 +12,9 @@
  */
 'use strict';
 
-/** Clé acceptée par Albert, en attente du clic sur "Commencer". */
-let cleAcceptee = null;
-
 /**
- * Vérifie la clé saisie auprès d'Albert et, si elle est acceptée, active "Commencer".
- *
- * Une clé refusée n'est pas gardée : la boîte reste ouverte avec le message.
+ * Vérifie la clé saisie auprès d'Albert. Acceptée, elle est enregistrée et
+ * le chat s'ouvre ; refusée, la boîte se ferme et un toast dit pourquoi.
  *
  * @returns {Promise<void>}
  */
@@ -35,58 +31,39 @@ async function validerCle() {
         }
     } catch (err) {
         const echec = messageEchec(err);
-        messageCle(echec.texte, true, echec.lien);
+        /* Copie hors de l'adresse officielle : la boîte reste, avec le lien vers la bonne. */
+        if (echec.lien) {
+            messageCle(echec.texte, true, echec.lien);
+        } else {
+            messageCle('', false);
+            $('dialogue-cle').close();
+            toast(echec.texte);
+        }
         return;
     } finally {
         bouton.disabled = false;
-    }
-    messageCle('', false);
-    cleAcceptee = cle;
-    $('cle').value = '';
-    $('dialogue-cle').close();
-    /* À l'écran une coche seule ; le lecteur d'écran lit "Clé acceptée". */
-    const coche = document.createElement('span');
-    coche.setAttribute('aria-hidden', 'true');
-    coche.textContent = '✓';
-    const texte = document.createElement('span');
-    texte.className = 'visuellement-cache';
-    texte.textContent = t('cle.acceptee');
-    $('etat-cle').replaceChildren(coche, texte);
-    $('commencer').setAttribute('aria-disabled', 'false');
-}
-
-/**
- * Enregistre la clé acceptée et ouvre le chat.
- */
-function commencer() {
-    /* aria-disabled et non disabled : un toucher sur téléphone doit pouvoir dire pourquoi. */
-    if (!cleAcceptee) {
-        toast(t('toast.cle-d-abord'));
-        return;
     }
     /* Cible pleine : le réglage n'a pas bougé, la case doit le dire. */
     if (!changerPartage(!$('partage-accueil').checked)) {
         $('partage-accueil').checked = !partage;
         toast(t('toast.partage-impossible'));
     }
-    reglages.cle = cleAcceptee;
-    cleAcceptee = null;
-    /* L'accueil revient ainsi à zéro si on quitte plus tard. */
-    $('commencer').setAttribute('aria-disabled', 'true');
-    $('etat-cle').textContent = '';
+    messageCle('', false);
+    $('cle').value = '';
+    reglages.cle = cle;
     ecrire('cle', reglages.cle);
     afficherReglages();
+    /* Ferme aussi la boîte. */
     afficher();
+    placerVolet();
 }
-
-$('commencer').addEventListener('click', commencer);
 
 $('form-cle').addEventListener('submit', (e) => {
     e.preventDefault();
     validerCle();
 });
 
-/* La boîte de saisie s'ouvre depuis l'accueil et se ferme une fois la clé acceptée. */
+/* La boîte de saisie s'ouvre depuis l'accueil et se ferme après la vérification. */
 $('ouvrir-cle').addEventListener('click', () => {
     $('dialogue-cle').showModal();
     $('cle').focus();
