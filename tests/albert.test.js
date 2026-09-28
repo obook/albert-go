@@ -269,3 +269,13 @@ test('wav : en-tête PCM 16 bits mono et échantillons bornés', () => {
     assert.strictEqual(wav.getUint32(40, true), 8);
     assert.deepStrictEqual([0, 1, 2, 3].map(i => wav.getInt16(44 + i * 2, true)), [0, 32767, -32767, 32767]);
 });
+
+test('variantes : blocs séparés par une ligne vide, jamais deux fois de suite la même', () => {
+    const liste = Albert.variantes('Madame,\r\nligne 2\r\n\r\n  \nDeuxième\n\n\nTroisième\n');
+    assert.deepStrictEqual(liste, ['Madame,\nligne 2', 'Deuxième', 'Troisième']);
+    for (let i = 0; i < 50; i++) {
+        assert.notStrictEqual(Albert.autreVariante(liste, 'Deuxième'), 'Deuxième');
+    }
+    assert.strictEqual(Albert.autreVariante(['seule'], 'seule'), 'seule');
+    assert.deepStrictEqual(Albert.variantes(''), []);
+});

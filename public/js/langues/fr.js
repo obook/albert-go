@@ -100,7 +100,7 @@ I18n.TEXTES.fr = {
     'bienvenue.exemple-rediger': 'Madame,\ndemande congé 3 au 7 novembre\ndossiers en cours confiés collègue',
     'bienvenue.exemple-calcul': 'Combien font {p} % de {n} ?',
     'bienvenue.exemple-schema': 'Fais un schéma du cycle de l\'eau, de l\'évaporation au retour à la mer.',
-    'bienvenue.exemple-graphique': 'Trace un graphique en barres des effectifs : 6e 120, 5e 115, 4e 108, 3e 102.',
+    'bienvenue.exemple-graphique': 'Trace un graphique en barres des entrées du cinéma : lundi {lun}, mardi {mar}, mercredi {mer}, jeudi {jeu}, vendredi {ven}, samedi {sam}.',
     'bienvenue.exemple-figure': 'Dessine un triangle rectangle de côtés 3, 4 et 5 cm.',
     'bienvenue.exemple-formule': 'Donne la formule de l\'aire d\'un disque et un exemple avec r = 3 cm.',
     'bienvenue.exemple-tirage': 'Tire au sort un animal parmi : chat, chien, lapin, cheval, tortue.',

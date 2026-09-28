@@ -1,0 +1,9 @@
+Draw a right triangle with sides 3, 4 and 5 cm.
+
+Draw a circle with a radius of 3 cm, with its centre, a radius and a diameter.
+
+Draw a square and its two diagonals.
+
+Draw a regular hexagon inscribed in a circle.
+
+Draw the curve of the square function between -3 and 3.

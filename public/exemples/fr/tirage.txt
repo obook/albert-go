@@ -1,0 +1,9 @@
+Tire au sort un animal parmi : chat, chien, lapin, cheval, tortue.
+
+Tire au sort deux fruits parmi : pomme, poire, banane, kiwi, fraise, cerise.
+
+Tire au sort une couleur parmi : rouge, bleu, vert, jaune, violet.
+
+Répartis au hasard en deux équipes : lion, zèbre, girafe, éléphant, hippopotame, rhinocéros.
+
+Mets dans un ordre au hasard : chat, chien, lapin, cheval, tortue.

@@ -100,7 +100,7 @@ I18n.TEXTES.es = {
     'bienvenue.exemple-rediger': 'Señora:\nsolicitud vacaciones 3 al 7 de noviembre\nexpedientes en curso confiados compañero',
     'bienvenue.exemple-calcul': '¿Cuánto es el {p} % de {n}?',
     'bienvenue.exemple-schema': 'Haz un esquema del ciclo del agua, desde la evaporación hasta el regreso al mar.',
-    'bienvenue.exemple-graphique': 'Traza un gráfico de barras de los alumnos: 1.º 120, 2.º 115, 3.º 108, 4.º 102.',
+    'bienvenue.exemple-graphique': 'Traza un gráfico de barras de las entradas del cine: lunes {lun}, martes {mar}, miércoles {mer}, jueves {jeu}, viernes {ven}, sábado {sam}.',
     'bienvenue.exemple-figure': 'Dibuja un triángulo rectángulo de lados 3, 4 y 5 cm.',
     'bienvenue.exemple-formule': 'Da la fórmula del área de un círculo y un ejemplo con r = 3 cm.',
     'bienvenue.exemple-tirage': 'Sortea un animal entre: gato, perro, conejo, caballo, tortuga.',

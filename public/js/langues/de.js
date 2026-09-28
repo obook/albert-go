@@ -100,7 +100,7 @@ I18n.TEXTES.de = {
     'bienvenue.exemple-rediger': 'Sehr geehrte Frau,\nUrlaubsantrag 3. bis 7. November\nlaufende Akten an Kollegen übergeben',
     'bienvenue.exemple-calcul': 'Wie viel sind {p} % von {n}?',
     'bienvenue.exemple-schema': 'Zeichne ein Schema des Wasserkreislaufs, von der Verdunstung bis zur Rückkehr ins Meer.',
-    'bienvenue.exemple-graphique': 'Zeichne ein Balkendiagramm der Schülerzahlen: Klasse 5 120, Klasse 6 115, Klasse 7 108, Klasse 8 102.',
+    'bienvenue.exemple-graphique': 'Zeichne ein Balkendiagramm der Kinobesucher: Montag {lun}, Dienstag {mar}, Mittwoch {mer}, Donnerstag {jeu}, Freitag {ven}, Samstag {sam}.',
     'bienvenue.exemple-figure': 'Zeichne ein rechtwinkliges Dreieck mit den Seiten 3, 4 und 5 cm.',
     'bienvenue.exemple-formule': 'Gib die Formel für den Flächeninhalt eines Kreises und ein Beispiel mit r = 3 cm an.',
     'bienvenue.exemple-tirage': 'Lose ein Tier aus: Katze, Hund, Kaninchen, Pferd, Schildkröte.',

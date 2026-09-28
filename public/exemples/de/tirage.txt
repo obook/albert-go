@@ -1,0 +1,9 @@
+Lose ein Tier aus: Katze, Hund, Kaninchen, Pferd, Schildkröte.
+
+Lose zwei Früchte aus: Apfel, Birne, Banane, Kiwi, Erdbeere, Kirsche.
+
+Lose eine Farbe aus: Rot, Blau, Grün, Gelb, Violett.
+
+Teile zufällig in zwei Teams auf: Löwe, Zebra, Giraffe, Elefant, Nilpferd, Nashorn.
+
+Bringe in eine zufällige Reihenfolge: Katze, Hund, Kaninchen, Pferd, Schildkröte.

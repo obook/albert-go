@@ -314,6 +314,28 @@ const Albert = {
     },
 
     /**
+     * Variantes d'un fichier d'exemples (public/exemples) : blocs séparés par une ligne vide.
+     *
+     * @param {string} texte - Contenu du fichier.
+     * @returns {string[]} Variantes, sans les espaces autour.
+     */
+    variantes(texte) {
+        return texte.replace(/\r/g, '').split(/\n\s*\n/).map(v => v.trim()).filter(Boolean);
+    },
+
+    /**
+     * Variante tirée au hasard, différente de la précédente quand c'est possible.
+     *
+     * @param {string[]} liste - Variantes (au moins une).
+     * @param {?string} precedente - Variante proposée au dernier clic.
+     * @returns {string} Variante choisie.
+     */
+    autreVariante(liste, precedente) {
+        const autres = liste.length > 1 ? liste.filter(v => v !== precedente) : liste;
+        return autres[Math.floor(Math.random() * autres.length)];
+    },
+
+    /**
      * Fichier WAV (PCM 16 bits, mono) à partir d'échantillons entre -1 et 1.
      *
      * @param {Float32Array} echantillons - Son mono.
