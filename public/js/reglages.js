@@ -236,6 +236,8 @@ afficherRecherche();
 $('recherche-reglage').addEventListener('change', () => {
     reglages.recherche = $('recherche-reglage').checked;
     ecrire('recherche', reglages.recherche ? 'oui' : 'non');
+    /* Recherche tout juste activée : on veut s'en servir, le globe est allumé au retour. */
+    rechercheUneFois = reglages.recherche;
     afficherRecherche();
 });
 
