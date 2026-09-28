@@ -258,15 +258,15 @@ function viderSaisie() {
 }
 
 /**
- * Bouton "Nouvelle discussion" : fil et saisie vides, et retour à Discuter
- * (Rédiger reste sur place, avec des notes vides).
+ * Bouton "Nouvelle discussion" : retour à Discussion, depuis Courrier aussi,
+ * avec un fil et une saisie vides. choisirOutil rouvrirait la dernière
+ * discussion : nouvelleConversation la referme.
  */
 function repartirDeZero() {
-    if (outilActuel === 'discuter' || outilActuel === 'rediger') {
-        nouvelleConversation();
-    } else {
+    if (outilActuel !== 'discuter') {
         choisirOutil('discuter');
     }
+    nouvelleConversation();
     viderSaisie();
 }
 
