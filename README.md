@@ -16,7 +16,7 @@ Chaque utilisateur utilise sa propre clé API. Pour obtenir une clé, consulter 
 | Ortho | Corriger un texte. |
 | Style | Reformuler un texte, avec trois propositions. |
 | Trad | Traduire un texte entre les deux langues choisies. |
-| Rédac | Rédiger un courrier à partir de quelques idées (voir plus bas). |
+| Courrier | Rédiger un courrier à partir de quelques idées (voir plus bas). |
 
 ### Réponses
 
@@ -26,7 +26,7 @@ Les réponses acceptent le Markdown, les formules LaTeX et les diagrammes Mermai
 
 Trombone, glisser-déposer ou Ctrl+V : un fichier texte, un PDF, un .docx ou un .odt est lu dans le navigateur ; une image est transcrite par le modèle Medium, un enregistrement audio par whisper (8 minutes environ au plus), puis le texte part avec la question. Un PDF scanné n'a pas de texte : il se joint comme image.
 
-### Rédac
+### Courrier
 
 On écrit une formule d'appel ("Madame,", "Monsieur le directeur,") puis les idées principales. À chaque pause de frappe, Albert propose le courrier rédigé et corrigé.
 

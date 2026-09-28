@@ -51,7 +51,7 @@ I18n.TEXTES.fr = {
     'invite.traduire': 'Collez le texte à traduire...',
     'invite.corriger': 'Collez le texte à corriger...',
     'outil.rediger': 'Rédiger',
-    'module.rediger': 'Rédac',
+    'module.rediger': 'Courrier',
     'invite.rediger': 'Madame, Monsieur... puis vos idées principales, une par ligne.',
     'notes.label': 'Notes du courrier',
 
