@@ -103,7 +103,7 @@ I18n.TEXTES.de = {
     'bienvenue.exemple-graphique': 'Zeichne ein Balkendiagramm der Schülerzahlen: Klasse 5 120, Klasse 6 115, Klasse 7 108, Klasse 8 102.',
     'bienvenue.exemple-figure': 'Zeichne ein rechtwinkliges Dreieck mit den Seiten 3, 4 und 5 cm.',
     'bienvenue.exemple-formule': 'Gib die Formel für den Flächeninhalt eines Kreises und ein Beispiel mit r = 3 cm an.',
-    'bienvenue.exemple-tirage': 'Lose aus: Léa, Tom, Inès, Noah, Jade.',
+    'bienvenue.exemple-tirage': 'Lose einen Namen aus: Léa, Tom, Inès, Noah, Jade.',
     'bienvenue.exemple-recherche': 'Wer hat die Brailleschrift erfunden, und wann?',
     'bienvenue.exemple-division': 'Wie viel ist {a} geteilt durch {b}?',
     'bienvenue.exemple-division-environ': 'Wie viel ist ungefähr {a} geteilt durch {b}?',
