@@ -37,6 +37,8 @@
     color: var(--texte);
 }
 .rouge { color: var(--rouge); }
+/* Titre du volet sans gras ; celui de l'en-tête le garde. */
+#titre-menu { font-weight: 400; }
 
 /* Albert interrogé (affichage.js, interroger) : un reflet rouge parcourt le bas de l'en-tête. */
 .entete { position: relative; }
