@@ -41,7 +41,7 @@ Dans Chat, quatre outils sont activés par défaut ; on peut les désactiver dan
 | Outil | Rôle |
 |---|---|
 | Calculatrice | Calcul exact avec [math.js](https://mathjs.org/) : opérations, puissances, racines, trigonométrie en degrés, logarithmes, fractions exactes, factorielles et combinaisons, unités ; décomposition en facteurs premiers, PGCD et PPCM ; statistiques d'une série (moyenne, médiane, variance, écart-type, quartiles du lycée). |
-| Tirage au sort | Ordre de passage, éléments tirés ou groupes, avec le générateur aléatoire du navigateur. |
+| Tirage aléatoire | Ordre de passage, éléments tirés ou groupes, avec le générateur aléatoire du navigateur. |
 | Calendrier | Date et heure actuelles ou dans N heures, jour de la semaine d'une date, date dans N jours, nombre de jours entre deux dates. |
 | Compteur | Nombre de mots et de caractères d'un texte. |
 
