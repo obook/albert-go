@@ -44,6 +44,10 @@ function afficherTheme() {
 $('ouvrir-menu').addEventListener('click', () => {
     /* Grand écran : le bouton replie ou déplie la colonne, et s'en souvient. */
     if (GRAND_ECRAN.matches) {
+        /* Bouton masqué pendant le glissement (0.2s, entete.css), puis fondu. */
+        if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            $('ouvrir-menu').animate({ opacity: [0, 0, 1] }, 400);
+        }
         if ($('menu').open) {
             $('menu').close();
             ecrire('volet', 'replie');
@@ -51,6 +55,7 @@ $('ouvrir-menu').addEventListener('click', () => {
             montrerVolet();
             ecrire('volet', null);
         }
+        rangerBouton();
         return;
     }
     $('recherche-historique').value = '';
@@ -91,16 +96,39 @@ function montrerVolet() {
 }
 
 /**
+ * Range le bouton du volet : à gauche du titre du volet ouvert en colonne,
+ * dans l'en-tête sinon (entete.css). Le déplacer lui fait perdre le focus.
+ */
+function rangerBouton() {
+    const bouton = $('ouvrir-menu');
+    const avaitLeFocus = document.activeElement === bouton;
+    if (GRAND_ECRAN.matches && $('menu').open) {
+        document.querySelector('.volet-contenu').prepend(bouton);
+    } else {
+        document.querySelector('.entete').prepend(bouton);
+    }
+    if (avaitLeFocus) {
+        bouton.focus();
+    }
+}
+
+/**
  * Ouvre le volet en colonne sur grand écran, le referme sinon.
  * Sans clé, l'accueil s'affiche volet fermé.
  */
 function placerVolet() {
+    /* Pas de glissement ici (chargement, changement de format) : seul le bouton anime. */
+    document.body.classList.add('sans-glisse');
     if ($('menu').open) {
         $('menu').close();
     }
     if (GRAND_ECRAN.matches && reglages.cle && lire('volet', null) !== 'replie') {
         montrerVolet();
     }
+    rangerBouton();
+    /* Lire une taille calcule les styles tant que les transitions sont coupées. */
+    void document.body.offsetWidth;
+    document.body.classList.remove('sans-glisse');
 }
 GRAND_ECRAN.addEventListener('change', placerVolet);
 placerVolet();
