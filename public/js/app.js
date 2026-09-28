@@ -246,7 +246,19 @@ function nouvelleConversation() {
 }
 
 /**
- * Bouton "Nouvelle conversation" : fil vide, et retour à Discuter
+ * Saisie vide et globe éteint : une conversation neuve ou rouverte part sans question en attente.
+ * Pas dans nouvelleConversation : en changeant de module, la saisie suit.
+ */
+function viderSaisie() {
+    $('saisie').value = '';
+    position = -1;
+    brouillon = '';
+    rechercheUneFois = false;
+    afficherRecherche();
+}
+
+/**
+ * Bouton "Nouvelle discussion" : fil et saisie vides, et retour à Discuter
  * (Rédiger reste sur place, avec des notes vides).
  */
 function repartirDeZero() {
@@ -255,6 +267,7 @@ function repartirDeZero() {
     } else {
         choisirOutil('discuter');
     }
+    viderSaisie();
 }
 
 $('nouvelle').addEventListener('click', repartirDeZero);

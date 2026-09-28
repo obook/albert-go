@@ -324,6 +324,7 @@ function ligneHistorique(entree) {
     bouton.title = libelle + '\n' + I18n.dateHeure(entree.date);
     bouton.addEventListener('click', () => {
         rouvrirConversation(entree);
+        viderSaisie();
     });
     /* Appui long ou clic droit : même menu que le bouton de suppression. */
     armerAppuiLong(bouton, () => {
