@@ -32,7 +32,7 @@ On écrit une formule d'appel ("Madame,", "Monsieur le directeur,") puis les id�
 
 ### Recherche web
 
-Le globe de la barre de saisie fait passer la question suivante par une recherche ; "Toujours rechercher", dans Réglages, le fait pour chaque question. Le moteur se choisit dans Réglages. Les mots cherchés et les pages consultées s'affichent sous la réponse.
+Activation et choix du moteur dans Réglages. Le globe de la barre de saisie apparaît alors : il fait passer la question suivante par une recherche. Les mots cherchés et les pages consultées s'affichent sous la réponse.
 
 ### Outils
 

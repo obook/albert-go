@@ -211,9 +211,20 @@ $('cx-recherche').addEventListener('change', () => {
 /** Recherche demandée au globe pour la prochaine question seulement (app.js la remet à false). */
 let rechercheUneFois = false;
 
-/* Recherche désactivée : choix du moteur et clés fermés et grisés. Globe allumé pour une question ou toujours. */
+/* Réglages autorise la recherche ; le globe s'en sert, question par question.
+   Sans autorisation, ni globe ni suggestion "Faire une recherche" ; choix du
+   moteur et clés fermés et grisés. Le globe n'existe que dans Discussion. */
 function afficherRecherche() {
-    $('recherche-web').setAttribute('aria-pressed', String(reglages.recherche || rechercheUneFois));
+    if (!reglages.recherche) {
+        rechercheUneFois = false;
+    }
+    /* Premier appel avant modules.js, qui déclare outilActuel : la barre suit au démarrage. */
+    const discussion = typeof outilActuel === 'undefined' || outilActuel === 'discuter';
+    $('recherche-web').hidden = !reglages.recherche || !discussion;
+    $('recherche-web').setAttribute('aria-pressed', String(rechercheUneFois));
+    for (const suggestion of document.querySelectorAll('.suggestion[data-recherche]')) {
+        suggestion.hidden = !reglages.recherche;
+    }
     $('choix-moteur').inert = !reglages.recherche;
     $('cles-recherche').inert = !reglages.recherche;
     if (!reglages.recherche) {
@@ -225,16 +236,13 @@ afficherRecherche();
 $('recherche-reglage').addEventListener('change', () => {
     reglages.recherche = $('recherche-reglage').checked;
     ecrire('recherche', reglages.recherche ? 'oui' : 'non');
+    /* Recherche tout juste activée : on veut s'en servir, le globe est allumé au retour. */
+    rechercheUneFois = reglages.recherche;
     afficherRecherche();
 });
 
-/* Le globe demande une recherche pour la prochaine question, et dit quel moteur servira.
-   "Toujours rechercher" le laisse allumé. */
+/* Le globe demande une recherche pour la prochaine question, et dit quel moteur servira. */
 $('recherche-web').addEventListener('click', () => {
-    if (reglages.recherche) {
-        toast(t('toast.recherche-toujours'));
-        return;
-    }
     rechercheUneFois = !rechercheUneFois;
     afficherRecherche();
     const nom = Recherche.MOTEURS[reglages.fournisseur].nom;
