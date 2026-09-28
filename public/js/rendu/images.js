@@ -14,15 +14,16 @@
 Object.assign(Rendu, {
     /**
      * Affiche au-dessus d'un lien vers Commons l'image qu'il désigne, avec son
-     * crédit. Seulement si l'outil Images est activé : Wikimedia voit
-     * alors l'adresse IP.
+     * crédit. Seulement si la réponse a cherché ses images (globe allumé) et
+     * qu'Internet est toujours autorisé : Wikimedia voit alors l'adresse IP.
+     * Un lien écrit de mémoire par le modèle reste un lien.
      *
      * @param {HTMLElement} element - Conteneur de la réponse.
+     * @param {boolean} [cherchees] - true si l'outil d'images a servi pour cette réponse.
      * @returns {Promise<void>}
      */
-    async imagesCommons(element) {
-        /* Image chargée à l'affichage : Internet autorisé suffit, sans le globe. */
-        if (!reglages.recherche) {
+    async imagesCommons(element, cherchees = false) {
+        if (!cherchees || !reglages.recherche) {
             return;
         }
         const vus = new Set();

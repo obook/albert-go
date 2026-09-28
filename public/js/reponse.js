@@ -215,11 +215,12 @@ function suivreBulle(element) {
  *
  * @param {HTMLElement} element - Conteneur de la réponse.
  * @param {string} texte - Réponse en Markdown.
+ * @param {boolean} images - true si la réponse a cherché des images Commons.
  * @returns {Promise<void>} Terminée après le rendu final.
  */
-async function devoiler(element, texte) {
+async function devoiler(element, texte, images) {
     if (texte.length < 40 || matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        return Rendu.afficher(element, texte);
+        return Rendu.afficher(element, texte, images);
     }
     element.setAttribute('aria-busy', 'true');
     let part = 0, debut = performance.now();
@@ -229,7 +230,7 @@ async function devoiler(element, texte) {
         await new Promise(resoudre => setTimeout(resoudre, INTERVALLE_DEVOILEMENT));
         part = (performance.now() - debut) / DUREE_DEVOILEMENT;
     }
-    await Rendu.afficher(element, texte);
+    await Rendu.afficher(element, texte, images);
     suivreBulle(element);
     element.removeAttribute('aria-busy');
 }
@@ -257,10 +258,12 @@ function bulleReponse(texte, titre, langue, animer = false, recherches = null) {
     }
     const contenu = document.createElement('div');
     contenu.className = 'texte rendu';
+    /* Images Commons montrées seulement si l'outil d'images a servi à cette réponse. */
+    const imagesCherchees = (recherches || []).some(r => r && r.image_commons);
     if (animer) {
-        devoiler(contenu, texte);
+        devoiler(contenu, texte, imagesCherchees);
     } else {
-        Rendu.afficher(contenu, texte);
+        Rendu.afficher(contenu, texte, imagesCherchees);
     }
 
     const actions = document.createElement('div');
