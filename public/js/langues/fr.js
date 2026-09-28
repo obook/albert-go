@@ -42,7 +42,7 @@ I18n.TEXTES.fr = {
     'outil.corriger': 'Corriger',
     'outil.reformuler': 'Reformuler',
     'outil.traduire': 'Traduire',
-    'module.discuter': 'Chat',
+    'module.discuter': 'Discussion',
     'module.corriger': 'Ortho',
     'module.reformuler': 'Style',
     'module.traduire': 'Trad',

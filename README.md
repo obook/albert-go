@@ -12,7 +12,7 @@ Chaque utilisateur utilise sa propre clé API. Pour obtenir une clé, consulter 
 
 | Module | Rôle |
 |---|---|
-| Chat | Discuter avec Albert. |
+| Discussion | Discuter avec Albert. |
 | Ortho | Corriger un texte. |
 | Style | Reformuler un texte, avec trois propositions. |
 | Trad | Traduire un texte entre les deux langues choisies. |
@@ -36,7 +36,7 @@ Activation dans Réglages. Le modèle reçoit un outil de recherche et décide s
 
 ### Outils
 
-Dans Chat, quatre outils sont activés par défaut ; on peut les désactiver dans Réglages > Outils. Tout se passe dans le navigateur. Le modèle décide seul de s'en servir ; quand un outil a servi, son icône apparaît sous la réponse et un clic montre ce qu'il a fait.
+Dans Discussion, quatre outils sont activés par défaut ; on peut les désactiver dans Réglages > Outils. Tout se passe dans le navigateur. Le modèle décide seul de s'en servir ; quand un outil a servi, son icône apparaît sous la réponse et un clic montre ce qu'il a fait.
 
 | Outil | Rôle |
 |---|---|
@@ -45,7 +45,7 @@ Dans Chat, quatre outils sont activés par défaut ; on peut les désactiver dan
 | Calendrier | Date et heure actuelles ou dans N heures, jour de la semaine d'une date, date dans N jours, nombre de jours entre deux dates. |
 | Compteur | Nombre de mots et de caractères d'un texte. |
 
-Chaque demande donne aussi au modèle son nom. Dans Chat, la date et l'heure viennent du Calendrier : son icône sous la réponse montre qu'elles viennent de l'appareil et non du modèle. Calendrier désactivé, ou dans les autres modules, elles partent avec chaque demande.
+Chaque demande donne aussi au modèle son nom. Dans Discussion, la date et l'heure viennent du Calendrier : son icône sous la réponse montre qu'elles viennent de l'appareil et non du modèle. Calendrier désactivé, ou dans les autres modules, elles partent avec chaque demande.
 
 ### Réglages
 
