@@ -46,9 +46,6 @@ const ICONES = {
     points: '<svg class="plein" viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>'
 };
 
-/** Consommation du dernier échange, pour la jauge de contexte. */
-let dernierUsage = null;
-
 /** Minuteur qui masque le toast. */
 let minuteurToast = null;
 
@@ -124,7 +121,9 @@ function textePartage(actif) {
  */
 function afficherReglages() {
     const modele = modeleActuel();
-    const pourcent = Albert.occupation(dernierUsage, modele.contexte);
+    /* Consommation de la dernière réponse, gardée avec la conversation. */
+    const derniere = conversation.findLast(m => m.usage);
+    const pourcent = Albert.occupation(derniere && derniere.usage, modele.contexte);
 
     let contexte = t('contexte.sans');
     if (reglages.memoire) {
