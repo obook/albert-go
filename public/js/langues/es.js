@@ -103,7 +103,7 @@ I18n.TEXTES.es = {
     'bienvenue.exemple-graphique': 'Traza un gráfico de barras de los alumnos: 1.º 120, 2.º 115, 3.º 108, 4.º 102.',
     'bienvenue.exemple-figure': 'Dibuja un triángulo rectángulo de lados 3, 4 y 5 cm.',
     'bienvenue.exemple-formule': 'Da la fórmula del área de un círculo y un ejemplo con r = 3 cm.',
-    'bienvenue.exemple-tirage': 'Sortea: Léa, Tom, Inès, Noah, Jade.',
+    'bienvenue.exemple-tirage': 'Sortea un nombre entre: Léa, Tom, Inès, Noah, Jade.',
     'bienvenue.exemple-recherche': '¿Quién inventó el braille y cuándo?',
     'bienvenue.exemple-division': '¿Cuánto es {a} dividido entre {b}?',
     'bienvenue.exemple-division-environ': '¿Cuánto es aproximadamente {a} dividido entre {b}?',

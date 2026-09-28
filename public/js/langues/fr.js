@@ -103,7 +103,7 @@ I18n.TEXTES.fr = {
     'bienvenue.exemple-graphique': 'Trace un graphique en barres des effectifs : 6e 120, 5e 115, 4e 108, 3e 102.',
     'bienvenue.exemple-figure': 'Dessine un triangle rectangle de côtés 3, 4 et 5 cm.',
     'bienvenue.exemple-formule': 'Donne la formule de l\'aire d\'un disque et un exemple avec r = 3 cm.',
-    'bienvenue.exemple-tirage': 'Tire au sort : Léa, Tom, Inès, Noah, Jade.',
+    'bienvenue.exemple-tirage': 'Tire au sort un nom parmi : Léa, Tom, Inès, Noah, Jade.',
     'bienvenue.exemple-recherche': 'Qui a inventé le braille, et quand ?',
     'bienvenue.exemple-division': 'Combien font {a} divisé par {b} ?',
     'bienvenue.exemple-division-environ': 'Combien font environ {a} divisé par {b} ?',
