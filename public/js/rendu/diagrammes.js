@@ -198,7 +198,7 @@ Object.assign(Rendu, {
         const boutons = document.createElement('div');
         boutons.className = 'boutons-figure';
         boutons.append(boutonSvg, boutonPng);
-        conteneur.append(svg, boutons);
+        conteneur.append(boutons, svg);
         bloc.parentElement.replaceWith(conteneur);
     },
 
