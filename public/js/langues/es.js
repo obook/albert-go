@@ -140,7 +140,7 @@ I18n.TEXTES.es = {
     'reglages.calcul': 'Calculadora',
     'reglages.calendrier': 'Calendario',
     'reglages.compteur': 'Contador de palabras y caracteres',
-    'reglages.tirage': 'Sorteo',
+    'reglages.tirage': 'Sorteo aleatorio',
     'reglages.aide-outils': 'La IA decide sola usarlas cuando las necesita.',
     'reglages.recherche-active': 'Búsqueda:',
     'moteur.wikipedia': 'Enciclopedia generalista',
