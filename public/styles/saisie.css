@@ -108,7 +108,11 @@
     color: var(--texte-doux);
 }
 .saisie .recherche-web, .saisie .joindre:has(+ .recherche-web[hidden]) { margin-right: auto; }
-.saisie .joindre:hover, .saisie .recherche-web:hover { background: var(--bulle); }
+/* Survol à la souris seulement : au doigt, :hover reste collé après un toucher
+   et le globe éteint gardait le fond gris de l'état activé. */
+@media (hover: hover) {
+    .saisie .joindre:hover, .saisie .recherche-web:hover { background: var(--bulle); }
+}
 /* Recherche activée : globe foncé sur fond gris. */
 .saisie .recherche-web[aria-pressed="true"] { background: var(--bulle); color: var(--texte); }
 
