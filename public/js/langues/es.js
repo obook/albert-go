@@ -83,7 +83,7 @@ I18n.TEXTES.es = {
     'cle.saisir': 'Introducir',
     'cle.titre-boite': 'Clave API',
     'bienvenue.texte': 'Algunas ideas para empezar:',
-    'bienvenue.corriger': 'Corregir un texto',
+    'bienvenue.corriger': 'Corregir',
     'bienvenue.reformuler': 'Reformular',
     'bienvenue.traduire': 'Traducir',
     'bienvenue.rediger': 'Redactar una carta',

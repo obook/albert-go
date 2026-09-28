@@ -83,7 +83,7 @@ I18n.TEXTES.de = {
     'cle.saisir': 'Eingeben',
     'cle.titre-boite': 'API-Schlüssel',
     'bienvenue.texte': 'Ein paar Ideen für den Anfang:',
-    'bienvenue.corriger': 'Einen Text korrigieren',
+    'bienvenue.corriger': 'Korrigieren',
     'bienvenue.reformuler': 'Umformulieren',
     'bienvenue.traduire': 'Übersetzen',
     'bienvenue.rediger': 'Einen Brief schreiben',
