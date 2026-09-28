@@ -76,6 +76,7 @@ I18n.TEXTES.de = {
     /* Schlüsselbildschirm. */
     'cle.intro': 'Die KI des französischen Staates zum Chatten, Korrigieren, Umformulieren, Übersetzen und Schreiben. Zugang nur für Beschäftigte im öffentlichen Dienst.',
     'cle.etape-acces': 'Noch kein Schlüssel?',
+    'cle.etape-saisie': 'Ich habe einen Schlüssel',
     'cle.exemple': 'sk-...',
     'cle.souvenir': 'Im Browser behalten, jederzeit löschbar',
     'cle.ou-va': 'Wohin geht mein Schlüssel?',

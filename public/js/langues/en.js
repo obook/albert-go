@@ -76,6 +76,7 @@ I18n.TEXTES.en = {
     /* Key screen. */
     'cle.intro': 'The French State AI to chat, correct, rephrase, translate and write. Access reserved for public servants.',
     'cle.etape-acces': 'No key yet?',
+    'cle.etape-saisie': 'I have a key',
     'cle.exemple': 'sk-...',
     'cle.souvenir': 'Keep it in this browser, erasable at any time',
     'cle.ou-va': 'Where does my key go?',

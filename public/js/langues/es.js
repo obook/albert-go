@@ -76,6 +76,7 @@ I18n.TEXTES.es = {
     /* Pantalla de la clave. */
     'cle.intro': 'La IA del Estado francés para charlar, corregir, reformular, traducir y redactar. Acceso reservado a los agentes públicos.',
     'cle.etape-acces': '¿Todavía sin clave?',
+    'cle.etape-saisie': 'Tengo una clave',
     'cle.exemple': 'sk-...',
     'cle.souvenir': 'Conservarla en este navegador, borrable en cualquier momento',
     'cle.ou-va': '¿Adónde va mi clave?',

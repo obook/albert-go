@@ -76,6 +76,7 @@ I18n.TEXTES.fr = {
     /* Écran de la clé. */
     'cle.intro': 'L\'IA de l\'État pour discuter, corriger, reformuler, traduire et rédiger. Accès réservé aux agents publics.',
     'cle.etape-acces': 'Pas encore de clé ?',
+    'cle.etape-saisie': 'J\'ai une clé',
     'cle.exemple': 'sk-...',
     'cle.souvenir': 'La conserver dans ce navigateur, effaçable à tout moment',
     'cle.ou-va': 'Où va ma clé ?',
