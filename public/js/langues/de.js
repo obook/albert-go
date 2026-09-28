@@ -140,7 +140,7 @@ I18n.TEXTES.de = {
     'reglages.calcul': 'Taschenrechner',
     'reglages.calendrier': 'Kalender',
     'reglages.compteur': 'Wort- und Zeichenzähler',
-    'reglages.tirage': 'Auslosung',
+    'reglages.tirage': 'Zufallsziehung',
     'reglages.aide-outils': 'Die KI entscheidet selbst, sie bei Bedarf zu verwenden.',
     'reglages.recherche-active': 'Suche:',
     'moteur.wikipedia': 'Allgemeine Enzyklopädie',
