@@ -68,6 +68,8 @@ laissait les colonnes rétrécir jusqu'à une lettre. Trop large, le tableau dé
 }
 .rendu th { background: var(--bleu-clair); }
 .rendu .katex-display { overflow-x: auto; overflow-y: hidden; }
+/* Formule trop longue, redessinée en ligne (rendu.js) : centrée, elle passe à la ligne. */
+.rendu .formule-longue { display: block; margin: 1em 0; text-align: center; }
 /* Fond blanc même en thème sombre : Mermaid dessine en thème clair. */
 .rendu .diagramme {
     position: relative;
