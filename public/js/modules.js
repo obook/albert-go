@@ -126,6 +126,8 @@ function afficherOutil() {
         }
     }
     $('outil-actif').textContent = t('module.' + outilActuel);
+    /* Seule Discussion a les outils, recherche comprise (outils-modele.js). */
+    $('recherche-web').hidden = outilActuel !== 'discuter';
     $('saisie').placeholder = t('invite.' + outilActuel);
     $('langues').hidden = outilActuel !== 'traduire';
     /* Le CSS n'affiche la bienvenue que dans Chat. */

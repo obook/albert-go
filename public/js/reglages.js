@@ -153,6 +153,7 @@ for (const [nom, local] of Object.entries(OUTILS_LOCAUX)) {
 
 /* Même globe que sous une réponse qui a cherché sur le web. */
 $('recherche-reglage').insertAdjacentHTML('afterend', '<span class="icone-outil">' + ICONES.globe + '</span>');
+$('recherche-web').innerHTML = ICONES.globe;
 $('images-reglage').insertAdjacentHTML('afterend', '<span class="icone-outil">' + ICONES.image + '</span>');
 $('images-reglage').checked = reglages.images;
 $('images-reglage').addEventListener('change', () => {
@@ -207,8 +208,9 @@ $('cx-recherche').addEventListener('change', () => {
     ecrire('cx', reglages.cx);
 });
 
-/* Recherche désactivée : choix du moteur et clés fermés et grisés. */
+/* Recherche désactivée : choix du moteur et clés fermés et grisés, globe éteint. */
 function afficherRecherche() {
+    $('recherche-web').setAttribute('aria-pressed', String(reglages.recherche));
     $('choix-moteur').inert = !reglages.recherche;
     $('cles-recherche').inert = !reglages.recherche;
     if (!reglages.recherche) {
@@ -221,6 +223,17 @@ $('recherche-reglage').addEventListener('change', () => {
     reglages.recherche = $('recherche-reglage').checked;
     ecrire('recherche', reglages.recherche ? 'oui' : 'non');
     afficherRecherche();
+});
+
+/* Le globe de la saisie bascule le même réglage, et dit quel moteur servira. */
+$('recherche-web').addEventListener('click', () => {
+    reglages.recherche = !reglages.recherche;
+    $('recherche-reglage').checked = reglages.recherche;
+    ecrire('recherche', reglages.recherche ? 'oui' : 'non');
+    afficherRecherche();
+    toast(reglages.recherche
+        ? t('toast.recherche-activee', { nom: Recherche.MOTEURS[reglages.fournisseur].nom })
+        : t('toast.recherche-desactivee'));
 });
 
 /* Chaque moteur a sa clé : on efface celle de l'autre en changeant. */
