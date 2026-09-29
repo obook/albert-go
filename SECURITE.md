@@ -37,6 +37,11 @@ Navigateur (Pages) -> webhook n8n -> https://albert.api.etalab.gouv.fr
   (`connect-src`).
   Une image écrite par le modèle devient un lien : rien ne se charge sans ce
   contrôle.
+- **Services de l'État :** globe activé, le modèle peut interroger sept API
+  publiques sans clé (mots envoyés à `api-lannuaire.service-public.fr`,
+  `recherche-entreprises.api.gouv.fr`, `data.education.gouv.fr`,
+  `data.geopf.fr`, `geo.api.gouv.fr`, `boamp-datadila.opendatasoft.com`). Les
+  noms des dirigeants d'entreprise ne sont pas transmis au modèle.
 - **Aucun CDN, aucune télémétrie.** Les sept bibliothèques sont servies depuis
   Pages, le QR code est calculé dans le navigateur, et la version affichée dans
   "À propos" est écrite au déploiement : aucune requête vers la forge.

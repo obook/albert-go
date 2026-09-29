@@ -85,7 +85,7 @@ Navigateur -> webhook n8n -> API Albert
 ```
 
 - `public/` : la page (HTML, CSS, JavaScript), publiée sur Pages, avec les bibliothèques embarquées dans `public/vendor/`.
-- `public/js/tools/` : les outils proposés au modèle (calculs, recherche web, images de Commons).
+- `public/js/tools/` : les outils proposés au modèle (calculs, jours ouvrés, contrôle SIRET et IBAN, recherche web, images de Commons, services de l'État).
 - `n8n/albert-proxy.json` : le workflow n8n, à importer dans une instance n8n puis publier.
 
 ## Développement

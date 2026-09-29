@@ -30,6 +30,9 @@ const ICONES = {
     calendrier: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"/>'
         + '<path d="M4 10h16M8 3v4M16 3v4"/></svg>',
     compteur: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 4 8 20M16 4l-2 16M4.5 9h15M4 15h15"/></svg>',
+    /* Bouclier coché : clé de contrôle d'un SIRET ou d'un IBAN. */
+    controle: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3Z"/>'
+        + '<path d="M9 12l2 2 4-4"/></svg>',
     de: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3"/>'
         + '<path d="M8.5 8.5h.01M15.5 8.5h.01M12 12h.01M8.5 15.5h.01M15.5 15.5h.01"/></svg>',
     /* Globe : recherche sur le web. */

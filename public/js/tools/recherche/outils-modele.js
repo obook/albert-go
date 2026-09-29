@@ -1,9 +1,9 @@
 /*
  * tools/recherche/outils-modele.js
- * Boucle d'appels d'outils : le modèle demande une recherche, une image
- * ou un calcul, la page l'exécute et lui rend le résultat.
+ * Boucle d'appels d'outils : le modèle demande une recherche, une image,
+ * un service de l'État ou un calcul, la page l'exécute et lui rend le résultat.
  *
- * Utilise Recherche (recherche.js), OUTILS_LOCAUX (calcul.js) et Albert.
+ * Utilise Recherche (recherche.js), Services (services.js), OUTILS_LOCAUX (calcul.js) et Albert.
  *
  * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
  * Auteur : O. Booklage
@@ -50,14 +50,18 @@ async function executerOutil(appel, signal, faites) {
     if (!mots) {
         return t('recherche.aucun-mot');
     }
+    /* Un service de l'État se cherche et se cite comme une base du moteur. */
+    const service = Services.TABLE[appel.function.name];
     etat(t('etat.recherche', { mots: mots }));
     try {
-        const resultats = await Recherche.chercher(reglages.fournisseur, reglages.cleRecherche, mots, signal);
+        const resultats = service
+            ? await Recherche.chercherBase(service, mots, signal)
+            : await Recherche.chercher(reglages.fournisseur, reglages.cleRecherche, mots, signal);
         const numerotes = Recherche.numeroter(resultats, faites);
         /* Une page déjà citée garde son numéro : elle n'entre pas deux fois. */
         faites.push({
             mots: mots,
-            moteur: reglages.fournisseur,
+            moteur: service ? appel.function.name : reglages.fournisseur,
             sources: numerotes.filter(r => !r.connue).map(r => ({ numero: r.numero, titre: r.titre, url: r.url }))
         });
         return Recherche.formater(numerotes) || t('recherche.aucun-resultat');
@@ -115,8 +119,10 @@ function avecRappel(messages, cherche) {
         ? t('recherche.source-base', { nom: moteur.nom })
         : t('recherche.source-web');
     /* Sans ces rappels, une photo demandée partait en recherche web. */
+    const internet = reglages.recherche && globeActif;
     const rappel = [cherche ? t('recherche.rappel', { source: source }) : '',
-        t(reglages.recherche && globeActif ? 'images.rappel' : 'images.absent'),
+        t(internet ? 'images.rappel' : 'images.absent'),
+        internet ? t('services.rappel') : '',
         /* Sans lui, le modèle reprenait une heure déjà donnée et se trompait de jour. */
         reglages.calendrier ? t('calendrier.rappel') : ''].filter(Boolean).join('\n');
     if (messages[0] && messages[0].role === 'system') {
@@ -156,13 +162,13 @@ function avecDate(messages) {
  * @returns {Promise<Object>} Réponse d'Albert.repondre.
  */
 async function repondreAvecOutils(cle, requete, signal) {
-    /* Internet autorisé dans Réglages et globe activé :
-       recherche (si le moteur a sa clé) et images Wikimedia. */
+    /* Internet autorisé dans Réglages et globe activé : recherche (si le
+       moteur a sa clé), images Wikimedia et services de l'État. */
     const internet = reglages.recherche && globeActif;
     const cherche = internet && (Recherche.sansCle(reglages.fournisseur) || Boolean(reglages.cleRecherche));
     const outils = Object.keys(OUTILS_LOCAUX).filter(nom => reglages[nom]).map(nom => OUTILS_LOCAUX[nom].outil());
     if (internet) {
-        outils.unshift(Recherche.outilImages());
+        outils.unshift(Recherche.outilImages(), ...Services.outils());
     }
     if (cherche) {
         outils.unshift(Recherche.outil(reglages.fournisseur));

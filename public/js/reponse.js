@@ -70,7 +70,7 @@ function boutonRecherches(note, recherches) {
        rouverte doit citer la source qui a servi. Avant, rien ne le notait. */
     const choisi = (recherches.find(r => r && r.moteur) || {}).moteur || reglages.fournisseur;
     /* Le bouton dit où on a cherché : W pour un wiki, globe pour le reste. */
-    const moteur = Recherche.MOTEURS[choisi] || Recherche.MOTEURS.wikipedia;
+    const moteur = Recherche.MOTEURS[choisi] || Services.TABLE[choisi] || Recherche.MOTEURS.wikipedia;
     const bouton = boutonAction(moteur.wiki ? ICONES.wikipedia : ICONES.globe,
         t('reponse.recherches', { nom: moteur.nom }));
     bouton.setAttribute('aria-expanded', 'false');

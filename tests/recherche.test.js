@@ -79,7 +79,7 @@ test('chercherBase : HAL rend ses champs, la description est bornée', async () 
             { label_s: 'Sans adresse' }
         ] } }) };
     };
-    const resultats = await Recherche.chercherBase('hal', 'these');
+    const resultats = await Recherche.chercherBase(Recherche.MOTEURS.hal, 'these');
     assert.ok(vue.includes('q=these'));
     assert.ok(!vue.includes('key='));
     /* Sans adresse, le résultat ne serait pas consultable sous la réponse. */
@@ -111,7 +111,7 @@ test('chercherBase : la requête raccourcit tant que rien ne vient', async () =>
         return { ok: true, json: async () => ({ data: trouve
             ? [{ title: 'Recensement', page: 'https://www.data.gouv.fr/datasets/recensement' }] : [] }) };
     };
-    const resultats = await Recherche.chercherBase('data-gouv', 'quelle est la population');
+    const resultats = await Recherche.chercherBase(Recherche.MOTEURS['data-gouv'], 'quelle est la population');
     assert.strictEqual(vues.length, 4);
     assert.strictEqual(resultats.length, 1);
     assert.strictEqual(resultats[0].title, 'Recensement');
@@ -119,7 +119,7 @@ test('chercherBase : la requête raccourcit tant que rien ne vient', async () =>
 
 test('chercherBase : une base injoignable remonte son code', async () => {
     global.fetch = async () => ({ ok: false, status: 503, json: async () => ({}) });
-    await assert.rejects(Recherche.chercherBase('openalex', 'test'), /503/);
+    await assert.rejects(Recherche.chercherBase(Recherche.MOTEURS.openalex, 'test'), /503/);
 });
 
 test('resumeInverse : le résumé d\'OpenAlex revient en phrase', () => {

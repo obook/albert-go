@@ -187,7 +187,7 @@ const Recherche = {
             return this.chercherMediaWiki(fournisseur, question, signal);
         }
         if (moteur.adresse) {
-            return this.chercherBase(fournisseur, question, signal);
+            return this.chercherBase(moteur, question, signal);
         }
         const mojeek = fournisseur === 'mojeek';
         const adresse = mojeek
@@ -273,18 +273,17 @@ const Recherche = {
      * La requête est raccourcie tant qu'elle ne ramène rien, au plus quatre
      * essais : mieux vaut un résultat approchant que la réponse de mémoire.
      *
-     * @param {string} fournisseur - Clé de MOTEURS portant un champ adresse.
+     * @param {Object} moteur - Entrée de MOTEURS portant un champ adresse, ou service de Services.TABLE.
      * @param {string} question - Texte cherché.
      * @param {AbortSignal} [signal] - Pour annuler avec la question.
      * @returns {Promise<Array<Object>>} Résultats { title, url, desc }.
      */
-    async chercherBase(fournisseur, question, signal) {
-        const moteur = this.MOTEURS[fournisseur];
+    async chercherBase(moteur, question, signal) {
         for (const essai of this.replis(question)) {
             const reponse = await fetch(moteur.adresse(essai, this.NOMBRE), { signal: signal });
             const corps = await reponse.json().catch(() => ({}));
             if (!reponse.ok) {
-                throw new Error(t('recherche.moteur-injoignable', { nom: moteur.nom || fournisseur, status: reponse.status }));
+                throw new Error(t('recherche.moteur-injoignable', { nom: moteur.nom, status: reponse.status }));
             }
             const resultats = moteur.extraire(corps).filter(r => r.url).map(r => ({
                 title: r.title || '',
