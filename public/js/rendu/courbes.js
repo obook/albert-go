@@ -54,6 +54,57 @@ Object.assign(Rendu, {
         return { fonctions, intervalle };
     },
 
+    /** Exposants que l'Unicode sait écrire : x², e⁻ˣ, xⁿ. */
+    EXPOSANTS: { 0: '⁰', 1: '¹', 2: '²', 3: '³', 4: '⁴', 5: '⁵', 6: '⁶', 7: '⁷', 8: '⁸', 9: '⁹',
+        '-': '⁻', '+': '⁺', x: 'ˣ', n: 'ⁿ' },
+
+    /**
+     * Légende d'une courbe en écriture mathématique : "y = x^2" devient
+     * "y = x²", 2*x devient 2x, sqrt(x) devient √x, pi devient π. Un SVG
+     * ne peut pas afficher KaTeX (foreignObject est retiré) : l'Unicode
+     * garde la légende dans les fichiers SVG et PNG.
+     *
+     * @param {string} nom - Ligne du bloc, par exemple "f(x) = 2*x^3".
+     * @returns {string} Légende ; la ligne telle quelle si math.js ne la lit pas.
+     */
+    legendeCourbe(nom) {
+        const egal = nom.indexOf('=');
+        const langue = typeof I18n !== 'undefined' ? I18n.langue : 'fr';
+        const handler = (node, options) => {
+            if (node.type === 'ConstantNode' && typeof node.value === 'number') {
+                return node.value.toLocaleString(langue, { useGrouping: false, maximumSignificantDigits: 10 });
+            }
+            if (node.type === 'SymbolNode' && node.name === 'pi') {
+                return 'π';
+            }
+            if (node.type === 'FunctionNode' && node.fn.name === 'sqrt') {
+                const [arg] = node.args;
+                const texte = arg.toString(options);
+                return '√' + (['SymbolNode', 'ConstantNode', 'ParenthesisNode'].includes(arg.type) ? texte : '(' + texte + ')');
+            }
+            if (node.type === 'OperatorNode' && node.op === '^') {
+                const haut = node.args[1].toString(options).replace(/^\((.*)\)$/, '$1').replace(/\s/g, '');
+                const base = node.args[0].toString(options);
+                return [...haut].every(c => this.EXPOSANTS[c])
+                    ? base + [...haut].map(c => this.EXPOSANTS[c]).join('')
+                    : base + '^' + node.args[1].toString(options);
+            }
+            /* 2x et πx accolés, comme sur le papier ; 2 × 3 ou x × y sinon. */
+            if (node.type === 'OperatorNode' && node.op === '*') {
+                const [gauche, droite] = node.args;
+                const accole = (gauche.type === 'ConstantNode' || (gauche.type === 'SymbolNode' && gauche.name === 'pi'))
+                    && droite.type !== 'ConstantNode' && !(droite.type === 'OperatorNode' && droite.fn === 'unaryMinus');
+                return gauche.toString(options) + (accole ? '' : ' × ') + droite.toString(options);
+            }
+            return undefined;
+        };
+        try {
+            return nom.slice(0, egal).trim() + ' = ' + math.parse(nom.slice(egal + 1)).toString({ handler });
+        } catch (err) {
+            return nom;
+        }
+    },
+
     /**
      * Fonction de x définie par math.js, avec les garde-fous de la
      * calculatrice et les angles en radians.
@@ -157,26 +208,29 @@ Object.assign(Rendu, {
         const c = this.CADRE_COURBE;
         const largeur = c.largeur - c.gauche - c.droite;
         const hauteur = c.hauteur - c.haut - c.bas;
+        /* Légendes au-dessus du cadre : dedans, elles cachaient la courbe (x² passe dans le coin). */
+        const legende = courbes.length * 22;
+        const haut = c.haut + legende;
         const X = x => c.gauche + (x - a) / (b - a) * largeur;
         /* Borné : une valeur immense (1/x près de 0) ne doit pas produire une coordonnée infinie. */
-        const Y = y => Math.max(-1e4, Math.min(1e4, c.haut + (max - y) / (max - min) * hauteur));
+        const Y = y => Math.max(-1e4, Math.min(1e4, haut + (max - y) / (max - min) * hauteur));
         const n = (v) => v.toFixed(1);
         const echapper = (s) => s.replace(/[&<>"]/g, (car) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[car]);
         const langue = typeof I18n !== 'undefined' ? I18n.langue : 'fr';
         const nombre = (v) => v.toLocaleString(langue, { maximumSignificantDigits: 6 });
         /* Axes en 0 s'il est dans le cadre, sinon sur le bord. */
-        const axeX = min <= 0 && max >= 0 ? Y(0) : c.haut + hauteur;
+        const axeX = min <= 0 && max >= 0 ? Y(0) : haut + hauteur;
         const axeY = a <= 0 && b >= 0 ? X(0) : c.gauche;
         const clip = 'cadre-' + Math.random().toString(36).slice(2);
         const morceaux = [
-            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + c.largeur + ' ' + c.hauteur + '" font-size="14">',
-            '<defs><clipPath id="' + clip + '"><rect x="' + c.gauche + '" y="' + c.haut + '" width="' + largeur
+            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + c.largeur + ' ' + (c.hauteur + legende) + '" font-size="14">',
+            '<defs><clipPath id="' + clip + '"><rect x="' + c.gauche + '" y="' + haut + '" width="' + largeur
                 + '" height="' + hauteur + '"/></clipPath></defs>'
         ];
         /* Quadrillage gris moyen : un gris très clair disparaît sur certains écrans. */
         for (const v of this.graduations(a, b)) {
-            morceaux.push('<line x1="' + n(X(v)) + '" y1="' + c.haut + '" x2="' + n(X(v)) + '" y2="' + (c.haut + hauteur) + '" stroke="#d0d0d0"/>',
-                '<text x="' + n(X(v)) + '" y="' + n(Math.min(axeX + 16, c.hauteur - 4)) + '" text-anchor="middle" fill="#333">' + nombre(v) + '</text>');
+            morceaux.push('<line x1="' + n(X(v)) + '" y1="' + haut + '" x2="' + n(X(v)) + '" y2="' + (haut + hauteur) + '" stroke="#d0d0d0"/>',
+                '<text x="' + n(X(v)) + '" y="' + n(Math.min(axeX + 16, c.hauteur + legende - 4)) + '" text-anchor="middle" fill="#333">' + nombre(v) + '</text>');
         }
         for (const v of this.graduations(min, max)) {
             morceaux.push('<line x1="' + c.gauche + '" y1="' + n(Y(v)) + '" x2="' + (c.gauche + largeur) + '" y2="' + n(Y(v)) + '" stroke="#d0d0d0"/>');
@@ -185,7 +239,7 @@ Object.assign(Rendu, {
             }
         }
         morceaux.push('<line x1="' + c.gauche + '" y1="' + n(axeX) + '" x2="' + (c.gauche + largeur) + '" y2="' + n(axeX) + '" stroke="#333" stroke-width="1.2"/>',
-            '<line x1="' + n(axeY) + '" y1="' + c.haut + '" x2="' + n(axeY) + '" y2="' + (c.haut + hauteur) + '" stroke="#333" stroke-width="1.2"/>');
+            '<line x1="' + n(axeY) + '" y1="' + haut + '" x2="' + n(axeY) + '" y2="' + (haut + hauteur) + '" stroke="#333" stroke-width="1.2"/>');
         courbes.forEach((courbe, rang) => {
             let d = '';
             let avant = null;
@@ -201,8 +255,11 @@ Object.assign(Rendu, {
             const couleur = this.COULEURS_COURBE[rang % this.COULEURS_COURBE.length];
             morceaux.push('<path class="courbe" clip-path="url(#' + clip + ')" fill="none" stroke="' + couleur
                 + '" stroke-width="2" stroke-linejoin="round" d="' + d + '"/>',
-                '<text x="' + (c.gauche + 8) + '" y="' + (c.haut + 18 + rang * 18) + '" fill="' + couleur
-                + '" stroke="#fff" stroke-width="3" paint-order="stroke">' + echapper(courbe.nom) + '</text>');
+                '<text x="' + c.gauche + '" y="' + (c.haut + 16 + rang * 22) + '" fill="' + couleur
+                + '" font-family="KaTeX_Main, \'Times New Roman\', serif" font-size="18">'
+                /* Lettres seules en italique, comme dans une formule ; sin, ln, exp restent droits. */
+                + echapper(this.legendeCourbe(courbe.nom)).replace(/(?<![A-Za-z&])([A-Za-z])(?![A-Za-z;])/g, '<tspan font-style="italic">$1</tspan>')
+                + '</text>');
         });
         morceaux.push('</svg>');
         return morceaux.join('');
