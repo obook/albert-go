@@ -16,7 +16,7 @@ const assert = require('node:assert');
 /* math.js, chargé à la demande dans la page, est déjà là pour les tests. */
 globalThis.math = require('../public/vendor/mathjs/math.js');
 require('../public/js/i18n.js');
-const { Calcul, Calendrier, Compteur, Tirage, Statistiques, Facteurs, OUTILS_LOCAUX } = require('../public/js/tools/calcul.js');
+const { Calcul, Calendrier, Compteur, Controle, Tirage, Statistiques, Facteurs, OUTILS_LOCAUX } = require('../public/js/tools/calcul.js');
 
 test('evaluer : priorités, parenthèses, puissance, point décimal', () => {
     assert.strictEqual(Calcul.evaluer('2 + 3 * 4'), 14);
@@ -53,6 +53,43 @@ test('calendrier : jour, décalage, écart, date impossible', () => {
     /* En heures : 24 heures après le 24 septembre à minuit, le 25 à minuit. */
     assert.match(Calendrier.repondre({ date: '2026-09-24', heures: 24 }, 'fr'), /\+ 24 heures : vendredi 25 septembre 2026, 00:00:00/);
     assert.match(Calendrier.repondre({ heures: -2 }, 'fr'), /\+ -2 heures : /);
+});
+
+test('calendrier : jours fériés, dont Pâques et l\'Alsace-Moselle', () => {
+    assert.deepStrictEqual(Calendrier.paques(2026), new Date(2026, 3, 5));
+    assert.deepStrictEqual(Calendrier.paques(2027), new Date(2027, 2, 28));
+    assert.strictEqual(Calendrier.feries(2026).length, 11);
+    assert.strictEqual(Calendrier.feries(2026, true).length, 13);
+    const liste = Calendrier.repondre({ feries: 2026 }, 'fr');
+    assert.match(liste, /lundi 6 avril 2026 \(Lundi de Pâques\)/);
+    assert.match(liste, /jeudi 14 mai 2026 \(Ascension\)/);
+    assert.match(liste, /lundi 25 mai 2026 \(Lundi de Pentecôte\)/);
+    assert.doesNotMatch(liste, /Vendredi saint/);
+    assert.match(Calendrier.repondre({ feries: 2026, alsace_moselle: true }, 'fr'), /vendredi 3 avril 2026 \(Vendredi saint/);
+    assert.throws(() => Calendrier.repondre({ feries: 12 }, 'fr'));
+});
+
+test('calendrier : jours ouvrés, sans week-end ni jour férié', () => {
+    /* Le vendredi 8 mai est férié : trois jours ouvrés après le jeudi 7 mènent au mercredi 13. */
+    assert.match(Calendrier.repondre({ date: '2026-05-07', jours: 3, ouvres: true }, 'fr'), /mercredi 13 mai 2026/);
+    assert.match(Calendrier.repondre({ date: '2026-05-13', jours: 1, ouvres: true }, 'fr'), /vendredi 15 mai 2026/);
+    assert.match(Calendrier.repondre({ date: '2026-05-11', jours: -1, ouvres: true }, 'fr'), /jeudi 7 mai 2026/);
+    /* Mai 2026 : 21 jours de semaine, dont 4 fériés. */
+    assert.match(Calendrier.repondre({ date: '2026-05-01', fin: '2026-05-31', ouvres: true }, 'fr'), /^17 jours ouvrés/);
+    assert.match(Calendrier.repondre({ date: '2026-05-31', fin: '2026-05-01', ouvres: true }, 'fr'), /^17 jours ouvrés/);
+    assert.throws(() => Calendrier.repondre({ date: '2026-05-07', jours: 100000, ouvres: true }, 'fr'));
+});
+
+test('controle : SIREN, SIRET et IBAN, La Poste à part', async () => {
+    assert.deepStrictEqual(Controle.verifier('130 025 265'), { type: 'SIREN', valide: true });
+    assert.deepStrictEqual(Controle.verifier('13002526500013'), { type: 'SIRET', valide: true });
+    assert.deepStrictEqual(Controle.verifier('13002526500014'), { type: 'SIRET', valide: false });
+    /* Établissement de La Poste : la clé de Luhn est fausse, la somme des chiffres est un multiple de 5. */
+    assert.strictEqual(Controle.verifier('35600000033203').valide, true);
+    assert.deepStrictEqual(Controle.verifier('FR14 2004 1010 0505 0001 3M02 606'), { type: 'IBAN', valide: true });
+    assert.strictEqual(Controle.verifier('FR15 2004 1010 0505 0001 3M02 606').valide, false);
+    assert.throws(() => Controle.verifier('12345'));
+    assert.match(await OUTILS_LOCAUX.controle.executer({ numero: '13002526500014' }, 'fr'), /SIRET 13002526500014/);
 });
 
 test('evaluer : refuse le code et les expressions fausses', () => {
