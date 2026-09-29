@@ -13,7 +13,7 @@
 
 Object.assign(Rendu, {
     /**
-     * Remplace les blocs ```svg et ```mermaid par leur dessin.
+     * Remplace les blocs ```courbe, ```svg et ```mermaid par leur dessin.
      *
      * Un Mermaid refusé est corrigé par le modèle ; s'il reste faux, le
      * code s'affiche avec l'erreur de Mermaid en dessous.
@@ -25,6 +25,10 @@ Object.assign(Rendu, {
         /* Marked garde la casse : ```Mermaid donne language-Mermaid. */
         const blocs = (langue) => [...element.querySelectorAll('pre > code')]
             .filter((code) => new RegExp('(^|\\s)language-' + langue + '(\\s|$)', 'i').test(code.className));
+        /* Courbes calculées ici, jamais tracées à la main (courbes.js). */
+        for (const bloc of blocs('courbe')) {
+            await this.dessinerCourbe(bloc);
+        }
         for (const bloc of blocs('svg')) {
             this.remplacerBloc(bloc, this.assainirSvg(bloc.textContent, this.BALISES_INTERDITES_SVG_MODELE), bloc.textContent);
         }

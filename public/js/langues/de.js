@@ -230,6 +230,7 @@ I18n.TEXTES.de = {
     'reponse.telecharger-png': 'Bild herunterladen (PNG)',
     'reponse.telecharger-image': 'Originalbild herunterladen',
     'reponse.erreur-diagramme': 'Diagramm nicht angezeigt, Mermaid-Fehler: ',
+    'reponse.erreur-courbe': 'Kurve nicht angezeigt: eine Zeile y = ... pro Funktion (x^2, sqrt(x), sin(x) im Bogenmaß), dann x = Anfang .. Ende.',
     'reponse.image-absente': 'Bild auf Wikimedia Commons nicht gefunden.',
     'reponse.correction-diagramme': 'Diagramm wird korrigiert...',
     'mermaid.corriger': 'Korrigiere diesen abgelehnten Mermaid-Code anhand des folgenden Fehlers. Antworte nur mit dem korrigierten Code.',

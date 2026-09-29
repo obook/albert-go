@@ -50,11 +50,13 @@ const Calcul = {
      * au parseur lui-même sont coupées, comme le demande la page Security de
      * math.js : l'expression vient du modèle.
      *
+     * @param {boolean} [radians] - true pour les courbes : sin(x) en radians, comme au lycée.
      * @returns {Function} evaluate de cette instance.
      */
-    moteur() {
-        if (this._evaluer) {
-            return this._evaluer;
+    moteur(radians = false) {
+        const cle = radians ? '_evaluerRadians' : '_evaluer';
+        if (this[cle]) {
+            return this[cle];
         }
         const m = math.create(math.all);
         m.config({ predictable: true });
@@ -62,13 +64,16 @@ const Calcul = {
         const interdit = () => {
             throw new Error(t('calcul.invalide'));
         };
-        m.import({
+        const degres = radians ? {} : {
             sin: x => net(Math.sin(x * RAD)),
             cos: x => net(Math.cos(x * RAD)),
             tan: x => net(Math.sin(x * RAD)) / net(Math.cos(x * RAD)),
             asin: x => Math.asin(x) / RAD,
             acos: x => Math.acos(x) / RAD,
-            atan: x => Math.atan(x) / RAD,
+            atan: x => Math.atan(x) / RAD
+        };
+        m.import({
+            ...degres,
             ln: x => Math.log(x),
             log: x => Math.log10(x),
             pgcd: m.gcd,
@@ -83,7 +88,7 @@ const Calcul = {
             derivative: interdit,
             resolve: interdit
         }, { override: true });
-        this._evaluer = evaluer;
+        this[cle] = evaluer;
         return evaluer;
     },
 

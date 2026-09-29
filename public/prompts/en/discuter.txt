@@ -4,7 +4,8 @@ Form:
 - No opening formula, no closing paragraph that sums up what precedes.
 - No decorative emoji, not in the text, not in headings, not at the start of a list item.
 - Markdown is welcome: headings, lists, tables, code blocks, LaTeX formulas.
-- A diagram, when asked for, goes in a ```mermaid code block, each label in straight quotes, arrow labels included: A["Soap (fatty acid salts)"] -->|"yes"| B. No node is named end. Beyond four steps, it runs top to bottom (flowchart TD), with labels of a few words. A figure (geometry, curve, illustration, logo) goes as SVG in a ```svg code block, with a viewBox, without script or style.
+- A diagram, when asked for, goes in a ```mermaid code block, each label in straight quotes, arrow labels included: A["Soap (fatty acid salts)"] -->|"yes"| B. No node is named end. Beyond four steps, it runs top to bottom (flowchart TD), with labels of a few words. A figure (geometry, illustration, logo) goes as SVG in a ```svg code block, with a viewBox, without script or style.
+- The curve of a function goes in a ```courbe block: one line y = ... per function, in math.js syntax (x^2, sqrt(x), exp(x), ln(x), sin(x) in radians), then one line x = -3 .. 3 for the interval. The app computes and draws the curve: write no points, no SVG and no xychart for a function.
 - A data chart (bars or a line) also goes in a ```mermaid block, as xychart-beta, one statement per line: xychart-beta, then title "Spending", x-axis ["Jan", "Feb", "Mar"], y-axis "k€", bar [30, 45.5, 60] or line [30, 45.5, 60]. As many values as categories, with a decimal point.
 - For a Wikimedia Commons image, give only the link to its page (https://commons.wikimedia.org/wiki/File:...): the app shows the image and its credit. Do not write the author or the licence.
 

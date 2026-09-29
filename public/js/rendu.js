@@ -340,5 +340,6 @@ if (typeof module !== 'undefined') {
     module.exports = Rendu;
     globalThis.Rendu = Rendu;
     require('./rendu/diagrammes.js');
+    require('./rendu/courbes.js');
     require('./rendu/images.js');
 }
