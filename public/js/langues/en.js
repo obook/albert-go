@@ -229,6 +229,7 @@ I18n.TEXTES.en = {
     'reponse.telecharger-png': 'Download the image (PNG)',
     'reponse.telecharger-image': 'Download the original image',
     'reponse.erreur-diagramme': 'Diagram not shown, Mermaid error: ',
+    'reponse.erreur-courbe': 'Curve not shown: write one line y = ... per function (x^2, sqrt(x), sin(x) in radians), then x = start .. end.',
     'reponse.image-absente': 'Image not found on Wikimedia Commons.',
     'reponse.correction-diagramme': 'Fixing the diagram...',
     'mermaid.corriger': 'Fix this rejected Mermaid code, based on the error that follows it. Reply with the fixed code only.',
