@@ -82,7 +82,7 @@ I18n.TEXTES.en = {
     'cle.ou-va': 'Where does my key go?',
     'cle.saisir': 'Enter',
     'cle.titre-boite': 'API key',
-    'bienvenue.texte': 'A few ideas to get started:',
+    'bienvenue.texte': 'A few ideas to get started',
     'bienvenue.corriger': 'Proofread',
     'bienvenue.reformuler': 'Rephrase',
     'bienvenue.traduire': 'Translate',

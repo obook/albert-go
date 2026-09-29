@@ -82,7 +82,7 @@ I18n.TEXTES.es = {
     'cle.ou-va': '¿Adónde va mi clave?',
     'cle.saisir': 'Introducir',
     'cle.titre-boite': 'Clave API',
-    'bienvenue.texte': 'Algunas ideas para empezar:',
+    'bienvenue.texte': 'Algunas ideas para empezar',
     'bienvenue.corriger': 'Corregir',
     'bienvenue.reformuler': 'Reformular',
     'bienvenue.traduire': 'Traducir',
