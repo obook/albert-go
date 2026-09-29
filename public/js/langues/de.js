@@ -43,7 +43,7 @@ I18n.TEXTES.de = {
     'outil.reformuler': 'Umformulieren',
     'outil.traduire': 'Übersetzen',
     'module.discuter': 'Chat',
-    'module.corriger': 'Ortho',
+    'module.corriger': 'Korrektur',
     'module.reformuler': 'Stil',
     'module.traduire': 'Übers',
     'invite.discuter': 'Stellen Sie eine Frage',
