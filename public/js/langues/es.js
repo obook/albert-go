@@ -43,7 +43,7 @@ I18n.TEXTES.es = {
     'outil.reformuler': 'Reformular',
     'outil.traduire': 'Traducir',
     'module.discuter': 'Chat',
-    'module.corriger': 'Ortog',
+    'module.corriger': 'Corrección',
     'module.reformuler': 'Estilo',
     'module.traduire': 'Trad',
     'invite.discuter': 'Haga una pregunta',

@@ -43,7 +43,7 @@ I18n.TEXTES.en = {
     'outil.reformuler': 'Rephrase',
     'outil.traduire': 'Translate',
     'module.discuter': 'Chat',
-    'module.corriger': 'Proof',
+    'module.corriger': 'Proofreading',
     'module.reformuler': 'Style',
     'module.traduire': 'Trans',
     'invite.discuter': 'Ask a question',
