@@ -6,4 +6,4 @@ Zeichne ein Quadrat und seine beiden Diagonalen.
 
 Zeichne ein regelmäßiges Sechseck, das einem Kreis einbeschrieben ist.
 
-Zeichne die Graphen der Quadrat- und der Kubikfunktion zwischen -2 und 2.
+Zeichne die Graphen von y = x, y = x² und y = x³ zwischen -2 und 2.
