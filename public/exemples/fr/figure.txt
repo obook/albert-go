@@ -6,4 +6,4 @@ Dessine un carré et ses deux diagonales.
 
 Dessine un hexagone régulier inscrit dans un cercle.
 
-Trace la courbe de la fonction carré entre -3 et 3.
+Trace les courbes des fonctions carré et cube entre -2 et 2.
