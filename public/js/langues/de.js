@@ -94,7 +94,7 @@ I18n.TEXTES.de = {
     'bienvenue.formule': 'Eine Formel schreiben',
     'bienvenue.tirage': 'Auslosen',
     'bienvenue.recherche': 'Suchen',
-    'bienvenue.exemple-corriger': 'Korrigiere die Fehler: Vielen dank für ihre schnele Antwort, ich stehe ihnen zur verfügung.',
+    'bienvenue.exemple-corriger': 'Vielen dank für ihre schnele Antwort, ich stehe ihnen zur verfügung.',
     'bienvenue.exemple-reformuler': 'Wir teilen Ihnen mit, dass die ursprünglich angesetzte Sitzung aufgrund der Nichtverfügbarkeit eines erheblichen Teils der Teilnehmer auf einen späteren Zeitpunkt verschoben wird, der Ihnen schnellstmöglich mitgeteilt wird.',
     'bienvenue.exemple-traduire': 'Übersetze ins Englische: Hallo, ich möchte nächste Woche einen Termin vereinbaren.',
     'bienvenue.exemple-rediger': 'Sehr geehrte Frau,\nUrlaubsantrag 3. bis 7. November\nlaufende Akten an Kollegen übergeben',
