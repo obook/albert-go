@@ -65,8 +65,26 @@ test('bornesCourbe : une asymptote n\'écrase pas la courbe', () => {
     assert.ok(min <= 0 && max >= 9);
 });
 
+test('legendeCourbe : écriture mathématique, pas la syntaxe de math.js', () => {
+    assert.strictEqual(Rendu.legendeCourbe('y = x^2'), 'y = x²');
+    assert.strictEqual(Rendu.legendeCourbe('f(x) = 2*x^3 - 0.5*x'), 'f(x) = 2x³ - 0,5x');
+    assert.strictEqual(Rendu.legendeCourbe('y = 2x + 1'), 'y = 2x + 1');
+    assert.strictEqual(Rendu.legendeCourbe('y = sqrt(x)'), 'y = √x');
+    assert.strictEqual(Rendu.legendeCourbe('y = sqrt(x + 1)'), 'y = √(x + 1)');
+    assert.strictEqual(Rendu.legendeCourbe('y = e^(-x)'), 'y = e⁻ˣ');
+    assert.strictEqual(Rendu.legendeCourbe('y = sin(pi*x)'), 'y = sin(πx)');
+    assert.strictEqual(Rendu.legendeCourbe('y = -x^2 + 2*3'), 'y = -x² + 2 × 3');
+    assert.strictEqual(Rendu.legendeCourbe('y = x^(1/2)'), 'y = x^(1 / 2)');
+});
+
+test('svgCourbe : légende en italique pour les lettres, comme une formule', () => {
+    const svg = Rendu.svgCourbe('y = x^2\nx = -3 .. 3');
+    assert.match(svg, /<tspan font-style="italic">y<\/tspan> = <tspan font-style="italic">x<\/tspan>²/);
+    assert.doesNotMatch(svg, /x\^2</);
+});
+
 test('svgCourbe : légende échappée, code refusé comme dans la calculatrice', () => {
-    assert.match(Rendu.svgCourbe('y = x & 1 > 0 ? 1 : 0\nx = -1 .. 1'), /y = x &amp; 1 &gt; 0/);
+    assert.match(Rendu.svgCourbe('y = x & 1 > 0 ? 1 : 0\nx = -1 .. 1'), /&amp; 1 &gt; 0/);
     assert.throws(() => Rendu.svgCourbe('y = evaluate("1")\nx = 0 .. 1'));
 });
 
