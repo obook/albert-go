@@ -54,7 +54,7 @@ test('conversation : filtre, alias, ordre, nom court', () => {
     assert.strictEqual(modeles[2].type, 'texte');
 });
 
-test('normaliserModeles : format actuel, id = alias, modèle réel parmi les aliases', () => {
+test('normaliserModeles : format de llm-proxy, id = alias, modèle réel parmi les aliases', () => {
     const liste = [
         { id: 'openweight-large', model_type: 'text-generation', type: 'model',
             aliases: ['openweight-large', 'gpt-oss-120b', 'openai/gpt-oss-120b'] },
