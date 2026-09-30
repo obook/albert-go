@@ -132,8 +132,9 @@ const Albert = {
      *
      * Le type est dans "type", ou dans "model_type" derrière certains proxys.
      * Le modèle réel est l'alias "éditeur/modèle" (ex. openai/gpt-oss-120b) :
-     * Albert met aujourd'hui l'alias dans "id" ; avant, "id" portait le
-     * modèle réel, d'où le repli sur "id".
+     * Albert met un nom court dans "id" (gpt-oss-120b), un relais comme
+     * llm-proxy y met l'alias (openweight-large). Sans alias de cette forme,
+     * "id" sert de repli.
      *
      * @param {Object[]} liste - Modèles bruts renvoyés par /v1/models.
      * @returns {Object[]} Modèles { id, nom, reel, type, contexte }.
