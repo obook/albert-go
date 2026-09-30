@@ -54,6 +54,22 @@ test('conversation : filtre, alias, ordre, nom court', () => {
     assert.strictEqual(modeles[2].type, 'texte');
 });
 
+test('normaliserModeles : format actuel, id = alias, modèle réel parmi les aliases', () => {
+    const liste = [
+        { id: 'openweight-large', model_type: 'text-generation', type: 'model',
+            aliases: ['openweight-large', 'gpt-oss-120b', 'openai/gpt-oss-120b'] },
+        { id: 'deepseek-v4-flash-0731', model_type: 'text-generation', type: 'model',
+            aliases: ['deepseek-v4-flash-0731', 'deepseek-ai/DeepSeek-V4-Flash-0731', 'deepseek-v4-flash'] }
+    ];
+    const modeles = Albert.normaliserModeles(liste);
+    assert.deepStrictEqual(modeles.map(m => [m.id, m.reel]), [
+        ['deepseek-v4-flash-0731', 'deepseek-ai/DeepSeek-V4-Flash-0731'],
+        ['openweight-large', 'openai/gpt-oss-120b']
+    ]);
+    /* Le logo de l'éditeur se lit sur le modèle réel, pas sur l'alias. */
+    assert.strictEqual(Albert.logoEditeur(modeles[1].reel), 'images/editeurs/openai.png');
+});
+
 test('occupation : pourcentage du contexte, borné, inconnu', () => {
     assert.strictEqual(Albert.occupation({ total_tokens: 12800 }, 128000), 10);
     assert.strictEqual(Albert.occupation({ prompt_tokens: 100000, completion_tokens: 40000 }, 128000), 100);

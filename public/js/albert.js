@@ -131,6 +131,9 @@ const Albert = {
      * Garde les modèles de conversation, sans OCR, triés par alias.
      *
      * Le type est dans "type", ou dans "model_type" derrière certains proxys.
+     * Le modèle réel est l'alias "éditeur/modèle" (ex. openai/gpt-oss-120b) :
+     * Albert met aujourd'hui l'alias dans "id" ; avant, "id" portait le
+     * modèle réel, d'où le repli sur "id".
      *
      * @param {Object[]} liste - Modèles bruts renvoyés par /v1/models.
      * @returns {Object[]} Modèles { id, nom, reel, type, contexte }.
@@ -145,7 +148,7 @@ const Albert = {
                 return {
                     id: alias,
                     nom: connu ? connu.nom : this.nomCourt(alias),
-                    reel: m.id,
+                    reel: (m.aliases || []).find(a => a.includes('/')) || m.id,
                     type: (m.model_type || m.type) === 'image-text-to-text' ? 'texte-images' : 'texte',
                     contexte: m.max_context_length || (connu && connu.contexte) || null
                 };
