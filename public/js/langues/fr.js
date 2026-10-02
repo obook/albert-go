@@ -324,7 +324,7 @@ I18n.TEXTES.fr = {
     'erreur.http': 'Erreur {status}.',
     'erreur.http-detail': 'Erreur {status} : {detail}',
     'erreur.relais': 'Relais n8n injoignable. Vérifiez la connexion.',
-    'erreur.relais-hs': 'Relais n8n hors service. Réessayez dans quelques minutes.',
+    'erreur.relais-hs': 'Relais interministériel n8n indisponible. Réessayez plus tard.',
     'erreur.hors-ligne': 'Vous êtes hors ligne. Vérifiez la connexion.',
     'erreur.timeout': 'Albert ne répond pas. Réessayez.',
     'erreur.origine': 'Le relais n8n n\'acceptera pas l\'adresse {origine}. Ouvrez ',

@@ -324,7 +324,7 @@ I18n.TEXTES.en = {
     'erreur.http': 'Error {status}.',
     'erreur.http-detail': 'Error {status}: {detail}',
     'erreur.relais': 'The n8n relay cannot be reached. Check your connection.',
-    'erreur.relais-hs': 'The n8n relay is down. Try again in a few minutes.',
+    'erreur.relais-hs': 'The interministerial n8n relay is unavailable. Try again later.',
     'erreur.hors-ligne': 'You are offline. Check your connection.',
     'erreur.timeout': 'Albert is not answering. Try again.',
     'erreur.origine': 'The n8n relay will not accept the address {origine}. Open ',

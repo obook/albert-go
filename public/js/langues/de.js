@@ -324,7 +324,7 @@ I18n.TEXTES.de = {
     'erreur.http': 'Fehler {status}.',
     'erreur.http-detail': 'Fehler {status}: {detail}',
     'erreur.relais': 'Das n8n-Relais ist nicht erreichbar. Prüfen Sie die Verbindung.',
-    'erreur.relais-hs': 'Das n8n-Relais ist ausgefallen. Versuchen Sie es in einigen Minuten erneut.',
+    'erreur.relais-hs': 'Das interministerielle n8n-Relais ist nicht verfügbar. Versuchen Sie es später erneut.',
     'erreur.hors-ligne': 'Sie sind offline. Prüfen Sie die Verbindung.',
     'erreur.timeout': 'Albert antwortet nicht. Versuchen Sie es erneut.',
     'erreur.origine': 'Das n8n-Relais akzeptiert die Adresse {origine} nicht. Öffnen Sie ',

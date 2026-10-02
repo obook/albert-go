@@ -324,7 +324,7 @@ I18n.TEXTES.es = {
     'erreur.http': 'Error {status}.',
     'erreur.http-detail': 'Error {status}: {detail}',
     'erreur.relais': 'No se puede contactar con el relé n8n. Compruebe la conexión.',
-    'erreur.relais-hs': 'El relé n8n está fuera de servicio. Inténtelo dentro de unos minutos.',
+    'erreur.relais-hs': 'El relé interministerial n8n no está disponible. Inténtelo más tarde.',
     'erreur.hors-ligne': 'Está sin conexión. Compruebe la conexión.',
     'erreur.timeout': 'Albert no responde. Inténtelo de nuevo.',
     'erreur.origine': 'El relé n8n no aceptará la dirección {origine}. Abra ',

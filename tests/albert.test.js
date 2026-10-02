@@ -168,7 +168,7 @@ test('messageErreur : quota', () => {
 });
 
 test('messageErreur : relais hors service', () => {
-    assert.match(Albert.messageErreur(503, null), /hors service/);
+    assert.match(Albert.messageErreur(503, null), /indisponible/);
 });
 
 test('repondre : relais bloqué, la sonde /stats arrête la requête', async () => {
@@ -179,7 +179,7 @@ test('repondre : relais bloqué, la sonde /stats arrête la requête', async () 
         ? Promise.reject(new TypeError('bloqué'))
         : new Promise((_, rejeter) => options.signal.addEventListener('abort', () => rejeter(options.signal.reason)));
     try {
-        await assert.rejects(Albert.repondre('cle', {}, new AbortController().signal), /hors service/);
+        await assert.rejects(Albert.repondre('cle', {}, new AbortController().signal), /indisponible/);
     } finally {
         globalThis.fetch = fetchOrigine;
         Albert.SONDE_MS = sondeOrigine;
