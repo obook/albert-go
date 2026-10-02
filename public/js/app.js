@@ -28,6 +28,43 @@ function messageOrigine() {
     };
 }
 
+/** Délai entre deux vérifications du relais en panne. */
+const RELAIS_MS = 30000;
+let relaisEnPanne = false;
+let minuteurRelais = null;
+
+/**
+ * Vérifie le relais jusqu'à sa reprise, puis l'annonce.
+ *
+ * Onglet caché : pas de requête, on attend son retour.
+ */
+function verifierRelais() {
+    clearTimeout(minuteurRelais);
+    if (document.hidden) {
+        minuteurRelais = setTimeout(verifierRelais, RELAIS_MS);
+        return;
+    }
+    Albert.appels().then(() => {
+        relaisEnPanne = false;
+        if ($('etat').textContent === t('erreur.relais-hs')) {
+            etat('');
+        }
+        toast(t('toast.relais-retabli'));
+    }).catch(() => {
+        minuteurRelais = setTimeout(verifierRelais, RELAIS_MS);
+    });
+}
+
+/**
+ * Note la panne du relais et lance la surveillance, une seule fois.
+ */
+function signalerPanneRelais() {
+    if (!relaisEnPanne) {
+        relaisEnPanne = true;
+        minuteurRelais = setTimeout(verifierRelais, RELAIS_MS);
+    }
+}
+
 /**
  * Message d'erreur à afficher après un échec d'envoi.
  *
@@ -45,10 +82,17 @@ function messageEchec(err) {
         return messageOrigine();
     }
     if (err instanceof TypeError) {
+        if (navigator.onLine) {
+            signalerPanneRelais();
+        }
         return { texte: t(navigator.onLine ? 'erreur.relais' : 'erreur.hors-ligne'), lien: null };
     }
     if (err.name === 'TimeoutError') {
         return { texte: t('erreur.timeout'), lien: null };
+    }
+    /* Tous les échecs passent ici : c'est là qu'on repère la panne du relais. */
+    if (err.message === t('erreur.relais-hs')) {
+        signalerPanneRelais();
     }
     return { texte: err.message, lien: null };
 }
@@ -339,6 +383,9 @@ async function verifierVersion() {
 document.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'visible') {
         verifierVersion();
+        if (relaisEnPanne) {
+            verifierRelais();
+        }
     }
 });
 
@@ -348,6 +395,7 @@ verifierVersion();
 Albert.appels().catch(() => {
     etat(t('erreur.relais-hs'), true);
     toast(t('erreur.relais-hs'));
+    signalerPanneRelais();
 });
 I18n.appliquer();
 afficherReglages();

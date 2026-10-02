@@ -295,6 +295,7 @@ I18n.TEXTES.es = {
     'toast.telecharge': 'Archivo descargado: {nom}',
     'toast.telechargement-impossible': 'No se pudo descargar.',
     'toast.cle-effacee': 'Clave borrada del navegador',
+    'toast.relais-retabli': 'El relé n8n vuelve a estar disponible',
     'toast.partage-impossible': 'Cambio imposible: los datos no caben en el nuevo almacenamiento.',
     'toast.conversation-supprimee': 'Conversación eliminada.',
     'toast.conversation-longue': 'Conversación demasiado larga para guardarla. Se queda en pantalla hasta cerrar la pestaña.',
