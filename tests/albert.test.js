@@ -167,6 +167,25 @@ test('messageErreur : quota', () => {
     assert.match(Albert.messageErreur(429, null), /Quota/);
 });
 
+test('messageErreur : relais hors service', () => {
+    assert.match(Albert.messageErreur(503, null), /indisponible/);
+});
+
+test('repondre : relais bloqué, la sonde /stats arrête la requête', async () => {
+    const fetchOrigine = globalThis.fetch;
+    const sondeOrigine = Albert.SONDE_MS;
+    Albert.SONDE_MS = 10;
+    globalThis.fetch = (url, options) => url.endsWith('/stats')
+        ? Promise.reject(new TypeError('bloqué'))
+        : new Promise((_, rejeter) => options.signal.addEventListener('abort', () => rejeter(options.signal.reason)));
+    try {
+        await assert.rejects(Albert.repondre('cle', {}, new AbortController().signal), /indisponible/);
+    } finally {
+        globalThis.fetch = fetchOrigine;
+        Albert.SONDE_MS = sondeOrigine;
+    }
+});
+
 test('messageErreur : détail texte repris, détail objet ignoré', () => {
     assert.strictEqual(Albert.messageErreur(404, { detail: 'Model not found' }), 'Erreur 404 : Model not found');
     assert.strictEqual(Albert.messageErreur(422, { detail: [{ msg: 'x' }] }), 'Erreur 422.');

@@ -27,6 +27,9 @@ const Albert = {
     /** Délai maximal d'une réponse, en millisecondes. */
     DELAI_MS: 120000,
 
+    /** Attente avant de vérifier que le relais répond encore (via /stats). */
+    SONDE_MS: 10000,
+
     /** Nombre de questions gardées pour les flèches de la saisie. */
     HISTORIQUE_MAX: 30,
 
@@ -203,13 +206,28 @@ const Albert = {
      * @throws {Error} Si Albert refuse la requête, ou si elle est annulée.
      */
     async repondre(cle, requete, annulation) {
-        const res = await fetch(this.BASE + '/chat/completions', {
-            method: 'POST',
-            headers: { 'Authorization': 'Bearer ' + cle, 'Content-Type': 'application/json' },
-            body: JSON.stringify(requete),
-            signal: AbortSignal.any([annulation, AbortSignal.timeout(this.DELAI_MS)])
-        });
-        const corps = await res.json().catch(() => null);
+        /* Relais bloqué : Scalingo ne rend son 504 sans CORS qu'après 60 s.
+           Si /stats ne répond pas non plus, inutile d'attendre. */
+        const sonde = new AbortController();
+        const minuterie = setTimeout(() => {
+            this.appels().catch(() => sonde.abort(new Error(t('erreur.relais-hs'))));
+        }, this.SONDE_MS);
+        let res, corps;
+        try {
+            res = await fetch(this.BASE + '/chat/completions', {
+                method: 'POST',
+                headers: { 'Authorization': 'Bearer ' + cle, 'Content-Type': 'application/json' },
+                body: JSON.stringify(requete),
+                signal: AbortSignal.any([annulation, sonde.signal, AbortSignal.timeout(this.DELAI_MS)])
+            });
+            corps = await res.json().catch(() => null);
+        } finally {
+            clearTimeout(minuterie);
+        }
+        /* Sonde échouée pendant la lecture du corps, avalée par le catch du json. */
+        if (sonde.signal.aborted) {
+            throw sonde.signal.reason;
+        }
         if (!res.ok) {
             throw new Error(this.messageErreur(res.status, corps));
         }
@@ -625,6 +643,10 @@ const Albert = {
         }
         if (status === 429) {
             return t('erreur.quota');
+        }
+        /* Le reverse proxy répond seul quand n8n est arrêté. */
+        if ([502, 503, 504].includes(status)) {
+            return t('erreur.relais-hs');
         }
         const detail = corps && (typeof corps.detail === 'string' ? corps.detail : corps.message);
         if (!detail) {

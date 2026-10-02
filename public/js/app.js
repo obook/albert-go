@@ -45,7 +45,7 @@ function messageEchec(err) {
         return messageOrigine();
     }
     if (err instanceof TypeError) {
-        return { texte: t('erreur.relais'), lien: null };
+        return { texte: t(navigator.onLine ? 'erreur.relais' : 'erreur.hors-ligne'), lien: null };
     }
     if (err.name === 'TimeoutError') {
         return { texte: t('erreur.timeout'), lien: null };
@@ -344,6 +344,11 @@ document.addEventListener('visibilitychange', () => {
 
 /* Démarrage. */
 verifierVersion();
+/* Relais vérifié en arrière-plan : la panne s'annonce avant la première question. */
+Albert.appels().catch(() => {
+    etat(t('erreur.relais-hs'), true);
+    toast(t('erreur.relais-hs'));
+});
 I18n.appliquer();
 afficherReglages();
 afficherTheme();
