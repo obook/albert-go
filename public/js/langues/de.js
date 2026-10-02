@@ -187,7 +187,6 @@ I18n.TEXTES.de = {
     'modele.openweight-large': 'Das fähigste, für lange Überlegungen. Langsamer.',
     'modele.openweight-small': 'Das schnellste, für einfache Fragen.',
     'modele.openweight-code': 'Auf Programmierung spezialisiert.',
-    'modele.openweight-code-2': 'Programmierung, sehr langer Kontext.',
     'modele.inconnu': 'Gesprächsmodell.',
 
     /* Dialoge. */

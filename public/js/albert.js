@@ -37,12 +37,13 @@ const Albert = {
     CONVERSATIONS_MAX: 10,
 
     /*
-    Liste de secours si /v1/models ne répond pas (annuaire BidouIAge, 1er août 2026).
+    Liste de secours si /v1/models ne répond pas (relevée le 2 octobre 2026).
     Albert peut changer le modèle derrière un alias : /v1/models fait foi.
     */
     MODELES: [
         { id: 'openweight-code', nom: 'Code', reel: 'qwen3-coder-30b-A3b-instruct', type: 'texte', contexte: 262144 },
-        { id: 'openweight-code-2', nom: 'Code 2', reel: 'deepseek-v4-flash', type: 'texte', contexte: 393216 },
+        { id: 'deepseek-v4-flash-0731', nom: 'DeepSeek V4 Flash', reel: 'deepseek-ai/DeepSeek-V4-Flash-0731', type: 'texte', contexte: 131072 },
+        { id: 'gemma-4-31b-it', nom: 'Gemma 4 31B', reel: 'google/gemma-4-31B-it', type: 'texte-images', contexte: 262144 },
         { id: 'openweight-large', nom: 'Large', reel: 'openai/gpt-oss-120b', type: 'texte', contexte: 131072 },
         { id: 'openweight-medium', nom: 'Medium', reel: 'mistral-small-3-2-24b-instruct-2506', type: 'texte-images', contexte: 128000 },
         { id: 'openweight-small', nom: 'Small', reel: 'ministral-3-8b-instruct-2512', type: 'texte-images', contexte: 262144 }

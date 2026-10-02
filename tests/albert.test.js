@@ -70,6 +70,20 @@ test('normaliserModeles : format de llm-proxy, id = alias, modèle réel parmi l
     assert.strictEqual(Albert.logoEditeur(modeles[1].reel), 'images/editeurs/openai.png');
 });
 
+test('MODELES : chaque modèle de secours figure dans /v1/models', () => {
+    /* Modèles de conversation relevés sur Albert le 2 octobre 2026. */
+    const liste = [
+        { id: 'openweight-large', model_type: 'text-generation', aliases: ['openweight-large', 'openai/gpt-oss-120b'], max_context_length: 131072 },
+        { id: 'openweight-code', model_type: 'text-generation', aliases: ['openweight-code', 'Qwen/Qwen3-Coder-30B-A3B-Instruct'], max_context_length: 262144 },
+        { id: 'openweight-small', model_type: 'image-text-to-text', aliases: ['openweight-small', 'mistralai/Ministral-3-8B-Instruct-2512'], max_context_length: 262144 },
+        { id: 'openweight-medium', model_type: 'image-text-to-text', aliases: ['openweight-medium', 'mistralai/Mistral-Small-3.2-24B-Instruct-2506'], max_context_length: 128000 },
+        { id: 'deepseek-v4-flash-0731', model_type: 'text-generation', aliases: ['deepseek-ai/DeepSeek-V4-Flash-0731', 'deepseek-v4-flash'], max_context_length: 131072 },
+        { id: 'gemma-4-31b-it', model_type: 'image-text-to-text', aliases: ['google/gemma-4-31B-it'], max_context_length: 262144 }
+    ];
+    const reels = Albert.normaliserModeles(liste).map(m => [m.id, m.type, m.contexte]);
+    for (const m of Albert.MODELES) assert.deepStrictEqual(reels.find(r => r[0] === m.id), [m.id, m.type, m.contexte]);
+});
+
 test('occupation : pourcentage du contexte, borné, inconnu', () => {
     assert.strictEqual(Albert.occupation({ total_tokens: 12800 }, 128000), 10);
     assert.strictEqual(Albert.occupation({ prompt_tokens: 100000, completion_tokens: 40000 }, 128000), 100);
