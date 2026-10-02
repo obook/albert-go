@@ -200,6 +200,9 @@ function motAppel(nombre) {
 
 $('ouvrir-info').addEventListener('click', () => {
     $('version').textContent = texteVersion();
+    /* Affiché tant que les stats ne sont pas arrivées, et gardé si elles échouent. */
+    $('appels').textContent = t('info.appels-hs');
+    $('appels').hidden = false;
     Albert.appels().then(({ total, parHeure }) => {
         const h = Math.round(parHeure * 10) / 10;
         $('appels').textContent = t('info.appels', {
@@ -208,7 +211,6 @@ $('ouvrir-info').addEventListener('click', () => {
             motN: motAppel(total),
             motH: motAppel(h)
         });
-        $('appels').hidden = false;
     }).catch(() => {});
     $('info').showModal();
 });
