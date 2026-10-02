@@ -273,7 +273,7 @@ test('appels : somme des jours et moyenne horaire depuis le premier jour', async
     const maintenant = Date.now;
     global.fetch = async url => {
         assert.ok(url.endsWith('/webhook/albert-go/stats'));
-        return { ok: true, json: async () => ({ '2026-09-25': { appels: 4, utilisateurs: 2 }, '2026-09-26': { appels: 3, utilisateurs: 1 } }) };
+        return { ok: true, json: async () => ({ '2026-09-25': { appels: 4 }, '2026-09-26': { appels: 3 } }) };
     };
     try {
         Date.now = () => Date.parse('2026-09-26T10:00:00Z');
