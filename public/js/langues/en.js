@@ -187,7 +187,6 @@ I18n.TEXTES.en = {
     'modele.openweight-large': 'The most capable, for long reasoning. Slower.',
     'modele.openweight-small': 'The fastest, for simple questions.',
     'modele.openweight-code': 'Specialised in programming.',
-    'modele.openweight-code-2': 'Programming, very long context.',
     'modele.inconnu': 'Chat model.',
 
     /* Dialogs. */

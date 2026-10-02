@@ -187,7 +187,6 @@ I18n.TEXTES.es = {
     'modele.openweight-large': 'El más capaz, para razonamientos largos. Más lento.',
     'modele.openweight-small': 'El más rápido, para preguntas sencillas.',
     'modele.openweight-code': 'Especializado en programación.',
-    'modele.openweight-code-2': 'Programación, contexto muy largo.',
     'modele.inconnu': 'Modelo de conversación.',
 
     /* Cuadros de diálogo. */
