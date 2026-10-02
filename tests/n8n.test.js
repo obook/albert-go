@@ -28,42 +28,45 @@ function noeud(nom, webhook = 'Webhook modèles') {
         });
 }
 
-test('Compteur : jour et empreinte, sans la clé', () => {
-    const compter = noeud('Compteur');
-    const [a] = compter({ authorization: 'Bearer cle-secrete-1' });
-    const [b] = compter({ authorization: 'Bearer cle-secrete-1' });
-    const [c] = compter({ authorization: 'Bearer cle-secrete-2' });
-
-    assert.strictEqual(a.json.jour, new Date().toISOString().slice(0, 10));
-    assert.strictEqual(a.json.empreinte, b.json.empreinte);
-    assert.notStrictEqual(a.json.empreinte, c.json.empreinte);
-    assert.ok(!JSON.stringify([a, c]).includes('cle-secrete'));
-    assert.deepStrictEqual(compter({ authorization: 'Bearer cle-refusee' }, 401), []);
-    assert.deepStrictEqual(noeud('Compteur chat', 'Webhook chat')({ authorization: 'Bearer cle-secrete-1' }), [a]);
+test('Compteur : le jour seul, pour les appels acceptés', () => {
+    assert.deepStrictEqual(noeud('Compteur')({}), [{ json: { jour: new Date().toISOString().slice(0, 10) } }]);
+    assert.deepStrictEqual(noeud('Compteur')({}, 401), []);
 });
 
-test('Lire stats : appels et utilisateurs par jour, table vide', () => {
-    const lignes = [['2026-10-01', 'a'], ['2026-10-01', 'a'], ['2026-10-01', 'b'], ['2026-10-02', 'a']]
-        .map(([jour, empreinte]) => ({ json: { id: 1, jour, empreinte } }));
-    assert.deepStrictEqual(noeud('Lire stats')(lignes), [{ json: {
-        '2026-10-01': { appels: 3, utilisateurs: 2 },
-        '2026-10-02': { appels: 1, utilisateurs: 1 }
-    } }]);
-    /* Table vide : "Lire appels" sort un élément vide, sinon la réponse ne part pas. */
+test('Noter l\'appel : une ligne par jour, incrémentée', () => {
+    const { filters, columns } = trouver('Noter l\'appel').parameters;
+    const evaluer = (expr, json) => new Function('$json', '$', 'return ' + expr.slice(3, -2))(
+        json, n => ({ first: () => ({ json: { jour: n === 'Compteur' ? '2026-10-02' : null } }) }));
+    assert.strictEqual(evaluer(filters.conditions[0].keyValue, {}), '2026-10-02');
+    assert.strictEqual(evaluer(columns.value.jour, {}), '2026-10-02');
+    /* Premier appel du jour : "Lire le jour" sort un élément vide. */
+    assert.strictEqual(trouver('Lire le jour').alwaysOutputData, true);
+    assert.strictEqual(evaluer(columns.value.appels, {}), 1);
+    assert.strictEqual(evaluer(columns.value.appels, { jour: '2026-10-02', appels: 4 }), 5);
+});
+
+test('Lire stats : appels par jour, table vide', () => {
+    const lignes = [{ json: { id: 1, jour: '2026-09-26', appels: 1000 } }, { json: { id: 2, jour: '2026-10-02', appels: 3 } }];
+    assert.deepStrictEqual(noeud('Lire stats')(lignes), [{ json: { '2026-09-26': { appels: 1000 }, '2026-10-02': { appels: 3 } } }]);
     assert.strictEqual(trouver('Lire appels').alwaysOutputData, true);
     assert.deepStrictEqual(noeud('Lire stats')([{ json: {} }]), [{ json: {} }]);
 });
 
-test('Câblage : la réponse part avant le compte, plus de données statiques', () => {
-    assert.ok(!JSON.stringify(workflow).includes('getWorkflowStaticData'));
-    for (const [albert, reponse, compteur] of [['Albert modèles', 'Réponse modèles', 'Compteur'], ['Albert chat', 'Réponse chat', 'Compteur chat']]) {
-        assert.deepStrictEqual(suivants(albert).sort(), [compteur, reponse].sort());
+test('Câblage : la réponse part avant le compte, rien sur la clé', () => {
+    const texte = JSON.stringify(workflow);
+    assert.ok(!texte.includes('getWorkflowStaticData') && !texte.includes('empreinte'));
+    for (const [albert, reponse] of [['Albert modèles', 'Réponse modèles'], ['Albert chat', 'Réponse chat']]) {
+        assert.deepStrictEqual(suivants(albert).sort(), ['Compteur', reponse].sort());
         /* executionOrder v1 : la branche la plus haute passe en premier. */
-        assert.ok(trouver(reponse).position[1] < trouver(compteur).position[1]);
-        assert.deepStrictEqual(suivants(compteur), ['Noter l\'appel']);
+        assert.ok(trouver(reponse).position[1] < trouver('Compteur').position[1]);
     }
+    assert.deepStrictEqual(suivants('Compteur'), ['Lire le jour']);
+    assert.deepStrictEqual(suivants('Lire le jour'), ['Noter l\'appel']);
     assert.deepStrictEqual(suivants('Webhook stats'), ['Lire appels', 'Purger']);
     assert.deepStrictEqual(suivants('Lire appels'), ['Lire stats']);
+    for (const n of workflow.nodes.filter(n => n.type.endsWith('dataTable'))) {
+        assert.strictEqual(n.parameters.dataTableId.value, 'albert-go-compteur');
+    }
 });
 
 test('Purger : lignes de plus de 90 jours', () => {

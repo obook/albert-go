@@ -199,7 +199,7 @@ lesquelles il a prise, ou qu'il déplace vers quelqu'un d'autre.
 | R3 Confiance dans les bibliothèques externes | Partielle | Sept bibliothèques embarquées, aucune dépendance de construction, aucun CDN. Six vérifiées octet pour octet, la septième par équivalence de sortie (I11). Vérification manuelle, à refaire à chaque mise à jour. |
 | R5 Principes DevSecOps | Partielle | 35 tests à chaque étape, audit rejoué à chaque changement de périmètre. Pas d'analyse automatique avant fusion. |
 | R7 Confidentialité dès la conception | Couverte | Rien ne quitte le navigateur en dehors d'Albert et, sur activation, du moteur. Mode partagé par défaut : tout le sensible s'efface à la fermeture de l'onglet. |
-| R8 Besoin d'en connaître | Couverte | La clé appartient à l'utilisateur, le relais n'en garde qu'une empreinte du jour pour le compteur. Aucun compte, aucun identifiant. |
+| R8 Besoin d'en connaître | Couverte | La clé appartient à l'utilisateur, le relais n'en garde rien. Aucun compte, aucun identifiant. |
 | R9 Pas d'usage automatisé pour des actions critiques | Sans objet | La réponse est du texte affiché. Aucune action n'en découle. |
 | R10 Accès à privilèges maîtrisés | Couverte, côté utilisateur | Une clé par personne, vérifiée auprès d'Albert avant d'être enregistrée, jamais enregistrée si elle est refusée. Le projet n'administre aucun accès. |
 | R13 Passerelle sécurisée si exposition Internet | Partielle | Le relais fait office de passerelle : TLS 1.3, CORS à deux origines, trois chemins dont le compteur public, 401 sans clé, rien de conservé. Il lui manque une limite de débit (E1). |
@@ -210,7 +210,7 @@ lesquelles il a prise, ou qu'il déplace vers quelqu'un d'autre.
 | R25 Filtrage des entrées et des sorties | Partielle | En sortie, le HTML est assaini, et les liens comme les adresses des sources passent par `Rendu.urlDangereuse`. En entrée, les fichiers joints sont bornés et convertis, mais les pages trouvées par la recherche ne sont pas filtrées (I9). |
 | R26 Interactions maîtrisées | Couverte | Destinations fermées par la CSP et vérifiées en ligne. Aucune destination découverte à l'exécution, aucun CDN, aucune télémétrie. |
 | R27 Limiter les actions automatiques sur entrées non maîtrisées | Partielle | Le modèle décide seul quand chercher, sur du texte venu du web ouvert (I9). Cette décision ne déclenche qu'un `GET` vers le moteur, et la réponse reste du texte. |
-| R29 Journalisation | Partielle | Exécutions n8n non enregistrées, pas de télémétrie dans la page. Seul un compteur agrégé par jour (appels, empreintes de clé salées par le jour) est gardé 90 jours. Les journaux d'accès relèvent des hébergeurs. |
+| R29 Journalisation | Partielle | Exécutions n8n non enregistrées, pas de télémétrie dans la page. Seul un nombre d'appels par jour est gardé 90 jours. Les journaux d'accès relèvent des hébergeurs. |
 | R30 à R32 Contrôle du code généré par IA | Côté utilisateur | Albert Go affiche du texte, code compris, que l'utilisateur relit et exécute ailleurs s'il le veut. |
 | R33 Durcissement des services grand public | Partielle | Page publique pour les agents de l'État : CSP fermée, pas de cadrage, pas de script en ligne, pas de stockage persistant par défaut. Les en-têtes manquants (E3, E5) ne sont pas à notre main. |
 | R34 Pas d'IA générative publique sur données sensibles | Favorisée, avec une réserve | Le modèle est Albert, API souveraine hébergée en France. La recherche, si elle est activée, envoie en revanche les mots de la requête à un moteur tiers, Google compris (E6). |

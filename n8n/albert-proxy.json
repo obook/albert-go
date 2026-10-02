@@ -216,19 +216,27 @@
       "name": "Compteur",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [660, 450],
+      "position": [880, 450],
       "parameters": {
-        "jsCode": "/* Appel accepté par Albert : jour et empreinte FNV-1a de clé + jour, la clé n'est pas gardée. */\nif ($input.first().json.statusCode !== 200) return [];\nconst h = $('Webhook modèles').first().json.headers;\nconst jour = new Date().toISOString().slice(0, 10);\nlet e = 0x811c9dc5;\nfor (const c of h.authorization + jour) e = Math.imul(e ^ c.charCodeAt(0), 0x01000193);\nreturn [{ json: { jour, empreinte: (e >>> 0).toString(16) } }];"
+        "jsCode": "/* Un appel accepté par Albert compte pour son jour, rien d'autre n'est gardé. */\n/* ponytail: lecture puis écriture, deux appels simultanés peuvent n'en compter qu'un. */\nif ($input.first().json.statusCode !== 200) return [];\nreturn [{ json: { jour: new Date().toISOString().slice(0, 10) } }];"
       }
     },
     {
       "id": "0d4c1f52-1a4e-4c3a-9f7e-2b1d6a8e0015",
-      "name": "Compteur chat",
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [660, 50],
+      "name": "Lire le jour",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [1100, 450],
+      "alwaysOutputData": true,
       "parameters": {
-        "jsCode": "/* Même compteur que \"Compteur\", pour les messages. */\nif ($input.first().json.statusCode !== 200) return [];\nconst h = $('Webhook chat').first().json.headers;\nconst jour = new Date().toISOString().slice(0, 10);\nlet e = 0x811c9dc5;\nfor (const c of h.authorization + jour) e = Math.imul(e ^ c.charCodeAt(0), 0x01000193);\nreturn [{ json: { jour, empreinte: (e >>> 0).toString(16) } }];"
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": { "__rl": true, "mode": "name", "value": "albert-go-compteur" },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [{ "keyName": "jour", "condition": "eq", "keyValue": "={{ $json.jour }}" }]
+        },
+        "limit": 1
       }
     },
     {
@@ -236,12 +244,24 @@
       "name": "Noter l'appel",
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
-      "position": [880, 250],
+      "position": [1320, 450],
       "parameters": {
         "resource": "row",
-        "operation": "insert",
-        "dataTableId": { "__rl": true, "mode": "name", "value": "albert-go-appels" },
-        "columns": { "mappingMode": "autoMapInputData", "value": {}, "matchingColumns": [], "schema": [] },
+        "operation": "upsert",
+        "dataTableId": { "__rl": true, "mode": "name", "value": "albert-go-compteur" },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [{ "keyName": "jour", "condition": "eq", "keyValue": "={{ $('Compteur').first().json.jour }}" }]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": { "jour": "={{ $('Compteur').first().json.jour }}", "appels": "={{ ($json.appels || 0) + 1 }}" },
+          "matchingColumns": [],
+          "schema": [
+            { "id": "jour", "displayName": "jour", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
+            { "id": "appels", "displayName": "appels", "required": false, "defaultMatch": false, "display": true, "type": "number", "canBeUsedToMatch": true }
+          ]
+        },
         "options": {}
       }
     },
@@ -268,7 +288,7 @@
       "typeVersion": 2,
       "position": [440, 700],
       "parameters": {
-        "jsCode": "/* Public : nombres seulement, jamais les empreintes. */\n/* ponytail: une ligne par appel, lecture paginée fragile au-delà de 1000 lignes ; regrouper par jour et empreinte si besoin. */\nconst jours = {};\nfor (const { json: { jour, empreinte } } of $input.all()) {\n  if (!jour) continue;\n  const j = jours[jour] || (jours[jour] = { appels: 0, empreintes: new Set() });\n  j.appels++;\n  j.empreintes.add(empreinte);\n}\nfor (const d in jours) jours[d] = { appels: jours[d].appels, utilisateurs: jours[d].empreintes.size };\nreturn [{ json: jours }];"
+        "jsCode": "/* Public : appels par jour. */\nconst jours = {};\nfor (const { json: { jour, appels } } of $input.all()) if (jour) jours[jour] = { appels };\nreturn [{ json: jours }];"
       }
     },
     {
@@ -281,7 +301,7 @@
       "parameters": {
         "resource": "row",
         "operation": "get",
-        "dataTableId": { "__rl": true, "mode": "name", "value": "albert-go-appels" },
+        "dataTableId": { "__rl": true, "mode": "name", "value": "albert-go-compteur" },
         "returnAll": true
       }
     },
@@ -294,7 +314,7 @@
       "parameters": {
         "resource": "row",
         "operation": "deleteRows",
-        "dataTableId": { "__rl": true, "mode": "name", "value": "albert-go-appels" },
+        "dataTableId": { "__rl": true, "mode": "name", "value": "albert-go-compteur" },
         "matchType": "allConditions",
         "filters": {
           "conditions": [
@@ -444,7 +464,8 @@
         [{ "node": "Refus sans clé (modèles)", "type": "main", "index": 0 }]
       ]
     },
-    "Compteur": { "main": [[{ "node": "Noter l'appel", "type": "main", "index": 0 }]] },
+    "Compteur": { "main": [[{ "node": "Lire le jour", "type": "main", "index": 0 }]] },
+    "Lire le jour": { "main": [[{ "node": "Noter l'appel", "type": "main", "index": 0 }]] },
     "Webhook stats": {
       "main": [[{ "node": "Lire appels", "type": "main", "index": 0 }, { "node": "Purger", "type": "main", "index": 0 }]]
     },
@@ -461,9 +482,8 @@
       ]
     },
     "Albert chat": {
-      "main": [[{ "node": "Réponse chat", "type": "main", "index": 0 }, { "node": "Compteur chat", "type": "main", "index": 0 }]]
+      "main": [[{ "node": "Réponse chat", "type": "main", "index": 0 }, { "node": "Compteur", "type": "main", "index": 0 }]]
     },
-    "Compteur chat": { "main": [[{ "node": "Noter l'appel", "type": "main", "index": 0 }]] },
     "Webhook audio": { "main": [[{ "node": "Clé présente ? (audio)", "type": "main", "index": 0 }]] },
     "Clé présente ? (audio)": {
       "main": [
