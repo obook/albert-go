@@ -225,14 +225,15 @@ n'avaient pas la même largeur. Le préfixe .pico passe devant son sélecteur. *
     margin: 0;
     clip-path: inset(50%);
 }
-/* Carte de modèle : logo de l'éditeur à gauche, sur fond blanc pour les logos noirs. */
+/* Logo à gauche, dans un même cadre blanc : fonds transparents, blancs ou colorés s'y alignent. */
 .cartes-choix label:has(.logo) { grid-template-columns: 2rem minmax(0, 1fr); column-gap: 0.75rem; }
 .cartes-choix .logo {
     grid-row: span 5;
     width: 2rem;
     height: 2rem;
-    padding: 0.125rem;
+    padding: 0.25rem;
     background: #ffffff;
+    border: 1px solid var(--bord-carte);
     border-radius: 0.375rem;
 }
 /* Marge négative : le logo ne grandit pas le menu. */
@@ -241,8 +242,9 @@ n'avaient pas la même largeur. Le préfixe .pico passe devant son sélecteur. *
     height: 1.5rem;
     flex: none;
     margin-block: -0.25rem;
-    padding: 0.0625rem;
+    padding: 0.125rem;
     background: #ffffff;
+    border: 1px solid var(--bord-carte);
     border-radius: 0.25rem;
 }
 .cartes-choix .nom { font-weight: 700; }
