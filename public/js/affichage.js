@@ -285,9 +285,11 @@ function messageCle(texte, erreur, lien) {
  *
  * @param {string} texte - Message, ou chaîne vide pour effacer.
  * @param {boolean} [erreur] - true pour l'afficher comme une erreur.
+ * @param {boolean} [succes] - true pour l'afficher en vert.
  */
-function etat(texte, erreur) {
+function etat(texte, erreur, succes) {
     const ligne = $('etat');
     ligne.textContent = texte;
     ligne.classList.toggle('erreur', !!erreur);
+    ligne.classList.toggle('succes', !!succes);
 }

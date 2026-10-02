@@ -180,6 +180,7 @@
 }
 .etat:empty { margin-top: 0; }
 .etat.erreur { color: var(--erreur); font-weight: 700; }
+.etat.succes { color: var(--succes); font-weight: 700; }
 .etat:not(:empty) + .avertissement { display: none; }
 
 /* Toast : court message sous l'en-tête. */
