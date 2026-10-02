@@ -46,8 +46,9 @@ function verifierRelais() {
     }
     Albert.appels().then(() => {
         relaisEnPanne = false;
+        /* Pas pendant une réponse : la ligne d'état sert alors à l'attente. */
         if ($('etat').textContent === t('erreur.relais-hs')) {
-            etat('');
+            etat(t('toast.relais-retabli'), false, true);
         }
         toast(t('toast.relais-retabli'));
     }).catch(() => {

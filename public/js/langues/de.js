@@ -295,7 +295,7 @@ I18n.TEXTES.de = {
     'toast.telecharge': 'Datei heruntergeladen: {nom}',
     'toast.telechargement-impossible': 'Download fehlgeschlagen.',
     'toast.cle-effacee': 'Schlüssel aus dem Browser gelöscht',
-    'toast.relais-retabli': 'Das n8n-Relais ist wieder verfügbar',
+    'toast.relais-retabli': 'Das interministerielle n8n-Relais ist verfügbar.',
     'toast.partage-impossible': 'Wechsel nicht möglich: die Daten passen nicht in den neuen Speicher.',
     'toast.conversation-supprimee': 'Gespräch gelöscht.',
     'toast.conversation-longue': 'Gespräch zu lang zum Speichern. Es bleibt am Bildschirm, bis der Tab geschlossen wird.',
