@@ -4,7 +4,7 @@ Chatbot minimal pour [Albert](https://ia.numerique.gouv.fr/outils-ia/albert-api/
 
 Essayer Albert Go en ligne : https://booklageolivier.forge.apps.education.fr/albert-go/
 
-Chaque utilisateur utilise sa propre clé API. Pour obtenir une clé, consulter la page [Albert API](https://ia.numerique.gouv.fr/outils-ia/albert-api/).
+Chaque utilisateur utilise sa propre clé API. Les clés s'obtiennent sur le [playground Albert](https://albert.playground.etalab.gouv.fr/).
 
 ## Fonctionnalités
 
