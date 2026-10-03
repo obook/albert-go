@@ -408,6 +408,23 @@ test('limiterConversations : projets et discussions comptés à part', () => {
     assert.ok(Albert.limiterConversations([...dix, { id: 'p', outil: 'projet' }]).some(c => c.id === 'p'));
 });
 
+test('messagesProjet : la demande, précédée de la version en cours du document', () => {
+    const conv = [
+        { role: 'user', content: 'Fais une évaluation', affiche: 'Fais une évaluation' },
+        { role: 'assistant', content: 'Version 1', langue: 'fr' },
+        { role: 'user', content: 'Ajoute un exercice' },
+        { role: 'assistant', content: 'Version 2' },
+        { role: 'user', content: 'Barème sur 10' }
+    ];
+    /* Les versions plus anciennes ne partent pas : chacune est un document entier. */
+    assert.deepStrictEqual(Albert.messagesProjet(conv), [
+        { role: 'user', content: 'Ajoute un exercice' },
+        { role: 'assistant', content: 'Version 2' },
+        { role: 'user', content: 'Barème sur 10' }
+    ]);
+    assert.deepStrictEqual(Albert.messagesProjet(conv.slice(0, 1)), [{ role: 'user', content: 'Fais une évaluation' }]);
+});
+
 test('nomLibre : un nom déjà pris est numéroté', () => {
     assert.strictEqual(Albert.nomLibre('image.png', ['cours.pdf']), 'image.png');
     assert.strictEqual(Albert.nomLibre('image.png', ['image.png']), 'image (2).png');

@@ -757,6 +757,20 @@ const Albert = {
     },
 
     /**
+     * Messages d'un projet : la demande, précédée de la version en cours du
+     * document et de la demande qui l'a produite.
+     *
+     * Un projet construit un seul document : les versions plus anciennes,
+     * chacune un document entier, ne partent pas.
+     *
+     * @param {Object[]} conversation - Messages du projet.
+     * @returns {Object[]} Trois messages { role, content } au plus.
+     */
+    messagesProjet(conversation) {
+        return conversation.slice(-3).map(m => ({ role: m.role, content: m.content }));
+    },
+
+    /**
      * Message d'erreur lisible à partir d'une réponse refusée.
      *
      * @param {number} status - Code HTTP.

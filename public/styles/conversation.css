@@ -182,6 +182,10 @@ main {
     color: inherit;
     font: inherit;
 }
+/* Projet : un seul document, construit peu à peu. Ni les demandes ni les versions précédentes ne s'affichent ;
+   pendant l'attente, la version en cours reste à l'écran. */
+.chat[data-module="projet"] .fil li.user,
+.chat[data-module="projet"] .fil li.assistant:has(~ li.assistant:not(.en-attente)) { display: none; }
 /* Projet : la réponse est un rendu, dans une bulle discrète comme la carte Documents. */
 .chat[data-module="projet"] .fil .assistant .carte {
     padding: 0.75rem 1rem;

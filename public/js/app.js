@@ -154,7 +154,9 @@ async function demanderReponse(outil) {
     if (Albert.OUTILS[outil].documents && documentsProjet.length) {
         texteConsigne += '\n\n' + Albert.joindreDocuments(documentsProjet);
     }
-    let messages = Albert.messagesAEnvoyer(conversation, reglages.memoire && fil);
+    /* Projet : un seul document, seule sa version en cours accompagne la demande. */
+    let messages = Albert.OUTILS[outil].documents ? Albert.messagesProjet(conversation)
+        : Albert.messagesAEnvoyer(conversation, reglages.memoire && fil);
     if (texteConsigne) {
         messages = [{ role: 'system', content: texteConsigne }, ...messages];
     }

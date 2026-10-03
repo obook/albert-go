@@ -205,7 +205,8 @@ function logo(src) {
  */
 function ajouterAttente() {
     const li = document.createElement('li');
-    li.className = 'assistant';
+    /* en-attente : dans Projet, le document reste affiché tant que la suite n'est pas arrivée (conversation.css). */
+    li.className = 'assistant en-attente';
     const attente = document.createElement('div');
     attente.className = 'carte attente';
     const points = document.createElement('span');
