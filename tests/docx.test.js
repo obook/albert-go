@@ -54,3 +54,108 @@ test('zip : chaque fichier se retrouve à son adresse, avec sa somme de contrôl
     /* Somme de contrôle de la première entrée du répertoire. */
     assert.strictEqual(vue.getUint32(vue.getUint32(fin + 16, true) + 16, true), Rendu.crc32(octets('bonjour')));
 });
+
+/* Faux nœuds : le parcours ne lit que nodeType, tagName, childNodes, data, textContent et getAttribute. */
+const n = (balise, attributs = {}, ...enfants) => {
+    const childNodes = enfants.map((e) => (typeof e === 'string' ? { nodeType: 3, data: e, textContent: e, childNodes: [] } : e));
+    return {
+        nodeType: 1,
+        tagName: balise,
+        childNodes,
+        getAttribute: (nom) => (nom in attributs ? attributs[nom] : null),
+        get textContent() {
+            return childNodes.map((c) => c.textContent).join('');
+        }
+    };
+};
+const etatVide = () => ({ images: new Map(), medias: [], rels: [], listes: [] });
+/* Formule telle que KaTeX la laisse : la source LaTeX est dans <annotation>. */
+const katex = (tex) => n('SPAN', { class: 'katex' },
+    n('SPAN', { class: 'katex-mathml' }, n('math', {}, n('annotation', { encoding: 'application/x-tex' }, tex))),
+    n('SPAN', { class: 'katex-html' }, 'rendu'));
+
+test('echapperXml : caractères réservés échappés, caractères interdits retirés', () => {
+    assert.strictEqual(Rendu.echapperXml('a < b & "c" > d'), 'a &lt; b &amp; &quot;c&quot; &gt; d');
+    /* Contrôle U+0001 et demi-paire isolée retirés ; tabulation, accent et emoji gardés. */
+    assert.strictEqual(Rendu.echapperXml('a\u0001b\uD83Dc\té\u{1F600}'), 'abc\té\u{1F600}');
+});
+
+test('corpsDocx : titres, gras, italique, blancs entre blocs ignorés', () => {
+    const xml = Rendu.corpsDocx(n('DIV', {},
+        n('H1', {}, 'Titre'), '\n',
+        n('H4', {}, 'Petit titre'), '\n',
+        n('P', {}, 'Du ', n('STRONG', {}, 'gras'), ' et de l\'', n('EM', {}, 'italique'), '.'), '\n',
+        n('HR', {})), etatVide());
+    assert.strictEqual((xml.match(/<w:p>/g) || []).length, 3);
+    assert.ok(xml.includes('<w:pStyle w:val="Heading1"/>'));
+    assert.ok(xml.includes('<w:pStyle w:val="Heading3"/>'));
+    assert.ok(xml.includes('<w:r><w:rPr><w:b/></w:rPr><w:t xml:space="preserve">gras</w:t></w:r>'));
+    assert.ok(xml.includes('<w:r><w:rPr><w:i/></w:rPr><w:t xml:space="preserve">italique</w:t></w:r>'));
+});
+
+test('corpsDocx : réponse vide, le corps garde un paragraphe', () => {
+    assert.strictEqual(Rendu.corpsDocx(n('DIV', {}, '\n'), etatVide()), '<w:p/>');
+});
+
+test('corpsDocx : listes imbriquées, chaque liste numérotée a sa numérotation', () => {
+    const etat = etatVide();
+    const xml = Rendu.corpsDocx(n('DIV', {},
+        n('OL', {}, n('LI', {}, 'un', n('UL', {}, n('LI', {}, 'puce'))), n('LI', {}, n('P', {}, 'deux'), n('P', {}, 'suite'))),
+        n('OL', { start: '3' }, n('LI', {}, 'trois'))), etat);
+    assert.ok(xml.includes('<w:numPr><w:ilvl w:val="0"/><w:numId w:val="2"/></w:numPr></w:pPr><w:r><w:t xml:space="preserve">un</w:t>'));
+    assert.ok(xml.includes('<w:numPr><w:ilvl w:val="1"/><w:numId w:val="1"/></w:numPr></w:pPr><w:r><w:t xml:space="preserve">puce</w:t>'));
+    /* Deuxième paragraphe d'un élément : en retrait, sans numéro. */
+    assert.ok(xml.includes('<w:p><w:pPr><w:ind w:left="720"/></w:pPr><w:r><w:t xml:space="preserve">suite</w:t>'));
+    assert.ok(xml.includes('<w:numId w:val="3"/></w:numPr></w:pPr><w:r><w:t xml:space="preserve">trois</w:t>'));
+    assert.deepStrictEqual(etat.listes, [{ debut: 1, niveau: 0 }, { debut: 3, niveau: 0 }]);
+});
+
+test('listeDocx : au-delà de neuf niveaux, le niveau reste à 8', () => {
+    const xml = Rendu.listeDocx(n('UL', {}, n('LI', {}, 'fond')), etatVide(), { niveau: 12, numId: 1 });
+    assert.ok(xml.includes('<w:ilvl w:val="8"/>'));
+});
+
+test('corpsDocx : tableau, en-tête en gras, ligne incomplète complétée', () => {
+    const xml = Rendu.corpsDocx(n('DIV', {}, n('TABLE', {},
+        n('THEAD', {}, n('TR', {}, n('TH', {}, 'Question'), n('TH', {}, 'Points'))),
+        n('TBODY', {}, n('TR', {}, n('TD', {}, '1'))))), etatVide());
+    assert.strictEqual((xml.match(/<w:gridCol /g) || []).length, 2);
+    assert.strictEqual((xml.match(/<w:tc>/g) || []).length, 4);
+    assert.ok(xml.includes('<w:rPr><w:b/></w:rPr><w:t xml:space="preserve">Question</w:t>'));
+    /* Case absente : paragraphe vide, Word refuse une case sans paragraphe. */
+    assert.ok(xml.includes('</w:tcPr><w:p/></w:tc></w:tr>'));
+});
+
+test('corpsDocx : lien cliquable, adresse douteuse laissée en texte', () => {
+    const etat = etatVide();
+    const xml = Rendu.corpsDocx(n('DIV', {}, n('P', {},
+        n('A', { href: 'https://exemple.fr/?a=1&b="2"' }, 'bon'),
+        n('A', { href: 'javascript:alert(1)' }, 'douteux'))), etat);
+    assert.ok(xml.includes('<w:hyperlink r:id="rId3"><w:r><w:rPr><w:rStyle w:val="Hyperlink"/></w:rPr><w:t xml:space="preserve">bon</w:t></w:r></w:hyperlink>'));
+    assert.ok(xml.includes('<w:r><w:t xml:space="preserve">douteux</w:t></w:r>'));
+    assert.deepStrictEqual(etat.rels, [{ type: 'hyperlink', cible: 'https://exemple.fr/?a=1&b=%222%22' }]);
+});
+
+test('corpsDocx : formule en LaTeX brut, formule centrée sur sa ligne', () => {
+    const xml = Rendu.corpsDocx(n('DIV', {},
+        n('P', {}, 'Aire : ', katex('\\pi r^2'), n('SPAN', { class: 'katex-display' }, katex('a^2 + b^2')), 'fin')), etatVide());
+    assert.ok(xml.includes('<w:t xml:space="preserve">\\pi r^2</w:t>'));
+    assert.ok(xml.includes('<w:r><w:br/></w:r><w:r><w:t xml:space="preserve">a^2 + b^2</w:t></w:r><w:r><w:br/></w:r>'));
+    assert.ok(!xml.includes('rendu'));
+    /* Seule dans son paragraphe : pas de ligne vide autour. */
+    const seule = Rendu.corpsDocx(n('DIV', {}, n('P', {}, n('SPAN', { class: 'katex-display' }, katex('x')))), etatVide());
+    assert.ok(!seule.includes('<w:br/>'));
+});
+
+test('corpsDocx : bloc de code, un paragraphe par ligne, bouton ignoré', () => {
+    const xml = Rendu.corpsDocx(n('DIV', {}, n('DIV', { class: 'bloc-code' },
+        n('PRE', {}, n('CODE', {}, 'a = 1\n  b = 2\n')), n('BUTTON', {}, 'Copier'))), etatVide());
+    assert.strictEqual((xml.match(/<w:p>/g) || []).length, 2);
+    assert.ok(xml.includes('<w:rFonts w:ascii="Courier New" w:hAnsi="Courier New" w:cs="Courier New"/></w:rPr><w:t xml:space="preserve">  b = 2</w:t>'));
+    assert.ok(!xml.includes('Copier'));
+});
+
+test('corpsDocx : citation en retrait', () => {
+    const xml = Rendu.corpsDocx(n('DIV', {}, n('BLOCKQUOTE', {}, n('P', {}, 'cité'))), etatVide());
+    assert.ok(xml.includes('<w:p><w:pPr><w:ind w:left="720"/></w:pPr><w:r><w:t xml:space="preserve">cité</w:t>'));
+});
