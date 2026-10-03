@@ -464,5 +464,113 @@ Object.assign(Rendu, {
      */
     corpsDocx(element, etat) {
         return this.fluxDocx(element, etat) || '<w:p/>';
+    },
+
+    /* Types des fichiers de l'archive. */
+    TYPES_DOCX: '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">'
+        + '<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>'
+        + '<Default Extension="xml" ContentType="application/xml"/>'
+        + '<Default Extension="png" ContentType="image/png"/>'
+        + '<Default Extension="jpg" ContentType="image/jpeg"/>'
+        + '<Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/>'
+        + '<Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/>'
+        + '<Override PartName="/word/numbering.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.numbering+xml"/>'
+        + '</Types>',
+
+    /* Relation de l'archive vers le document. */
+    RACINE_DOCX: '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'
+        + '<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/>'
+        + '</Relationships>',
+
+    /**
+     * Relations du document : styles, numérotation, puis images et liens
+     * dans l'ordre où le parcours les a rencontrés.
+     *
+     * @param {Object} etat - Voir docx().
+     * @returns {string} XML de word/_rels/document.xml.rels.
+     */
+    relsDocx(etat) {
+        const TYPE = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/';
+        return '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'
+            + '<Relationship Id="rId1" Type="' + TYPE + 'styles" Target="styles.xml"/>'
+            + '<Relationship Id="rId2" Type="' + TYPE + 'numbering" Target="numbering.xml"/>'
+            + etat.rels.map((rel, i) => '<Relationship Id="rId' + (i + 3) + '" Type="' + TYPE + rel.type
+                + '" Target="' + this.echapperXml(rel.cible) + '"' + (rel.type === 'hyperlink' ? ' TargetMode="External"' : '') + '/>').join('')
+            + '</Relationships>';
+    },
+
+    /**
+     * Numérotations : les puces (numId 1), puis une par liste numérotée.
+     *
+     * @param {Object} etat - Voir docx().
+     * @returns {string} XML de word/numbering.xml.
+     */
+    numerotationDocx(etat) {
+        const niveaux = (format, texte) => Array.from({ length: 9 }, (_, i) => '<w:lvl w:ilvl="' + i + '"><w:start w:val="1"/>'
+            + '<w:numFmt w:val="' + format + '"/><w:lvlText w:val="' + texte(i) + '"/><w:lvlJc w:val="left"/>'
+            + '<w:pPr><w:ind w:left="' + 720 * (i + 1) + '" w:hanging="360"/></w:pPr></w:lvl>').join('');
+        return '<w:numbering xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">'
+            + '<w:abstractNum w:abstractNumId="0"><w:multiLevelType w:val="hybridMultilevel"/>' + niveaux('bullet', () => '&#8226;') + '</w:abstractNum>'
+            + '<w:abstractNum w:abstractNumId="1"><w:multiLevelType w:val="hybridMultilevel"/>' + niveaux('decimal', (i) => '%' + (i + 1) + '.') + '</w:abstractNum>'
+            + '<w:num w:numId="1"><w:abstractNumId w:val="0"/></w:num>'
+            + etat.listes.map((liste, i) => '<w:num w:numId="' + (i + 2) + '"><w:abstractNumId w:val="1"/>'
+                + '<w:lvlOverride w:ilvl="' + liste.niveau + '"><w:startOverride w:val="' + liste.debut + '"/></w:lvlOverride></w:num>').join('')
+            + '</w:numbering>';
+    },
+
+    /**
+     * Styles : Arial 11, titres en gras de 16, 14 et 12 points, liens, tableau à bordures.
+     *
+     * @returns {string} XML de word/styles.xml. Tailles en demi-points.
+     */
+    stylesDocx() {
+        const titre = (rang, taille) => '<w:style w:type="paragraph" w:styleId="Heading' + rang + '"><w:name w:val="heading ' + rang + '"/>'
+            + '<w:basedOn w:val="Normal"/><w:next w:val="Normal"/>'
+            + '<w:pPr><w:keepNext/><w:spacing w:before="240" w:after="120"/><w:outlineLvl w:val="' + (rang - 1) + '"/></w:pPr>'
+            + '<w:rPr><w:b/><w:sz w:val="' + taille + '"/><w:szCs w:val="' + taille + '"/></w:rPr></w:style>';
+        const bord = (cote) => '<w:' + cote + ' w:val="single" w:sz="4" w:space="0" w:color="auto"/>';
+        return '<w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">'
+            + '<w:docDefaults><w:rPrDefault><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial" w:cs="Arial"/><w:sz w:val="22"/><w:szCs w:val="22"/></w:rPr></w:rPrDefault>'
+            + '<w:pPrDefault><w:pPr><w:spacing w:after="120"/></w:pPr></w:pPrDefault></w:docDefaults>'
+            + '<w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/></w:style>'
+            + titre(1, 32) + titre(2, 28) + titre(3, 24)
+            + '<w:style w:type="character" w:styleId="Hyperlink"><w:name w:val="Hyperlink"/><w:rPr><w:color w:val="0563C1"/><w:u w:val="single"/></w:rPr></w:style>'
+            + '<w:style w:type="table" w:styleId="TableGrid"><w:name w:val="Table Grid"/><w:tblPr><w:tblBorders>'
+            + ['top', 'left', 'bottom', 'right', 'insideH', 'insideV'].map(bord).join('')
+            + '</w:tblBorders></w:tblPr></w:style>'
+            + '</w:styles>';
+    },
+
+    /**
+     * Fichier .docx d'une réponse affichée.
+     *
+     * etat : images préparées, puis médias, relations et listes numérotées
+     * que le parcours rencontre.
+     *
+     * @param {HTMLElement} element - Conteneur de la réponse.
+     * @returns {Promise<Blob>} Document Word.
+     */
+    async docx(element) {
+        const etat = { images: await this.imagesDocx(element), medias: [], rels: [], listes: [] };
+        /* Page A4, marges de 2 cm (1134 vingtièmes de point). */
+        const principal = '<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"'
+            + ' xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"'
+            + ' xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"'
+            + ' xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"'
+            + ' xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"><w:body>'
+            + this.corpsDocx(element, etat)
+            + '<w:sectPr><w:pgSz w:w="11906" w:h="16838"/>'
+            + '<w:pgMar w:top="1134" w:right="1134" w:bottom="1134" w:left="1134" w:header="708" w:footer="708" w:gutter="0"/></w:sectPr>'
+            + '</w:body></w:document>';
+        const xml = (texte) => new TextEncoder().encode('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n' + texte);
+        return new Blob([this.zip([
+            { nom: '[Content_Types].xml', octets: xml(this.TYPES_DOCX) },
+            { nom: '_rels/.rels', octets: xml(this.RACINE_DOCX) },
+            { nom: 'word/document.xml', octets: xml(principal) },
+            { nom: 'word/_rels/document.xml.rels', octets: xml(this.relsDocx(etat)) },
+            { nom: 'word/styles.xml', octets: xml(this.stylesDocx()) },
+            { nom: 'word/numbering.xml', octets: xml(this.numerotationDocx(etat)) },
+            ...etat.medias.map((media, i) => ({ nom: 'word/media/image' + (i + 1) + '.' + media.extension, octets: media.octets }))
+        ])], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
     }
 });

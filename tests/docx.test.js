@@ -180,3 +180,50 @@ test('corpsDocx : figure insérée et ramenée à 16 cm, image non préparée om
     assert.ok(xml.includes('La tour'));
     assert.ok(xml.includes('Auteur, CC BY-SA 4.0'));
 });
+
+test('numerotationDocx : une numérotation par liste, avec son début', () => {
+    const xml = Rendu.numerotationDocx({ listes: [{ debut: 1, niveau: 0 }, { debut: 3, niveau: 1 }] });
+    /* Word exige tous les abstractNum avant le premier num. */
+    assert.ok(xml.indexOf('<w:num ') > xml.lastIndexOf('</w:abstractNum>'));
+    assert.ok(xml.includes('<w:num w:numId="1"><w:abstractNumId w:val="0"/></w:num>'));
+    assert.ok(xml.includes('<w:num w:numId="3"><w:abstractNumId w:val="1"/><w:lvlOverride w:ilvl="1"><w:startOverride w:val="3"/></w:lvlOverride></w:num>'));
+});
+
+test('relsDocx : adresse échappée, lien marqué externe', () => {
+    const TYPE = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/';
+    const xml = Rendu.relsDocx({ rels: [{ type: 'image', cible: 'media/image1.png' }, { type: 'hyperlink', cible: 'https://exemple.fr/?a=1&b=2' }] });
+    assert.ok(xml.includes('<Relationship Id="rId3" Type="' + TYPE + 'image" Target="media/image1.png"/>'));
+    assert.ok(xml.includes('<Relationship Id="rId4" Type="' + TYPE + 'hyperlink" Target="https://exemple.fr/?a=1&amp;b=2" TargetMode="External"/>'));
+});
+
+test('docx : archive complète, texte et image à leur place', async (t) => {
+    const figure = n('svg', {});
+    const reponse = n('DIV', {},
+        n('H1', {}, 'Évaluation'),
+        n('P', {}, 'Durée : ', n('STRONG', {}, '30 minutes'), '. Formule : ', katex('a^2 + b^2 = c^2')),
+        n('OL', {}, n('LI', {}, 'Énoncer le théorème.'), n('LI', {}, 'Calculer ', n('CODE', {}, 'BC'), '.', n('UL', {}, n('LI', {}, 'poser le calcul')))),
+        n('TABLE', {}, n('TR', {}, n('TH', {}, 'Question'), n('TH', {}, 'Points')), n('TR', {}, n('TD', {}, '1'), n('TD', {}, '4'))),
+        n('DIV', { class: 'diagramme' }, figure),
+        n('P', {}, n('A', { href: 'https://fr.wikipedia.org/wiki/Pythagore' }, 'Source')));
+    /* PNG d'un pixel : préparer une vraie figure demande un navigateur. */
+    const png = Uint8Array.from(Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', 'base64'));
+    t.mock.method(Rendu, 'imagesDocx', async () => new Map([[figure, { octets: png, extension: 'png', largeur: 800, hauteur: 400 }]]));
+    const fichier = await Rendu.docx(reponse);
+    assert.strictEqual(fichier.type, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+    const archive = new Uint8Array(await fichier.arrayBuffer());
+    const lire = (nom) => new TextDecoder().decode(dansZip(archive, nom));
+    /* [Content_Types].xml en premier : Word le cherche là. */
+    assert.strictEqual(new TextDecoder().decode(archive.subarray(30, 49)), '[Content_Types].xml');
+    assert.ok(lire('word/document.xml').startsWith('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'));
+    assert.ok(lire('word/document.xml').includes('<w:t xml:space="preserve">Évaluation</w:t>'));
+    assert.ok(lire('word/document.xml').endsWith('</w:sectPr></w:body></w:document>'));
+    assert.ok(lire('word/_rels/document.xml.rels').includes('Target="media/image1.png"'));
+    assert.ok(lire('word/numbering.xml').includes('<w:num w:numId="2">'));
+    assert.ok(lire('word/styles.xml').includes('w:styleId="Heading3"'));
+    assert.ok(lire('_rels/.rels').includes('Target="word/document.xml"'));
+    assert.deepStrictEqual(dansZip(archive, 'word/media/image1.png'), png);
+    /* DOCX_SORTIE=chemin : garde le fichier, pour l'ouvrir dans LibreOffice. */
+    if (process.env.DOCX_SORTIE) {
+        require('node:fs').writeFileSync(process.env.DOCX_SORTIE, archive);
+    }
+});
