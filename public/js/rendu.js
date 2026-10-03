@@ -344,4 +344,5 @@ if (typeof module !== 'undefined') {
     require('./rendu/images.js');
     require('./rendu/export.js');
     require('./rendu/docx.js');
+    require('./rendu/odt.js');
 }

@@ -20,7 +20,7 @@ Chaque utilisateur utilise sa propre clé API. Les clés s'obtiennent sur le [pl
 
 ### Réponses
 
-Les réponses acceptent le Markdown, les formules LaTeX et les diagrammes Mermaid ; un diagramme refusé par Mermaid est renvoyé une fois au modèle pour correction. Sous chaque réponse : copier le texte, l'enregistrer en .docx (figures en image, formules en équations Word), ou le lire à voix haute avec une voix installée sur l'appareil.
+Les réponses acceptent le Markdown, les formules LaTeX et les diagrammes Mermaid ; un diagramme refusé par Mermaid est renvoyé une fois au modèle pour correction. Sous chaque réponse : copier le texte, l'enregistrer en .docx ou en .odt (figures en image, formules modifiables), ou le lire à voix haute avec une voix installée sur l'appareil.
 
 ### Fichiers joints
 

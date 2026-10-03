@@ -98,8 +98,7 @@ function afficherProposition(texte, erreur = false, anomalies = []) {
     const boutons = [];
     if (texte && !erreur) {
         boutons.push(boutonCopier(texte));
-        const boutonDocx = boutonAction(ICONES.docx, t('reponse.telecharger-docx'));
-        boutonDocx.addEventListener('click', () => {
+        boutons.push(...boutonsExport(() => {
             /* Texte brut : un paragraphe par ligne du courrier. */
             const page = document.createElement('div');
             page.append(...texte.split('\n').map((ligne) => {
@@ -107,9 +106,8 @@ function afficherProposition(texte, erreur = false, anomalies = []) {
                 p.textContent = ligne;
                 return p;
             }));
-            Rendu.telechargerAvecAttente(boutonDocx, () => Rendu.docx(page), Rendu.nomFigure(new Date(), 'docx', 'courrier'));
-        });
-        boutons.push(boutonDocx);
+            return page;
+        }, () => 'courrier'));
         /* ponytail: lu dans la langue de l'interface ; détecter celle du courrier dès qu'on rédige dans une autre langue. */
         if (typeof speechSynthesis !== 'undefined') {
             boutons.push(boutonLire($('proposition'), I18n.langue));
