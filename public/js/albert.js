@@ -55,13 +55,25 @@ const Albert = {
     Le nom et l'invite sont dans langues/*.js ; la consigne est le fichier de
     public/prompts/<langue>/ (modules.js).
     */
+    /* fil : conversation envoyée, outils et recherche. documents : fichiers
+       épinglés, envoyés avec chaque question. complement : suite de la consigne. */
     OUTILS: {
-        discuter: { consigne: 'discuter.txt' },
+        discuter: { consigne: 'discuter.txt', fil: true },
         reformuler: { consigne: 'reformuler.txt' },
         traduire: { consigne: 'traduire.txt' },
         corriger: { consigne: 'corriger.txt' },
-        rediger: { consigne: 'rediger.txt', revue: 'revoir.txt' }
+        rediger: { consigne: 'rediger.txt', revue: 'revoir.txt' },
+        projet: { consigne: 'discuter.txt', complement: 'projet.txt', fil: true, documents: true }
     },
+
+    /** Part du contexte laissée aux documents d'un projet : le reste sert à la conversation et à la réponse. */
+    PART_DOCUMENTS: 0.6,
+
+    /** Caractères par jeton, estimation prudente pour le français. */
+    CARACTERES_PAR_JETON: 3,
+
+    /** Plafond des documents d'un projet quand le contexte du modèle est inconnu, en caractères. */
+    DOCUMENTS_MAX: 200000,
 
     /** Rédiger : notes plus courtes non envoyées, pour ne pas payer une requête par mot. */
     LONGUEUR_MIN_NOTES: 10,
@@ -401,6 +413,57 @@ const Albert = {
     },
 
     /**
+     * Texte des documents d'un projet, mis à la suite de la consigne.
+     *
+     * @param {{nom: string, texte: string}[]} documents - Documents du projet.
+     * @returns {string} Un bloc par document, ou '' sans document.
+     */
+    joindreDocuments(documents) {
+        /* ponytail: documents envoyés en entier ; recherche dans les documents (RAG) s'ils dépassent le contexte. */
+        return documents.map(d => t('demande.fichier', { nom: d.nom, texte: d.texte })).join('\n\n');
+    },
+
+    /**
+     * Plafond du texte des documents d'un projet.
+     *
+     * @param {?number} contexte - Taille du contexte du modèle, en jetons.
+     * @returns {number} Nombre de caractères au plus.
+     */
+    plafondDocuments(contexte) {
+        /* ponytail: jetons estimés à 3 caractères ; compter avec le modèle si l'estimation trompe. */
+        return contexte ? Math.floor(contexte * this.PART_DOCUMENTS * this.CARACTERES_PAR_JETON) : this.DOCUMENTS_MAX;
+    },
+
+    /**
+     * Part du contexte occupée par les documents d'un projet.
+     *
+     * @param {{texte: string}[]} documents - Documents du projet.
+     * @param {?number} contexte - Taille du contexte du modèle, en jetons.
+     * @returns {?number} Pourcentage, au-delà de 100 si le modèle est trop petit ; null si le contexte est inconnu.
+     */
+    partDocuments(documents, contexte) {
+        if (!contexte) {
+            return null;
+        }
+        const caracteres = documents.reduce((somme, d) => somme + d.texte.length, 0);
+        return Math.round(caracteres / this.CARACTERES_PAR_JETON / contexte * 100);
+    },
+
+    /**
+     * Documents d'un projet augmentés d'un nouveau. Un document de même nom est remplacé.
+     *
+     * @param {{nom: string, texte: string}[]} documents - Documents actuels.
+     * @param {{nom: string, texte: string}} nouveau - Document à ajouter.
+     * @param {?number} contexte - Taille du contexte du modèle, en jetons.
+     * @returns {?Object[]} Nouvelle liste, ou null si elle dépasse le plafond.
+     */
+    avecDocument(documents, nouveau, contexte) {
+        const liste = [...documents.filter(d => d.nom !== nouveau.nom), nouveau];
+        const total = liste.reduce((somme, d) => somme + d.texte.length, 0);
+        return total > this.plafondDocuments(contexte) ? null : liste;
+    },
+
+    /**
      * Texte montré dans le fil pour la question posée.
      *
      * Le fichier joint s'annonce sous la question, ou seul si rien n'est tapé.
@@ -550,21 +613,27 @@ const Albert = {
      * @param {string} id - Identifiant de la conversation.
      * @param {string} outil - Clé de OUTILS.
      * @param {Array<Object>} messages - Messages de la conversation.
-     * @returns {?Object} Entrée { id, outil, titre, date, messages }, ou null si rien n'a été demandé.
+     * @param {Object[]} [documents] - Documents d'un projet.
+     * @returns {?Object} Entrée { id, outil, titre, date, messages, documents? }, ou null s'il n'y a ni question ni document.
      */
-    entreeConversation(id, outil, messages) {
+    entreeConversation(id, outil, messages, documents = []) {
         const premiere = messages.find(m => m.role === 'user');
-        if (!premiere) {
+        if (!premiere && !documents.length) {
             return null;
         }
-        return {
+        const entree = {
             id: id,
             outil: outil,
-            titre: premiere.affiche || premiere.content,
+            /* Projet sans question : le nom de son premier document. */
+            titre: premiere ? premiere.affiche || premiere.content : documents[0].nom,
             date: Date.now(),
             /* Copie : la conversation en cours continue de changer. */
             messages: messages.slice()
         };
+        if (documents.length) {
+            entree.documents = documents.slice();
+        }
+        return entree;
     },
 
     /**

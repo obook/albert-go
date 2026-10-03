@@ -328,3 +328,52 @@ test('variantes : blocs séparés par une ligne vide, jamais deux fois de suite 
     assert.strictEqual(Albert.autreVariante(['seule'], 'seule'), 'seule');
     assert.deepStrictEqual(Albert.variantes(''), []);
 });
+
+test('OUTILS : Discussion et Projet sont à fil, Projet seul a des documents', () => {
+    assert.strictEqual(Albert.OUTILS.discuter.fil, true);
+    assert.deepStrictEqual(Albert.OUTILS.projet, { consigne: 'discuter.txt', complement: 'projet.txt', fil: true, documents: true });
+    assert.ok(!Albert.OUTILS.corriger.fil);
+    assert.ok(!Albert.OUTILS.discuter.documents);
+});
+
+test('joindreDocuments : un bloc par document, rien sans document', () => {
+    assert.strictEqual(Albert.joindreDocuments([]), '');
+    assert.strictEqual(Albert.joindreDocuments([{ nom: 'cours.pdf', texte: 'A' }, { nom: 'sujet.odt', texte: 'B' }]),
+        'Contenu du fichier "cours.pdf" :\n\nA\n\nContenu du fichier "sujet.odt" :\n\nB');
+});
+
+test('plafondDocuments : 60 % du contexte, à trois caractères par jeton', () => {
+    assert.strictEqual(Albert.plafondDocuments(131072), 235929);
+    assert.strictEqual(Albert.plafondDocuments(null), 200000);
+});
+
+test('partDocuments : pourcentage du contexte, non plafonné', () => {
+    assert.strictEqual(Albert.partDocuments([{ nom: 'a', texte: 'x'.repeat(600) }], 1000), 20);
+    /* Modèle changé pour un contexte plus petit : la part dépasse 100. */
+    assert.strictEqual(Albert.partDocuments([{ nom: 'a', texte: 'x'.repeat(600) }], 100), 200);
+    assert.strictEqual(Albert.partDocuments([], 1000), 0);
+    assert.strictEqual(Albert.partDocuments([{ nom: 'a', texte: 'x' }], null), null);
+});
+
+test('avecDocument : même nom remplacé, plafond dépassé refusé', () => {
+    const cours = { nom: 'cours.pdf', texte: 'x'.repeat(100) };
+    assert.deepStrictEqual(Albert.avecDocument([cours], { nom: 'sujet.odt', texte: 'y' }, 1000),
+        [cours, { nom: 'sujet.odt', texte: 'y' }]);
+    assert.deepStrictEqual(Albert.avecDocument([cours], { nom: 'cours.pdf', texte: 'z' }, 1000),
+        [{ nom: 'cours.pdf', texte: 'z' }]);
+    /* Contexte de 1000 jetons : 1800 caractères au plus. */
+    assert.strictEqual(Albert.avecDocument([cours], { nom: 'gros.pdf', texte: 'x'.repeat(1701) }, 1000), null);
+    assert.ok(Albert.avecDocument([cours], { nom: 'gros.pdf', texte: 'x'.repeat(1700) }, 1000));
+});
+
+test('entreeConversation : projet sans question, titré par son premier document', () => {
+    const documents = [{ nom: 'cours.pdf', texte: 'A' }];
+    const entree = Albert.entreeConversation('p1', 'projet', [], documents);
+    assert.strictEqual(entree.titre, 'cours.pdf');
+    assert.deepStrictEqual(entree.documents, documents);
+    assert.notStrictEqual(entree.documents, documents);
+    /* Avec une question : le titre habituel. Sans document : pas de champ documents. */
+    assert.strictEqual(Albert.entreeConversation('p1', 'projet', [{ role: 'user', content: 'Fais un devoir' }], documents).titre, 'Fais un devoir');
+    assert.ok(!('documents' in Albert.entreeConversation('d1', 'discuter', [{ role: 'user', content: 'Bonjour' }])));
+    assert.strictEqual(Albert.entreeConversation('d1', 'discuter', []), null);
+});
