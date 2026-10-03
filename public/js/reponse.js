@@ -284,8 +284,6 @@ function bulleReponse(texte, titre, langue, animer = false, recherches = null) {
     if (typeof speechSynthesis !== 'undefined') {
         actions.append(boutonLire(contenu, langue));
     }
-    /* Exports après copier et lire. Le clic attend la fin du rendu : avant, formules et figures manquent. */
-    actions.append(...boutonsExport(() => pret.then(() => contenu), () => Rendu.questionAvant(contenu) || 'reponse'));
     carte.append(contenu);
     /* Une icône par outil local qui a servi. */
     for (const [nom, local] of Object.entries(OUTILS_LOCAUX)) {
@@ -315,6 +313,8 @@ function bulleReponse(texte, titre, langue, animer = false, recherches = null) {
         carte.append(note);
         actions.append(boutonRecherches(note, cherchees));
     }
+    /* Exports toujours en dernier. Le clic attend la fin du rendu : avant, formules et figures manquent. */
+    actions.append(...boutonsExport(() => pret.then(() => contenu), () => Rendu.questionAvant(contenu) || 'reponse'));
     carte.append(actions);
     li.append(pastilleIA(), carte);
     return li;

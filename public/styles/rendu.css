@@ -17,7 +17,8 @@
 .rendu h1, .rendu h2, .rendu h3, .rendu h4 {
     margin: 1.25rem 0 0.5rem;
     line-height: 1.25;
-    color: var(--bleu);
+    /* Couleur du texte, pas de bleu : la taille et la graisse suffisent à marquer un titre. */
+    color: var(--texte);
 }
 .rendu h1 { font-size: 1.375rem; }
 .rendu h2 { font-size: 1.25rem; }

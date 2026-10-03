@@ -102,6 +102,10 @@ function afficherProposition(texte, erreur = false, anomalies = []) {
         if (typeof speechSynthesis !== 'undefined') {
             boutons.push(boutonLire($('proposition'), I18n.langue));
         }
+        const revue = boutonAction(ICONES.revoir, t('reponse.revoir'));
+        revue.addEventListener('click', revoir);
+        boutons.push(revue);
+        /* Exports toujours en dernier. */
         boutons.push(...boutonsExport(() => {
             /* Texte brut : un paragraphe par ligne du courrier. */
             const page = document.createElement('div');
@@ -112,9 +116,6 @@ function afficherProposition(texte, erreur = false, anomalies = []) {
             }));
             return page;
         }, () => 'courrier'));
-        const revue = boutonAction(ICONES.revoir, t('reponse.revoir'));
-        revue.addEventListener('click', revoir);
-        boutons.push(revue);
     }
     $('actions-redaction').replaceChildren(...boutons);
 }
