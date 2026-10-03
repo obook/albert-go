@@ -64,6 +64,7 @@ I18n.TEXTES.fr = {
     'confirmer-suppression.projet': 'Supprimer ce document et ses sources ?',
     'documents.nom': 'Nom du document',
     'documents.deposer': 'Déposer des sources',
+    'documents.formats': 'Formats acceptés : PDF, .docx, .odt, fichiers texte (.txt, .md, .csv, .tex...), images et enregistrements audio.',
     'documents.retirer': 'Retirer {nom}',
     'erreur.projet-plein': 'Sources trop volumineuses : retirez-en une ou choisissez un modèle au contexte plus grand.',
     'projet.bienvenue': 'Déposez vos sources, puis construisez votre document, une demande après l\'autre.',

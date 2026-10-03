@@ -64,6 +64,7 @@ I18n.TEXTES.es = {
     'confirmer-suppression.projet': '¿Eliminar este documento y sus fuentes?',
     'documents.nom': 'Nombre del documento',
     'documents.deposer': 'Añadir fuentes',
+    'documents.formats': 'Formatos aceptados: PDF, .docx, .odt, archivos de texto (.txt, .md, .csv, .tex...), imágenes y grabaciones de audio.',
     'documents.retirer': 'Quitar {nom}',
     'erreur.projet-plein': 'Fuentes demasiado voluminosas: quite una o elija un modelo con un contexto mayor.',
     'projet.bienvenue': 'Añada sus fuentes y construya su documento, una petición tras otra.',

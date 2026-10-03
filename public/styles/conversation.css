@@ -169,6 +169,8 @@ main {
 .liste-documents { margin: 0.5rem 0; padding: 0; list-style: none; }
 .liste-documents li { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
 .liste-documents span { overflow-wrap: anywhere; }
+/* Formats acceptés, rappelés sous le bouton de dépôt. */
+.formats-sources { margin: 0.5rem 0 0; font-size: 0.8125rem; color: var(--texte-doux); }
 /* Nom long : le bouton "Retirer" garde sa taille (cible tactile). */
 .liste-documents button { flex: none; }
 .nom-projet {
