@@ -64,6 +64,7 @@ I18n.TEXTES.de = {
     'confirmer-suppression.projet': 'Dieses Dokument und seine Quellen löschen?',
     'documents.nom': 'Name des Dokuments',
     'documents.deposer': 'Quellen hinzufügen',
+    'documents.formats': 'Akzeptierte Formate: PDF, .docx, .odt, Textdateien (.txt, .md, .csv, .tex...), Bilder und Audioaufnahmen.',
     'documents.retirer': '{nom} entfernen',
     'erreur.projet-plein': 'Quellen zu umfangreich: Entfernen Sie eine oder wählen Sie ein Modell mit größerem Kontext.',
     'projet.bienvenue': 'Fügen Sie Ihre Quellen hinzu und bauen Sie Ihr Dokument auf, eine Anfrage nach der anderen.',

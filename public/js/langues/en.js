@@ -64,6 +64,7 @@ I18n.TEXTES.en = {
     'confirmer-suppression.projet': 'Delete this document and its sources?',
     'documents.nom': 'Document name',
     'documents.deposer': 'Add sources',
+    'documents.formats': 'Accepted formats: PDF, .docx, .odt, text files (.txt, .md, .csv, .tex...), images and audio recordings.',
     'documents.retirer': 'Remove {nom}',
     'erreur.projet-plein': 'Sources too large: remove one or choose a model with a larger context.',
     'projet.bienvenue': 'Add your sources, then build your document, one request after another.',
