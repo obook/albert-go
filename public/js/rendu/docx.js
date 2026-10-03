@@ -1,8 +1,9 @@
 /*
  * rendu/docx.js
- * Réponse affichée enregistrée en fichier Word (.docx), sans bibliothèque.
+ * Écriture Word (.docx) d'une réponse affichée, sans bibliothèque.
  *
- * Complète l'objet Rendu de rendu.js, chargé avant.
+ * Le parcours de la réponse et le zip sont dans export.js, chargé avant.
+ * Complète l'objet Rendu de rendu.js.
  *
  * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
  * Auteur : O. Booklage
@@ -12,131 +13,8 @@
 'use strict';
 
 Object.assign(Rendu, {
-    /**
-     * Somme de contrôle CRC-32 d'un fichier du zip.
-     *
-     * @param {Uint8Array} octets - Contenu.
-     * @returns {number} CRC-32, entier non signé.
-     */
-    crc32(octets) {
-        this._crc ??= Array.from({ length: 256 }, (_, n) => {
-            for (let k = 0; k < 8; k++) {
-                n = n & 1 ? 0xEDB88320 ^ (n >>> 1) : n >>> 1;
-            }
-            return n >>> 0;
-        });
-        let crc = 0xFFFFFFFF;
-        for (const octet of octets) {
-            crc = this._crc[(crc ^ octet) & 0xFF] ^ (crc >>> 8);
-        }
-        return (crc ^ 0xFFFFFFFF) >>> 0;
-    },
-
-    /**
-     * Archive zip sans compression.
-     *
-     * @param {{nom: string, octets: Uint8Array}[]} fichiers - Fichiers, dans l'ordre de l'archive.
-     * @returns {Uint8Array} Archive.
-     */
-    zip(fichiers) {
-        /* ponytail: fichiers stockés tels quels ; CompressionStream('deflate-raw') si le poids gêne. */
-        const encodeur = new TextEncoder();
-        const morceaux = [];
-        const repertoire = [];
-        let adresse = 0;
-        for (const fichier of fichiers) {
-            const nom = encodeur.encode(fichier.nom);
-            /* Champs communs à l'en-tête local et au répertoire : version 2.0, noms en UTF-8, 1er janvier 1980. */
-            const commun = new DataView(new ArrayBuffer(26));
-            commun.setUint16(0, 20, true);
-            commun.setUint16(2, 0x0800, true);
-            commun.setUint16(8, 0x0021, true);
-            commun.setUint32(10, this.crc32(fichier.octets), true);
-            commun.setUint32(14, fichier.octets.length, true);
-            commun.setUint32(18, fichier.octets.length, true);
-            commun.setUint16(22, nom.length, true);
-            const local = new Uint8Array(30 + nom.length);
-            new DataView(local.buffer).setUint32(0, 0x04034b50, true);
-            local.set(new Uint8Array(commun.buffer), 4);
-            local.set(nom, 30);
-            const central = new Uint8Array(46 + nom.length);
-            const vue = new DataView(central.buffer);
-            vue.setUint32(0, 0x02014b50, true);
-            vue.setUint16(4, 20, true);
-            central.set(new Uint8Array(commun.buffer), 6);
-            vue.setUint32(42, adresse, true);
-            central.set(nom, 46);
-            morceaux.push(local, fichier.octets);
-            repertoire.push(central);
-            adresse += local.length + fichier.octets.length;
-        }
-        const tailleRepertoire = repertoire.reduce((somme, entree) => somme + entree.length, 0);
-        const fin = new DataView(new ArrayBuffer(22));
-        fin.setUint32(0, 0x06054b50, true);
-        fin.setUint16(8, fichiers.length, true);
-        fin.setUint16(10, fichiers.length, true);
-        fin.setUint32(12, tailleRepertoire, true);
-        fin.setUint32(16, adresse, true);
-        const archive = new Uint8Array(adresse + tailleRepertoire + 22);
-        let position = 0;
-        for (const morceau of [...morceaux, ...repertoire, new Uint8Array(fin.buffer)]) {
-            archive.set(morceau, position);
-            position += morceau.length;
-        }
-        return archive;
-    },
-
     /* Saut de ligne dans un paragraphe. */
     SAUT_DOCX: '<w:r><w:br/></w:r>',
-
-    /* Éléments qui ferment le paragraphe en cours. */
-    BLOCS_DOCX: ['P', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'UL', 'OL', 'TABLE', 'BLOCKQUOTE', 'PRE', 'DIV', 'FIGURE', 'FIGCAPTION', 'HR'],
-
-    /**
-     * Texte sûr dans du XML. Un seul caractère interdit en XML 1.0 rend le
-     * fichier illisible dans Word : ils sont retirés.
-     *
-     * @param {string} texte - Texte du modèle.
-     * @returns {string} Texte échappé.
-     */
-    echapperXml(texte) {
-        return String(texte).replace(/[^\t\n\r\u0020-\uD7FF\uE000-\uFFFD\u{10000}-\u{10FFFF}]/gu, '')
-            .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-    },
-
-    /**
-     * true si l'élément porte la classe. Lue par getAttribute : le className d'un SVG n'est pas une chaîne.
-     *
-     * @param {Element} noeud - Élément.
-     * @param {string} nom - Classe cherchée.
-     * @returns {boolean}
-     */
-    aClasse(noeud, nom) {
-        return (' ' + (noeud.getAttribute('class') || '') + ' ').includes(' ' + nom + ' ');
-    },
-
-    /**
-     * Premier descendant portant cette balise.
-     *
-     * @param {Node} noeud - Départ.
-     * @param {string} balise - Nom en majuscules.
-     * @returns {?Element}
-     */
-    descendant(noeud, balise) {
-        for (const enfant of noeud.childNodes) {
-            if (enfant.nodeType !== 1) {
-                continue;
-            }
-            if (enfant.tagName.toUpperCase() === balise) {
-                return enfant;
-            }
-            const trouve = this.descendant(enfant, balise);
-            if (trouve) {
-                return trouve;
-            }
-        }
-        return null;
-    },
 
     /**
      * Morceau de texte avec sa mise en forme.
@@ -152,108 +30,6 @@ Object.assign(Rendu, {
             + (style.position ? '<w:vertAlign w:val="' + style.position + '"/>' : '');
         return '<w:r>' + (props ? '<w:rPr>' + props + '</w:rPr>' : '')
             + '<w:t xml:space="preserve">' + this.echapperXml(texte) + '</w:t></w:r>';
-    },
-
-    /**
-     * Contenu en ligne d'un nœud : texte, gras, liens, formules.
-     *
-     * @param {Node} noeud - Nœud de la réponse affichée.
-     * @param {Object} etat - Voir docx().
-     * @param {Object} style - Mise en forme héritée.
-     * @returns {string[]} Morceaux XML, dans l'ordre.
-     */
-    lignesDocx(noeud, etat, style) {
-        if (noeud.nodeType === 3) {
-            /* Seuls les blancs que HTML replie : une espace insécable le reste. */
-            const texte = style.code ? noeud.data : noeud.data.replace(/[ \t\n\r\f]+/g, ' ');
-            return texte ? [this.runDocx(texte, style)] : [];
-        }
-        if (noeud.nodeType !== 1) {
-            return [];
-        }
-        const balise = noeud.tagName.toUpperCase();
-        const enfants = (s) => [...noeud.childNodes].flatMap((enfant) => this.lignesDocx(enfant, etat, s));
-        if (balise === 'BUTTON' || this.aClasse(noeud, 'boutons-figure') || this.aClasse(noeud, 'image-absente')) {
-            return [];
-        }
-        if (balise === 'BR') {
-            return [this.SAUT_DOCX];
-        }
-        if (balise === 'SVG' || balise === 'IMG') {
-            return this.imageDocx(noeud, etat);
-        }
-        if (this.aClasse(noeud, 'katex')) {
-            /* KaTeX glisse le MathML de la formule dans la page : il devient une équation Word. */
-            const maths = this.descendant(noeud, 'MATH');
-            const omml = maths ? this.ommlDocx(maths) : '';
-            if (omml) {
-                return ['<m:oMath>' + omml + '</m:oMath>'];
-            }
-            /* ponytail: sans MathML, la source LaTeX telle quelle ; rien d'autre n'est disponible. */
-            const tex = this.descendant(noeud, 'ANNOTATION');
-            return tex ? [this.runDocx(tex.textContent, style)] : enfants(style);
-        }
-        if (this.aClasse(noeud, 'katex-display') || this.aClasse(noeud, 'formule-longue')) {
-            /* Formule centrée : elle prendra son propre paragraphe (paragrapheDocx). */
-            const contenu = enfants(style);
-            return contenu.length && contenu.every((morceau) => morceau.startsWith('<m:oMath>'))
-                ? contenu.map((morceau) => '<m:oMathPara>' + morceau + '</m:oMathPara>')
-                : [this.SAUT_DOCX, ...contenu, this.SAUT_DOCX];
-        }
-        if (balise === 'A') {
-            const adresse = noeud.getAttribute('href') || '';
-            if (style.lien || !/^(https?:|mailto:)/i.test(adresse)) {
-                return enfants(style);
-            }
-            /* Adresse normalisée : une adresse mal formée dans les relations rend le fichier illisible dans Word. */
-            let cible;
-            try {
-                cible = new URL(adresse).href;
-            } catch (err) {
-                return enfants(style);
-            }
-            const interieur = enfants({ ...style, lien: true });
-            if (!interieur.length) {
-                return [];
-            }
-            etat.rels.push({ type: 'hyperlink', cible });
-            return ['<w:hyperlink r:id="rId' + (2 + etat.rels.length) + '">' + interieur.join('') + '</w:hyperlink>'];
-        }
-        if (balise === 'Q') {
-            return [this.runDocx('"', style), ...enfants(style), this.runDocx('"', style)];
-        }
-        const ajout = {
-            STRONG: { gras: true }, B: { gras: true }, EM: { italique: true }, I: { italique: true },
-            DEL: { barre: true }, S: { barre: true }, CODE: { code: true },
-            /* Sans eux, 10 puissance 3 sortirait 103. */
-            SUP: { position: 'superscript' }, SUB: { position: 'subscript' }
-        }[balise];
-        return enfants(ajout ? { ...style, ...ajout } : style);
-    },
-
-    /**
-     * Paragraphes Word d'une suite de morceaux. Une formule centrée coupe
-     * le paragraphe et prend le sien.
-     *
-     * @param {string[]} runs - Morceaux de lignesDocx.
-     * @param {string} [pPr] - Propriétés du premier paragraphe.
-     * @param {string} [pPrSuite] - Propriétés des suivants.
-     * @returns {string} XML des w:p, ou '' si tout est vide.
-     */
-    paragrapheDocx(runs, pPr = '', pPrSuite = pPr) {
-        const morceaux = [[]];
-        for (const run of runs) {
-            if (run.startsWith('<m:oMathPara>')) {
-                morceaux.push([run], []);
-            } else {
-                morceaux.at(-1).push(run);
-            }
-        }
-        let xml = '';
-        for (const morceau of morceaux) {
-            xml += this.unParagrapheDocx(morceau, xml ? pPrSuite : pPr);
-        }
-        return xml;
     },
 
     /**
@@ -282,20 +58,11 @@ Object.assign(Rendu, {
         return '<w:p>' + (props ? '<w:pPr>' + props + '</w:pPr>' : '') + corps + '</w:p>';
     },
 
-    /* Opérateurs invisibles de MathML (application de fonction, produit implicite) : rien dans Word. */
-    INVISIBLES_MATHML: new RegExp('[' + String.fromCharCode(0x2061) + '-' + String.fromCharCode(0x2064) + ']', 'g'),
-
     /* Accents de KaTeX (chapeau, tilde, flèche) remplacés par le signe combinant que Word attend. */
     ACCENTS_OMML: { '^': 0x302, '~': 0x303, [String.fromCharCode(0x2192)]: 0x20D7 },
 
     /* Traits de KaTeX pour une barre au-dessus. */
     SURLIGNES_OMML: [String.fromCharCode(0x203E), String.fromCharCode(0xAF)],
-
-    /* Ensembles de nombres : lettre ajourée d'Unicode pour une lettre "double-struck" de KaTeX. */
-    ENSEMBLES_OMML: { C: 0x2102, D: 0x1D53B, N: 0x2115, Q: 0x211A, R: 0x211D, Z: 0x2124 },
-
-    /* Éléments MathML dont le premier enfant est la base d'un indice ou d'un exposant. */
-    INDICES_MATHML: ['msub', 'msup', 'msubsup'],
 
     /**
      * Équation Word (OMML) d'un élément MathML de KaTeX.
@@ -333,7 +100,7 @@ Object.assign(Rendu, {
             mo: () => texte(/^[A-Za-z]{2,}$/.test(noeud.textContent) ? droit : ''),
             /* Plusieurs lettres (sin, cm) ou variante "normal" : en droit, pas en italique. */
             mi: () => {
-                const ensemble = noeud.getAttribute('mathvariant') === 'double-struck' && this.ENSEMBLES_OMML[noeud.textContent];
+                const ensemble = noeud.getAttribute('mathvariant') === 'double-struck' && this.ENSEMBLES_MATHML[noeud.textContent];
                 if (ensemble) {
                     return '<m:r><m:t xml:space="preserve">' + String.fromCodePoint(ensemble) + '</m:t></m:r>';
                 }
@@ -384,151 +151,6 @@ Object.assign(Rendu, {
         return forme ? forme() : tous();
     },
 
-    /**
-     * Blocs d'un conteneur : paragraphes, titres, listes, tableaux. Le
-     * contenu en ligne s'accumule, un bloc ferme le paragraphe en cours.
-     *
-     * @param {Node} noeud - Conteneur.
-     * @param {Object} etat - Voir docx().
-     * @param {string} [pPr] - Propriétés du premier paragraphe.
-     * @param {string} [pPrSuite] - Propriétés des suivants.
-     * @param {{niveau: number, numId: number}} [liste] - Liste qui contient le nœud.
-     * @returns {string} XML des blocs.
-     */
-    fluxDocx(noeud, etat, pPr = '', pPrSuite = pPr, liste = { niveau: 0, numId: 0 }) {
-        let xml = '';
-        let runs = [];
-        let premier = true;
-        const courant = () => (premier ? pPr : pPrSuite);
-        const ajouter = (morceau) => {
-            if (morceau) {
-                xml += morceau;
-                premier = false;
-            }
-        };
-        const fermer = () => {
-            ajouter(this.paragrapheDocx(runs, courant(), pPrSuite));
-            runs = [];
-        };
-        for (const enfant of noeud.childNodes) {
-            const balise = enfant.nodeType === 1 ? enfant.tagName.toUpperCase() : '';
-            if (!this.BLOCS_DOCX.includes(balise)) {
-                /* Blancs entre deux blocs : pas de paragraphe. */
-                if (balise || runs.length || (enfant.data || '').trim()) {
-                    runs.push(...this.lignesDocx(enfant, etat, {}));
-                }
-                continue;
-            }
-            fermer();
-            if (balise === 'P') {
-                ajouter(this.paragrapheDocx(this.lignesDocx(enfant, etat, {}), courant(), pPrSuite));
-            } else if (/^H[1-6]$/.test(balise)) {
-                ajouter(this.paragrapheDocx(this.lignesDocx(enfant, etat, {}),
-                    '<w:pStyle w:val="Heading' + Math.min(Number(balise[1]), 3) + '"/>'));
-            } else if (balise === 'UL' || balise === 'OL') {
-                ajouter(this.listeDocx(enfant, etat, liste));
-            } else if (balise === 'TABLE') {
-                ajouter(this.tableauDocx(enfant, etat));
-            } else if (balise === 'PRE') {
-                ajouter(this.codeDocx(enfant));
-            } else if (balise === 'BLOCKQUOTE') {
-                ajouter(this.fluxDocx(enfant, etat, '<w:ind w:left="720"/>'));
-            } else if (balise === 'FIGCAPTION') {
-                /* Titre puis crédit : un paragraphe centré chacun. */
-                for (const ligne of enfant.childNodes) {
-                    ajouter(this.paragrapheDocx(this.lignesDocx(ligne, etat, {}), '<w:jc w:val="center"/>'));
-                }
-            } else if (balise !== 'HR') {
-                ajouter(this.fluxDocx(enfant, etat, courant(), pPrSuite, liste));
-            }
-        }
-        fermer();
-        return xml;
-    },
-
-    /**
-     * Liste à puces ou numérotée, avec ses sous-listes. Puces : numId 1.
-     * Chaque liste numérotée a le sien, pour repartir de son début ; une
-     * sous-liste numérotée garde celui de sa liste.
-     *
-     * @param {Element} noeud - <ul> ou <ol>.
-     * @param {Object} etat - Voir docx().
-     * @param {{niveau: number, numId: number}} parent - Liste qui contient celle-ci.
-     * @returns {string} XML des paragraphes.
-     */
-    listeDocx(noeud, etat, parent) {
-        /* Word ne connaît que neuf niveaux. */
-        const niveau = Math.min(parent.niveau, 8);
-        let numId = 1;
-        if (noeud.tagName.toUpperCase() === 'OL') {
-            /* start vient du modèle : un entier que Word accepte, sinon 1. */
-            const lu = parseInt(noeud.getAttribute('start'), 10);
-            const debut = lu >= 0 && lu <= 9999 ? lu : 1;
-            numId = parent.numId > 1 ? parent.numId : etat.listes.push({ debut, niveau }) + 1;
-        }
-        let xml = '';
-        for (const item of noeud.childNodes) {
-            if (item.nodeType === 1 && item.tagName.toUpperCase() === 'LI') {
-                xml += this.fluxDocx(item, etat,
-                    '<w:numPr><w:ilvl w:val="' + niveau + '"/><w:numId w:val="' + numId + '"/></w:numPr>',
-                    '<w:ind w:left="' + 720 * (niveau + 1) + '"/>',
-                    { niveau: parent.niveau + 1, numId });
-            }
-        }
-        return xml;
-    },
-
-    /**
-     * Tableau à bordures, en-tête en gras, colonnes de même largeur.
-     *
-     * @param {Element} noeud - <table>.
-     * @param {Object} etat - Voir docx().
-     * @returns {string} XML du w:tbl, suivi d'un paragraphe vide.
-     */
-    tableauDocx(noeud, etat) {
-        const lignes = [];
-        const lire = (parent) => {
-            for (const enfant of parent.childNodes) {
-                if (enfant.nodeType !== 1) {
-                    continue;
-                }
-                if (enfant.tagName.toUpperCase() === 'TR') {
-                    lignes.push([...enfant.childNodes].filter((c) => c.nodeType === 1 && /^T[HD]$/i.test(c.tagName)));
-                } else {
-                    lire(enfant);
-                }
-            }
-        };
-        lire(noeud);
-        const colonnes = Math.max(0, ...lignes.map((ligne) => ligne.length));
-        if (!colonnes) {
-            return '';
-        }
-        /* 9638 : largeur utile d'une page A4 aux marges de 2 cm, en vingtièmes de point. */
-        const largeur = Math.floor(9638 / colonnes);
-        const cellule = (c) => {
-            const texte = c ? this.paragrapheDocx(this.lignesDocx(c, etat, { gras: c.tagName.toUpperCase() === 'TH' })) : '';
-            return '<w:tc><w:tcPr><w:tcW w:w="' + largeur + '" w:type="dxa"/></w:tcPr>' + (texte || '<w:p/>') + '</w:tc>';
-        };
-        return '<w:tbl><w:tblPr><w:tblStyle w:val="TableGrid"/><w:tblW w:w="0" w:type="auto"/></w:tblPr><w:tblGrid>'
-            + ('<w:gridCol w:w="' + largeur + '"/>').repeat(colonnes) + '</w:tblGrid>'
-            + lignes.map((ligne) => '<w:tr>' + Array.from({ length: colonnes }, (_, i) => cellule(ligne[i])).join('') + '</w:tr>').join('')
-            /* Paragraphe vide : deux tableaux qui se suivent fusionneraient. */
-            + '</w:tbl><w:p/>';
-    },
-
-    /**
-     * Bloc de code : un paragraphe par ligne, en chasse fixe.
-     *
-     * @param {Element} noeud - <pre>.
-     * @returns {string} XML des paragraphes.
-     */
-    codeDocx(noeud) {
-        /* ponytail: coloration perdue ; reprendre les classes de highlight.js si elle manque. */
-        return noeud.textContent.replace(/\n$/, '').split('\n')
-            .map((ligne) => '<w:p><w:pPr><w:spacing w:after="0"/></w:pPr>' + this.runDocx(ligne, { code: true }) + '</w:p>').join('');
-    },
-
     /* 16 cm et 12 cm, largeur et hauteur maximales d'une image, en EMU (360 000 par cm). */
     LARGEUR_IMAGE_DOCX: 5760000,
     HAUTEUR_IMAGE_DOCX: 4320000,
@@ -564,46 +186,6 @@ Object.assign(Rendu, {
     },
 
     /**
-     * Prépare les images d'une réponse : figures en PNG, images de Commons
-     * récupérées. Une image impossible à préparer est omise.
-     *
-     * @param {HTMLElement} element - Conteneur de la réponse.
-     * @returns {Promise<Map<Element, Object>>} { octets, extension, largeur, hauteur } par élément.
-     */
-    async imagesDocx(element) {
-        const images = new Map();
-        for (const noeud of element.querySelectorAll('.diagramme > svg, figure.image-commons img')) {
-            try {
-                const figure = noeud.tagName.toUpperCase() === 'SVG';
-                /* La CSP n'ouvre fetch que vers upload.wikimedia.org, qui sert les mêmes miniatures que thumb. */
-                const adresse = figure ? '' : noeud.src.replace(/^https:\/\/thumb\.wikimedia\.org\//, 'https://upload.wikimedia.org/');
-                const fichier = figure ? await this.enPng(noeud) : await fetch(adresse).then((r) => {
-                    if (!r.ok) {
-                        throw new Error(r.status);
-                    }
-                    return r.blob();
-                });
-                /* ponytail: PNG et JPEG seulement ; passer par un canevas pour les autres formats. */
-                const extension = { 'image/png': 'png', 'image/jpeg': 'jpg' }[fichier.type];
-                if (!extension) {
-                    continue;
-                }
-                const cadre = figure ? noeud.viewBox.baseVal : null;
-                const affiche = noeud.getBoundingClientRect();
-                images.set(noeud, {
-                    octets: new Uint8Array(await fichier.arrayBuffer()),
-                    extension,
-                    largeur: figure ? (cadre && cadre.width) || affiche.width : noeud.naturalWidth,
-                    hauteur: figure ? (cadre && cadre.height) || affiche.height : noeud.naturalHeight
-                });
-            } catch (err) {
-                /* Image omise : l'export continue. */
-            }
-        }
-        return images;
-    },
-
-    /**
      * Corps du document Word d'une réponse affichée.
      *
      * @param {Node} element - Conteneur de la réponse.
@@ -611,7 +193,76 @@ Object.assign(Rendu, {
      * @returns {string} XML des blocs ; un paragraphe vide si la réponse n'a rien.
      */
     corpsDocx(element, etat) {
-        return this.fluxDocx(element, etat) || '<w:p/>';
+        etat.e ??= this.ecritureDocx();
+        return this.corpsExport(element, etat);
+    },
+
+    /**
+     * Liste Word, avec ses sous-listes : paragraphes numérotés à plat.
+     *
+     * @param {Element} noeud - <ul> ou <ol>.
+     * @param {Object} etat - Voir docx().
+     * @param {{niveau: number, numId: number}} parent - Liste qui contient celle-ci.
+     * @returns {string} XML des paragraphes.
+     */
+    listeDocx(noeud, etat, parent) {
+        etat.e ??= this.ecritureDocx();
+        return this.listeExport(noeud, etat, parent);
+    },
+
+    /**
+     * Écriture Word des morceaux que le parcours (export.js) décrit.
+     *
+     * @returns {Object} Écriture à placer dans etat.e.
+     */
+    ecritureDocx() {
+        return {
+            saut: this.SAUT_DOCX,
+            vide: '<w:p/>',
+            genreRetrait: '<w:ind w:left="720"/>',
+            genreCentre: '<w:jc w:val="center"/>',
+            genreTitre: (rang) => '<w:pStyle w:val="Heading' + rang + '"/>',
+            texte: (texte, style) => this.runDocx(texte, style),
+            image: (noeud, etat) => this.imageDocx(noeud, etat),
+            paragraphe: (runs, genre) => this.unParagrapheDocx(runs, genre),
+            formule: (maths) => {
+                const omml = this.ommlDocx(maths);
+                return omml ? '<m:oMath>' + omml + '</m:oMath>' : '';
+            },
+            estFormule: (morceau) => morceau.startsWith('<m:oMath>'),
+            centrer: (morceau) => '<m:oMathPara>' + morceau + '</m:oMathPara>',
+            estCentree: (morceau) => morceau.startsWith('<m:oMathPara>'),
+            lien: (cible, interieur, etat) => {
+                etat.rels.push({ type: 'hyperlink', cible });
+                return '<w:hyperlink r:id="rId' + (2 + etat.rels.length) + '">' + interieur.join('') + '</w:hyperlink>';
+            },
+            /* Puces : numId 1. Chaque liste numérotée a le sien, pour repartir de son début ;
+               une sous-liste numérotée garde celui de sa liste. */
+            liste: (etat, { ordonnee, debut, niveau, parent }) => {
+                let numId = 1;
+                if (ordonnee) {
+                    numId = parent.numId > 1 ? parent.numId : etat.listes.push({ debut, niveau }) + 1;
+                }
+                return {
+                    numId,
+                    genre: '<w:numPr><w:ilvl w:val="' + niveau + '"/><w:numId w:val="' + numId + '"/></w:numPr>',
+                    genreSuite: '<w:ind w:left="' + 720 * (niveau + 1) + '"/>'
+                };
+            },
+            finListe: (elements) => elements.join(''),
+            tableau: (cases, colonnes) => {
+                /* 9638 : largeur utile d'une page A4 aux marges de 2 cm, en vingtièmes de point. */
+                const largeur = Math.floor(9638 / colonnes);
+                const cellule = (texte) => '<w:tc><w:tcPr><w:tcW w:w="' + largeur + '" w:type="dxa"/></w:tcPr>' + (texte || '<w:p/>') + '</w:tc>';
+                return '<w:tbl><w:tblPr><w:tblStyle w:val="TableGrid"/><w:tblW w:w="0" w:type="auto"/></w:tblPr><w:tblGrid>'
+                    + ('<w:gridCol w:w="' + largeur + '"/>').repeat(colonnes) + '</w:tblGrid>'
+                    + cases.map((ligne) => '<w:tr>' + ligne.map(cellule).join('') + '</w:tr>').join('')
+                    /* Paragraphe vide : deux tableaux qui se suivent fusionneraient. */
+                    + '</w:tbl><w:p/>';
+            },
+            /* Un paragraphe par ligne, en chasse fixe. */
+            code: (lignes) => lignes.map((ligne) => '<w:p><w:pPr><w:spacing w:after="0"/></w:pPr>' + this.runDocx(ligne, { code: true }) + '</w:p>').join('')
+        };
     },
 
     /* Types des fichiers de l'archive. */
@@ -699,7 +350,7 @@ Object.assign(Rendu, {
      * @returns {Promise<Blob>} Document Word.
      */
     async docx(element) {
-        const etat = { images: await this.imagesDocx(element), medias: [], rels: [], listes: [] };
+        const etat = { images: await this.imagesExport(element), medias: [], rels: [], listes: [], e: this.ecritureDocx() };
         /* Page A4, marges de 2 cm (1134 vingtièmes de point). */
         const principal = '<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"'
             + ' xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"'
