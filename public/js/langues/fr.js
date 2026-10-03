@@ -73,6 +73,8 @@ I18n.TEXTES.fr = {
     'projet.exemple-evaluation': 'Prépare une évaluation d\'une heure à partir de ces sources : énoncé, barème sur 20, puis corrigé.',
     'projet.exemple-revision': 'Résume ces sources en une fiche de révision d\'une page pour les élèves.',
     'projet.exemple-flash': 'Écris dix questions flash sur ces sources, avec les réponses à la fin.',
+    'projet.courrier': 'Courrier',
+    'projet.exemple-courrier': 'Écris un courrier de demande de devis à un musée, pour la visite d\'un groupe de 16 personnes.',
     'notes.label': 'Notes du courrier',
 
     /* Langues de Traduire. */

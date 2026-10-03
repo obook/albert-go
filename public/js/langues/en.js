@@ -73,6 +73,8 @@ I18n.TEXTES.en = {
     'projet.exemple-evaluation': 'Prepare a one-hour test from these sources: questions, marking scheme out of 20, then answer key.',
     'projet.exemple-revision': 'Summarise these sources as a one-page revision sheet for students.',
     'projet.exemple-flash': 'Write ten quick questions about these sources, with the answers at the end.',
+    'projet.courrier': 'Letter',
+    'projet.exemple-courrier': 'Write a letter asking a museum for a quote, for a visit by a group of 16 people.',
     'notes.label': 'Letter notes',
 
     /* Translate languages. */
