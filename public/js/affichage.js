@@ -154,6 +154,8 @@ function afficherReglages() {
     if (radio) {
         radio.checked = true;
     }
+    /* La part des documents dépend du contexte du modèle. */
+    afficherDocuments();
 }
 
 /**

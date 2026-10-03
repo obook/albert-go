@@ -148,6 +148,8 @@ function afficherOutil() {
     afficherRecherche();
     $('saisie').placeholder = t('invite.' + outilActuel);
     $('langues').hidden = outilActuel !== 'traduire';
+    /* Projet prend plusieurs fichiers d'un coup. */
+    $('fichier').multiple = !!Albert.OUTILS[outilActuel].documents;
     /* Le CSS n'affiche la bienvenue que dans Chat. */
     $('chat').dataset.module = outilActuel;
 }

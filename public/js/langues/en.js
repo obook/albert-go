@@ -56,6 +56,11 @@ I18n.TEXTES.en = {
     'outil.projet': 'Project',
     'module.projet': 'Project',
     'invite.projet': 'Ask for a result based on the documents',
+    'documents.resume': 'Documents ({nombre})',
+    'documents.resume-part': 'Documents ({nombre}) - {pourcent}% of the context',
+    'documents.deposer': 'Add documents',
+    'documents.retirer': 'Remove {nom}',
+    'erreur.projet-plein': 'Project full: remove a document or choose a model with a larger context.',
     'notes.label': 'Letter notes',
 
     /* Translate languages. */

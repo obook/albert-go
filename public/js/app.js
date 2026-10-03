@@ -149,7 +149,11 @@ function memoriser(question) {
 async function demanderReponse(outil) {
     /* Chaque outil a sa consigne système ; seuls les modules à fil envoient aussi la conversation. */
     const fil = Albert.OUTILS[outil].fil;
-    const texteConsigne = await consigne(outil);
+    let texteConsigne = await consigne(outil);
+    /* Projet : les documents partent à chaque question, à la suite de la consigne. */
+    if (Albert.OUTILS[outil].documents && documentsProjet.length) {
+        texteConsigne += '\n\n' + Albert.joindreDocuments(documentsProjet);
+    }
     let messages = Albert.messagesAEnvoyer(conversation, reglages.memoire && fil);
     if (texteConsigne) {
         messages = [{ role: 'system', content: texteConsigne }, ...messages];
@@ -237,6 +241,8 @@ async function envoyer() {
        de hauteur, et le fil défilé trop tôt cachait l'attente dessous. */
     $('saisie').value = '';
     retirerPiece();
+    /* Projet : la carte se replie pour laisser la place au fil. */
+    $('documents').open = false;
     etat(t('etat.reflechit'));
     /* Lien vers le fichier et miniature : à l'écran seulement, pas dans l'historique. */
     const bulle = ajouter('user', piece ? question : affiche);
@@ -278,6 +284,9 @@ function nouvelleConversation() {
     retirerPiece();
     viderRedaction();
     conversation = [];
+    documentsProjet = [];
+    afficherDocuments();
+    $('documents').open = true;
     conversationId = null;
     retenirCourante(null);
     afficherReglages();

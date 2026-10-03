@@ -56,6 +56,11 @@ I18n.TEXTES.fr = {
     'outil.projet': 'Projet',
     'module.projet': 'Projet',
     'invite.projet': 'Demander un rendu à partir des documents',
+    'documents.resume': 'Documents ({nombre})',
+    'documents.resume-part': 'Documents ({nombre}) - {pourcent} % du contexte',
+    'documents.deposer': 'Déposer des documents',
+    'documents.retirer': 'Retirer {nom}',
+    'erreur.projet-plein': 'Projet plein : retirez un document ou choisissez un modèle au contexte plus grand.',
     'notes.label': 'Notes du courrier',
 
     /* Langues de Traduire. */

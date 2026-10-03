@@ -197,6 +197,12 @@
                  class="chat"
                  hidden
                  data-t-attr="aria-label:chat.aria">
+            <!-- Projet : documents épinglés, envoyés avec chaque question (projet.js). -->
+            <details id="documents" class="documents" open>
+                <summary id="resume-documents"></summary>
+                <ul id="liste-documents" class="liste-documents"></ul>
+                <button type="button" id="deposer-documents" class="deposer" data-t="documents.deposer"></button>
+            </details>
             <!-- Chat vide : bienvenue et suggestions, masquées dès la première question (CSS). -->
             <div class="bienvenue">
                 <p data-t="bienvenue.texte"></p>
@@ -583,6 +589,7 @@
     <script src="js/tools/services.js?v=dev"></script>
     <script src="js/tools/recherche/outils-modele.js?v=dev"></script>
     <script src="js/stockage.js?v=dev"></script>
+    <script src="js/projet.js?v=dev"></script>
     <script src="js/affichage.js?v=dev"></script>
     <script src="js/reponse.js?v=dev"></script>
     <script src="js/reglages.js?v=dev"></script>

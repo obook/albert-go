@@ -56,6 +56,11 @@ I18n.TEXTES.de = {
     'outil.projet': 'Projekt',
     'module.projet': 'Projekt',
     'invite.projet': 'Ein Ergebnis aus den Dokumenten anfordern',
+    'documents.resume': 'Dokumente ({nombre})',
+    'documents.resume-part': 'Dokumente ({nombre}) - {pourcent} % des Kontexts',
+    'documents.deposer': 'Dokumente hinzufügen',
+    'documents.retirer': '{nom} entfernen',
+    'erreur.projet-plein': 'Projekt voll: Entfernen Sie ein Dokument oder wählen Sie ein Modell mit größerem Kontext.',
     'notes.label': 'Notizen zum Brief',
 
     /* Sprachen von Übersetzen. */

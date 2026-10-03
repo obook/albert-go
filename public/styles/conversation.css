@@ -138,7 +138,7 @@ main {
 .chat[data-module="discuter"]:has(#fil:empty) .bienvenue { display: grid; gap: 0.75rem; }
 .bienvenue p { margin: 0; color: var(--texte-doux); }
 .suggestions { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; margin-top: 0.5rem; }
-.suggestion {
+.suggestion, .deposer {
     padding: 0.5rem 1rem;
     /* Discret, comme la carte de saisie : le survol le passe en bleu. */
     border: 1px solid var(--bord);
@@ -149,7 +149,23 @@ main {
     font-size: 0.9375rem;
     cursor: pointer;
 }
-.suggestion:hover, .suggestion:focus-visible { border-color: var(--bleu); color: var(--bleu); background: var(--bleu-clair); }
+.suggestion:hover, .suggestion:focus-visible,
+.deposer:hover, .deposer:focus-visible { border-color: var(--bleu); color: var(--bleu); background: var(--bleu-clair); }
+
+/* Projet : carte Documents en tête du fil, dans ce module seulement. */
+.documents {
+    display: none;
+    margin-bottom: 1rem;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--bord);
+    border-radius: 0.75rem;
+    background: var(--surface);
+}
+.chat[data-module="projet"] .documents { display: block; }
+.documents summary { cursor: pointer; font-weight: 700; }
+.liste-documents { margin: 0.5rem 0; padding: 0; list-style: none; }
+.liste-documents li { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
+.liste-documents span { overflow-wrap: anywhere; }
 
 /* Fil de conversation */
 

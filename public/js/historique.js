@@ -101,7 +101,8 @@ function ecrireConversations(liste) {
  * Si le stockage est plein, un toast dit ce qui a été supprimé ou perdu.
  */
 function sauverConversation() {
-    const entree = Albert.entreeConversation(conversationId || Date.now().toString(36), outilActuel, conversation);
+    const documents = Albert.OUTILS[outilActuel].documents ? documentsProjet : [];
+    const entree = Albert.entreeConversation(conversationId || Date.now().toString(36), outilActuel, conversation, documents);
     if (!entree) {
         return;
     }
@@ -156,6 +157,10 @@ function rouvrirConversation(entree) {
     afficherOutil();
     afficher();
     conversation = entree.messages.slice();
+    documentsProjet = (entree.documents || []).slice();
+    afficherDocuments();
+    /* Carte ouverte tant que rien n'a été demandé. */
+    $('documents').open = !conversation.length;
     conversationId = entree.id;
     retenirCourante(conversationId);
     afficherReglages();

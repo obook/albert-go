@@ -56,6 +56,11 @@ I18n.TEXTES.es = {
     'outil.projet': 'Proyecto',
     'module.projet': 'Proyecto',
     'invite.projet': 'Pedir un resultado a partir de los documentos',
+    'documents.resume': 'Documentos ({nombre})',
+    'documents.resume-part': 'Documentos ({nombre}) - {pourcent} % del contexto',
+    'documents.deposer': 'Añadir documentos',
+    'documents.retirer': 'Quitar {nom}',
+    'erreur.projet-plein': 'Proyecto lleno: quite un documento o elija un modelo con un contexto mayor.',
     'notes.label': 'Notas de la carta',
 
     /* Idiomas de Traducir. */
