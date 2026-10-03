@@ -159,3 +159,24 @@ test('corpsDocx : citation en retrait', () => {
     const xml = Rendu.corpsDocx(n('DIV', {}, n('BLOCKQUOTE', {}, n('P', {}, 'cité'))), etatVide());
     assert.ok(xml.includes('<w:p><w:pPr><w:ind w:left="720"/></w:pPr><w:r><w:t xml:space="preserve">cité</w:t>'));
 });
+
+test('corpsDocx : figure insérée et ramenée à 16 cm, image non préparée omise', () => {
+    const figure = n('svg', {});
+    const perdue = n('IMG', { alt: 'Tour Eiffel' });
+    const etat = etatVide();
+    etat.images.set(figure, { octets: new Uint8Array([1]), extension: 'png', largeur: 800, hauteur: 400 });
+    const xml = Rendu.corpsDocx(n('DIV', {},
+        n('DIV', { class: 'diagramme' }, n('DIV', { class: 'boutons-figure' }, n('BUTTON', {}, n('svg', {}))), figure),
+        n('FIGURE', { class: 'image-commons' }, n('DIV', { class: 'cadre-image' }, perdue),
+            n('FIGCAPTION', {}, n('Q', {}, n('I', {}, 'La tour')),
+                n('A', { href: 'https://commons.wikimedia.org/wiki/File:T.jpg' }, 'Auteur, CC BY-SA 4.0')))), etat);
+    assert.strictEqual((xml.match(/<w:drawing>/g) || []).length, 1);
+    assert.ok(xml.includes('<wp:extent cx="5760000" cy="2880000"/>'));
+    assert.ok(xml.includes('<w:p><w:pPr><w:jc w:val="center"/></w:pPr><w:r><w:drawing>'));
+    assert.ok(xml.includes('<a:blip r:embed="rId3"/>'));
+    assert.deepStrictEqual(etat.rels[0], { type: 'image', cible: 'media/image1.png' });
+    assert.strictEqual(etat.medias.length, 1);
+    /* Légende gardée même sans image. */
+    assert.ok(xml.includes('La tour'));
+    assert.ok(xml.includes('Auteur, CC BY-SA 4.0'));
+});

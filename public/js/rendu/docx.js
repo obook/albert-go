@@ -178,7 +178,7 @@ Object.assign(Rendu, {
             return [this.SAUT_DOCX];
         }
         if (balise === 'SVG' || balise === 'IMG') {
-            return [];
+            return this.imageDocx(noeud, etat);
         }
         if (this.aClasse(noeud, 'katex')) {
             /* ponytail: formule en LaTeX brut ; équations Word (OMML) si les enseignants le demandent. */
@@ -382,6 +382,77 @@ Object.assign(Rendu, {
         /* ponytail: coloration perdue ; reprendre les classes de highlight.js si elle manque. */
         return noeud.textContent.replace(/\n$/, '').split('\n')
             .map((ligne) => '<w:p><w:pPr><w:spacing w:after="0"/></w:pPr>' + this.runDocx(ligne, { code: true }) + '</w:p>').join('');
+    },
+
+    /* 16 cm, largeur maximale d'une image, en EMU (360 000 par cm). */
+    LARGEUR_IMAGE_DOCX: 5760000,
+
+    /**
+     * Image insérée dans le texte, si elle a pu être préparée.
+     *
+     * @param {Element} noeud - <svg> ou <img> de la réponse.
+     * @param {Object} etat - Voir docx().
+     * @returns {string[]} Un w:r avec l'image, ou rien.
+     */
+    imageDocx(noeud, etat) {
+        const image = etat.images.get(noeud);
+        if (!image || !image.largeur || !image.hauteur) {
+            return [];
+        }
+        etat.medias.push(image);
+        const numero = etat.medias.length;
+        etat.rels.push({ type: 'image', cible: 'media/image' + numero + '.' + image.extension });
+        /* 9525 EMU par pixel, ramené à la largeur de la page. */
+        const echelle = Math.min(1, this.LARGEUR_IMAGE_DOCX / (image.largeur * 9525));
+        const cx = Math.round(image.largeur * 9525 * echelle);
+        const cy = Math.round(image.hauteur * 9525 * echelle);
+        return ['<w:r><w:drawing><wp:inline distT="0" distB="0" distL="0" distR="0">'
+            + '<wp:extent cx="' + cx + '" cy="' + cy + '"/>'
+            + '<wp:docPr id="' + numero + '" name="Image ' + numero + '" descr="' + this.echapperXml(noeud.getAttribute('alt') || '') + '"/>'
+            + '<a:graphic><a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:pic>'
+            + '<pic:nvPicPr><pic:cNvPr id="' + numero + '" name="Image ' + numero + '"/><pic:cNvPicPr/></pic:nvPicPr>'
+            + '<pic:blipFill><a:blip r:embed="rId' + (2 + etat.rels.length) + '"/><a:stretch><a:fillRect/></a:stretch></pic:blipFill>'
+            + '<pic:spPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="' + cx + '" cy="' + cy + '"/></a:xfrm>'
+            + '<a:prstGeom prst="rect"><a:avLst/></a:prstGeom></pic:spPr>'
+            + '</pic:pic></a:graphicData></a:graphic></wp:inline></w:drawing></w:r>'];
+    },
+
+    /**
+     * Prépare les images d'une réponse : figures en PNG, images de Commons
+     * récupérées. Une image impossible à préparer est omise.
+     *
+     * @param {HTMLElement} element - Conteneur de la réponse.
+     * @returns {Promise<Map<Element, Object>>} { octets, extension, largeur, hauteur } par élément.
+     */
+    async imagesDocx(element) {
+        const images = new Map();
+        for (const noeud of element.querySelectorAll('.diagramme > svg, figure.image-commons img')) {
+            try {
+                const figure = noeud.tagName.toUpperCase() === 'SVG';
+                const fichier = figure ? await this.enPng(noeud) : await fetch(noeud.src).then((r) => {
+                    if (!r.ok) {
+                        throw new Error(r.status);
+                    }
+                    return r.blob();
+                });
+                /* ponytail: PNG et JPEG seulement ; passer par un canevas pour les autres formats. */
+                const extension = { 'image/png': 'png', 'image/jpeg': 'jpg' }[fichier.type];
+                if (!extension) {
+                    continue;
+                }
+                const cadre = figure ? noeud.viewBox.baseVal : null;
+                const affiche = noeud.getBoundingClientRect();
+                images.set(noeud, {
+                    octets: new Uint8Array(await fichier.arrayBuffer()),
+                    extension,
+                    largeur: figure ? (cadre && cadre.width) || affiche.width : noeud.naturalWidth,
+                    hauteur: figure ? (cadre && cadre.height) || affiche.height : noeud.naturalHeight
+                });
+            } catch (err) {
+                /* Image omise : l'export continue. */
+            }
+        }
+        return images;
     },
 
     /**
