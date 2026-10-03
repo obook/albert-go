@@ -229,6 +229,7 @@ I18n.TEXTES.de = {
     'reponse.telecharger-figure': 'Abbildung herunterladen (SVG)',
     'reponse.telecharger-png': 'Bild herunterladen (PNG)',
     'reponse.telecharger-image': 'Originalbild herunterladen',
+    'reponse.telecharger-docx': 'Als .docx herunterladen',
     'reponse.erreur-diagramme': 'Diagramm nicht angezeigt, Mermaid-Fehler: ',
     'reponse.erreur-courbe': 'Kurve nicht angezeigt: eine Zeile y = ... pro Funktion (x^2, sqrt(x), sin(x) im Bogenmaß), dann x = Anfang .. Ende.',
     'reponse.image-absente': 'Bild auf Wikimedia Commons nicht gefunden.',

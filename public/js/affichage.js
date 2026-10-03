@@ -20,6 +20,8 @@ const ICONES = {
     /* Format du fichier en lettres : deux flèches de téléchargement se confondraient. */
     svg: '<svg class="lettre" viewBox="0 0 24 24" aria-hidden="true"><text x="12" y="16.5" text-anchor="middle" font-size="12" font-weight="700" textLength="23" lengthAdjust="spacingAndGlyphs">SVG</text></svg>',
     png: '<svg class="lettre" viewBox="0 0 24 24" aria-hidden="true"><text x="12" y="16.5" text-anchor="middle" font-size="12" font-weight="700" textLength="23" lengthAdjust="spacingAndGlyphs">PNG</text></svg>',
+    /* Page au coin plié : la réponse en fichier Word. */
+    docx: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l5 5v13H7Z"/><path d="M14 3v5h5M10 13h6M10 17h6"/></svg>',
     image: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.5"/><path d="M4 18l5-5 4 4 3-3 4 4"/></svg>',
     telecharger: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>',
     lire: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9Z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg>',

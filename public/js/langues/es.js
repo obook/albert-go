@@ -229,6 +229,7 @@ I18n.TEXTES.es = {
     'reponse.telecharger-figure': 'Descargar la figura (SVG)',
     'reponse.telecharger-png': 'Descargar la imagen (PNG)',
     'reponse.telecharger-image': 'Descargar la imagen original',
+    'reponse.telecharger-docx': 'Descargar en .docx',
     'reponse.erreur-diagramme': 'Diagrama no mostrado, error de Mermaid: ',
     'reponse.erreur-courbe': 'Curva no mostrada: escribe una línea y = ... por función (x^2, sqrt(x), sin(x) en radianes) y luego x = inicio .. fin.',
     'reponse.image-absente': 'Imagen no encontrada en Wikimedia Commons.',
