@@ -232,10 +232,14 @@ function exempleGraphique() {
     return t('bienvenue.exemple-graphique', visiteurs);
 }
 
-/** Exemples tirés au hasard à chaque clic. */
+/** Exemples fabriqués ici, sans fichier : tirés au hasard, ou texte unique. */
 const EXEMPLES_ALEATOIRES = {
     'bienvenue.exemple-calcul': exempleCalcul,
-    'bienvenue.exemple-graphique': exempleGraphique
+    'bienvenue.exemple-graphique': exempleGraphique,
+    /* Demandes types de Projet : un seul texte, sans fichier d'exemples. */
+    'projet.exemple-evaluation': () => t('projet.exemple-evaluation'),
+    'projet.exemple-revision': () => t('projet.exemple-revision'),
+    'projet.exemple-flash': () => t('projet.exemple-flash')
 };
 
 /** Variantes lues dans public/exemples (promesses, par fichier), et dernière proposée. */

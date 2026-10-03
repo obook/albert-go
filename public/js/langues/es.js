@@ -61,6 +61,13 @@ I18n.TEXTES.es = {
     'documents.deposer': 'Añadir documentos',
     'documents.retirer': 'Quitar {nom}',
     'erreur.projet-plein': 'Proyecto lleno: quite un documento o elija un modelo con un contexto mayor.',
+    'projet.bienvenue': 'Añada sus documentos y luego pida un resultado.',
+    'projet.evaluation': 'Evaluación',
+    'projet.revision': 'Ficha de repaso',
+    'projet.flash': 'Preguntas rápidas',
+    'projet.exemple-evaluation': 'Prepara una evaluación de una hora a partir de estos documentos: enunciado, baremo sobre 20 y después la corrección.',
+    'projet.exemple-revision': 'Resume estos documentos en una ficha de repaso de una página para los alumnos.',
+    'projet.exemple-flash': 'Escribe diez preguntas rápidas sobre estos documentos, con las respuestas al final.',
     'notes.label': 'Notas de la carta',
 
     /* Idiomas de Traducir. */

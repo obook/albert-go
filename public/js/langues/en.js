@@ -61,6 +61,13 @@ I18n.TEXTES.en = {
     'documents.deposer': 'Add documents',
     'documents.retirer': 'Remove {nom}',
     'erreur.projet-plein': 'Project full: remove a document or choose a model with a larger context.',
+    'projet.bienvenue': 'Add your documents, then ask for a result.',
+    'projet.evaluation': 'Test',
+    'projet.revision': 'Revision sheet',
+    'projet.flash': 'Quick questions',
+    'projet.exemple-evaluation': 'Prepare a one-hour test from these documents: questions, marking scheme out of 20, then answer key.',
+    'projet.exemple-revision': 'Summarise these documents as a one-page revision sheet for students.',
+    'projet.exemple-flash': 'Write ten quick questions about these documents, with the answers at the end.',
     'notes.label': 'Letter notes',
 
     /* Translate languages. */

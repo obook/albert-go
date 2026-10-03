@@ -61,6 +61,13 @@ I18n.TEXTES.fr = {
     'documents.deposer': 'Déposer des documents',
     'documents.retirer': 'Retirer {nom}',
     'erreur.projet-plein': 'Projet plein : retirez un document ou choisissez un modèle au contexte plus grand.',
+    'projet.bienvenue': 'Déposez vos documents, puis demandez un rendu.',
+    'projet.evaluation': 'Évaluation',
+    'projet.revision': 'Fiche de révision',
+    'projet.flash': 'Questions flash',
+    'projet.exemple-evaluation': 'Prépare une évaluation d\'une heure à partir de ces documents : énoncé, barème sur 20, puis corrigé.',
+    'projet.exemple-revision': 'Résume ces documents en une fiche de révision d\'une page pour les élèves.',
+    'projet.exemple-flash': 'Écris dix questions flash sur ces documents, avec les réponses à la fin.',
     'notes.label': 'Notes du courrier',
 
     /* Langues de Traduire. */

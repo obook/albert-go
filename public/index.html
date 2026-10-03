@@ -203,6 +203,15 @@
                 <ul id="liste-documents" class="liste-documents"></ul>
                 <button type="button" id="deposer-documents" class="deposer" data-t="documents.deposer"></button>
             </details>
+            <!-- Projet vide : une phrase et trois demandes types, masquées dès la première question (CSS). -->
+            <div class="accueil-projet">
+                <p data-t="projet.bienvenue"></p>
+                <div class="suggestions">
+                    <button type="button" class="suggestion" data-exemple="projet.exemple-evaluation" data-t="projet.evaluation"></button>
+                    <button type="button" class="suggestion" data-exemple="projet.exemple-revision" data-t="projet.revision"></button>
+                    <button type="button" class="suggestion" data-exemple="projet.exemple-flash" data-t="projet.flash"></button>
+                </div>
+            </div>
             <!-- Chat vide : bienvenue et suggestions, masquées dès la première question (CSS). -->
             <div class="bienvenue">
                 <p data-t="bienvenue.texte"></p>

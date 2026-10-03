@@ -61,6 +61,13 @@ I18n.TEXTES.de = {
     'documents.deposer': 'Dokumente hinzufügen',
     'documents.retirer': '{nom} entfernen',
     'erreur.projet-plein': 'Projekt voll: Entfernen Sie ein Dokument oder wählen Sie ein Modell mit größerem Kontext.',
+    'projet.bienvenue': 'Fügen Sie Ihre Dokumente hinzu und fordern Sie dann ein Ergebnis an.',
+    'projet.evaluation': 'Klassenarbeit',
+    'projet.revision': 'Lernzettel',
+    'projet.flash': 'Blitzfragen',
+    'projet.exemple-evaluation': 'Erstelle aus diesen Dokumenten eine einstündige Klassenarbeit: Aufgaben, Bewertungsschema mit 20 Punkten, dann die Lösung.',
+    'projet.exemple-revision': 'Fasse diese Dokumente zu einem einseitigen Lernzettel für die Schüler zusammen.',
+    'projet.exemple-flash': 'Schreibe zehn Blitzfragen zu diesen Dokumenten, mit den Antworten am Ende.',
     'notes.label': 'Notizen zum Brief',
 
     /* Sprachen von Übersetzen. */
