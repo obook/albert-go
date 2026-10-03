@@ -260,15 +260,17 @@ function bulleReponse(texte, titre, langue, animer = false, recherches = null) {
     contenu.className = 'texte rendu';
     /* Images Commons montrées seulement si l'outil d'images a servi à cette réponse. */
     const imagesCherchees = (recherches || []).some(r => r && r.image_commons);
-    if (animer) {
-        devoiler(contenu, texte, imagesCherchees);
-    } else {
-        Rendu.afficher(contenu, texte, imagesCherchees);
-    }
+    const pret = animer ? devoiler(contenu, texte, imagesCherchees) : Rendu.afficher(contenu, texte, imagesCherchees);
 
     const actions = document.createElement('div');
     actions.className = 'actions-reponse';
     actions.append(boutonCopier(texte));
+    /* Le clic attend la fin du rendu : avant, formules et figures manquent. */
+    const boutonDocx = boutonAction(ICONES.docx, t('reponse.telecharger-docx'));
+    boutonDocx.addEventListener('click', () => Rendu.telechargerAvecAttente(boutonDocx,
+        () => pret.then(() => Rendu.docx(contenu)),
+        Rendu.nomFigure(new Date(), 'docx', Rendu.questionAvant(contenu) || 'reponse')));
+    actions.append(boutonDocx);
     if (typeof speechSynthesis !== 'undefined') {
         actions.append(boutonLire(contenu, langue));
     }

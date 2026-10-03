@@ -42,5 +42,9 @@ class SansCache(http.server.SimpleHTTPRequestHandler):
         super().end_headers()
 
 port, dossier = int(sys.argv[1]), sys.argv[2]
-http.server.ThreadingHTTPServer(('127.0.0.1', port), functools.partial(SansCache, directory=dossier)).serve_forever()
+try:
+    http.server.ThreadingHTTPServer(('127.0.0.1', port), functools.partial(SansCache, directory=dossier)).serve_forever()
+except KeyboardInterrupt:
+    # Ctrl+C : arrêt voulu, sans trace d'erreur.
+    print()
 PYTHON

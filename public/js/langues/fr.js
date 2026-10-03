@@ -229,6 +229,7 @@ I18n.TEXTES.fr = {
     'reponse.telecharger-figure': 'Télécharger la figure (SVG)',
     'reponse.telecharger-png': 'Télécharger l\'image (PNG)',
     'reponse.telecharger-image': 'Télécharger l\'image originale',
+    'reponse.telecharger-docx': 'Télécharger en .docx',
     'reponse.erreur-diagramme': 'Diagramme non affiché, erreur de Mermaid : ',
     'reponse.erreur-courbe': 'Courbe non affichée : écrire une ligne y = ... par fonction (x^2, sqrt(x), sin(x) en radians), puis x = début .. fin.',
     'reponse.image-absente': 'Image introuvable sur Wikimedia Commons.',
