@@ -181,6 +181,29 @@ test('corpsDocx : figure insérée et ramenée à 16 cm, image non préparée om
     assert.ok(xml.includes('Auteur, CC BY-SA 4.0'));
 });
 
+test('imageDocx : image en hauteur ramenée à 12 cm, la légende reste sur la page', () => {
+    const photo = n('IMG', { alt: 'Tour Eiffel' });
+    const etat = etatVide();
+    etat.images.set(photo, { octets: new Uint8Array([1]), extension: 'jpg', largeur: 500, hauteur: 925 });
+    assert.ok(Rendu.imageDocx(photo, etat)[0].includes('<wp:extent cx="2335135" cy="4320000"/>'));
+});
+
+test('imagesDocx : miniature de thumb.wikimedia.org demandée à upload.wikimedia.org', async (t) => {
+    /* La CSP n'ouvre fetch que vers upload.wikimedia.org. */
+    const demandees = [];
+    t.mock.method(globalThis, 'fetch', async (adresse) => {
+        demandees.push(adresse);
+        return { ok: true, blob: async () => new Blob([new Uint8Array([1, 2])], { type: 'image/jpeg' }) };
+    });
+    const img = {
+        tagName: 'IMG', src: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a8/T.jpg/500px-T.jpg',
+        naturalWidth: 500, naturalHeight: 925, getBoundingClientRect: () => ({})
+    };
+    const images = await Rendu.imagesDocx({ querySelectorAll: () => [img] });
+    assert.deepStrictEqual(demandees, ['https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/T.jpg/500px-T.jpg']);
+    assert.deepStrictEqual({ ...images.get(img), octets: null }, { octets: null, extension: 'jpg', largeur: 500, hauteur: 925 });
+});
+
 test('numerotationDocx : une numérotation par liste, avec son début', () => {
     const xml = Rendu.numerotationDocx({ listes: [{ debut: 1, niveau: 0 }, { debut: 3, niveau: 1 }] });
     /* Word exige tous les abstractNum avant le premier num. */

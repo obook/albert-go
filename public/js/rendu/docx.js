@@ -384,8 +384,9 @@ Object.assign(Rendu, {
             .map((ligne) => '<w:p><w:pPr><w:spacing w:after="0"/></w:pPr>' + this.runDocx(ligne, { code: true }) + '</w:p>').join('');
     },
 
-    /* 16 cm, largeur maximale d'une image, en EMU (360 000 par cm). */
+    /* 16 cm et 12 cm, largeur et hauteur maximales d'une image, en EMU (360 000 par cm). */
     LARGEUR_IMAGE_DOCX: 5760000,
+    HAUTEUR_IMAGE_DOCX: 4320000,
 
     /**
      * Image insérée dans le texte, si elle a pu être préparée.
@@ -402,8 +403,8 @@ Object.assign(Rendu, {
         etat.medias.push(image);
         const numero = etat.medias.length;
         etat.rels.push({ type: 'image', cible: 'media/image' + numero + '.' + image.extension });
-        /* 9525 EMU par pixel, ramené à la largeur de la page. */
-        const echelle = Math.min(1, this.LARGEUR_IMAGE_DOCX / (image.largeur * 9525));
+        /* 9525 EMU par pixel, ramené à la largeur de la page et à une demi-page de haut. */
+        const echelle = Math.min(1, this.LARGEUR_IMAGE_DOCX / (image.largeur * 9525), this.HAUTEUR_IMAGE_DOCX / (image.hauteur * 9525));
         const cx = Math.round(image.largeur * 9525 * echelle);
         const cy = Math.round(image.hauteur * 9525 * echelle);
         return ['<w:r><w:drawing><wp:inline distT="0" distB="0" distL="0" distR="0">'
@@ -429,7 +430,9 @@ Object.assign(Rendu, {
         for (const noeud of element.querySelectorAll('.diagramme > svg, figure.image-commons img')) {
             try {
                 const figure = noeud.tagName.toUpperCase() === 'SVG';
-                const fichier = figure ? await this.enPng(noeud) : await fetch(noeud.src).then((r) => {
+                /* La CSP n'ouvre fetch que vers upload.wikimedia.org, qui sert les mêmes miniatures que thumb. */
+                const adresse = figure ? '' : noeud.src.replace(/^https:\/\/thumb\.wikimedia\.org\//, 'https://upload.wikimedia.org/');
+                const fichier = figure ? await this.enPng(noeud) : await fetch(adresse).then((r) => {
                     if (!r.ok) {
                         throw new Error(r.status);
                     }
