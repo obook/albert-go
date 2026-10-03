@@ -73,6 +73,13 @@ const etatVide = () => ({ images: new Map(), medias: [], rels: [], listes: [] })
 const katex = (tex) => n('SPAN', { class: 'katex' },
     n('SPAN', { class: 'katex-mathml' }, n('math', {}, n('annotation', { encoding: 'application/x-tex' }, tex))),
     n('SPAN', { class: 'katex-html' }, 'rendu'));
+/* Formule avec le MathML que KaTeX produit, à côté de la source LaTeX. */
+const mathml = (tex, ...contenu) => n('SPAN', { class: 'katex' },
+    n('SPAN', { class: 'katex-mathml' }, n('math', {}, n('semantics', {}, n('mrow', {}, ...contenu), n('annotation', { encoding: 'application/x-tex' }, tex)))),
+    n('SPAN', { class: 'katex-html' }, 'rendu'));
+const nombre = (x) => n('mn', {}, x);
+/* Morceau de texte d'une équation Word. */
+const r = (x) => '<m:r><m:t xml:space="preserve">' + x + '</m:t></m:r>';
 
 test('echapperXml : caractères réservés échappés, caractères interdits retirés', () => {
     assert.strictEqual(Rendu.echapperXml('a < b & "c" > d'), 'a &lt; b &amp; &quot;c&quot; &gt; d');
@@ -127,6 +134,82 @@ test('listeDocx : début de liste douteux ramené à un entier que Word accepte'
     assert.strictEqual(debut('1e999'), 1);
     assert.strictEqual(debut('-3'), 1);
     assert.strictEqual(debut('99999999999999999999'), 1);
+});
+
+test('ommlDocx : fraction, puissance, indice et racine en équation Word', () => {
+    const fois = String.fromCharCode(0xD7);
+    assert.strictEqual(Rendu.ommlDocx(n('mfrac', {}, nombre('48'), nombre('60'))),
+        '<m:f><m:num>' + r('48') + '</m:num><m:den>' + r('60') + '</m:den></m:f>');
+    assert.strictEqual(Rendu.ommlDocx(n('msup', {}, n('mi', {}, 'x'), nombre('2'))),
+        '<m:sSup><m:e>' + r('x') + '</m:e><m:sup>' + r('2') + '</m:sup></m:sSup>');
+    assert.strictEqual(Rendu.ommlDocx(n('msub', {}, n('mi', {}, 'u'), n('mi', {}, 'n'))),
+        '<m:sSub><m:e>' + r('u') + '</m:e><m:sub>' + r('n') + '</m:sub></m:sSub>');
+    assert.strictEqual(Rendu.ommlDocx(n('msqrt', {}, nombre('2'))),
+        '<m:rad><m:radPr><m:degHide m:val="1"/></m:radPr><m:deg/><m:e>' + r('2') + '</m:e></m:rad>');
+    /* Rangée : les morceaux se suivent, la source LaTeX est ignorée. */
+    assert.strictEqual(Rendu.ommlDocx(n('semantics', {}, n('mrow', {}, nombre('4'), n('mo', {}, fois), nombre('12')), n('annotation', {}, 'source'))),
+        r('4') + r(fois) + r('12'));
+});
+
+test('ommlDocx : nom de fonction en droit, texte et espace gardés, vecteur accentué', () => {
+    /* Texte droit marqué "nor" : LibreOffice ne respecte que cette marque. */
+    assert.strictEqual(Rendu.ommlDocx(n('mi', {}, 'sin')), '<m:r><m:rPr><m:nor/></m:rPr><m:t xml:space="preserve">sin</m:t></m:r>');
+    assert.strictEqual(Rendu.ommlDocx(n('mi', { mathvariant: 'normal' }, 'H')), '<m:r><m:rPr><m:nor/></m:rPr><m:t xml:space="preserve">H</m:t></m:r>');
+    assert.strictEqual(Rendu.ommlDocx(n('mrow', {}, nombre('2'), n('mtext', {}, ' '), nombre('000'))),
+        r('2') + '<m:r><m:rPr><m:nor/></m:rPr><m:t xml:space="preserve"> </m:t></m:r>' + r('000'));
+    const fleche = String.fromCharCode(0x20D7);
+    assert.strictEqual(Rendu.ommlDocx(n('mover', {}, n('mi', {}, 'u'), n('mo', {}, fleche))),
+        '<m:acc><m:accPr><m:chr m:val="' + fleche + '"/></m:accPr><m:e>' + r('u') + '</m:e></m:acc>');
+    /* Opérateur invisible de MathML : rien dans Word. */
+    assert.strictEqual(Rendu.ommlDocx(n('mo', {}, String.fromCharCode(0x2061))), '');
+});
+
+test('ommlDocx : nom d\'opérateur en droit, parenthèses et accolade extensibles', () => {
+    /* "lim" sans marque de texte droit : LibreOffice le lit comme un mot-clé et casse la formule. */
+    assert.strictEqual(Rendu.ommlDocx(n('mo', {}, 'lim')), '<m:r><m:rPr><m:nor/></m:rPr><m:t xml:space="preserve">lim</m:t></m:r>');
+    /* Chimie (mhchem) : l'indice s'appuie sur une lettre fantôme, qui ne doit pas s'écrire. */
+    assert.strictEqual(Rendu.ommlDocx(n('msub', {}, n('mrow', {}, n('mpadded', {}, n('mphantom', {}, n('mi', {}, 'X')))), nombre('2'))),
+        '<m:sSub><m:e><m:r><m:t>&#8203;</m:t></m:r></m:e><m:sub>' + r('2') + '</m:sub></m:sSub>');
+    const clos = (signe) => n('mo', { fence: 'true' }, signe);
+    assert.strictEqual(Rendu.ommlDocx(n('mrow', {}, clos('('), nombre('1'), clos(')'))),
+        '<m:d><m:dPr><m:begChr m:val="("/><m:endChr m:val=")"/></m:dPr><m:e>' + r('1') + '</m:e></m:d>');
+    /* Système : accolade ouvrante seule. */
+    assert.strictEqual(Rendu.ommlDocx(n('mrow', {}, clos('{'), n('mtable', {}, n('mtr', {}, n('mtd', {}, nombre('1')))))),
+        '<m:d><m:dPr><m:begChr m:val="{"/><m:endChr m:val=""/></m:dPr><m:e><m:m><m:mr><m:e>' + r('1') + '</m:e></m:mr></m:m></m:e></m:d>');
+    /* Parenthèses ordinaires : du texte. */
+    assert.strictEqual(Rendu.ommlDocx(n('mrow', {}, n('mo', {}, '('), nombre('1'), n('mo', {}, ')'))), r('(') + r('1') + r(')'));
+});
+
+test('ommlDocx : chimie, flèche de réaction et ensembles de nombres', () => {
+    const droit = (x) => '<m:r><m:rPr><m:nor/></m:rPr><m:t xml:space="preserve">' + x + '</m:t></m:r>';
+    const lettre = (x) => n('mi', { mathvariant: 'normal' }, x);
+    const fantome = () => n('mrow', {}, n('mpadded', {}, n('mphantom', {}, n('mi', {}, 'X'))));
+    /* H2O de mhchem : l'indice sans base s'accroche à la lettre qui le précède. */
+    assert.strictEqual(Rendu.ommlDocx(n('mrow', {}, lettre('H'), n('msub', {}, fantome(), nombre('2')), lettre('O'))),
+        '<m:sSub><m:e>' + droit('H') + '</m:e><m:sub>' + r('2') + '</m:sub></m:sSub>' + droit('O'));
+    /* Flèche de réaction : rien au-dessus, donc pas d'accent. */
+    const fleche = String.fromCharCode(0x2192);
+    assert.strictEqual(Rendu.ommlDocx(n('mover', {}, n('mo', {}, fleche), n('mpadded', {}, n('mspace', {})))), r(fleche));
+    /* Ensemble des réels : la lettre ajourée, pas un R ordinaire. */
+    assert.strictEqual(Rendu.ommlDocx(n('mi', { mathvariant: 'double-struck' }, 'R')), r(String.fromCharCode(0x211D)));
+});
+
+test('corpsDocx : équation en ligne dans le texte, équation centrée dans son paragraphe', () => {
+    const demi = () => n('mfrac', {}, nombre('1'), nombre('2'));
+    const f = '<m:f><m:num>' + r('1') + '</m:num><m:den>' + r('2') + '</m:den></m:f>';
+    const xml = Rendu.corpsDocx(n('DIV', {},
+        n('P', {}, 'Calcul : ', mathml('a', demi()), ' puis ',
+            n('SPAN', { class: 'katex-display' }, mathml('b', demi())), ' Le réservoir est plein.'),
+        n('OL', {}, n('LI', {}, 'Voici ', n('SPAN', { class: 'formule-longue' }, mathml('c', demi())), 'la suite'))), etatVide());
+    /* En ligne : l'équation est dans le paragraphe, entre deux morceaux de texte. */
+    assert.ok(xml.includes('Calcul : </w:t></w:r><m:oMath>' + f + '</m:oMath><w:r>'));
+    /* Centrée : seule dans son paragraphe, le texte qui suit repart dans un autre, sans espace en tête. */
+    assert.ok(xml.includes('</w:p><w:p><m:oMathPara><m:oMath>' + f + '</m:oMath></m:oMathPara></w:p>'
+        + '<w:p><w:r><w:t xml:space="preserve">Le réservoir est plein.</w:t>'));
+    /* Dans une liste : le numéro ne se répète ni sur la formule ni sur la suite. */
+    assert.strictEqual((xml.match(/<w:numPr>/g) || []).length, 1);
+    assert.ok(xml.includes('<w:p><w:pPr><w:ind w:left="720"/></w:pPr><m:oMathPara>'));
+    assert.ok(!xml.includes('rendu'));
 });
 
 test('corpsDocx : réponse vide, le corps garde un paragraphe', () => {
@@ -259,7 +342,8 @@ test('docx : archive complète, texte et image à leur place', async (t) => {
     const figure = n('svg', {});
     const reponse = n('DIV', {},
         n('H1', {}, 'Évaluation'),
-        n('P', {}, 'Durée : ', n('STRONG', {}, '30 minutes'), '. Formule : ', katex('a^2 + b^2 = c^2')),
+        n('P', {}, 'Durée : ', n('STRONG', {}, '30 minutes'), '. Formule : ', mathml('a', n('mfrac', {}, nombre('48'), nombre('60'))),
+            n('SPAN', { class: 'katex-display' }, mathml('b', n('msup', {}, n('mi', {}, 'x'), nombre('2')), n('mo', {}, '='), n('msqrt', {}, nombre('2')))), 'Suite.'),
         n('OL', {}, n('LI', {}, 'Énoncer le théorème.'), n('LI', {}, 'Calculer ', n('CODE', {}, 'BC'), '.', n('UL', {}, n('LI', {}, 'poser le calcul')))),
         n('TABLE', {}, n('TR', {}, n('TH', {}, 'Question'), n('TH', {}, 'Points')), n('TR', {}, n('TD', {}, '1'), n('TD', {}, '4'))),
         n('DIV', { class: 'diagramme' }, figure),
@@ -276,6 +360,8 @@ test('docx : archive complète, texte et image à leur place', async (t) => {
     assert.ok(lire('word/document.xml').startsWith('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'));
     assert.ok(lire('word/document.xml').includes('<w:t xml:space="preserve">Évaluation</w:t>'));
     assert.ok(lire('word/document.xml').endsWith('</w:sectPr></w:body></w:document>'));
+    assert.ok(lire('word/document.xml').includes('xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"'));
+    assert.ok(lire('word/document.xml').includes('<m:oMathPara><m:oMath><m:sSup>'));
     assert.ok(lire('word/_rels/document.xml.rels').includes('Target="media/image1.png"'));
     assert.ok(lire('word/numbering.xml').includes('<w:num w:numId="2">'));
     assert.ok(lire('word/styles.xml').includes('w:styleId="Heading3"'));
