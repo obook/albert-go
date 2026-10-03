@@ -27,6 +27,10 @@ const EXTENSIONS_DOCUMENT = /\.(pdf|docx|odt)$/i;
 const XML_DOCX = 'http://schemas.openxmlformats.org/wordprocessingml/2006/main';
 const XML_ODT = 'urn:oasis:names:tc:opendocument:xmlns:text:1.0';
 
+/** Espaces de noms des objets d'un .odt et de leur adresse. */
+const XML_DESSIN_ODT = 'urn:oasis:names:tc:opendocument:xmlns:drawing:1.0';
+const XML_LIEN = 'http://www.w3.org/1999/xlink';
+
 /** Taille maximale d'un document, en octets. */
 const DOCUMENT_MAX = 20000000;
 
@@ -200,15 +204,22 @@ async function lireDansZip(donnees, nom) {
  *
  * @param {Node} noeud - Paragraphe ou partie de paragraphe.
  * @param {boolean} odt - true pour un .odt.
+ * @param {Map<Element, string>} [formules] - Texte des objets formule d'un .odt (lireDocument).
  * @returns {string} Texte du nœud.
  */
-function texteXml(noeud, odt) {
+function texteXml(noeud, odt, formules = new Map()) {
     let texte = '';
     for (const enfant of noeud.childNodes) {
         if (enfant.nodeType === Node.TEXT_NODE) {
             texte += odt ? enfant.data : '';
         } else if (['pPr', 'rPr'].includes(enfant.localName)) {
             /* Propriétés du .docx : leurs w:tab sont des taquets, pas du texte. */
+        } else if (formules.has(enfant)) {
+            /* Formule d'un .odt : un objet à part, sans elle le texte perdrait ses maths. */
+            texte += formules.get(enfant);
+        } else if (enfant.localName === 'oMath') {
+            /* Équation Word : ses chiffres mis bout à bout donneraient 4860 pour 48/60. */
+            texte += Albert.texteOmml(enfant);
         } else if (enfant.localName === 't') {
             texte += enfant.textContent;
         } else if (enfant.localName === 'tab') {
@@ -219,7 +230,7 @@ function texteXml(noeud, odt) {
             /* text:s c="3" : trois espaces. */
             texte += ' '.repeat(Number(enfant.getAttributeNS(XML_ODT, 'c')) || 1);
         } else {
-            texte += texteXml(enfant, odt);
+            texte += texteXml(enfant, odt, formules);
         }
     }
     return texte;
@@ -233,8 +244,15 @@ function texteXml(noeud, odt) {
  */
 async function lireDocument(fichier) {
     const odt = /\.odt$/i.test(fichier.name);
-    const xml = await lireDansZip(await fichier.arrayBuffer(), odt ? 'content.xml' : 'word/document.xml');
+    const donnees = await fichier.arrayBuffer();
+    const xml = await lireDansZip(donnees, odt ? 'content.xml' : 'word/document.xml');
     const racine = new DOMParser().parseFromString(xml, 'application/xml');
+    /* Formules d'un .odt : chacune est un objet rangé dans son dossier de l'archive. */
+    const formules = new Map();
+    for (const objet of odt ? racine.getElementsByTagNameNS(XML_DESSIN_ODT, 'object') : []) {
+        const dossier = (objet.getAttributeNS(XML_LIEN, 'href') || '').replace(/^\.\//, '');
+        formules.set(objet, Albert.formuleOdt(await lireDansZip(donnees, dossier + '/content.xml').catch(() => '')));
+    }
     /* Paragraphes et titres, dans l'ordre du document. */
     const paragraphes = [...racine.getElementsByTagName('*')]
         .filter((e) => e.namespaceURI === (odt ? XML_ODT : XML_DOCX) && ['p', 'h'].includes(e.localName));
@@ -242,7 +260,7 @@ async function lireDocument(fichier) {
     return paragraphes.map((p) => {
         const caseTableau = ['tc', 'table-cell'].includes(p.parentNode.localName);
         const suite = caseTableau && p === p.parentNode.lastElementChild && p.parentNode.nextElementSibling;
-        return texteXml(p, odt) + (suite ? '\t' : '\n');
+        return texteXml(p, odt, formules) + (suite ? '\t' : '\n');
     }).join('');
 }
 

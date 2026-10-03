@@ -673,6 +673,57 @@ const Albert = {
     },
 
     /**
+     * Texte d'un objet formule d'un .odt, à remettre dans le texte du document.
+     *
+     * @param {string} xml - Contenu de l'objet : MathML et annotations.
+     * @returns {string} "$...$" si la source LaTeX y est, "[formule : ...]" pour l'écriture de LibreOffice, '' sinon.
+     */
+    formuleOdt(xml) {
+        const lire = (encodage) => {
+            const trouve = new RegExp('<annotation[^>]*encoding="' + encodage + '"[^>]*>([^<]*)</annotation>').exec(xml);
+            return trouve ? trouve[1].replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&apos;/g, "'").replace(/&amp;/g, '&').trim() : '';
+        };
+        /* ponytail: l'écriture StarMath de LibreOffice passe telle quelle ; la convertir en LaTeX si le modèle la lit mal. */
+        const tex = lire('application/x-tex');
+        const starmath = lire('StarMath 5.0');
+        return tex ? '$' + tex + '$' : (starmath ? '[formule : ' + starmath + ']' : '');
+    },
+
+    /**
+     * Équation Word en texte : fractions, puissances, indices et racines restent lisibles.
+     *
+     * @param {Node} noeud - m:oMath ou l'un de ses descendants.
+     * @returns {string} Texte de l'équation.
+     */
+    texteOmml(noeud) {
+        let texte = '';
+        for (const enfant of noeud.childNodes) {
+            const nom = enfant.localName || '';
+            const partie = (balise) => {
+                const trouve = [...enfant.childNodes].find((c) => c.localName === balise);
+                return trouve ? this.texteOmml(trouve) : '';
+            };
+            if (nom === 't') {
+                texte += enfant.textContent;
+            } else if (nom === 'f') {
+                texte += '(' + partie('num') + ')/(' + partie('den') + ')';
+            } else if (nom === 'sSup') {
+                texte += partie('e') + '^(' + partie('sup') + ')';
+            } else if (nom === 'sSub') {
+                texte += partie('e') + '_(' + partie('sub') + ')';
+            } else if (nom === 'sSubSup') {
+                texte += partie('e') + '_(' + partie('sub') + ')^(' + partie('sup') + ')';
+            } else if (nom === 'rad') {
+                texte += 'racine(' + partie('e') + ')';
+            } else if (enfant.nodeType === 1 && !nom.endsWith('Pr')) {
+                /* Les propriétés (fPr, rPr...) ne portent pas de texte. */
+                texte += this.texteOmml(enfant);
+            }
+        }
+        return texte;
+    },
+
+    /**
      * Nom libre pour un document : "image.png", puis "image (2).png" si le nom est pris.
      *
      * @param {string} nom - Nom voulu.

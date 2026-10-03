@@ -425,6 +425,34 @@ test('messagesProjet : la demande, précédée de la version en cours du documen
     assert.deepStrictEqual(Albert.messagesProjet(conv.slice(0, 1)), [{ role: 'user', content: 'Fais une évaluation' }]);
 });
 
+test('formuleOdt : la source LaTeX d\'un objet formule, sinon son écriture LibreOffice', () => {
+    const objet = (annotations) => '<math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn></mrow>' + annotations + '</semantics></math>';
+    const frac = String.fromCharCode(92) + 'frac{a}{b}';
+    /* Fichier exporté par Albert Go : la source LaTeX y est gardée. */
+    assert.strictEqual(Albert.formuleOdt(objet('<annotation encoding="application/x-tex">' + frac + ' &lt; 1</annotation>'
+        + '<annotation encoding="StarMath 5.0">{a} over {b} &lt; 1</annotation>')), '$' + frac + ' < 1$');
+    /* Fichier écrit dans LibreOffice : seule son écriture StarMath existe. */
+    assert.strictEqual(Albert.formuleOdt(objet('<annotation encoding="StarMath 5.0">{a} over {b} &amp; c</annotation>')), '[formule : {a} over {b} & c]');
+    assert.strictEqual(Albert.formuleOdt(objet('')), '');
+    assert.strictEqual(Albert.formuleOdt(''), '');
+});
+
+test('texteOmml : une équation Word reste lisible en texte', () => {
+    /* Faux nœuds : la lecture ne regarde que nodeType, localName, childNodes et textContent. */
+    const e = (localName, ...enfants) => {
+        const childNodes = enfants.map((x) => (typeof x === 'string' ? { nodeType: 3, textContent: x, childNodes: [] } : x));
+        return { nodeType: 1, localName, childNodes, get textContent() { return childNodes.map((c) => c.textContent).join(''); } };
+    };
+    const r = (texte) => e('r', e('rPr', e('nor')), e('t', texte));
+    const equation = e('oMath',
+        e('f', e('fPr'), e('num', r('48')), e('den', r('60'))), r('='),
+        e('sSup', e('e', r('x')), e('sup', r('2'))), r('+'),
+        e('sSub', e('e', r('u')), e('sub', r('n'))), r('+'),
+        e('rad', e('radPr', e('degHide')), e('deg'), e('e', r('2'))));
+    /* Sans cela, 48/60 sortait "4860". */
+    assert.strictEqual(Albert.texteOmml(equation), '(48)/(60)=x^(2)+u_(n)+racine(2)');
+});
+
 test('nomLibre : un nom déjà pris est numéroté', () => {
     assert.strictEqual(Albert.nomLibre('image.png', ['cours.pdf']), 'image.png');
     assert.strictEqual(Albert.nomLibre('image.png', ['image.png']), 'image (2).png');

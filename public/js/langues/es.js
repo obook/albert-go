@@ -73,6 +73,8 @@ I18n.TEXTES.es = {
     'projet.exemple-evaluation': 'Prepara una evaluación de una hora a partir de estas fuentes: enunciado, baremo sobre 20 y después la corrección.',
     'projet.exemple-revision': 'Resume estas fuentes en una ficha de repaso de una página para los alumnos.',
     'projet.exemple-flash': 'Escribe diez preguntas rápidas sobre estas fuentes, con las respuestas al final.',
+    'projet.courrier': 'Carta',
+    'projet.exemple-courrier': 'Escribe una carta para pedir un presupuesto a un museo, para la visita de un grupo de 16 personas.',
     'notes.label': 'Notas de la carta',
 
     /* Idiomas de Traducir. */

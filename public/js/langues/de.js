@@ -73,6 +73,8 @@ I18n.TEXTES.de = {
     'projet.exemple-evaluation': 'Erstelle aus diesen Quellen eine einstündige Klassenarbeit: Aufgaben, Bewertungsschema mit 20 Punkten, dann die Lösung.',
     'projet.exemple-revision': 'Fasse diese Quellen zu einem einseitigen Lernzettel für die Schüler zusammen.',
     'projet.exemple-flash': 'Schreibe zehn Blitzfragen zu diesen Quellen, mit den Antworten am Ende.',
+    'projet.courrier': 'Brief',
+    'projet.exemple-courrier': 'Schreibe einen Brief an ein Museum mit der Bitte um ein Angebot für den Besuch einer Gruppe von 16 Personen.',
     'notes.label': 'Notizen zum Brief',
 
     /* Sprachen von Übersetzen. */
