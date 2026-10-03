@@ -102,7 +102,8 @@ test('corpsDocx : titres, gras, italique, blancs entre blocs ignorés', () => {
 
 test('docx.js : aucun caractère invisible dans le source', () => {
     /* Une regex écrite avec des caractères spéciaux tels quels se "répare" au premier éditeur venu. */
-    const source = require('node:fs').readFileSync(require('node:path').join(__dirname, '../public/js/rendu/docx.js'), 'utf8');
+    const lire = (nom) => require('node:fs').readFileSync(require('node:path').join(__dirname, '../public/js/rendu/' + nom), 'utf8');
+    const source = lire('export.js') + lire('docx.js');
     const suspects = [...new Set(source)].filter((c) => {
         const code = c.codePointAt(0);
         return !(code === 10 || (code >= 32 && code <= 126) || (code >= 0xC0 && code <= 0x17F));
@@ -307,7 +308,7 @@ test('imageDocx : image en hauteur ramenée à 12 cm, la légende reste sur la p
     assert.ok(Rendu.imageDocx(photo, etat)[0].includes('<wp:extent cx="2335135" cy="4320000"/>'));
 });
 
-test('imagesDocx : miniature de thumb.wikimedia.org demandée à upload.wikimedia.org', async (t) => {
+test('imagesExport : miniature de thumb.wikimedia.org demandée à upload.wikimedia.org', async (t) => {
     /* La CSP n'ouvre fetch que vers upload.wikimedia.org. */
     const demandees = [];
     t.mock.method(globalThis, 'fetch', async (adresse) => {
@@ -318,7 +319,7 @@ test('imagesDocx : miniature de thumb.wikimedia.org demandée à upload.wikimedi
         tagName: 'IMG', src: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a8/T.jpg/500px-T.jpg',
         naturalWidth: 500, naturalHeight: 925, getBoundingClientRect: () => ({})
     };
-    const images = await Rendu.imagesDocx({ querySelectorAll: () => [img] });
+    const images = await Rendu.imagesExport({ querySelectorAll: () => [img] });
     assert.deepStrictEqual(demandees, ['https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/T.jpg/500px-T.jpg']);
     assert.deepStrictEqual({ ...images.get(img), octets: null }, { octets: null, extension: 'jpg', largeur: 500, hauteur: 925 });
 });
@@ -350,7 +351,7 @@ test('docx : archive complète, texte et image à leur place', async (t) => {
         n('P', {}, n('A', { href: 'https://fr.wikipedia.org/wiki/Pythagore' }, 'Source')));
     /* PNG d'un pixel : préparer une vraie figure demande un navigateur. */
     const png = Uint8Array.from(Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', 'base64'));
-    t.mock.method(Rendu, 'imagesDocx', async () => new Map([[figure, { octets: png, extension: 'png', largeur: 800, hauteur: 400 }]]));
+    t.mock.method(Rendu, 'imagesExport', async () => new Map([[figure, { octets: png, extension: 'png', largeur: 800, hauteur: 400 }]]));
     const fichier = await Rendu.docx(reponse);
     assert.strictEqual(fichier.type, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
     const archive = new Uint8Array(await fichier.arrayBuffer());

@@ -342,5 +342,7 @@ if (typeof module !== 'undefined') {
     require('./rendu/diagrammes.js');
     require('./rendu/courbes.js');
     require('./rendu/images.js');
+    require('./rendu/export.js');
     require('./rendu/docx.js');
+    require('./rendu/odt.js');
 }

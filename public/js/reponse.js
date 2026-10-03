@@ -236,6 +236,22 @@ async function devoiler(element, texte, images) {
 }
 
 /**
+ * Boutons qui enregistrent une réponse en fichier : .docx, puis .odt.
+ *
+ * @param {function(): (HTMLElement|Promise<HTMLElement>)} lire - Donne le contenu à enregistrer, une fois prêt.
+ * @param {function(): string} sujet - Donne le sujet, pour nommer le fichier.
+ * @returns {HTMLButtonElement[]} Les deux boutons.
+ */
+function boutonsExport(lire, sujet) {
+    return ['docx', 'odt'].map((format) => {
+        const bouton = boutonAction(ICONES[format], t('reponse.telecharger-' + format));
+        bouton.addEventListener('click', () => Rendu.telechargerAvecAttente(bouton,
+            async () => Rendu[format](await lire()), Rendu.nomFigure(new Date(), format, sujet())));
+        return bouton;
+    });
+}
+
+/**
  * Crée la bulle d'une réponse, ou d'une variante si un titre est donné.
  *
  * @param {string} texte - Texte en Markdown.
@@ -266,11 +282,7 @@ function bulleReponse(texte, titre, langue, animer = false, recherches = null) {
     actions.className = 'actions-reponse';
     actions.append(boutonCopier(texte));
     /* Le clic attend la fin du rendu : avant, formules et figures manquent. */
-    const boutonDocx = boutonAction(ICONES.docx, t('reponse.telecharger-docx'));
-    boutonDocx.addEventListener('click', () => Rendu.telechargerAvecAttente(boutonDocx,
-        () => pret.then(() => Rendu.docx(contenu)),
-        Rendu.nomFigure(new Date(), 'docx', Rendu.questionAvant(contenu) || 'reponse')));
-    actions.append(boutonDocx);
+    actions.append(...boutonsExport(() => pret.then(() => contenu), () => Rendu.questionAvant(contenu) || 'reponse'));
     if (typeof speechSynthesis !== 'undefined') {
         actions.append(boutonLire(contenu, langue));
     }
