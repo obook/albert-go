@@ -17,6 +17,7 @@ Chaque utilisateur utilise sa propre clé API. Les clés s'obtiennent sur le [pl
 | Style | Reformuler un texte, avec trois propositions. |
 | Trad | Traduire un texte entre les deux langues choisies. |
 | Courrier | Rédiger un courrier à partir de quelques idées (voir plus bas). |
+| Projet | Déposer des documents une fois, puis demander un rendu : évaluation avec barème, fiche de révision, questions. |
 
 ### Réponses
 
@@ -25,6 +26,8 @@ Les réponses acceptent le Markdown, les formules LaTeX et les diagrammes Mermai
 ### Fichiers joints
 
 Trombone, glisser-déposer ou Ctrl+V : un fichier texte, un PDF, un .docx ou un .odt est lu dans le navigateur ; une image est transcrite par le modèle Medium, un enregistrement audio par whisper (8 minutes environ au plus), puis le texte part avec la question. Un PDF scanné n'a pas de texte : il se joint comme image.
+
+Dans Projet, les fichiers déposés restent attachés à la conversation et partent avec chaque question ; leur texte ne dépasse pas 60 % du contexte du modèle, soit environ 80 pages avec Large.
 
 ### Courrier
 
