@@ -1,6 +1,7 @@
 /*
  * projet.js
- * Module Projet : documents déposés une fois, envoyés avec chaque question.
+ * Module Documents (clé interne "projet") : des sources déposées une fois,
+ * un seul document construit peu à peu.
  *
  * Garde les documents et le nom du projet affiché, et tient sa carte à jour.
  * La lecture des fichiers est dans piece-jointe.js, l'envoi dans app.js,

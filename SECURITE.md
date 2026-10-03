@@ -52,8 +52,8 @@ Navigateur (Pages) -> webhook n8n -> https://albert.api.etalab.gouv.fr
   recherche, 30 dernières questions, 10 dernières conversations. En mode
   partagé, activé par défaut, tout cela va dans `sessionStorage` et disparaît à
   la fermeture de l'onglet. Sinon dans `localStorage`, sans limite de durée.
-  Les documents déposés dans un projet sont gardés avec sa conversation, selon
-  la même règle.
+  Les sources déposées dans le module Documents sont gardées avec leur document,
+  selon la même règle.
 - L'effacement est explicite, le navigateur restaurant `sessionStorage` quand on
   rouvre un onglet fermé : `pagehide` pose une marque, le chargement suivant
   efface si ce n'est pas un rechargement. Un onglet gelé en arrière-plan garde
