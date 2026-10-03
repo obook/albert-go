@@ -100,7 +100,7 @@ Object.assign(Rendu, {
      * @returns {string} Texte échappé.
      */
     echapperXml(texte) {
-        return String(texte).replace(/[^\t\n\r -퟿-�\u{10000}-\u{10FFFF}]/gu, '')
+        return String(texte).replace(/[^\t\n\r\u0020-\uD7FF\uE000-\uFFFD\u{10000}-\u{10FFFF}]/gu, '')
             .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
     },
 
@@ -142,13 +142,14 @@ Object.assign(Rendu, {
      * Morceau de texte avec sa mise en forme.
      *
      * @param {string} texte - Texte brut.
-     * @param {Object} style - { gras, italique, barre, code, lien }.
+     * @param {Object} style - { gras, italique, barre, code, lien, position }.
      * @returns {string} XML d'un w:r.
      */
     runDocx(texte, style) {
         const props = (style.lien ? '<w:rStyle w:val="Hyperlink"/>' : '')
             + (style.code ? '<w:rFonts w:ascii="Courier New" w:hAnsi="Courier New" w:cs="Courier New"/>' : '')
-            + (style.gras ? '<w:b/>' : '') + (style.italique ? '<w:i/>' : '') + (style.barre ? '<w:strike/>' : '');
+            + (style.gras ? '<w:b/>' : '') + (style.italique ? '<w:i/>' : '') + (style.barre ? '<w:strike/>' : '')
+            + (style.position ? '<w:vertAlign w:val="' + style.position + '"/>' : '');
         return '<w:r>' + (props ? '<w:rPr>' + props + '</w:rPr>' : '')
             + '<w:t xml:space="preserve">' + this.echapperXml(texte) + '</w:t></w:r>';
     },
@@ -163,7 +164,8 @@ Object.assign(Rendu, {
      */
     lignesDocx(noeud, etat, style) {
         if (noeud.nodeType === 3) {
-            const texte = style.code ? noeud.data : noeud.data.replace(/\s+/g, ' ');
+            /* Seuls les blancs que HTML replie : une espace insécable le reste. */
+            const texte = style.code ? noeud.data : noeud.data.replace(/[ \t\n\r\f]+/g, ' ');
             return texte ? [this.runDocx(texte, style)] : [];
         }
         if (noeud.nodeType !== 1) {
@@ -212,7 +214,9 @@ Object.assign(Rendu, {
         }
         const ajout = {
             STRONG: { gras: true }, B: { gras: true }, EM: { italique: true }, I: { italique: true },
-            DEL: { barre: true }, S: { barre: true }, CODE: { code: true }
+            DEL: { barre: true }, S: { barre: true }, CODE: { code: true },
+            /* Sans eux, 10 puissance 3 sortirait 103. */
+            SUP: { position: 'superscript' }, SUB: { position: 'subscript' }
         }[balise];
         return enfants(ajout ? { ...style, ...ajout } : style);
     },
@@ -318,8 +322,10 @@ Object.assign(Rendu, {
         const niveau = Math.min(parent.niveau, 8);
         let numId = 1;
         if (noeud.tagName.toUpperCase() === 'OL') {
-            numId = parent.numId > 1 ? parent.numId
-                : etat.listes.push({ debut: Number(noeud.getAttribute('start')) || 1, niveau }) + 1;
+            /* start vient du modèle : un entier que Word accepte, sinon 1. */
+            const lu = parseInt(noeud.getAttribute('start'), 10);
+            const debut = lu >= 0 && lu <= 9999 ? lu : 1;
+            numId = parent.numId > 1 ? parent.numId : etat.listes.push({ debut, niveau }) + 1;
         }
         let xml = '';
         for (const item of noeud.childNodes) {

@@ -93,6 +93,42 @@ test('corpsDocx : titres, gras, italique, blancs entre blocs ignorés', () => {
     assert.ok(xml.includes('<w:r><w:rPr><w:i/></w:rPr><w:t xml:space="preserve">italique</w:t></w:r>'));
 });
 
+test('docx.js : aucun caractère invisible dans le source', () => {
+    /* Une regex écrite avec des caractères spéciaux tels quels se "répare" au premier éditeur venu. */
+    const source = require('node:fs').readFileSync(require('node:path').join(__dirname, '../public/js/rendu/docx.js'), 'utf8');
+    const suspects = [...new Set(source)].filter((c) => {
+        const code = c.codePointAt(0);
+        return !(code === 10 || (code >= 32 && code <= 126) || (code >= 0xC0 && code <= 0x17F));
+    }).map((c) => 'U+' + c.codePointAt(0).toString(16).toUpperCase());
+    assert.deepStrictEqual(suspects, []);
+});
+
+test('corpsDocx : espaces insécables gardées, seuls les blancs de HTML sont repliés', () => {
+    const insecable = String.fromCharCode(0xA0);
+    const fine = String.fromCharCode(0x202F);
+    const xml = Rendu.corpsDocx(n('DIV', {}, n('P', {}, 'Durée' + insecable + ': 30' + fine + 'min,\n  10' + insecable + '000')), etatVide());
+    assert.ok(xml.includes('Durée' + insecable + ': 30' + fine + 'min, 10' + insecable + '000</w:t>'));
+});
+
+test('corpsDocx : exposant et indice gardés', () => {
+    const xml = Rendu.corpsDocx(n('DIV', {}, n('P', {}, '10', n('SUP', {}, '3'), ' H', n('SUB', {}, '2'), 'O')), etatVide());
+    assert.ok(xml.includes('<w:rPr><w:vertAlign w:val="superscript"/></w:rPr><w:t xml:space="preserve">3</w:t>'));
+    assert.ok(xml.includes('<w:rPr><w:vertAlign w:val="subscript"/></w:rPr><w:t xml:space="preserve">2</w:t>'));
+});
+
+test('listeDocx : début de liste douteux ramené à un entier que Word accepte', () => {
+    const debut = (start) => {
+        const etat = etatVide();
+        Rendu.listeDocx(n('OL', { start }, n('LI', {}, 'a')), etat, { niveau: 0, numId: 0 });
+        return etat.listes[0].debut;
+    };
+    assert.strictEqual(debut('0'), 0);
+    assert.strictEqual(debut('2.5'), 2);
+    assert.strictEqual(debut('1e999'), 1);
+    assert.strictEqual(debut('-3'), 1);
+    assert.strictEqual(debut('99999999999999999999'), 1);
+});
+
 test('corpsDocx : réponse vide, le corps garde un paragraphe', () => {
     assert.strictEqual(Rendu.corpsDocx(n('DIV', {}, '\n'), etatVide()), '<w:p/>');
 });
