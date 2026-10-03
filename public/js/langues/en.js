@@ -53,6 +53,9 @@ I18n.TEXTES.en = {
     'outil.rediger': 'Write',
     'module.rediger': 'Letter',
     'invite.rediger': 'Dear Mrs Smith... then your main ideas, one per line.',
+    'outil.projet': 'Project',
+    'module.projet': 'Project',
+    'invite.projet': 'Ask for a result based on the documents',
     'notes.label': 'Letter notes',
 
     /* Translate languages. */

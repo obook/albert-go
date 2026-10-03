@@ -147,14 +147,15 @@ function memoriser(question) {
  * @returns {Promise<Object>} Réponse de Albert.repondre.
  */
 async function demanderReponse(outil) {
-    /* Chaque outil a sa consigne système ; seul Discuter envoie aussi la conversation. */
+    /* Chaque outil a sa consigne système ; seuls les modules à fil envoient aussi la conversation. */
+    const fil = Albert.OUTILS[outil].fil;
     const texteConsigne = await consigne(outil);
-    let messages = Albert.messagesAEnvoyer(conversation, reglages.memoire && outil === 'discuter');
+    let messages = Albert.messagesAEnvoyer(conversation, reglages.memoire && fil);
     if (texteConsigne) {
         messages = [{ role: 'system', content: texteConsigne }, ...messages];
     }
-    /* Seul Discuter propose les outils calcul et recherche : les autres rendent un texte. */
-    const envoi = outil === 'discuter' ? repondreAvecOutils : Albert.repondre.bind(Albert);
+    /* Seuls les modules à fil proposent les outils calcul et recherche : les autres rendent un texte. */
+    const envoi = fil ? repondreAvecOutils : Albert.repondre.bind(Albert);
     return envoi(reglages.cle, {
         model: modeleActuel().id,
         temperature: reglages.temperature,
@@ -223,7 +224,7 @@ async function envoyer() {
     }
 
     const outil = outilActuel;
-    if (outil === 'discuter' && Albert.contientLien(question)) {
+    if (Albert.OUTILS[outil].fil && Albert.contientLien(question)) {
         toast(t('toast.liens'));
     }
 

@@ -53,6 +53,9 @@ I18n.TEXTES.de = {
     'outil.rediger': 'Verfassen',
     'module.rediger': 'Brief',
     'invite.rediger': 'Sehr geehrte Frau Müller... dann Ihre Hauptgedanken, einer pro Zeile.',
+    'outil.projet': 'Projekt',
+    'module.projet': 'Projekt',
+    'invite.projet': 'Ein Ergebnis aus den Dokumenten anfordern',
     'notes.label': 'Notizen zum Brief',
 
     /* Sprachen von Übersetzen. */

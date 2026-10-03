@@ -42,6 +42,26 @@ let langueCible = langueLue('langue-cible', I18n.langue === 'fr' ? 'en' : 'fr');
 const consignesLues = {};
 
 /**
+ * Fichier de consigne de la langue de l'interface, lu une fois.
+ *
+ * @param {string} fichier - Nom du fichier dans public/prompts/<langue>/.
+ * @param {string} outil - Clé de Albert.OUTILS, pour le message d'erreur.
+ * @returns {Promise<string>} Texte du fichier.
+ * @throws {Error} Si le fichier ne peut pas être lu.
+ */
+async function lireConsigne(fichier, outil) {
+    const chemin = 'prompts/' + I18n.langue + '/' + fichier;
+    if (!consignesLues[chemin]) {
+        const res = await fetch(chemin);
+        if (!res.ok) {
+            throw new Error(t('erreur.consigne', { outil: t('outil.' + outil) }));
+        }
+        consignesLues[chemin] = await res.text();
+    }
+    return consignesLues[chemin];
+}
+
+/**
  * Consigne système de l'outil, lue dans son fichier au premier appel.
  *
  * @param {string} outil - Clé de Albert.OUTILS.
@@ -54,25 +74,23 @@ async function consigne(outil, champ = 'consigne') {
     if (!fichier) {
         return null;
     }
-    const chemin = 'prompts/' + I18n.langue + '/' + fichier;
-    if (!consignesLues[chemin]) {
-        const res = await fetch(chemin);
-        if (!res.ok) {
-            throw new Error(t('erreur.consigne', { outil: t('outil.' + outil) }));
-        }
-        consignesLues[chemin] = await res.text();
+    let texte = await lireConsigne(fichier, outil);
+    /* Projet : son complément suit la consigne de Discussion. */
+    const complement = champ === 'consigne' && Albert.OUTILS[outil].complement;
+    if (complement) {
+        texte += '\n\n' + await lireConsigne(complement, outil);
     }
     /* Le modèle ne connaît ni la date, ni l'heure, ni son propre nom. Dans
-       Chat, le Calendrier donne la date et l'heure : leur icône sous la réponse
-       prouve qu'elles viennent de l'appareil. Ailleurs, ou Calendrier coupé,
-       elles partent avec la consigne. */
+       un module à fil, le Calendrier donne la date et l'heure : leur icône
+       sous la réponse prouve qu'elles viennent de l'appareil. Ailleurs, ou
+       Calendrier désactivé, elles partent avec la consigne. */
     const contexte = [];
-    if (outil !== 'discuter' || !reglages.calendrier) {
+    if (!Albert.OUTILS[outil].fil || !reglages.calendrier) {
         contexte.push(t('consigne.date', Calendrier.maintenant(I18n.langue)));
     }
     const modele = modeleActuel();
     contexte.push(t('consigne.contexte', { nom: modele.nom, reel: modele.reel }));
-    return consignesLues[chemin] + '\n\n' + contexte.join(' ');
+    return texte + '\n\n' + contexte.join(' ');
 }
 
 /**

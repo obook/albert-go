@@ -207,13 +207,13 @@ let globeActif = false;
 
 /* Réglages autorise la recherche, le globe l'active.
    Sans autorisation, ni globe ni suggestion "Faire une recherche" ; choix du
-   moteur et clés fermés et grisés. Le globe n'existe que dans Discussion. */
+   moteur et clés fermés et grisés. Le globe n'existe que dans un module à fil. */
 function afficherRecherche() {
     if (!reglages.recherche) {
         globeActif = false;
     }
     /* Premier appel avant modules.js, qui déclare outilActuel : la barre suit au démarrage. */
-    const discussion = typeof outilActuel === 'undefined' || outilActuel === 'discuter';
+    const discussion = typeof outilActuel === 'undefined' || !!Albert.OUTILS[outilActuel].fil;
     $('recherche-web').hidden = !reglages.recherche || !discussion;
     $('recherche-web').setAttribute('aria-pressed', String(globeActif));
     for (const suggestion of document.querySelectorAll('.suggestion[data-recherche]')) {

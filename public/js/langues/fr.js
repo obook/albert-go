@@ -53,6 +53,9 @@ I18n.TEXTES.fr = {
     'outil.rediger': 'Rédiger',
     'module.rediger': 'Courrier',
     'invite.rediger': 'Madame, Monsieur... puis vos idées principales, une par ligne.',
+    'outil.projet': 'Projet',
+    'module.projet': 'Projet',
+    'invite.projet': 'Demander un rendu à partir des documents',
     'notes.label': 'Notes du courrier',
 
     /* Langues de Traduire. */

@@ -53,6 +53,9 @@ I18n.TEXTES.es = {
     'outil.rediger': 'Redactar',
     'module.rediger': 'Carta',
     'invite.rediger': 'Estimada señora... y luego sus ideas principales, una por línea.',
+    'outil.projet': 'Proyecto',
+    'module.projet': 'Proyecto',
+    'invite.projet': 'Pedir un resultado a partir de los documentos',
     'notes.label': 'Notas de la carta',
 
     /* Idiomas de Traducir. */
