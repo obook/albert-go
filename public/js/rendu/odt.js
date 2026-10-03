@@ -366,7 +366,10 @@ Object.assign(Rendu, {
                 if (!this.texteMathml(maths)) {
                     return '';
                 }
-                etat.objets.push(mathml + '<annotation encoding="StarMath 5.0">' + this.echapperXml(this.starmathOdt(maths)) + '</annotation>');
+                /* La source LaTeX est gardée aussi : un .odt d'Albert Go redéposé comme source retrouve ses formules. */
+                const tex = this.descendant(maths, 'ANNOTATION');
+                etat.objets.push(mathml + (tex ? '<annotation encoding="application/x-tex">' + this.echapperXml(tex.textContent) + '</annotation>' : '')
+                    + '<annotation encoding="StarMath 5.0">' + this.echapperXml(this.starmathOdt(maths)) + '</annotation>');
                 const numero = etat.objets.length;
                 return '<draw:frame draw:style-name="Formule" draw:name="Formule' + numero + '" text:anchor-type="as-char">'
                     + '<draw:object xlink:href="./Object ' + numero + '" xlink:type="simple" xlink:show="embed" xlink:actuate="onLoad"/></draw:frame>';

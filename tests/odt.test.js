@@ -198,7 +198,7 @@ test('corpsOdt : formule en objet dans le texte, formule centrée dans son parag
     assert.ok(xml.includes('<text:p text:style-name="Centre">' + cadre(2) + '</text:p><text:p>Le réservoir est plein.</text:p>'));
     assert.strictEqual(etat.objets.length, 2);
     assert.ok(etat.objets[0].includes('<mfrac>' + rang('<mn>1</mn>') + rang('<mn>2</mn>') + '</mfrac>'));
-    assert.ok(etat.objets[0].endsWith('<annotation encoding="StarMath 5.0">{{1} over {2}}</annotation>'));
+    assert.ok(etat.objets[0].endsWith('<annotation encoding="application/x-tex">a</annotation><annotation encoding="StarMath 5.0">{{1} over {2}}</annotation>'));
     assert.ok(!xml.includes('rendu'));
 });
 
