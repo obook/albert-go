@@ -147,14 +147,21 @@ function memoriser(question) {
  * @returns {Promise<Object>} Réponse de Albert.repondre.
  */
 async function demanderReponse(outil) {
-    /* Chaque outil a sa consigne système ; seul Discuter envoie aussi la conversation. */
-    const texteConsigne = await consigne(outil);
-    let messages = Albert.messagesAEnvoyer(conversation, reglages.memoire && outil === 'discuter');
+    /* Chaque outil a sa consigne système ; seuls les modules à fil envoient aussi la conversation. */
+    const fil = Albert.OUTILS[outil].fil;
+    let texteConsigne = await consigne(outil);
+    /* Projet : les documents partent à chaque question, à la suite de la consigne. */
+    if (Albert.OUTILS[outil].documents && documentsProjet.length) {
+        texteConsigne += '\n\n' + Albert.joindreDocuments(documentsProjet);
+    }
+    /* Projet : un seul document, seule sa version en cours accompagne la demande. */
+    let messages = Albert.OUTILS[outil].documents ? Albert.messagesProjet(conversation)
+        : Albert.messagesAEnvoyer(conversation, reglages.memoire && fil);
     if (texteConsigne) {
         messages = [{ role: 'system', content: texteConsigne }, ...messages];
     }
-    /* Seul Discuter propose les outils calcul et recherche : les autres rendent un texte. */
-    const envoi = outil === 'discuter' ? repondreAvecOutils : Albert.repondre.bind(Albert);
+    /* Seuls les modules à fil proposent les outils calcul et recherche : les autres rendent un texte. */
+    const envoi = fil ? repondreAvecOutils : Albert.repondre.bind(Albert);
     return envoi(reglages.cle, {
         model: modeleActuel().id,
         temperature: reglages.temperature,
@@ -223,7 +230,7 @@ async function envoyer() {
     }
 
     const outil = outilActuel;
-    if (outil === 'discuter' && Albert.contientLien(question)) {
+    if (Albert.OUTILS[outil].fil && Albert.contientLien(question)) {
         toast(t('toast.liens'));
     }
 
@@ -236,6 +243,8 @@ async function envoyer() {
        de hauteur, et le fil défilé trop tôt cachait l'attente dessous. */
     $('saisie').value = '';
     retirerPiece();
+    /* Projet : la carte se replie pour laisser la place au fil. */
+    $('documents').open = false;
     etat(t('etat.reflechit'));
     /* Lien vers le fichier et miniature : à l'écran seulement, pas dans l'historique. */
     const bulle = ajouter('user', piece ? question : affiche);
@@ -244,7 +253,8 @@ async function envoyer() {
     }
     annulation = new AbortController();
     boutonEnvoi(true);
-    const retirerAttente = ajouterAttente();
+    /* Documents : la demande n'a pas de bulle, l'attente la rappelle. */
+    const retirerAttente = ajouterAttente(Albert.OUTILS[outil].documents ? affiche : '');
 
     try {
         const reponse = await demanderReponse(outil);
@@ -277,6 +287,10 @@ function nouvelleConversation() {
     retirerPiece();
     viderRedaction();
     conversation = [];
+    documentsProjet = [];
+    nomProjet = '';
+    afficherDocuments();
+    $('documents').open = true;
     conversationId = null;
     retenirCourante(null);
     afficherReglages();

@@ -36,6 +36,12 @@ const Albert = {
     /** Nombre de conversations gardées dans le menu. */
     CONVERSATIONS_MAX: 10,
 
+    /** Nombre de projets gardés dans le menu, comptés à part des conversations. */
+    PROJETS_MAX: 10,
+
+    /** Longueur maximale du nom d'un projet. */
+    NOM_PROJET_MAX: 40,
+
     /*
     Liste de secours si /v1/models ne répond pas (relevée le 2 octobre 2026).
     Albert peut changer le modèle derrière un alias : /v1/models fait foi.
@@ -55,13 +61,25 @@ const Albert = {
     Le nom et l'invite sont dans langues/*.js ; la consigne est le fichier de
     public/prompts/<langue>/ (modules.js).
     */
+    /* fil : conversation envoyée, outils et recherche. documents : fichiers
+       épinglés, envoyés avec chaque question. complement : suite de la consigne. */
     OUTILS: {
-        discuter: { consigne: 'discuter.txt' },
+        discuter: { consigne: 'discuter.txt', fil: true },
         reformuler: { consigne: 'reformuler.txt' },
         traduire: { consigne: 'traduire.txt' },
         corriger: { consigne: 'corriger.txt' },
-        rediger: { consigne: 'rediger.txt', revue: 'revoir.txt' }
+        rediger: { consigne: 'rediger.txt', revue: 'revoir.txt' },
+        projet: { consigne: 'discuter.txt', complement: 'projet.txt', fil: true, documents: true }
     },
+
+    /** Part du contexte laissée aux documents d'un projet : le reste sert à la conversation et à la réponse. */
+    PART_DOCUMENTS: 0.6,
+
+    /** Caractères par jeton, estimation prudente pour le français. */
+    CARACTERES_PAR_JETON: 3,
+
+    /** Plafond des documents d'un projet quand le contexte du modèle est inconnu, en caractères. */
+    DOCUMENTS_MAX: 200000,
 
     /** Rédiger : notes plus courtes non envoyées, pour ne pas payer une requête par mot. */
     LONGUEUR_MIN_NOTES: 10,
@@ -401,6 +419,57 @@ const Albert = {
     },
 
     /**
+     * Texte des documents d'un projet, mis à la suite de la consigne.
+     *
+     * @param {{nom: string, texte: string}[]} documents - Documents du projet.
+     * @returns {string} Un bloc par document, ou '' sans document.
+     */
+    joindreDocuments(documents) {
+        /* ponytail: documents envoyés en entier ; recherche dans les documents (RAG) s'ils dépassent le contexte. */
+        return documents.map(d => t('demande.fichier', { nom: d.nom, texte: d.texte })).join('\n\n');
+    },
+
+    /**
+     * Plafond du texte des documents d'un projet.
+     *
+     * @param {?number} contexte - Taille du contexte du modèle, en jetons.
+     * @returns {number} Nombre de caractères au plus.
+     */
+    plafondDocuments(contexte) {
+        /* ponytail: jetons estimés à 3 caractères ; compter avec le modèle si l'estimation trompe. */
+        return contexte ? Math.floor(contexte * this.PART_DOCUMENTS * this.CARACTERES_PAR_JETON) : this.DOCUMENTS_MAX;
+    },
+
+    /**
+     * Part du contexte occupée par les documents d'un projet.
+     *
+     * @param {{texte: string}[]} documents - Documents du projet.
+     * @param {?number} contexte - Taille du contexte du modèle, en jetons.
+     * @returns {?number} Pourcentage, au-delà de 100 si le modèle est trop petit ; null si le contexte est inconnu.
+     */
+    partDocuments(documents, contexte) {
+        if (!contexte) {
+            return null;
+        }
+        const caracteres = documents.reduce((somme, d) => somme + d.texte.length, 0);
+        return Math.round(caracteres / this.CARACTERES_PAR_JETON / contexte * 100);
+    },
+
+    /**
+     * Documents d'un projet augmentés d'un nouveau. Un document de même nom est remplacé.
+     *
+     * @param {{nom: string, texte: string}[]} documents - Documents actuels.
+     * @param {{nom: string, texte: string}} nouveau - Document à ajouter.
+     * @param {?number} contexte - Taille du contexte du modèle, en jetons.
+     * @returns {?Object[]} Nouvelle liste, ou null si elle dépasse le plafond.
+     */
+    avecDocument(documents, nouveau, contexte) {
+        const liste = [...documents.filter(d => d.nom !== nouveau.nom), nouveau];
+        const total = liste.reduce((somme, d) => somme + d.texte.length, 0);
+        return total > this.plafondDocuments(contexte) ? null : liste;
+    },
+
+    /**
      * Texte montré dans le fil pour la question posée.
      *
      * Le fichier joint s'annonce sous la question, ou seul si rien n'est tapé.
@@ -550,21 +619,73 @@ const Albert = {
      * @param {string} id - Identifiant de la conversation.
      * @param {string} outil - Clé de OUTILS.
      * @param {Array<Object>} messages - Messages de la conversation.
-     * @returns {?Object} Entrée { id, outil, titre, date, messages }, ou null si rien n'a été demandé.
+     * @param {Object[]} [documents] - Documents d'un projet.
+     * @param {string} [nom] - Nom donné au projet.
+     * @returns {?Object} Entrée { id, outil, titre, date, messages, documents?, nom? }, ou null s'il n'y a ni question ni document.
      */
-    entreeConversation(id, outil, messages) {
+    entreeConversation(id, outil, messages, documents = [], nom = '') {
         const premiere = messages.find(m => m.role === 'user');
-        if (!premiere) {
+        if (!premiere && !documents.length) {
             return null;
         }
-        return {
+        const entree = {
             id: id,
             outil: outil,
-            titre: premiere.affiche || premiere.content,
+            /* Projet sans question : le nom de son premier document. */
+            titre: premiere ? premiere.affiche || premiere.content : documents[0].nom,
             date: Date.now(),
             /* Copie : la conversation en cours continue de changer. */
             messages: messages.slice()
         };
+        if (documents.length) {
+            entree.documents = documents.slice();
+        }
+        const nomNet = nom.trim().slice(0, this.NOM_PROJET_MAX);
+        if (nomNet) {
+            entree.nom = nomNet;
+        }
+        return entree;
+    },
+
+    /**
+     * Indique si une entrée d'historique est un projet.
+     *
+     * @param {Object} entree - Entrée d'historique { outil }.
+     * @returns {boolean}
+     */
+    estProjet(entree) {
+        return !!(this.OUTILS[entree.outil] || {}).documents;
+    },
+
+    /**
+     * Liste d'historique ramenée à ses plafonds : projets et conversations comptés à part.
+     *
+     * @param {Object[]} liste - Entrées, la plus récente en premier.
+     * @returns {Object[]} Entrées gardées, dans le même ordre.
+     */
+    limiterConversations(liste) {
+        const restants = [this.CONVERSATIONS_MAX, this.PROJETS_MAX];
+        return liste.filter((entree) => {
+            const sorte = Number(this.estProjet(entree));
+            restants[sorte] -= 1;
+            return restants[sorte] >= 0;
+        });
+    },
+
+    /**
+     * Nom libre pour un document : "image.png", puis "image (2).png" si le nom est pris.
+     *
+     * @param {string} nom - Nom voulu.
+     * @param {string[]} pris - Noms déjà utilisés.
+     * @returns {string} Nom absent de la liste.
+     */
+    nomLibre(nom, pris) {
+        const [, base, extension = ''] = nom.match(/^(.*?)(\.[^.]*)?$/);
+        let libre = nom;
+        for (let rang = 2; pris.includes(libre); rang++) {
+            libre = base + ' (' + rang + ')' + extension;
+        }
+        return libre;
     },
 
     /**
@@ -576,6 +697,10 @@ const Albert = {
      * @returns {string} Libellé à afficher.
      */
     libelleConversation(entree) {
+        /* Un projet a sa propre liste : son nom suffit, ou son titre s'il n'en a pas. */
+        if (this.estProjet(entree)) {
+            return entree.nom || entree.titre;
+        }
         if (!entree.outil || entree.outil === 'discuter') {
             return entree.titre;
         }
@@ -629,6 +754,20 @@ const Albert = {
     messagesAEnvoyer(conversation, memoire) {
         const messages = memoire ? conversation : conversation.slice(-1);
         return messages.map(m => ({ role: m.role, content: m.content }));
+    },
+
+    /**
+     * Messages d'un projet : la demande, précédée de la version en cours du
+     * document et de la demande qui l'a produite.
+     *
+     * Un projet construit un seul document : les versions plus anciennes,
+     * chacune un document entier, ne partent pas.
+     *
+     * @param {Object[]} conversation - Messages du projet.
+     * @returns {Object[]} Trois messages { role, content } au plus.
+     */
+    messagesProjet(conversation) {
+        return conversation.slice(-3).map(m => ({ role: m.role, content: m.content }));
     },
 
     /**

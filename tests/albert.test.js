@@ -328,3 +328,106 @@ test('variantes : blocs séparés par une ligne vide, jamais deux fois de suite 
     assert.strictEqual(Albert.autreVariante(['seule'], 'seule'), 'seule');
     assert.deepStrictEqual(Albert.variantes(''), []);
 });
+
+test('OUTILS : Discussion et Projet sont à fil, Projet seul a des documents', () => {
+    assert.strictEqual(Albert.OUTILS.discuter.fil, true);
+    assert.deepStrictEqual(Albert.OUTILS.projet, { consigne: 'discuter.txt', complement: 'projet.txt', fil: true, documents: true });
+    assert.ok(!Albert.OUTILS.corriger.fil);
+    assert.ok(!Albert.OUTILS.discuter.documents);
+});
+
+test('joindreDocuments : un bloc par document, rien sans document', () => {
+    assert.strictEqual(Albert.joindreDocuments([]), '');
+    assert.strictEqual(Albert.joindreDocuments([{ nom: 'cours.pdf', texte: 'A' }, { nom: 'sujet.odt', texte: 'B' }]),
+        'Contenu du fichier "cours.pdf" :\n\nA\n\nContenu du fichier "sujet.odt" :\n\nB');
+});
+
+test('plafondDocuments : 60 % du contexte, à trois caractères par jeton', () => {
+    assert.strictEqual(Albert.plafondDocuments(131072), 235929);
+    assert.strictEqual(Albert.plafondDocuments(null), 200000);
+});
+
+test('partDocuments : pourcentage du contexte, non plafonné', () => {
+    assert.strictEqual(Albert.partDocuments([{ nom: 'a', texte: 'x'.repeat(600) }], 1000), 20);
+    /* Modèle changé pour un contexte plus petit : la part dépasse 100. */
+    assert.strictEqual(Albert.partDocuments([{ nom: 'a', texte: 'x'.repeat(600) }], 100), 200);
+    assert.strictEqual(Albert.partDocuments([], 1000), 0);
+    assert.strictEqual(Albert.partDocuments([{ nom: 'a', texte: 'x' }], null), null);
+});
+
+test('avecDocument : même nom remplacé, plafond dépassé refusé', () => {
+    const cours = { nom: 'cours.pdf', texte: 'x'.repeat(100) };
+    assert.deepStrictEqual(Albert.avecDocument([cours], { nom: 'sujet.odt', texte: 'y' }, 1000),
+        [cours, { nom: 'sujet.odt', texte: 'y' }]);
+    assert.deepStrictEqual(Albert.avecDocument([cours], { nom: 'cours.pdf', texte: 'z' }, 1000),
+        [{ nom: 'cours.pdf', texte: 'z' }]);
+    /* Contexte de 1000 jetons : 1800 caractères au plus. */
+    assert.strictEqual(Albert.avecDocument([cours], { nom: 'gros.pdf', texte: 'x'.repeat(1701) }, 1000), null);
+    assert.ok(Albert.avecDocument([cours], { nom: 'gros.pdf', texte: 'x'.repeat(1700) }, 1000));
+});
+
+test('entreeConversation : projet sans question, titré par son premier document', () => {
+    const documents = [{ nom: 'cours.pdf', texte: 'A' }];
+    const entree = Albert.entreeConversation('p1', 'projet', [], documents);
+    assert.strictEqual(entree.titre, 'cours.pdf');
+    assert.deepStrictEqual(entree.documents, documents);
+    assert.notStrictEqual(entree.documents, documents);
+    /* Avec une question : le titre habituel. Sans document : pas de champ documents. */
+    assert.strictEqual(Albert.entreeConversation('p1', 'projet', [{ role: 'user', content: 'Fais un devoir' }], documents).titre, 'Fais un devoir');
+    assert.ok(!('documents' in Albert.entreeConversation('d1', 'discuter', [{ role: 'user', content: 'Bonjour' }])));
+    assert.strictEqual(Albert.entreeConversation('d1', 'discuter', []), null);
+});
+
+test('entreeConversation : nom du projet gardé, coupé à 40 caractères', () => {
+    const documents = [{ nom: 'cours.pdf', texte: 'A' }];
+    assert.strictEqual(Albert.entreeConversation('p1', 'projet', [], documents, '  3e - Pythagore  ').nom, '3e - Pythagore');
+    assert.strictEqual(Albert.entreeConversation('p1', 'projet', [], documents, 'x'.repeat(60)).nom.length, 40);
+    assert.ok(!('nom' in Albert.entreeConversation('p1', 'projet', [], documents, '   ')));
+    /* Un nom seul ne fait pas un projet : il faut un document ou une question. */
+    assert.strictEqual(Albert.entreeConversation('p1', 'projet', [], [], '3e - Pythagore'), null);
+});
+
+test('libelleConversation : un projet porte son nom, sinon son titre', () => {
+    assert.strictEqual(Albert.libelleConversation({ outil: 'projet', titre: 'cours.pdf' }), 'cours.pdf');
+    assert.strictEqual(Albert.libelleConversation({ outil: 'projet', titre: 'cours.pdf', nom: '3e - Pythagore' }), '3e - Pythagore');
+});
+
+test('limiterConversations : projets et discussions comptés à part', () => {
+    const liste = [];
+    for (let i = 0; i < 12; i++) {
+        liste.push({ id: 'd' + i, outil: 'discuter' }, { id: 'p' + i, outil: 'projet' });
+    }
+    const gardees = Albert.limiterConversations(liste);
+    assert.strictEqual(gardees.filter(c => c.outil === 'projet').length, 10);
+    assert.strictEqual(gardees.filter(c => c.outil !== 'projet').length, 10);
+    /* Les plus récentes d'abord, dans l'ordre d'origine. */
+    assert.deepStrictEqual(gardees.slice(0, 3).map(c => c.id), ['d0', 'p0', 'd1']);
+    assert.ok(!gardees.some(c => c.id === 'p10' || c.id === 'd11'));
+    /* Dix discussions ne font pas sortir un projet. */
+    const dix = Array.from({ length: 10 }, (_, i) => ({ id: 'd' + i, outil: 'discuter' }));
+    assert.ok(Albert.limiterConversations([...dix, { id: 'p', outil: 'projet' }]).some(c => c.id === 'p'));
+});
+
+test('messagesProjet : la demande, précédée de la version en cours du document', () => {
+    const conv = [
+        { role: 'user', content: 'Fais une évaluation', affiche: 'Fais une évaluation' },
+        { role: 'assistant', content: 'Version 1', langue: 'fr' },
+        { role: 'user', content: 'Ajoute un exercice' },
+        { role: 'assistant', content: 'Version 2' },
+        { role: 'user', content: 'Barème sur 10' }
+    ];
+    /* Les versions plus anciennes ne partent pas : chacune est un document entier. */
+    assert.deepStrictEqual(Albert.messagesProjet(conv), [
+        { role: 'user', content: 'Ajoute un exercice' },
+        { role: 'assistant', content: 'Version 2' },
+        { role: 'user', content: 'Barème sur 10' }
+    ]);
+    assert.deepStrictEqual(Albert.messagesProjet(conv.slice(0, 1)), [{ role: 'user', content: 'Fais une évaluation' }]);
+});
+
+test('nomLibre : un nom déjà pris est numéroté', () => {
+    assert.strictEqual(Albert.nomLibre('image.png', ['cours.pdf']), 'image.png');
+    assert.strictEqual(Albert.nomLibre('image.png', ['image.png']), 'image (2).png');
+    assert.strictEqual(Albert.nomLibre('image.png', ['image.png', 'image (2).png']), 'image (3).png');
+    assert.strictEqual(Albert.nomLibre('image collée', ['image collée']), 'image collée (2)');
+});

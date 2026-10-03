@@ -48,6 +48,9 @@ let pieceJointe = null;
 /** Lecture en cours (AbortController), ou null. */
 let lecturePiece = null;
 
+/** true tant qu'un lot de fichiers est lu pour un projet. */
+let depotEnCours = false;
+
 /**
  * Affiche le nom du fichier joint au-dessus de la saisie.
  *
@@ -304,20 +307,21 @@ async function lireContenu(fichier, type, signal, image) {
  * Lit un fichier et le prépare pour la prochaine question.
  *
  * @param {File} fichier - Fichier choisi, déposé ou collé.
- * @returns {Promise<void>}
+ * @returns {Promise<boolean>} true si le fichier est joint.
  */
 async function joindreFichier(fichier) {
     retirerPiece();
     const type = typeFichier(fichier);
     if (!type) {
         etat(t('erreur.format'), true);
-        return;
+        return false;
     }
 
     const piece = { nom: fichier.name || t('piece.image-collee'), texte: '' };
     afficherPiece(piece, true);
     const controle = new AbortController();
     lecturePiece = controle;
+    let lu = false;
     try {
         if (type === 'image') {
             piece.image = await imageEnDataUrl(fichier);
@@ -325,16 +329,25 @@ async function joindreFichier(fichier) {
         piece.texte = await lireContenu(fichier, type, controle.signal, piece.image);
         /* Un autre fichier a remplacé celui-ci pendant la lecture. */
         if (lecturePiece !== controle) {
-            return;
+            return false;
         }
         lecturePiece = null;
-        /* ponytail: jamais révoquée, le fichier reste en mémoire jusqu'au rechargement. */
-        piece.url = URL.createObjectURL(fichier);
-        afficherPiece(piece);
-        etat('');
+        if (Albert.OUTILS[outilActuel].documents) {
+            /* Projet : le fichier lu rejoint les documents, pas le message. */
+            retirerPiece();
+            lu = ajouterDocument(piece);
+        } else {
+            /* ponytail: jamais révoquée, le fichier reste en mémoire jusqu'au rechargement. */
+            piece.url = URL.createObjectURL(fichier);
+            afficherPiece(piece);
+            lu = true;
+        }
+        if (lu) {
+            etat('');
+        }
     } catch (err) {
         if (lecturePiece !== controle) {
-            return;
+            return false;
         }
         retirerPiece();
         if (err.name !== 'AbortError') {
@@ -342,6 +355,35 @@ async function joindreFichier(fichier) {
         }
     }
     focusSaisie();
+    return lu;
+}
+
+/**
+ * Joint les fichiers choisis ou déposés : tous dans Projet, le premier ailleurs.
+ *
+ * L'un après l'autre : une lecture en cours serait abandonnée par la suivante.
+ * Arrêt au premier fichier refusé, pour que son message reste affiché.
+ *
+ * @param {File[]} fichiers - Fichiers choisis ou déposés.
+ * @returns {Promise<void>}
+ */
+async function joindreFichiers(fichiers) {
+    const projet = !!Albert.OUTILS[outilActuel].documents;
+    /* Projet : un dépôt pendant un autre abandonnerait la lecture en cours et le reste du lot. */
+    if (projet && depotEnCours) {
+        etat(t('etat.attendre-lecture'));
+        return;
+    }
+    depotEnCours = projet;
+    try {
+        for (const fichier of projet ? fichiers : fichiers.slice(0, 1)) {
+            if (!await joindreFichier(fichier)) {
+                return;
+            }
+        }
+    } finally {
+        depotEnCours = false;
+    }
 }
 
 /**
@@ -380,12 +422,10 @@ $('joindre').addEventListener('click', () => {
 });
 
 $('fichier').addEventListener('change', () => {
-    const fichier = $('fichier').files[0];
+    const fichiers = [...$('fichier').files];
     /* Permet de choisir à nouveau le même fichier. */
     $('fichier').value = '';
-    if (fichier) {
-        joindreFichier(fichier);
-    }
+    joindreFichiers(fichiers);
 });
 
 $('piece-retirer').addEventListener('click', () => {
@@ -407,10 +447,7 @@ $('form-question').addEventListener('dragleave', () => {
 $('form-question').addEventListener('drop', (e) => {
     e.preventDefault();
     $('form-question').classList.remove('depot');
-    const fichier = e.dataTransfer.files[0];
-    if (fichier) {
-        joindreFichier(fichier);
-    }
+    joindreFichiers([...e.dataTransfer.files]);
 });
 
 /* Image collée (Ctrl+V) dans le champ de saisie. */
@@ -421,5 +458,8 @@ $('saisie').addEventListener('paste', (e) => {
         return;
     }
     e.preventDefault();
-    joindreFichier(image);
+    /* Projet : deux images collées portent le même nom, la seconde ne doit pas remplacer la première. */
+    const voulu = image.name || t('piece.image-collee');
+    const nom = Albert.OUTILS[outilActuel].documents ? Albert.nomLibre(voulu, documentsProjet.map(d => d.nom)) : voulu;
+    joindreFichiers([nom === image.name ? image : new File([image], nom, { type: image.type })]);
 });

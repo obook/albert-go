@@ -329,6 +329,8 @@ input.recherche-historique {
     text-overflow: ellipsis;
 }
 .titre-conversation:hover { background: var(--bleu-clair); }
+/* "Nouveau projet" : aligné sur les lignes de la liste, qui sont en retrait. */
+.nouveau-projet { display: block; width: calc(100% - 2.5rem); margin-left: 2.5rem; }
 
 /* Cible d'au moins 24 px de côté (RGAA 12.11, taille des cibles tactiles). */
 .supprimer-conversation {

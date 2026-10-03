@@ -132,6 +132,15 @@
                 </button>
                 -->
             </div>
+            <!-- Projets : en créer un, en rouvrir un, le supprimer, comme l'historique (projet.js, historique.js). -->
+            <details id="menu-projets" class="historique" open hidden>
+                <summary class="entree">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></svg>
+                    <span data-t="menu.projets"></span>
+                </summary>
+                <button type="button" id="nouveau-projet" class="titre-conversation nouveau-projet" data-t="projets.nouveau"></button>
+                <ol id="liste-projets" class="liste-historique"></ol>
+            </details>
             <details id="menu-historique" class="historique" hidden>
                 <summary class="entree">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5M12 7v5l3 3"/></svg>
@@ -193,6 +202,23 @@
                  class="chat"
                  hidden
                  data-t-attr="aria-label:chat.aria">
+            <!-- Projet : documents épinglés, envoyés avec chaque question (projet.js). -->
+            <details id="documents" class="documents" open>
+                <summary id="resume-documents"></summary>
+                <label for="nom-projet" class="visuellement-cache" data-t="documents.nom"></label>
+                <input type="text" id="nom-projet" class="nom-projet" maxlength="40" data-t-attr="placeholder:documents.nom">
+                <ul id="liste-documents" class="liste-documents"></ul>
+                <button type="button" id="deposer-documents" class="deposer" data-t="documents.deposer"></button>
+            </details>
+            <!-- Projet vide : une phrase et trois demandes types, masquées dès la première question (CSS). -->
+            <div class="accueil-projet">
+                <p data-t="projet.bienvenue"></p>
+                <div class="suggestions">
+                    <button type="button" class="suggestion" data-exemple="projet.exemple-evaluation" data-t="projet.evaluation"></button>
+                    <button type="button" class="suggestion" data-exemple="projet.exemple-revision" data-t="projet.revision"></button>
+                    <button type="button" class="suggestion" data-exemple="projet.exemple-flash" data-t="projet.flash"></button>
+                </div>
+            </div>
             <!-- Chat vide : bienvenue et suggestions, masquées dès la première question (CSS). -->
             <div class="bienvenue">
                 <p data-t="bienvenue.texte"></p>
@@ -567,7 +593,9 @@
     <script src="js/rendu/diagrammes.js?v=dev"></script>
     <script src="js/rendu/courbes.js?v=dev"></script>
     <script src="js/rendu/images.js?v=dev"></script>
+    <script src="js/rendu/export.js?v=dev"></script>
     <script src="js/rendu/docx.js?v=dev"></script>
+    <script src="js/rendu/odt.js?v=dev"></script>
     <script src="js/lecture.js?v=dev"></script>
     <script src="js/version.js?v=dev"></script>
     <script src="js/albert.js?v=dev"></script>
@@ -579,6 +607,7 @@
     <script src="js/tools/services.js?v=dev"></script>
     <script src="js/tools/recherche/outils-modele.js?v=dev"></script>
     <script src="js/stockage.js?v=dev"></script>
+    <script src="js/projet.js?v=dev"></script>
     <script src="js/affichage.js?v=dev"></script>
     <script src="js/reponse.js?v=dev"></script>
     <script src="js/reglages.js?v=dev"></script>

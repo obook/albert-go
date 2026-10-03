@@ -76,6 +76,11 @@ function rouvrirCourante() {
  * @throws {Error} Si le stockage est bloqué (navigation privée).
  */
 function ecrireConversations(liste) {
+    /* Plus rien à garder : la clé est effacée, sinon la dernière entrée supprimée resterait dans le stockage. */
+    if (!liste.length) {
+        stockage('conversations').removeItem('albert-go.conversations');
+        return [];
+    }
     const aEcrire = liste.slice();
     while (aEcrire.length > 0) {
         try {
@@ -97,17 +102,19 @@ function ecrireConversations(liste) {
 /**
  * Enregistre la conversation en cours en tête de la liste.
  *
- * Au-delà de Albert.CONVERSATIONS_MAX, les plus anciennes sont supprimées.
+ * Au-delà des plafonds (Albert.limiterConversations), les plus anciennes sont supprimées.
  * Si le stockage est plein, un toast dit ce qui a été supprimé ou perdu.
  */
 function sauverConversation() {
-    const entree = Albert.entreeConversation(conversationId || Date.now().toString(36), outilActuel, conversation);
+    const projet = Albert.OUTILS[outilActuel].documents;
+    const entree = Albert.entreeConversation(conversationId || Date.now().toString(36), outilActuel, conversation,
+        projet ? documentsProjet : [], projet ? nomProjet : '');
     if (!entree) {
         return;
     }
     conversationId = entree.id;
     const autres = conversations.filter(c => c.id !== conversationId);
-    const voulue = [entree, ...autres].slice(0, Albert.CONVERSATIONS_MAX);
+    const voulue = Albert.limiterConversations([entree, ...autres]);
     if (enregistrerListe(voulue)) {
         retenirCourante(conversationId);
     }
@@ -156,6 +163,11 @@ function rouvrirConversation(entree) {
     afficherOutil();
     afficher();
     conversation = entree.messages.slice();
+    documentsProjet = (entree.documents || []).slice();
+    nomProjet = entree.nom || '';
+    afficherDocuments();
+    /* Carte ouverte tant que rien n'a été demandé. */
+    $('documents').open = !conversation.length;
     conversationId = entree.id;
     retenirCourante(conversationId);
     afficherReglages();
@@ -183,6 +195,8 @@ function rouvrirConversation(entree) {
  */
 function demanderSuppression(entree, libelle) {
     $('texte-confirmer-suppression').textContent = libelle;
+    /* Un projet emporte ses documents : la question le dit. */
+    $('titre-confirmer-suppression').textContent = t(Albert.estProjet(entree) ? 'confirmer-suppression.projet' : 'confirmer-suppression.titre');
     /* Sinon Échap reprendrait la réponse précédente. */
     $('confirmer-suppression').returnValue = '';
     $('confirmer-suppression').addEventListener('close', () => {
@@ -298,11 +312,14 @@ function filtrerConversations(liste, texte) {
  * Remplit la liste des conversations dans le menu, filtrée par la recherche.
  */
 function afficherHistorique() {
-    const trouvees = filtrerConversations(conversations, $('recherche-historique').value);
+    /* Les projets ont leur propre liste, sans recherche : ils sont dix au plus. */
+    const discussions = conversations.filter(c => !Albert.estProjet(c));
+    const trouvees = filtrerConversations(discussions, $('recherche-historique').value);
     $('liste-historique').replaceChildren(...trouvees.map(ligneHistorique));
-    $('recherche-historique').hidden = conversations.length === 0;
+    $('recherche-historique').hidden = discussions.length === 0;
     $('historique-vide').hidden = trouvees.length > 0;
-    $('historique-vide').textContent = t(conversations.length > 0 ? 'historique.aucune' : 'historique.vide');
+    $('historique-vide').textContent = t(discussions.length > 0 ? 'historique.aucune' : 'historique.vide');
+    $('liste-projets').replaceChildren(...conversations.filter(c => Albert.estProjet(c)).map(ligneHistorique));
 }
 
 /* Sauté sous Node. */
@@ -335,7 +352,7 @@ function ligneHistorique(entree) {
     supprimer.type = 'button';
     supprimer.className = 'supprimer-conversation';
     supprimer.innerHTML = ICONES.points;
-    supprimer.setAttribute('aria-label', t('historique.supprimer-aria', { titre: libelle }));
+    supprimer.setAttribute('aria-label', t(Albert.estProjet(entree) ? 'projets.supprimer-aria' : 'historique.supprimer-aria', { titre: libelle }));
     supprimer.title = t('historique.supprimer');
     supprimer.addEventListener('click', () => {
         demanderSuppression(entree, libelle);
