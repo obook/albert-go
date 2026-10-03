@@ -183,12 +183,22 @@ Object.assign(Rendu, {
             return this.imageDocx(noeud, etat);
         }
         if (this.aClasse(noeud, 'katex')) {
-            /* ponytail: formule en LaTeX brut ; équations Word (OMML) si les enseignants le demandent. */
+            /* KaTeX glisse le MathML de la formule dans la page : il devient une équation Word. */
+            const maths = this.descendant(noeud, 'MATH');
+            const omml = maths ? this.ommlDocx(maths) : '';
+            if (omml) {
+                return ['<m:oMath>' + omml + '</m:oMath>'];
+            }
+            /* ponytail: sans MathML, la source LaTeX telle quelle ; rien d'autre n'est disponible. */
             const tex = this.descendant(noeud, 'ANNOTATION');
             return tex ? [this.runDocx(tex.textContent, style)] : enfants(style);
         }
-        if (this.aClasse(noeud, 'katex-display')) {
-            return [this.SAUT_DOCX, ...enfants(style), this.SAUT_DOCX];
+        if (this.aClasse(noeud, 'katex-display') || this.aClasse(noeud, 'formule-longue')) {
+            /* Formule centrée : elle prendra son propre paragraphe (paragrapheDocx). */
+            const contenu = enfants(style);
+            return contenu.length && contenu.every((morceau) => morceau.startsWith('<m:oMath>'))
+                ? contenu.map((morceau) => '<m:oMathPara>' + morceau + '</m:oMathPara>')
+                : [this.SAUT_DOCX, ...contenu, this.SAUT_DOCX];
         }
         if (balise === 'A') {
             const adresse = noeud.getAttribute('href') || '';
@@ -222,14 +232,39 @@ Object.assign(Rendu, {
     },
 
     /**
-     * Paragraphe Word. Sauts de ligne retirés en tête et en queue ; un
-     * paragraphe qui ne contient qu'une image est centré.
+     * Paragraphes Word d'une suite de morceaux. Une formule centrée coupe
+     * le paragraphe et prend le sien.
      *
      * @param {string[]} runs - Morceaux de lignesDocx.
-     * @param {string} [pPr] - Propriétés du paragraphe.
-     * @returns {string} XML du w:p, ou '' s'il est vide.
+     * @param {string} [pPr] - Propriétés du premier paragraphe.
+     * @param {string} [pPrSuite] - Propriétés des suivants.
+     * @returns {string} XML des w:p, ou '' si tout est vide.
      */
-    paragrapheDocx(runs, pPr = '') {
+    paragrapheDocx(runs, pPr = '', pPrSuite = pPr) {
+        const morceaux = [[]];
+        for (const run of runs) {
+            if (run.startsWith('<m:oMathPara>')) {
+                morceaux.push([run], []);
+            } else {
+                morceaux.at(-1).push(run);
+            }
+        }
+        let xml = '';
+        for (const morceau of morceaux) {
+            xml += this.unParagrapheDocx(morceau, xml ? pPrSuite : pPr);
+        }
+        return xml;
+    },
+
+    /**
+     * Un paragraphe Word. Sauts de ligne retirés en tête et en queue ; un
+     * paragraphe qui ne contient qu'une image est centré.
+     *
+     * @param {string[]} runs - Morceaux du paragraphe.
+     * @param {string} [pPr] - Propriétés du paragraphe.
+     * @returns {string} XML du w:p, ou '' s'il n'a que des blancs.
+     */
+    unParagrapheDocx(runs, pPr = '') {
         const contenu = [...runs];
         while (contenu[0] === this.SAUT_DOCX) {
             contenu.shift();
@@ -237,12 +272,116 @@ Object.assign(Rendu, {
         while (contenu.at(-1) === this.SAUT_DOCX) {
             contenu.pop();
         }
-        if (!contenu.length) {
+        /* Après une formule centrée, le texte repart sans l'espace laissée par le retour à la ligne. */
+        const corps = contenu.join('').replace(/^(<w:r>(?:<w:rPr>.*?<\/w:rPr>)?<w:t xml:space="preserve">) +/, '$1');
+        if (!/<w:drawing>|<m:oMath/.test(corps) && !corps.replace(/<[^>]+>/g, '').trim()) {
             return '';
         }
         const image = contenu.every((run) => run.includes('<w:drawing>'));
         const props = pPr + (image && !pPr.includes('<w:jc') ? '<w:jc w:val="center"/>' : '');
-        return '<w:p>' + (props ? '<w:pPr>' + props + '</w:pPr>' : '') + contenu.join('') + '</w:p>';
+        return '<w:p>' + (props ? '<w:pPr>' + props + '</w:pPr>' : '') + corps + '</w:p>';
+    },
+
+    /* Opérateurs invisibles de MathML (application de fonction, produit implicite) : rien dans Word. */
+    INVISIBLES_MATHML: new RegExp('[' + String.fromCharCode(0x2061) + '-' + String.fromCharCode(0x2064) + ']', 'g'),
+
+    /* Accents de KaTeX (chapeau, tilde, flèche) remplacés par le signe combinant que Word attend. */
+    ACCENTS_OMML: { '^': 0x302, '~': 0x303, [String.fromCharCode(0x2192)]: 0x20D7 },
+
+    /* Traits de KaTeX pour une barre au-dessus. */
+    SURLIGNES_OMML: [String.fromCharCode(0x203E), String.fromCharCode(0xAF)],
+
+    /* Ensembles de nombres : lettre ajourée d'Unicode pour une lettre "double-struck" de KaTeX. */
+    ENSEMBLES_OMML: { C: 0x2102, D: 0x1D53B, N: 0x2115, Q: 0x211A, R: 0x211D, Z: 0x2124 },
+
+    /* Éléments MathML dont le premier enfant est la base d'un indice ou d'un exposant. */
+    INDICES_MATHML: ['msub', 'msup', 'msubsup'],
+
+    /**
+     * Équation Word (OMML) d'un élément MathML de KaTeX.
+     *
+     * @param {Element} noeud - Élément MathML.
+     * @param {string} [baseHeritee] - Base d'un indice qui n'en a pas : ce qui le précède.
+     * @returns {string} XML OMML, sans l'enveloppe m:oMath.
+     */
+    ommlDocx(noeud, baseHeritee = '') {
+        const elements = (parent) => [...parent.childNodes].filter((enfant) => enfant.nodeType === 1);
+        const fils = elements(noeud);
+        const suite = (liste) => {
+            const morceaux = [];
+            for (const enfant of liste) {
+                /* Chimie (mhchem) : un indice sans base s'accroche à ce qui le précède. */
+                const base = elements(enfant)[0];
+                const orphelin = this.INDICES_MATHML.includes(enfant.tagName.toLowerCase()) && base && !this.ommlDocx(base);
+                morceaux.push(this.ommlDocx(enfant, orphelin ? morceaux.pop() : ''));
+            }
+            return morceaux.join('');
+        };
+        const tous = () => suite(fils);
+        const partie = (i) => (fils[i] ? this.ommlDocx(fils[i]) : '');
+        const texte = (proprietes = '') => {
+            const lu = this.echapperXml(noeud.textContent.replace(this.INVISIBLES_MATHML, ''));
+            return lu ? '<m:r>' + proprietes + '<m:t xml:space="preserve">' + lu + '</m:t></m:r>' : '';
+        };
+        /* Texte droit. LibreOffice ne respecte que la marque "nor" ; sans elle, il lit "lim" comme un mot-clé et casse la formule. */
+        const droit = '<m:rPr><m:nor/></m:rPr>';
+        /* Indice ou exposant sans base (chimie) : un blanc sans largeur, sinon Word dessine une case vide. */
+        const base = () => partie(0) || baseHeritee || '<m:r><m:t>&#8203;</m:t></m:r>';
+        const formes = {
+            annotation: () => '',
+            mn: () => texte(),
+            mo: () => texte(/^[A-Za-z]{2,}$/.test(noeud.textContent) ? droit : ''),
+            /* Plusieurs lettres (sin, cm) ou variante "normal" : en droit, pas en italique. */
+            mi: () => {
+                const ensemble = noeud.getAttribute('mathvariant') === 'double-struck' && this.ENSEMBLES_OMML[noeud.textContent];
+                if (ensemble) {
+                    return '<m:r><m:t xml:space="preserve">' + String.fromCodePoint(ensemble) + '</m:t></m:r>';
+                }
+                return texte(noeud.textContent.length > 1 || noeud.getAttribute('mathvariant') === 'normal' ? droit : '');
+            },
+            mrow: () => {
+                /* Parenthèse ou accolade extensible de KaTeX : un délimiteur Word, qui grandit avec son contenu. */
+                const clos = (enfant) => enfant.tagName.toLowerCase() === 'mo' && enfant.getAttribute('fence') === 'true';
+                if (fils.length < 2 || !clos(fils[0])) {
+                    return tous();
+                }
+                const fin = clos(fils.at(-1)) ? fils.at(-1) : null;
+                const dedans = suite(fils.slice(1, fin ? -1 : undefined));
+                return '<m:d><m:dPr><m:begChr m:val="' + this.echapperXml(fils[0].textContent) + '"/><m:endChr m:val="'
+                    + this.echapperXml(fin ? fin.textContent : '') + '"/></m:dPr><m:e>' + dedans + '</m:e></m:d>';
+            },
+            mtext: () => texte(droit),
+            /* Lettre fantôme de mhchem, qui ne sert qu'à caler la hauteur. */
+            mphantom: () => '',
+            mspace: () => '<m:r><m:t xml:space="preserve"> </m:t></m:r>',
+            mfrac: () => '<m:f><m:num>' + partie(0) + '</m:num><m:den>' + partie(1) + '</m:den></m:f>',
+            msup: () => '<m:sSup><m:e>' + base() + '</m:e><m:sup>' + partie(1) + '</m:sup></m:sSup>',
+            msub: () => '<m:sSub><m:e>' + base() + '</m:e><m:sub>' + partie(1) + '</m:sub></m:sSub>',
+            msubsup: () => '<m:sSubSup><m:e>' + base() + '</m:e><m:sub>' + partie(1) + '</m:sub><m:sup>' + partie(2) + '</m:sup></m:sSubSup>',
+            msqrt: () => '<m:rad><m:radPr><m:degHide m:val="1"/></m:radPr><m:deg/><m:e>' + tous() + '</m:e></m:rad>',
+            mroot: () => '<m:rad><m:deg>' + partie(1) + '</m:deg><m:e>' + partie(0) + '</m:e></m:rad>',
+            mover: () => {
+                const signe = (fils[1] ? fils[1].textContent : '').trim();
+                /* Flèche de réaction de mhchem : rien au-dessus. */
+                if (!signe) {
+                    return partie(0);
+                }
+                if (this.SURLIGNES_OMML.includes(signe)) {
+                    return '<m:bar><m:barPr><m:pos m:val="top"/></m:barPr><m:e>' + partie(0) + '</m:e></m:bar>';
+                }
+                const accent = this.ACCENTS_OMML[signe] ? String.fromCharCode(this.ACCENTS_OMML[signe]) : signe;
+                return '<m:acc><m:accPr><m:chr m:val="' + this.echapperXml(accent) + '"/></m:accPr><m:e>' + partie(0) + '</m:e></m:acc>';
+            },
+            munder: () => '<m:limLow><m:e>' + partie(0) + '</m:e><m:lim>' + partie(1) + '</m:lim></m:limLow>',
+            /* ponytail: somme ou intégrale rendue par deux limites ; m:nary si la taille de l'opérateur compte. */
+            munderover: () => '<m:limUpp><m:e><m:limLow><m:e>' + partie(0) + '</m:e><m:lim>' + partie(1) + '</m:lim></m:limLow></m:e><m:lim>'
+                + partie(2) + '</m:lim></m:limUpp>',
+            mtable: () => '<m:m>' + tous() + '</m:m>',
+            mtr: () => '<m:mr>' + fils.map((cellule) => '<m:e>' + this.ommlDocx(cellule) + '</m:e>').join('') + '</m:mr>'
+        };
+        /* math, semantics, mstyle, mtd et le reste : leurs enfants à la suite. */
+        const forme = formes[noeud.tagName.toLowerCase()];
+        return forme ? forme() : tous();
     },
 
     /**
@@ -268,7 +407,7 @@ Object.assign(Rendu, {
             }
         };
         const fermer = () => {
-            ajouter(this.paragrapheDocx(runs, courant()));
+            ajouter(this.paragrapheDocx(runs, courant(), pPrSuite));
             runs = [];
         };
         for (const enfant of noeud.childNodes) {
@@ -282,7 +421,7 @@ Object.assign(Rendu, {
             }
             fermer();
             if (balise === 'P') {
-                ajouter(this.paragrapheDocx(this.lignesDocx(enfant, etat, {}), courant()));
+                ajouter(this.paragrapheDocx(this.lignesDocx(enfant, etat, {}), courant(), pPrSuite));
             } else if (/^H[1-6]$/.test(balise)) {
                 ajouter(this.paragrapheDocx(this.lignesDocx(enfant, etat, {}),
                     '<w:pStyle w:val="Heading' + Math.min(Number(balise[1]), 3) + '"/>'));
@@ -566,7 +705,8 @@ Object.assign(Rendu, {
             + ' xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"'
             + ' xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"'
             + ' xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"'
-            + ' xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"><w:body>'
+            + ' xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"'
+            + ' xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"><w:body>'
             + this.corpsDocx(element, etat)
             + '<w:sectPr><w:pgSz w:w="11906" w:h="16838"/>'
             + '<w:pgMar w:top="1134" w:right="1134" w:bottom="1134" w:left="1134" w:header="708" w:footer="708" w:gutter="0"/></w:sectPr>'
