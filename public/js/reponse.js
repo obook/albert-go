@@ -281,11 +281,11 @@ function bulleReponse(texte, titre, langue, animer = false, recherches = null) {
     const actions = document.createElement('div');
     actions.className = 'actions-reponse';
     actions.append(boutonCopier(texte));
-    /* Le clic attend la fin du rendu : avant, formules et figures manquent. */
-    actions.append(...boutonsExport(() => pret.then(() => contenu), () => Rendu.questionAvant(contenu) || 'reponse'));
     if (typeof speechSynthesis !== 'undefined') {
         actions.append(boutonLire(contenu, langue));
     }
+    /* Exports après copier et lire. Le clic attend la fin du rendu : avant, formules et figures manquent. */
+    actions.append(...boutonsExport(() => pret.then(() => contenu), () => Rendu.questionAvant(contenu) || 'reponse'));
     carte.append(contenu);
     /* Une icône par outil local qui a servi. */
     for (const [nom, local] of Object.entries(OUTILS_LOCAUX)) {

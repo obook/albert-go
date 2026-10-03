@@ -98,6 +98,10 @@ function afficherProposition(texte, erreur = false, anomalies = []) {
     const boutons = [];
     if (texte && !erreur) {
         boutons.push(boutonCopier(texte));
+        /* ponytail: lu dans la langue de l'interface ; détecter celle du courrier dès qu'on rédige dans une autre langue. */
+        if (typeof speechSynthesis !== 'undefined') {
+            boutons.push(boutonLire($('proposition'), I18n.langue));
+        }
         boutons.push(...boutonsExport(() => {
             /* Texte brut : un paragraphe par ligne du courrier. */
             const page = document.createElement('div');
@@ -108,10 +112,6 @@ function afficherProposition(texte, erreur = false, anomalies = []) {
             }));
             return page;
         }, () => 'courrier'));
-        /* ponytail: lu dans la langue de l'interface ; détecter celle du courrier dès qu'on rédige dans une autre langue. */
-        if (typeof speechSynthesis !== 'undefined') {
-            boutons.push(boutonLire($('proposition'), I18n.langue));
-        }
         const revue = boutonAction(ICONES.revoir, t('reponse.revoir'));
         revue.addEventListener('click', revoir);
         boutons.push(revue);

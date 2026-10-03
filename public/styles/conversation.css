@@ -275,10 +275,13 @@ main {
 
 .attente {
     display: flex;
+    /* Rappel de la demande au-dessus des points (module Documents). */
+    flex-wrap: wrap;
     align-items: center;
     gap: 0.75rem;
     min-height: 2rem;
 }
+.attente .demande { flex-basis: 100%; white-space: pre-wrap; color: var(--texte-doux); }
 .points { display: inline-flex; gap: 0.3rem; }
 .points span {
     width: 0.5rem;

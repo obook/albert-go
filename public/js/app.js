@@ -253,7 +253,8 @@ async function envoyer() {
     }
     annulation = new AbortController();
     boutonEnvoi(true);
-    const retirerAttente = ajouterAttente();
+    /* Documents : la demande n'a pas de bulle, l'attente la rappelle. */
+    const retirerAttente = ajouterAttente(Albert.OUTILS[outil].documents ? affiche : '');
 
     try {
         const reponse = await demanderReponse(outil);
