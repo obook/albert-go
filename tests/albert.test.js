@@ -377,3 +377,40 @@ test('entreeConversation : projet sans question, titré par son premier document
     assert.ok(!('documents' in Albert.entreeConversation('d1', 'discuter', [{ role: 'user', content: 'Bonjour' }])));
     assert.strictEqual(Albert.entreeConversation('d1', 'discuter', []), null);
 });
+
+test('entreeConversation : nom du projet gardé, coupé à 40 caractères', () => {
+    const documents = [{ nom: 'cours.pdf', texte: 'A' }];
+    assert.strictEqual(Albert.entreeConversation('p1', 'projet', [], documents, '  3e - Pythagore  ').nom, '3e - Pythagore');
+    assert.strictEqual(Albert.entreeConversation('p1', 'projet', [], documents, 'x'.repeat(60)).nom.length, 40);
+    assert.ok(!('nom' in Albert.entreeConversation('p1', 'projet', [], documents, '   ')));
+    /* Un nom seul ne fait pas un projet : il faut un document ou une question. */
+    assert.strictEqual(Albert.entreeConversation('p1', 'projet', [], [], '3e - Pythagore'), null);
+});
+
+test('libelleConversation : un projet porte son nom, sinon son titre', () => {
+    assert.strictEqual(Albert.libelleConversation({ outil: 'projet', titre: 'cours.pdf' }), 'cours.pdf');
+    assert.strictEqual(Albert.libelleConversation({ outil: 'projet', titre: 'cours.pdf', nom: '3e - Pythagore' }), '3e - Pythagore');
+});
+
+test('limiterConversations : projets et discussions comptés à part', () => {
+    const liste = [];
+    for (let i = 0; i < 12; i++) {
+        liste.push({ id: 'd' + i, outil: 'discuter' }, { id: 'p' + i, outil: 'projet' });
+    }
+    const gardees = Albert.limiterConversations(liste);
+    assert.strictEqual(gardees.filter(c => c.outil === 'projet').length, 10);
+    assert.strictEqual(gardees.filter(c => c.outil !== 'projet').length, 10);
+    /* Les plus récentes d'abord, dans l'ordre d'origine. */
+    assert.deepStrictEqual(gardees.slice(0, 3).map(c => c.id), ['d0', 'p0', 'd1']);
+    assert.ok(!gardees.some(c => c.id === 'p10' || c.id === 'd11'));
+    /* Dix discussions ne font pas sortir un projet. */
+    const dix = Array.from({ length: 10 }, (_, i) => ({ id: 'd' + i, outil: 'discuter' }));
+    assert.ok(Albert.limiterConversations([...dix, { id: 'p', outil: 'projet' }]).some(c => c.id === 'p'));
+});
+
+test('nomLibre : un nom déjà pris est numéroté', () => {
+    assert.strictEqual(Albert.nomLibre('image.png', ['cours.pdf']), 'image.png');
+    assert.strictEqual(Albert.nomLibre('image.png', ['image.png']), 'image (2).png');
+    assert.strictEqual(Albert.nomLibre('image.png', ['image.png', 'image (2).png']), 'image (3).png');
+    assert.strictEqual(Albert.nomLibre('image collée', ['image collée']), 'image collée (2)');
+});

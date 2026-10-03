@@ -17,7 +17,7 @@ Chaque utilisateur utilise sa propre clé API. Les clés s'obtiennent sur le [pl
 | Style | Reformuler un texte, avec trois propositions. |
 | Trad | Traduire un texte entre les deux langues choisies. |
 | Courrier | Rédiger un courrier à partir de quelques idées (voir plus bas). |
-| Projet | Déposer des documents une fois, puis demander un rendu : évaluation avec barème, fiche de révision, questions. |
+| Projet | Déposer des documents une fois, puis demander un rendu : évaluation avec barème, fiche de révision, questions. Les projets se créent, se nomment, se rouvrent et se suppriment dans la section "Projets" du menu. |
 
 ### Réponses
 

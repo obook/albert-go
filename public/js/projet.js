@@ -2,9 +2,9 @@
  * projet.js
  * Module Projet : documents déposés une fois, envoyés avec chaque question.
  *
- * Garde les documents du projet affiché et tient sa carte à jour. La lecture
- * des fichiers est dans piece-jointe.js, l'envoi dans app.js,
- * l'enregistrement dans historique.js.
+ * Garde les documents et le nom du projet affiché, et tient sa carte à jour.
+ * La lecture des fichiers est dans piece-jointe.js, l'envoi dans app.js,
+ * l'enregistrement et la liste des projets dans historique.js.
  *
  * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
  * Auteur : O. Booklage
@@ -16,13 +16,17 @@
 /** Documents du projet affiché : { nom, texte }. */
 let documentsProjet = [];
 
+/** Nom donné au projet affiché, ou '' : son titre sert alors de nom. */
+let nomProjet = '';
+
 /* Croix du bouton "Retirer", celle de la pièce jointe. */
 const ICONE_RETIRER = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
 
 /**
- * Met la carte Documents à jour : nombre, part du contexte, liste.
+ * Met la carte Documents à jour : nom du projet, nombre, part du contexte, liste.
  */
 function afficherDocuments() {
+    $('nom-projet').value = nomProjet;
     const part = Albert.partDocuments(documentsProjet, modeleActuel().contexte);
     $('resume-documents').textContent = t(part === null ? 'documents.resume' : 'documents.resume-part',
         { nombre: documentsProjet.length, pourcent: part });
@@ -68,11 +72,13 @@ function ajouterDocument(piece) {
 function retirerDocument(nom) {
     documentsProjet = documentsProjet.filter(d => d.nom !== nom);
     afficherDocuments();
+    /* La liste est reconstruite : le focus retombe sur un bouton, pas sur la page. */
+    $('deposer-documents').focus();
     if (documentsProjet.length || conversation.length) {
         sauverConversation();
         return;
     }
-    /* Projet vidé avant toute question : il quitte l'historique. */
+    /* Projet vidé avant toute question : il quitte la liste des projets. */
     const restantes = conversations.filter(c => c.id !== conversationId);
     try {
         ecrireConversations(restantes);
@@ -97,4 +103,25 @@ $('documents').addEventListener('dragover', (e) => {
 $('documents').addEventListener('drop', (e) => {
     e.preventDefault();
     joindreFichiers([...e.dataTransfer.files]);
+});
+
+/* Nom du projet : suivi à chaque frappe, enregistré quand le champ est quitté. */
+$('nom-projet').addEventListener('input', () => {
+    nomProjet = $('nom-projet').value;
+});
+
+$('nom-projet').addEventListener('change', () => {
+    /* Un nom seul ne fait pas un projet : il sera gardé au premier document ou à la première question. */
+    if (documentsProjet.length || conversation.length) {
+        sauverConversation();
+    }
+});
+
+/* "Nouveau projet" : choisirOutil rouvrirait le projet laissé, nouvelleConversation le referme. */
+$('nouveau-projet').addEventListener('click', () => {
+    if (outilActuel !== 'projet') {
+        choisirOutil('projet');
+    }
+    nouvelleConversation();
+    viderSaisie();
 });

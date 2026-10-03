@@ -36,6 +36,12 @@ const Albert = {
     /** Nombre de conversations gardées dans le menu. */
     CONVERSATIONS_MAX: 10,
 
+    /** Nombre de projets gardés dans le menu, comptés à part des conversations. */
+    PROJETS_MAX: 10,
+
+    /** Longueur maximale du nom d'un projet. */
+    NOM_PROJET_MAX: 40,
+
     /*
     Liste de secours si /v1/models ne répond pas (relevée le 2 octobre 2026).
     Albert peut changer le modèle derrière un alias : /v1/models fait foi.
@@ -614,9 +620,10 @@ const Albert = {
      * @param {string} outil - Clé de OUTILS.
      * @param {Array<Object>} messages - Messages de la conversation.
      * @param {Object[]} [documents] - Documents d'un projet.
-     * @returns {?Object} Entrée { id, outil, titre, date, messages, documents? }, ou null s'il n'y a ni question ni document.
+     * @param {string} [nom] - Nom donné au projet.
+     * @returns {?Object} Entrée { id, outil, titre, date, messages, documents?, nom? }, ou null s'il n'y a ni question ni document.
      */
-    entreeConversation(id, outil, messages, documents = []) {
+    entreeConversation(id, outil, messages, documents = [], nom = '') {
         const premiere = messages.find(m => m.role === 'user');
         if (!premiere && !documents.length) {
             return null;
@@ -633,7 +640,52 @@ const Albert = {
         if (documents.length) {
             entree.documents = documents.slice();
         }
+        const nomNet = nom.trim().slice(0, this.NOM_PROJET_MAX);
+        if (nomNet) {
+            entree.nom = nomNet;
+        }
         return entree;
+    },
+
+    /**
+     * Indique si une entrée d'historique est un projet.
+     *
+     * @param {Object} entree - Entrée d'historique { outil }.
+     * @returns {boolean}
+     */
+    estProjet(entree) {
+        return !!(this.OUTILS[entree.outil] || {}).documents;
+    },
+
+    /**
+     * Liste d'historique ramenée à ses plafonds : projets et conversations comptés à part.
+     *
+     * @param {Object[]} liste - Entrées, la plus récente en premier.
+     * @returns {Object[]} Entrées gardées, dans le même ordre.
+     */
+    limiterConversations(liste) {
+        const restants = [this.CONVERSATIONS_MAX, this.PROJETS_MAX];
+        return liste.filter((entree) => {
+            const sorte = Number(this.estProjet(entree));
+            restants[sorte] -= 1;
+            return restants[sorte] >= 0;
+        });
+    },
+
+    /**
+     * Nom libre pour un document : "image.png", puis "image (2).png" si le nom est pris.
+     *
+     * @param {string} nom - Nom voulu.
+     * @param {string[]} pris - Noms déjà utilisés.
+     * @returns {string} Nom absent de la liste.
+     */
+    nomLibre(nom, pris) {
+        const [, base, extension = ''] = nom.match(/^(.*?)(\.[^.]*)?$/);
+        let libre = nom;
+        for (let rang = 2; pris.includes(libre); rang++) {
+            libre = base + ' (' + rang + ')' + extension;
+        }
+        return libre;
     },
 
     /**
@@ -645,6 +697,10 @@ const Albert = {
      * @returns {string} Libellé à afficher.
      */
     libelleConversation(entree) {
+        /* Un projet a sa propre liste : son nom suffit, ou son titre s'il n'en a pas. */
+        if (this.estProjet(entree)) {
+            return entree.nom || entree.titre;
+        }
         if (!entree.outil || entree.outil === 'discuter') {
             return entree.titre;
         }

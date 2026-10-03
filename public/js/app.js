@@ -285,6 +285,7 @@ function nouvelleConversation() {
     viderRedaction();
     conversation = [];
     documentsProjet = [];
+    nomProjet = '';
     afficherDocuments();
     $('documents').open = true;
     conversationId = null;

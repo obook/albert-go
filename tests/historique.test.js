@@ -46,6 +46,14 @@ test('ecrireConversations : tout passe, la liste revient telle quelle', () => {
     assert.deepStrictEqual(JSON.parse(faux.valeurs['albert-go.conversations']), trois);
 });
 
+test('ecrireConversations : liste vide, le stockage est effacé', () => {
+    /* Sinon la dernière conversation supprimée, ou un projet vidé, resterait dans le stockage. */
+    neuf(0);
+    ecrireConversations(trois);
+    assert.deepStrictEqual(ecrireConversations([]), []);
+    assert.strictEqual(faux.valeurs['albert-go.conversations'], undefined);
+});
+
 test('ecrireConversations : quota plein, les plus anciennes sont retirées', () => {
     /* Les deux premiers essais échouent : il reste la conversation en cours. */
     neuf(2);

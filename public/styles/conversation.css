@@ -169,6 +169,26 @@ main {
 .liste-documents { margin: 0.5rem 0; padding: 0; list-style: none; }
 .liste-documents li { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
 .liste-documents span { overflow-wrap: anywhere; }
+/* Nom long : le bouton "Retirer" garde sa taille (cible tactile). */
+.liste-documents button { flex: none; }
+.nom-projet {
+    display: block;
+    width: 100%;
+    margin-top: 0.5rem;
+    padding: 0.375rem 0.5rem;
+    border: 1px solid var(--bord-champ);
+    border-radius: 0.5rem;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+}
+/* Projet : la réponse est un rendu, dans une bulle discrète comme la carte Documents. */
+.chat[data-module="projet"] .fil .assistant .carte {
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--bord);
+    border-radius: 0.75rem;
+    background: var(--surface);
+}
 
 /* Fil de conversation */
 

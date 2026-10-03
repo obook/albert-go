@@ -48,6 +48,9 @@ let pieceJointe = null;
 /** Lecture en cours (AbortController), ou null. */
 let lecturePiece = null;
 
+/** true tant qu'un lot de fichiers est lu pour un projet. */
+let depotEnCours = false;
+
 /**
  * Affiche le nom du fichier joint au-dessus de la saisie.
  *
@@ -365,11 +368,21 @@ async function joindreFichier(fichier) {
  * @returns {Promise<void>}
  */
 async function joindreFichiers(fichiers) {
-    const liste = Albert.OUTILS[outilActuel].documents ? fichiers : fichiers.slice(0, 1);
-    for (const fichier of liste) {
-        if (!await joindreFichier(fichier)) {
-            return;
+    const projet = !!Albert.OUTILS[outilActuel].documents;
+    /* Projet : un dépôt pendant un autre abandonnerait la lecture en cours et le reste du lot. */
+    if (projet && depotEnCours) {
+        etat(t('etat.attendre-lecture'));
+        return;
+    }
+    depotEnCours = projet;
+    try {
+        for (const fichier of projet ? fichiers : fichiers.slice(0, 1)) {
+            if (!await joindreFichier(fichier)) {
+                return;
+            }
         }
+    } finally {
+        depotEnCours = false;
     }
 }
 
@@ -445,5 +458,8 @@ $('saisie').addEventListener('paste', (e) => {
         return;
     }
     e.preventDefault();
-    joindreFichier(image);
+    /* Projet : deux images collées portent le même nom, la seconde ne doit pas remplacer la première. */
+    const voulu = image.name || t('piece.image-collee');
+    const nom = Albert.OUTILS[outilActuel].documents ? Albert.nomLibre(voulu, documentsProjet.map(d => d.nom)) : voulu;
+    joindreFichiers([nom === image.name ? image : new File([image], nom, { type: image.type })]);
 });

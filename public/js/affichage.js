@@ -64,7 +64,7 @@ function afficher() {
     $('chat').hidden = !connecte || redaction;
     $('saisie-zone').hidden = !connecte || redaction;
     $('redaction').hidden = !connecte || !redaction;
-    for (const id of ['ouvrir-reglages', 'nouvelle', 'resume-reglages', 'menu-outils', 'menu-historique', 'changer-cle']) {
+    for (const id of ['ouvrir-reglages', 'nouvelle', 'resume-reglages', 'menu-outils', 'menu-projets', 'menu-historique', 'changer-cle']) {
         $(id).hidden = !connecte;
     }
     if (connecte) {
