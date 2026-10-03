@@ -17,21 +17,32 @@ Chaque utilisateur utilise sa propre clé API. Les clés s'obtiennent sur le [pl
 | Style | Reformuler un texte, avec trois propositions. |
 | Trad | Traduire un texte entre les deux langues choisies. |
 | Courrier | Rédiger un courrier à partir de quelques idées (voir plus bas). |
-| Documents | Déposer des sources une fois, puis construire un document peu à peu : évaluation avec barème, fiche de révision, questions. Les documents se créent, se nomment, se rouvrent et se suppriment dans la section "Documents" du menu. |
+| Documents | Construire un document peu à peu à partir de sources déposées (voir plus bas). |
 
 ### Réponses
 
-Les réponses acceptent le Markdown, les formules LaTeX et les diagrammes Mermaid ; un diagramme refusé par Mermaid est renvoyé une fois au modèle pour correction. Sous chaque réponse : copier le texte, l'enregistrer en .docx ou en .odt (figures en image, formules modifiables), ou le lire à voix haute avec une voix installée sur l'appareil.
+Les réponses acceptent le Markdown, les formules LaTeX et les diagrammes Mermaid ; un diagramme refusé par Mermaid est renvoyé une fois au modèle pour correction. Sous chaque réponse : copier le texte, le lire à voix haute avec une voix installée sur l'appareil, ou l'enregistrer en .docx ou en .odt.
+
+Les deux fichiers sont écrits dans le navigateur, sans bibliothèque : titres, listes, tableaux, code, liens, figures et images en image. Les formules restent modifiables : équations Word dans le .docx, objets LibreOffice Math dans le .odt. Une formule que KaTeX n'a pas su lire garde sa source LaTeX. Les deux formats ont été vérifiés dans LibreOffice, pas dans Microsoft Word.
 
 ### Fichiers joints
 
 Trombone, glisser-déposer ou Ctrl+V : un fichier texte, un PDF, un .docx ou un .odt est lu dans le navigateur ; une image est transcrite par le modèle Medium, un enregistrement audio par whisper (8 minutes environ au plus), puis le texte part avec la question. Un PDF scanné n'a pas de texte : il se joint comme image.
 
-Dans Documents, les fichiers déposés sont les sources du document : elles lui restent attachées et partent avec chaque demande ; leur texte ne dépasse pas 60 % du contexte du modèle, soit environ 80 pages avec Large.
+Dans Documents, les fichiers déposés sont les sources du document (voir plus bas).
 
 ### Courrier
 
 On écrit une formule d'appel ("Madame,", "Monsieur le directeur,") puis les idées principales. À chaque pause de frappe, Albert propose le courrier rédigé et corrigé.
+
+### Documents
+
+On dépose des sources (cours, ancien sujet, programme), puis on demande un document : évaluation avec barème, fiche de révision, questions. Chaque demande suivante le modifie : Albert rend le document entier, mis à jour. Seule la dernière version s'affiche, sans les demandes ; elle s'enregistre en .docx ou en .odt.
+
+- Les sources partent en entier avec chaque demande. Leur texte ne dépasse pas 60 % du contexte du modèle, soit environ 80 pages avec Large.
+- Seule la version en cours du document accompagne la demande : Albert ne peut pas revenir à une version antérieure.
+- La section "Documents" du menu sert à créer, nommer, rouvrir et supprimer les documents : dix au plus, comptés à part des dix conversations de l'historique.
+- Mêmes outils que Discussion : calculatrice, tirage, recherche web.
 
 ### Recherche web
 
@@ -88,6 +99,7 @@ Navigateur -> webhook n8n -> API Albert
 ```
 
 - `public/` : la page (HTML, CSS, JavaScript), publiée sur Pages, avec les bibliothèques embarquées dans `public/vendor/`.
+- `public/js/rendu/` : le rendu des réponses (schémas, courbes, images) et leur export : `export.js` parcourt la réponse affichée, `docx.js` et `odt.js` écrivent le fichier.
 - `public/js/tools/` : les outils proposés au modèle (calculs, jours ouvrés, contrôle SIRET et IBAN, recherche web, images de Commons, services de l'État).
 - `n8n/albert-proxy.json` : le workflow n8n, installation dans `n8n/README.md`.
 

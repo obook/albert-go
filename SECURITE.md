@@ -53,7 +53,9 @@ Navigateur (Pages) -> webhook n8n -> https://albert.api.etalab.gouv.fr
   partagé, activé par défaut, tout cela va dans `sessionStorage` et disparaît à
   la fermeture de l'onglet. Sinon dans `localStorage`, sans limite de durée.
   Les sources déposées dans le module Documents sont gardées avec leur document,
-  selon la même règle.
+  selon la même règle. Elles partent à la suite de la consigne système : un
+  fichier piégé y aurait l'autorité de la consigne, on n'y dépose que des
+  fichiers de confiance.
 - L'effacement est explicite, le navigateur restaurant `sessionStorage` quand on
   rouvre un onglet fermé : `pagehide` pose une marque, le chargement suivant
   efface si ce n'est pas un rechargement. Un onglet gelé en arrière-plan garde

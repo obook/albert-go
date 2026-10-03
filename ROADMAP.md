@@ -16,6 +16,14 @@ Ce qui reste à faire, du plus simple au plus long. Le détail des failles est d
 - Légifrance et Judilibre : il faut des identifiants PISTE et une route n8n, car la clé ne peut pas rester dans le navigateur.
 - Wiktionnaire et autres services externes : en réflexion, car les mots cherchés partent chez un tiers.
 
+## Documents et exports
+
+- Essayer le module Documents avec un vrai modèle : la consigne lui demande de rendre le document entier à chaque demande, ce qui n'a été vérifié qu'avec des réponses simulées.
+- Ouvrir un .docx et un .odt produits dans Microsoft Word : seul LibreOffice a servi aux essais.
+- Modèle de l'enseignant : son propre .odt, avec son en-tête et une balise `{contenu}` où Albert Go insère le document, sur le principe d'odtPHP.
+- Recherche dans les sources (collections et `/v1/search` d'Albert) quand elles dépassent le plafond : il faut trois routes de plus dans le relais n8n, et les sources seraient alors gardées chez Albert.
+- Mineurs connus : un élément de liste qui commence par un bloc de code ou une image perd son numéro dans le fichier exporté ; le refus d'un fichier ne dit pas lequel ; les grands opérateurs d'une équation Word ne grandissent pas avec leur contenu.
+
 ## Interface
 
 - Grand écran : le titre de la conversation dans le bouton du volet, comme sur L'Assistant de la DINUM. Le titre existe déjà (`Albert.libelleConversation`).
