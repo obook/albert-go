@@ -202,14 +202,14 @@ function changerPartage(actif) {
 /**
  * Température enregistrée, ramenée aux bornes du curseur.
  *
- * @returns {number} Température entre 0 et 1, ou la valeur conseillée.
+ * @returns {number} Température entre 0 et Albert.TEMPERATURE_MAX, ou la valeur conseillée.
  */
 function temperatureLue() {
     const valeur = parseFloat(lire('temperature', ''));
     if (!Number.isFinite(valeur)) {
         return Albert.CONSEILLES.temperature;
     }
-    return Math.min(1, Math.max(0, valeur));
+    return Math.min(Albert.TEMPERATURE_MAX, Math.max(0, valeur));
 }
 
 /** Réglages de l'utilisateur, lus au démarrage. */
