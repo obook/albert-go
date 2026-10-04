@@ -116,6 +116,12 @@ $('temperature').addEventListener('input', () => {
     afficherReglages();
 });
 
+$('top-k').addEventListener('input', () => {
+    reglages.topK = parseInt($('top-k').value, 10);
+    ecrire('top-k', String(reglages.topK));
+    afficherReglages();
+});
+
 $('memoire-reglage').addEventListener('change', () => {
     reglages.memoire = $('memoire-reglage').checked;
     ecrire('memoire', reglages.memoire ? 'oui' : 'non');
@@ -298,9 +304,11 @@ $('nom-application').addEventListener('input', () => {
 $('reglages-conseilles').addEventListener('click', () => {
     reglages.modele = Albert.CONSEILLES.modele;
     reglages.temperature = Albert.CONSEILLES.temperature;
+    reglages.topK = Albert.CONSEILLES.topK;
     reglages.memoire = Albert.CONSEILLES.memoire;
     ecrire('modele', reglages.modele);
     ecrire('temperature', String(reglages.temperature));
+    ecrire('top-k', String(reglages.topK));
     ecrire('memoire', reglages.memoire ? 'oui' : 'non');
     afficherReglages();
 });

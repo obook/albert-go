@@ -157,7 +157,7 @@ I18n.TEXTES.fr = {
 
     /* Réglages. */
     'reglages.titre': 'Réglages',
-    'reglages.conseil': 'Conseillé : modèle Large, température 0,2, toute la conversation envoyée.',
+    'reglages.conseil': 'Conseillé : modèle Large, température 0,2, top-k 40, toute la conversation envoyée.',
     'reglages.carte-reponse': 'IA',
     'reglages.carte-application': 'Application',
     'reglages.modele': 'Modèle',
@@ -166,7 +166,12 @@ I18n.TEXTES.fr = {
     'reglages.temperature': 'Température',
     'reglages.precis': 'Précis',
     'reglages.creatif': 'Créatif',
-    'reglages.aide-temperature': 'Bas : réponses stables et factuelles. Haut : réponses originales, mais le modèle invente davantage. Au-delà de 1 : pour expérimenter, le texte peut devenir incohérent et la réponse est écourtée.',
+    'reglages.aide-temperature': 'Basse : réponses stables et factuelles. Haute : réponses plus variées.',
+    'reglages.aide-temperature-haute': 'Au-delà de 1 : le texte peut devenir incohérent, la réponse est écourtée.',
+    'reglages.top-k': 'Top-k',
+    'reglages.aide-top-k': 'Tirage d\'un mot au hasard parmi les {k} mots les plus probables pour construire la réponse.',
+    'reglages.aide-top-k-un': 'Toujours le mot le plus probable : aucun hasard.',
+    'reglages.aide-top-k-tous': 'Tirage d\'un mot au hasard parmi tous les mots possibles pour construire la réponse.',
     'reglages.contexte': 'Contexte',
     'reglages.lecture': 'Lecture à voix haute',
     'reglages.voix-en-ligne': 'Autoriser les voix en ligne',

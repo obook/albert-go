@@ -157,7 +157,7 @@ I18n.TEXTES.en = {
 
     /* Settings. */
     'reglages.titre': 'Settings',
-    'reglages.conseil': 'Recommended: Large model, temperature 0.2, whole conversation sent.',
+    'reglages.conseil': 'Recommended: Large model, temperature 0.2, top-k 40, whole conversation sent.',
     'reglages.carte-reponse': 'AI',
     'reglages.carte-application': 'App',
     'reglages.modele': 'Model',
@@ -166,7 +166,12 @@ I18n.TEXTES.en = {
     'reglages.temperature': 'Temperature',
     'reglages.precis': 'Precise',
     'reglages.creatif': 'Creative',
-    'reglages.aide-temperature': 'Low: steady, factual answers. High: original answers, but the model makes things up more often. Above 1: for experimenting, the text may stop making sense and the answer is cut short.',
+    'reglages.aide-temperature': 'Low: steady, factual answers. High: more varied answers.',
+    'reglages.aide-temperature-haute': 'Above 1: the text may stop making sense, the answer is cut short.',
+    'reglages.top-k': 'Top-k',
+    'reglages.aide-top-k': 'One word is drawn at random from the {k} most likely words to build the answer.',
+    'reglages.aide-top-k-un': 'Always the most likely word: no randomness.',
+    'reglages.aide-top-k-tous': 'One word is drawn at random from all possible words to build the answer.',
     'reglages.contexte': 'Context',
     'reglages.lecture': 'Read aloud',
     'reglages.voix-en-ligne': 'Allow online voices',

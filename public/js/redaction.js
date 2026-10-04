@@ -149,6 +149,7 @@ async function demanderRedaction(champ, demande, attente) {
         const reponse = await Albert.repondre(reglages.cle, {
             model: modeleActuel().id,
             temperature: reglages.temperature,
+            ...Albert.topK(reglages.topK),
             messages: [
                 { role: 'system', content: await consigne('rediger', champ) },
                 { role: 'user', content: demande }

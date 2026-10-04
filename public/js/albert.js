@@ -102,10 +102,13 @@ const Albert = {
     },
 
     /** Réglages conseillés, aussi utilisés au premier lancement. */
-    CONSEILLES: { modele: 'openweight-large', temperature: 0.2, memoire: true },
+    CONSEILLES: { modele: 'openweight-large', temperature: 0.2, topK: 40, memoire: true },
 
     /** Albert accepte de 0 à 2 pour la conversation ; au-delà de 1, le texte déraille. */
     TEMPERATURE_MAX: 2,
+
+    /** Position du curseur top-k qui veut dire "sans limite" : rien n'est envoyé. */
+    TOP_K_SANS_LIMITE: 50,
 
     /** Longueur de réponse au-delà de 1 : sans plafond, un modèle qui déraille ne s'arrête plus. */
     JETONS_EXPERIENCE: 600,
@@ -219,6 +222,29 @@ const Albert = {
     nomCourt(alias) {
         return alias.replace(/^openweight-/, '').split('-')
             .map(mot => mot.charAt(0).toUpperCase() + mot.slice(1)).join(' ');
+    },
+
+    /**
+     * Champ top_k d'une requête : le modèle tire le mot suivant parmi les k plus probables.
+     *
+     * @param {number} k - Position du curseur.
+     * @returns {Object} { top_k }, ou rien quand le curseur est sur "sans limite".
+     */
+    topK(k) {
+        return k < this.TOP_K_SANS_LIMITE ? { top_k: k } : {};
+    },
+
+    /**
+     * Clé de la phrase qui décrit le top-k choisi : un mot, k mots ou tous.
+     *
+     * @param {number} k - Position du curseur.
+     * @returns {string} Clé du dictionnaire.
+     */
+    cleAideTopK(k) {
+        if (k >= this.TOP_K_SANS_LIMITE) {
+            return 'reglages.aide-top-k-tous';
+        }
+        return k === 1 ? 'reglages.aide-top-k-un' : 'reglages.aide-top-k';
     },
 
     /**
