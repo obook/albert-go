@@ -273,6 +273,31 @@ $('cle-recherche').addEventListener('change', () => {
     ecrire('cle-recherche', reglages.cleRecherche);
 });
 
+/* Outils conseillés : tous les outils locaux activés, Internet désactivé, moteur Wikipédia. */
+$('outils-conseilles').addEventListener('click', () => {
+    for (const nom of Object.keys(OUTILS_LOCAUX)) {
+        reglages[nom] = true;
+        ecrire(nom, 'oui');
+    }
+    for (const caseOutil of $('outils-locaux').querySelectorAll('input')) {
+        caseOutil.checked = true;
+    }
+    reglages.recherche = false;
+    ecrire('recherche', 'non');
+    $('recherche-reglage').checked = false;
+    /* Comme un changement de moteur à la main : la clé de l'ancien est effacée. */
+    if (reglages.fournisseur !== 'wikipedia') {
+        reglages.fournisseur = 'wikipedia';
+        reglages.cleRecherche = null;
+        $('cle-recherche').value = '';
+        ecrire('fournisseur', reglages.fournisseur);
+        ecrire('cle-recherche', null);
+        afficherMoteurs();
+        afficherCles();
+    }
+    afficherRecherche();
+});
+
 $('partage-reglage').addEventListener('change', () => {
     if (!changerPartage(!$('partage-reglage').checked)) {
         $('partage-reglage').checked = !partage;

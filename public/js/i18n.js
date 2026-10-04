@@ -65,6 +65,21 @@ const I18n = {
     },
 
     /**
+     * Texte au singulier ou au pluriel selon un nombre, dans la langue affichée.
+     *
+     * Le singulier a la clé du pluriel suivie de "-un". En français, 0 et 1 sont au singulier.
+     *
+     * @param {string} cle - Clé du pluriel.
+     * @param {number} nombre - Nombre qui décide de l'accord.
+     * @param {Object} [valeurs] - Valeurs des {marqueurs} du texte.
+     * @returns {string} Texte traduit et accordé.
+     */
+    accorde(cle, nombre, valeurs) {
+        const un = new Intl.PluralRules(this.langue).select(nombre) === 'one';
+        return this.t(un ? cle + '-un' : cle, valeurs);
+    },
+
+    /**
      * Indique si une clé existe dans la langue affichée ou en français.
      *
      * @param {string} cle - Clé du dictionnaire.
@@ -120,11 +135,19 @@ function t(cle, valeurs) {
     return I18n.t(cle, valeurs);
 }
 
+/**
+ * Traduit et accorde un texte selon un nombre (voir I18n.accorde).
+ */
+function tn(cle, nombre, valeurs) {
+    return I18n.accorde(cle, nombre, valeurs);
+}
+
 /* Export pour les tests Node ; ignoré dans le navigateur. Les autres
    modules lisent t et I18n comme variables globales. */
 if (typeof module !== 'undefined') {
     module.exports = I18n;
     globalThis.t = t;
+    globalThis.tn = tn;
     globalThis.I18n = I18n;
     for (const langue of I18n.LANGUES) {
         require('./langues/' + langue + '.js');

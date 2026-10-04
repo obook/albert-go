@@ -65,7 +65,7 @@ function afficher() {
     $('chat').hidden = !connecte || redaction;
     $('saisie-zone').hidden = !connecte || redaction;
     $('redaction').hidden = !connecte || !redaction;
-    for (const id of ['ouvrir-reglages', 'nouvelle', 'resume-reglages', 'trait-outils', 'menu-outils', 'menu-projets', 'menu-historique', 'changer-cle']) {
+    for (const id of ['ouvrir-reglages', 'nouvelle', 'resume-reglages', 'trait-outils', 'menu-outils', 'trait-documents', 'menu-projets', 'menu-historique', 'changer-cle']) {
         $(id).hidden = !connecte;
     }
     if (connecte) {
@@ -135,7 +135,7 @@ function afficherReglages() {
     if (reglages.echanges >= Albert.ECHANGES_TOUS) {
         contexte = pourcent === null ? t('contexte.complet') : t('contexte.pourcent', { pourcent: pourcent });
     } else if (reglages.echanges > 0) {
-        contexte = t('contexte.echanges', { n: reglages.echanges });
+        contexte = tn('contexte.echanges', reglages.echanges, { n: reglages.echanges });
     }
     /* Virgule décimale en français, point en anglais. */
     const temperature = reglages.temperature.toLocaleString(I18n.langue, { minimumFractionDigits: 1, maximumFractionDigits: 1 });

@@ -246,9 +246,9 @@ const Calendrier = {
                 for (const d = new Date(premier); d <= dernier; d.setDate(d.getDate() + 1)) {
                     ouvres += this.ouvre(d, alsace) ? 1 : 0;
                 }
-                return t('calendrier.ecart-ouvres', { debut: format.format(premier), fin: format.format(dernier), jours: ouvres });
+                return tn('calendrier.ecart-ouvres', ouvres, { debut: format.format(premier), fin: format.format(dernier), jours: ouvres });
             }
-            return t('calendrier.ecart', { debut: format.format(debut), fin: format.format(fin), jours: ecart });
+            return tn('calendrier.ecart', ecart, { debut: format.format(debut), fin: format.format(fin), jours: ecart });
         }
         /* En heures : depuis maintenant, ou depuis minuit de la date donnée. */
         if (Number.isFinite(demande.heures) && demande.heures !== 0) {
@@ -257,7 +257,7 @@ const Calendrier = {
                 const m = this.maintenant(langue, d);
                 return m.date + ', ' + m.heure;
             };
-            return t('calendrier.decale-heures', {
+            return tn('calendrier.decale-heures', demande.heures, {
                 debut: clair(base), heures: demande.heures, fin: clair(new Date(base.getTime() + demande.heures * 3600000))
             });
         }
@@ -271,11 +271,11 @@ const Calendrier = {
                 d.setDate(d.getDate() + pas);
                 reste -= this.ouvre(d, alsace) ? 1 : 0;
             }
-            return t('calendrier.decale-ouvres', { debut: format.format(debut), jours: demande.jours, date: format.format(d) });
+            return tn('calendrier.decale-ouvres', demande.jours, { debut: format.format(debut), jours: demande.jours, date: format.format(d) });
         }
         if (Number.isInteger(demande.jours) && demande.jours !== 0) {
             const decale = new Date(debut.getFullYear(), debut.getMonth(), debut.getDate() + demande.jours);
-            return t('calendrier.decale', { debut: format.format(debut), jours: demande.jours, date: format.format(decale) });
+            return tn('calendrier.decale', demande.jours, { debut: format.format(debut), jours: demande.jours, date: format.format(decale) });
         }
         if (!demande.date) {
             return t('calendrier.maintenant', this.maintenant(langue, maintenant));
@@ -579,7 +579,14 @@ const OUTILS_LOCAUX = {
     compteur: {
         icone: 'compteur',
         outil: () => definirOutil('compteur', { texte: { type: 'string' } }, ['texte']),
-        executer: a => t('compteur.resultat', Compteur.compter(a.texte))
+        executer: a => {
+            const compte = Compteur.compter(a.texte);
+            return t('compteur.resultat', {
+                ...compte,
+                motMots: tn('compteur.mots', compte.mots),
+                motCaracteres: tn('compteur.caracteres', compte.caracteres)
+            });
+        }
     },
     controle: {
         icone: 'controle',
