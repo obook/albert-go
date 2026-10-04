@@ -163,11 +163,11 @@ function rouvrirConversation(entree) {
     afficherOutil();
     afficher();
     conversation = entree.messages.slice();
-    documentsProjet = (entree.documents || []).slice();
+    choisirSources(entree.sources || []);
     nomProjet = entree.nom || '';
     afficherDocuments();
     /* Carte ouverte tant que rien n'a été demandé. */
-    $('documents').open = !conversation.length;
+    ouvrirSources(!conversation.length);
     conversationId = entree.id;
     retenirCourante(conversationId);
     afficherReglages();
@@ -195,7 +195,7 @@ function rouvrirConversation(entree) {
  */
 function demanderSuppression(entree, libelle) {
     $('texte-confirmer-suppression').textContent = libelle;
-    /* Un projet emporte ses documents : la question le dit. */
+    /* Un document supprimé laisse ses sources dans la bibliothèque : la question le dit. */
     $('titre-confirmer-suppression').textContent = t(Albert.estProjet(entree) ? 'confirmer-suppression.projet' : 'confirmer-suppression.titre');
     /* Sinon Échap reprendrait la réponse précédente. */
     $('confirmer-suppression').returnValue = '';

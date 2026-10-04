@@ -49,7 +49,7 @@ if (window.top !== window.self) {
 }
 
 /* Données effacées à la fermeture de l'onglet en mode partagé. */
-const SENSIBLES = ['cle', 'cle-recherche', 'historique', 'conversations'];
+const SENSIBLES = ['cle', 'cle-recherche', 'historique', 'conversations', 'bibliotheque'];
 
 /** Mode partagé : clé, questions et conversations en sessionStorage. */
 let partage = false;

@@ -515,6 +515,71 @@ const Albert = {
     },
 
     /**
+     * Fichiers de la bibliothèque cochés pour un document, dans l'ordre de la bibliothèque.
+     *
+     * @param {{nom: string, texte: string}[]} bibliotheque - Tous les fichiers déposés.
+     * @param {string[]} noms - Noms cochés pour ce document.
+     * @returns {Object[]} Fichiers envoyés avec ses questions.
+     */
+    sourcesCochees(bibliotheque, noms) {
+        return bibliotheque.filter(d => noms.includes(d.nom));
+    },
+
+    /**
+     * Reprend dans la bibliothèque les sources que chaque document gardait avec lui.
+     *
+     * Même nom et même texte : un seul fichier. Même nom, autre texte : renommé.
+     *
+     * @param {Object[]} conversations - Entrées d'historique, certaines avec { documents }.
+     * @param {{nom: string, texte: string}[]} bibliotheque - Fichiers déjà dans la bibliothèque.
+     * @returns {{conversations: Object[], bibliotheque: Object[], change: boolean}} Entrées avec { sources }, bibliothèque complétée.
+     */
+    versBibliotheque(conversations, bibliotheque) {
+        const fichiers = bibliotheque.slice();
+        let change = false;
+        const reprises = conversations.map((entree) => {
+            if (!entree.documents) {
+                return entree;
+            }
+            change = true;
+            const { documents, ...reste } = entree;
+            reste.sources = documents.map((doc) => {
+                if (fichiers.some(f => f.nom === doc.nom && f.texte === doc.texte)) {
+                    return doc.nom;
+                }
+                const nom = this.nomLibre(doc.nom, fichiers.map(f => f.nom));
+                fichiers.push({ nom: nom, texte: doc.texte });
+                return nom;
+            });
+            return reste;
+        });
+        return { conversations: reprises, bibliotheque: fichiers, change: change };
+    },
+
+    /**
+     * Nom sous lequel le texte d'un fichier de la bibliothèque se télécharge.
+     *
+     * La bibliothèque garde le texte lu, pas le fichier : un PDF revient en .txt.
+     *
+     * @param {string} nom - Nom du fichier déposé.
+     * @returns {string} Le même nom pour un fichier texte, sinon suivi de ".txt".
+     */
+    nomTexte(nom) {
+        return /\.(txt|md|csv|tsv|tex)$/i.test(nom) ? nom : nom + '.txt';
+    },
+
+    /**
+     * Retire un fichier supprimé de la bibliothèque des documents qui le cochaient.
+     *
+     * @param {Object[]} conversations - Entrées d'historique.
+     * @param {string} nom - Nom du fichier supprimé.
+     * @returns {Object[]} Entrées, sans ce nom dans leurs sources.
+     */
+    sansSource(conversations, nom) {
+        return conversations.map(c => (c.sources ? { ...c, sources: c.sources.filter(s => s !== nom) } : c));
+    },
+
+    /**
      * Texte montré dans le fil pour la question posée.
      *
      * Le fichier joint s'annonce sous la question, ou seul si rien n'est tapé.
@@ -664,9 +729,9 @@ const Albert = {
      * @param {string} id - Identifiant de la conversation.
      * @param {string} outil - Clé de OUTILS.
      * @param {Array<Object>} messages - Messages de la conversation.
-     * @param {Object[]} [documents] - Documents d'un projet.
+     * @param {Object[]} [documents] - Sources cochées d'un projet.
      * @param {string} [nom] - Nom donné au projet.
-     * @returns {?Object} Entrée { id, outil, titre, date, messages, documents?, nom? }, ou null s'il n'y a ni question ni document.
+     * @returns {?Object} Entrée { id, outil, titre, date, messages, sources?, nom? }, ou null s'il n'y a ni question ni source.
      */
     entreeConversation(id, outil, messages, documents = [], nom = '') {
         const premiere = messages.find(m => m.role === 'user');
@@ -683,7 +748,8 @@ const Albert = {
             messages: messages.slice()
         };
         if (documents.length) {
-            entree.documents = documents.slice();
+            /* Les fichiers sont dans la bibliothèque : le document ne garde que leurs noms. */
+            entree.sources = documents.map(d => d.nom);
         }
         const nomNet = nom.trim().slice(0, this.NOM_PROJET_MAX);
         if (nomNet) {

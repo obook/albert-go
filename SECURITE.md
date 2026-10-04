@@ -49,17 +49,20 @@ Navigateur (Pages) -> webhook n8n -> https://albert.api.etalab.gouv.fr
 ### Stockage dans le navigateur (préfixe `albert-go.`)
 
 - **Sensible** (liste `SENSIBLES` de `stockage.js`) : clé Albert, clé de
-  recherche, 30 dernières questions, 10 dernières conversations. En mode
+  recherche, 30 dernières questions, 10 dernières conversations, 10 derniers
+  documents et la bibliothèque de sources. En mode
   partagé, activé par défaut, tout cela va dans `sessionStorage` et disparaît à
   la fermeture de l'onglet. Sinon dans `localStorage`, sans limite de durée.
-  Les sources déposées dans le module Documents sont gardées avec leur document,
-  selon la même règle. Elles partent à la suite de la consigne système : un
+  Les sources déposées dans le module Documents vont dans une bibliothèque commune
+  à tous les documents (clé `bibliotheque`, dans `SENSIBLES`), gardée selon la même
+  règle. Seul le texte lu est gardé, pas le fichier d'origine. Les sources cochées
+  pour un document partent à la suite de la consigne système : un
   fichier piégé y aurait l'autorité de la consigne, on n'y dépose que des
   fichiers de confiance.
 - L'effacement est explicite, le navigateur restaurant `sessionStorage` quand on
   rouvre un onglet fermé : `pagehide` pose une marque, le chargement suivant
   efface si ce n'est pas un rechargement. Un onglet gelé en arrière-plan garde
-  ses données, et Ctrl+Maj+T peut le rouvrir avec sa clé.
+  ses données, et Ctrl+Maj+T peut le rouvrir avec sa clé et sa bibliothèque.
 - **Réglages** (`localStorage`, sans limite de durée) : modèle, température, top-k,
   contexte, thème, langue, voix en ligne, moteur, identifiant `cx`. Aucune donnée
   personnelle.
@@ -94,7 +97,7 @@ Navigateur (Pages) -> webhook n8n -> https://albert.api.etalab.gouv.fr
 | Clé ou questions lues sur un poste partagé | Mode partagé par défaut : tout le sensible en `sessionStorage`, effacé à la fermeture. |
 | Page intégrée dans le cadre d'un autre site | La page détecte le cadre et n'affiche qu'un lien vers elle-même. |
 | Texte envoyé à une synthèse vocale en ligne | Voix de l'appareil en priorité. Voix en ligne seulement si l'utilisateur les autorise (désactivé par défaut) et faute de voix locale. |
-| Fichier joint piégé | Texte lu comme du texte (200 Ko au plus), images redessinées dans un canevas puis converties en JPEG, audio décodé par le navigateur puis réécrit en WAV (le MP3 part tel quel, vers Albert seulement). Le résultat n'apparaît qu'à travers la réponse, donc assaini. |
+| Fichier joint piégé | Texte lu comme du texte (200 Ko au plus), images redessinées dans un canevas puis converties en JPEG, audio décodé par le navigateur puis réécrit en WAV (le MP3 part tel quel, vers Albert seulement). Le résultat n'apparaît qu'à travers la réponse, donc assaini. Dans Documents, le texte gardé se télécharge aussi, toujours comme fichier texte (`Albert.nomTexte`) : une page ou un script déposé revient en `.txt`. |
 
 ## Audit interne
 
@@ -177,6 +180,8 @@ Boîte noire depuis un poste extérieur, le 2026-09-21, avec `curl` et `openssl`
 
 - Aucun compte, aucun cookie, aucune collecte par Albert Go.
 - **Vers Albert (DINUM) :** questions, fichiers joints et clé, par le relais.
+  Dans Documents, les sources cochées repartent avec chaque demande ; une image
+  ou un enregistrement part dès le dépôt, pour être lu.
   Albert voit l'adresse IP de n8n, pas celle de l'utilisateur.
 - **Vers le moteur, seulement si l'utilisateur active la recherche :** les mots
   de la requête, que le modèle tire de la question, plus l'adresse IP et le
@@ -186,9 +191,11 @@ Boîte noire depuis un poste extérieur, le 2026-09-21, avec `curl` et `openssl`
   Cloud Act. C'est le seul tiers du parcours qui ne soit pas un service de
   l'État, d'où le réglage désactivé par défaut et Wikipédia en premier choix.
 - Hébergement de l'instance n8n et conservation des requêtes par Albert : non vérifiés.
-- Dans le navigateur : réglages sans limite de durée ; clés, questions et
-  conversations jusqu'à la fermeture de l'onglet, sauf si le mode partagé est
-  désactivé.
+- Dans le navigateur : réglages sans limite de durée ; clés, questions,
+  conversations, documents et bibliothèque de sources jusqu'à la fermeture de
+  l'onglet, sauf si le mode partagé est désactivé. La bibliothèque n'a alors ni
+  plafond ni date : supprimer un document, ou le voir sortir des dix gardés, y
+  laisse ses sources ; elle se vide fichier par fichier.
 
 ## Auto-évaluation ANSSI-PA-102
 

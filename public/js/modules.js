@@ -239,7 +239,6 @@ const EXEMPLES_ALEATOIRES = {
     /* Demandes types de Projet : un seul texte, sans fichier d'exemples. */
     'projet.exemple-evaluation': () => t('projet.exemple-evaluation'),
     'projet.exemple-revision': () => t('projet.exemple-revision'),
-    'projet.exemple-flash': () => t('projet.exemple-flash'),
     'projet.exemple-courrier': () => t('projet.exemple-courrier')
 };
 
