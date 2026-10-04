@@ -373,3 +373,11 @@ test('docx : archive complète, texte et image à leur place', async (t) => {
         require('node:fs').writeFileSync(process.env.DOCX_SORTIE, archive);
     }
 });
+
+test('export sans gras (Imprimerie) : ni titres ni en-tête de tableau en gras', () => {
+    assert.ok(Rendu.stylesDocx().includes('<w:rPr><w:b/><w:sz w:val='));
+    assert.ok(!Rendu.stylesDocx(true).includes('<w:b/>'));
+    const tableau = n('DIV', {}, n('TABLE', {}, n('THEAD', {}, n('TR', {}, n('TH', {}, 'Question')))));
+    assert.ok(Rendu.corpsDocx(tableau, etatVide()).includes('<w:b/>'));
+    assert.ok(!Rendu.corpsDocx(tableau, { ...etatVide(), sansGras: true }).includes('<w:b/>'));
+});

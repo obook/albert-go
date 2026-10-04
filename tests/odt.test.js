@@ -252,3 +252,8 @@ test('odt : archive complète, mimetype en tête, formule et image déclarées',
         require('node:fs').writeFileSync(process.env.ODT_SORTIE, archive);
     }
 });
+
+test('export sans gras (Imprimerie) : les titres perdent leur gras', () => {
+    assert.ok(Rendu.stylesOdt().includes('fo:font-weight="bold"'));
+    assert.ok(!Rendu.stylesOdt(true).includes('fo:font-weight="bold"'));
+});

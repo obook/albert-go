@@ -320,13 +320,14 @@ Object.assign(Rendu, {
     /**
      * Styles : Arial 11, titres en gras de 16, 14 et 12 points, liens, tableau à bordures.
      *
+     * @param {boolean} [sansGras] - Titres sans gras (Imprimerie).
      * @returns {string} XML de word/styles.xml. Tailles en demi-points.
      */
-    stylesDocx() {
+    stylesDocx(sansGras = false) {
         const titre = (rang, taille) => '<w:style w:type="paragraph" w:styleId="Heading' + rang + '"><w:name w:val="heading ' + rang + '"/>'
             + '<w:basedOn w:val="Normal"/><w:next w:val="Normal"/>'
             + '<w:pPr><w:keepNext/><w:spacing w:before="240" w:after="120"/><w:outlineLvl w:val="' + (rang - 1) + '"/></w:pPr>'
-            + '<w:rPr><w:b/><w:sz w:val="' + taille + '"/><w:szCs w:val="' + taille + '"/></w:rPr></w:style>';
+            + '<w:rPr>' + (sansGras ? '' : '<w:b/>') + '<w:sz w:val="' + taille + '"/><w:szCs w:val="' + taille + '"/></w:rPr></w:style>';
         const bord = (cote) => '<w:' + cote + ' w:val="single" w:sz="4" w:space="0" w:color="auto"/>';
         return '<w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">'
             + '<w:docDefaults><w:rPrDefault><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial" w:cs="Arial"/><w:sz w:val="22"/><w:szCs w:val="22"/></w:rPr></w:rPrDefault>'
@@ -349,8 +350,8 @@ Object.assign(Rendu, {
      * @param {HTMLElement} element - Conteneur de la réponse.
      * @returns {Promise<Blob>} Document Word.
      */
-    async docx(element) {
-        const etat = { images: await this.imagesExport(element), medias: [], rels: [], listes: [], e: this.ecritureDocx() };
+    async docx(element, sansGras = false) {
+        const etat = { images: await this.imagesExport(element), medias: [], rels: [], listes: [], e: this.ecritureDocx(), sansGras: sansGras };
         /* Page A4, marges de 2 cm (1134 vingtièmes de point). */
         const principal = '<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"'
             + ' xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"'
@@ -368,7 +369,7 @@ Object.assign(Rendu, {
             { nom: '_rels/.rels', octets: xml(this.RACINE_DOCX) },
             { nom: 'word/document.xml', octets: xml(principal) },
             { nom: 'word/_rels/document.xml.rels', octets: xml(this.relsDocx(etat)) },
-            { nom: 'word/styles.xml', octets: xml(this.stylesDocx()) },
+            { nom: 'word/styles.xml', octets: xml(this.stylesDocx(sansGras)) },
             { nom: 'word/numbering.xml', octets: xml(this.numerotationDocx(etat)) },
             ...etat.medias.map((media, i) => ({ nom: 'word/media/image' + (i + 1) + '.' + media.extension, octets: media.octets }))
         ])], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });

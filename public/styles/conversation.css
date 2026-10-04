@@ -203,6 +203,9 @@ main {
 .chat[data-module="projet"] .fil li.assistant:has(~ li.assistant:not(.en-attente)) { display: none; }
 /* Projet : aucun gras dans le document. Titres et en-têtes de tableau se distinguent par la taille et le fond. */
 .chat[data-module="projet"] .rendu :is(h1, h2, h3, h4, h5, h6, th, strong, b) { font-weight: 400; }
+.chat[data-module="projet"] .rendu h1 { font-size: 1.5rem; }
+.chat[data-module="projet"] .rendu h2 { font-size: 1.3125rem; }
+.chat[data-module="projet"] .rendu :is(h3, h4) { font-size: 1.125rem; }
 /* Projet : la réponse est un rendu, dans une bulle discrète comme la carte Documents. */
 .chat[data-module="projet"] .fil .assistant .carte {
     padding: 0.75rem 1rem;
