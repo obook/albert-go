@@ -91,7 +91,7 @@
             <!-- Le nom de l'outil actif suit la marque : afficherOutil le remplit. -->
             <h1 class="marque">Albert&nbsp;Go<span class="outil-actif" id="outil-actif"></span></h1>
         </div>
-        <!-- Documents : ouvre la bibliothèque, volet de droite (projet.js). -->
+        <!-- Imprimerie : ouvre la bibliothèque, volet de droite (projet.js). -->
         <button type="button"
                 class="bouton-icone"
                 id="ouvrir-bibliotheque"
@@ -178,8 +178,6 @@
                 </button>
                 -->
             </div>
-            <!-- Documents et historique à part, entre deux traits ; masqué sans clé comme eux (afficher). -->
-            <hr id="trait-documents" hidden>
             <!-- Projets : en créer un, en rouvrir un, le supprimer, comme l'historique (projet.js, historique.js). -->
             <details id="menu-projets" class="historique" open hidden>
                 <summary class="entree">
@@ -189,6 +187,8 @@
                 <button type="button" id="nouveau-projet" class="titre-conversation nouveau-projet" data-t="projets.nouveau"></button>
                 <ol id="liste-projets" class="liste-historique"></ol>
             </details>
+            <!-- L'historique à part, entre deux traits ; masqué sans clé comme lui (afficher). -->
+            <hr id="trait-historique" hidden>
             <details id="menu-historique" class="historique" hidden>
                 <summary class="entree">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5M12 7v5l3 3"/></svg>
@@ -225,7 +225,7 @@
         </div>
     </dialog>
 
-    <!-- Bibliothèque du module Documents, commune à tous les documents : volet de droite, symétrique du menu.
+    <!-- Bibliothèque du module Imprimerie, commune à tous les documents : volet de droite, symétrique du menu.
          Les fichiers cochés partent avec chaque question (projet.js, entete.css). -->
     <dialog id="bibliotheque" class="volet volet-droit" aria-labelledby="titre-bibliotheque">
         <div class="volet-contenu">

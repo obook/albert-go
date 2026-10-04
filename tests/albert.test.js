@@ -565,7 +565,7 @@ test('nomTexte : le texte d\'un fichier se télécharge en .txt, sauf s\'il est 
     assert.strictEqual(Albert.nomTexte('script.js'), 'script.js.txt');
 });
 
-test('sansGras : un document de Documents ne garde aucun gras, sauf dans le code', () => {
+test('sansGras : dans Imprimerie, un document ne garde aucun gras, sauf dans le code', () => {
     const document = [
         '**ÉVALUATION : Pythagore**',
         '### **Exercice 1 : calculs (6 points)**',

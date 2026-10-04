@@ -1,6 +1,6 @@
 /*
  * projet.js
- * Module Documents (clé interne "projet") : une bibliothèque de fichiers
+ * Module Imprimerie (clé interne "projet") : une bibliothèque de fichiers
  * déposés une fois, communs à tous les documents ; chaque document coche
  * ceux qu'il utilise et se construit peu à peu.
  *
@@ -57,7 +57,7 @@ function montrerBibliotheque() {
 /**
  * Place le volet de la bibliothèque selon le module et l'écran.
  *
- * Dans Documents, sur très grand écran : colonne ouverte, sauf si elle a été repliée.
+ * Dans Imprimerie, sur très grand écran : colonne ouverte, sauf si elle a été repliée.
  * Ailleurs, ou sur un écran plus étroit : volet fermé, le bouton de l'en-tête l'ouvre en tiroir.
  */
 function placerBibliotheque() {
@@ -67,11 +67,11 @@ function placerBibliotheque() {
     const volet = $('bibliotheque');
     const colonne = projet && COLONNE_SOURCES.matches && lire('bibliotheque-volet', null) !== 'replie';
     const enColonne = volet.open && !volet.matches(':modal');
-    /* Déjà en place : colonne voulue et affichée, ou tiroir laissé ouvert dans Documents. */
+    /* Déjà en place : colonne voulue et affichée, ou tiroir laissé ouvert dans Imprimerie. */
     if (colonne === enColonne && (projet || !volet.open)) {
         return;
     }
-    /* La colonne glisse quand on entre dans Documents ou qu'on en sort (entete.css). */
+    /* La colonne glisse quand on entre dans Imprimerie ou qu'on en sort (entete.css). */
     if (volet.open) {
         volet.close();
     }

@@ -152,7 +152,7 @@ function afficherOutil() {
     $('fichier').multiple = !!Albert.OUTILS[outilActuel].documents;
     /* Le CSS n'affiche la bienvenue que dans Chat. */
     $('chat').dataset.module = outilActuel;
-    /* Le volet de la bibliothèque n'existe que dans Documents. */
+    /* Le volet de la bibliothèque n'existe que dans Imprimerie. */
     placerBibliotheque();
 }
 

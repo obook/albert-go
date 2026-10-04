@@ -158,7 +158,7 @@ main {
 .suggestion:hover, .suggestion:focus-visible,
 .deposer:hover, .deposer:focus-visible { border-color: var(--bleu); color: var(--bleu); background: var(--bleu-clair); }
 
-/* Bibliothèque du module Documents : la liste du volet de droite (entete.css). */
+/* Bibliothèque du module Imprimerie : la liste du volet de droite (entete.css). */
 .liste-documents { margin: 0.5rem 0; padding: 0; list-style: none; }
 .liste-documents li { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
 /* Bibliothèque : la case qui ajoute le fichier au document, puis son nom, qui télécharge son texte. */
@@ -298,7 +298,7 @@ main {
     gap: 0.75rem;
     min-height: 2rem;
 }
-/* Rappel de la demande après les points (module Documents) : une ligne, coupée par des points de suspension. */
+/* Rappel de la demande après les points (module Imprimerie) : une ligne, coupée par des points de suspension. */
 .attente .demande {
     flex: 1 1 0;
     min-width: 0;

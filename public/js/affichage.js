@@ -65,7 +65,7 @@ function afficher() {
     $('chat').hidden = !connecte || redaction;
     $('saisie-zone').hidden = !connecte || redaction;
     $('redaction').hidden = !connecte || !redaction;
-    for (const id of ['ouvrir-reglages', 'nouvelle', 'resume-reglages', 'trait-outils', 'menu-outils', 'trait-documents', 'menu-projets', 'menu-historique', 'changer-cle']) {
+    for (const id of ['ouvrir-reglages', 'nouvelle', 'resume-reglages', 'trait-outils', 'menu-outils', 'menu-projets', 'trait-historique', 'menu-historique', 'changer-cle']) {
         $(id).hidden = !connecte;
     }
     if (connecte) {
@@ -210,7 +210,7 @@ function logo(src) {
  * Affiche l'attente d'une réponse : trois points, secondes écoulées et,
  * passé 20 puis 60 s, un message annoncé aux lecteurs d'écran.
  *
- * @param {string} [demande] - Texte de la demande, à rappeler là où sa bulle n'est pas affichée (Documents).
+ * @param {string} [demande] - Texte de la demande, à rappeler là où sa bulle n'est pas affichée (Imprimerie).
  * @returns {Function} Fonction qui retire l'attente.
  */
 function ajouterAttente(demande = '') {

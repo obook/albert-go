@@ -17,7 +17,7 @@ Chaque utilisateur utilise sa propre clé API. Les clés s'obtiennent sur le [pl
 | Style | Reformuler un texte, avec trois propositions. |
 | Trad | Traduire un texte entre les deux langues choisies. |
 | Courrier | Rédiger un courrier à partir de quelques idées (voir plus bas). |
-| Documents | Construire un document peu à peu à partir de sources déposées (voir plus bas). |
+| Imprimerie | Construire un document peu à peu à partir de sources déposées (voir plus bas). |
 
 ### Réponses
 
@@ -29,13 +29,13 @@ Les deux fichiers sont écrits dans le navigateur, sans bibliothèque : titres, 
 
 Trombone, glisser-déposer ou Ctrl+V : un fichier texte, un PDF, un .docx ou un .odt est lu dans le navigateur, formules comprises pour ces deux derniers ; une image est transcrite par le modèle Medium, un enregistrement audio par whisper (8 minutes environ au plus), puis le texte part avec la question. Un PDF scanné n'a pas de texte : il se joint comme image.
 
-Dans Documents, les fichiers déposés sont les sources du document (voir plus bas).
+Dans Imprimerie, les fichiers déposés sont les sources du document (voir plus bas).
 
 ### Courrier
 
 On écrit une formule d'appel ("Madame,", "Monsieur le directeur,") puis les idées principales. À chaque pause de frappe, Albert propose le courrier rédigé et corrigé.
 
-### Documents
+### Imprimerie
 
 On dépose des sources (cours, ancien sujet, programme), puis on demande un document : évaluation avec barème, fiche de révision, questions. Chaque demande suivante le modifie : Albert rend le document entier, mis à jour. Seule la dernière version s'affiche, sans les demandes ; elle s'enregistre en .docx ou en .odt.
 

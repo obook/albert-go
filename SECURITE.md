@@ -53,7 +53,7 @@ Navigateur (Pages) -> webhook n8n -> https://albert.api.etalab.gouv.fr
   documents et la bibliothèque de sources. En mode
   partagé, activé par défaut, tout cela va dans `sessionStorage` et disparaît à
   la fermeture de l'onglet. Sinon dans `localStorage`, sans limite de durée.
-  Les sources déposées dans le module Documents vont dans une bibliothèque commune
+  Les sources déposées dans le module Imprimerie vont dans une bibliothèque commune
   à tous les documents (clé `bibliotheque`, dans `SENSIBLES`), gardée selon la même
   règle. Seul le texte lu est gardé, pas le fichier d'origine. Les sources cochées
   pour un document partent à la suite de la consigne système : un
@@ -97,7 +97,7 @@ Navigateur (Pages) -> webhook n8n -> https://albert.api.etalab.gouv.fr
 | Clé ou questions lues sur un poste partagé | Mode partagé par défaut : tout le sensible en `sessionStorage`, effacé à la fermeture. |
 | Page intégrée dans le cadre d'un autre site | La page détecte le cadre et n'affiche qu'un lien vers elle-même. |
 | Texte envoyé à une synthèse vocale en ligne | Voix de l'appareil en priorité. Voix en ligne seulement si l'utilisateur les autorise (désactivé par défaut) et faute de voix locale. |
-| Fichier joint piégé | Texte lu comme du texte (200 Ko au plus), images redessinées dans un canevas puis converties en JPEG, audio décodé par le navigateur puis réécrit en WAV (le MP3 part tel quel, vers Albert seulement). Le résultat n'apparaît qu'à travers la réponse, donc assaini. Dans Documents, le texte gardé se télécharge aussi, toujours comme fichier texte (`Albert.nomTexte`) : une page ou un script déposé revient en `.txt`. |
+| Fichier joint piégé | Texte lu comme du texte (200 Ko au plus), images redessinées dans un canevas puis converties en JPEG, audio décodé par le navigateur puis réécrit en WAV (le MP3 part tel quel, vers Albert seulement). Le résultat n'apparaît qu'à travers la réponse, donc assaini. Dans Imprimerie, le texte gardé se télécharge aussi, toujours comme fichier texte (`Albert.nomTexte`) : une page ou un script déposé revient en `.txt`. |
 
 ## Audit interne
 
@@ -180,7 +180,7 @@ Boîte noire depuis un poste extérieur, le 2026-09-21, avec `curl` et `openssl`
 
 - Aucun compte, aucun cookie, aucune collecte par Albert Go.
 - **Vers Albert (DINUM) :** questions, fichiers joints et clé, par le relais.
-  Dans Documents, les sources cochées repartent avec chaque demande ; une image
+  Dans Imprimerie, les sources cochées repartent avec chaque demande ; une image
   ou un enregistrement part dès le dépôt, pour être lu.
   Albert voit l'adresse IP de n8n, pas celle de l'utilisateur.
 - **Vers le moteur, seulement si l'utilisateur active la recherche :** les mots
