@@ -163,11 +163,13 @@ function rouvrirConversation(entree) {
     afficherOutil();
     afficher();
     conversation = entree.messages.slice();
+    if (Albert.estProjet(entree)) {
+        /* Document enregistré avant que le gras soit retiré à la réception. */
+        conversation = conversation.map(m => (m.role === 'assistant' ? { ...m, content: Albert.sansGras(m.content) } : m));
+    }
     choisirSources(entree.sources || []);
     nomProjet = entree.nom || '';
     afficherDocuments();
-    /* Carte ouverte tant que rien n'a été demandé. */
-    ouvrirSources(!conversation.length);
     conversationId = entree.id;
     retenirCourante(conversationId);
     afficherReglages();

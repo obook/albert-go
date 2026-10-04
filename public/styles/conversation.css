@@ -14,6 +14,9 @@ main {
     /* Garde les textes .visuellement-cache dans main, sinon la page s'allonge. */
     position: relative;
     overflow-y: auto;
+    /* La barre de défilement prend sa place des deux côtés : sinon le fil se décale
+       d'une demi-barre par rapport à la saisie, qui ne défile pas. */
+    scrollbar-gutter: stable both-edges;
     padding: 1.5rem 1rem;
 }
 
@@ -155,17 +158,7 @@ main {
 .suggestion:hover, .suggestion:focus-visible,
 .deposer:hover, .deposer:focus-visible { border-color: var(--bleu); color: var(--bleu); background: var(--bleu-clair); }
 
-/* Projet : carte Documents en tête du fil, dans ce module seulement. */
-.documents {
-    display: none;
-    margin-bottom: 1rem;
-    padding: 0.5rem 0.75rem;
-    border: 1px solid var(--bord);
-    border-radius: 0.75rem;
-    background: var(--surface);
-}
-.chat[data-module="projet"] .documents { display: block; }
-.documents summary { cursor: pointer; font-weight: 700; }
+/* Bibliothèque du module Documents : la liste du volet de droite (entete.css). */
 .liste-documents { margin: 0.5rem 0; padding: 0; list-style: none; }
 .liste-documents li { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
 /* Bibliothèque : la case qui ajoute le fichier au document, puis son nom, qui télécharge son texte. */
@@ -200,42 +193,16 @@ main {
     font: inherit;
     font-size: 1.25rem;
     font-weight: 700;
+    text-align: center;
 }
 .chat[data-module="projet"] .nom-projet { display: block; }
 .nom-projet:hover, .nom-projet:focus-visible { border-color: var(--bord-champ); }
-
-/* Grand écran : les sources passent dans une colonne à droite, toujours visible (projet.js, COLONNE_SOURCES). */
-@media (min-width: 80rem) {
-    .chat[data-module="projet"] {
-        max-width: 76rem;
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) 18rem;
-        column-gap: 1.5rem;
-        align-items: start;
-    }
-    .chat[data-module="projet"] > * { grid-column: 1; }
-    .chat[data-module="projet"] > .documents {
-        grid-column: 2;
-        grid-row: 1 / span 99;
-        position: sticky;
-        top: 0;
-        margin-bottom: 0;
-    }
-    /* Une colonne ne se replie pas. */
-    .documents summary { pointer-events: none; list-style: none; }
-    .documents summary::-webkit-details-marker { display: none; }
-    /* La saisie s'aligne sur la colonne du document. */
-    body:has(.chat[data-module="projet"]:not([hidden])) .saisie-zone > :is(.saisie, .etat, .avertissement) {
-        max-width: none;
-        width: calc(min(100%, 76rem) - 19.5rem);
-        margin-left: max(0px, calc((100% - 76rem) / 2));
-        margin-right: auto;
-    }
-}
 /* Projet : un seul document, construit peu à peu. Ni les demandes ni les versions précédentes ne s'affichent ;
    pendant l'attente, la version en cours reste à l'écran. */
 .chat[data-module="projet"] .fil li.user,
 .chat[data-module="projet"] .fil li.assistant:has(~ li.assistant:not(.en-attente)) { display: none; }
+/* Projet : aucun gras dans le document. Titres et en-têtes de tableau se distinguent par la taille et le fond. */
+.chat[data-module="projet"] .rendu :is(h1, h2, h3, h4, h5, h6, th, strong, b) { font-weight: 400; }
 /* Projet : la réponse est un rendu, dans une bulle discrète comme la carte Documents. */
 .chat[data-module="projet"] .fil .assistant .carte {
     padding: 0.75rem 1rem;
@@ -325,13 +292,22 @@ main {
 
 .attente {
     display: flex;
-    /* Rappel de la demande au-dessus des points (module Documents). */
+    /* Le message des attentes longues passe à la ligne. */
     flex-wrap: wrap;
     align-items: center;
     gap: 0.75rem;
     min-height: 2rem;
 }
-.attente .demande { flex-basis: 100%; white-space: pre-wrap; color: var(--texte-doux); }
+/* Rappel de la demande après les points (module Documents) : une ligne, coupée par des points de suspension. */
+.attente .demande {
+    flex: 1 1 0;
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: var(--texte-doux);
+}
+.attente:has(.demande) .palier:not(:empty) { order: 1; flex-basis: 100%; }
 .points { display: inline-flex; gap: 0.3rem; }
 .points span {
     width: 0.5rem;

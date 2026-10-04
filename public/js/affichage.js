@@ -77,6 +77,8 @@ function afficher() {
         /* Écran de la clé : effacement à la fermeture toujours proposé par défaut. */
         $('partage-accueil').checked = false;
     }
+    /* Sans clé, ni volet ni bouton de bibliothèque. */
+    placerBibliotheque();
 }
 
 /**
@@ -231,10 +233,11 @@ function ajouterAttente(demande = '') {
     [pastille, points, duree].forEach(e => e.setAttribute('aria-hidden', 'true'));
     attente.append(points, palier, duree);
     if (demande) {
+        /* Après les points, sur une seule ligne : le reste est coupé (conversation.css). */
         const rappel = document.createElement('span');
         rappel.className = 'demande';
         rappel.textContent = demande;
-        attente.prepend(rappel);
+        points.after(rappel);
     }
     li.append(pastille, attente);
     $('fil').append(li);

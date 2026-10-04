@@ -91,6 +91,17 @@
             <!-- Le nom de l'outil actif suit la marque : afficherOutil le remplit. -->
             <h1 class="marque">Albert&nbsp;Go<span class="outil-actif" id="outil-actif"></span></h1>
         </div>
+        <!-- Documents : ouvre la bibliothèque, volet de droite (projet.js). -->
+        <button type="button"
+                class="bouton-icone"
+                id="ouvrir-bibliotheque"
+                data-t-attr="aria-label:bibliotheque.ouvrir;title:bibliotheque.ouvrir"
+                aria-haspopup="dialog"
+                aria-controls="bibliotheque"
+                aria-expanded="false"
+                hidden>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4v16M10 4v16M15 5l4 15M3 20h18"/></svg>
+        </button>
     </header>
 
     <!-- Traduire : langues dans une carte fixe sous l'en-tête. -->
@@ -214,6 +225,25 @@
         </div>
     </dialog>
 
+    <!-- Bibliothèque du module Documents, commune à tous les documents : volet de droite, symétrique du menu.
+         Les fichiers cochés partent avec chaque question (projet.js, entete.css). -->
+    <dialog id="bibliotheque" class="volet volet-droit" aria-labelledby="titre-bibliotheque">
+        <div class="volet-contenu">
+            <div class="volet-titre">
+                <h2 id="titre-bibliotheque" class="marque" data-t="bibliotheque.titre"></h2>
+                <button type="button" class="bouton-icone fermer-bibliotheque" autofocus data-t-attr="aria-label:bibliotheque.fermer;title:bibliotheque.fermer">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </button>
+            </div>
+            <p id="resume-documents" class="resume-bibliotheque"></p>
+            <hr>
+            <ul id="liste-documents" class="liste-documents"></ul>
+            <button type="button" id="deposer-documents" class="deposer" data-t="documents.deposer"></button>
+            <p class="formats-sources" data-t="documents.formats"></p>
+            <p class="formats-sources" data-t="documents.garde"></p>
+        </div>
+    </dialog>
+
     <main id="principal">
         <section id="accueil" class="accueil pico" hidden>
             <h2 data-t="cle.titre"></h2>
@@ -242,15 +272,6 @@
             <!-- Projet : le nom du document sert de titre, au-dessus du fil. -->
             <label for="nom-projet" class="visuellement-cache" data-t="documents.nom"></label>
             <input type="text" id="nom-projet" class="nom-projet" maxlength="40" data-t-attr="placeholder:documents.nom">
-            <!-- Projet : la bibliothèque, commune à tous les documents ; les fichiers cochés partent avec chaque question (projet.js).
-                 Bloc repliable en haut, colonne à droite sur grand écran (conversation.css). -->
-            <details id="documents" class="documents" open>
-                <summary id="resume-documents"></summary>
-                <ul id="liste-documents" class="liste-documents"></ul>
-                <button type="button" id="deposer-documents" class="deposer" data-t="documents.deposer"></button>
-                <p class="formats-sources" data-t="documents.formats"></p>
-                <p class="formats-sources" data-t="documents.garde"></p>
-            </details>
             <!-- Projet vide : une phrase et trois demandes types, masquées dès la première question (CSS). -->
             <div class="accueil-projet">
                 <p data-t="projet.bienvenue"></p>

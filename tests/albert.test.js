@@ -564,3 +564,33 @@ test('nomTexte : le texte d\'un fichier se télécharge en .txt, sauf s\'il est 
     assert.strictEqual(Albert.nomTexte('page.html'), 'page.html.txt');
     assert.strictEqual(Albert.nomTexte('script.js'), 'script.js.txt');
 });
+
+test('sansGras : un document de Documents ne garde aucun gras, sauf dans le code', () => {
+    const document = [
+        '**ÉVALUATION : Pythagore**',
+        '### **Exercice 1 : calculs (6 points)**',
+        '**Durée** : 1 h, **Points** : 8',
+        '| **Total** |  | **20** |',
+        '**1.** Calculer __BC__.',
+        'Le code `a**b` et `__init__` reste tel quel, **pas ceci**.',
+        '```python',
+        '# **commentaire** de code',
+        'x = 2**3',
+        '```',
+        'Un astérisque seul * et une *italique* restent.'
+    ].join('\n');
+    assert.strictEqual(Albert.sansGras(document), [
+        'ÉVALUATION : Pythagore',
+        '### Exercice 1 : calculs (6 points)',
+        'Durée : 1 h, Points : 8',
+        '| Total |  | 20 |',
+        '1. Calculer BC.',
+        'Le code `a**b` et `__init__` reste tel quel, pas ceci.',
+        '```python',
+        '# **commentaire** de code',
+        'x = 2**3',
+        '```',
+        'Un astérisque seul * et une *italique* restent.'
+    ].join('\n'));
+    assert.strictEqual(Albert.sansGras('Sans gras'), 'Sans gras');
+});
