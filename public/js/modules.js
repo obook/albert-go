@@ -131,6 +131,13 @@ function afficherLangues() {
  * Met l'interface à jour pour l'outil actif : menu, titre, invite, langues.
  */
 function afficherOutil() {
+    /* Imprimerie n'a pas de bouton : c'est le titre de sa section qui porte la marque du module actif. */
+    const imprimerie = $('menu-projets').querySelector('summary');
+    if (Albert.OUTILS[outilActuel].documents) {
+        imprimerie.setAttribute('aria-current', 'true');
+    } else {
+        imprimerie.removeAttribute('aria-current');
+    }
     for (const bouton of document.querySelectorAll('[data-outil]')) {
         if (bouton.dataset.outil === outilActuel) {
             bouton.setAttribute('aria-current', 'true');
