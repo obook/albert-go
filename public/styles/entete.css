@@ -220,7 +220,7 @@ hidden et le focus (autofocus, bouton du volet) ne pourrait pas y entrer. */
 .volet:not([open])::backdrop { opacity: 0; }
 @starting-style { .volet[open]::backdrop { opacity: 0; } }
 .sans-glisse, .sans-glisse > .volet { transition: none; }
-/* Volet droit : la bibliothèque du module Documents, symétrique du menu. */
+/* Volet droit : la bibliothèque du module Imprimerie, symétrique du menu. */
 .volet-droit { inset: 0 0 0 auto; border-right: 0; border-left: 1px solid var(--bord); }
 .volet-droit:not([open]) { transform: translateX(100%); }
 .volet-droit .volet-contenu > :not(.volet-titre, hr) { margin-left: 0.75rem; margin-right: 0.75rem; }

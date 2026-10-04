@@ -179,7 +179,7 @@ async function demanderReponse(outil) {
 function recevoirReponse(reponse, outil) {
     /* Langue gardée pour la lecture à voix haute : la cible de Traduire, sinon celle du texte. */
     const langue = outil === 'traduire' ? langueCible : Albert.langueDuTexte(reponse.texte, I18n.langue);
-    /* Documents : le gras est retiré avant l'affichage, l'export et la demande suivante. */
+    /* Imprimerie : le gras est retiré avant l'affichage, l'export et la demande suivante. */
     const texte = Albert.OUTILS[outil].documents ? Albert.sansGras(reponse.texte) : reponse.texte;
     conversation.push({ role: 'assistant', content: texte, langue: langue, recherches: reponse.recherches, usage: reponse.usage });
     ajouter('assistant', texte, langue, true, reponse.recherches);
@@ -254,7 +254,7 @@ async function envoyer() {
     }
     annulation = new AbortController();
     boutonEnvoi(true);
-    /* Documents : la demande n'a pas de bulle, l'attente la rappelle. */
+    /* Imprimerie : la demande n'a pas de bulle, l'attente la rappelle. */
     const retirerAttente = ajouterAttente(Albert.OUTILS[outil].documents ? affiche : '');
 
     try {
