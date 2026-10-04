@@ -48,6 +48,12 @@ Navigateur (Pages) -> webhook n8n -> https://albert.api.etalab.gouv.fr
 
 ### Stockage dans le navigateur (préfixe `albert-go.`)
 
+- **Fichiers de l'application** : un service worker (`public/sw.js`) garde la page,
+  les scripts, les styles, les images et les consignes dans le cache du navigateur,
+  pour un démarrage rapide et hors connexion. Il ne garde aucune donnée de
+  l'utilisateur et laisse passer toutes les requêtes vers Albert, le relais et les
+  moteurs. Il n'est pas enregistré en local.
+
 - **Sensible** (liste `SENSIBLES` de `stockage.js`) : clé Albert, clé de
   recherche, 30 dernières questions, 10 dernières conversations, 10 derniers
   documents et la bibliothèque de sources. En mode
