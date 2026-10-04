@@ -43,7 +43,7 @@ On dépose des sources (cours, ancien sujet, programme), puis on demande un docu
 - Seul le texte des fichiers est gardé, dans le navigateur, selon la même règle que les conversations (voir Sécurité). Supprimer un document laisse ses sources dans la bibliothèque : on les en retire une par une.
 - Les sources cochées partent en entier avec chaque demande. Au moment où on les coche, leur texte ne dépasse pas 60 % du contexte du modèle, soit environ 80 pages avec Large.
 - Seule la version en cours du document accompagne la demande : Albert ne peut pas revenir à une version antérieure.
-- La section "Documents" du menu sert à créer, nommer, rouvrir et supprimer les documents : dix au plus, comptés à part des dix conversations de l'historique.
+- La section "Imprimerie" du menu sert à créer, nommer, rouvrir et supprimer les documents : dix au plus, comptés à part des dix conversations de l'historique.
 - Mêmes outils que Discussion : calculatrice, tirage, recherche web.
 
 ### Recherche web
