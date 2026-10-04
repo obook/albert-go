@@ -195,7 +195,8 @@ Boîte noire depuis un poste extérieur, le 2026-09-21, avec `curl` et `openssl`
   conversations, documents et bibliothèque de sources jusqu'à la fermeture de
   l'onglet, sauf si le mode partagé est désactivé. La bibliothèque n'a alors ni
   plafond ni date : supprimer un document, ou le voir sortir des dix gardés, y
-  laisse ses sources ; elle se vide fichier par fichier.
+  laisse ses sources ; elle se vide fichier par fichier, ou d'un coup avec "Vider la
+  bibliothèque".
 
 ## Auto-évaluation ANSSI-PA-102
 

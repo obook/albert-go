@@ -180,6 +180,7 @@ function afficherResumeSources() {
 function afficherDocuments() {
     $('nom-projet').value = nomProjet;
     afficherResumeSources();
+    $('vider-bibliotheque').hidden = !bibliotheque.length;
     $('liste-documents').replaceChildren(...bibliotheque.map((doc) => {
         const ligne = document.createElement('li');
         const coche = document.createElement('input');
@@ -296,6 +297,38 @@ function supprimerSource(nom) {
     $('deposer-documents').focus();
     enregistrerProjet();
 }
+
+/**
+ * Vide la bibliothèque : chaque fichier quitte tous les documents.
+ */
+function viderBibliotheque() {
+    const allegees = bibliotheque.reduce((liste, doc) => Albert.sansSource(liste, doc.nom), conversations);
+    bibliotheque = [];
+    ecrireBibliotheque(bibliotheque);
+    choisirSources([]);
+    try {
+        ecrireConversations(allegees);
+    } catch (err) {
+        /* Stockage bloqué : la liste en mémoire suffit. */
+    }
+    conversations = allegees;
+    afficherDocuments();
+    $('deposer-documents').focus();
+    enregistrerProjet();
+}
+
+$('vider-bibliotheque').addEventListener('click', () => {
+    $('texte-confirmer-suppression').textContent = t('confirmer-suppression.bibliotheque-texte');
+    $('titre-confirmer-suppression').textContent = t('confirmer-suppression.bibliotheque');
+    /* Sinon Échap reprendrait la réponse précédente. */
+    $('confirmer-suppression').returnValue = '';
+    $('confirmer-suppression').addEventListener('close', () => {
+        if ($('confirmer-suppression').returnValue === 'oui') {
+            viderBibliotheque();
+        }
+    }, { once: true });
+    $('confirmer-suppression').showModal();
+});
 
 /**
  * Demande confirmation avant de supprimer un fichier de la bibliothèque.

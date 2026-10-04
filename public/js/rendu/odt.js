@@ -438,13 +438,14 @@ Object.assign(Rendu, {
     /**
      * Styles du document : Arial 11, titres en gras de 16, 14 et 12 points, page A4 aux marges de 2 cm.
      *
+     * @param {boolean} [sansGras] - Titres sans gras (Imprimerie).
      * @returns {string} XML de styles.xml.
      */
-    stylesOdt() {
+    stylesOdt(sansGras = false) {
         const titre = (rang, taille) => '<style:style style:name="Heading_20_' + rang + '" style:display-name="Heading ' + rang + '" style:family="paragraph"'
             + ' style:parent-style-name="Standard" style:next-style-name="Standard" style:default-outline-level="' + rang + '">'
             + '<style:paragraph-properties fo:margin-top="0.42cm" fo:margin-bottom="0.21cm" fo:keep-with-next="always"/>'
-            + '<style:text-properties fo:font-size="' + taille + 'pt" fo:font-weight="bold"/></style:style>';
+            + '<style:text-properties fo:font-size="' + taille + 'pt"' + (sansGras ? '' : ' fo:font-weight="bold"') + '/></style:style>';
         return '<office:document-styles ' + this.NS_ODT + '>' + this.POLICES_ODT
             + '<office:styles>'
             + '<style:default-style style:family="paragraph"><style:paragraph-properties fo:margin-top="0cm" fo:margin-bottom="0.21cm"/>'
@@ -494,9 +495,10 @@ Object.assign(Rendu, {
      * @param {HTMLElement} element - Conteneur de la réponse.
      * @returns {Promise<Blob>} Document OpenDocument.
      */
-    async odt(element) {
+    async odt(element, sansGras = false) {
         /* ponytail: validité vérifiée par l'ouverture dans LibreOffice ; passer le validateur ODF si un fichier est refusé ailleurs. */
         const etat = this.etatOdt(await this.imagesExport(element));
+        etat.sansGras = sansGras;
         const corps = this.corpsOdt(element, etat);
         const xml = (texte) => new TextEncoder().encode('<?xml version="1.0" encoding="UTF-8"?>\n' + texte);
         const contenu = '<office:document-content ' + this.NS_ODT + '>' + this.POLICES_ODT
@@ -507,7 +509,7 @@ Object.assign(Rendu, {
             { nom: 'mimetype', octets: new TextEncoder().encode('application/vnd.oasis.opendocument.text') },
             { nom: 'META-INF/manifest.xml', octets: xml(this.manifesteOdt(etat)) },
             { nom: 'content.xml', octets: xml(contenu) },
-            { nom: 'styles.xml', octets: xml(this.stylesOdt()) },
+            { nom: 'styles.xml', octets: xml(this.stylesOdt(sansGras)) },
             { nom: 'settings.xml', octets: xml(this.reglagesOdt()) },
             ...etat.medias.map((media, i) => ({ nom: 'Pictures/image' + (i + 1) + '.' + media.extension, octets: media.octets })),
             ...etat.objets.map((objet, i) => ({

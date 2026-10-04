@@ -246,7 +246,8 @@ function boutonsExport(lire, sujet) {
     return ['docx', 'odt'].map((format) => {
         const bouton = boutonAction(ICONES[format], t('reponse.telecharger-' + format));
         bouton.addEventListener('click', () => Rendu.telechargerAvecAttente(bouton,
-            async () => Rendu[format](await lire()), Rendu.nomFigure(new Date(), format, sujet())));
+            /* Imprimerie : document sans gras, à l'export comme à l'écran. */
+            async () => Rendu[format](await lire(), !!Albert.OUTILS[outilActuel].documents), Rendu.nomFigure(new Date(), format, sujet())));
         return bouton;
     });
 }

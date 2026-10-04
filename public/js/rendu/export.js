@@ -366,7 +366,7 @@ Object.assign(Rendu, {
         }
         /* Case absente : chaîne vide, que l'écriture remplace par un paragraphe vide. */
         const cases = lignes.map((ligne) => Array.from({ length: colonnes }, (_, i) => (ligne[i]
-            ? this.paragrapheExport(this.lignesExport(ligne[i], etat, { gras: ligne[i].tagName.toUpperCase() === 'TH' }), etat) : '')));
+            ? this.paragrapheExport(this.lignesExport(ligne[i], etat, { gras: !etat.sansGras && ligne[i].tagName.toUpperCase() === 'TH' }), etat) : '')));
         return etat.e.tableau(cases, colonnes, etat);
     },
 

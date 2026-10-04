@@ -40,7 +40,7 @@ On écrit une formule d'appel ("Madame,", "Monsieur le directeur,") puis les id�
 On dépose des sources (cours, ancien sujet, programme), puis on demande un document : évaluation avec barème, fiche de révision, questions. Chaque demande suivante le modifie : Albert rend le document entier, mis à jour. Seule la dernière version s'affiche, sans les demandes ; elle s'enregistre en .docx ou en .odt.
 
 - Les fichiers déposés vont dans une bibliothèque commune à tous les documents. Chaque document coche ceux qu'il utilise ; un clic sur un nom télécharge le texte gardé, pas le fichier d'origine.
-- Seul le texte des fichiers est gardé, dans le navigateur, selon la même règle que les conversations (voir Sécurité). Supprimer un document laisse ses sources dans la bibliothèque : on les en retire une par une.
+- Seul le texte des fichiers est gardé, dans le navigateur, selon la même règle que les conversations (voir Sécurité). Supprimer un document laisse ses sources dans la bibliothèque : on les en retire une par une, ou toutes d'un coup avec "Vider la bibliothèque".
 - Les sources cochées partent en entier avec chaque demande. Au moment où on les coche, leur texte ne dépasse pas 60 % du contexte du modèle, soit environ 80 pages avec Large.
 - Seule la version en cours du document accompagne la demande : Albert ne peut pas revenir à une version antérieure.
 - La section "Imprimerie" du menu sert à créer, nommer, rouvrir et supprimer les documents : dix au plus, comptés à part des dix conversations de l'historique.
