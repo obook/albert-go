@@ -150,6 +150,9 @@ function afficherReglages() {
     $('texte-partage-reglage').textContent = textePartage(!partage);
     $('temperature').value = reglages.temperature;
     $('valeur-temperature').textContent = temperature;
+    $('aide-temperature').textContent = t(reglages.temperature > 1 ? 'reglages.aide-temperature-haute' : 'reglages.aide-temperature');
+    $('top-k').value = reglages.topK;
+    $('aide-top-k').textContent = t(Albert.cleAideTopK(reglages.topK), { k: reglages.topK });
     $('modele-choisi').replaceChildren(logo(Albert.logoEditeur(modele.reel)), modele.nom + ' (' + modele.id + ')');
     const radio = [...document.querySelectorAll('input[name="modele"]')].find(r => r.value === modele.id);
     if (radio) {

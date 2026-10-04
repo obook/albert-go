@@ -492,3 +492,16 @@ test('repondre : le plafond part bien dans la requête', async () => {
         globalThis.fetch = avant;
     }
 });
+
+test('topK : envoyé seulement sous la position "sans limite" du curseur', () => {
+    assert.deepStrictEqual(Albert.topK(5), { top_k: 5 });
+    assert.deepStrictEqual(Albert.topK(1), { top_k: 1 });
+    assert.deepStrictEqual(Albert.topK(Albert.TOP_K_SANS_LIMITE), {});
+    assert.deepStrictEqual(Albert.topK(Albert.CONSEILLES.topK), { top_k: 40 });
+    assert.strictEqual(Albert.cleAideTopK(1), 'reglages.aide-top-k-un');
+    assert.strictEqual(Albert.cleAideTopK(40), 'reglages.aide-top-k');
+    assert.strictEqual(Albert.cleAideTopK(Albert.TOP_K_SANS_LIMITE), 'reglages.aide-top-k-tous');
+    const page = fs.readFileSync(path.join(__dirname, '..', 'public', 'index.html'), 'utf8');
+    const [, min, max] = page.match(/id="top-k"\s+min="(\d+)"\s+max="(\d+)"/);
+    assert.deepStrictEqual([Number(min), Number(max)], [1, Albert.TOP_K_SANS_LIMITE]);
+});

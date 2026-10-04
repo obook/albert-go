@@ -165,6 +165,7 @@ async function demanderReponse(outil) {
     return envoi(reglages.cle, {
         model: modeleActuel().id,
         temperature: reglages.temperature,
+        ...Albert.topK(reglages.topK),
         messages: messages
     }, annulation.signal);
 }

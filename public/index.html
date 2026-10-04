@@ -380,7 +380,22 @@
                             <span aria-hidden="true" data-t="reglages.creatif"></span>
                             <output id="valeur-temperature" for="temperature"></output>
                         </div>
-                        <p id="aide-temperature" class="note" data-t="reglages.aide-temperature"></p>
+                        <!-- Phrase écrite par afficherReglages : elle change au-delà de 1. -->
+                        <p id="aide-temperature" class="note"></p>
+                    </fieldset>
+
+                    <fieldset>
+                        <legend data-t="reglages.top-k"></legend>
+                        <div class="temperature">
+                            <input type="range"
+                                   id="top-k"
+                                   min="1"
+                                   max="50"
+                                   step="1"
+                                   aria-describedby="aide-top-k">
+                        </div>
+                        <!-- Phrase écrite par afficherReglages : elle porte la valeur du curseur. -->
+                        <p id="aide-top-k" class="note"></p>
                     </fieldset>
 
                     <fieldset>
@@ -391,7 +406,7 @@
                         </label>
                     </fieldset>
 
-                    <!-- Remet les trois réglages ci-dessus, et eux seuls. -->
+                    <!-- Remet les quatre réglages ci-dessus, et eux seuls. -->
                     <button type="button"
                             class="bouton-texte outline"
                             id="reglages-conseilles"

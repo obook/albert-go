@@ -157,7 +157,7 @@ I18n.TEXTES.es = {
 
     /* Ajustes. */
     'reglages.titre': 'Ajustes',
-    'reglages.conseil': 'Recomendado: modelo Large, temperatura 0,2, toda la conversación enviada.',
+    'reglages.conseil': 'Recomendado: modelo Large, temperatura 0,2, top-k 40, toda la conversación enviada.',
     'reglages.carte-reponse': 'IA',
     'reglages.carte-application': 'Aplicación',
     'reglages.modele': 'Modelo',
@@ -166,7 +166,12 @@ I18n.TEXTES.es = {
     'reglages.temperature': 'Temperatura',
     'reglages.precis': 'Preciso',
     'reglages.creatif': 'Creativo',
-    'reglages.aide-temperature': 'Baja: respuestas estables y factuales. Alta: respuestas originales, pero el modelo inventa más. Por encima de 1: para experimentar, el texto puede volverse incoherente y la respuesta se acorta.',
+    'reglages.aide-temperature': 'Baja: respuestas estables y factuales. Alta: respuestas más variadas.',
+    'reglages.aide-temperature-haute': 'Por encima de 1: el texto puede volverse incoherente, la respuesta se acorta.',
+    'reglages.top-k': 'Top-k',
+    'reglages.aide-top-k': 'Se sortea una palabra entre las {k} palabras más probables para construir la respuesta.',
+    'reglages.aide-top-k-un': 'Siempre la palabra más probable: sin azar.',
+    'reglages.aide-top-k-tous': 'Se sortea una palabra entre todas las palabras posibles para construir la respuesta.',
     'reglages.contexte': 'Contexto',
     'reglages.lecture': 'Lectura en voz alta',
     'reglages.voix-en-ligne': 'Permitir las voces en línea',

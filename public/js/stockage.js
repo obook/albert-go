@@ -212,12 +212,26 @@ function temperatureLue() {
     return Math.min(Albert.TEMPERATURE_MAX, Math.max(0, valeur));
 }
 
+/**
+ * Top-k enregistré, ramené aux bornes du curseur.
+ *
+ * @returns {number} Entier de 1 à Albert.TOP_K_SANS_LIMITE, ou la valeur conseillée.
+ */
+function topKLu() {
+    const valeur = parseInt(lire('top-k', ''), 10);
+    if (!Number.isFinite(valeur)) {
+        return Albert.CONSEILLES.topK;
+    }
+    return Math.min(Albert.TOP_K_SANS_LIMITE, Math.max(1, valeur));
+}
+
 /** Réglages de l'utilisateur, lus au démarrage. */
 const reglages = {
     cle: lire('cle', null),
     modele: lire('modele', Albert.CONSEILLES.modele),
     /* Une valeur illisible donnerait NaN, envoyé en "temperature": null. */
     temperature: temperatureLue(),
+    topK: topKLu(),
     memoire: lire('memoire', Albert.CONSEILLES.memoire ? 'oui' : 'non') === 'oui',
     langue: I18n.langue,
     voixEnLigne: lire('voix-en-ligne', 'non') === 'oui',

@@ -63,7 +63,7 @@ Chaque demande donne aussi au modèle son nom. Dans Discussion, la date et l'heu
 
 ### Réglages
 
-Choix du modèle, température et contexte. Si le contexte est désactivé, seule la dernière question part.
+Choix du modèle, température, top-k et contexte. Si le contexte est désactivé, seule la dernière question part.
 
 ### Langues
 
