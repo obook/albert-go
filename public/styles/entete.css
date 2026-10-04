@@ -286,7 +286,10 @@ colonne au-delà du volet et décale tout le menu vers la droite. */
     text-align: left;
     cursor: pointer;
 }
-.entree:hover { background: var(--bulle); }
+/* Survol à la souris seulement : au doigt, l'entrée touchée resterait grisée comme le module actif. */
+@media (hover: hover) {
+    .entree:hover { background: var(--bulle); }
+}
 .entree svg {
     flex: none;
     width: 1.25rem;
@@ -298,7 +301,7 @@ colonne au-delà du volet et décale tout le menu vers la droite. */
     stroke-linejoin: round;
 }
 .entree.danger { color: var(--rouge); }
-/* Outil actif (Discuter, Reformuler, Traduire). */
+/* Module actif, Imprimerie comprise (modules.js, afficherOutil). */
 .entree[aria-current="true"] { background: var(--bulle); }
 .outils { display: grid; gap: 0.125rem; }
 summary.entree { list-style: none; }
