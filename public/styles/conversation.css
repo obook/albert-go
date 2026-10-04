@@ -168,21 +168,69 @@ main {
 .documents summary { cursor: pointer; font-weight: 700; }
 .liste-documents { margin: 0.5rem 0; padding: 0; list-style: none; }
 .liste-documents li { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
-.liste-documents span { overflow-wrap: anywhere; }
+/* Bibliothèque : la case qui ajoute le fichier au document, puis son nom, qui télécharge son texte. */
+.liste-documents input { flex: none; width: 1.125rem; height: 1.125rem; margin: 0; accent-color: var(--bleu); }
+.liste-documents .nom-source {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 0.25rem 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    overflow-wrap: anywhere;
+    cursor: pointer;
+}
+.liste-documents .nom-source:hover, .liste-documents .nom-source:focus-visible { color: var(--bleu); text-decoration: underline; }
 /* Formats acceptés, rappelés sous le bouton de dépôt. */
 .formats-sources { margin: 0.5rem 0 0; font-size: 0.8125rem; color: var(--texte-doux); }
-/* Nom long : le bouton "Retirer" garde sa taille (cible tactile). */
+/* Nom long : le bouton "Supprimer" garde sa taille (cible tactile). */
 .liste-documents button { flex: none; }
+/* Nom du document : un titre au-dessus du fil, qui montre son cadre quand on s'en approche. */
 .nom-projet {
-    display: block;
+    display: none;
     width: 100%;
-    margin-top: 0.5rem;
-    padding: 0.375rem 0.5rem;
-    border: 1px solid var(--bord-champ);
+    margin-bottom: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    border: 1px solid transparent;
     border-radius: 0.5rem;
     background: transparent;
     color: inherit;
     font: inherit;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+.chat[data-module="projet"] .nom-projet { display: block; }
+.nom-projet:hover, .nom-projet:focus-visible { border-color: var(--bord-champ); }
+
+/* Grand écran : les sources passent dans une colonne à droite, toujours visible (projet.js, COLONNE_SOURCES). */
+@media (min-width: 80rem) {
+    .chat[data-module="projet"] {
+        max-width: 76rem;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 18rem;
+        column-gap: 1.5rem;
+        align-items: start;
+    }
+    .chat[data-module="projet"] > * { grid-column: 1; }
+    .chat[data-module="projet"] > .documents {
+        grid-column: 2;
+        grid-row: 1 / span 99;
+        position: sticky;
+        top: 0;
+        margin-bottom: 0;
+    }
+    /* Une colonne ne se replie pas. */
+    .documents summary { pointer-events: none; list-style: none; }
+    .documents summary::-webkit-details-marker { display: none; }
+    /* La saisie s'aligne sur la colonne du document. */
+    body:has(.chat[data-module="projet"]:not([hidden])) .saisie-zone > :is(.saisie, .etat, .avertissement) {
+        max-width: none;
+        width: calc(min(100%, 76rem) - 19.5rem);
+        margin-left: max(0px, calc((100% - 76rem) / 2));
+        margin-right: auto;
+    }
 }
 /* Projet : un seul document, construit peu à peu. Ni les demandes ni les versions précédentes ne s'affichent ;
    pendant l'attente, la version en cours reste à l'écran. */

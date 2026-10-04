@@ -39,7 +39,9 @@ On écrit une formule d'appel ("Madame,", "Monsieur le directeur,") puis les id�
 
 On dépose des sources (cours, ancien sujet, programme), puis on demande un document : évaluation avec barème, fiche de révision, questions. Chaque demande suivante le modifie : Albert rend le document entier, mis à jour. Seule la dernière version s'affiche, sans les demandes ; elle s'enregistre en .docx ou en .odt.
 
-- Les sources partent en entier avec chaque demande. Leur texte ne dépasse pas 60 % du contexte du modèle, soit environ 80 pages avec Large.
+- Les fichiers déposés vont dans une bibliothèque commune à tous les documents. Chaque document coche ceux qu'il utilise ; un clic sur un nom télécharge le texte gardé, pas le fichier d'origine.
+- Seul le texte des fichiers est gardé, dans le navigateur, selon la même règle que les conversations (voir Sécurité). Supprimer un document laisse ses sources dans la bibliothèque : on les en retire une par une.
+- Les sources cochées partent en entier avec chaque demande. Au moment où on les coche, leur texte ne dépasse pas 60 % du contexte du modèle, soit environ 80 pages avec Large.
 - Seule la version en cours du document accompagne la demande : Albert ne peut pas revenir à une version antérieure.
 - La section "Documents" du menu sert à créer, nommer, rouvrir et supprimer les documents : dix au plus, comptés à part des dix conversations de l'historique.
 - Mêmes outils que Discussion : calculatrice, tirage, recherche web.
@@ -82,7 +84,7 @@ La page vise la conformité [RGAA](https://accessibilite.numerique.gouv.fr/). Au
 
 Audit interne et externe, modèle de menaces et plan d'action : [SECURITE.md](SECURITE.md).
 
-- Par défaut, la clé et l'historique des questions sont effacés de `sessionStorage` à la fermeture de l'onglet. Interrupteur activé, ils restent dans `localStorage`.
+- Par défaut, la clé, les questions, les conversations, les documents et la bibliothèque de sources sont gardés dans `sessionStorage` et effacés après la fermeture de l'onglet (au chargement suivant). Interrupteur activé, ils restent dans `localStorage`, sans limite de durée.
 - La clé part dans l'en-tête `Authorization`, jamais dans l'URL.
 - Elle transite par l'instance n8n : l'administrateur de cette instance peut techniquement la voir. Le workflow n'enregistre aucune exécution, donc aucun en-tête.
 - Le workflow compte par jour les appels acceptés par Albert (ouverture de la page et messages) : le nombre d'appels, rien d'autre, 90 jours au plus. Le total s'affiche dans "À propos", lu sur `albert-go/stats`, public.

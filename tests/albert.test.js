@@ -387,11 +387,12 @@ test('entreeConversation : projet sans question, titré par son premier document
     const documents = [{ nom: 'cours.pdf', texte: 'A' }];
     const entree = Albert.entreeConversation('p1', 'projet', [], documents);
     assert.strictEqual(entree.titre, 'cours.pdf');
-    assert.deepStrictEqual(entree.documents, documents);
-    assert.notStrictEqual(entree.documents, documents);
-    /* Avec une question : le titre habituel. Sans document : pas de champ documents. */
+    /* Les fichiers sont dans la bibliothèque : le document ne garde que leurs noms. */
+    assert.deepStrictEqual(entree.sources, ['cours.pdf']);
+    assert.ok(!('documents' in entree));
+    /* Avec une question : le titre habituel. Sans source : pas de champ sources. */
     assert.strictEqual(Albert.entreeConversation('p1', 'projet', [{ role: 'user', content: 'Fais un devoir' }], documents).titre, 'Fais un devoir');
-    assert.ok(!('documents' in Albert.entreeConversation('d1', 'discuter', [{ role: 'user', content: 'Bonjour' }])));
+    assert.ok(!('sources' in Albert.entreeConversation('d1', 'discuter', [{ role: 'user', content: 'Bonjour' }])));
     assert.strictEqual(Albert.entreeConversation('d1', 'discuter', []), null);
 });
 
@@ -519,4 +520,47 @@ test('topK : envoyé seulement sous la position "sans limite" du curseur', () =>
     const page = fs.readFileSync(path.join(__dirname, '..', 'public', 'index.html'), 'utf8');
     const [, min, max] = page.match(/id="top-k"\s+min="(\d+)"\s+max="(\d+)"/);
     assert.deepStrictEqual([Number(min), Number(max)], [1, Albert.TOP_K_SANS_LIMITE]);
+});
+
+test('sourcesCochees : les fichiers de la bibliothèque cochés pour ce document, dans son ordre', () => {
+    const fichiers = [{ nom: 'a.pdf', texte: 'A' }, { nom: 'b.pdf', texte: 'B' }, { nom: 'c.pdf', texte: 'C' }];
+    assert.deepStrictEqual(Albert.sourcesCochees(fichiers, ['c.pdf', 'a.pdf', 'absent.pdf']).map(d => d.nom), ['a.pdf', 'c.pdf']);
+    assert.deepStrictEqual(Albert.sourcesCochees(fichiers, []), []);
+});
+
+test('versBibliotheque : les sources gardées avec chaque document passent dans la bibliothèque', () => {
+    const anciennes = [
+        { id: 'p1', outil: 'projet', messages: [], documents: [{ nom: 'cours.pdf', texte: 'A' }, { nom: 'carte.png', texte: 'B' }] },
+        { id: 'p2', outil: 'projet', messages: [], documents: [{ nom: 'cours.pdf', texte: 'A' }, { nom: 'carte.png', texte: 'autre' }] },
+        { id: 'd1', outil: 'discuter', messages: [] }
+    ];
+    const reprise = Albert.versBibliotheque(anciennes, [{ nom: 'deja.txt', texte: 'D' }]);
+    assert.strictEqual(reprise.change, true);
+    /* Même nom et même texte : un seul fichier. Même nom, autre texte : renommé. */
+    assert.deepStrictEqual(reprise.bibliotheque.map(d => d.nom), ['deja.txt', 'cours.pdf', 'carte.png', 'carte (2).png']);
+    assert.deepStrictEqual(reprise.conversations[0].sources, ['cours.pdf', 'carte.png']);
+    assert.deepStrictEqual(reprise.conversations[1].sources, ['cours.pdf', 'carte (2).png']);
+    assert.ok(reprise.conversations.every(c => !('documents' in c)));
+    assert.ok(!('sources' in reprise.conversations[2]));
+    /* Déjà reprises : rien ne change. Les entrées d'origine ne sont pas modifiées. */
+    assert.strictEqual(Albert.versBibliotheque(reprise.conversations, reprise.bibliotheque).change, false);
+    assert.ok('documents' in anciennes[0]);
+});
+
+test('sansSource : un fichier supprimé de la bibliothèque quitte tous les documents', () => {
+    const liste = [{ id: 'p1', sources: ['a.pdf', 'b.pdf'] }, { id: 'p2', sources: ['b.pdf'] }, { id: 'd1' }];
+    assert.deepStrictEqual(Albert.sansSource(liste, 'b.pdf').map(c => c.sources), [['a.pdf'], [], undefined]);
+    assert.deepStrictEqual(liste[0].sources, ['a.pdf', 'b.pdf']);
+});
+
+test('nomTexte : le texte d\'un fichier se télécharge en .txt, sauf s\'il est déjà du texte', () => {
+    assert.strictEqual(Albert.nomTexte('cours.pdf'), 'cours.pdf.txt');
+    assert.strictEqual(Albert.nomTexte('photo.PNG'), 'photo.PNG.txt');
+    assert.strictEqual(Albert.nomTexte('notes.txt'), 'notes.txt');
+    assert.strictEqual(Albert.nomTexte('liste.CSV'), 'liste.CSV');
+    assert.strictEqual(Albert.nomTexte('sujet.tex'), 'sujet.tex');
+    assert.strictEqual(Albert.nomTexte('sans extension'), 'sans extension.txt');
+    /* Une page ou un script déposé revient en texte, pas sous une extension qui s'exécute. */
+    assert.strictEqual(Albert.nomTexte('page.html'), 'page.html.txt');
+    assert.strictEqual(Albert.nomTexte('script.js'), 'script.js.txt');
 });

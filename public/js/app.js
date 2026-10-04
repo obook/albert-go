@@ -245,7 +245,7 @@ async function envoyer() {
     $('saisie').value = '';
     retirerPiece();
     /* Projet : la carte se replie pour laisser la place au fil. */
-    $('documents').open = false;
+    ouvrirSources(false);
     etat(t('etat.reflechit'));
     /* Lien vers le fichier et miniature : à l'écran seulement, pas dans l'historique. */
     const bulle = ajouter('user', piece ? question : affiche);
@@ -288,10 +288,10 @@ function nouvelleConversation() {
     retirerPiece();
     viderRedaction();
     conversation = [];
-    documentsProjet = [];
+    choisirSources([]);
     nomProjet = '';
     afficherDocuments();
-    $('documents').open = true;
+    ouvrirSources(true);
     conversationId = null;
     retenirCourante(null);
     afficherReglages();
@@ -425,6 +425,7 @@ if (!Albert.ORIGINES.includes(location.origin)) {
     $('cle').disabled = true;
     $('form-cle').querySelector('button[type="submit"]').disabled = true;
 }
+reprendreSources();
 if (reglages.cle) {
     rouvrirCourante();
 }

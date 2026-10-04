@@ -478,6 +478,6 @@ $('saisie').addEventListener('paste', (e) => {
     e.preventDefault();
     /* Projet : deux images collées portent le même nom, la seconde ne doit pas remplacer la première. */
     const voulu = image.name || t('piece.image-collee');
-    const nom = Albert.OUTILS[outilActuel].documents ? Albert.nomLibre(voulu, documentsProjet.map(d => d.nom)) : voulu;
+    const nom = Albert.OUTILS[outilActuel].documents ? Albert.nomLibre(voulu, bibliotheque.map(d => d.nom)) : voulu;
     joindreFichiers([nom === image.name ? image : new File([image], nom, { type: image.type })]);
 });
