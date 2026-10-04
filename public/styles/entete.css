@@ -71,11 +71,10 @@
 }
 
 /* Nom du module : tout de .marque, sauf la taille, moitié de celle du titre. */
-.outil-actif {
-    font-size: 0.5em;
-    /* Écart en em : il suit la taille du mot, pas celle du titre. */
-    margin-left: 1em;
-}
+.outil-actif { font-size: 0.5em; }
+/* Place comptée (téléphone, texte agrandi) : le nom du module passe sous la marque
+   au lieu de venir toucher le bouton de droite. */
+.titre .marque { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 0.5em; }
 
 .burger { flex: none; }
 .burger .icone-volet { display: none; }
