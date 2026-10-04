@@ -250,8 +250,9 @@ const reglages = {
     echanges: echangesLus(),
     langue: I18n.langue,
     voixEnLigne: lire('voix-en-ligne', 'non') === 'oui',
-    /* Internet, pour la recherche et les images Wikimedia. Ancien réglage images compris. */
-    recherche: lire('recherche', 'non') === 'oui' || lire('images', 'non') === 'oui',
+    /* Internet, pour la recherche et les images Wikimedia. L'ancien réglage images
+       ne sert que tant que celui-ci n'a jamais été écrit : sinon on ne pourrait plus le désactiver. */
+    recherche: lire('recherche', lire('images', 'non')) === 'oui',
     /* Un interrupteur par outil local, activé par défaut. */
     ...Object.fromEntries(Object.keys(OUTILS_LOCAUX).map(nom => [nom, lire(nom, 'oui') === 'oui'])),
     fournisseur: lire('fournisseur', 'wikipedia'),

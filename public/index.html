@@ -167,6 +167,8 @@
                 </button>
                 -->
             </div>
+            <!-- Documents et historique à part, entre deux traits ; masqué sans clé comme eux (afficher). -->
+            <hr id="trait-documents" hidden>
             <!-- Projets : en créer un, en rouvrir un, le supprimer, comme l'historique (projet.js, historique.js). -->
             <details id="menu-projets" class="historique" open hidden>
                 <summary class="entree">
@@ -461,6 +463,13 @@
                                    spellcheck="false">
                         </div>
                     </fieldset>
+
+                    <!-- Tous les outils locaux activés, Internet désactivé, moteur Wikipédia. -->
+                    <button type="button"
+                            class="bouton-texte outline"
+                            id="outils-conseilles"
+                            data-t="reglages.conseilles"
+                            data-t-attr="title:reglages.conseil-outils"></button>
                 </div>
             </details>
             <details class="carte" name="reglages">

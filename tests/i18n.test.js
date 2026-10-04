@@ -32,3 +32,32 @@ for (const langue of I18n.LANGUES.filter(l => l !== 'fr')) {
         }
     });
 }
+
+test('accorde : singulier ou pluriel selon le nombre et la langue', () => {
+    const avant = I18n.langue;
+    try {
+        I18n.langue = 'fr';
+        /* En français, 0 et 1 sont au singulier. */
+        assert.strictEqual(I18n.accorde('contexte.echanges', 0, { n: 0 }), 'Contexte : 0 échange');
+        assert.strictEqual(I18n.accorde('contexte.echanges', 1, { n: 1 }), 'Contexte : 1 échange');
+        assert.strictEqual(I18n.accorde('contexte.echanges', 2, { n: 2 }), 'Contexte : 2 échanges');
+        I18n.langue = 'en';
+        assert.strictEqual(I18n.accorde('contexte.echanges', 0, { n: 0 }), 'Context: 0 exchanges');
+        assert.strictEqual(I18n.accorde('contexte.echanges', 1, { n: 1 }), 'Context: 1 exchange');
+    } finally {
+        I18n.langue = avant;
+    }
+});
+
+test('aucun pluriel entre parenthèses, et un singulier pour chaque texte accordé', () => {
+    for (const langue of I18n.LANGUES) {
+        const textes = I18n.TEXTES[langue];
+        /* calcul.* décrit la syntaxe math.js au modèle : ses parenthèses sont des fonctions. */
+        const fautifs = Object.keys(textes).filter(c => !c.startsWith('calcul.') && /\((s|es|e|n|en)\)/.test(textes[c]));
+        assert.deepStrictEqual(fautifs, [], langue);
+    }
+    for (const cle of ['contexte.echanges', 'toast.memoire-pleine', 'calendrier.ecart', 'calendrier.decale',
+        'calendrier.ecart-ouvres', 'calendrier.decale-ouvres', 'calendrier.decale-heures', 'compteur.mots', 'compteur.caracteres']) {
+        assert.ok(FR[cle + '-un'], cle);
+    }
+});

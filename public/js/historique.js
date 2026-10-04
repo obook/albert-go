@@ -144,7 +144,7 @@ function enregistrerListe(voulue) {
     }
     const supprimees = voulue.length - ecrite.length;
     if (supprimees > 0) {
-        toast(t('toast.memoire-pleine', { nombre: supprimees }));
+        toast(tn('toast.memoire-pleine', supprimees, { nombre: supprimees }));
     }
     conversations = ecrite;
     return true;

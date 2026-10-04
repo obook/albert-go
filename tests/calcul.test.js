@@ -49,7 +49,13 @@ test('calendrier : jour, décalage, écart, date impossible', () => {
     assert.throws(() => Calendrier.repondre({ date: 'demain' }, 'fr'));
     /* Sans date : aujourd'hui, avec l'heure de l'appareil. */
     assert.match(Calendrier.repondre({}, 'fr'), /^Nous sommes le .+, il est \d\d:\d\d:\d\d/);
-    assert.match(Calendrier.repondre({ jours: 1 }, 'fr'), /\+ 1 jours : /);
+    assert.match(Calendrier.repondre({ jours: 1 }, 'fr'), /\+ 1 jour : /);
+    assert.match(Calendrier.repondre({ jours: 2 }, 'fr'), /\+ 2 jours : /);
+    assert.match(Calendrier.repondre({ date: '2026-05-04', fin: '2026-05-05' }, 'fr'), /^1 jour sépare /);
+    assert.match(Calendrier.repondre({ date: '2026-05-04', fin: '2026-05-06' }, 'fr'), /^2 jours séparent /);
+    assert.match(Calendrier.repondre({ date: '2026-05-04', heures: 1 }, 'fr'), /\+ 1 heure : /);
+    assert.match(Calendrier.repondre({ date: '2026-05-13', jours: 1, ouvres: true }, 'fr'), /\+ 1 jour ouvré : /);
+    assert.match(Calendrier.repondre({ date: '2026-05-04', fin: '2026-05-04', ouvres: true }, 'fr'), /^1 jour ouvré /);
     /* En heures : 24 heures après le 24 septembre à minuit, le 25 à minuit. */
     assert.match(Calendrier.repondre({ date: '2026-09-24', heures: 24 }, 'fr'), /\+ 24 heures : vendredi 25 septembre 2026, 00:00:00/);
     assert.match(Calendrier.repondre({ heures: -2 }, 'fr'), /\+ -2 heures : /);
@@ -104,6 +110,8 @@ test('compteur : mots, caractères, sans espaces', () => {
     assert.deepStrictEqual(Compteur.compter(''), { mots: 0, caracteres: 0, sansEspaces: 0 });
     assert.deepStrictEqual(Compteur.compter('Combien de mots dans cette phrase ?'), { mots: 6, caracteres: 35, sansEspaces: 29 });
     assert.strictEqual(Compteur.compter('Oui - 12 fois !').mots, 3);
+    assert.strictEqual(OUTILS_LOCAUX.compteur.executer({ texte: 'a' }), '1 mot, 1 caractère (1 sans les espaces).');
+    assert.strictEqual(OUTILS_LOCAUX.compteur.executer({ texte: 'ab cd' }), '2 mots, 5 caractères (4 sans les espaces).');
 });
 
 test('tirage : tout le monde une fois, groupes égaux à un près', () => {
