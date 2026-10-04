@@ -61,7 +61,7 @@ Navigateur (Pages) -> webhook n8n -> https://albert.api.etalab.gouv.fr
   efface si ce n'est pas un rechargement. Un onglet gelé en arrière-plan garde
   ses données, et Ctrl+Maj+T peut le rouvrir avec sa clé.
 - **Réglages** (`localStorage`, sans limite de durée) : modèle, température, top-k,
-  mémoire, thème, langue, voix en ligne, moteur, identifiant `cx`. Aucune donnée
+  contexte, thème, langue, voix en ligne, moteur, identifiant `cx`. Aucune donnée
   personnelle.
 
 ### Relais n8n

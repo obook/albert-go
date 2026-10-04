@@ -157,7 +157,7 @@ I18n.TEXTES.en = {
 
     /* Settings. */
     'reglages.titre': 'Settings',
-    'reglages.conseil': 'Recommended: Large model, temperature 0.2, top-k 40, whole conversation sent.',
+    'reglages.conseil': 'Recommended: Large model, whole conversation sent, temperature 0.2, top-k 40.',
     'reglages.carte-reponse': 'AI',
     'reglages.carte-application': 'App',
     'reglages.modele': 'Model',
@@ -169,9 +169,9 @@ I18n.TEXTES.en = {
     'reglages.aide-temperature': 'Low: steady, factual answers. High: more varied answers.',
     'reglages.aide-temperature-haute': 'Above 1: the text may stop making sense, the answer is cut short.',
     'reglages.top-k': 'Top-k',
-    'reglages.aide-top-k': 'One word is drawn at random from the {k} most likely words to build the answer.',
-    'reglages.aide-top-k-un': 'Always the most likely word: no randomness.',
-    'reglages.aide-top-k-tous': 'One word is drawn at random from all possible words to build the answer.',
+    'reglages.aide-top-k': 'One word is drawn at random from the {k} most likely words to generate the text.',
+    'reglages.aide-top-k-un': 'Always the most likely word: almost no randomness left.',
+    'reglages.aide-top-k-tous': 'One word is drawn at random from all possible words to generate the text.',
     'reglages.contexte': 'Context',
     'reglages.lecture': 'Read aloud',
     'reglages.voix-en-ligne': 'Allow online voices',
@@ -202,11 +202,15 @@ I18n.TEXTES.en = {
     'reglages.conseilles': 'Recommended settings',
     'reglages.resume': '{modele}, temperature {temperature}\n{contexte}',
     'contexte.sans': 'No context',
+    'contexte.echanges': 'Context: {n} exchange(s)',
     'contexte.complet': 'Full context',
     'contexte.pourcent': 'Full context ({pourcent} % used)',
     'partage.actif': 'On closing, the key and the conversations will be kept.',
     'partage.inactif': 'On closing, the key and the conversations will be erased.',
-    'reglages.memoire': 'Send the whole conversation to the AI.',
+    'reglages.aide-echanges': 'The AI receives the last {n} exchanges before answering.',
+    'reglages.aide-echanges-un': 'The AI receives the last exchange before answering.',
+    'reglages.aide-echanges-aucun': 'No memory: the AI receives only the last question.',
+    'reglages.aide-echanges-tous': 'The AI receives the whole conversation, as long as it fits in its context window.',
 
     /* Models. */
     'modele.type.texte': 'Text',

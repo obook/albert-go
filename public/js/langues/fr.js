@@ -157,7 +157,7 @@ I18n.TEXTES.fr = {
 
     /* Réglages. */
     'reglages.titre': 'Réglages',
-    'reglages.conseil': 'Conseillé : modèle Large, température 0,2, top-k 40, toute la conversation envoyée.',
+    'reglages.conseil': 'Conseillé : modèle Large, toute la conversation envoyée, température 0,2, top-k 40.',
     'reglages.carte-reponse': 'IA',
     'reglages.carte-application': 'Application',
     'reglages.modele': 'Modèle',
@@ -169,9 +169,9 @@ I18n.TEXTES.fr = {
     'reglages.aide-temperature': 'Basse : réponses stables et factuelles. Haute : réponses plus variées.',
     'reglages.aide-temperature-haute': 'Au-delà de 1 : le texte peut devenir incohérent, la réponse est écourtée.',
     'reglages.top-k': 'Top-k',
-    'reglages.aide-top-k': 'Tirage d\'un mot au hasard parmi les {k} mots les plus probables pour construire la réponse.',
-    'reglages.aide-top-k-un': 'Toujours le mot le plus probable : aucun hasard.',
-    'reglages.aide-top-k-tous': 'Tirage d\'un mot au hasard parmi tous les mots possibles pour construire la réponse.',
+    'reglages.aide-top-k': 'Tirage d\'un mot au hasard parmi les {k} mots les plus probables pour générer le texte.',
+    'reglages.aide-top-k-un': 'Toujours le mot le plus probable : presque plus de hasard.',
+    'reglages.aide-top-k-tous': 'Tirage d\'un mot au hasard parmi tous les mots possibles pour générer le texte.',
     'reglages.contexte': 'Contexte',
     'reglages.lecture': 'Lecture à voix haute',
     'reglages.voix-en-ligne': 'Autoriser les voix en ligne',
@@ -202,11 +202,15 @@ I18n.TEXTES.fr = {
     'reglages.conseilles': 'Réglages conseillés',
     'reglages.resume': '{modele}, température {temperature}\n{contexte}',
     'contexte.sans': 'Sans contexte',
+    'contexte.echanges': 'Contexte : {n} échange(s)',
     'contexte.complet': 'Contexte complet',
     'contexte.pourcent': 'Contexte complet ({pourcent} % utilisé)',
     'partage.actif': 'À la fermeture, la clé et les conversations seront conservées.',
     'partage.inactif': 'À la fermeture, la clé et les conversations seront effacées.',
-    'reglages.memoire': 'Envoyer à l\'IA toute la conversation.',
+    'reglages.aide-echanges': 'L\'IA reçoit les {n} derniers échanges avant de répondre.',
+    'reglages.aide-echanges-un': 'L\'IA reçoit le dernier échange avant de répondre.',
+    'reglages.aide-echanges-aucun': 'Aucune mémoire : l\'IA ne reçoit que la dernière question.',
+    'reglages.aide-echanges-tous': 'L\'IA reçoit toute la conversation, tant qu\'elle tient dans sa fenêtre de contexte.',
 
     /* Modèles. */
     'modele.type.texte': 'Texte',

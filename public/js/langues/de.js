@@ -157,7 +157,7 @@ I18n.TEXTES.de = {
 
     /* Einstellungen. */
     'reglages.titre': 'Einstellungen',
-    'reglages.conseil': 'Empfohlen: Modell Large, Temperatur 0,2, Top-k 40, ganzes Gespräch gesendet.',
+    'reglages.conseil': 'Empfohlen: Modell Large, ganzes Gespräch gesendet, Temperatur 0,2, Top-k 40.',
     'reglages.carte-reponse': 'KI',
     'reglages.carte-application': 'App',
     'reglages.modele': 'Modell',
@@ -169,9 +169,9 @@ I18n.TEXTES.de = {
     'reglages.aide-temperature': 'Niedrig: stabile, sachliche Antworten. Hoch: abwechslungsreichere Antworten.',
     'reglages.aide-temperature-haute': 'Über 1: Der Text kann unverständlich werden, die Antwort wird gekürzt.',
     'reglages.top-k': 'Top-k',
-    'reglages.aide-top-k': 'Ein Wort wird zufällig aus den {k} wahrscheinlichsten Wörtern gezogen, um die Antwort zu bilden.',
-    'reglages.aide-top-k-un': 'Immer das wahrscheinlichste Wort: kein Zufall.',
-    'reglages.aide-top-k-tous': 'Ein Wort wird zufällig aus allen möglichen Wörtern gezogen, um die Antwort zu bilden.',
+    'reglages.aide-top-k': 'Ein Wort wird zufällig aus den {k} wahrscheinlichsten Wörtern gezogen, um den Text zu erzeugen.',
+    'reglages.aide-top-k-un': 'Immer das wahrscheinlichste Wort: fast kein Zufall mehr.',
+    'reglages.aide-top-k-tous': 'Ein Wort wird zufällig aus allen möglichen Wörtern gezogen, um den Text zu erzeugen.',
     'reglages.contexte': 'Kontext',
     'reglages.lecture': 'Vorlesen',
     'reglages.voix-en-ligne': 'Online-Stimmen erlauben',
@@ -202,11 +202,15 @@ I18n.TEXTES.de = {
     'reglages.conseilles': 'Empfohlene Einstellungen',
     'reglages.resume': '{modele}, Temperatur {temperature}\n{contexte}',
     'contexte.sans': 'Ohne Kontext',
+    'contexte.echanges': 'Kontext: {n} Wechsel',
     'contexte.complet': 'Voller Kontext',
     'contexte.pourcent': 'Voller Kontext ({pourcent} % belegt)',
     'partage.actif': 'Beim Schließen bleiben Schlüssel und Gespräche erhalten.',
     'partage.inactif': 'Beim Schließen werden Schlüssel und Gespräche gelöscht.',
-    'reglages.memoire': 'Die ganze Unterhaltung an die KI senden.',
+    'reglages.aide-echanges': 'Die KI erhält die letzten {n} Wechsel, bevor sie antwortet.',
+    'reglages.aide-echanges-un': 'Die KI erhält den letzten Wechsel, bevor sie antwortet.',
+    'reglages.aide-echanges-aucun': 'Kein Gedächtnis: Die KI erhält nur die letzte Frage.',
+    'reglages.aide-echanges-tous': 'Die KI erhält das ganze Gespräch, solange es in ihr Kontextfenster passt.',
 
     /* Modelle. */
     'modele.type.texte': 'Text',

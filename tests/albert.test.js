@@ -20,19 +20,34 @@ const path = require('node:path');
 require('../public/js/i18n.js');
 const Albert = require('../public/js/albert.js');
 
-test('messagesAEnvoyer : mémoire active ou non', () => {
-    const conv = [
-        { role: 'user', content: 'a' },
-        { role: 'assistant', content: 'b' },
-        { role: 'user', content: 'c' }
-    ];
-    assert.deepStrictEqual(Albert.messagesAEnvoyer(conv, true), conv);
-    assert.deepStrictEqual(Albert.messagesAEnvoyer(conv, false), [{ role: 'user', content: 'c' }]);
+test('messagesAEnvoyer : nombre d\'échanges relus', () => {
+    const conv = ['a', 'b', 'c', 'd', 'e', 'f', 'g'].map((content, i) => ({ role: i % 2 ? 'assistant' : 'user', content }));
+    const envoyes = n => Albert.messagesAEnvoyer(conv, n).map(m => m.content).join('');
+    assert.strictEqual(envoyes(Albert.ECHANGES_TOUS), 'abcdefg');
+    assert.strictEqual(envoyes(0), 'g');
+    assert.strictEqual(envoyes(1), 'efg');
+    assert.strictEqual(envoyes(2), 'cdefg');
+    assert.strictEqual(envoyes(10), 'abcdefg');
+    /* Deux questions de suite (réponse en échec) : l'envoi commence quand même par une question. */
+    const bancale = [{ role: 'user', content: 'a' }, { role: 'user', content: 'b' }, { role: 'assistant', content: 'c' }, { role: 'user', content: 'd' }];
+    assert.strictEqual(Albert.messagesAEnvoyer(bancale, 1)[0].role, 'user');
+    assert.strictEqual(Albert.messagesAEnvoyer([{ role: 'assistant', content: 'x' }, ...bancale], 2)[0].role, 'user');
+});
+
+test('contexte : le curseur, la valeur conseillée et les phrases', () => {
+    const page = fs.readFileSync(path.join(__dirname, '..', 'public', 'index.html'), 'utf8');
+    const [, min, max] = page.match(/id="echanges"\s+min="(\d+)"\s+max="(\d+)"/);
+    assert.deepStrictEqual([Number(min), Number(max)], [0, Albert.ECHANGES_TOUS]);
+    assert.strictEqual(Albert.CONSEILLES.echanges, Albert.ECHANGES_TOUS);
+    assert.strictEqual(Albert.cleAideEchanges(0), 'reglages.aide-echanges-aucun');
+    assert.strictEqual(Albert.cleAideEchanges(1), 'reglages.aide-echanges-un');
+    assert.strictEqual(Albert.cleAideEchanges(3), 'reglages.aide-echanges');
+    assert.strictEqual(Albert.cleAideEchanges(Albert.ECHANGES_TOUS), 'reglages.aide-echanges-tous');
 });
 
 test('messagesAEnvoyer : le texte de la bulle ne part pas', () => {
     const conv = [{ role: 'user', content: 'Résume\n\nContenu du fichier', affiche: 'Résume\nFichier joint : a.txt' }];
-    assert.deepStrictEqual(Albert.messagesAEnvoyer(conv, true), [{ role: 'user', content: 'Résume\n\nContenu du fichier' }]);
+    assert.deepStrictEqual(Albert.messagesAEnvoyer(conv, Albert.ECHANGES_TOUS), [{ role: 'user', content: 'Résume\n\nContenu du fichier' }]);
 });
 
 test('conversation : filtre, alias, ordre, nom court', () => {
