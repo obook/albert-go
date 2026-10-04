@@ -61,7 +61,7 @@ I18n.TEXTES.fr = {
     'bibliotheque.fermer': 'Fermer la bibliothèque',
     'documents.resume': 'Utilisés : {coches} sur {nombre}',
     'documents.resume-part': 'Utilisés : {coches} sur {nombre} - {pourcent} % du contexte',
-    'menu.projets': 'Documents',
+    'menu.projets': 'Imprimerie',
     'projets.nouveau': 'Nouveau document',
     'projets.supprimer-aria': 'Supprimer le document : {titre}',
     'confirmer-suppression.projet': 'Supprimer ce document ? Ses sources restent dans la bibliothèque.',

@@ -61,7 +61,7 @@ I18n.TEXTES.es = {
     'bibliotheque.fermer': 'Cerrar la biblioteca',
     'documents.resume': 'En uso: {coches} de {nombre}',
     'documents.resume-part': 'En uso: {coches} de {nombre} - {pourcent} % del contexto',
-    'menu.projets': 'Documentos',
+    'menu.projets': 'Imprenta',
     'projets.nouveau': 'Nuevo documento',
     'projets.supprimer-aria': 'Eliminar el documento: {titre}',
     'confirmer-suppression.projet': '¿Eliminar este documento? Sus fuentes quedan en la biblioteca.',

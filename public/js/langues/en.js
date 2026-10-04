@@ -61,7 +61,7 @@ I18n.TEXTES.en = {
     'bibliotheque.fermer': 'Close the library',
     'documents.resume': 'In use: {coches} of {nombre}',
     'documents.resume-part': 'In use: {coches} of {nombre} - {pourcent}% of the context',
-    'menu.projets': 'Documents',
+    'menu.projets': 'Print shop',
     'projets.nouveau': 'New document',
     'projets.supprimer-aria': 'Delete the document: {titre}',
     'confirmer-suppression.projet': 'Delete this document? Its sources stay in the library.',
