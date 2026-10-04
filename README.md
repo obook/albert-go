@@ -108,6 +108,7 @@ Navigateur -> webhook n8n -> API Albert
 ```bash
 ./local.sh     # sert la page sur http://localhost:8642 et l'ouvre dans le navigateur
 node --test    # tests
+./images-lancement.sh    # refait les images de lancement iOS (nouvel écran : une ligne dans ECRANS)
 ```
 
 Le webhook n'accepte que deux origines : l'adresse Pages du projet et `http://localhost:8642`.
