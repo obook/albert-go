@@ -102,7 +102,10 @@ const Albert = {
     },
 
     /** Réglages conseillés, aussi utilisés au premier lancement. */
-    CONSEILLES: { modele: 'openweight-large', temperature: 0.2, topK: 40, memoire: true },
+    CONSEILLES: { modele: 'openweight-large', temperature: 0.2, topK: 40, echanges: 11 },
+
+    /** Position du curseur de contexte qui veut dire "toute la conversation". */
+    ECHANGES_TOUS: 11,
 
     /** Albert accepte de 0 à 2 pour la conversation ; au-delà de 1, le texte déraille. */
     TEMPERATURE_MAX: 2,
@@ -836,17 +839,35 @@ const Albert = {
     },
 
     /**
-     * Messages à envoyer : toute la conversation, ou la dernière question seule.
+     * Messages à envoyer : la dernière question, précédée des échanges que l'IA relit.
      *
      * Seuls role et content partent : les autres champs (affiche) restent ici.
      *
      * @param {Object[]} conversation - Messages de la conversation.
-     * @param {boolean} memoire - Réglage "Envoyer toute la conversation".
+     * @param {number} echanges - Échanges (question et réponse) relus ; ECHANGES_TOUS : toute la conversation.
      * @returns {Object[]} Messages { role, content } à envoyer.
      */
-    messagesAEnvoyer(conversation, memoire) {
-        const messages = memoire ? conversation : conversation.slice(-1);
+    messagesAEnvoyer(conversation, echanges) {
+        let messages = conversation;
+        if (echanges < this.ECHANGES_TOUS) {
+            messages = conversation.slice(-(2 * echanges + 1));
+            /* Un envoi ne commence pas par une réponse : des modèles le refusent. */
+            messages = messages.slice(Math.max(messages.findIndex(m => m.role === 'user'), 0));
+        }
         return messages.map(m => ({ role: m.role, content: m.content }));
+    },
+
+    /**
+     * Clé de la phrase qui décrit le contexte choisi : rien, un échange, n échanges ou tout.
+     *
+     * @param {number} echanges - Position du curseur.
+     * @returns {string} Clé du dictionnaire.
+     */
+    cleAideEchanges(echanges) {
+        if (echanges >= this.ECHANGES_TOUS) {
+            return 'reglages.aide-echanges-tous';
+        }
+        return ['reglages.aide-echanges-aucun', 'reglages.aide-echanges-un'][echanges] || 'reglages.aide-echanges';
     },
 
     /**

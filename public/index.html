@@ -368,6 +368,21 @@
                     </fieldset>
 
                     <fieldset>
+                        <legend data-t="reglages.contexte"></legend>
+                        <div class="temperature">
+                            <input type="range"
+                                   id="echanges"
+                                   min="0"
+                                   max="11"
+                                   step="1"
+                                   data-t-attr="aria-label:reglages.contexte"
+                                   aria-describedby="aide-echanges">
+                        </div>
+                        <!-- Phrase écrite par afficherReglages : elle porte la valeur du curseur. -->
+                        <p id="aide-echanges" class="note"></p>
+                    </fieldset>
+
+                    <fieldset>
                         <legend data-t="reglages.temperature"></legend>
                         <div class="temperature">
                             <span aria-hidden="true" data-t="reglages.precis"></span>
@@ -387,23 +402,18 @@
                     <fieldset>
                         <legend data-t="reglages.top-k"></legend>
                         <div class="temperature">
+                            <span aria-hidden="true" data-t="reglages.precis"></span>
                             <input type="range"
                                    id="top-k"
                                    min="1"
                                    max="50"
                                    step="1"
+                                   data-t-attr="aria-label:reglages.top-k"
                                    aria-describedby="aide-top-k">
+                            <span aria-hidden="true" data-t="reglages.creatif"></span>
                         </div>
                         <!-- Phrase écrite par afficherReglages : elle porte la valeur du curseur. -->
                         <p id="aide-top-k" class="note"></p>
-                    </fieldset>
-
-                    <fieldset>
-                        <legend data-t="reglages.contexte"></legend>
-                        <label class="interrupteur">
-                            <input type="checkbox" id="memoire-reglage" role="switch">
-                            <span data-t="reglages.memoire"></span>
-                        </label>
                     </fieldset>
 
                     <!-- Remet les quatre réglages ci-dessus, et eux seuls. -->

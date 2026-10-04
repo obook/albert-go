@@ -275,3 +275,5 @@ n'avaient pas la même largeur. Le préfixe .pico passe devant son sélecteur. *
 }
 .temperature input { grid-row: 1; grid-column: 1 / -1; accent-color: var(--bleu); }
 .temperature output { font-weight: 700; }
+/* Sans valeur affichée à droite (top-k), le second repère va jusqu'au bord. */
+.temperature span:last-child { grid-column: 2 / -1; }

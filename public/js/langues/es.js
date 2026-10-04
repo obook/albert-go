@@ -157,7 +157,7 @@ I18n.TEXTES.es = {
 
     /* Ajustes. */
     'reglages.titre': 'Ajustes',
-    'reglages.conseil': 'Recomendado: modelo Large, temperatura 0,2, top-k 40, toda la conversación enviada.',
+    'reglages.conseil': 'Recomendado: modelo Large, toda la conversación enviada, temperatura 0,2, top-k 40.',
     'reglages.carte-reponse': 'IA',
     'reglages.carte-application': 'Aplicación',
     'reglages.modele': 'Modelo',
@@ -169,9 +169,9 @@ I18n.TEXTES.es = {
     'reglages.aide-temperature': 'Baja: respuestas estables y factuales. Alta: respuestas más variadas.',
     'reglages.aide-temperature-haute': 'Por encima de 1: el texto puede volverse incoherente, la respuesta se acorta.',
     'reglages.top-k': 'Top-k',
-    'reglages.aide-top-k': 'Se sortea una palabra entre las {k} palabras más probables para construir la respuesta.',
-    'reglages.aide-top-k-un': 'Siempre la palabra más probable: sin azar.',
-    'reglages.aide-top-k-tous': 'Se sortea una palabra entre todas las palabras posibles para construir la respuesta.',
+    'reglages.aide-top-k': 'Se sortea una palabra entre las {k} palabras más probables para generar el texto.',
+    'reglages.aide-top-k-un': 'Siempre la palabra más probable: casi sin azar.',
+    'reglages.aide-top-k-tous': 'Se sortea una palabra entre todas las palabras posibles para generar el texto.',
     'reglages.contexte': 'Contexto',
     'reglages.lecture': 'Lectura en voz alta',
     'reglages.voix-en-ligne': 'Permitir las voces en línea',
@@ -202,11 +202,15 @@ I18n.TEXTES.es = {
     'reglages.conseilles': 'Ajustes recomendados',
     'reglages.resume': '{modele}, temperatura {temperature}\n{contexte}',
     'contexte.sans': 'Sin contexto',
+    'contexte.echanges': 'Contexto: {n} intercambio(s)',
     'contexte.complet': 'Contexto completo',
     'contexte.pourcent': 'Contexto completo ({pourcent} % usado)',
     'partage.actif': 'Al cerrar, la clave y las conversaciones se conservarán.',
     'partage.inactif': 'Al cerrar, la clave y las conversaciones se borrarán.',
-    'reglages.memoire': 'Enviar a la IA toda la conversación.',
+    'reglages.aide-echanges': 'La IA recibe los {n} últimos intercambios antes de responder.',
+    'reglages.aide-echanges-un': 'La IA recibe el último intercambio antes de responder.',
+    'reglages.aide-echanges-aucun': 'Sin memoria: la IA solo recibe la última pregunta.',
+    'reglages.aide-echanges-tous': 'La IA recibe toda la conversación, mientras quepa en su ventana de contexto.',
 
     /* Modelos. */
     'modele.type.texte': 'Texto',

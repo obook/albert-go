@@ -225,6 +225,21 @@ function topKLu() {
     return Math.min(Albert.TOP_K_SANS_LIMITE, Math.max(1, valeur));
 }
 
+/**
+ * Échanges relus, ramenés aux bornes du curseur.
+ *
+ * L'ancien interrupteur "mémoire" est repris : "non" valait aucun échange.
+ *
+ * @returns {number} Entier de 0 à Albert.ECHANGES_TOUS, ou la valeur conseillée.
+ */
+function echangesLus() {
+    const valeur = parseInt(lire('echanges', ''), 10);
+    if (!Number.isFinite(valeur)) {
+        return lire('memoire', 'oui') === 'non' ? 0 : Albert.CONSEILLES.echanges;
+    }
+    return Math.min(Albert.ECHANGES_TOUS, Math.max(0, valeur));
+}
+
 /** Réglages de l'utilisateur, lus au démarrage. */
 const reglages = {
     cle: lire('cle', null),
@@ -232,7 +247,7 @@ const reglages = {
     /* Une valeur illisible donnerait NaN, envoyé en "temperature": null. */
     temperature: temperatureLue(),
     topK: topKLu(),
-    memoire: lire('memoire', Albert.CONSEILLES.memoire ? 'oui' : 'non') === 'oui',
+    echanges: echangesLus(),
     langue: I18n.langue,
     voixEnLigne: lire('voix-en-ligne', 'non') === 'oui',
     /* Internet, pour la recherche et les images Wikimedia. Ancien réglage images compris. */

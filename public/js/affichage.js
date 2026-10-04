@@ -132,8 +132,10 @@ function afficherReglages() {
     const pourcent = Albert.occupation(derniere && derniere.usage, modele.contexte);
 
     let contexte = t('contexte.sans');
-    if (reglages.memoire) {
+    if (reglages.echanges >= Albert.ECHANGES_TOUS) {
         contexte = pourcent === null ? t('contexte.complet') : t('contexte.pourcent', { pourcent: pourcent });
+    } else if (reglages.echanges > 0) {
+        contexte = t('contexte.echanges', { n: reglages.echanges });
     }
     /* Virgule décimale en français, point en anglais. */
     const temperature = reglages.temperature.toLocaleString(I18n.langue, { minimumFractionDigits: 1, maximumFractionDigits: 1 });
@@ -144,7 +146,8 @@ function afficherReglages() {
     $('jauge-niveau').classList.toggle('pleine', pourcent !== null && pourcent >= 80);
     */
 
-    $('memoire-reglage').checked = reglages.memoire;
+    $('echanges').value = reglages.echanges;
+    $('aide-echanges').textContent = t(Albert.cleAideEchanges(reglages.echanges), { n: reglages.echanges });
     $('voix-en-ligne').checked = reglages.voixEnLigne;
     $('partage-reglage').checked = !partage;
     $('texte-partage-reglage').textContent = textePartage(!partage);
