@@ -515,6 +515,32 @@ const Albert = {
     },
 
     /**
+     * Retire tout le gras d'un document en Markdown : titres, étiquettes, mots.
+     *
+     * Les modèles en mettent malgré la consigne ("### **Exercice 1**", "**Durée** : 1 h").
+     * Les blocs de code et le code en ligne ne sont pas touchés.
+     *
+     * @param {string} texte - Document en Markdown.
+     * @returns {string} Le même document, sans gras.
+     */
+    sansGras(texte) {
+        let bloc = false;
+        return texte.split('\n').map((ligne) => {
+            if (/^\s*(```|~~~)/.test(ligne)) {
+                bloc = !bloc;
+                return ligne;
+            }
+            if (bloc) {
+                return ligne;
+            }
+            /* Un morceau sur deux est du code en ligne, entre accents graves. */
+            return ligne.split(/(`[^`]*`)/).map((morceau, rang) => (rang % 2
+                ? morceau
+                : morceau.replace(/\*\*(.+?)\*\*|__(.+?)__/g, '$1$2'))).join('');
+        }).join('\n');
+    },
+
+    /**
      * Fichiers de la bibliothèque cochés pour un document, dans l'ordre de la bibliothèque.
      *
      * @param {{nom: string, texte: string}[]} bibliotheque - Tous les fichiers déposés.

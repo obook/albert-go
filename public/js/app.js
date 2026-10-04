@@ -179,8 +179,10 @@ async function demanderReponse(outil) {
 function recevoirReponse(reponse, outil) {
     /* Langue gardée pour la lecture à voix haute : la cible de Traduire, sinon celle du texte. */
     const langue = outil === 'traduire' ? langueCible : Albert.langueDuTexte(reponse.texte, I18n.langue);
-    conversation.push({ role: 'assistant', content: reponse.texte, langue: langue, recherches: reponse.recherches, usage: reponse.usage });
-    ajouter('assistant', reponse.texte, langue, true, reponse.recherches);
+    /* Documents : le gras est retiré avant l'affichage, l'export et la demande suivante. */
+    const texte = Albert.OUTILS[outil].documents ? Albert.sansGras(reponse.texte) : reponse.texte;
+    conversation.push({ role: 'assistant', content: texte, langue: langue, recherches: reponse.recherches, usage: reponse.usage });
+    ajouter('assistant', texte, langue, true, reponse.recherches);
     sauverConversation();
     afficherReglages();
     etat('');
@@ -244,8 +246,6 @@ async function envoyer() {
        de hauteur, et le fil défilé trop tôt cachait l'attente dessous. */
     $('saisie').value = '';
     retirerPiece();
-    /* Projet : la carte se replie pour laisser la place au fil. */
-    ouvrirSources(false);
     etat(t('etat.reflechit'));
     /* Lien vers le fichier et miniature : à l'écran seulement, pas dans l'historique. */
     const bulle = ajouter('user', piece ? question : affiche);
@@ -291,7 +291,6 @@ function nouvelleConversation() {
     choisirSources([]);
     nomProjet = '';
     afficherDocuments();
-    ouvrirSources(true);
     conversationId = null;
     retenirCourante(null);
     afficherReglages();

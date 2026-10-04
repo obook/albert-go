@@ -5,7 +5,7 @@
  * ceux qu'il utilise et se construit peu à peu.
  *
  * Garde la bibliothèque, les sources cochées et le nom du document affiché,
- * et tient leur carte à jour. La lecture des fichiers est dans
+ * et tient leur volet à jour. La lecture des fichiers est dans
  * piece-jointe.js, l'envoi dans app.js, l'enregistrement et la liste des
  * documents dans historique.js.
  *
@@ -36,20 +36,77 @@ let documentsProjet = [];
 /** Nom donné au projet affiché, ou '' : son titre sert alors de nom. */
 let nomProjet = '';
 
-/** Grand écran : la carte des sources est une colonne à droite (conversation.css). */
+/** Très grand écran : la bibliothèque est une colonne à droite ; sinon un tiroir (entete.css). */
 const COLONNE_SOURCES = matchMedia('(min-width: 80rem)');
 
 /**
- * Déplie ou replie la carte des sources ; en colonne, elle reste dépliée.
- *
- * @param {boolean} ouverte - Carte dépliée sur petit écran.
+ * Affiche la bibliothèque en colonne, sans lui donner le focus.
  */
-function ouvrirSources(ouverte) {
-    $('documents').open = ouverte || COLONNE_SOURCES.matches;
+function montrerBibliotheque() {
+    const avant = document.activeElement;
+    $('bibliotheque').show();
+    $('ouvrir-bibliotheque').setAttribute('aria-expanded', 'true');
+    /* show() prend le focus : on le rend. */
+    if (avant && avant !== document.body) {
+        avant.focus();
+    } else {
+        document.activeElement.blur();
+    }
 }
-/* Écran élargi, ou repli au clavier : la colonne se redéplie. */
-COLONNE_SOURCES.addEventListener('change', () => ouvrirSources($('documents').open));
-$('documents').addEventListener('toggle', () => ouvrirSources($('documents').open));
+
+/**
+ * Place le volet de la bibliothèque selon le module et l'écran.
+ *
+ * Dans Documents, sur très grand écran : colonne ouverte, sauf si elle a été repliée.
+ * Ailleurs, ou sur un écran plus étroit : volet fermé, le bouton de l'en-tête l'ouvre en tiroir.
+ */
+function placerBibliotheque() {
+    /* Premier appel avant modules.js, qui déclare outilActuel. */
+    const projet = !!reglages.cle && typeof outilActuel !== 'undefined' && !!Albert.OUTILS[outilActuel].documents;
+    $('ouvrir-bibliotheque').hidden = !projet;
+    const volet = $('bibliotheque');
+    const colonne = projet && COLONNE_SOURCES.matches && lire('bibliotheque-volet', null) !== 'replie';
+    const enColonne = volet.open && !volet.matches(':modal');
+    /* Déjà en place : colonne voulue et affichée, ou tiroir laissé ouvert dans Documents. */
+    if (colonne === enColonne && (projet || !volet.open)) {
+        return;
+    }
+    /* La colonne glisse quand on entre dans Documents ou qu'on en sort (entete.css). */
+    if (volet.open) {
+        volet.close();
+    }
+    if (colonne) {
+        montrerBibliotheque();
+    }
+}
+COLONNE_SOURCES.addEventListener('change', placerBibliotheque);
+
+$('ouvrir-bibliotheque').addEventListener('click', () => {
+    if (!COLONNE_SOURCES.matches) {
+        $('bibliotheque').showModal();
+        $('ouvrir-bibliotheque').setAttribute('aria-expanded', 'true');
+        return;
+    }
+    /* Colonne : le bouton la replie ou la déplie, et s'en souvient. */
+    if ($('bibliotheque').open) {
+        $('bibliotheque').close();
+        ecrire('bibliotheque-volet', 'replie');
+    } else {
+        montrerBibliotheque();
+        ecrire('bibliotheque-volet', null);
+    }
+});
+
+$('bibliotheque').addEventListener('close', () => {
+    $('ouvrir-bibliotheque').setAttribute('aria-expanded', 'false');
+});
+
+/* Tiroir : sa flèche et un clic sur le fond le referment. */
+$('bibliotheque').addEventListener('click', (e) => {
+    if (e.target === $('bibliotheque') || e.target.closest('.fermer-bibliotheque')) {
+        $('bibliotheque').close();
+    }
+});
 
 /* Croix du bouton "Supprimer", celle de la pièce jointe. */
 const ICONE_RETIRER = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
@@ -107,7 +164,7 @@ function reprendreSources() {
 }
 
 /**
- * Met le résumé de la carte à jour : fichiers cochés, taille de la bibliothèque, part du contexte.
+ * Met le résumé du volet à jour : fichiers cochés, taille de la bibliothèque, part du contexte.
  */
 function afficherResumeSources() {
     const part = Albert.partDocuments(documentsProjet, modeleActuel().contexte);
@@ -116,7 +173,7 @@ function afficherResumeSources() {
 }
 
 /**
- * Met la carte de la bibliothèque à jour : nom du document, résumé, un fichier par ligne.
+ * Met le volet de la bibliothèque à jour : nom du document, résumé, un fichier par ligne.
  *
  * Chaque ligne : la case qui l'ajoute au document, son nom (qui télécharge son texte), sa suppression.
  */
@@ -262,12 +319,12 @@ $('deposer-documents').addEventListener('click', () => {
     $('fichier').click();
 });
 
-/* Glisser-déposer sur la carte, comme sur la saisie. */
-$('documents').addEventListener('dragover', (e) => {
+/* Glisser-déposer sur le volet, comme sur la saisie. */
+$('bibliotheque').addEventListener('dragover', (e) => {
     e.preventDefault();
 });
 
-$('documents').addEventListener('drop', (e) => {
+$('bibliotheque').addEventListener('drop', (e) => {
     e.preventDefault();
     joindreFichiers([...e.dataTransfer.files]);
 });
