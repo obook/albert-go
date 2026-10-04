@@ -15,6 +15,8 @@
 
 const { test } = require('node:test');
 const assert = require('node:assert');
+const fs = require('node:fs');
+const path = require('node:path');
 require('../public/js/i18n.js');
 const Albert = require('../public/js/albert.js');
 
@@ -458,4 +460,35 @@ test('nomLibre : un nom déjà pris est numéroté', () => {
     assert.strictEqual(Albert.nomLibre('image.png', ['image.png']), 'image (2).png');
     assert.strictEqual(Albert.nomLibre('image.png', ['image.png', 'image (2).png']), 'image (3).png');
     assert.strictEqual(Albert.nomLibre('image collée', ['image collée']), 'image collée (2)');
+});
+
+test('température : le curseur s\'arrête à la borne d\'Albert pour la conversation', () => {
+    const page = fs.readFileSync(path.join(__dirname, '..', 'public', 'index.html'), 'utf8');
+    const [, min, max] = page.match(/id="temperature"\s+min="([\d.]+)"\s+max="([\d.]+)"/);
+    assert.deepStrictEqual([Number(min), Number(max)], [0, Albert.TEMPERATURE_MAX]);
+    assert.strictEqual(Albert.TEMPERATURE_MAX, 2);
+});
+
+test('plafonnee : réponse écourtée seulement au-delà de 1', () => {
+    assert.strictEqual(Albert.plafonnee({ temperature: 1 }).max_tokens, undefined);
+    assert.strictEqual(Albert.plafonnee({ temperature: 1.1 }).max_tokens, Albert.JETONS_EXPERIENCE);
+    assert.strictEqual(Albert.plafonnee({ temperature: 2, max_tokens: 50 }).max_tokens, 50);
+    assert.strictEqual(Albert.plafonnee({}).max_tokens, undefined);
+});
+
+test('repondre : le plafond part bien dans la requête', async () => {
+    const avant = globalThis.fetch;
+    let envoye = null;
+    globalThis.fetch = async (url, options) => {
+        if (options && options.body) {
+            envoye = JSON.parse(options.body);
+        }
+        return { ok: true, status: 200, json: async () => ({ choices: [{ message: { content: 'ok' } }] }) };
+    };
+    try {
+        await Albert.repondre('cle', { model: 'm', temperature: 1.5, messages: [] }, new AbortController().signal);
+        assert.strictEqual(envoye.max_tokens, Albert.JETONS_EXPERIENCE);
+    } finally {
+        globalThis.fetch = avant;
+    }
 });

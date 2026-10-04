@@ -166,7 +166,7 @@ I18n.TEXTES.en = {
     'reglages.temperature': 'Temperature',
     'reglages.precis': 'Precise',
     'reglages.creatif': 'Creative',
-    'reglages.aide-temperature': 'Low: steady, factual answers. High: original answers, but the model makes things up more often.',
+    'reglages.aide-temperature': 'Low: steady, factual answers. High: original answers, but the model makes things up more often. Above 1: for experimenting, the text may stop making sense and the answer is cut short.',
     'reglages.contexte': 'Context',
     'reglages.lecture': 'Read aloud',
     'reglages.voix-en-ligne': 'Allow online voices',

@@ -104,6 +104,12 @@ const Albert = {
     /** Réglages conseillés, aussi utilisés au premier lancement. */
     CONSEILLES: { modele: 'openweight-large', temperature: 0.2, memoire: true },
 
+    /** Albert accepte de 0 à 2 pour la conversation ; au-delà de 1, le texte déraille. */
+    TEMPERATURE_MAX: 2,
+
+    /** Longueur de réponse au-delà de 1 : sans plafond, un modèle qui déraille ne s'arrête plus. */
+    JETONS_EXPERIENCE: 600,
+
     /* Modèle qui lit les images (annuaire BidouIAge, 1er août 2026). */
     MODELE_VISION: 'openweight-medium',
 
@@ -216,6 +222,16 @@ const Albert = {
     },
 
     /**
+     * Plafonne la réponse d'une requête dont la température dépasse 1.
+     *
+     * @param {Object} requete - Corps au format chat/completions.
+     * @returns {Object} La requête, avec max_tokens si elle n'en fixait pas.
+     */
+    plafonnee(requete) {
+        return requete.temperature > 1 ? { max_tokens: this.JETONS_EXPERIENCE, ...requete } : requete;
+    },
+
+    /**
      * Envoie une requête de conversation à Albert.
      *
      * @param {string} cle - Clé API de l'utilisateur.
@@ -236,7 +252,7 @@ const Albert = {
             res = await fetch(this.BASE + '/chat/completions', {
                 method: 'POST',
                 headers: { 'Authorization': 'Bearer ' + cle, 'Content-Type': 'application/json' },
-                body: JSON.stringify(requete),
+                body: JSON.stringify(this.plafonnee(requete)),
                 signal: AbortSignal.any([annulation, sonde.signal, AbortSignal.timeout(this.DELAI_MS)])
             });
             corps = await res.json().catch(() => null);

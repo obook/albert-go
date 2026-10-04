@@ -166,7 +166,7 @@ I18n.TEXTES.fr = {
     'reglages.temperature': 'Température',
     'reglages.precis': 'Précis',
     'reglages.creatif': 'Créatif',
-    'reglages.aide-temperature': 'Bas : réponses stables et factuelles. Haut : réponses originales, mais le modèle invente davantage.',
+    'reglages.aide-temperature': 'Bas : réponses stables et factuelles. Haut : réponses originales, mais le modèle invente davantage. Au-delà de 1 : pour expérimenter, le texte peut devenir incohérent et la réponse est écourtée.',
     'reglages.contexte': 'Contexte',
     'reglages.lecture': 'Lecture à voix haute',
     'reglages.voix-en-ligne': 'Autoriser les voix en ligne',
