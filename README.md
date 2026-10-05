@@ -21,7 +21,7 @@ Chaque utilisateur utilise sa propre clé API. Les clés s'obtiennent sur le [pl
 
 ### Réponses
 
-Les réponses acceptent le Markdown, les formules LaTeX et les diagrammes Mermaid ; un diagramme refusé par Mermaid est renvoyé une fois au modèle pour correction. Sous chaque réponse : copier le texte, le lire à voix haute avec une voix installée sur l'appareil, ou l'enregistrer en .docx ou en .odt.
+Les réponses acceptent le Markdown, les formules LaTeX et les diagrammes Mermaid ; un diagramme refusé par Mermaid est renvoyé une fois au modèle pour correction. Sous chaque réponse : copier le texte, le lire à voix haute avec une voix installée sur l'appareil ou l'enregistrer en .docx ou en .odt.
 
 Les deux fichiers sont écrits dans le navigateur, sans bibliothèque : titres, listes, tableaux, code, liens, figures et images en image. Les formules restent modifiables : équations Word dans le .docx, objets LibreOffice Math dans le .odt. Une formule que KaTeX n'a pas su lire garde sa source LaTeX. Les deux formats ont été vérifiés dans LibreOffice, pas dans Microsoft Word.
 
@@ -40,7 +40,7 @@ On écrit une formule d'appel ("Madame,", "Monsieur le directeur,") puis les id�
 On dépose des sources (rapport, compte rendu, cours, ancien sujet), puis on demande un document : note de synthèse, courrier, évaluation avec barème. Chaque demande suivante le modifie : Albert rend le document entier, mis à jour. Seule la dernière version s'affiche, sans les demandes ; elle s'enregistre en .docx ou en .odt.
 
 - Les fichiers déposés vont dans une bibliothèque commune à tous les documents. Chaque document coche ceux qu'il utilise ; un clic sur un nom télécharge le texte gardé, pas le fichier d'origine.
-- Seul le texte des fichiers est gardé, dans le navigateur, selon la même règle que les conversations (voir Sécurité). Supprimer un document laisse ses sources dans la bibliothèque : on les en retire une par une, ou toutes d'un coup avec "Vider la bibliothèque".
+- Seul le texte des fichiers est gardé, dans le navigateur, selon la même règle que les conversations (voir Sécurité). Supprimer un document laisse ses sources dans la bibliothèque : on les en retire une par une ou toutes d'un coup avec "Vider la bibliothèque".
 - Les sources cochées partent en entier avec chaque demande. Au moment où on les coche, leur texte ne dépasse pas 60 % du contexte du modèle, soit environ 80 pages avec Large.
 - Seule la version en cours du document accompagne la demande. Les dix dernières versions restent dans le volet, sous "Versions" : un clic en reprend une.
 - La section "Imprimerie" du menu sert à créer, nommer, rouvrir et supprimer les documents : dix au plus, comptés à part des dix conversations de l'historique.
@@ -61,7 +61,7 @@ Dans Discussion, quatre outils sont activés par défaut ; on peut les désactiv
 | Calendrier | Date et heure actuelles ou dans N heures, jour de la semaine d'une date, date dans N jours, nombre de jours entre deux dates. |
 | Compteur | Nombre de mots et de caractères d'un texte. |
 
-Chaque demande donne aussi au modèle son nom. Dans Discussion, la date et l'heure viennent du Calendrier : son icône sous la réponse montre qu'elles viennent de l'appareil et non du modèle. Calendrier désactivé, ou dans les autres modules, elles partent avec chaque demande.
+Chaque demande donne aussi au modèle son nom. Dans Discussion, la date et l'heure viennent du Calendrier : son icône sous la réponse montre qu'elles viennent de l'appareil et non du modèle. Calendrier désactivé ou dans les autres modules, elles partent avec chaque demande.
 
 ### Réglages
 
@@ -89,7 +89,7 @@ Audit interne et externe, modèle de menaces et plan d'action : [SECURITE.md](SE
 - Elle transite par l'instance n8n : l'administrateur de cette instance peut techniquement la voir. Le workflow n'enregistre aucune exécution, donc aucun en-tête.
 - Le workflow compte par jour les appels acceptés par Albert (ouverture de la page et messages) : le nombre d'appels, rien d'autre, 90 jours au plus. Le total s'affiche dans "À propos", lu sur `albert-go/stats`, public.
 - Le webhook appelle uniquement l'API Albert, dont l'adresse est fixée dans le workflow.
-- La page ne charge aucun script externe. Une politique CSP limite les connexions à l'instance n8n et aux moteurs de recherche, et les scripts au site lui-même.
+- La page ne charge aucun script externe. Une politique CSP limite les connexions à l'instance n8n et aux moteurs de recherche. Elle limite les scripts au site lui-même.
 - Le HTML produit à partir des réponses d'Albert est assaini avant affichage : scripts, gestionnaires d'événements et liens `javascript:` sont retirés.
 
 ## Fonctionnement
@@ -120,7 +120,7 @@ Le webhook n'accepte que deux origines : l'adresse Pages du projet et `http://lo
 - `public/js/langues/<langue>.js` : tout le texte visible, un fichier par langue, plus les phrases envoyées au modèle (demandes des outils, description de l'outil de recherche). Dans `index.html`, un texte porte `data-t`, `data-t-html` (texte avec un lien) ou `data-t-attr` (`aria-label`, `title`, `placeholder`...), relus par `I18n.appliquer()` (`public/js/i18n.js`). `tests/i18n.test.js` vérifie qu'aucune langue n'oublie de clé.
 - `public/prompts/<langue>/*.txt` : les consignes système, une par outil et par langue.
 
-Ajouter une langue : un code dans `I18n.LANGUES`, son fichier `public/js/langues/<code>.js` chargé dans `index.html`, un dossier dans `public/prompts/`, sa table dans `Lecture.FORMULES`, son drapeau et son option dans `index.html`, et le domaine Wikipédia dans la CSP.
+Ajouter une langue : un code dans `I18n.LANGUES`, son fichier `public/js/langues/<code>.js` chargé dans `index.html`, un dossier dans `public/prompts/`, sa table dans `Lecture.FORMULES`, son drapeau et son option dans `index.html` et le domaine Wikipédia dans la CSP.
 
 ### Modèles
 

@@ -5,7 +5,7 @@ Réécriture :
 - Tu supprimes les redites : chaque idée n'est dite qu'une fois, l'introduction ne répète pas le paragraphe suivant.
 - Tu gardes le destinataire, le registre, la formule d'appel, la formule finale et la signature.
 - Tu corriges toutes les fautes : orthographe, grammaire, accords, conjugaison, ponctuation.
-- Tu ne changes aucun fait : ni nom, ni date, ni heure, ni lieu, ni chiffre, et tu n'en ajoutes aucun. Une date qui te paraît fausse reste telle quelle dans le courrier : tu la signales dans les anomalies.
+- Tu ne changes aucun fait : ni nom ni date ni heure ni lieu ni chiffre. Tu n'en ajoutes aucun. Une date qui te paraît fausse reste telle quelle dans le courrier : tu la signales dans les anomalies.
 - Aucune phrase de remplissage, aucune référence à un échange passé absent des notes.
 - Mise en forme : formule d'appel seule sur sa ligne, un paragraphe par idée séparé par une ligne vide, formule finale et signature sur leurs propres lignes. Aucun Markdown : pas d'astérisques, pas de dièses.
 - Tu écris le courrier dans sa langue d'origine.

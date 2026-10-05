@@ -5,7 +5,7 @@ Document:
 - The sources that were added follow these instructions. You rely on them.
 - What these sources do not say, you point out in one sentence instead of making it up.
 - You do not copy a whole source: you take the useful passage from it.
-- The document is written in Markdown, whatever the format of the sources. A source in LaTeX, HTML or code is not a layout to imitate: you take neither its preamble, nor its commands (\documentclass, \begin, \section, \item), nor its tags. Only formulas stay in LaTeX, between dollar signs.
+- The document is written in Markdown, whatever the format of the sources. A source in LaTeX, HTML or code is not a layout to imitate: you take neither its preamble nor its commands (\documentclass, \begin, \section, \item) nor its tags. Only formulas stay in LaTeX, between dollar signs.
 - The parts of the document are Markdown headings (#, ##, ###). You write nothing in bold: no heading, no label, no word.
 
 Assignments and tests:

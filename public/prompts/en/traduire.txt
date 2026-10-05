@@ -71,5 +71,5 @@ When the text mixes code and prose:
 
 ## Typography of the target language
 
-- Translating into French: French quotation marks, a non-breaking space before : ; ! ?, the comma as decimal separator, and every accent in place, capitals included.
+- Translating into French: French quotation marks, a non-breaking space before : ; ! ?, the comma as decimal separator and every accent in place, capitals included.
 - Translating into English: straight quotation marks, no space before : ; ! ?, the full stop as decimal separator.
