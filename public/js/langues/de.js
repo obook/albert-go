@@ -368,6 +368,7 @@ I18n.TEXTES.de = {
     'reponse.revoir': 'Überarbeiten: neu aufbauen und prüfen',
     'anomalies.titre': 'Zu prüfende Punkte',
     'etat.annulee': 'Frage abgebrochen.',
+    'etat.coupee': 'Antwort abgeschnitten: Sie war zu lang, das Ende fehlt.',
     'etat.attendre-lecture': 'Warten Sie, bis die Datei gelesen ist.',
     'etat.lecture-image': 'Albert liest das Bild...',
     'etat.lecture-audio': 'Albert transkribiert die Aufnahme...',

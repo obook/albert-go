@@ -587,6 +587,19 @@ test('repondre : le plafond part bien dans la requête', async () => {
     }
 });
 
+test('repondre : une réponse coupée par la longueur est signalée', async () => {
+    const avant = globalThis.fetch;
+    let fin = 'length';
+    globalThis.fetch = async () => ({ ok: true, status: 200, json: async () => ({ choices: [{ message: { content: 'ok' }, finish_reason: fin }] }) });
+    try {
+        assert.strictEqual((await Albert.repondre('cle', { model: 'm', messages: [] }, new AbortController().signal)).coupee, true);
+        fin = 'stop';
+        assert.strictEqual((await Albert.repondre('cle', { model: 'm', messages: [] }, new AbortController().signal)).coupee, false);
+    } finally {
+        globalThis.fetch = avant;
+    }
+});
+
 test('topK : envoyé seulement sous la position "sans limite" du curseur', () => {
     assert.deepStrictEqual(Albert.topK(5), { top_k: 5 });
     assert.deepStrictEqual(Albert.topK(1), { top_k: 1 });

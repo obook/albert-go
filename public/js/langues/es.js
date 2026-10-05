@@ -368,6 +368,7 @@ I18n.TEXTES.es = {
     'reponse.revoir': 'Revisar: reconstruir y comprobar',
     'anomalies.titre': 'Puntos que comprobar',
     'etat.annulee': 'Pregunta cancelada.',
+    'etat.coupee': 'Respuesta cortada: era demasiado larga, falta el final.',
     'etat.attendre-lecture': 'Espere a que termine la lectura del archivo.',
     'etat.lecture-image': 'Albert está leyendo la imagen...',
     'etat.lecture-audio': 'Albert está transcribiendo la grabación...',

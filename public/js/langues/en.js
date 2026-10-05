@@ -368,6 +368,7 @@ I18n.TEXTES.en = {
     'reponse.revoir': 'Review: rebuild and check',
     'anomalies.titre': 'Points to check',
     'etat.annulee': 'Question cancelled.',
+    'etat.coupee': 'Answer cut off: it was too long, the end is missing.',
     'etat.attendre-lecture': 'Wait until the file has been read.',
     'etat.lecture-image': 'Albert is reading the image...',
     'etat.lecture-audio': 'Albert is transcribing the recording...',
