@@ -18,7 +18,7 @@ Ce qui reste à faire, du plus simple au plus long. Le détail des failles est d
 
 ## Documents et exports
 
-- Essayer le module Imprimerie avec un vrai modèle : la consigne lui demande de rendre le document entier à chaque demande, ce qui n'a été vérifié qu'avec des réponses simulées.
+- Imprimerie : essayer un long document avec un vrai modèle. Le rendu du document entier n'est vérifié que sur un sujet court, avec Small et Medium.
 - Ouvrir un .docx et un .odt produits dans Microsoft Word : seul LibreOffice a servi aux essais.
 - Modèle de l'enseignant : son propre .odt, avec son en-tête et une balise `{contenu}` où Albert Go insère le document, sur le principe d'odtPHP.
 - Recherche dans les sources (collections et `/v1/search` d'Albert) quand elles dépassent le plafond : il faut trois routes de plus dans le relais n8n, et les sources seraient alors gardées chez Albert.
