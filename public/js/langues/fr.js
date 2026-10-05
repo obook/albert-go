@@ -368,6 +368,7 @@ I18n.TEXTES.fr = {
     'reponse.revoir': 'Revoir : reconstruire et vérifier',
     'anomalies.titre': 'Points à vérifier',
     'etat.annulee': 'Question annulée.',
+    'etat.coupee': 'Réponse coupée : elle était trop longue, la fin manque.',
     'etat.attendre-lecture': 'Attendez la fin de la lecture du fichier.',
     'etat.lecture-image': 'Lecture de l\'image par Albert...',
     'etat.lecture-audio': 'Transcription de l\'enregistrement par Albert...',

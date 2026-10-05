@@ -190,7 +190,8 @@ function recevoirReponse(reponse, outil) {
     ajouter('assistant', texte, langue, true, reponse.recherches);
     sauverConversation();
     afficherReglages();
-    etat('');
+    /* Réponse arrêtée par la longueur : la fin manque, on le dit. */
+    etat(reponse.coupee ? t('etat.coupee') : '', reponse.coupee);
 }
 
 /**

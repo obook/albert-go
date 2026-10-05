@@ -269,7 +269,7 @@ const Albert = {
      * @param {string} cle - Clé API de l'utilisateur.
      * @param {Object} requete - Corps au format chat/completions (model, messages...).
      * @param {AbortSignal} annulation - Signal du bouton Arrêter.
-     * @returns {Promise<{texte: string, usage: ?Object}>} Réponse et consommation.
+     * @returns {Promise<{texte: string, usage: ?Object, coupee: boolean}>} Réponse, consommation, et coupee si la longueur l'a arrêtée.
      * @throws {Error} Si Albert refuse la requête, ou si elle est annulée.
      */
     async repondre(cle, requete, annulation) {
@@ -305,7 +305,7 @@ const Albert = {
         }
         /* message complet : il porte les tool_calls. content est null quand le
            modèle n'appelle qu'un outil, d'où le '' pour l'affichage. */
-        return { texte: choix.message.content || '', message: choix.message, usage: corps.usage || null };
+        return { texte: choix.message.content || '', message: choix.message, usage: corps.usage || null, coupee: choix.finish_reason === 'length' };
     },
 
     /**
