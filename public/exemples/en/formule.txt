@@ -4,6 +4,6 @@ Give the formula of Pythagoras' theorem and an example.
 
 Give the formula for the volume of a sphere and an example with r = 5 cm.
 
-Give the formula for compound interest and an example over 5 years at 3 %.
+Give the formula for compound interest and an example over 5 years at 3%.
 
 Give the formula for the solutions of a quadratic equation and an example.

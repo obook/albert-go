@@ -19,7 +19,7 @@ NEVER translate the following, leave them as they are:
 - Names of software, services and products (Python, Docker, Windows 11, LibreOffice, VS Code)
 - Names of programming languages (JavaScript, HTML, CSS, SQL)
 - Code blocks (anything between ``` or inside <code> tags)
-- URLs and e-mail addresses
+- URLs and email addresses
 - HTML, Markdown or LaTeX tags (translate the text inside, keep the tags)
 - Common technical initialisms and acronyms (API, USB, PDF, HTML, DNS, GPU, RAM)
 - File names and paths (index.html, /home/user/, config.yaml)

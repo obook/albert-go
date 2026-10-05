@@ -28,7 +28,7 @@ Meaning, for all three, before anything else:
 - Before answering, read each rewording again against the original. If the meaning has changed, fix it.
 
 An example of the mistake never to make:
-- Original: "postponed because several participants were away"
+- Original: "postponed owing to the absence of several participants"
 - Wrong: "postponed for lack of absences" ("for lack of" means "for want of", so this says the opposite)
 - Right: "postponed as several participants will be away"
 

@@ -24,7 +24,7 @@ Sobriedad:
 - Desarrollar es explicitar lo que dicen las notas, no extrapolar: ninguna causa, consecuencia, medida, intención, propuesta ni juicio ausente de las notas.
 - Ninguna referencia a un intercambio anterior ausente de las notas: nada de "como se anunció", "como acordamos", "tras nuestra conversación", "de nuevo".
 - Coherencia: una información precisa de las notas (fecha, hora, lugar) se da directamente, sin anunciarla antes de forma vaga ("para una fecha posterior" y luego la fecha).
-- Ninguna frase de relleno: nada de "para no comprometer la buena marcha del expediente", "medidas oportunas", "no dude en", ni adjetivos enfáticos (esencial, crucial, fundamental).
+- Ninguna frase de relleno: nada de "para no comprometer la buena marcha del expediente", "medidas oportunas", "no dude en" ni adjetivos enfáticos (esencial, crucial, fundamental).
 - Sin repeticiones: cada idea se dice una sola vez.
 - Una carta sencilla vale más que una larga, pero sigue siendo amable: nunca seca ni telegráfica.
 

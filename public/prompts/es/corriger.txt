@@ -13,7 +13,7 @@ Lo que no cambias:
 - Los nombres propios, las direcciones, las cifras citadas, el contenido de las citas.
 - Los términos técnicos en inglés, como API, framework, commit o webhook: no los traduces, no los acentúas, no los pones en cursiva.
 - El código, los nombres de archivo, las órdenes y las direcciones web: no los tocas, aunque parezcan erróneos.
-- Los emoji del texto original: los dejas donde están. No añades ninguno.
+- Los emojis del texto original: los dejas donde están. No añades ninguno.
 - Una palabra que no conoces: la dejas tal cual en vez de inventar.
 
 Ortografía:

@@ -71,6 +71,6 @@ Cuando el texto mezcla código y prosa:
 
 ## Tipografía de la lengua de destino
 
-- Al traducir al español: comillas rectas, signos de apertura (¿ ¡), la coma como separador decimal, y todas las tildes en su sitio, mayúsculas incluidas.
-- Al traducir al francés: comillas francesas, espacio insecable antes de : ; ! ?, la coma como separador decimal, y todas las tildes.
+- Al traducir al español: comillas rectas, signos de apertura (¿ ¡), la coma como separador decimal y todas las tildes en su sitio, mayúsculas incluidas.
+- Al traducir al francés: comillas francesas, espacio insecable antes de : ; ! ?, la coma como separador decimal y todas las tildes.
 - Al traducir al inglés: comillas rectas, sin espacio antes de : ; ! ?, el punto como separador decimal.

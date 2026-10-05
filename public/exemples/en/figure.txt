@@ -1,4 +1,4 @@
-Draw a right triangle with sides 3, 4 and 5 cm.
+Draw a right-angled triangle with sides 3, 4 and 5 cm.
 
 Draw a circle with a radius of 3 cm, with its centre, a radius and a diameter.
 
