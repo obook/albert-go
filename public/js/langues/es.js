@@ -12,7 +12,7 @@
 'use strict';
 
 I18n.TEXTES.es = {
-    /* Cabecera y menu. */
+    /* Cabecera y menú. */
     'menu.ouvrir': 'Menú',
     'menu.fermer': 'Cerrar el menú',
     'menu.resume': 'Abrir los ajustes',
@@ -55,7 +55,7 @@ I18n.TEXTES.es = {
     'invite.rediger': 'Estimada señora... y luego sus ideas principales, una por línea.',
     'outil.projet': 'Imprenta',
     'module.projet': 'Imprenta',
-    'invite.projet': 'Pedir la creación de un documento, o un cambio',
+    'invite.projet': 'Pedir la creación de un documento o un cambio',
     'bibliotheque.titre': 'Biblioteca',
     'bibliotheque.ouvrir': 'Abrir la biblioteca',
     'bibliotheque.fermer': 'Cerrar la biblioteca',
@@ -244,7 +244,7 @@ I18n.TEXTES.es = {
     'dialogue.oui': 'Sí',
     'dialogue.non': 'No',
     'confirmer-changer-cle.titre': '¿Borrar la clave y salir?',
-    'confirmer-changer-cle.texte': 'La clave se borrará del almacenamiento del navegador y volverá a la pantalla de inicio.',
+    'confirmer-changer-cle.texte': 'La clave se borrará del almacenamiento del navegador y usted volverá a la pantalla de inicio.',
     'confirmer-suppression.titre': '¿Eliminar esta conversación?',
     'partage.titre': 'Compartir',
     'partage.texte': 'Escanee el código QR o copie la dirección, su clave no se comparte.',
@@ -254,14 +254,14 @@ I18n.TEXTES.es = {
 
     /* Acerca de. */
     'info.titre': 'Acerca de',
-    'info.intro': 'Albert Go permite charlar con los modelos de Inteligencia Artificial de la dirección interministerial de lo digital (<a href="https://ia.numerique.gouv.fr/outils-ia/albert-api/" target="_blank" rel="noopener noreferrer">DINUM</a>), con su clave API personal.',
+    'info.intro': 'Albert Go permite charlar con los modelos de inteligencia artificial de la dirección interministerial de lo digital (<a href="https://ia.numerique.gouv.fr/outils-ia/albert-api/" target="_blank" rel="noopener noreferrer">DINUM</a>), con su clave API personal.',
     'info.donnees': 'Sus datos',
     'info.donnees.relais': 'Su clave y sus preguntas pasan por un relé n8n interministerial, que no guarda nada, y luego van a Albert API.',
     'info.donnees.traceurs': 'Ninguna cuenta, ninguna cookie, ninguna biblioteca cargada desde un sitio ajeno. Llamadas de las herramientas de Internet solo si usted las permite.',
     'info.clavier': 'Teclado',
     'info.clavier.texte': 'Intro: enviar. Mayús+Intro: nueva línea. Flechas arriba y abajo: preguntas anteriores.',
     'info.reponses': 'Las respuestas',
-    'info.reponses.texte': 'La IA puede equivocarse o inventar. Compruebe sus respuestas antes de usarlas, y no le confíe datos personales.',
+    'info.reponses.texte': 'La IA puede equivocarse o inventar. Compruebe sus respuestas antes de usarlas y no le confíe datos personales.',
     'info.projet': 'El proyecto',
     'info.projet.texte': 'Autor: <a href="mailto:olivier.booklage@ac-bordeaux.fr">Olivier Booklage</a> (Académie de Bordeaux)<br>Fuente: <a href="https://forge.apps.education.fr/booklageolivier/albert-go" target="_blank" rel="noopener noreferrer">Forge des communs numériques</a>',
     'info.version': 'Versión: ',
@@ -280,7 +280,7 @@ I18n.TEXTES.es = {
     'reponse.telecharger-docx': 'Descargar en .docx',
     'reponse.telecharger-odt': 'Descargar en .odt',
     'reponse.erreur-diagramme': 'Diagrama no mostrado, error de Mermaid: ',
-    'reponse.erreur-courbe': 'Curva no mostrada: escribe una línea y = ... por función (x^2, sqrt(x), sin(x) en radianes) y luego x = inicio .. fin.',
+    'reponse.erreur-courbe': 'Curva no mostrada: escribir una línea y = ... por función (x^2, sqrt(x), sin(x) en radianes) y luego x = inicio .. fin.',
     'reponse.image-absente': 'Imagen no encontrada en Wikimedia Commons.',
     'reponse.correction-diagramme': 'Corrigiendo el diagrama...',
     'mermaid.corriger': 'Corrige este código Mermaid rechazado, según el error que lo sigue. Responde solo con el código corregido.',
@@ -419,10 +419,10 @@ I18n.TEXTES.es = {
         + 'sobre un tema preciso. El buscador es {nom}: lo que recibes es todo lo que '
         + 'tienes, dilo si no basta.',
     'recherche.parametre': 'Las palabras que buscar.',
-    'recherche.description-catalogue': 'Este buscador es un catálogo: solo devuelve un resultado si todas las palabras buscadas aparecen en él. Busca pues con dos o tres palabras clave, nunca con una frase.',
+    'recherche.description-catalogue': 'Este buscador es un catálogo: solo devuelve un resultado si todas las palabras buscadas aparecen en él. Busca, pues, con dos o tres palabras clave, nunca con una frase.',
     'recherche.source-base': 'en {nom}',
     'recherche.source-web': 'en la web',
-    'recherche.rappel': 'Dispones de la herramienta recherche_web: puedes buscar {source}, '
+    'recherche.rappel': 'Dispones de la herramienta recherche_web: puedes buscar {source} '
         + 'y lo dices si te lo preguntan. Úsala en cuanto una respuesta necesite un dato preciso '
         + 'que no estés seguro de saber.',
     'recherche.resultats': 'Resultados de búsqueda:\n{extraits}\n\nResponde ahora a la pregunta a partir de estos extractos. Cita cada dato con el número de su fuente entre corchetes, por ejemplo [1].',
@@ -443,11 +443,11 @@ I18n.TEXTES.es = {
     'recherche.moteur-refus': 'petición rechazada por {nom}.',
     'images.description': 'Busca imágenes reales en Wikimedia Commons y devuelve el enlace a su página. Úsala cuando se pida una foto o una imagen. Cita después uno de esos enlaces, nunca un nombre de archivo inventado.',
     'images.aucune': 'Ninguna imagen encontrada en Wikimedia Commons.',
-    'etat.images': 'Buscando imágenes «{mots}»...',
+    'etat.images': 'Buscando imágenes "{mots}"...',
     'reponse.images': 'Ver las imágenes buscadas',
     'reponse.note-images': 'Imágenes buscadas: {lignes}',
     'images.rappel': 'Para una foto o una imagen, usa la herramienta image_commons, no recherche_web, y da el enlace de un archivo encontrado. Nunca describas un archivo sin su enlace; si ninguno corresponde, dilo.',
-    'images.absent': 'No puedes buscar ni mostrar imágenes: si te piden una, di que hay que encender el globo de la barra de entrada, tras autorizar Internet en Ajustes > Herramientas si no aparece.',
+    'images.absent': 'No puedes buscar ni mostrar imágenes: si te piden una, di que hay que activar el globo de la barra de entrada, tras autorizar Internet en Ajustes > Herramientas si no aparece.',
     'services.rappel': 'Para un servicio público, una empresa, un centro escolar, las vacaciones escolares, una dirección, un municipio o un contrato público, usa la herramienta dedicada en lugar de recherche_web.',
     'annuaire_administration.description': 'Busca un servicio público francés en el Annuaire de l\'administration (service-public.fr): ayuntamiento, prefectura, caja, tribunal, rectorado, ministerio... Devuelve dirección, teléfono, correo, sitio web y horarios.',
     'annuaire_administration.q': 'Tipo de servicio y municipio, por ejemplo: mairie Lyon 2e, préfecture Rhône.',
@@ -460,7 +460,7 @@ I18n.TEXTES.es = {
     'adresse.description': 'Encuentra una dirección en Francia en la base nacional de direcciones (IGN): dirección normalizada, código postal, código INSEE del municipio, departamento y región.',
     'adresse.q': 'Dirección, aunque esté incompleta o mal escrita, por ejemplo: 20 avenue de Ségur Paris.',
     'commune.description': 'Da los datos de un municipio francés (API Géo): código INSEE, códigos postales, población, superficie, departamento, región.',
-    'commune.q': 'Nombre del municipio solo, o código postal de cinco cifras.',
+    'commune.q': 'Nombre del municipio solo o código postal de cinco cifras.',
     'marches_publics.description': 'Busca anuncios de contratos públicos franceses en el BOAMP, los más recientes primero: objeto, comprador, tipo de anuncio, procedimiento, plazo de respuesta.',
     'marches_publics.q': 'Dos o tres palabras clave en francés, por ejemplo: nettoyage Lyon.',
     'reglages.outils-externes': 'Internet'

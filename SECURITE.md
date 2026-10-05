@@ -173,7 +173,7 @@ Boîte noire depuis un poste extérieur, le 2026-09-21, avec `curl` et `openssl`
 ## Pratiques de développement
 
 - Aucune dépendance de construction : ni bundler ni `npm install` pour publier.
-- Cinq bibliothèques embarquées, versions et provenances dans
+- Sept bibliothèques embarquées, versions et provenances dans
   `public/vendor/README.md`. Aucun appel à un CDN.
 - Pas de code dynamique : aucun `eval`, aucun script en ligne (interdit par la CSP).
 - Textes insérés par `textContent`. `data-t-html`, seul chemin par `innerHTML`,

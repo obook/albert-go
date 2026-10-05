@@ -36,7 +36,7 @@ Punctuation:
 Numbers:
 - The decimal separator is the full stop: 3.14.
 - A comma separates thousands: 10,000.
-- A space separates a number from its unit: 5 km, 20 EUR, 100 %.
+- A space separates a number from its unit, except the percent sign: 5 km, 20 EUR, 100%.
 - The currency symbol precedes the number in English: £50, $50.
 
 Before you answer:
