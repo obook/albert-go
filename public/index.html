@@ -229,20 +229,27 @@
          Les fichiers cochés partent avec chaque question (projet.js, entete.css). -->
     <dialog id="bibliotheque" class="volet volet-droit" aria-labelledby="titre-bibliotheque">
         <div class="volet-contenu">
-            <div class="volet-titre">
-                <h2 id="titre-bibliotheque" class="marque" data-t="bibliotheque.titre"></h2>
-                <button type="button" class="bouton-icone fermer-bibliotheque" autofocus data-t-attr="aria-label:bibliotheque.fermer;title:bibliotheque.fermer">
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-                </button>
-            </div>
-            <p id="resume-documents" class="resume-bibliotheque"></p>
-            <hr>
-            <ul id="liste-documents" class="liste-documents"></ul>
-            <button type="button" id="deposer-documents" class="deposer" data-t="documents.deposer"></button>
-            <p class="formats-sources" data-t="documents.formats"></p>
-            <p class="formats-sources" data-t="documents.garde"></p>
-            <!-- Masqué tant que la bibliothèque est vide (projet.js). -->
-            <button type="button" id="vider-bibliotheque" class="deposer" data-t="bibliotheque.vider" hidden></button>
+            <button type="button" class="bouton-icone fermer-bibliotheque" autofocus data-t-attr="aria-label:bibliotheque.fermer;title:bibliotheque.fermer">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </button>
+            <!-- Deux sections repliables : la bibliothèque, dépliée, puis les versions du document. -->
+            <details open>
+                <summary><h2 id="titre-bibliotheque" class="marque" data-t="bibliotheque.titre"></h2></summary>
+                <p id="resume-documents" class="resume-bibliotheque"></p>
+                <hr>
+                <p class="formats-sources" data-t="documents.garde"></p>
+                <ul id="liste-documents" class="liste-documents"></ul>
+                <button type="button" id="deposer-documents" class="deposer" data-t="documents.deposer"></button>
+                <p class="formats-sources" data-t="documents.formats"></p>
+                <!-- Masqué tant que la bibliothèque est vide (projet.js). -->
+                <button type="button" id="vider-bibliotheque" class="deposer" data-t="bibliotheque.vider" hidden></button>
+            </details>
+            <!-- Versions du document affiché : masquées tant qu'il n'en a qu'une (projet.js). -->
+            <hr id="trait-versions" hidden>
+            <details id="versions" hidden>
+                <summary><h2 class="marque" data-t="versions.titre"></h2></summary>
+                <ul id="liste-versions" class="liste-documents liste-versions"></ul>
+            </details>
         </div>
     </dialog>
 

@@ -108,7 +108,7 @@ function ecrireConversations(liste) {
 function sauverConversation() {
     const projet = Albert.OUTILS[outilActuel].documents;
     const entree = Albert.entreeConversation(conversationId || Date.now().toString(36), outilActuel, conversation,
-        projet ? documentsProjet : [], projet ? nomProjet : '');
+        projet ? documentsProjet : [], projet ? nomProjet : '', projet ? conversations.find(c => c.id === conversationId) : null);
     if (!entree) {
         return;
     }
@@ -164,8 +164,8 @@ function rouvrirConversation(entree) {
     afficher();
     conversation = entree.messages.slice();
     if (Albert.estProjet(entree)) {
-        /* Document enregistré avant que le gras soit retiré à la réception. */
-        conversation = conversation.map(m => (m.role === 'assistant' ? { ...m, content: Albert.sansGras(m.content) } : m));
+        /* Document enregistré avant que le gras soit retiré à la réception, ou avant les numéros de version. */
+        conversation = Albert.numeroterVersions(conversation.map(m => (m.role === 'assistant' ? { ...m, content: Albert.sansGras(m.content) } : m)));
     }
     choisirSources(entree.sources || []);
     nomProjet = entree.nom || '';
@@ -177,6 +177,14 @@ function rouvrirConversation(entree) {
         rouvrirRedaction(conversation);
         return;
     }
+    afficherFil();
+}
+
+/**
+ * Réaffiche dans le fil les messages de la conversation en cours.
+ */
+function afficherFil() {
+    $('fil').replaceChildren();
     for (const message of conversation) {
         /* Traduction enregistrée avant qu'on garde la langue : on prend la langue cible actuelle. */
         let langue = message.langue;

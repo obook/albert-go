@@ -198,11 +198,12 @@ function pastilleIA() {
  *
  * "nearest" montre le bas de la bulle tant qu'elle tient à l'écran, puis
  * garde son début en haut : "end" cachait le début d'une longue réponse.
+ * Imprimerie : le début du document se cale en haut.
  *
  * @param {HTMLElement} element - Élément de la bulle, ou la bulle elle-même.
  */
 function suivreBulle(element) {
-    element.closest('li')?.scrollIntoView({ block: 'nearest' });
+    element.closest('li')?.scrollIntoView({ block: Albert.OUTILS[outilActuel].documents ? 'start' : 'nearest' });
 }
 
 /**
@@ -277,7 +278,13 @@ function bulleReponse(texte, titre, langue, animer = false, recherches = null) {
     contenu.className = 'texte rendu';
     /* Images Commons montrées seulement si l'outil d'images a servi à cette réponse. */
     const imagesCherchees = (recherches || []).some(r => r && r.image_commons);
-    const pret = animer ? devoiler(contenu, texte, imagesCherchees) : Rendu.afficher(contenu, texte, imagesCherchees);
+    /* Imprimerie : pas de Markdown brut dévoilé, le document arrive rendu et monte en fondu (conversation.css). */
+    const projet = !!Albert.OUTILS[outilActuel].documents;
+    const pret = animer && !projet ? devoiler(contenu, texte, imagesCherchees) : Rendu.afficher(contenu, texte, imagesCherchees);
+    if (projet) {
+        /* Formules et figures rendues, la hauteur est connue : le début se cale en haut. */
+        pret.then(() => suivreBulle(li));
+    }
 
     const actions = document.createElement('div');
     actions.className = 'actions-reponse';

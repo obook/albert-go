@@ -60,6 +60,7 @@ I18n.TEXTES.fr = {
     'bibliotheque.ouvrir': 'Ouvrir la bibliothèque',
     'bibliotheque.fermer': 'Fermer la bibliothèque',
     'bibliotheque.vider': 'Vider la bibliothèque',
+    'versions.titre': 'Versions',
     'confirmer-suppression.bibliotheque': 'Vider la bibliothèque ?',
     'confirmer-suppression.bibliotheque-texte': 'Tous les fichiers seront supprimés et quitteront tous les documents.',
     'documents.resume': 'Utilisés : {coches} sur {nombre}',
@@ -403,6 +404,7 @@ I18n.TEXTES.fr = {
     'demande.traduire': 'Traduis ce texte en {cible} :\n\n{texte}',
     'demande.traduire-source': 'Traduis ce texte en {cible} (langue source : {source}) :\n\n{texte}',
     'demande.fichier': 'Contenu du fichier "{nom}" :\n\n{texte}',
+    'demande.document-entier': 'Rends le document entier, mis à jour, sans rien écrire avant ni après. Ce que la demande ne touche pas reste tel quel.',
     'demande.image': 'Transcris fidèlement tout le texte visible dans cette image, en Markdown. '
         + 'Écris les formules en LaTeX entre $. Si l\'image contient une figure ou un schéma, '
         + 'décris-le en quelques phrases. Ne réponds rien d\'autre.',

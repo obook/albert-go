@@ -100,6 +100,16 @@ const I18n = {
     },
 
     /**
+     * Heure seule au format court de la langue affichée.
+     *
+     * @param {Date|number} date - Date à écrire.
+     * @returns {string} Heure, par exemple "19:40".
+     */
+    heure(date) {
+        return new Intl.DateTimeFormat(this.langue, { timeStyle: 'short' }).format(date);
+    },
+
+    /**
      * Traduit la page : textes, textes avec lien, et attributs.
      *
      * data-t-html reçoit du HTML écrit ici, jamais du texte du modèle.

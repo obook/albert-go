@@ -61,3 +61,13 @@ test('aucun pluriel entre parenthèses, et un singulier pour chaque texte accord
         assert.ok(FR[cle + '-un'], cle);
     }
 });
+
+test('heure : l\'heure seule, au format court de la langue', () => {
+    const avant = I18n.langue;
+    try {
+        I18n.langue = 'fr';
+        assert.strictEqual(I18n.heure(new Date(2026, 9, 5, 18, 41)), '18:41');
+    } finally {
+        I18n.langue = avant;
+    }
+});
