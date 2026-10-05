@@ -6,4 +6,4 @@ Sortea un color entre: rojo, azul, verde, amarillo, violeta.
 
 Reparte al azar en dos equipos: león, cebra, jirafa, elefante, hipopótamo, rinoceronte.
 
-Ordena al azar: gato, perro, conejo, caballo, tortuga.
+Sortea el orden de intervención de estos servicios: recepción, contabilidad, recursos humanos, informática, logística.

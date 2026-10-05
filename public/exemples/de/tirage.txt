@@ -6,4 +6,4 @@ Lose eine Farbe aus: Rot, Blau, Grün, Gelb, Violett.
 
 Teile zufällig in zwei Teams auf: Löwe, Zebra, Giraffe, Elefant, Nilpferd, Nashorn.
 
-Bringe in eine zufällige Reihenfolge: Katze, Hund, Kaninchen, Pferd, Schildkröte.
+Lose die Reihenfolge dieser Abteilungen aus: Empfang, Buchhaltung, Personal, IT, Logistik.

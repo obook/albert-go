@@ -108,6 +108,15 @@ $('bibliotheque').addEventListener('click', (e) => {
     }
 });
 
+/* Aide d'une section du volet : son titre et son explication, dans la même boîte. */
+for (const bouton of document.querySelectorAll('[data-aide]')) {
+    bouton.addEventListener('click', () => {
+        $('titre-aide').textContent = t(bouton.dataset.aide + '.titre');
+        $('texte-aide').textContent = t('aide.' + bouton.dataset.aide, { nombre: Albert.VERSIONS_MAX });
+        $('aide').showModal();
+    });
+}
+
 /* Croix du bouton "Supprimer", celle de la pièce jointe. */
 const ICONE_RETIRER = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
 

@@ -232,25 +232,47 @@
             <button type="button" class="bouton-icone fermer-bibliotheque" autofocus data-t-attr="aria-label:bibliotheque.fermer;title:bibliotheque.fermer">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
             </button>
-            <!-- Deux sections repliables : la bibliothèque, dépliée, puis les versions du document. -->
-            <details open>
-                <summary><h2 id="titre-bibliotheque" class="marque" data-t="bibliotheque.titre"></h2></summary>
-                <p id="resume-documents" class="resume-bibliotheque"></p>
-                <hr>
-                <p class="formats-sources" data-t="documents.garde"></p>
-                <ul id="liste-documents" class="liste-documents"></ul>
-                <button type="button" id="deposer-documents" class="deposer" data-t="documents.deposer"></button>
-                <p class="formats-sources" data-t="documents.formats"></p>
-                <!-- Masqué tant que la bibliothèque est vide (projet.js). -->
-                <button type="button" id="vider-bibliotheque" class="deposer" data-t="bibliotheque.vider" hidden></button>
-            </details>
+            <!-- Deux sections repliables : la bibliothèque, dépliée, puis les versions du document.
+                 L'aide est hors du summary : elle reste visible section repliée, et ne la replie pas. -->
+            <div class="section-volet">
+                <button type="button" class="bouton-icone aide" data-aide="bibliotheque" data-t-attr="aria-label:aide.bibliotheque-bouton;title:aide.bibliotheque-bouton">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.6 2.2c-.7.4-1.1.9-1.1 1.8M12 17h.01"/></svg>
+                </button>
+                <details open>
+                    <summary><h2 id="titre-bibliotheque" class="marque" data-t="bibliotheque.titre"></h2></summary>
+                    <p id="resume-documents" class="resume-bibliotheque"></p>
+                    <hr>
+                    <p class="formats-sources" data-t="documents.garde"></p>
+                    <ul id="liste-documents" class="liste-documents"></ul>
+                    <button type="button" id="deposer-documents" class="deposer" data-t="documents.deposer"></button>
+                    <p class="formats-sources" data-t="documents.formats"></p>
+                    <!-- Masqué tant que la bibliothèque est vide (projet.js). -->
+                    <button type="button" id="vider-bibliotheque" class="deposer" data-t="bibliotheque.vider" hidden></button>
+                </details>
+            </div>
             <!-- Versions du document affiché : masquées tant qu'il n'en a qu'une (projet.js). -->
             <hr id="trait-versions" hidden>
-            <details id="versions" hidden>
-                <summary><h2 class="marque" data-t="versions.titre"></h2></summary>
-                <ul id="liste-versions" class="liste-documents liste-versions"></ul>
-            </details>
+            <div id="versions" class="section-volet" hidden>
+                <button type="button" class="bouton-icone aide" data-aide="versions" data-t-attr="aria-label:aide.versions-bouton;title:aide.versions-bouton">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.6 2.2c-.7.4-1.1.9-1.1 1.8M12 17h.01"/></svg>
+                </button>
+                <details>
+                    <summary><h2 class="marque" data-t="versions.titre"></h2></summary>
+                    <ul id="liste-versions" class="liste-documents liste-versions"></ul>
+                </details>
+            </div>
         </div>
+    </dialog>
+
+    <!-- Aide d'une section du volet de droite : titre et texte posés par projet.js. -->
+    <dialog id="aide" class="reglages pico" aria-labelledby="titre-aide" aria-describedby="texte-aide">
+        <form method="dialog">
+            <h2 id="titre-aide"></h2>
+            <p id="texte-aide"></p>
+            <div class="boutons-dialogue">
+                <button type="submit" class="bouton-principal" autofocus data-t="dialogue.fermer"></button>
+            </div>
+        </form>
     </dialog>
 
     <main id="principal">
@@ -286,8 +308,8 @@
                 <p data-t="projet.bienvenue"></p>
                 <div class="suggestions">
                     <button type="button" class="suggestion" data-exemple="projet.exemple-courrier" data-t="projet.courrier"></button>
+                    <button type="button" class="suggestion" data-exemple="projet.exemple-synthese" data-t="projet.synthese"></button>
                     <button type="button" class="suggestion" data-exemple="projet.exemple-evaluation" data-t="projet.evaluation"></button>
-                    <button type="button" class="suggestion" data-exemple="projet.exemple-revision" data-t="projet.revision"></button>
                 </div>
             </div>
             <!-- Chat vide : bienvenue et suggestions, masquées dès la première question (CSS). -->

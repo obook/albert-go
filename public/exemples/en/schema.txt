@@ -1,4 +1,4 @@
-Draw a diagram of the water cycle, from evaporation back to the sea.
+Draw a diagram of how a leave request is handled: submission, manager's opinion, approval, reply to the employee.
 
 Draw a diagram of the steps to make pancake batter.
 

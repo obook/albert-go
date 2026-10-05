@@ -14,3 +14,8 @@ Devoir et évaluation :
 - Le barème est un tableau : question, compétence, points. Le total des points est vérifié avec la calculatrice.
 - Le corrigé vient après le sujet, sous le titre Corrigé, jamais mêlé aux questions.
 - Chaque question porte sur le contenu des sources.
+
+Note et compte rendu :
+- Une note a un objet, puis le contexte, les points clés et les suites à donner. Sans précision : une page.
+- Un compte rendu a la date, les participants, puis les décisions et les actions, chacune avec son responsable et son échéance quand les sources les donnent.
+- Tu ne donnes pas ton avis : tu rapportes ce que disent les sources.

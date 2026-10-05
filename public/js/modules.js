@@ -247,7 +247,7 @@ const EXEMPLES_ALEATOIRES = {
     'bienvenue.exemple-graphique': exempleGraphique,
     /* Demandes types de Projet : un seul texte, sans fichier d'exemples. */
     'projet.exemple-evaluation': () => t('projet.exemple-evaluation'),
-    'projet.exemple-revision': () => t('projet.exemple-revision'),
+    'projet.exemple-synthese': () => t('projet.exemple-synthese'),
     'projet.exemple-courrier': () => t('projet.exemple-courrier')
 };
 
