@@ -10,7 +10,7 @@ N'ajoute aucun emoji. Garde ceux du texte d'origine, sans les traduire ni les re
 
 1. Conserve le ton, le registre et la mise en forme du texte original (gras, italique, listes, retours à la ligne).
 2. Si le texte est déjà intégralement dans la langue cible, retourne-le tel quel.
-3. Privilégie une traduction naturelle et idiomatique. Ne fais JAMAIS de traduction mot-à-mot. Chaque phrase doit sonner comme si elle avait été écrite directement dans la langue cible.
+3. Privilégie une traduction naturelle et idiomatique. Ne fais JAMAIS de traduction mot à mot. Chaque phrase doit sonner comme si elle avait été écrite directement dans la langue cible.
 
 ## Ce qu'il ne faut PAS traduire
 

@@ -7,12 +7,12 @@ Voir `n8n/sspcloud.md`.
 ## Sources de recherche ouvertes (note d'un autre agent)
 
 Piste pour élargir la recherche au-delà de Wikipédia. Note reçue telle quelle,
-non vérifiée, et déjà contredite en partie par les essais consignés dans le
+non vérifiée et déjà contredite en partie par les essais consignés dans le
 README : Marginalia et SearXNG public ont été testés le 20 septembre 2026 et ne
 renvoient aucun en-tête CORS, là où la note les donne pour utilisables ou "à
 vérifier". Tout retester avant d'ouvrir le chantier.
 
-Jamais essayées ici, et c'est là que la note est utile : Wikidata, OpenAlex,
+Jamais essayées ici (et c'est là que la note est utile) : Wikidata, OpenAlex,
 Crossref, HAL, Openverse, Internet Archive, Open Library, Nominatim,
 data.gouv.fr, Recherche d'entreprises. Toutes sans clé.
 

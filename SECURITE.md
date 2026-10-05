@@ -19,7 +19,7 @@ Navigateur (Pages) -> webhook n8n -> https://albert.api.etalab.gouv.fr
 ### Réseau
 
 - **Destinations de la page**, fixées par la CSP `connect-src` (vérifiée en
-  ligne) : le relais n8n, et si la recherche est activée
+  ligne) : le relais n8n et, si la recherche est activée,
   `{fr,en,es,de}.wikipedia.org`, `www.googleapis.com`, `www.mojeek.com`.
 - **Destinations du relais :** `/v1/chat/completions`, `/v1/models` et
   `/v1/audio/transcriptions` chez Albert, adresses fixées dans le workflow.
@@ -30,7 +30,7 @@ Navigateur (Pages) -> webhook n8n -> https://albert.api.etalab.gouv.fr
 - **Sources affichées sous une réponse :** titres et adresses renvoyés par le
   moteur. Rien n'est chargé depuis ces domaines, seulement des liens à cliquer.
 - **Images de Commons :** si l'outil Images est activé, le modèle cherche des
-  fichiers sur Commons (mots envoyés à `commons.wikimedia.org`), et un lien vers un fichier
+  fichiers sur Commons (mots envoyés à `commons.wikimedia.org`) et un lien vers un fichier
   de `commons.wikimedia.org` affiche sa miniature, servie par
   `upload.wikimedia.org` ou `thumb.wikimedia.org`. Wikimedia voit l'adresse IP.
   Le bouton de téléchargement récupère l'original sur `upload.wikimedia.org`
@@ -43,7 +43,7 @@ Navigateur (Pages) -> webhook n8n -> https://albert.api.etalab.gouv.fr
   `data.geopf.fr`, `geo.api.gouv.fr`, `boamp-datadila.opendatasoft.com`). Les
   noms des dirigeants d'entreprise ne sont pas transmis au modèle.
 - **Aucun CDN, aucune télémétrie.** Les sept bibliothèques sont servies depuis
-  Pages, le QR code est calculé dans le navigateur, et la version affichée dans
+  Pages, le QR code est calculé dans le navigateur et la version affichée dans
   "À propos" est écrite au déploiement : aucune requête vers la forge.
 
 ### Stockage dans le navigateur (préfixe `albert-go.`)
@@ -68,7 +68,7 @@ Navigateur (Pages) -> webhook n8n -> https://albert.api.etalab.gouv.fr
 - L'effacement est explicite, le navigateur restaurant `sessionStorage` quand on
   rouvre un onglet fermé : `pagehide` pose une marque, le chargement suivant
   efface si ce n'est pas un rechargement. Un onglet gelé en arrière-plan garde
-  ses données, et Ctrl+Maj+T peut le rouvrir avec sa clé et sa bibliothèque.
+  ses données et Ctrl+Maj+T peut le rouvrir avec sa clé et sa bibliothèque.
 - **Réglages** (`localStorage`, sans limite de durée) : modèle, température, top-k,
   contexte, thème, langue, voix en ligne, moteur, identifiant `cx`. Aucune donnée
   personnelle.
@@ -98,7 +98,7 @@ Navigateur (Pages) -> webhook n8n -> https://albert.api.etalab.gouv.fr
 | Conservation de la clé côté serveur | Sauvegarde des exécutions n8n désactivée, vérifiée après un appel réel. |
 | Bibliothèque compromise | Sept bibliothèques, aucune dépendance de construction. Six identiques octet pour octet au paquet npm, la septième en I11. `npm audit` : rien. |
 | Lien piégé dans une réponse | Liens ouverts avec `rel="noopener noreferrer"`, qui coupe aussi le `Referer` : la page visée ne sait pas d'où vient le clic. |
-| Adresse piégée dans les sources listées sous une réponse | Ces adresses viennent du moteur, pas du modèle. Elles passent par le même contrôle que les liens d'une réponse (`Rendu.urlDangereuse`) avant de devenir cliquables, et leur titre est inséré par `textContent`. |
+| Adresse piégée dans les sources listées sous une réponse | Ces adresses viennent du moteur, pas du modèle. Elles passent par le même contrôle que les liens d'une réponse (`Rendu.urlDangereuse`) avant de devenir cliquables et leur titre est inséré par `textContent`. |
 | Consigne cachée dans une page trouvée par la recherche | Recherche désactivée par défaut, Wikipédia par défaut, extraits tronqués, aucune capacité hors chercher. Détail en I9. |
 | Clé ou questions lues sur un poste partagé | Mode partagé par défaut : tout le sensible en `sessionStorage`, effacé à la fermeture. |
 | Page intégrée dans le cadre d'un autre site | La page détecte le cadre et n'affiche qu'un lien vers elle-même. |
@@ -121,7 +121,7 @@ l'est pas, voir I11. `npm audit` sur les sept versions, le 2026-09-24 : rien.
 | N° | Gravité | Constat | Recommandation |
 |---|---|---|---|
 | I9 | Moyenne | Recherche activée, le texte des pages trouvées entre tel quel dans le contexte du modèle (`tools/recherche.js`). Une page bien classée sur la requête peut donc lui dicter sa réponse. Le modèle ne sait rien faire d'autre que chercher et sa réponse est assainie : le risque est une réponse orientée ou un lien trompeur présenté comme sourcé. | Afficher les adresses consultées sous la réponse, pas seulement les mots cherchés. Dire dans l'aide que les extraits viennent du web et ne sont pas vérifiés. |
-| I10 | Faible | L'identifiant `cx` n'est pas encodé dans l'adresse Google, contrairement à la clé et à la question. Seul l'utilisateur remplit ce champ, et l'hôte reste fixe : il ne peut nuire qu'à lui-même. | `encodeURIComponent(this.CX)`. |
+| I10 | Faible | L'identifiant `cx` n'est pas encodé dans l'adresse Google, contrairement à la clé et à la question. Seul l'utilisateur remplit ce champ et l'hôte reste fixe : il ne peut nuire qu'à lui-même. | `encodeURIComponent(this.CX)`. |
 | I11 | Faible | Le Marked embarqué vient de jsDelivr (`Minified by jsDelivr using Terser v5.39.0`), un fichier généré à la demande : impossible à vérifier octet pour octet, contrairement aux quatre autres. Contrôle de repli : sortie identique à `marked@17.0.1/lib/marked.umd.js` sur 14 entrées, dont HTML brut et URL `javascript:`. | Embarquer `lib/marked.umd.js` du paquet npm. |
 | I12 | Élevée | Pas de `.gitignore` dans le dépôt. Un `.env` portant une vraie clé Albert est à la racine du répertoire de travail, ignoré seulement par le `~/.config/git/ignore` du poste. Il n'a jamais été suivi et l'arbre suivi ne contient aucun secret, mais la protection ne suit pas le dépôt : ailleurs, un `git add .` publierait la clé. | Ajouter un `.gitignore`. |
 
@@ -145,7 +145,7 @@ Boîte noire depuis un poste extérieur, le 2026-09-21, avec `curl` et `openssl`
 
 | N° | Gravité | Constat | Recommandation |
 |---|---|---|---|
-| E1 | Moyenne | Reconduit du 2026-09-18. Pas de limite de débit, et le webhook reste appelable hors navigateur, où CORS ne s'applique pas. Revérifié : cinq requêtes sans clé toutes servies, corps de 2 Mo lu en entier avant le 401. Depuis I8, Albert n'est plus sollicité sans clé : l'abus se limite aux ressources de n8n. | Demander une limite de débit par adresse IP aux administrateurs. |
+| E1 | Moyenne | Reconduit du 2026-09-18. Pas de limite de débit. Le webhook reste appelable hors navigateur, où CORS ne s'applique pas. Revérifié : cinq requêtes sans clé toutes servies, corps de 2 Mo lu en entier avant le 401. Depuis I8, Albert n'est plus sollicité sans clé : l'abus se limite aux ressources de n8n. | Demander une limite de débit par adresse IP aux administrateurs. |
 | E3 | Faible | Reconduit du 2026-09-18. Pages n'envoie pas `X-Content-Type-Options: nosniff`. Sans effet ici : tous les fichiers sont servis avec leur type exact. | À signaler à l'équipe de la Forge. |
 | E5 | Info | Le HSTS de Pages n'a ni `includeSubDomains` ni `preload`. Pages n'accepte pas d'en-tête sur mesure. | À signaler avec E3. |
 | E6 | Info | Recherche activée, le navigateur appelle le moteur en direct : celui-ci voit l'adresse IP de l'utilisateur et les mots de la requête. Pas un défaut, mais un périmètre nouveau depuis le dernier audit. | Le dire dans l'aide des réglages (I9) et dans la section RGPD. |
@@ -160,7 +160,7 @@ Boîte noire depuis un poste extérieur, le 2026-09-21, avec `curl` et `openssl`
 | I6 | Corrigé le 2026-09-18 : KaTeX 0.16.47. Confirmé identique, polices comprises. |
 | I7 | Sans objet : `/v1/models` sert à lister les modèles disponibles, avec la même vérification de clé. |
 | I8 | Corrigé le 2026-09-18 : nœud "Clé présente ?". Revérifié en ligne ce jour. |
-| I9 | Corrigé le 2026-09-26 : pages consultées en liens sous la réponse, et l'aide des outils Internet dit que leurs textes ne sont pas vérifiés. |
+| I9 | Corrigé le 2026-09-26 : pages consultées en liens sous la réponse. L'aide des outils Internet dit que leurs textes ne sont pas vérifiés. |
 | I10 | Corrigé le 2026-09-21 : `encodeURIComponent(this.CX)`. |
 | I11 | Ouvert : prendre le Marked du paquet npm. |
 | I12 | Corrigé le 2026-09-21 : `.gitignore` au dépôt. Le `.env` reste, il sert aux outils du poste. |
@@ -172,7 +172,7 @@ Boîte noire depuis un poste extérieur, le 2026-09-21, avec `curl` et `openssl`
 
 ## Pratiques de développement
 
-- Aucune dépendance de construction : ni bundler, ni `npm install` pour publier.
+- Aucune dépendance de construction : ni bundler ni `npm install` pour publier.
 - Cinq bibliothèques embarquées, versions et provenances dans
   `public/vendor/README.md`. Aucun appel à un CDN.
 - Pas de code dynamique : aucun `eval`, aucun script en ligne (interdit par la CSP).
@@ -193,15 +193,15 @@ Boîte noire depuis un poste extérieur, le 2026-09-21, avec `curl` et `openssl`
   de la requête, que le modèle tire de la question, plus l'adresse IP et le
   `User-Agent`, que toute requête web révèle. L'appel part du navigateur, sans
   relais. Le moteur choisi décide qui reçoit tout cela : Wikimedia Foundation
-  (par défaut, sans clé), Mojeek Ltd, ou Google via `googleapis.com`, soumis au
+  (par défaut, sans clé), Mojeek Ltd ou Google via `googleapis.com`, soumis au
   Cloud Act. C'est le seul tiers du parcours qui ne soit pas un service de
   l'État, d'où le réglage désactivé par défaut et Wikipédia en premier choix.
 - Hébergement de l'instance n8n et conservation des requêtes par Albert : non vérifiés.
 - Dans le navigateur : réglages sans limite de durée ; clés, questions,
   conversations, documents et bibliothèque de sources jusqu'à la fermeture de
   l'onglet, sauf si le mode partagé est désactivé. La bibliothèque n'a alors ni
-  plafond ni date : supprimer un document, ou le voir sortir des dix gardés, y
-  laisse ses sources ; elle se vide fichier par fichier, ou d'un coup avec "Vider la
+  plafond ni date : supprimer un document ou le voir sortir des dix gardés y
+  laisse ses sources ; elle se vide fichier par fichier ou d'un coup avec "Vider la
   bibliothèque".
 
 ## Auto-évaluation ANSSI-PA-102
@@ -210,7 +210,7 @@ Boîte noire depuis un poste extérieur, le 2026-09-21, avec `curl` et `openssl`
 vise un système d'IA générative complet, de l'entraînement à l'exploitation.
 Albert Go est une page cliente devant un système tiers : il n'entraîne,
 n'héberge et ne sert aucun modèle. Seules figurent ici les recommandations sur
-lesquelles il a prise, ou qu'il déplace vers quelqu'un d'autre.
+lesquelles il a prise ou qu'il déplace vers quelqu'un d'autre.
 
 | Reco | Statut | Ce qu'il en est |
 |------|--------|-----------------|
@@ -225,9 +225,9 @@ lesquelles il a prise, ou qu'il déplace vers quelqu'un d'autre.
 | R22 Chaîne de déploiement sécurisée | Couverte | Publication automatique depuis la branche par défaut. Le commit publié est écrit dans la page : on vérifie de l'extérieur que la production est bien le dépôt. Refait ce jour. |
 | R23 Audit de sécurité avant production | Non couverte | Aucune revue externe. Ce document en tient lieu, à ses limites près. |
 | R24 Tests fonctionnels avant production | Couverte | 35 tests `node --test`, plus les tests en boîte noire ci-dessus. |
-| R25 Filtrage des entrées et des sorties | Partielle | En sortie, le HTML est assaini, et les liens comme les adresses des sources passent par `Rendu.urlDangereuse`. En entrée, les fichiers joints sont bornés et convertis, mais les pages trouvées par la recherche ne sont pas filtrées (I9). |
+| R25 Filtrage des entrées et des sorties | Partielle | En sortie, le HTML est assaini et les liens comme les adresses des sources passent par `Rendu.urlDangereuse`. En entrée, les fichiers joints sont bornés et convertis, mais les pages trouvées par la recherche ne sont pas filtrées (I9). |
 | R26 Interactions maîtrisées | Couverte | Destinations fermées par la CSP et vérifiées en ligne. Aucune destination découverte à l'exécution, aucun CDN, aucune télémétrie. |
-| R27 Limiter les actions automatiques sur entrées non maîtrisées | Partielle | Le modèle décide seul quand chercher, sur du texte venu du web ouvert (I9). Cette décision ne déclenche qu'un `GET` vers le moteur, et la réponse reste du texte. |
+| R27 Limiter les actions automatiques sur entrées non maîtrisées | Partielle | Le modèle décide seul quand chercher, sur du texte venu du web ouvert (I9). Cette décision ne déclenche qu'un `GET` vers le moteur et la réponse reste du texte. |
 | R29 Journalisation | Partielle | Exécutions n8n non enregistrées, pas de télémétrie dans la page. Seul un nombre d'appels par jour est gardé 90 jours. Les journaux d'accès relèvent des hébergeurs. |
 | R30 à R32 Contrôle du code généré par IA | Côté utilisateur | Albert Go affiche du texte, code compris, que l'utilisateur relit et exécute ailleurs s'il le veut. |
 | R33 Durcissement des services grand public | Partielle | Page publique pour les agents de l'État : CSP fermée, pas de cadrage, pas de script en ligne, pas de stockage persistant par défaut. Les en-têtes manquants (E3, E5) ne sont pas à notre main. |
