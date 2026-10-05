@@ -438,9 +438,87 @@ test('messagesProjet : la demande, précédée de la version en cours du documen
     assert.deepStrictEqual(Albert.messagesProjet(conv), [
         { role: 'user', content: 'Ajoute un exercice' },
         { role: 'assistant', content: 'Version 2' },
-        { role: 'user', content: 'Barème sur 10' }
+        /* Le rappel suit la demande : sans lui, le modèle rend parfois la seule partie modifiée. */
+        { role: 'user', content: 'Barème sur 10\n\n' + I18n.t('demande.document-entier') }
     ]);
+    /* Une phrase, pas la clé rendue faute de texte. */
+    assert.match(I18n.t('demande.document-entier'), / /);
+    /* Première demande : aucun document à rendre entier, et la conversation gardée reste sans rappel. */
     assert.deepStrictEqual(Albert.messagesProjet(conv.slice(0, 1)), [{ role: 'user', content: 'Fais une évaluation' }]);
+    assert.strictEqual(conv[4].content, 'Barème sur 10');
+});
+
+/* Trois versions d'un document, chacune avec sa demande. */
+const TROIS_VERSIONS = [
+    { role: 'user', content: 'Consigne : Fais une évaluation', affiche: 'Fais une évaluation' },
+    { role: 'assistant', content: 'Version 1' },
+    { role: 'user', content: 'Ajoute un exercice' },
+    { role: 'assistant', content: 'Version 2' },
+    { role: 'user', content: 'Barème sur 10' },
+    { role: 'assistant', content: 'Version 3' }
+];
+
+test('numeroterVersions : un numéro par version, à partir de 0, qui la suit quand elle est reprise', () => {
+    const numerotee = Albert.numeroterVersions(TROIS_VERSIONS);
+    assert.deepStrictEqual(Albert.versionsProjet(numerotee).map(v => v.numero), [0, 1, 2]);
+    /* Reprise, la version 0 passe en dernier mais garde son numéro. */
+    const reprise = Albert.reprendreVersion(numerotee, 1);
+    assert.deepStrictEqual(Albert.versionsProjet(reprise).map(v => v.numero), [1, 2, 0]);
+    /* La version suivante prend la suite du plus grand numéro, même si une autre est sortie. */
+    const suite = Albert.numeroterVersions([...reprise.slice(2), { role: 'user', content: 'Suite' }, { role: 'assistant', content: 'Version 4' }]);
+    assert.deepStrictEqual(Albert.versionsProjet(suite).map(v => v.numero), [2, 0, 3]);
+    assert.strictEqual(TROIS_VERSIONS[1].version, undefined);
+});
+
+test('versionsProjet : passé le plafond, les numéros continuent de monter', () => {
+    let conv = [];
+    for (let i = 0; i < Albert.VERSIONS_MAX + 3; i += 1) {
+        conv = Albert.limiterVersions(Albert.numeroterVersions([...conv, { role: 'user', content: 'Demande ' + i }, { role: 'assistant', content: 'Version ' + i }]));
+    }
+    assert.deepStrictEqual(Albert.versionsProjet(conv).map(v => v.numero), [3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+});
+
+test('versionsProjet : une version par réponse, nommée par sa demande affichée', () => {
+    assert.deepStrictEqual(Albert.versionsProjet(Albert.numeroterVersions(TROIS_VERSIONS)), [
+        { rang: 1, demande: 'Fais une évaluation', numero: 0, date: undefined },
+        { rang: 3, demande: 'Ajoute un exercice', numero: 1, date: undefined },
+        { rang: 5, demande: 'Barème sur 10', numero: 2, date: undefined }
+    ]);
+    /* L'heure de la version, notée à sa réception. */
+    assert.strictEqual(Albert.versionsProjet([{ role: 'user', content: 'a' }, { role: 'assistant', content: 'b', date: 5 }])[0].date, 5);
+    /* Une demande en attente n'est pas une version. */
+    assert.strictEqual(Albert.versionsProjet(TROIS_VERSIONS.slice(0, 5)).length, 2);
+});
+
+test('reprendreVersion : la version reprise passe en dernier avec sa demande, rien ne sort', () => {
+    const reprise = Albert.reprendreVersion(TROIS_VERSIONS, 1);
+    assert.deepStrictEqual(reprise.map(m => m.content),
+        ['Ajoute un exercice', 'Version 2', 'Barème sur 10', 'Version 3', 'Consigne : Fais une évaluation', 'Version 1']);
+    /* C'est elle qui part avec la demande suivante. */
+    assert.strictEqual(Albert.messagesProjet([...reprise, { role: 'user', content: 'Suite' }])[1].content, 'Version 1');
+    assert.strictEqual(TROIS_VERSIONS[1].content, 'Version 1');
+});
+
+test('limiterVersions : au-delà du plafond, les plus anciennes sortent avec leur demande', () => {
+    const conv = Array.from({ length: Albert.VERSIONS_MAX + 2 }, (_, i) => [
+        { role: 'user', content: 'Demande ' + i },
+        { role: 'assistant', content: 'Version ' + i }
+    ]).flat();
+    const gardees = Albert.limiterVersions(conv);
+    assert.strictEqual(gardees.length, 2 * Albert.VERSIONS_MAX);
+    assert.strictEqual(gardees[0].content, 'Demande 2');
+    assert.strictEqual(gardees.at(-1).content, 'Version ' + (Albert.VERSIONS_MAX + 1));
+    /* Sous le plafond, rien ne change. */
+    assert.strictEqual(Albert.limiterVersions(TROIS_VERSIONS), TROIS_VERSIONS);
+});
+
+test('entreeConversation : le titre d\'un document ne suit pas ses versions', () => {
+    const avant = Albert.entreeConversation('p', 'projet', TROIS_VERSIONS);
+    const apres = Albert.entreeConversation('p', 'projet', Albert.reprendreVersion(TROIS_VERSIONS, 1).slice(2), [], '', avant);
+    assert.strictEqual(apres.titre, 'Fais une évaluation');
+    /* Document qui n'avait que des sources : le titre devient sa première demande. */
+    const sources = Albert.entreeConversation('p', 'projet', [], [{ nom: 'cours.pdf', texte: 'a' }]);
+    assert.strictEqual(Albert.entreeConversation('p', 'projet', TROIS_VERSIONS, [], '', sources).titre, 'Fais une évaluation');
 });
 
 test('formuleOdt : la source LaTeX d\'un objet formule, sinon son écriture LibreOffice', () => {

@@ -224,7 +224,12 @@ hidden et le focus (autofocus, bouton du volet) ne pourrait pas y entrer. */
 .volet-droit:not([open]) { transform: translateX(100%); }
 .volet-droit .volet-contenu > :not(.volet-titre, hr) { margin-left: 0.75rem; margin-right: 0.75rem; }
 .resume-bibliotheque { color: var(--texte-doux); font-size: 0.8125rem; }
-.fermer-bibliotheque { flex: none; width: 2.25rem; height: 2.25rem; }
+/* Tiroir : la flèche de fermeture, en haut à droite, sur la ligne du titre. */
+.fermer-bibliotheque { position: absolute; top: 1rem; right: 0.5rem; width: 2.25rem; height: 2.25rem; }
+/* Bibliothèque et historique : deux sections repliables, leur titre dans le summary. */
+.volet-droit summary { cursor: pointer; }
+.volet-droit summary h2 { display: inline; padding: 0; }
+.volet-droit details hr { width: auto; margin: 0.5rem 0; }
 /* À droite de l'en-tête, même quand le titre est sorti de l'écran (grand écran). */
 #ouvrir-bibliotheque { flex: none; margin-left: auto; }
 .volet-droit .deposer { justify-self: start; }

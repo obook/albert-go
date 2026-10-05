@@ -42,6 +42,9 @@ const Albert = {
     /** Longueur maximale du nom d'un projet. */
     NOM_PROJET_MAX: 40,
 
+    /** Nombre de versions gardées pour un document d'Imprimerie. */
+    VERSIONS_MAX: 10,
+
     /*
     Liste de secours si /v1/models ne répond pas (relevée le 2 octobre 2026).
     Albert peut changer le modèle derrière un alias : /v1/models fait foi.
@@ -757,18 +760,21 @@ const Albert = {
      * @param {Array<Object>} messages - Messages de la conversation.
      * @param {Object[]} [documents] - Sources cochées d'un projet.
      * @param {string} [nom] - Nom donné au projet.
+     * @param {?Object} [ancienne] - Entrée déjà enregistrée du projet : son titre est gardé.
      * @returns {?Object} Entrée { id, outil, titre, date, messages, sources?, nom? }, ou null s'il n'y a ni question ni source.
      */
-    entreeConversation(id, outil, messages, documents = [], nom = '') {
+    entreeConversation(id, outil, messages, documents = [], nom = '', ancienne = null) {
         const premiere = messages.find(m => m.role === 'user');
         if (!premiere && !documents.length) {
             return null;
         }
+        /* Projet : la première demande peut sortir de l'historique des versions, le titre reste. */
+        const garde = ancienne && ancienne.messages.length ? ancienne.titre : '';
         const entree = {
             id: id,
             outil: outil,
             /* Projet sans question : le nom de son premier document. */
-            titre: premiere ? premiere.affiche || premiere.content : documents[0].nom,
+            titre: garde || (premiere ? premiere.affiche || premiere.content : documents[0].nom),
             date: Date.now(),
             /* Copie : la conversation en cours continue de changer. */
             messages: messages.slice()
@@ -973,7 +979,68 @@ const Albert = {
      * @returns {Object[]} Trois messages { role, content } au plus.
      */
     messagesProjet(conversation) {
-        return conversation.slice(-3).map(m => ({ role: m.role, content: m.content }));
+        const messages = conversation.slice(-3).map(m => ({ role: m.role, content: m.content }));
+        /* Une version existe : sans ce rappel après la demande, le modèle rend parfois la seule partie modifiée. */
+        if (messages.some(m => m.role === 'assistant')) {
+            messages.at(-1).content += '\n\n' + t('demande.document-entier');
+        }
+        return messages;
+    },
+
+    /**
+     * Versions d'un document : chaque réponse, avec la demande qui l'a produite.
+     *
+     * @param {Object[]} conversation - Messages du projet.
+     * @returns {{rang: number, demande: string, numero: number, date: ?number}[]} Dans l'ordre de la conversation ; rang de la réponse.
+     */
+    versionsProjet(conversation) {
+        return conversation.flatMap((m, i) => {
+            const avant = conversation[i - 1];
+            const demande = avant && avant.role === 'user' ? avant.affiche || avant.content : '';
+            /* Le numéro affiché part de 0 : le champ version, lui, part de 1. */
+            return m.role === 'assistant' ? [{ rang: i, demande: demande, numero: m.version - 1, date: m.date }] : [];
+        });
+    },
+
+    /**
+     * Numérote les versions qui n'ont pas de numéro, à la suite du plus grand : il les suit ensuite.
+     *
+     * @param {Object[]} conversation - Messages du projet.
+     * @returns {Object[]} Nouvelle conversation, chaque réponse avec son champ version, à partir de 1.
+     */
+    numeroterVersions(conversation) {
+        let dernier = Math.max(0, ...conversation.map(m => m.version || 0));
+        return conversation.map((m) => {
+            if (m.role !== 'assistant' || m.version) {
+                return m;
+            }
+            dernier += 1;
+            return { ...m, version: dernier };
+        });
+    },
+
+    /**
+     * Reprend une version : elle passe en dernier avec sa demande, et redevient le document en cours.
+     *
+     * @param {Object[]} conversation - Messages du projet.
+     * @param {number} rang - Rang de la réponse reprise.
+     * @returns {Object[]} Nouvelle conversation, aucune version n'en sort.
+     */
+    reprendreVersion(conversation, rang) {
+        const debut = rang > 0 && conversation[rang - 1].role === 'user' ? rang - 1 : rang;
+        return [...conversation.slice(0, debut), ...conversation.slice(rang + 1), ...conversation.slice(debut, rang + 1)];
+    },
+
+    /**
+     * Garde les dernières versions d'un document (VERSIONS_MAX).
+     *
+     * @param {Object[]} conversation - Messages du projet.
+     * @returns {Object[]} La conversation, sans ses versions les plus anciennes.
+     */
+    limiterVersions(conversation) {
+        const versions = this.versionsProjet(conversation);
+        const trop = versions.length - this.VERSIONS_MAX;
+        return trop > 0 ? conversation.slice(versions[trop - 1].rang + 1) : conversation;
     },
 
     /**

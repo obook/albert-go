@@ -181,6 +181,7 @@ function afficherDocuments() {
     $('nom-projet').value = nomProjet;
     afficherResumeSources();
     $('vider-bibliotheque').hidden = !bibliotheque.length;
+    afficherVersions();
     $('liste-documents').replaceChildren(...bibliotheque.map((doc) => {
         const ligne = document.createElement('li');
         const coche = document.createElement('input');
@@ -201,6 +202,59 @@ function afficherDocuments() {
         ligne.append(coche, nom, supprimer);
         return ligne;
     }));
+}
+
+/**
+ * Met la liste des versions du volet à jour : une ligne par version, la plus récente en tête, la version affichée en gras.
+ */
+function afficherVersions() {
+    const versions = Albert.versionsProjet(conversation);
+    /* La version affichée est la dernière de la conversation, reprise ou reçue. */
+    const affichee = versions.at(-1);
+    $('versions').hidden = $('trait-versions').hidden = versions.length < 2;
+    $('liste-versions').replaceChildren(...versions.sort((a, b) => b.numero - a.numero).map((version) => {
+        const ligne = document.createElement('li');
+        /* La version affichée ne se clique pas. */
+        const nom = document.createElement(version === affichee ? 'span' : 'button');
+        nom.className = 'nom-source';
+        /* Numéro, heure si elle a été notée, puis la demande : le CSS la coupe en bout de ligne. */
+        nom.textContent = version.numero + '. ' + (version.date ? I18n.heure(version.date) + ' - ' : '') + version.demande;
+        /* Infobulle : la demande en entier, puis la date et l'heure, comme dans le menu. */
+        nom.title = version.demande + (version.date ? '\n' + I18n.dateHeure(version.date) : '');
+        if (version === affichee) {
+            nom.setAttribute('aria-current', 'true');
+        } else {
+            nom.type = 'button';
+            nom.addEventListener('click', () => choisirVersion(version.rang));
+        }
+        ligne.append(nom);
+        return ligne;
+    }));
+}
+
+/**
+ * Reprend une version : elle redevient le document affiché, base de la demande suivante.
+ *
+ * @param {number} rang - Rang de sa réponse dans la conversation.
+ */
+function choisirVersion(rang) {
+    /* Une réponse est attendue : elle se poserait sur une autre version. */
+    if (annulation) {
+        return;
+    }
+    if (typeof speechSynthesis !== 'undefined') {
+        Lecture.arreter();
+    }
+    conversation = Albert.reprendreVersion(conversation, rang);
+    afficherFil();
+    afficherVersions();
+    sauverConversation();
+    /* Tiroir : il se referme pour montrer le document. */
+    if ($('bibliotheque').matches(':modal')) {
+        $('bibliotheque').close();
+    } else {
+        focusSaisie();
+    }
 }
 
 /**

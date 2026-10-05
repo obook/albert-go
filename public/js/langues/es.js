@@ -60,6 +60,7 @@ I18n.TEXTES.es = {
     'bibliotheque.ouvrir': 'Abrir la biblioteca',
     'bibliotheque.fermer': 'Cerrar la biblioteca',
     'bibliotheque.vider': 'Vaciar la biblioteca',
+    'versions.titre': 'Versiones',
     'confirmer-suppression.bibliotheque': '¿Vaciar la biblioteca?',
     'confirmer-suppression.bibliotheque-texte': 'Todos los archivos se eliminarán y saldrán de todos los documentos.',
     'documents.resume': 'En uso: {coches} de {nombre}',
@@ -403,6 +404,7 @@ I18n.TEXTES.es = {
     'demande.traduire': 'Traduce este texto al {cible}:\n\n{texte}',
     'demande.traduire-source': 'Traduce este texto al {cible} (idioma de origen: {source}):\n\n{texte}',
     'demande.fichier': 'Contenido del archivo "{nom}":\n\n{texte}',
+    'demande.document-entier': 'Devuelve el documento entero, actualizado, sin escribir nada antes ni después. Lo que la petición no toca queda tal cual.',
     'demande.image': 'Transcribe fielmente todo el texto visible en esta imagen, en Markdown. '
         + 'Escribe las fórmulas en LaTeX entre $. Si la imagen contiene una figura o un esquema, '
         + 'descríbelo en unas frases. No respondas nada más.',

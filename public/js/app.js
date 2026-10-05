@@ -182,6 +182,11 @@ function recevoirReponse(reponse, outil) {
     /* Imprimerie : le gras est retiré avant l'affichage, l'export et la demande suivante. */
     const texte = Albert.OUTILS[outil].documents ? Albert.sansGras(reponse.texte) : reponse.texte;
     conversation.push({ role: 'assistant', content: texte, langue: langue, recherches: reponse.recherches, usage: reponse.usage });
+    if (Albert.OUTILS[outil].documents) {
+        /* Imprimerie : la version prend son heure et son numéro ; au-delà du plafond, la plus ancienne sort. */
+        conversation.at(-1).date = Date.now();
+        conversation = Albert.limiterVersions(Albert.numeroterVersions(conversation));
+    }
     ajouter('assistant', texte, langue, true, reponse.recherches);
     sauverConversation();
     afficherReglages();
