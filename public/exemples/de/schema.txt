@@ -1,4 +1,4 @@
-Zeichne ein Schema des Wasserkreislaufs, von der Verdunstung bis zur Rückkehr ins Meer.
+Zeichne ein Schema zum Ablauf eines Urlaubsantrags: Einreichung, Stellungnahme der Vorgesetzten, Genehmigung, Antwort an die Person.
 
 Zeichne ein Schema der Schritte, um einen Pfannkuchenteig zuzubereiten.
 

@@ -6,4 +6,4 @@ Draw one colour from: red, blue, green, yellow, purple.
 
 Split at random into two teams: lion, zebra, giraffe, elephant, hippopotamus, rhinoceros.
 
-Put in random order: cat, dog, rabbit, horse, turtle.
+Draw the speaking order of these departments: reception, accounting, human resources, IT, logistics.

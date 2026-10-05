@@ -14,3 +14,8 @@ Aufgaben und Klassenarbeiten:
 - Das Bewertungsschema ist eine Tabelle: Frage, Kompetenz, Punkte. Die Summe wird mit dem Rechner geprüft.
 - Die Lösung steht nach der Arbeit, unter dem Titel Lösung, nie zwischen den Fragen.
 - Jede Frage bezieht sich auf den Inhalt der Quellen.
+
+Vermerk und Protokoll:
+- Ein Vermerk hat einen Betreff, dann den Kontext, die Kernpunkte und die nächsten Schritte. Ohne Angabe: eine Seite.
+- Ein Protokoll hat das Datum, die Teilnehmenden, dann die Beschlüsse und die Aufgaben, jeweils mit Verantwortlichem und Frist, wenn die Quellen sie nennen.
+- Du gibst keine eigene Meinung ab: Du gibst wieder, was die Quellen sagen.

@@ -1,4 +1,4 @@
-Haz un esquema del ciclo del agua, desde la evaporación hasta el regreso al mar.
+Haz un esquema del circuito de una solicitud de permiso: presentación, opinión del responsable, validación, respuesta al agente.
 
 Haz un esquema de los pasos para preparar la masa de crepes.
 

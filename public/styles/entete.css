@@ -228,6 +228,9 @@ hidden et le focus (autofocus, bouton du volet) ne pourrait pas y entrer. */
 .fermer-bibliotheque { position: absolute; top: 1rem; right: 0.5rem; width: 2.25rem; height: 2.25rem; }
 /* Bibliothèque et historique : deux sections repliables, leur titre dans le summary. */
 .volet-droit summary { cursor: pointer; }
+/* Aide d'une section, sur la ligne de son titre ; dans le tiroir, elle laisse le coin à la flèche de fermeture. */
+.section-volet { position: relative; }
+.section-volet > .aide { position: absolute; top: -0.25rem; right: 2.75rem; width: 2.25rem; height: 2.25rem; }
 .volet-droit summary h2 { display: inline; padding: 0; }
 .volet-droit details hr { width: auto; margin: 0.5rem 0; }
 /* À droite de l'en-tête, même quand le titre est sorti de l'écran (grand écran). */
@@ -445,4 +448,5 @@ input.recherche-historique {
     .volet-droit:not([open]) { transform: none; }
     /* En colonne, le bouton de l'en-tête la replie. */
     .fermer-bibliotheque { display: none; }
+    .section-volet > .aide { right: 0; }
 }

@@ -14,3 +14,8 @@ Assignments and tests:
 - The marking scheme is a table: question, skill, marks. The total is checked with the calculator.
 - The answer key comes after the paper, under the heading Answer key, never mixed with the questions.
 - Every question is about the content of the sources.
+
+Notes and minutes:
+- A note has a subject, then the context, the key points and the next steps. If no length is given: one page.
+- Minutes have the date, the participants, then the decisions and the actions, each with its owner and its deadline when the sources give them.
+- You do not give your opinion: you report what the sources say.

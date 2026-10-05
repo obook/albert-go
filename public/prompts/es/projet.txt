@@ -14,3 +14,8 @@ Tareas y evaluaciones:
 - El baremo es una tabla: pregunta, competencia, puntos. El total se comprueba con la calculadora.
 - La corrección va después del enunciado, bajo el título Corrección, nunca mezclada con las preguntas.
 - Cada pregunta trata del contenido de las fuentes.
+
+Nota y acta:
+- Una nota tiene un asunto, luego el contexto, los puntos clave y los pasos siguientes. Sin indicación: una página.
+- Un acta tiene la fecha, los participantes, luego las decisiones y las acciones, cada una con su responsable y su plazo cuando las fuentes los indican.
+- No das tu opinión: recoges lo que dicen las fuentes.
