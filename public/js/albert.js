@@ -373,19 +373,48 @@ const Albert = {
     },
 
     /**
+     * Texte des segments de diarized_json : un tour de parole par ligne s'il y a plusieurs voix.
+     *
+     * Le champ text de la réponse colle alors les phrases sans espace : on repart des segments.
+     *
+     * @param {Array<{speaker: ?string, text: string}>} [segments] - Segments de la réponse.
+     * @returns {string} Vide sans segments ; d'un seul bloc pour une voix ou un locuteur inconnu.
+     */
+    texteParLocuteur(segments) {
+        if (!Array.isArray(segments)) {
+            return '';
+        }
+        const locuteurs = [...new Set(segments.map(s => s.speaker))];
+        if (locuteurs.length < 2 || segments.some(s => !s.speaker)) {
+            return segments.map(s => s.text.trim()).join(' ');
+        }
+        const tours = [];
+        for (const { speaker, text } of segments) {
+            const dernier = tours.at(-1);
+            if (dernier && dernier.speaker === speaker) {
+                dernier.texte += ' ' + text.trim();
+            } else {
+                tours.push({ speaker, texte: text.trim() });
+            }
+        }
+        return tours.map(tour => t('audio.tour', { n: locuteurs.indexOf(tour.speaker) + 1, texte: tour.texte })).join('\n');
+    },
+
+    /**
      * Fait transcrire un enregistrement par le modèle audio.
      *
      * @param {string} cle - Clé API de l'utilisateur.
      * @param {Blob} audio - Enregistrement MP3 ou WAV.
      * @param {string} nom - Nom du fichier, avec son extension.
      * @param {AbortSignal} annulation - Signal pour abandonner la lecture.
-     * @returns {Promise<string>} Texte entendu.
+     * @returns {Promise<string>} Texte entendu, par locuteur s'il y a plusieurs voix.
      * @throws {Error} Si Albert refuse l'enregistrement.
      */
     async transcrireAudio(cle, audio, nom, annulation) {
         const formulaire = new FormData();
         formulaire.append('file', audio, nom);
         formulaire.append('model', this.MODELE_AUDIO);
+        formulaire.append('response_format', 'diarized_json');
         const res = await fetch(this.BASE + '/audio/transcriptions', {
             method: 'POST',
             headers: { 'Authorization': 'Bearer ' + cle },
@@ -399,7 +428,7 @@ const Albert = {
         if (!corps || typeof corps.text !== 'string') {
             throw new Error(t('erreur.reponse-illisible'));
         }
-        return corps.text;
+        return this.texteParLocuteur(corps.segments) || corps.text;
     },
 
     /**

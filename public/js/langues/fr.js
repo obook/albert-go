@@ -399,6 +399,7 @@ I18n.TEXTES.fr = {
     'erreur.audio-long': 'Enregistrement trop long : environ 8 minutes au plus.',
     'erreur.audio-vide': 'Aucune parole entendue dans cet enregistrement.',
     'erreur.audio-illisible': 'Enregistrement illisible.',
+    'audio.tour': 'Locuteur {n} : {texte}',
     'erreur.hors-cadre': 'Ouvrir Albert Go dans son propre onglet',
 
     /* Textes envoyés au modèle. */

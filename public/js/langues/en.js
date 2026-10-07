@@ -399,6 +399,7 @@ I18n.TEXTES.en = {
     'erreur.audio-long': 'Recording too long: about 8 minutes at most.',
     'erreur.audio-vide': 'No speech heard in this recording.',
     'erreur.audio-illisible': 'Unreadable recording.',
+    'audio.tour': 'Speaker {n}: {texte}',
     'erreur.hors-cadre': 'Open Albert Go in its own tab',
 
     /* Text sent to the model. */
