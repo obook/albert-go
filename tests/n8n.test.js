@@ -76,3 +76,10 @@ test('Purger : lignes de plus de 90 jours', () => {
     const limite = new Function('return ' + condition.keyValue.slice(3, -2))();
     assert.strictEqual(limite, new Date(Date.now() - 89 * 864e5).toISOString().slice(0, 10));
 });
+
+test('Albert audio : le format de réponse suit la demande, json par défaut', () => {
+    const { value } = trouver('Albert audio').parameters.bodyParameters.parameters.find(p => p.name === 'response_format');
+    const evaluer = body => new Function('$json', 'return ' + value.slice(3, -2))({ body });
+    assert.strictEqual(evaluer({ response_format: 'diarized_json' }), 'diarized_json');
+    assert.strictEqual(evaluer({}), 'json');
+});

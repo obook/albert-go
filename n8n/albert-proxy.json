@@ -402,7 +402,8 @@
         "bodyParameters": {
           "parameters": [
             { "parameterType": "formBinaryData", "name": "file", "inputDataFieldName": "file" },
-            { "name": "model", "value": "={{ $json.body.model }}" }
+            { "name": "model", "value": "={{ $json.body.model }}" },
+            { "name": "response_format", "value": "={{ $json.body.response_format || 'json' }}" }
           ]
         },
         "options": {

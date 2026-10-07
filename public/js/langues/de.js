@@ -399,6 +399,7 @@ I18n.TEXTES.de = {
     'erreur.audio-long': 'Aufnahme zu lang: höchstens etwa 8 Minuten.',
     'erreur.audio-vide': 'In dieser Aufnahme ist keine Sprache zu hören.',
     'erreur.audio-illisible': 'Aufnahme nicht lesbar.',
+    'audio.tour': 'Sprecher {n}: {texte}',
     'erreur.hors-cadre': 'Albert Go in einem eigenen Tab öffnen',
 
     /* An das Modell gesendete Texte. */

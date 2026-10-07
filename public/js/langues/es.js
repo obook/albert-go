@@ -399,6 +399,7 @@ I18n.TEXTES.es = {
     'erreur.audio-long': 'Grabación demasiado larga: unos 8 minutos como máximo.',
     'erreur.audio-vide': 'No se oye ninguna voz en esta grabación.',
     'erreur.audio-illisible': 'Grabación ilegible.',
+    'audio.tour': 'Hablante {n}: {texte}',
     'erreur.hors-cadre': 'Abrir Albert Go en su propia pestaña',
 
     /* Textos enviados al modelo. */
