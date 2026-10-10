@@ -409,7 +409,8 @@
          aria-live="polite"></div>
 
     <dialog id="reglages" class="reglages pico" aria-labelledby="titre-reglages">
-        <form method="dialog">
+        <!-- autocomplete="off" : sinon Firefox rejoue d'anciennes valeurs au réveil d'un onglet déchargé. -->
+        <form method="dialog" autocomplete="off">
             <h2 id="titre-reglages" data-t="reglages.titre"></h2>
             <!-- Quatre cartes dépliables, la première ouverte. -->
             <details class="carte" name="reglages">
