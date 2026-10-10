@@ -115,7 +115,19 @@ test('joindre : question seule, fichier seul, les deux', () => {
     assert.strictEqual(Albert.joindre('Résume', piece), 'Résume\n\nContenu du fichier "notes.txt" :\n\nLigne 1');
 });
 
-test('avecImage : la dernière question porte l\'image, le reste ne change pas', () => {
+test('modeleImages : le modèle choisi s\'il lit les images, sinon le préféré, sinon aucun', () => {
+    const large = { id: 'openweight-large', type: 'texte' };
+    const small = { id: 'openweight-small', type: 'texte-images' };
+    const medium = { id: 'openweight-medium', type: 'texte-images' };
+    const gemma = { id: 'gemma-4-31b-it', type: 'texte-images' };
+    assert.strictEqual(Albert.modeleImages([large, small, medium, gemma], small), small);
+    assert.strictEqual(Albert.modeleImages([large, small, medium, gemma], large), gemma);
+    assert.strictEqual(Albert.modeleImages([large, small, medium], large), medium);
+    assert.strictEqual(Albert.modeleImages([large, small], large), small);
+    assert.strictEqual(Albert.modeleImages([large], large), null);
+});
+
+test('avecImage :la dernière question porte l\'image, le reste ne change pas', () => {
     const messages = [{ role: 'user', content: 'a' }, { role: 'assistant', content: 'b' }, { role: 'user', content: 'transcription' }];
     const image = { type: 'image_url', image_url: { url: 'data:image/jpeg;base64,AA' } };
     assert.deepStrictEqual(Albert.avecImage(messages, 'Décris', image.image_url.url),

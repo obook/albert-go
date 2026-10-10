@@ -146,9 +146,10 @@ function memoriser(question) {
  * @param {string} outil - Clé de Albert.OUTILS.
  * @param {string} question - Texte saisi, sans le fichier joint.
  * @param {?string} image - Image à montrer au modèle, ou null.
+ * @param {Object} modele - Modèle qui répond : celui des réglages, ou un lecteur d'images.
  * @returns {Promise<Object>} Réponse de Albert.repondre.
  */
-async function demanderReponse(outil, question, image) {
+async function demanderReponse(outil, question, image, modele) {
     /* Chaque outil a sa consigne système ; seuls les modules à fil envoient aussi la conversation. */
     const fil = Albert.OUTILS[outil].fil;
     let texteConsigne = await consigne(outil);
@@ -169,7 +170,7 @@ async function demanderReponse(outil, question, image) {
     /* Seuls les modules à fil proposent les outils calcul et recherche : les autres rendent un texte. */
     const envoi = fil ? repondreAvecOutils : Albert.repondre.bind(Albert);
     return envoi(reglages.cle, {
-        model: modeleActuel().id,
+        model: modele.id,
         temperature: reglages.temperature,
         ...Albert.topK(reglages.topK),
         messages: messages
@@ -249,13 +250,19 @@ async function envoyer() {
         toast(t('toast.liens'));
     }
 
-    /* Image vue par le modèle s'il lit les images ; sinon il n'en reçoit que la transcription, et on le dit. */
+    /* Image : un modèle qui lit les images répond à cette question, à la place du modèle choisi s'il le faut. */
     let image = null;
+    let modele = modeleActuel();
     if (piece && piece.image && Albert.OUTILS[outil].fil) {
-        if (modeleActuel().type === 'texte-images') {
-            image = piece.image;
+        const lecteur = Albert.modeleImages(modelesDispo, modele);
+        if (!lecteur) {
+            toast(t('toast.image-transcrite', { modele: modele.nom }));
         } else {
-            toast(t('toast.image-transcrite', { modele: modeleActuel().nom }));
+            image = piece.image;
+            if (lecteur !== modele) {
+                toast(t('toast.image-modele', { modele: lecteur.nom }));
+            }
+            modele = lecteur;
         }
     }
 
@@ -280,7 +287,7 @@ async function envoyer() {
     const retirerAttente = ajouterAttente(Albert.OUTILS[outil].documents ? affiche : '');
 
     try {
-        const reponse = await demanderReponse(outil, question, image);
+        const reponse = await demanderReponse(outil, question, image, modele);
         retirerAttente();
         if (conversation === courante) {
             recevoirReponse(reponse, outil);
