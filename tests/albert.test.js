@@ -115,6 +115,14 @@ test('joindre : question seule, fichier seul, les deux', () => {
     assert.strictEqual(Albert.joindre('Résume', piece), 'Résume\n\nContenu du fichier "notes.txt" :\n\nLigne 1');
 });
 
+test('avecImage : la dernière question porte l\'image, le reste ne change pas', () => {
+    const messages = [{ role: 'user', content: 'a' }, { role: 'assistant', content: 'b' }, { role: 'user', content: 'transcription' }];
+    const image = { type: 'image_url', image_url: { url: 'data:image/jpeg;base64,AA' } };
+    assert.deepStrictEqual(Albert.avecImage(messages, 'Décris', image.image_url.url),
+        [messages[0], messages[1], { role: 'user', content: [{ type: 'text', text: 'Décris' }, image] }]);
+    assert.deepStrictEqual(Albert.avecImage(messages, '', image.image_url.url).at(-1).content, [image]);
+});
+
 test('libelleConversation : l\'outil devant le titre, sauf Discuter', () => {
     assert.strictEqual(Albert.libelleConversation({ titre: 'Bonjour', outil: 'discuter' }), 'Bonjour');
     assert.strictEqual(Albert.libelleConversation({ titre: 'Bonjour', outil: 'traduire' }), 'Traduire : Bonjour');

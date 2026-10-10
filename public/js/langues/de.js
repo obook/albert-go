@@ -359,7 +359,8 @@ I18n.TEXTES.de = {
     'toast.conversation-longue': 'Gespräch zu lang zum Speichern. Es bleibt am Bildschirm, bis der Tab geschlossen wird.',
     'toast.memoire-pleine': 'Browserspeicher voll: {nombre} alte Gespräche gelöscht.',
     'toast.memoire-pleine-un': 'Browserspeicher voll: {nombre} altes Gespräch gelöscht.',
-    'toast.liens': 'Albert öffnet keine Links. Bei einer Webseite den Text einfügen oder als Datei anhängen.',
+    'toast.image-transcrite': '{modele} liest keine Bilder: Es erhält ihren Text.',
+    'toast.liens':'Albert öffnet keine Links. Bei einer Webseite den Text einfügen oder als Datei anhängen.',
     'toast.recherche-indisponible': 'Suche mit diesem Modell nicht verfügbar.',
     'toast.recherche-activee': 'Internet-Werkzeuge aktiviert',
     'toast.recherche-desactivee': 'Internet-Werkzeuge deaktiviert',
@@ -412,8 +413,10 @@ I18n.TEXTES.de = {
     'demande.fichier': 'Inhalt der Datei "{nom}":\n\n{texte}',
     'demande.document-entier': 'Gib das ganze Dokument aktualisiert zurück, ohne etwas davor oder danach zu schreiben. Was die Anfrage nicht betrifft, bleibt unverändert.',
     'demande.image': 'Übertrage getreu den gesamten sichtbaren Text dieses Bildes, in Markdown. '
-        + 'Schreibe Formeln in LaTeX zwischen $. Enthält das Bild eine Abbildung oder ein Schema, '
-        + 'beschreibe es in wenigen Sätzen. Antworte sonst nichts.',
+        + 'Schreibe Formeln in LaTeX zwischen $. Ein Schema, einen Baum oder ein Organigramm '
+        + 'überträgst du in einen ```mermaid-Block (flowchart TD, Beschriftungen in geraden '
+        + 'Anführungszeichen, "..." in einem leeren Feld), nie mit ausgerichteten Zeichen. '
+        + 'Eine andere Abbildung beschreibst du in wenigen Sätzen. Antworte sonst nichts.',
     'recherche.description': 'Sucht eine Information und liefert Auszüge mit Quelle. '
         + 'Aufzurufen für einen zu prüfenden Fakt, ein Datum, eine Zahl, eine Etymologie, '
         + 'eine Nachricht oder eine zu zitierende Quelle und jedes Mal, wenn du sonst aus '

@@ -144,9 +144,11 @@ function memoriser(question) {
  * Demande la réponse à Albert pour l'outil actif.
  *
  * @param {string} outil - Clé de Albert.OUTILS.
+ * @param {string} question - Texte saisi, sans le fichier joint.
+ * @param {?string} image - Image à montrer au modèle, ou null.
  * @returns {Promise<Object>} Réponse de Albert.repondre.
  */
-async function demanderReponse(outil) {
+async function demanderReponse(outil, question, image) {
     /* Chaque outil a sa consigne système ; seuls les modules à fil envoient aussi la conversation. */
     const fil = Albert.OUTILS[outil].fil;
     let texteConsigne = await consigne(outil);
@@ -157,6 +159,10 @@ async function demanderReponse(outil) {
     /* Projet : un seul document, seule sa version en cours accompagne la demande. */
     let messages = Albert.OUTILS[outil].documents ? Albert.messagesProjet(conversation)
         : Albert.messagesAEnvoyer(conversation, fil ? reglages.echanges : 0);
+    /* ponytail: l'image ne part qu'avec sa question ; aux tours suivants, le modèle relit sa transcription. */
+    if (image) {
+        messages = Albert.avecImage(messages, question, image);
+    }
     if (texteConsigne) {
         messages = [{ role: 'system', content: texteConsigne }, ...messages];
     }
@@ -243,6 +249,16 @@ async function envoyer() {
         toast(t('toast.liens'));
     }
 
+    /* Image vue par le modèle s'il lit les images ; sinon il n'en reçoit que la transcription, et on le dit. */
+    let image = null;
+    if (piece && piece.image && Albert.OUTILS[outil].fil) {
+        if (modeleActuel().type === 'texte-images') {
+            image = piece.image;
+        } else {
+            toast(t('toast.image-transcrite', { modele: modeleActuel().nom }));
+        }
+    }
+
     const affiche = Albert.texteAffiche(question, piece);
     const demande = Albert.construireDemande(outil, Albert.joindre(question, piece), langueSource, langueCible);
     conversation.push({ role: 'user', content: demande, affiche: affiche });
@@ -264,7 +280,7 @@ async function envoyer() {
     const retirerAttente = ajouterAttente(Albert.OUTILS[outil].documents ? affiche : '');
 
     try {
-        const reponse = await demanderReponse(outil);
+        const reponse = await demanderReponse(outil, question, image);
         retirerAttente();
         if (conversation === courante) {
             recevoirReponse(reponse, outil);

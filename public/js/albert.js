@@ -496,6 +496,22 @@ const Albert = {
     },
 
     /**
+     * Remplace la dernière question par la question et son image, pour un modèle qui lit les images.
+     *
+     * @param {Object[]} messages - Messages { role, content } à envoyer.
+     * @param {string} question - Texte saisi, éventuellement vide.
+     * @param {string} image - Image en data URL.
+     * @returns {Object[]} Messages, le dernier portant l'image.
+     */
+    avecImage(messages, question, image) {
+        const contenu = [{ type: 'image_url', image_url: { url: image } }];
+        if (question) {
+            contenu.unshift({ type: 'text', text: question });
+        }
+        return [...messages.slice(0, -1), { role: 'user', content: contenu }];
+    },
+
+    /**
      * Texte des documents d'un projet, mis à la suite de la consigne.
      *
      * @param {{nom: string, texte: string}[]} documents - Documents du projet.
