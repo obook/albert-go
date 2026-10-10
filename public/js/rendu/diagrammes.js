@@ -43,7 +43,7 @@ Object.assign(Rendu, {
         }
         const dessiner = (code) => mermaid.render('mermaid-' + Math.random().toString(36).slice(2), code);
         for (const bloc of mermaids) {
-            const code = this.chimieMermaid(bloc.textContent);
+            const code = this.formulesMermaid(this.chimieMermaid(bloc.textContent));
             let erreur;
             try {
                 const { svg } = await dessiner(code).catch((err) => {
@@ -126,6 +126,20 @@ Object.assign(Rendu, {
             code = code.slice(fin);
         }
         return sortie + code;
+    },
+
+    /**
+     * Retire les $ autour d'une formule dans un diagramme : Mermaid afficherait $-3$ tel quel.
+     *
+     * Un $ suivi ou précédé d'une espace est une monnaie : "5 $ et 10 $" ne change pas.
+     *
+     * @param {string} code - Code Mermaid.
+     * @returns {string} Code sans délimiteur de formule.
+     */
+    formulesMermaid(code) {
+        const signes = { '\\times': '×', '\\div': '÷', '\\cdot': '·' };
+        return code.replace(/\$(\S(?:[^$\n]*\S)?)\$/g,
+            (_, formule) => formule.replace(/\\(?:times|div|cdot)\b/g, (signe) => signes[signe]));
     },
 
     /**

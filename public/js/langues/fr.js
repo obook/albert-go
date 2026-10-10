@@ -359,7 +359,9 @@ I18n.TEXTES.fr = {
     'toast.conversation-longue': 'Conversation trop longue pour être enregistrée. Elle reste affichée jusqu\'à la fermeture de l\'onglet.',
     'toast.memoire-pleine': 'Mémoire du navigateur pleine : {nombre} anciennes conversations supprimées.',
     'toast.memoire-pleine-un': 'Mémoire du navigateur pleine : {nombre} ancienne conversation supprimée.',
-    'toast.liens': 'Albert n\'ouvre pas les liens. Pour une page web, collez son texte ou joignez-le en fichier.',
+    'toast.image-modele': 'Image : {modele} répond à cette question.',
+    'toast.image-transcrite':'{modele} ne lit pas les images : il reçoit leur texte.',
+    'toast.liens':'Albert n\'ouvre pas les liens. Pour une page web, collez son texte ou joignez-le en fichier.',
     'toast.recherche-indisponible': 'Recherche indisponible avec ce modèle.',
     'toast.recherche-activee': 'Outils Internet activés',
     'toast.recherche-desactivee': 'Outils Internet désactivés',
@@ -412,8 +414,10 @@ I18n.TEXTES.fr = {
     'demande.fichier': 'Contenu du fichier "{nom}" :\n\n{texte}',
     'demande.document-entier': 'Rends le document entier, mis à jour, sans rien écrire avant ni après. Ce que la demande ne touche pas reste tel quel.',
     'demande.image': 'Transcris fidèlement tout le texte visible dans cette image, en Markdown. '
-        + 'Écris les formules en LaTeX entre $. Si l\'image contient une figure ou un schéma, '
-        + 'décris-le en quelques phrases. Ne réponds rien d\'autre.',
+        + 'Écris les formules en LaTeX entre $. Un schéma, un arbre ou un organigramme se recopie '
+        + 'dans un bloc ```mermaid (flowchart TD, étiquettes entre guillemets droits, "..." dans '
+        + 'une case vide), jamais avec des caractères alignés. Une autre figure se décrit en '
+        + 'quelques phrases. Ne réponds rien d\'autre.',
     'recherche.description': 'Cherche une information et renvoie des extraits sourcés. '
         + 'À appeler pour un fait à vérifier, une date, un chiffre, une étymologie, '
         + 'une actualité ou une source à citer et chaque fois que tu répondrais de mémoire '

@@ -122,6 +122,9 @@ const Albert = {
     /* Modèle qui lit les images (annuaire BidouIAge, 1er août 2026). */
     MODELE_VISION: 'openweight-medium',
 
+    /** Modèles préférés pour répondre à une question avec image, quand le modèle choisi ne les lit pas. */
+    MODELES_IMAGES: ['gemma-4-31b-it', 'openweight-medium'],
+
     /** Modèle de transcription audio (whisper). */
     MODELE_AUDIO: 'openweight-audio',
 
@@ -493,6 +496,38 @@ const Albert = {
         }
         const fichier = t('demande.fichier', { nom: piece.nom, texte: piece.texte });
         return (question ? question + '\n\n' : '') + fichier;
+    },
+
+    /**
+     * Modèle qui répond à une question accompagnée d'une image.
+     *
+     * @param {Object[]} modeles - Modèles disponibles.
+     * @param {Object} actuel - Modèle choisi dans les réglages.
+     * @returns {?Object} Le modèle choisi s'il lit les images, sinon le premier de MODELES_IMAGES, ou null.
+     */
+    modeleImages(modeles, actuel) {
+        const lecteurs = modeles.filter(m => m.type === 'texte-images');
+        if (lecteurs.includes(actuel)) {
+            return actuel;
+        }
+        const prefere = this.MODELES_IMAGES.map(id => lecteurs.find(m => m.id === id)).find(Boolean);
+        return prefere || lecteurs[0] || null;
+    },
+
+    /**
+     * Remplace la dernière question par la question et son image, pour un modèle qui lit les images.
+     *
+     * @param {Object[]} messages - Messages { role, content } à envoyer.
+     * @param {string} question - Texte saisi, éventuellement vide.
+     * @param {string} image - Image en data URL.
+     * @returns {Object[]} Messages, le dernier portant l'image.
+     */
+    avecImage(messages, question, image) {
+        const contenu = [{ type: 'image_url', image_url: { url: image } }];
+        if (question) {
+            contenu.unshift({ type: 'text', text: question });
+        }
+        return [...messages.slice(0, -1), { role: 'user', content: contenu }];
     },
 
     /**

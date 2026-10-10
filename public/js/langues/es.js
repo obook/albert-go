@@ -359,7 +359,9 @@ I18n.TEXTES.es = {
     'toast.conversation-longue': 'Conversación demasiado larga para guardarla. Se queda en pantalla hasta cerrar la pestaña.',
     'toast.memoire-pleine': 'Memoria del navegador llena: {nombre} conversaciones antiguas eliminadas.',
     'toast.memoire-pleine-un': 'Memoria del navegador llena: {nombre} conversación antigua eliminada.',
-    'toast.liens': 'Albert no abre los enlaces. Para una página web, pegue su texto o adjúntelo como archivo.',
+    'toast.image-modele': 'Imagen: {modele} responde a esta pregunta.',
+    'toast.image-transcrite':'{modele} no lee las imágenes: recibe su texto.',
+    'toast.liens':'Albert no abre los enlaces. Para una página web, pegue su texto o adjúntelo como archivo.',
     'toast.recherche-indisponible': 'La búsqueda no está disponible con este modelo.',
     'toast.recherche-activee': 'Herramientas de Internet activadas',
     'toast.recherche-desactivee': 'Herramientas de Internet desactivadas',
@@ -412,8 +414,10 @@ I18n.TEXTES.es = {
     'demande.fichier': 'Contenido del archivo "{nom}":\n\n{texte}',
     'demande.document-entier': 'Devuelve el documento entero, actualizado, sin escribir nada antes ni después. Lo que la petición no toca queda tal cual.',
     'demande.image': 'Transcribe fielmente todo el texto visible en esta imagen, en Markdown. '
-        + 'Escribe las fórmulas en LaTeX entre $. Si la imagen contiene una figura o un esquema, '
-        + 'descríbelo en unas frases. No respondas nada más.',
+        + 'Escribe las fórmulas en LaTeX entre $. Un esquema, un árbol o un organigrama se copia '
+        + 'en un bloque ```mermaid (flowchart TD, etiquetas entre comillas rectas, "..." en una '
+        + 'casilla vacía), nunca con caracteres alineados. Otra figura se describe en unas '
+        + 'frases. No respondas nada más.',
     'recherche.description': 'Busca información y devuelve extractos con su fuente. '
         + 'Llámala para un dato que comprobar, una fecha, una cifra, una etimología, '
         + 'una noticia o una fuente que citar, y cada vez que responderías de memoria '

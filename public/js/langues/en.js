@@ -359,7 +359,9 @@ I18n.TEXTES.en = {
     'toast.conversation-longue': 'Conversation too long to be saved. It stays on screen until the tab closes.',
     'toast.memoire-pleine': 'Browser storage full: {nombre} old conversations deleted.',
     'toast.memoire-pleine-un': 'Browser storage full: {nombre} old conversation deleted.',
-    'toast.liens': 'Albert does not open links. For a web page, paste its text or attach it as a file.',
+    'toast.image-modele': 'Image: {modele} answers this question.',
+    'toast.image-transcrite':'{modele} does not read images: it gets their text.',
+    'toast.liens':'Albert does not open links. For a web page, paste its text or attach it as a file.',
     'toast.recherche-indisponible': 'Search is not available with this model.',
     'toast.recherche-activee': 'Internet tools on',
     'toast.recherche-desactivee': 'Internet tools off',
@@ -412,8 +414,10 @@ I18n.TEXTES.en = {
     'demande.fichier': 'Contents of the file "{nom}":\n\n{texte}',
     'demande.document-entier': 'Return the whole document, updated, with nothing written before or after it. Whatever the request does not touch stays as it is.',
     'demande.image': 'Transcribe faithfully all the text visible in this image, in Markdown. '
-        + 'Write formulas in LaTeX between $. If the image holds a figure or a diagram, '
-        + 'describe it in a few sentences. Answer nothing else.',
+        + 'Write formulas in LaTeX between $. Copy a diagram, a tree or a chart into a '
+        + '```mermaid block (flowchart TD, labels in straight quotes, "..." in an empty box), '
+        + 'never with aligned characters. Describe any other figure in a few sentences. '
+        + 'Answer nothing else.',
     'recherche.description': 'Searches for information and returns sourced extracts. '
         + 'Call it for a fact to check, a date, a figure, an etymology, a news item or a '
         + 'source to cite, and every time you would otherwise answer from memory on a '

@@ -124,6 +124,11 @@ test('chimieMermaid : \\ce{} écrit en texte, indices et charges en Unicode', ()
     assert.strictEqual(Rendu.chimieMermaid('A["Texte { avec } accolades"]'), 'A["Texte { avec } accolades"]');
 });
 
+test('formulesMermaid : les $ d\'une formule sont retirés, pas ceux d\'une monnaie', () => {
+    assert.strictEqual(Rendu.formulesMermaid('A["$-3$"] --> B["$\\times$"] --> C["$-1,5 + 2$"]'), 'A["-3"] --> B["×"] --> C["-1,5 + 2"]');
+    assert.strictEqual(Rendu.formulesMermaid('A["5 $ et 10 $"]'), 'A["5 $ et 10 $"]');
+});
+
 test('nomFigure : date d\'abord, puis le sujet sans rien que Windows refuse', () => {
     const date = new Date(2026, 8, 6, 1, 5, 9);
     assert.strictEqual(Rendu.nomFigure(date, 'png', 'Réaction acide/base : HA + B⁻ ?'), '2026-09-06-01-05-09-reaction-acide-base-ha-b.png');
