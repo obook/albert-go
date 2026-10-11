@@ -1,7 +1,8 @@
 /*
  * tools/services.js
  * Services de l'État proposés au modèle : annuaires, entreprises, adresses,
- * communes, calendrier scolaire, marchés publics.
+ * communes, calendrier scolaire, marchés publics, données publiques, formations Parcoursup,
+ * eau du robinet.
  *
  * Tous tenus par l'administration, sans clé et ouverts à CORS : les mots
  * cherchés restent chez l'État. Un outil par service, sous le globe comme
@@ -162,6 +163,63 @@ const Services = {
                     r.datelimitereponse && 'réponse avant le ' + r.datelimitereponse.slice(0, 10),
                     (r.code_departement || []).length && 'département ' + r.code_departement.join(', '))
             }))
+        },
+        /* Catalogue : tous les mots doivent figurer dans le jeu. */
+        donnees_publiques: {
+            nom: 'data.gouv.fr',
+            adresse: (q, n) => 'https://www.data.gouv.fr/api/1/datasets/?page_size=' + n + '&q=' + encodeURIComponent(q),
+            extraire: (corps) => (corps.data || []).map(d => ({ title: d.title, url: d.page, desc: d.description }))
+        },
+        /* Une ligne par session depuis 2020 : on garde la plus récente.
+           Pas de tri par année : "Nantes" ramènerait Nanterre. */
+        formation_parcoursup: {
+            nom: 'Parcoursup',
+            adresse: (q) => {
+                const annee = new Date().getFullYear();
+                return opendatasoft('https://data.enseignementsup-recherche.gouv.fr', 'fr-esr-cartographie_formations_parcoursup', q, 20,
+                    encodeURIComponent(' and annee in ("' + (annee - 1) + '", "' + annee + '", "' + (annee + 1) + '")')
+                    + '&select=annee,etab_uai,etab_nom,nm,fl,tc,commune,departement,region,fiche,etab_url');
+            },
+            extraire: (corps) => {
+                const recentes = new Map();
+                for (const r of corps.results || []) {
+                    const cle = r.etab_uai + ' ' + (r.nm || []).join(' ');
+                    if (!recentes.has(cle) || recentes.get(cle).annee < r.annee) {
+                        recentes.set(cle, r);
+                    }
+                }
+                return [...recentes.values()].slice(0, Recherche.NOMBRE).map(r => ({
+                    title: (r.nm || []).join(', ') + ' - ' + r.etab_nom,
+                    url: r.fiche,
+                    desc: accoler('session ' + r.annee, r.tc, (r.fl || []).join(', '),
+                        [r.commune, r.departement, r.region].filter(Boolean).join(', '), r.etab_url)
+                }));
+            }
+        },
+        /* Une ligne par mesure, regroupées par prélèvement.
+           Nom de commune approché ("Lyon" ramène Sainte-Foy-lès-Lyon), code INSEE exact. */
+        eau_potable: {
+            nom: 'Hub\'eau',
+            adresse: (q) => 'https://hubeau.eaufrance.fr/api/v1/qualite_eau_potable/resultats_dis?size=100&sort=desc'
+                + '&fields=code_prelevement,date_prelevement,code_commune,nom_commune,nom_distributeur,libelle_parametre,'
+                + 'resultat_alphanumerique,libelle_unite,conclusion_conformite_prelevement&'
+                + (/^\d[\dAB]\d{3}$/i.test(q.trim()) ? 'code_commune=' : 'nom_commune=') + encodeURIComponent(q.trim()),
+            extraire: (corps) => {
+                const prelevements = new Map();
+                for (const r of corps.data || []) {
+                    if (!prelevements.has(r.code_prelevement)) {
+                        prelevements.set(r.code_prelevement, { ...r, mesures: [] });
+                    }
+                    prelevements.get(r.code_prelevement).mesures.push(
+                        [r.libelle_parametre, r.resultat_alphanumerique, r.libelle_unite].filter(Boolean).join(' '));
+                }
+                return [...prelevements.values()].slice(0, Recherche.NOMBRE).map(p => ({
+                    title: 'Eau du robinet à ' + p.nom_commune + ', prélèvement du ' + String(p.date_prelevement).slice(0, 10),
+                    url: 'https://hubeau.eaufrance.fr/api/v1/qualite_eau_potable/resultats_dis?sort=desc&code_commune=' + p.code_commune,
+                    desc: accoler(p.conclusion_conformite_prelevement, p.nom_distributeur && 'distributeur ' + p.nom_distributeur,
+                        p.mesures.join(', '))
+                }));
+            }
         }
     },
 

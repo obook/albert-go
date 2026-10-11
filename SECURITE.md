@@ -37,10 +37,11 @@ Navigateur (Pages) -> webhook n8n -> https://albert.api.etalab.gouv.fr
   (`connect-src`).
   Une image écrite par le modèle devient un lien : rien ne se charge sans ce
   contrôle.
-- **Services de l'État :** globe activé, le modèle peut interroger sept API
-  publiques sans clé (mots envoyés à `api-lannuaire.service-public.fr`,
+- **Services de l'État :** globe activé, le modèle peut interroger dix API
+  publiques sans clé (mots envoyés à `www.data.gouv.fr`, `api-lannuaire.service-public.fr`,
   `recherche-entreprises.api.gouv.fr`, `data.education.gouv.fr`,
-  `data.geopf.fr`, `geo.api.gouv.fr`, `boamp-datadila.opendatasoft.com`). Les
+  `data.geopf.fr`, `geo.api.gouv.fr`, `boamp-datadila.opendatasoft.com`,
+  `data.enseignementsup-recherche.gouv.fr`, `hubeau.eaufrance.fr`). Les
   noms des dirigeants d'entreprise ne sont pas transmis au modèle.
 - **Aucun CDN, aucune télémétrie.** Les sept bibliothèques sont servies depuis
   Pages, le QR code est calculé dans le navigateur et la version affichée dans
@@ -99,7 +100,7 @@ Navigateur (Pages) -> webhook n8n -> https://albert.api.etalab.gouv.fr
 | Bibliothèque compromise | Sept bibliothèques, aucune dépendance de construction. Six identiques octet pour octet au paquet npm, la septième en I11. `npm audit` : rien. |
 | Lien piégé dans une réponse | Liens ouverts avec `rel="noopener noreferrer"`, qui coupe aussi le `Referer` : la page visée ne sait pas d'où vient le clic. |
 | Adresse piégée dans les sources listées sous une réponse | Ces adresses viennent du moteur, pas du modèle. Elles passent par le même contrôle que les liens d'une réponse (`Rendu.urlDangereuse`) avant de devenir cliquables et leur titre est inséré par `textContent`. |
-| Consigne cachée dans une page trouvée par la recherche | Recherche désactivée par défaut, Wikipédia par défaut, extraits tronqués, aucune capacité hors chercher. Détail en I9. |
+| Consigne cachée dans une page trouvée par la recherche | Aucun moteur coché par défaut, globe à activer à chaque session, extraits tronqués, aucune capacité hors chercher. Détail en I9. |
 | Clé ou questions lues sur un poste partagé | Mode partagé par défaut : tout le sensible en `sessionStorage`, effacé à la fermeture. |
 | Page intégrée dans le cadre d'un autre site | La page détecte le cadre et n'affiche qu'un lien vers elle-même. |
 | Texte envoyé à une synthèse vocale en ligne | Voix de l'appareil en priorité. Voix en ligne seulement si l'utilisateur les autorise (désactivé par défaut) et faute de voix locale. |
@@ -189,13 +190,13 @@ Boîte noire depuis un poste extérieur, le 2026-09-21, avec `curl` et `openssl`
   Dans Imprimerie, les sources cochées repartent avec chaque demande ; une image
   ou un enregistrement part dès le dépôt, pour être lu.
   Albert voit l'adresse IP de n8n, pas celle de l'utilisateur.
-- **Vers le moteur, seulement si l'utilisateur active la recherche :** les mots
-  de la requête, que le modèle tire de la question, plus l'adresse IP et le
-  `User-Agent`, que toute requête web révèle. L'appel part du navigateur, sans
-  relais. Le moteur choisi décide qui reçoit tout cela : Wikimedia Foundation
-  (par défaut, sans clé), Mojeek Ltd ou Google via `googleapis.com`, soumis au
-  Cloud Act. C'est le seul tiers du parcours qui ne soit pas un service de
-  l'État, d'où le réglage désactivé par défaut et Wikipédia en premier choix.
+- **Vers un moteur, seulement si l'utilisateur en coche un et active le globe :**
+  les mots de la requête, que le modèle tire de la question, plus l'adresse IP
+  et le `User-Agent`, que toute requête web révèle. L'appel part du navigateur,
+  sans relais. Chaque moteur coché, trois au plus, reçoit tout cela : Wikimedia
+  Foundation (sans clé), Mojeek Ltd ou Google via `googleapis.com`, soumis au
+  Cloud Act. Ce sont les seuls tiers du parcours qui ne soient pas des services
+  de l'État : aucun moteur n'est coché par défaut.
 - Hébergement de l'instance n8n et conservation des requêtes par Albert : non vérifiés.
 - Dans le navigateur : réglages sans limite de durée ; clés, questions,
   conversations, documents et bibliothèque de sources jusqu'à la fermeture de

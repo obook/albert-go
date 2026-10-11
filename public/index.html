@@ -16,7 +16,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Security-Policy"
-          content="default-src 'self'; connect-src 'self' https://n8n.incubateur.education.gouv.fr https://fr.wikipedia.org https://en.wikipedia.org https://es.wikipedia.org https://de.wikipedia.org https://www.mojeek.com https://www.googleapis.com https://fr.vikidia.org https://es.vikidia.org https://www.data.gouv.fr https://api.archives-ouvertes.fr https://archive.org https://openlibrary.org https://api.openalex.org https://commons.wikimedia.org https://upload.wikimedia.org https://api-lannuaire.service-public.fr https://recherche-entreprises.api.gouv.fr https://data.education.gouv.fr https://data.geopf.fr https://geo.api.gouv.fr https://boamp-datadila.opendatasoft.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://upload.wikimedia.org https://thumb.wikimedia.org; base-uri 'none'; form-action 'none'">
+          content="default-src 'self'; connect-src 'self' https://n8n.incubateur.education.gouv.fr https://fr.wikipedia.org https://en.wikipedia.org https://es.wikipedia.org https://de.wikipedia.org https://www.mojeek.com https://www.googleapis.com https://fr.vikidia.org https://es.vikidia.org https://www.data.gouv.fr https://api.archives-ouvertes.fr https://archive.org https://openlibrary.org https://api.openalex.org https://commons.wikimedia.org https://upload.wikimedia.org https://api-lannuaire.service-public.fr https://recherche-entreprises.api.gouv.fr https://data.education.gouv.fr https://data.geopf.fr https://geo.api.gouv.fr https://boamp-datadila.opendatasoft.com https://data.enseignementsup-recherche.gouv.fr https://hubeau.eaufrance.fr; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://upload.wikimedia.org https://thumb.wikimedia.org; base-uri 'none'; form-action 'none'">
     <title>Albert Go</title>
     <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
@@ -499,7 +499,9 @@
                                 <span data-t="reglages.recherche-active"></span>
                             </label>
                         </div>
-                        <!-- Une carte par moteur, comme pour les modèles : nom et domaine. -->
+                        <!-- Services de l'État, sans réglage. -->
+                        <p id="services-etat" class="note"></p>
+                        <!-- Une carte à cocher par moteur, trois au plus : nom et domaine. -->
                         <details id="choix-moteur" class="choix-liste">
                             <summary id="moteur-choisi"></summary>
                             <div id="moteurs" class="cartes-choix"></div>
@@ -519,7 +521,7 @@
                         </div>
                     </fieldset>
 
-                    <!-- Tous les outils locaux activés, Internet désactivé, moteur Wikipédia. -->
+                    <!-- Outils locaux et Internet activés, aucun moteur. -->
                     <button type="button"
                             class="bouton-texte outline"
                             id="outils-conseilles"

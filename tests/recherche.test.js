@@ -35,6 +35,28 @@ test('outil : format attendu par le champ tools de l\'API', () => {
     assert.ok(outil.function.description.length > 40);
 });
 
+test('plusieurs moteurs : résultats mêlés, NOMBRE en tout, un échec ignoré', async () => {
+    const origine = Recherche.chercher;
+    const pages = { wikipedia: ['w1', 'w2', 'w3', 'w4', 'w5'], hal: ['h1'], vikidia: ['v1', 'v2', 'v3'] };
+    Recherche.chercher = async (f) => {
+        if (!pages[f]) {
+            throw new Error('panne ' + f);
+        }
+        return pages[f].map(url => ({ url: url }));
+    };
+    try {
+        const urls = async (...moteurs) => (await Recherche.chercherPartout(moteurs, null, 'q')).map(r => r.url);
+        assert.deepStrictEqual(await urls('wikipedia', 'hal', 'vikidia'), ['w1', 'h1', 'v1', 'w2', 'v2']);
+        assert.deepStrictEqual(await urls('hal', 'openalex'), ['h1']);
+        await assert.rejects(urls('openalex', 'mojeek'), /panne openalex/);
+    } finally {
+        Recherche.chercher = origine;
+    }
+    const description = Recherche.outil(['wikipedia', 'hal']).function.description;
+    assert.ok(description.includes('Wikipédia, HAL'));
+    assert.ok(description.includes(t('recherche.description-catalogue')));
+});
+
 test('outil : la description nomme le moteur et prévient pour un catalogue', () => {
     const encyclopedie = Recherche.outil('wikipedia').function.description;
     const catalogue = Recherche.outil('hal').function.description;
@@ -111,7 +133,8 @@ test('chercherBase : la requête raccourcit tant que rien ne vient', async () =>
         return { ok: true, json: async () => ({ data: trouve
             ? [{ title: 'Recensement', page: 'https://www.data.gouv.fr/datasets/recensement' }] : [] }) };
     };
-    const resultats = await Recherche.chercherBase(Recherche.MOTEURS['data-gouv'], 'quelle est la population');
+    const { TABLE } = require('../public/js/tools/services.js');
+    const resultats = await Recherche.chercherBase(TABLE.donnees_publiques, 'quelle est la population');
     assert.strictEqual(vues.length, 4);
     assert.strictEqual(resultats.length, 1);
     assert.strictEqual(resultats[0].title, 'Recensement');

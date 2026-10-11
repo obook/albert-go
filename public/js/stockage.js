@@ -252,10 +252,11 @@ const reglages = {
     voixEnLigne: lire('voix-en-ligne', 'non') === 'oui',
     /* Internet, pour la recherche et les images Wikimedia. L'ancien réglage images
        ne sert que tant que celui-ci n'a jamais été écrit : sinon on ne pourrait plus le désactiver. */
-    recherche: lire('recherche', lire('images', 'non')) === 'oui',
+    recherche: lire('recherche', lire('images', 'oui')) === 'oui',
     /* Un interrupteur par outil local, activé par défaut. */
     ...Object.fromEntries(Object.keys(OUTILS_LOCAUX).map(nom => [nom, lire(nom, 'oui') === 'oui'])),
-    fournisseur: lire('fournisseur', 'wikipedia'),
+    /* Moteurs cochés, séparés par des virgules. "fournisseur" : ancien réglage, un seul moteur. */
+    fournisseurs: lire('fournisseurs', lire('fournisseur', '')).split(',').filter(Boolean),
     cx: lire('cx', Recherche.CX),
     cleRecherche: lire('cle-recherche', null)
 };

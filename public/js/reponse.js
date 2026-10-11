@@ -68,11 +68,12 @@ function boutonCopier(texte, libelle = t('reponse.copier'), message = t('toast.r
 function boutonRecherches(note, recherches) {
     /* Le moteur de la réponse, pas celui réglé depuis : une conversation
        rouverte doit citer la source qui a servi. Avant, rien ne le notait. */
-    const choisi = (recherches.find(r => r && r.moteur) || {}).moteur || reglages.fournisseur;
-    /* Le bouton dit où on a cherché : W pour un wiki, globe pour le reste. */
-    const moteur = Recherche.MOTEURS[choisi] || Services.TABLE[choisi] || Recherche.MOTEURS.wikipedia;
-    const bouton = boutonAction(moteur.wiki ? ICONES.wikipedia : ICONES.globe,
-        t('reponse.recherches', { nom: moteur.nom }));
+    const choisis = ((recherches.find(r => r && r.moteur) || {}).moteur || reglages.fournisseurs.join(',')).split(',')
+        .map(id => Recherche.MOTEURS[id] || Services.TABLE[id]).filter(Boolean);
+    const moteurs = choisis.length ? choisis : [Recherche.MOTEURS.wikipedia];
+    /* Le bouton dit où on a cherché : W pour des wikis seuls, globe pour le reste. */
+    const bouton = boutonAction(moteurs.every(m => m.wiki) ? ICONES.wikipedia : ICONES.globe,
+        t('reponse.recherches', { nom: moteurs.map(m => m.nom).join(', ') }));
     bouton.setAttribute('aria-expanded', 'false');
     bouton.addEventListener('click', () => {
         note.hidden = !note.hidden;

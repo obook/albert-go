@@ -1,7 +1,7 @@
 /*
  * tools/calcul.js
- * Outils locaux du modèle : calcul (math.js, avec facteurs premiers, PGCD, PPCM et statistiques), calendrier
- * (jours ouvrés et fériés compris), compteur, tirage, contrôle des SIREN, SIRET et IBAN.
+ * Outils locaux du modèle : calcul (math.js, avec facteurs premiers, PGCD, PPCM, statistiques, moyenne
+ * pondérée et dérivée), calendrier (jours ouvrés, fériés et échéances), compteur (mots, lettres, lisibilité), tirage.
  * Là où les modèles se trompent ; tout reste dans le navigateur.
  *
  * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
@@ -118,6 +118,41 @@ const Calcul = {
             throw new Error(t('calcul.invalide'));
         }
         return math.format(resultat, { precision: this.CHIFFRES });
+    },
+
+    /**
+     * Dérive une expression par rapport à x.
+     *
+     * Instance à part, en radians. ln népérien et log décimal, comme dans evaluer.
+     *
+     * @param {string} expression - Par exemple "x^3 + ln(x)".
+     * @returns {string} La dérivée, au format math.js.
+     */
+    deriver(expression) {
+        if (!this._formel) {
+            const m = math.create(math.all);
+            const outils = { m: m, parse: m.parse, derivative: m.derivative };
+            const interdit = () => {
+                throw new Error(t('calcul.invalide'));
+            };
+            /* Mêmes coupures que moteur. */
+            m.import(Object.fromEntries(['import', 'createUnit', 'reviver', 'evaluate', 'parse', 'compile', 'simplify',
+                'derivative', 'resolve'].map(nom => [nom, interdit])), { override: true });
+            this._formel = outils;
+        }
+        const { m, parse, derivative } = this._formel;
+        const appel = (nom, args) => new m.FunctionNode(nom, args);
+        const est = (n, nom, arite) => n.isFunctionNode && n.fn.name === nom && n.args.length === arite;
+        const dix = n => n.isConstantNode && n.value === 10;
+        try {
+            /* math.js écrit log(x) pour ln et log(x, 10) pour log. */
+            const entree = parse(String(expression)).transform(n => (est(n, 'ln', 1) ? appel('log', n.args)
+                : (est(n, 'log', 1) ? appel('log', [n.args[0], new m.ConstantNode(10)]) : n)));
+            return derivative(entree, 'x').transform(n => (est(n, 'log', 1) ? appel('ln', n.args)
+                : (est(n, 'log', 2) && dix(n.args[1]) ? appel('log', [n.args[0]]) : n))).toString();
+        } catch (err) {
+            throw new Error(t('calcul.invalide'));
+        }
     }
 };
 
@@ -196,11 +231,15 @@ const Calendrier = {
     /* Au-delà de dix ans de jours ouvrés, la demande est une erreur. */
     OUVRES_MAX: 2600,
 
+    /* Cent ans. */
+    MOIS_MAX: 1200,
+
     /**
-     * Répond à un appel : jour de la semaine, date décalée ou écart entre deux
-     * dates, en jours ou en jours ouvrés ; ou la liste des jours fériés d'une année.
+     * Répond à un appel : jour de la semaine, date décalée en jours ou en mois,
+     * écart entre deux dates, en jours ou en jours ouvrés ; ou la liste des
+     * jours fériés d'une année.
      *
-     * @param {Object} demande - { date, jours?, heures?, fin?, ouvres?, feries?, alsace_moselle? }.
+     * @param {Object} demande - { date, jours?, mois?, report?, heures?, fin?, ouvres?, feries?, alsace_moselle? }.
      * @param {string} langue - Code de langue de l'interface.
      * @returns {string} Une ligne pour le modèle et pour la trace.
      */
@@ -250,6 +289,27 @@ const Calendrier = {
             }
             return tn('calendrier.ecart', ecart, { debut: format.format(debut), fin: format.format(fin), jours: ecart });
         }
+        /* Échéance un samedi, un dimanche ou un jour férié : jour ouvré suivant. */
+        const reporter = (date) => {
+            if (!demande.report || this.ouvre(date, alsace)) {
+                return '';
+            }
+            const suivant = new Date(date);
+            do {
+                suivant.setDate(suivant.getDate() + 1);
+            } while (!this.ouvre(suivant, alsace));
+            return ' ' + t('calendrier.reporte', { report: format.format(suivant) });
+        };
+        if (Number.isInteger(demande.mois) && demande.mois !== 0) {
+            if (Math.abs(demande.mois) > this.MOIS_MAX) {
+                throw new Error(t('calendrier.invalide'));
+            }
+            /* 31 janvier + 1 mois = 28 février. */
+            const cible = new Date(debut.getFullYear(), debut.getMonth() + demande.mois, 1);
+            cible.setDate(Math.min(debut.getDate(), new Date(cible.getFullYear(), cible.getMonth() + 1, 0).getDate()));
+            return tn('calendrier.decale-mois', demande.mois, { debut: format.format(debut), mois: demande.mois, date: format.format(cible) })
+                + reporter(cible);
+        }
         /* En heures : depuis maintenant, ou depuis minuit de la date donnée. */
         if (Number.isFinite(demande.heures) && demande.heures !== 0) {
             const base = demande.date ? debut : maintenant;
@@ -275,7 +335,8 @@ const Calendrier = {
         }
         if (Number.isInteger(demande.jours) && demande.jours !== 0) {
             const decale = new Date(debut.getFullYear(), debut.getMonth(), debut.getDate() + demande.jours);
-            return tn('calendrier.decale', demande.jours, { debut: format.format(debut), jours: demande.jours, date: format.format(decale) });
+            return tn('calendrier.decale', demande.jours, { debut: format.format(debut), jours: demande.jours, date: format.format(decale) })
+                + reporter(decale);
         }
         if (!demande.date) {
             return t('calendrier.maintenant', this.maintenant(langue, maintenant));
@@ -337,9 +398,86 @@ const Compteur = {
     compter(texte) {
         const propre = String(texte).trim();
         return {
-            mots: propre.split(/\s+/).filter(m => /[\p{L}\p{N}]/u.test(m)).length,
+            mots: this.mots(propre).length,
             caracteres: [...propre].length,
             sansEspaces: [...propre.replace(/\s/g, '')].length
+        };
+    },
+
+    /** Mots d'un texte ; un signe de ponctuation isolé n'en est pas un. */
+    mots(texte) {
+        return String(texte).trim().split(/\s+/).filter(m => /[\p{L}\p{N}]/u.test(m));
+    },
+
+    /** Texte sans accents ni majuscules, pour comparer des lettres. */
+    nu(texte) {
+        return String(texte).normalize('NFD').replace(/\p{M}/gu, '').toLowerCase();
+    },
+
+    /**
+     * Compte une lettre, majuscules ignorées.
+     *
+     * "e" compte aussi é, è et ê ; "é" est comptée seule.
+     *
+     * @param {string} texte - Texte où chercher.
+     * @param {string} lettre - Un seul caractère.
+     * @returns {number} Nombre d'occurrences.
+     */
+    occurrences(texte, lettre) {
+        const cible = String(lettre).trim().normalize('NFC').toLowerCase();
+        if ([...cible].length !== 1) {
+            throw new Error(t('compteur.invalide'));
+        }
+        const plier = this.nu(cible) === cible ? (s => this.nu(s)) : (s => s.normalize('NFC').toLowerCase());
+        return [...plier(String(texte))].filter(c => c === cible).length;
+    },
+
+    /**
+     * Épelle un texte : lettres séparées par des tirets, puis texte à l'envers.
+     *
+     * @param {string} texte - Mot ou courte phrase.
+     * @returns {{lettres: string, envers: string}} Par exemple "c-h-a-t" et "tahc".
+     */
+    epeler(texte) {
+        const propre = String(texte).trim().normalize('NFC');
+        return {
+            lettres: propre.split(/\s+/).map(m => [...m].join('-')).join(' '),
+            envers: [...propre].reverse().join('')
+        };
+    },
+
+    /**
+     * Lettres triées, sans accents ni majuscules : deux anagrammes donnent le même résultat.
+     *
+     * @param {string} texte - Mot ou phrase.
+     * @returns {string} Par exemple "ceehin" pour "Chien é".
+     */
+    trier(texte) {
+        return [...this.nu(texte).replace(/[^\p{L}\p{N}]/gu, '')].sort().join('');
+    },
+
+    /* Seuils d'Albert Go, sans norme. */
+    PHRASE_LONGUE: 20,
+    MOT_LONG: 10,
+
+    /**
+     * Mesures de lisibilité d'un texte.
+     *
+     * @param {string} texte - Texte à mesurer.
+     * @returns {Object} { phrases, moyenne, max, longues, longs }.
+     */
+    lisibilite(texte) {
+        /* ponytail: "M. Dupont" compte pour deux phrases. */
+        const phrases = String(texte).split(/[.!?…]+(?:\s+|$)/).map(p => this.mots(p).length).filter(Boolean);
+        if (!phrases.length) {
+            throw new Error(t('compteur.invalide'));
+        }
+        return {
+            phrases: phrases.length,
+            moyenne: phrases.reduce((a, b) => a + b, 0) / phrases.length,
+            max: Math.max(...phrases),
+            longues: phrases.filter(n => n > this.PHRASE_LONGUE).length,
+            longs: this.mots(texte).filter(m => [...m.replace(/[^\p{L}]/gu, '')].length >= this.MOT_LONG).length
         };
     }
 };
@@ -459,16 +597,44 @@ const Facteurs = {
 
 const Statistiques = {
     /**
+     * Lit une série de nombres, virgule décimale acceptée.
+     *
+     * @param {Array<number|string>} valeurs - Série.
+     * @returns {number[]} Les nombres, dans l'ordre donné.
+     */
+    lire(valeurs) {
+        const serie = (valeurs || []).map(v => Number(String(v).replace(',', '.')));
+        if (!serie.length || serie.some(v => !Number.isFinite(v))) {
+            throw new Error(t('calcul.invalide'));
+        }
+        return serie;
+    },
+
+    /**
+     * Moyenne pondérée : notes et coefficients, dans le même ordre.
+     *
+     * @param {Array<number|string>} valeurs - Série.
+     * @param {Array<number|string>} coefficients - Un coefficient positif par valeur.
+     * @returns {{moyenne: number, total: number}} Moyenne et somme des coefficients.
+     */
+    ponderer(valeurs, coefficients) {
+        const serie = this.lire(valeurs);
+        const poids = this.lire(coefficients);
+        const total = poids.reduce((a, b) => a + b, 0);
+        if (poids.length !== serie.length || poids.some(p => p < 0) || total === 0) {
+            throw new Error(t('calcul.invalide'));
+        }
+        return { moyenne: serie.reduce((a, v, i) => a + v * poids[i], 0) / total, total: total };
+    },
+
+    /**
      * Statistiques d'une série, quartiles comme au lycée.
      *
      * @param {Array<number|string>} valeurs - Série, virgule décimale acceptée.
      * @returns {Object} Effectif, moyenne, médiane, variance, écart-type, extrêmes, quartiles, étendue, écart interquartile.
      */
     calculer(valeurs) {
-        const serie = (valeurs || []).map(v => Number(String(v).replace(',', '.'))).sort((a, b) => a - b);
-        if (!serie.length || serie.some(v => !Number.isFinite(v))) {
-            throw new Error(t('calcul.invalide'));
-        }
+        const serie = this.lire(valeurs).sort((a, b) => a - b);
         const n = serie.length;
         const moyenne = serie.reduce((a, b) => a + b, 0) / n;
         const milieu = Math.floor(n / 2);
@@ -524,11 +690,21 @@ const OUTILS_LOCAUX = {
         outil: () => definirOutil('calcul', {
             expression: { type: 'string' },
             nombres: { type: 'array', items: { type: 'integer' } },
-            valeurs: { type: 'array', items: { type: 'number' } }
+            valeurs: { type: 'array', items: { type: 'number' } },
+            coefficients: { type: 'array', items: { type: 'number' } },
+            derivee: { type: 'string' }
         }, []),
         executer: async (a, langue) => {
             if (Array.isArray(a.nombres) && a.nombres.length) {
                 return Facteurs.decrire(a.nombres.map(Number));
+            }
+            if (Array.isArray(a.valeurs) && a.valeurs.length && Array.isArray(a.coefficients) && a.coefficients.length) {
+                const { moyenne, total } = Statistiques.ponderer(a.valeurs, a.coefficients);
+                return t('calcul.ponderee', { moyenne: formaterNombre(moyenne, langue), total: formaterNombre(total, langue) });
+            }
+            if (a.derivee) {
+                await Calcul.charger();
+                return 'd/dx (' + a.derivee + ') = ' + Calcul.deriver(a.derivee);
             }
             if (Array.isArray(a.valeurs) && a.valeurs.length) {
                 const f = {};
@@ -571,24 +747,49 @@ const OUTILS_LOCAUX = {
     calendrier: {
         icone: 'calendrier',
         outil: () => definirOutil('calendrier', {
-            date: { type: 'string' }, jours: { type: 'integer' }, heures: { type: 'number' }, fin: { type: 'string' },
+            date: { type: 'string' }, jours: { type: 'integer' }, mois: { type: 'integer' }, report: { type: 'boolean' },
+            heures: { type: 'number' }, fin: { type: 'string' },
             ouvres: { type: 'boolean' }, feries: { type: 'integer' }, alsace_moselle: { type: 'boolean' }
         }, []),
         executer: (a, langue) => Calendrier.repondre(a, langue)
     },
     compteur: {
         icone: 'compteur',
-        outil: () => definirOutil('compteur', { texte: { type: 'string' } }, ['texte']),
-        executer: a => {
+        outil: () => definirOutil('compteur', {
+            texte: { type: 'string' }, lettre: { type: 'string' }, epeler: { type: 'boolean' },
+            anagramme: { type: 'string' }, lisibilite: { type: 'boolean' }
+        }, ['texte']),
+        executer: (a, langue) => {
             const compte = Compteur.compter(a.texte);
-            return t('compteur.resultat', {
+            const lignes = [t('compteur.resultat', {
                 ...compte,
                 motMots: tn('compteur.mots', compte.mots),
                 motCaracteres: tn('compteur.caracteres', compte.caracteres)
-            });
+            })];
+            if (a.lettre) {
+                lignes.push(t('compteur.occurrences', { lettre: String(a.lettre).trim(), nombre: Compteur.occurrences(a.texte, a.lettre) }));
+            }
+            if (a.epeler) {
+                lignes.push(t('compteur.epele', Compteur.epeler(a.texte)));
+            }
+            if (a.anagramme) {
+                const [un, deux] = [Compteur.trier(a.texte), Compteur.trier(a.anagramme)];
+                lignes.push(t(un === deux ? 'compteur.anagramme-oui' : 'compteur.anagramme-non', { un: un, deux: deux }));
+            }
+            if (a.lisibilite) {
+                const mesures = Compteur.lisibilite(a.texte);
+                lignes.push(t('compteur.mesures', {
+                    ...mesures,
+                    moyenne: mesures.moyenne.toLocaleString(langue, { maximumFractionDigits: 1 }),
+                    seuilPhrase: Compteur.PHRASE_LONGUE,
+                    seuilMot: Compteur.MOT_LONG
+                }));
+            }
+            return lignes.join(' ');
         }
-    },
-    controle: {
+    }
+    /* Contrôle SIRET et IBAN, retiré le 2026-10-11.
+    , controle: {
         icone: 'controle',
         outil: () => definirOutil('controle', { numero: { type: 'string' } }, ['numero']),
         executer: (a) => {
@@ -596,6 +797,7 @@ const OUTILS_LOCAUX = {
             return t(valide ? 'controle.valide' : 'controle.faux', { type: type, numero: String(a.numero).trim() });
         }
     }
+    */
 };
 
 /* Export pour les tests Node ; ignoré dans le navigateur. */

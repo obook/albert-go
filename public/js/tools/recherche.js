@@ -7,9 +7,9 @@
  * renvoyés pour qu'il rédige sa réponse (function calling, comme
  * albert-atelier le fait pour l'OCR).
  *
- * Neuf moteurs, les seuls testés qui acceptent un appel direct du
- * navigateur. Sept répondent sans clé. Wikipédia, par défaut, et Vikidia
- * rendent le texte des articles ; les cinq catalogues n'acceptent que des
+ * Huit moteurs, les seuls testés qui acceptent un appel direct du
+ * navigateur. Six répondent sans clé. Wikipédia, par défaut, et Vikidia
+ * rendent le texte des articles ; les quatre catalogues n'acceptent que des
  * mots-clés. Google et Mojeek demandent une clé, qui voyage dans l'adresse
  * comme leurs API la lisent, et ne rendent que de courts extraits.
  *
@@ -37,13 +37,6 @@ const Recherche = {
      */
     MOTEURS: {
         wikipedia: { nom: 'Wikipédia', wiki: 'wikipedia.org' },
-        'data-gouv': {
-            nom: 'data.gouv.fr',
-            adresse: (q, n) => 'https://www.data.gouv.fr/api/1/datasets/?page_size=' + n
-                + '&q=' + encodeURIComponent(q),
-            extraire: (corps) => (corps.data || [])
-                .map(d => ({ title: d.title, url: d.page, desc: d.description }))
-        },
         hal: {
             nom: 'HAL',
             adresse: (q, n) => 'https://api.archives-ouvertes.fr/search/?wt=json&rows=' + n
@@ -148,17 +141,18 @@ const Recherche = {
      * doit y chercher par mots-clés et non par phrase, sans quoi il ne
      * ramène rien. Les encyclopédies et les moteurs web acceptent les deux.
      *
-     * @param {string} [fournisseur] - Clé de MOTEURS ; sans elle, pas de consigne de famille.
+     * @param {string|string[]} [fournisseurs] - Clés de MOTEURS ; sans elles, pas de consigne de famille.
      * @returns {Object} Entrée du champ tools.
      */
-    outil(fournisseur) {
-        const moteur = this.MOTEURS[fournisseur];
-        const catalogue = Boolean(moteur && moteur.adresse);
+    outil(fournisseurs) {
+        const ids = [].concat(fournisseurs || []).filter(id => this.MOTEURS[id]);
+        /* Un seul catalogue suffit à demander des mots-clés. */
+        const catalogue = ids.some(id => this.MOTEURS[id].adresse);
         return {
             type: 'function',
             function: {
                 name: 'recherche_web',
-                description: t('recherche.description', { nom: (moteur || this.MOTEURS.wikipedia).nom })
+                description: t('recherche.description', { nom: this.noms(ids.length ? ids : ['wikipedia']) })
                     + (catalogue ? ' ' + t('recherche.description-catalogue') : ''),
                 parameters: {
                     type: 'object',
@@ -167,6 +161,44 @@ const Recherche = {
                 }
             }
         };
+    },
+
+    /** Moteurs interrogés ensemble, au plus. */
+    MOTEURS_MAX: 3,
+
+    /**
+     * Noms de moteurs, pour le modèle et pour la trace.
+     *
+     * @param {string[]} fournisseurs - Clés de MOTEURS.
+     * @returns {string} Par exemple "Wikipédia, HAL".
+     */
+    noms(fournisseurs) {
+        return fournisseurs.map(id => this.MOTEURS[id].nom).join(', ');
+    },
+
+    /**
+     * Interroge plusieurs moteurs à la fois et mêle leurs résultats.
+     *
+     * Un moteur en échec est ignoré tant qu'un autre répond.
+     *
+     * @param {string[]} fournisseurs - Clés de MOTEURS, au moins une.
+     * @param {?string} cle - Clé de l'utilisateur, pour Google ou Mojeek.
+     * @param {string} question - Texte cherché.
+     * @param {AbortSignal} [signal] - Pour annuler avec la question.
+     * @returns {Promise<Array<Object>>} NOMBRE résultats au plus.
+     */
+    async chercherPartout(fournisseurs, cle, question, signal) {
+        const reponses = await Promise.allSettled(fournisseurs.map(f => this.chercher(f, cle, question, signal)));
+        const listes = reponses.filter(r => r.status === 'fulfilled').map(r => r.value);
+        if (!listes.length) {
+            throw reponses[0].reason;
+        }
+        /* Un résultat par moteur à tour de rôle, NOMBRE en tout. */
+        const meles = [];
+        for (let rang = 0; meles.length < this.NOMBRE && listes.some(l => l[rang]); rang++) {
+            meles.push(...listes.map(l => l[rang]).filter(Boolean));
+        }
+        return meles.slice(0, this.NOMBRE);
     },
 
     /**

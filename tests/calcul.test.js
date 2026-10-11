@@ -95,7 +95,9 @@ test('controle : SIREN, SIRET et IBAN, La Poste à part', async () => {
     assert.deepStrictEqual(Controle.verifier('FR14 2004 1010 0505 0001 3M02 606'), { type: 'IBAN', valide: true });
     assert.strictEqual(Controle.verifier('FR15 2004 1010 0505 0001 3M02 606').valide, false);
     assert.throws(() => Controle.verifier('12345'));
+    /* Outil retiré de OUTILS_LOCAUX le 2026-10-11.
     assert.match(await OUTILS_LOCAUX.controle.executer({ numero: '13002526500014' }, 'fr'), /SIRET 13002526500014/);
+    */
 });
 
 test('evaluer : refuse le code et les expressions fausses', () => {
@@ -112,6 +114,57 @@ test('compteur : mots, caractères, sans espaces', () => {
     assert.strictEqual(Compteur.compter('Oui - 12 fois !').mots, 3);
     assert.strictEqual(OUTILS_LOCAUX.compteur.executer({ texte: 'a' }), '1 mot, 1 caractère (1 sans les espaces).');
     assert.strictEqual(OUTILS_LOCAUX.compteur.executer({ texte: 'ab cd' }), '2 mots, 5 caractères (4 sans les espaces).');
+});
+
+test('compteur : lettre, épellation, anagramme, lisibilité', () => {
+    assert.strictEqual(Compteur.occurrences('Strawberry', 'r'), 3);
+    /* Sans accent, la lettre compte ses formes accentuées ; avec accent, elle seule. */
+    assert.strictEqual(Compteur.occurrences('Élève réservé', 'e'), 6);
+    assert.strictEqual(Compteur.occurrences('Élève réservé', 'é'), 3);
+    assert.throws(() => Compteur.occurrences('abc', 'ab'));
+    assert.deepStrictEqual(Compteur.epeler('chat noir'), { lettres: 'c-h-a-t n-o-i-r', envers: 'rion tahc' });
+    assert.strictEqual(Compteur.trier('Chien'), Compteur.trier('niche'));
+    assert.notStrictEqual(Compteur.trier('chien'), Compteur.trier('chine s'));
+    assert.deepStrictEqual(Compteur.lisibilite('Il pleut. Le chat dort sur le canapé ! Anticonstitutionnellement ?'),
+        { phrases: 3, moyenne: 3, max: 6, longues: 0, longs: 1 });
+    assert.throws(() => Compteur.lisibilite(' ... '));
+    const ligne = OUTILS_LOCAUX.compteur.executer({ texte: 'chien', lettre: 'i', epeler: true, anagramme: 'niche', lisibilite: true }, 'fr');
+    assert.strictEqual(ligne, '1 mot, 5 caractères (5 sans les espaces). Lettre "i" : 1 dans le texte. Lettres : c-h-i-e-n. À l\'envers : neihc.'
+        + ' Anagramme : oui, mêmes lettres (cehin). Phrases : 1. Mots par phrase : 1 en moyenne, 1 au plus.'
+        + ' Phrases de plus de 20 mots : 0. Mots de 10 lettres ou plus : 0.');
+});
+
+test('calendrier : échéance en mois et report au premier jour ouvré', () => {
+    /* Le quantième absent donne le dernier jour du mois. */
+    assert.match(Calendrier.repondre({ date: '2027-01-31', mois: 1 }, 'fr'), /: dimanche 28 février 2027\.$/);
+    assert.match(Calendrier.repondre({ date: '2028-01-31', mois: 1 }, 'fr'), /: mardi 29 février 2028\.$/);
+    assert.match(Calendrier.repondre({ date: '2026-03-15', mois: -3 }, 'fr'), /: lundi 15 décembre 2025\.$/);
+    /* 1er mai 2027 : samedi férié. */
+    assert.match(Calendrier.repondre({ date: '2027-03-01', mois: 2, report: true }, 'fr'),
+        /2 mois : samedi 1 mai 2027\. Ce jour n'est pas ouvré : report au lundi 3 mai 2027\.$/);
+    assert.doesNotMatch(Calendrier.repondre({ date: '2027-03-03', mois: 2, report: true }, 'fr'), /report/);
+    /* 14 juillet 2026 : mardi férié. */
+    assert.match(Calendrier.repondre({ date: '2026-07-10', jours: 4, report: true }, 'fr'), /report au mercredi 15 juillet 2026\.$/);
+    assert.throws(() => Calendrier.repondre({ date: '2026-07-10', mois: 5000 }, 'fr'));
+});
+
+test('calcul : moyenne pondérée et dérivée', async () => {
+    const calcul = OUTILS_LOCAUX.calcul.executer;
+    assert.deepStrictEqual(Statistiques.ponderer([12, 8, 15], [2, 1, 3]), { moyenne: 77 / 6, total: 6 });
+    assert.strictEqual(await calcul({ valeurs: [12, 8, 15], coefficients: [2, 1, 3] }, 'fr'),
+        'Moyenne pondérée 12,83333333 (somme des coefficients 6).');
+    assert.throws(() => Statistiques.ponderer([12, 8], [1]));
+    assert.throws(() => Statistiques.ponderer([12, 8], [0, 0]));
+    assert.throws(() => Statistiques.ponderer([12, 8], [2, -1]));
+    assert.strictEqual(await calcul({ derivee: 'x^3 + 2x' }, 'fr'), 'd/dx (x^3 + 2x) = 3 * x ^ 2 + 2');
+    /* ln népérien et log décimal, comme dans evaluer. */
+    assert.strictEqual(Calcul.deriver('ln(x)'), '1 / x');
+    assert.match(Calcul.deriver('log(x)'), /^0\.434294\d+ \/ x$/);
+    assert.strictEqual(Calcul.deriver('x^x'), 'x ^ x * (ln(x) + 1)');
+    assert.throws(() => Calcul.deriver('2 +'));
+    assert.throws(() => Calcul.deriver('import({}, {}) * x'));
+    /* La dérivée ne dérègle pas le calcul en degrés. */
+    assert.strictEqual(Calcul.evaluer('sin(30)'), 0.5);
 });
 
 test('tirage : tout le monde une fois, groupes égaux à un près', () => {
