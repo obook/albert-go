@@ -36,7 +36,7 @@ function elementTexte(balise, classe, texte) {
  * @returns {string} Chemin de l'image.
  */
 function logoMoteur(id) {
-    return 'images/moteurs/' + id + (id === 'data-gouv' ? '.svg' : '.png');
+    return 'images/moteurs/' + id + '.png';
 }
 
 /**
@@ -163,38 +163,51 @@ $('recherche-web').innerHTML = ICONES.globe;
 $('recherche-reglage').checked = reglages.recherche;
 $('cle-recherche').value = reglages.cleRecherche || '';
 
-/**
- * Affiche une carte par moteur : son nom, puis son domaine de recherche.
- *
- * L'ordre est celui de Recherche.MOTEURS.
- */
+/** Moteur coché qui demande une clé, s'il y en a un. */
+function moteurAvecCle() {
+    return reglages.fournisseurs.find(id => !Recherche.sansCle(id));
+}
+
+/** Met à jour le résumé et grise les moteurs qu'on ne peut plus cocher. */
+function etatMoteurs() {
+    const choisis = reglages.fournisseurs;
+    const plein = choisis.length >= Recherche.MOTEURS_MAX;
+    for (const caseMoteur of $('moteurs').querySelectorAll('input')) {
+        /* ponytail: un seul champ de clé, donc un seul moteur à clé. */
+        const cleEnTrop = !Recherche.sansCle(caseMoteur.value) && Boolean(moteurAvecCle());
+        caseMoteur.disabled = !caseMoteur.checked && (plein || cleEnTrop);
+    }
+    $('moteur-choisi').replaceChildren(...(choisis.length
+        ? choisis.flatMap(id => [logo(logoMoteur(id)), Recherche.MOTEURS[id].nom])
+        : [t('reglages.moteur-aucun')]));
+}
+
+/** Affiche une carte à cocher par moteur, dans l'ordre de Recherche.MOTEURS. */
 function afficherMoteurs() {
     const cartes = Object.keys(Recherche.MOTEURS).map(id => {
         const label = document.createElement('label');
-        const radio = document.createElement('input');
-        radio.type = 'radio';
-        radio.name = 'moteur';
-        radio.value = id;
-        radio.checked = id === reglages.fournisseur;
-        label.append(radio, logo(logoMoteur(id)),
+        const caseMoteur = document.createElement('input');
+        caseMoteur.type = 'checkbox';
+        caseMoteur.value = id;
+        caseMoteur.checked = reglages.fournisseurs.includes(id);
+        label.append(caseMoteur, logo(logoMoteur(id)),
             elementTexte('strong', 'nom', Recherche.MOTEURS[id].nom),
             elementTexte('span', 'description', t('moteur.' + id)));
         return label;
     });
     $('moteurs').replaceChildren(...cartes);
-    $('moteur-choisi').replaceChildren(logo(logoMoteur(reglages.fournisseur)), Recherche.MOTEURS[reglages.fournisseur].nom);
+    etatMoteurs();
+    $('services-etat').textContent = Object.values(Services.TABLE).map(s => s.nom).join(', ');
 }
 
 /* Un moteur retiré du code laisserait un réglage enregistré sans carte. */
-if (!Recherche.MOTEURS[reglages.fournisseur]) {
-    reglages.fournisseur = 'wikipedia';
-    ecrire('fournisseur', reglages.fournisseur);
-}
+reglages.fournisseurs = reglages.fournisseurs.filter((id, rang, liste) => Recherche.MOTEURS[id] && liste.indexOf(id) === rang)
+    .slice(0, Recherche.MOTEURS_MAX);
 afficherMoteurs();
 
 /* Seuls Google et Mojeek demandent une clé et un identifiant de moteur. */
 function afficherCles() {
-    $('cles-recherche').hidden = Recherche.sansCle(reglages.fournisseur);
+    $('cles-recherche').hidden = !moteurAvecCle();
 }
 afficherCles();
 /* Le moteur choisi par l'utilisateur remplace celui du code. */
@@ -226,6 +239,7 @@ function afficherRecherche() {
         suggestion.hidden = !reglages.recherche;
     }
     $('choix-moteur').inert = !reglages.recherche;
+    $('services-etat').inert = !reglages.recherche;
     $('cles-recherche').inert = !reglages.recherche;
     if (!reglages.recherche) {
         $('choix-moteur').open = false;
@@ -248,24 +262,27 @@ $('recherche-web').addEventListener('click', () => {
     toast(t(globeActif ? 'toast.recherche-activee' : 'toast.recherche-desactivee'));
 });
 
-/* Chaque moteur a sa clé : on efface celle de l'autre en changeant. */
-$('moteurs').addEventListener('change', (e) => {
-    reglages.fournisseur = e.target.value;
-    reglages.cleRecherche = null;
-    $('cle-recherche').value = '';
-    ecrire('fournisseur', reglages.fournisseur);
-    ecrire('cle-recherche', null);
-    afficherMoteurs();
-    afficherCles();
-});
-
-/* Un clic referme la liste ; les flèches du clavier (detail 0) la laissent ouverte. */
-$('moteurs').addEventListener('click', (e) => {
-    if (!e.detail || !e.target.closest('label')) {
-        return;
+/**
+ * Enregistre les moteurs cochés. La clé est effacée si le moteur à clé change.
+ *
+ * @param {string[]} choisis - Clés de Recherche.MOTEURS.
+ */
+function choisirMoteurs(choisis) {
+    const avant = moteurAvecCle();
+    reglages.fournisseurs = choisis;
+    ecrire('fournisseurs', choisis.join(','));
+    if (moteurAvecCle() !== avant) {
+        reglages.cleRecherche = null;
+        $('cle-recherche').value = '';
+        ecrire('cle-recherche', null);
     }
-    $('choix-moteur').open = false;
-    $('moteur-choisi').focus();
+    afficherCles();
+}
+
+/* La liste reste ouverte : on y coche plusieurs moteurs. */
+$('moteurs').addEventListener('change', () => {
+    choisirMoteurs([...$('moteurs').querySelectorAll('input:checked')].map(c => c.value));
+    etatMoteurs();
 });
 
 $('cle-recherche').addEventListener('change', () => {
@@ -273,7 +290,7 @@ $('cle-recherche').addEventListener('change', () => {
     ecrire('cle-recherche', reglages.cleRecherche);
 });
 
-/* Outils conseillés : tous les outils locaux activés, Internet désactivé, moteur Wikipédia. */
+/* Outils conseillés : outils locaux et Internet activés, aucun moteur. */
 $('outils-conseilles').addEventListener('click', () => {
     for (const nom of Object.keys(OUTILS_LOCAUX)) {
         reglages[nom] = true;
@@ -282,19 +299,11 @@ $('outils-conseilles').addEventListener('click', () => {
     for (const caseOutil of $('outils-locaux').querySelectorAll('input')) {
         caseOutil.checked = true;
     }
-    reglages.recherche = false;
-    ecrire('recherche', 'non');
-    $('recherche-reglage').checked = false;
-    /* Comme un changement de moteur à la main : la clé de l'ancien est effacée. */
-    if (reglages.fournisseur !== 'wikipedia') {
-        reglages.fournisseur = 'wikipedia';
-        reglages.cleRecherche = null;
-        $('cle-recherche').value = '';
-        ecrire('fournisseur', reglages.fournisseur);
-        ecrire('cle-recherche', null);
-        afficherMoteurs();
-        afficherCles();
-    }
+    reglages.recherche = true;
+    ecrire('recherche', 'oui');
+    $('recherche-reglage').checked = true;
+    choisirMoteurs([]);
+    afficherMoteurs();
     afficherRecherche();
 });
 

@@ -189,7 +189,7 @@ fieldset .bouton-texte { justify-self: start; }
 /* Menu déroulant, pas accordéon : flèche en bas, en haut une fois ouvert. */
 .pico .choix-liste[open] > summary::after { transform: rotate(180deg); }
 .choix-liste[open] summary { margin-bottom: 0.25rem; }
-.choix-liste[inert], #cles-recherche[inert] { opacity: 0.5; }
+.choix-liste[inert], #cles-recherche[inert], #services-etat[inert] { opacity: 0.5; }
 
 .cartes-choix {
     display: grid;
@@ -217,8 +217,10 @@ n'avaient pas la même largeur. Le préfixe .pico passe devant son sélecteur. *
     outline: 3px solid var(--bleu);
     outline-offset: 2px;
 }
-/* Radio caché à l'œil seulement : le fond bleu montre le choix. */
-.cartes-choix [type=radio] {
+/* Moteur qu'on ne peut plus cocher. */
+.cartes-choix label:has(:disabled) { opacity: 0.5; cursor: not-allowed; }
+/* Radio ou case cachée à l'œil seulement : le fond bleu montre le choix. */
+.cartes-choix [type=radio], .cartes-choix [type=checkbox] {
     position: absolute;
     width: 1px;
     height: 1px;

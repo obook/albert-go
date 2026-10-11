@@ -16,6 +16,15 @@
 const TOURS_MAX = 2;
 
 /**
+ * Moteurs cochés qui peuvent répondre : sans clé, ou avec celle de l'utilisateur.
+ *
+ * @returns {string[]} Clés de Recherche.MOTEURS.
+ */
+function moteursActifs() {
+    return reglages.fournisseurs.filter(id => Recherche.sansCle(id) || Boolean(reglages.cleRecherche));
+}
+
+/**
  * Exécute un appel d'outil demandé par le modèle.
  *
  * Un échec de recherche est rendu au modèle en texte : il répond alors
@@ -52,16 +61,18 @@ async function executerOutil(appel, signal, faites) {
     }
     /* Un service de l'État se cherche et se cite comme une base du moteur. */
     const service = Services.TABLE[appel.function.name];
+    const actifs = moteursActifs();
     etat(t('etat.recherche', { mots: mots }));
     try {
         const resultats = service
             ? await Recherche.chercherBase(service, mots, signal)
-            : await Recherche.chercher(reglages.fournisseur, reglages.cleRecherche, mots, signal);
+            : await Recherche.chercherPartout(actifs, reglages.cleRecherche, mots, signal);
         const numerotes = Recherche.numeroter(resultats, faites);
         /* Une page déjà citée garde son numéro : elle n'entre pas deux fois. */
         faites.push({
             mots: mots,
-            moteur: service ? appel.function.name : reglages.fournisseur,
+            /* Plusieurs moteurs : leurs clés séparées par des virgules. */
+            moteur: service ? appel.function.name : actifs.join(','),
             sources: numerotes.filter(r => !r.connue).map(r => ({ numero: r.numero, titre: r.titre, url: r.url }))
         });
         return Recherche.formater(numerotes) || t('recherche.aucun-resultat');
@@ -114,9 +125,9 @@ async function chercherImagesOutil(appel, signal, faites) {
  * @returns {Array<Object>} Copie avec le rappel, sans toucher l'original.
  */
 function avecRappel(messages, cherche) {
-    const moteur = Recherche.MOTEURS[reglages.fournisseur] || {};
-    const source = Recherche.sansCle(reglages.fournisseur)
-        ? t('recherche.source-base', { nom: moteur.nom })
+    const actifs = moteursActifs();
+    const source = actifs.every(id => Recherche.sansCle(id))
+        ? t('recherche.source-base', { nom: Recherche.noms(actifs) })
         : t('recherche.source-web');
     /* Sans ces rappels, une photo demandée partait en recherche web. */
     const internet = reglages.recherche && globeActif;
@@ -162,16 +173,16 @@ function avecDate(messages) {
  * @returns {Promise<Object>} Réponse d'Albert.repondre.
  */
 async function repondreAvecOutils(cle, requete, signal) {
-    /* Internet autorisé dans Réglages et globe activé : recherche (si le
-       moteur a sa clé), images Wikimedia et services de l'État. */
+    /* Internet autorisé dans Réglages et globe activé : recherche (si un
+       moteur coché peut répondre), images Wikimedia et services de l'État. */
     const internet = reglages.recherche && globeActif;
-    const cherche = internet && (Recherche.sansCle(reglages.fournisseur) || Boolean(reglages.cleRecherche));
+    const cherche = internet && moteursActifs().length > 0;
     const outils = Object.keys(OUTILS_LOCAUX).filter(nom => reglages[nom]).map(nom => OUTILS_LOCAUX[nom].outil());
     if (internet) {
         outils.unshift(Recherche.outilImages(), ...Services.outils());
     }
     if (cherche) {
-        outils.unshift(Recherche.outil(reglages.fournisseur));
+        outils.unshift(Recherche.outil(moteursActifs()));
     }
     if (!outils.length) {
         return Albert.repondre(cle, requete, signal);

@@ -11,7 +11,7 @@ Ce qui reste à faire, du plus simple au plus long. Le détail des failles est d
 
 ## Outils du modèle
 
-- Tester avec un vrai modèle : outils locaux (groupes, statistiques, compteur), jours ouvrés, contrôle SIRET et IBAN, services de l'État, courbes (dont l'exemple à trois courbes de l'accueil).
+- Tester avec un vrai modèle : outils locaux (groupes, statistiques, compteur), jours ouvrés, services de l'État, courbes (dont l'exemple à trois courbes de l'accueil).
 - API ouvertes à étudier : Tabular API de data.gouv.fr (lire les lignes d'un fichier publié), géocodage inverse et itinéraire de l'IGN, Géorisques.
 - Légifrance et Judilibre : il faut des identifiants PISTE et une route n8n, car la clé ne peut pas rester dans le navigateur.
 - Wiktionnaire et autres services externes : en réflexion, car les mots cherchés partent chez un tiers.

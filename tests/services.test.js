@@ -97,6 +97,44 @@ test('marches_publics : champs choisis, du plus récent au plus ancien', () => {
     assert.match(adresse, /order_by=dateparution desc/);
 });
 
+test('formation_parcoursup : sessions récentes demandées, la dernière de chaque formation gardée', () => {
+    const annee = new Date().getFullYear();
+    const adresse = decodeURIComponent(TABLE.formation_parcoursup.adresse('licence droit Nantes'));
+    assert.ok(adresse.includes('where="licence droit Nantes" and annee in ("' + (annee - 1) + '", "' + annee + '", "' + (annee + 1) + '")&select='));
+    const formation = { etab_uai: '0442953W', etab_nom: 'Nantes Université (44)', nm: ['Licence - Droit'], fl: ['L1 - Droit'],
+        tc: 'Publics', commune: 'Nantes', departement: 'Loire-Atlantique', region: 'Pays de la Loire' };
+    const resultats = TABLE.formation_parcoursup.extraire({ results: [
+        { ...formation, annee: '2025', fiche: 'https://dossierappel.parcoursup.fr/fiche-2025' },
+        { ...formation, annee: '2026', fiche: 'https://dossierappel.parcoursup.fr/fiche-2026' },
+        { ...formation, etab_uai: '0442777E', etab_nom: 'UCO (Rezé - 44)', annee: '2026', fiche: 'https://dossierappel.parcoursup.fr/uco' }
+    ] });
+    assert.deepStrictEqual(resultats.map(r => r.url), ['https://dossierappel.parcoursup.fr/fiche-2026', 'https://dossierappel.parcoursup.fr/uco']);
+    assert.strictEqual(resultats[0].title, 'Licence - Droit - Nantes Université (44)');
+    assert.strictEqual(resultats[0].desc, 'session 2026 ; Publics ; L1 - Droit ; Nantes, Loire-Atlantique, Pays de la Loire');
+});
+
+test('eau_potable : code INSEE ou nom, une ligne par prélèvement', () => {
+    assert.match(TABLE.eau_potable.adresse('69266'), /&code_commune=69266$/);
+    assert.match(TABLE.eau_potable.adresse('2A004'), /&code_commune=2A004$/);
+    assert.match(TABLE.eau_potable.adresse('Saint-Étienne'), /&nom_commune=Saint-%C3%89tienne$/);
+    const ligne = { code_commune: '69266', nom_commune: 'VILLEURBANNE', nom_distributeur: 'EAU DU GRAND LYON',
+        conclusion_conformite_prelevement: 'Eau d\'alimentation conforme.' };
+    const resultats = TABLE.eau_potable.extraire({ data: [
+        { ...ligne, code_prelevement: 'B', date_prelevement: '2026-07-23T13:27:00Z', libelle_parametre: 'Titre alcalimétrique complet',
+            resultat_alphanumerique: '17,60', libelle_unite: '°f' },
+        { ...ligne, code_prelevement: 'B', date_prelevement: '2026-07-23T13:27:00Z', libelle_parametre: 'pH',
+            resultat_alphanumerique: '7,5', libelle_unite: 'unité pH' },
+        { ...ligne, code_prelevement: 'A', date_prelevement: '2026-07-10T08:00:00Z', libelle_parametre: 'Nitrates',
+            resultat_alphanumerique: '4,2', libelle_unite: 'mg/L' }
+    ] });
+    assert.strictEqual(resultats.length, 2);
+    assert.strictEqual(resultats[0].title, 'Eau du robinet à VILLEURBANNE, prélèvement du 2026-07-23');
+    assert.strictEqual(resultats[0].desc, 'Eau d\'alimentation conforme. ; distributeur EAU DU GRAND LYON ; '
+        + 'Titre alcalimétrique complet 17,60 °f, pH 7,5 unité pH');
+    assert.match(resultats[1].url, /code_commune=69266$/);
+    assert.deepStrictEqual(TABLE.eau_potable.extraire({}), []);
+});
+
 test('chercherBase : un service répond comme une base de Recherche', async () => {
     let vue = '';
     global.fetch = async (adresse) => {
