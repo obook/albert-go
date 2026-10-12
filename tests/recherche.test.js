@@ -375,4 +375,5 @@ test('rappel : le mois en cours, sans lequel un fait récent passe pour à venir
     assert.ok(rappel.includes('Nous sommes en ' + mois + '.'));
     /* Sans cette consigne, une réponse écrite dès la première recherche cite à la façon du modèle. */
     assert.ok(rappel.includes('par exemple [1]'));
+    assert.ok(rappel.includes('dis d\'abord que tu n\'as pas trouvé'));
 });
