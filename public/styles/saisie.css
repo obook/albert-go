@@ -42,13 +42,13 @@
     display: block;
     width: 0;
     height: 100%;
-    background: var(--bleu);
+    background: var(--accent);
     transition: width 0.4s;
 }
 .jauge span.pleine { background: var(--erreur); }
 .saisie:focus-within {
-    border-color: var(--bleu);
-    box-shadow: 0 0 0 3px var(--bleu-clair);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-clair);
 }
 .saisie textarea {
     display: block;
@@ -81,10 +81,10 @@
     padding: 0;
     border: 0;
     border-radius: 50%;
-    background: var(--bleu);
-    color: var(--sur-bleu);
+    background: var(--accent);
+    color: var(--sur-accent);
 }
-.envoyer:hover { background: var(--bleu-survol); }
+.envoyer:hover { background: var(--accent-survol); }
 .envoyer svg {
     width: 1.25rem;
     height: 1.25rem;
@@ -113,14 +113,14 @@
 @media (hover: hover) {
     .saisie .joindre:hover, .saisie .recherche-web:hover { background: var(--bulle); }
 }
-/* Recherche activée : globe sur rond bleu, comme le bouton Envoyer. */
-.saisie .recherche-web[aria-pressed="true"] { background: var(--bleu); color: var(--sur-bleu); }
+/* Recherche activée : globe sur rond d'accent, comme le bouton Envoyer. */
+.saisie .recherche-web[aria-pressed="true"] { background: var(--accent); color: var(--sur-accent); }
 
 /* Fichier glissé au-dessus de la carte. */
 .saisie.depot {
     border-style: dashed;
-    border-color: var(--bleu);
-    background: var(--bleu-clair);
+    border-color: var(--accent);
+    background: var(--accent-clair);
 }
 
 .piece-jointe {
@@ -151,7 +151,7 @@
     background: transparent;
     color: var(--texte-doux);
 }
-.piece-jointe button:hover { background: var(--bleu-clair); color: var(--bleu); }
+.piece-jointe button:hover { background: var(--accent-clair); color: var(--accent); }
 .piece-jointe svg {
     width: 0.875rem;
     height: 0.875rem;

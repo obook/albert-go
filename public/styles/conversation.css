@@ -146,7 +146,7 @@ main {
 .suggestions { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; margin-top: 0.5rem; }
 .suggestion, .deposer {
     padding: 0.5rem 1rem;
-    /* Discret, comme la carte de saisie : le survol le passe en bleu. */
+    /* Discret, comme la carte de saisie : le survol le passe à l'accent. */
     border: 1px solid var(--bord);
     border-radius: 999px;
     background: var(--surface);
@@ -156,13 +156,13 @@ main {
     cursor: pointer;
 }
 .suggestion:hover, .suggestion:focus-visible,
-.deposer:hover, .deposer:focus-visible { border-color: var(--bleu); color: var(--bleu); background: var(--bleu-clair); }
+.deposer:hover, .deposer:focus-visible { border-color: var(--accent); color: var(--accent); background: var(--accent-clair); }
 
 /* Bibliothèque du module Imprimerie : la liste du volet de droite (entete.css). */
 .liste-documents { margin: 0.5rem 0; padding: 0; list-style: none; }
 .liste-documents li { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
 /* Bibliothèque : la case qui ajoute le fichier au document, puis son nom, qui télécharge son texte. */
-.liste-documents input { flex: none; width: 1.125rem; height: 1.125rem; margin: 0; accent-color: var(--bleu); }
+.liste-documents input { flex: none; width: 1.125rem; height: 1.125rem; margin: 0; accent-color: var(--accent); }
 .liste-documents .nom-source {
     flex: 1 1 auto;
     min-width: 0;
@@ -175,7 +175,7 @@ main {
     overflow-wrap: anywhere;
     cursor: pointer;
 }
-.liste-documents .nom-source:hover, .liste-documents .nom-source:focus-visible { color: var(--bleu); text-decoration: underline; }
+.liste-documents .nom-source:hover, .liste-documents .nom-source:focus-visible { color: var(--accent); text-decoration: underline; }
 /* Versions : une par ligne, coupée si son nom est long ; la version affichée en gras, sans clic. */
 .liste-versions .nom-source { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
 .liste-versions .nom-source[aria-current="true"] { font-weight: 700; color: inherit; text-decoration: none; cursor: default; }
@@ -265,7 +265,7 @@ main {
     margin-bottom: 0.375rem;
     font-size: 0.8125rem;
     font-weight: 700;
-    color: var(--bleu);
+    color: var(--accent);
 }
 .actions-reponse {
     display: flex;
@@ -285,7 +285,7 @@ main {
     background: transparent;
     color: var(--texte-doux);
 }
-.bouton-action:hover { background: var(--bleu-clair); color: var(--bleu); }
+.bouton-action:hover { background: var(--accent-clair); color: var(--accent); }
 /* Fichier en préparation (image de Commons, PNG). */
 .bouton-action.en-cours { animation: clignote 1.2s infinite ease-in-out; cursor: progress; }
 .bouton-action svg,
@@ -327,7 +327,7 @@ main {
     width: 0.5rem;
     height: 0.5rem;
     border-radius: 50%;
-    background: var(--bleu);
+    background: var(--accent);
     animation: clignote 1.2s infinite ease-in-out;
 }
 .points span:nth-child(2) { animation-delay: 0.2s; }
@@ -395,7 +395,7 @@ main {
     padding: 0.375rem 1rem;
     border-bottom: 1px solid var(--bord);
     border-radius: calc(0.75rem - 1px) calc(0.75rem - 1px) 0 0;
-    background: var(--bleu-clair);
+    background: var(--accent-clair);
     text-align: left;
     overflow: hidden;
     white-space: nowrap;
@@ -420,4 +420,4 @@ main {
     color: var(--texte);
     border-color: var(--bord-champ);
 }
-.notes:focus-visible { outline: 2px solid var(--bleu); outline-offset: 2px; }
+.notes:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }

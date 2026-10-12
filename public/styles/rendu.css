@@ -17,7 +17,7 @@
 .rendu h1, .rendu h2, .rendu h3, .rendu h4 {
     margin: 1.25rem 0 0.5rem;
     line-height: 1.25;
-    /* Couleur du texte, pas de bleu : la taille et la graisse suffisent à marquer un titre. */
+    /* Couleur du texte, pas d'accent : la taille et la graisse suffisent à marquer un titre. */
     color: var(--texte);
 }
 .rendu h1 { font-size: 1.375rem; }
@@ -30,7 +30,7 @@
     font-size: 0.9em;
     padding: 0.1em 0.3em;
     border-radius: 0.2rem;
-    background: var(--bleu-clair);
+    background: var(--accent-clair);
 }
 .rendu pre {
     overflow-x: auto;
@@ -49,7 +49,7 @@
 .rendu pre code { padding: 0; background: none; }
 .rendu blockquote {
     padding-left: 1rem;
-    border-left: 4px solid var(--bleu);
+    border-left: 4px solid var(--accent);
     color: var(--texte-doux);
 }
 .rendu table {
@@ -67,7 +67,7 @@ laissait les colonnes rétrécir jusqu'à une lettre. Trop large, le tableau dé
     border: 1px solid var(--bord);
     text-align: left;
 }
-.rendu th { background: var(--bleu-clair); }
+.rendu th { background: var(--accent-clair); }
 .rendu .katex-display { overflow-x: auto; overflow-y: hidden; }
 /* Formule trop longue, redessinée en ligne (rendu.js) : centrée, elle passe à la ligne. */
 .rendu .formule-longue { display: block; margin: 1em 0; text-align: center; }
@@ -92,10 +92,10 @@ laissait les colonnes rétrécir jusqu'à une lettre. Trop large, le tableau dé
     .rendu .diagramme > svg.taille-propre { min-width: 0 !important; }
 }
 /* Liens sans soulignement : la flèche les distingue autrement que par la couleur (RGAA)
-   et dit qu'ils s'ouvrent dans un nouvel onglet. Bleu au survol et au focus. */
+   et dit qu'ils s'ouvrent dans un nouvel onglet. Accent au survol et au focus. */
 .rendu a { color: inherit; text-decoration: none; }
-.rendu a:not(:has(img))::after { content: "\2197" / ""; margin-left: 0.125em; font-size: 0.8em; color: var(--bleu); }
-.rendu a:hover, .rendu a:focus-visible { color: var(--bleu); }
+.rendu a:not(:has(img))::after { content: "\2197" / ""; margin-left: 0.125em; font-size: 0.8em; color: var(--accent); }
+.rendu a:hover, .rendu a:focus-visible { color: var(--accent); }
 /* Toute image d'une réponse tient dans la bulle, même écrite en Markdown par le modèle. */
 .rendu img { max-width: 100%; max-height: 20rem; height: auto; }
 .rendu .image-commons { margin: 0.5rem 0 0.75rem; }
