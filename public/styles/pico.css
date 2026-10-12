@@ -16,7 +16,8 @@
 :root { --pico-font-size: 100%; }
 
 .pico {
-    --pico-font-family: inherit;
+    /* Pas inherit : sur une variable, il reprend la pile de Pico. */
+    --pico-font-family: var(--police);
     --pico-font-size: 1rem;
     --pico-line-height: 1.5;
     --pico-color: var(--texte);
