@@ -15,6 +15,7 @@
    Sans light-dark(), que Safari ne lit qu'à partir d'iOS 17.5. */
 :root {
     color-scheme: light;
+    --police: "Work Sans", system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", sans-serif;
     /* Gris légèrement bleutés, de la teinte du thème sombre. */
     --fond: #f5f6f9;
     --surface: #ffffff;
@@ -42,9 +43,9 @@
     --succes: #18753c;
     --jaune-fond: #fef6e3;
     --jaune-bord: #b38b00;
-    /* Réglages : cartes blanches sur fond gris en clair, inchangées en sombre. */
+    /* Cartes sans bordure : l'ombre et un fond plus soutenu les détachent. */
+    --ombre: 0 1px 3px rgb(0 0 0 / 0.1), 0 4px 14px rgb(0 0 0 / 0.08);
     --fond-reglages: #e1e4ec;
-    --titre-carte: var(--surface);
     --bord-carte: #c9cdd8;
     /* Grand écran : conversation et volet de fonds différents, comme L'Assistant. */
     --fond-conversation: var(--surface);
@@ -80,8 +81,8 @@
         --succes: #3bea7e;
         --jaune-fond: #3a3320;
         --jaune-bord: #e0b83c;
-        --fond-reglages: var(--surface);
-        --titre-carte: var(--fond);
+        --ombre: 0 1px 3px rgb(0 0 0 / 0.3), 0 4px 14px rgb(0 0 0 / 0.25);
+        --fond-reglages: var(--fond);
         --bord-carte: var(--bord);
         --fond-conversation: var(--fond);
         --fond-volet: var(--surface);
@@ -116,8 +117,8 @@
     --succes: #3bea7e;
     --jaune-fond: #3a3320;
     --jaune-bord: #e0b83c;
-    --fond-reglages: var(--surface);
-    --titre-carte: var(--fond);
+    --ombre: 0 1px 3px rgb(0 0 0 / 0.3), 0 4px 14px rgb(0 0 0 / 0.25);
+    --fond-reglages: var(--fond);
     --bord-carte: var(--bord);
     --fond-conversation: var(--fond);
     --fond-volet: var(--surface);
@@ -127,6 +128,41 @@
     --code-nombre: #79c0ff;
     --code-titre: #d2a8ff;
     --code-type: #ffa657;
+}
+
+/* Work Sans (vendor/work-sans) : police du texte, variable de 100 à 900.
+   Le navigateur ne charge que les fichiers dont la page a besoin. */
+@font-face {
+    font-family: "Work Sans";
+    src: url("../vendor/work-sans/work-sans-latin-wght-normal.woff2") format("woff2");
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+    unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+@font-face {
+    font-family: "Work Sans";
+    src: url("../vendor/work-sans/work-sans-latin-wght-italic.woff2") format("woff2");
+    font-weight: 100 900;
+    font-style: italic;
+    font-display: swap;
+    unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+@font-face {
+    font-family: "Work Sans";
+    src: url("../vendor/work-sans/work-sans-latin-ext-wght-normal.woff2") format("woff2");
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+    unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+@font-face {
+    font-family: "Work Sans";
+    src: url("../vendor/work-sans/work-sans-latin-ext-wght-italic.woff2") format("woff2");
+    font-weight: 100 900;
+    font-style: italic;
+    font-display: swap;
+    unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
 }
 
 * { box-sizing: border-box; }
@@ -154,7 +190,7 @@ body {
     grid-template-rows: auto auto minmax(0, 1fr) auto;
     /* Jamais plus large que l'écran, même avec un texte agrandi. */
     grid-template-columns: minmax(0, 1fr);
-    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", sans-serif;
+    font-family: var(--police);
     font-size: 1rem;
     line-height: 1.5;
     background: var(--fond);
