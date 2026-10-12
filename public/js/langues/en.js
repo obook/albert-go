@@ -437,13 +437,13 @@ I18n.TEXTES.en = {
         + 'source to cite, and every time you would otherwise answer from memory on a '
         + 'precise subject. The engine is {nom}: what you get is all you have, say so '
         + 'if it is not enough.',
-    'recherche.parametre': 'The words to search for.',
+    'recherche.parametre': 'The words to search for, in English.',
     'recherche.description-catalogue': 'This engine is a catalogue: it returns a result only if every word searched for appears in it. So search with two or three keywords, never with a sentence.',
     'recherche.source-base': 'in {nom}',
     'recherche.source-web': 'on the web',
     'recherche.rappel': 'You have the recherche_web tool: you can search {source}, '
         + 'and you say so if asked. Use it as soon as an answer needs a precise fact '
-        + 'you are not sure you know.',
+        + 'you are not sure you know. It is {mois}.',
     'recherche.resultats': 'Search results:\n{extraits}\n\nNow answer the question from these extracts. Cite each fact with the number of its source in brackets, for example [1].',
     'recherche.aucun-mot': 'No words to search for.',
     'calcul.description': 'Computes an arithmetic expression exactly, breaks whole numbers down into prime factors with their GCD and LCM or gives the statistics of a series (count, mean, median, variance, standard deviation, quartiles...), a weighted mean (valeurs and coefficients) or the derivative of an expression in x (derivee). Use it for any calculation, even a simple one, instead of computing in your head.',

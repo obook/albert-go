@@ -437,13 +437,13 @@ I18n.TEXTES.de = {
         + 'eine Nachricht oder eine zu zitierende Quelle und jedes Mal, wenn du sonst aus '
         + 'dem Gedächtnis zu einem genauen Thema antworten würdest. Die Suchmaschine ist '
         + '{nom}: Was du bekommst, ist alles, was du hast, sage es, wenn das nicht reicht.',
-    'recherche.parametre': 'Die zu suchenden Wörter.',
+    'recherche.parametre': 'Die zu suchenden Wörter, auf Deutsch.',
     'recherche.description-catalogue': 'Diese Suchmaschine ist ein Katalog: Sie liefert nur dann ein Ergebnis, wenn alle gesuchten Wörter darin vorkommen. Suche also mit zwei oder drei Stichwörtern, nie mit einem Satz.',
     'recherche.source-base': 'in {nom}',
     'recherche.source-web': 'im Web',
     'recherche.rappel': 'Du verfügst über das Werkzeug recherche_web: Du kannst {source} suchen, '
         + 'und du sagst es, wenn man dich fragt. Nutze es, sobald eine Antwort einen genauen Fakt '
-        + 'braucht, den du nicht sicher kennst.',
+        + 'braucht, den du nicht sicher kennst. Es ist {mois}.',
     'recherche.resultats': 'Suchergebnisse:\n{extraits}\n\nBeantworte die Frage jetzt anhand dieser Auszüge. Belege jede Angabe mit der Nummer ihrer Quelle in eckigen Klammern, zum Beispiel [1].',
     'recherche.aucun-mot': 'Keine Wörter zum Suchen.',
     'calcul.description': 'Berechnet einen arithmetischen Ausdruck exakt, zerlegt ganze Zahlen in Primfaktoren mit ihrem ggT und kgV oder liefert die Statistik einer Reihe (Anzahl, Mittelwert, Median, Varianz, Standardabweichung, Quartile...), einen gewichteten Mittelwert (valeurs und coefficients) oder die Ableitung eines Ausdrucks in x (derivee). Für jede Rechnung verwenden, auch eine einfache, statt im Kopf zu rechnen.',

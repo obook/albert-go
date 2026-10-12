@@ -437,13 +437,13 @@ I18n.TEXTES.fr = {
         + 'une actualité ou une source à citer et chaque fois que tu répondrais de mémoire '
         + 'sur un sujet précis. Le moteur est {nom} : ce que tu reçois est tout ce dont '
         + 'tu disposes, dis-le si cela ne suffit pas.',
-    'recherche.parametre': 'Les mots à chercher.',
+    'recherche.parametre': 'Les mots à chercher, en français.',
     'recherche.description-catalogue': 'Ce moteur est un catalogue : il ne rend un résultat que si tous les mots cherchés y figurent. Cherche donc avec deux ou trois mots-clés, jamais avec une phrase.',
     'recherche.source-base': 'dans {nom}',
     'recherche.source-web': 'sur le web',
     'recherche.rappel': 'Tu disposes de l\'outil recherche_web : tu peux chercher {source} '
         + 'et tu le dis si on te le demande. Sers-t\'en dès qu\'une réponse demande un fait précis '
-        + 'que tu n\'es pas certain de connaître.',
+        + 'que tu n\'es pas certain de connaître. Nous sommes en {mois}.',
     'recherche.resultats': 'Résultats de recherche :\n{extraits}\n\nRéponds maintenant à la question à partir de ces extraits. Cite chaque fait avec le numéro de sa source entre crochets, par exemple [1].',
     'recherche.aucun-mot': 'Aucun mot à chercher.',
     'calcul.description': 'Calcule exactement une expression arithmétique, décompose des entiers en facteurs premiers avec leur PGCD et leur PPCM ou donne les statistiques d\'une série (effectif, moyenne, médiane, variance, écart-type, quartiles...), une moyenne pondérée (valeurs et coefficients) ou la dérivée d\'une expression en x (derivee). À utiliser pour tout calcul, même simple, au lieu de calculer de tête.',
