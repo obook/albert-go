@@ -15,8 +15,9 @@ Object.assign(Recherche, {
     /**
      * Champs de l'infobox, en "nom : valeur" séparés par des points-virgules.
      *
-     * Une ligne de l'infobox commence par une barre verticale et porte un
-     * seul champ. Un champ écrit sur plusieurs lignes est ignoré.
+     * Une ligne de l'infobox commence par une barre verticale, parfois
+     * indentée, et porte un seul champ. Un champ écrit sur plusieurs lignes
+     * est ignoré.
      *
      * @param {string} wikitexte - Wikitexte de la tête d'article.
      * @returns {string} Champs renseignés, vide si l'article n'a pas d'infobox.
@@ -24,7 +25,7 @@ Object.assign(Recherche, {
     fiche(wikitexte) {
         const champs = [];
         for (const ligne of wikitexte.split('\n')) {
-            const champ = ligne.match(/^\|\s*([^=|{}\[\]]+?)\s*=\s*(.*)$/);
+            const champ = ligne.match(/^\s*\|\s*([^=|{}\[\]]+?)\s*=\s*(.*)$/);
             if (!champ) {
                 continue;
             }

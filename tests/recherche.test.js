@@ -256,6 +256,15 @@ test('fiche : les champs chiffrés de l\'infobox, que le texte brut perd', () =>
     assert.ok(!fiche.includes('Saskatchewan'));
 });
 
+test('fiche : une infobox indentée se lit aussi', () => {
+    /* Coupe du monde de football 2026 : chaque champ commence par une espace. */
+    const fiche = Recherche.fiche('{{Infobox Compétition sportive\n'
+        + ' | date               = du {{date|11 juin 2026-}} au {{date|19 juillet 2026}}\n'
+        + " | vainqueur          = '''{{ESP football}}''' (2)\n"
+        + '}}');
+    assert.ok(fiche.includes('vainqueur : ESP football (2)'));
+});
+
 test('fiche : pas d\'infobox, pas de fiche', () => {
     assert.strictEqual(Recherche.fiche('Un article sans infobox.'), '');
     assert.strictEqual(Recherche.avecFiche('', 'Résumé.'), 'Résumé.');
