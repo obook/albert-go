@@ -89,6 +89,8 @@ label.interrupteur {
     font-weight: 700;
     cursor: pointer;
 }
+/* Icône du titre : tracés Lucide (ISC), dessinés par la règle de .bouton-icone svg. */
+#reglages .carte > summary svg { margin-right: 0.5rem; vertical-align: -0.25em; }
 /* Sur un summary, le contour est le seul repère de focus : --bleu-clair ne
    se voit pas. Les champs gardent leur halo pâle, ils ont déjà une bordure. */
 #reglages .carte, .choix-liste { --pico-primary-focus: var(--bleu); }
