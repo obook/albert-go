@@ -34,7 +34,7 @@ label.interrupteur {
     border: 0;
     /* Mêmes coins et même ombre que la carte de saisie. */
     border-radius: 1rem;
-    box-shadow: 0 8px 30px rgb(0 0 145 / 0.18);
+    box-shadow: 0 8px 30px rgb(0 0 0 / 0.18);
     background: var(--surface);
     color: var(--texte);
 }
@@ -63,15 +63,15 @@ label.interrupteur {
     display: grid;
     gap: 1.25rem;
     padding: 1rem;
-    border: 1px solid var(--bord-carte);
     border-radius: 0.75rem;
+    box-shadow: var(--ombre);
     background: var(--surface);
 }
 /* La grille espace déjà : les marges des paragraphes doubleraient l'écart. */
 .carte-texte p { margin: 0; }
 #reglages .carte {
-    border: 1px solid var(--bord-carte);
     border-radius: 0.75rem;
+    box-shadow: var(--ombre);
     background: var(--surface);
     /* Pico recolore le titre quand le details s'ouvre et quand il a le focus :
        son accordéon, pas le nôtre. Le focus clavier reste marqué plus bas. */
@@ -82,10 +82,8 @@ label.interrupteur {
 #reglages .carte > summary {
     padding: 0.625rem 0.75rem;
     margin-bottom: 0;
-    /* Le fond du titre suit les coins de la carte ; pas d'overflow hidden,
-       qui rognerait le contour de focus. */
-    border-radius: calc(0.75rem - 1px);
-    background: var(--titre-carte);
+    /* Le contour de focus suit les coins de la carte. */
+    border-radius: 0.75rem;
     font-weight: 700;
     cursor: pointer;
 }
@@ -95,11 +93,9 @@ label.interrupteur {
    se voit pas. Les champs gardent leur halo pâle, ils ont déjà une bordure. */
 #reglages .carte, .choix-liste { --pico-primary-focus: var(--bleu); }
 
-/* .pico devant : sinon Pico gagne la spécificité sur margin-bottom. */
-.pico #reglages .carte[open] > summary {
-    margin-bottom: 0;
+#reglages .carte[open] > summary {
     border-bottom: 1px solid var(--bord);
-    border-radius: calc(0.75rem - 1px) calc(0.75rem - 1px) 0 0;
+    border-radius: 0.75rem 0.75rem 0 0;
 }
 /* Corps dans un div : une <details> en display grid montre son contenu fermé. */
 #reglages .carte .corps {
