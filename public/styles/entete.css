@@ -310,7 +310,7 @@ colonne au-delà du volet et décale tout le menu vers la droite. */
 }
 .entree.danger { color: var(--rouge); }
 /* Module actif, Imprimerie comprise (modules.js, afficherOutil). */
-.entree[aria-current="true"] { background: var(--bulle); }
+.entree[aria-current="true"] { background: var(--bleu-clair); color: var(--bleu); }
 .outils { display: grid; gap: 0.125rem; }
 summary.entree { list-style: none; }
 summary.entree::-webkit-details-marker { display: none; }
