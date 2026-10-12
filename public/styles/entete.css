@@ -95,7 +95,7 @@
     cursor: pointer;
 }
 .choix-langue summary::-webkit-details-marker { display: none; }
-.choix-langue summary:hover { background: var(--bleu-clair); }
+.choix-langue summary:hover { background: var(--accent-clair); }
 
 /* Le contour rend visible la bande blanche des deux drapeaux. */
 .drapeau {
@@ -273,7 +273,7 @@ colonne au-delà du volet et décale tout le menu vers la droite. */
     /* Modèle et température, puis le contexte à la ligne (reglages.resume). */
     white-space: pre-line;
 }
-.resume:hover { color: var(--bleu); text-decoration: underline; }
+.resume:hover { color: var(--accent); text-decoration: underline; }
 .volet hr {
     width: calc(100% - 1.5rem);
     margin: 0.5rem 0.75rem;
@@ -310,7 +310,7 @@ colonne au-delà du volet et décale tout le menu vers la droite. */
 }
 .entree.danger { color: var(--rouge); }
 /* Module actif, Imprimerie comprise (modules.js, afficherOutil). */
-.entree[aria-current="true"] { background: var(--bleu-clair); color: var(--bleu); }
+.entree[aria-current="true"] { background: var(--accent-clair); color: var(--accent); }
 .outils { display: grid; gap: 0.125rem; }
 summary.entree { list-style: none; }
 summary.entree::-webkit-details-marker { display: none; }
@@ -348,7 +348,7 @@ input.recherche-historique {
     overflow: hidden;
     text-overflow: ellipsis;
 }
-.titre-conversation:hover { background: var(--bleu-clair); }
+.titre-conversation:hover { background: var(--accent-clair); }
 /* "Nouveau projet" : aligné sur les lignes de la liste, qui sont en retrait. */
 .nouveau-projet { display: block; width: calc(100% - 2.5rem); margin-left: 2.5rem; }
 
@@ -365,7 +365,7 @@ input.recherche-historique {
     background: transparent;
     color: var(--texte-doux);
 }
-.supprimer-conversation:hover { background: var(--bleu-clair); color: var(--rouge); }
+.supprimer-conversation:hover { background: var(--accent-clair); color: var(--rouge); }
 .supprimer-conversation svg {
     width: 1.25rem;
     height: 1.25rem;

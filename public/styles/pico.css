@@ -23,25 +23,25 @@
     --pico-color: var(--texte);
     --pico-muted-color: var(--texte-doux);
     --pico-background-color: var(--surface);
-    --pico-primary: var(--bleu);
-    --pico-primary-background: var(--bleu);
-    --pico-primary-border: var(--bleu);
-    --pico-primary-hover: var(--bleu-survol);
-    --pico-primary-hover-background: var(--bleu-survol);
-    --pico-primary-hover-border: var(--bleu-survol);
-    --pico-primary-inverse: var(--sur-bleu);
-    --pico-primary-focus: var(--bleu-clair);
+    --pico-primary: var(--accent);
+    --pico-primary-background: var(--accent);
+    --pico-primary-border: var(--accent);
+    --pico-primary-hover: var(--accent-survol);
+    --pico-primary-hover-background: var(--accent-survol);
+    --pico-primary-hover-border: var(--accent-survol);
+    --pico-primary-inverse: var(--sur-accent);
+    --pico-primary-focus: var(--accent-clair);
     --pico-form-element-background-color: var(--surface);
     --pico-form-element-border-color: var(--bord-champ);
     --pico-form-element-color: var(--texte);
-    --pico-form-element-active-border-color: var(--bleu);
-    --pico-form-element-focus-color: var(--bleu-clair);
+    --pico-form-element-active-border-color: var(--accent);
+    --pico-form-element-focus-color: var(--accent-clair);
     --pico-switch-background-color: var(--bord-champ);
-    --pico-switch-checked-background-color: var(--bleu);
-    --pico-range-thumb-color: var(--bleu);
-    --pico-range-active-border-color: var(--bleu-clair);
+    --pico-switch-checked-background-color: var(--accent);
+    --pico-range-thumb-color: var(--accent);
+    --pico-range-active-border-color: var(--accent-clair);
     --pico-h2-color: var(--texte);
-    --pico-h3-color: var(--bleu);
+    --pico-h3-color: var(--accent);
 }
 
 /* Interrupteur désactivé : piste vide et rond gris, plutôt qu'un bloc gris plein. */
@@ -77,9 +77,9 @@ les marges basses de Pico. Mêmes sélecteurs que Pico pour l'emporter.
     cursor: pointer;
 }
 .langues.pico select:hover,
-.langues.pico select:focus { background-color: var(--bleu-clair); }
-/* Sans cadre, le halo pâle de Pico ne se voit plus : contour bleu au clavier. */
-.langues.pico select:focus-visible { outline: 2px solid var(--bleu); outline-offset: 0; }
+.langues.pico select:focus { background-color: var(--accent-clair); }
+/* Sans cadre, le halo pâle de Pico ne se voit plus : contour d'accent au clavier. */
+.langues.pico select:focus-visible { outline: 2px solid var(--accent); outline-offset: 0; }
 
 /*
 Liste ouverte des langues à notre style (select personnalisable, Chrome 135 et plus).
@@ -107,14 +107,14 @@ Ailleurs (Firefox, Safari), la liste du système reste affichée.
         border-radius: 0.5rem;
         font-size: 0.875rem;
     }
-    .langues.pico option::checkmark { color: var(--bleu); }
+    .langues.pico option::checkmark { color: var(--accent); }
     .langues.pico option:hover,
     .langues.pico option:focus-visible {
-        background: var(--bleu-clair);
+        background: var(--accent-clair);
         outline: none;
     }
     .langues.pico option:checked {
-        color: var(--bleu);
+        color: var(--accent);
         font-weight: 700;
     }
 }

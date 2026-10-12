@@ -267,6 +267,9 @@ function ajouterAttente(demande = '') {
  */
 function toast(texte, jusquAuSuivant) {
     const boite = $('toast');
+    /* Rouvert dans la couche du dessus : sinon une boîte modale et son fond flou le couvrent. */
+    boite.togglePopover?.(false);
+    boite.togglePopover?.(true);
     boite.textContent = texte;
     boite.classList.add('visible');
     clearTimeout(minuteurToast);

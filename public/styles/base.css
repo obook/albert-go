@@ -3,7 +3,7 @@
  * Couleurs, mise en page générale et boutons.
  *
  * Chargée en premier : les autres feuilles utilisent ses variables.
- * Couleurs reprises d'albert-atelier (bleu France, rouge Marianne).
+ * Accent orange ; rouge Marianne repris d'albert-atelier.
  *
  * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
  * Auteur : O. Booklage
@@ -23,19 +23,18 @@
     --texte-doux: #3a3a3a;
     --bord: #dde0e8;
     --bord-champ: #6a6a6a;
-    /* Accent : orange d'Onyxia, assombri pour le contraste (5,1 sur blanc).
-       Le nom --bleu reste le temps de l'essai. */
-    --bleu: #c24400;
-    --bleu-survol: #9c3600;
-    --sur-bleu: #ffffff;
-    --bleu-clair: #fef0e6;
+    /* Accent : orange d'Onyxia, assombri pour le contraste (5,1 sur blanc). */
+    --accent: #c24400;
+    --accent-survol: #9c3600;
+    --sur-accent: #ffffff;
+    --accent-clair: #fef0e6;
     /* Boutons de l'accueil : gris en clair, clairs en sombre. */
     --bouton-fond: var(--bord);
     --bouton-texte: var(--texte);
     --bouton-survol: var(--bord-carte);
     /* Pastilles 1, 2, 3 de l'accueil : cerclées de noir en clair seulement. */
     --pastille-bord: var(--texte);
-    /* Bulle de la question : gris, séparée du bleu des liens et titres. */
+    /* Bulle de la question : gris, séparée de l'accent des liens et titres. */
     --bulle: #e6e8ef;
     --sur-bulle: #161616;
     --rouge: #e1000f;
@@ -66,10 +65,10 @@
         --texte-doux: #c8c8c8;
         --bord: #3d4356;
         --bord-champ: #929292;
-        --bleu: #ff8547;
-        --bleu-survol: #ffa070;
-        --sur-bleu: #161616;
-        --bleu-clair: #45332f;
+        --accent: #ff8547;
+        --accent-survol: #ffa070;
+        --sur-accent: #161616;
+        --accent-clair: #45332f;
     --bouton-fond: var(--texte);
     --bouton-texte: var(--surface);
     --bouton-survol: var(--texte-doux);
@@ -102,10 +101,10 @@
     --texte-doux: #c8c8c8;
     --bord: #3d4356;
     --bord-champ: #929292;
-    --bleu: #ff8547;
-    --bleu-survol: #ffa070;
-    --sur-bleu: #161616;
-    --bleu-clair: #45332f;
+    --accent: #ff8547;
+    --accent-survol: #ffa070;
+    --sur-accent: #161616;
+    --accent-clair: #45332f;
     --bouton-fond: var(--texte);
     --bouton-texte: var(--surface);
     --bouton-survol: var(--texte-doux);
@@ -205,11 +204,11 @@ main { grid-row: 3; }
 
 h1, h2, p { margin: 0; }
 
-a { color: var(--bleu); }
-a:hover { color: var(--bleu-survol); }
+a { color: var(--accent); }
+a:hover { color: var(--accent-survol); }
 
 :focus-visible {
-    outline: 3px solid var(--bleu);
+    outline: 3px solid var(--accent);
     outline-offset: 2px;
 }
 
@@ -236,7 +235,7 @@ input[type="password"], input[type="search"], textarea {
     padding: 0.5rem 0.75rem;
 }
 /* Même focus que les notes de Rédac ; .pico pour passer devant Pico. */
-input[type="password"]:focus-visible, .pico input[type="password"]:focus-visible { outline: 2px solid var(--bleu); outline-offset: 2px; }
+input[type="password"]:focus-visible, .pico input[type="password"]:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 /* Boutons */
 
@@ -247,24 +246,24 @@ button {
 
 .bouton-principal {
     padding: 0.5rem 1.25rem;
-    border: 2px solid var(--bleu);
+    border: 2px solid var(--accent);
     border-radius: 0.25rem;
-    background: var(--bleu);
-    color: var(--sur-bleu);
+    background: var(--accent);
+    color: var(--sur-accent);
     font-weight: 700;
 }
-.bouton-principal:hover { background: var(--bleu-survol); border-color: var(--bleu-survol); }
+.bouton-principal:hover { background: var(--accent-survol); border-color: var(--accent-survol); }
 .bouton-principal:disabled { opacity: 0.6; cursor: progress; }
 
 .bouton-texte {
     padding: 0.375rem 0.875rem;
-    border: 2px solid var(--bleu);
+    border: 2px solid var(--accent);
     border-radius: 0.25rem;
     background: transparent;
-    color: var(--bleu);
+    color: var(--accent);
     font-weight: 700;
 }
-.bouton-texte:hover { background: var(--bleu-clair); }
+.bouton-texte:hover { background: var(--accent-clair); }
 
 .bouton-icone {
     display: grid;
@@ -277,7 +276,7 @@ button {
     background: transparent;
     color: var(--texte);
 }
-.bouton-icone:hover { border-color: var(--bleu); color: var(--bleu); }
+.bouton-icone:hover { border-color: var(--accent); color: var(--accent); }
 .bouton-icone svg, #reglages .carte > summary svg {
     width: 1.25rem;
     height: 1.25rem;
@@ -292,7 +291,7 @@ button {
     padding: 0;
     border: 0;
     background: none;
-    color: var(--bleu);
+    color: var(--accent);
     text-decoration: underline;
     text-underline-offset: 0.2em;
     font-size: 0.875rem;
