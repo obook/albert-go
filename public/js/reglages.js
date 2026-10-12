@@ -128,6 +128,11 @@ $('echanges').addEventListener('input', () => {
     afficherReglages();
 });
 
+/* Faire défiler la carte, le pouce sur un curseur, changeait le réglage. */
+for (const curseur of document.querySelectorAll('#reglages [type="range"]')) {
+    annulerAuDefilement(curseur);
+}
+
 $('voix-en-ligne').addEventListener('change', () => {
     reglages.voixEnLigne = $('voix-en-ligne').checked;
     Lecture.enLigne = reglages.voixEnLigne;
