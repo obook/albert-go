@@ -194,6 +194,7 @@ async function repondreAvecOutils(cle, requete, signal) {
     const faites = [];
     /* Extraits trouvés, pour le dernier tour. */
     const extraits = [];
+    const rendre = (reponse) => ({ ...reponse, texte: Recherche.citations(reponse.texte), recherches: faites });
     for (let tour = 0; tour < TOURS_MAX; tour++) {
         let reponse;
         try {
@@ -207,11 +208,11 @@ async function repondreAvecOutils(cle, requete, signal) {
             if (cherche) {
                 toast(t('toast.recherche-indisponible'));
             }
-            return { ...await Albert.repondre(cle, { ...requete, messages: avecDate(messages) }, signal), recherches: faites };
+            return rendre(await Albert.repondre(cle, { ...requete, messages: avecDate(messages) }, signal));
         }
         const appels = (reponse.message && reponse.message.tool_calls) || [];
         if (!appels.length) {
-            return { ...reponse, recherches: faites };
+            return rendre(reponse);
         }
         messages.push(reponse.message);
         for (const appel of appels) {
@@ -228,7 +229,7 @@ async function repondreAvecOutils(cle, requete, signal) {
     const dernier = extraits.length
         ? [...requete.messages, { role: 'user', content: t(consigne, { extraits: extraits.join('\n') }) }]
         : requete.messages;
-    return { ...await Albert.repondre(cle, { ...requete, messages: dernier }, signal), recherches: faites };
+    return rendre(await Albert.repondre(cle, { ...requete, messages: dernier }, signal));
 }
 
 /* Export pour les tests Node ; ignoré dans le navigateur. */

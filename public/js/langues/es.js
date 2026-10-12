@@ -443,7 +443,7 @@ I18n.TEXTES.es = {
     'recherche.source-web': 'en la web',
     'recherche.rappel': 'Dispones de la herramienta recherche_web: puedes buscar {source} '
         + 'y lo dices si te lo preguntan. Úsala en cuanto una respuesta necesite un dato preciso '
-        + 'que no estés seguro de saber. Estamos en {mois}.',
+        + 'que no estés seguro de saber. Estamos en {mois}. Cita cada dato encontrado con el número de su fuente entre corchetes, por ejemplo [1].',
     'recherche.resultats': 'Resultados de búsqueda:\n{extraits}\n\nResponde ahora a la pregunta a partir de estos extractos. Cita cada dato con el número de su fuente entre corchetes, por ejemplo [1]. Si ningún extracto responde exactamente a la pregunta, di primero que no lo has encontrado y luego da lo que más se acerque.',
     'recherche.aucun-mot': 'Ninguna palabra que buscar.',
     'calcul.description': 'Calcula exactamente una expresión aritmética, descompone números enteros en factores primos con su MCD y su MCM, o da las estadísticas de una serie (efectivo, media, mediana, varianza, desviación típica, cuartiles...), una media ponderada (valeurs y coefficients) o la derivada de una expresión en x (derivee). Úsala para cualquier cálculo, incluso sencillo, en lugar de calcular de memoria.',

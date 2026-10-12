@@ -443,7 +443,7 @@ I18n.TEXTES.fr = {
     'recherche.source-web': 'sur le web',
     'recherche.rappel': 'Tu disposes de l\'outil recherche_web : tu peux chercher {source} '
         + 'et tu le dis si on te le demande. Sers-t\'en dès qu\'une réponse demande un fait précis '
-        + 'que tu n\'es pas certain de connaître. Nous sommes en {mois}.',
+        + 'que tu n\'es pas certain de connaître. Nous sommes en {mois}. Cite chaque fait trouvé avec le numéro de sa source entre crochets, par exemple [1].',
     'recherche.resultats': 'Résultats de recherche :\n{extraits}\n\nRéponds maintenant à la question à partir de ces extraits. Cite chaque fait avec le numéro de sa source entre crochets, par exemple [1]. Si aucun extrait ne répond exactement à la question, dis d\'abord que tu n\'as pas trouvé, puis donne ce qui s\'en approche.',
     'recherche.aucun-mot': 'Aucun mot à chercher.',
     'calcul.description': 'Calcule exactement une expression arithmétique, décompose des entiers en facteurs premiers avec leur PGCD et leur PPCM ou donne les statistiques d\'une série (effectif, moyenne, médiane, variance, écart-type, quartiles...), une moyenne pondérée (valeurs et coefficients) ou la dérivée d\'une expression en x (derivee). À utiliser pour tout calcul, même simple, au lieu de calculer de tête.',
