@@ -89,6 +89,8 @@ label.interrupteur {
     font-weight: 700;
     cursor: pointer;
 }
+/* Icône du titre : tracés Lucide (ISC), dessinés par la règle de .bouton-icone svg. */
+#reglages .carte > summary svg { margin-right: 0.5rem; vertical-align: -0.25em; }
 /* Sur un summary, le contour est le seul repère de focus : --bleu-clair ne
    se voit pas. Les champs gardent leur halo pâle, ils ont déjà une bordure. */
 #reglages .carte, .choix-liste { --pico-primary-focus: var(--bleu); }
@@ -104,6 +106,18 @@ label.interrupteur {
     display: grid;
     gap: 1.25rem;
     padding: 0.75rem;
+}
+/* Ouverture et fermeture d'une carte : la rangée passe de 0fr à 1fr,
+   content-visibility attend la fin pour masquer le contenu. */
+@media (prefers-reduced-motion: no-preference) {
+    #reglages .carte::details-content {
+        display: grid;
+        grid-template-rows: 0fr;
+        overflow: clip;
+        transition: grid-template-rows 0.2s ease-out, content-visibility 0.2s allow-discrete;
+    }
+    #reglages .carte[open]::details-content { grid-template-rows: 1fr; }
+    #reglages .carte .corps { min-height: 0; }
 }
 #reglages .carte .corps > .bouton-texte { justify-self: start; margin-bottom: 0; }
 /* La grille espace déjà : la marge de Pico sous un <p> doublerait l'écart. */
