@@ -107,6 +107,18 @@ label.interrupteur {
     gap: 1.25rem;
     padding: 0.75rem;
 }
+/* Ouverture et fermeture d'une carte : la rangée passe de 0fr à 1fr,
+   content-visibility attend la fin pour masquer le contenu. */
+@media (prefers-reduced-motion: no-preference) {
+    #reglages .carte::details-content {
+        display: grid;
+        grid-template-rows: 0fr;
+        overflow: clip;
+        transition: grid-template-rows 0.2s ease-out, content-visibility 0.2s allow-discrete;
+    }
+    #reglages .carte[open]::details-content { grid-template-rows: 1fr; }
+    #reglages .carte .corps { min-height: 0; }
+}
 #reglages .carte .corps > .bouton-texte { justify-self: start; margin-bottom: 0; }
 /* La grille espace déjà : la marge de Pico sous un <p> doublerait l'écart. */
 #reglages .carte .corps p { margin-bottom: 0; }
