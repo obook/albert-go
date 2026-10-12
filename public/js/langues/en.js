@@ -444,7 +444,7 @@ I18n.TEXTES.en = {
     'recherche.rappel': 'You have the recherche_web tool: you can search {source}, '
         + 'and you say so if asked. Use it as soon as an answer needs a precise fact '
         + 'you are not sure you know. It is {mois}.',
-    'recherche.resultats': 'Search results:\n{extraits}\n\nNow answer the question from these extracts. Cite each fact with the number of its source in brackets, for example [1].',
+    'recherche.resultats': 'Search results:\n{extraits}\n\nNow answer the question from these extracts. Cite each fact with the number of its source in brackets, for example [1]. If no extract answers the question exactly, first say you did not find it, then give what comes closest.',
     'recherche.aucun-mot': 'No words to search for.',
     'calcul.description': 'Computes an arithmetic expression exactly, breaks whole numbers down into prime factors with their GCD and LCM or gives the statistics of a series (count, mean, median, variance, standard deviation, quartiles...), a weighted mean (valeurs and coefficients) or the derivative of an expression in x (derivee). Use it for any calculation, even a simple one, instead of computing in your head.',
     'calcul.expression': 'Expression in math.js syntax. Decimal separator: the dot (12.5), never the comma; the comma separates arguments. Operations + - * / ^ !, parentheses, pi, e, sqrt, abs, round, floor, ceil, exp, ln, log (base 10), sin cos tan asin acos atan (in degrees), pgcd(a, b) for the GCD, ppcm(a, b) for the LCM, factorial(n), combinations(n, k), fraction(a, b) for an exact fraction, on each term: fraction(1, 3) + fraction(1, 4), not fraction(1/3 + 1/4), units (5 cm + 2 mm), complex numbers with i. Example: (12.5 + 3) * sin(30)',
