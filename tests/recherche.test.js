@@ -267,6 +267,16 @@ test('fiche : une infobox indentée se lit aussi', () => {
     assert.ok(fiche.includes('vainqueur : ESP football (2)'));
 });
 
+test('nettoyerWiki : un paramètre nommé ne remplace pas le nom du modèle', () => {
+    /* Moins de 17 ans 2025 : le vainqueur devenait "âge=17". */
+    assert.strictEqual(Recherche.nettoyerWiki("'''{{POR football juniors|âge=17}}''' (1)"), 'POR football juniors (1)');
+    assert.strictEqual(Recherche.nettoyerWiki('{{unité|2363.1|km|2}}'), '2363.1 km 2');
+});
+
+test('citations : les renvois de gpt-oss reviennent au format [n]', () => {
+    assert.strictEqual(Recherche.citations('pas connu【1†L9-L15】. Sacré en 2025【4】, voir [2].'), 'pas connu [1]. Sacré en 2025 [4], voir [2].');
+});
+
 test('fiche : pas d\'infobox, pas de fiche', () => {
     assert.strictEqual(Recherche.fiche('Un article sans infobox.'), '');
     assert.strictEqual(Recherche.avecFiche('', 'Résumé.'), 'Résumé.');
@@ -363,4 +373,6 @@ test('rappel : le mois en cours, sans lequel un fait récent passe pour à venir
     const mois = new Date().toLocaleDateString('fr', { month: 'long', year: 'numeric' });
     const rappel = avecRappel([{ role: 'user', content: 'Qui a gagné ?' }], true)[0].content;
     assert.ok(rappel.includes('Nous sommes en ' + mois + '.'));
+    /* Sans cette consigne, une réponse écrite dès la première recherche cite à la façon du modèle. */
+    assert.ok(rappel.includes('par exemple [1]'));
 });

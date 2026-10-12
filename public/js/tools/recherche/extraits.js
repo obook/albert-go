@@ -55,7 +55,8 @@ Object.assign(Recherche, {
             /* {{unité|2363.1|km|2}} donne "2363.1 km 2" ; {{Canada}} donne "Canada". */
             .replace(/\{\{([^{}]*)\}\}/g, (tout, contenu) => {
                 const parts = contenu.split('|');
-                return (parts.slice(1).join(' ').trim() || parts[0]);
+                /* {{POR football juniors|âge=17}} : un paramètre nommé n'est pas la valeur. */
+                return (parts.slice(1).filter(p => !p.includes('=')).join(' ').trim() || parts[0]);
             })
             .replace(/\[\[[^\]|]*\|([^\]]*)\]\]/g, '$1')
             .replace(/\[\[([^\]]*)\]\]/g, '$1')
@@ -63,6 +64,16 @@ Object.assign(Recherche, {
             .replace(/<[^>]+>/g, ' ')
             .replace(/\s+/g, ' ')
             .trim();
+    },
+
+    /**
+     * Remet au format [n] les renvois que gpt-oss écrit à sa façon : 【1†L9-L15】.
+     *
+     * @param {string} texte - Réponse du modèle.
+     * @returns {string} Réponse aux renvois lisibles.
+     */
+    citations(texte) {
+        return texte.replace(/\s*【(\d+)[^】]*】/g, ' [$1]');
     },
 
     /**

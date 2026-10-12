@@ -443,7 +443,7 @@ I18n.TEXTES.de = {
     'recherche.source-web': 'im Web',
     'recherche.rappel': 'Du verfügst über das Werkzeug recherche_web: Du kannst {source} suchen, '
         + 'und du sagst es, wenn man dich fragt. Nutze es, sobald eine Antwort einen genauen Fakt '
-        + 'braucht, den du nicht sicher kennst. Es ist {mois}.',
+        + 'braucht, den du nicht sicher kennst. Es ist {mois}. Belege jede gefundene Angabe mit der Nummer ihrer Quelle in eckigen Klammern, zum Beispiel [1].',
     'recherche.resultats': 'Suchergebnisse:\n{extraits}\n\nBeantworte die Frage jetzt anhand dieser Auszüge. Belege jede Angabe mit der Nummer ihrer Quelle in eckigen Klammern, zum Beispiel [1]. Wenn kein Auszug die Frage genau beantwortet, sag zuerst, dass du nichts gefunden hast, und nenne dann, was am nächsten kommt.',
     'recherche.aucun-mot': 'Keine Wörter zum Suchen.',
     'calcul.description': 'Berechnet einen arithmetischen Ausdruck exakt, zerlegt ganze Zahlen in Primfaktoren mit ihrem ggT und kgV oder liefert die Statistik einer Reihe (Anzahl, Mittelwert, Median, Varianz, Standardabweichung, Quartile...), einen gewichteten Mittelwert (valeurs und coefficients) oder die Ableitung eines Ausdrucks in x (derivee). Für jede Rechnung verwenden, auch eine einfache, statt im Kopf zu rechnen.',
