@@ -284,6 +284,25 @@ function toast(texte, jusquAuSuivant) {
 }
 
 /**
+ * Rend à un curseur sa valeur quand le contact du doigt devient un défilement.
+ *
+ * Chrome déplace le curseur dès le contact, avant de savoir ce que sera le geste.
+ *
+ * @param {HTMLInputElement} curseur - Curseur à protéger.
+ */
+function annulerAuDefilement(curseur) {
+    let avant = curseur.value;
+    curseur.addEventListener('pointerdown', () => {
+        avant = curseur.value;
+    });
+    curseur.addEventListener('pointercancel', () => {
+        curseur.value = avant;
+        /* Pour que l'écouteur du curseur enregistre la valeur revenue. */
+        curseur.dispatchEvent(new Event('input'));
+    });
+}
+
+/**
  * Écrit un message sous le champ de la clé.
  *
  * Le lien est ajouté à la fin, sous le nom "Albert Go", suivi du point final.
