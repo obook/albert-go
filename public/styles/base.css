@@ -22,10 +22,12 @@
     --texte-doux: #3a3a3a;
     --bord: #dde0e8;
     --bord-champ: #6a6a6a;
-    --bleu: #000091;
-    --bleu-survol: #1212ff;
+    /* Accent : orange d'Onyxia, assombri pour le contraste (5,1 sur blanc).
+       Le nom --bleu reste le temps de l'essai. */
+    --bleu: #c24400;
+    --bleu-survol: #9c3600;
     --sur-bleu: #ffffff;
-    --bleu-clair: #e3e3fd;
+    --bleu-clair: #fef0e6;
     /* Boutons de l'accueil : gris en clair, clairs en sombre. */
     --bouton-fond: var(--bord);
     --bouton-texte: var(--texte);
@@ -63,10 +65,10 @@
         --texte-doux: #c8c8c8;
         --bord: #3d4356;
         --bord-champ: #929292;
-        --bleu: #8585f6;
-        --bleu-survol: #a0a0ff;
+        --bleu: #ff8547;
+        --bleu-survol: #ffa070;
         --sur-bleu: #161616;
-        --bleu-clair: #353b52;
+        --bleu-clair: #45332f;
     --bouton-fond: var(--texte);
     --bouton-texte: var(--surface);
     --bouton-survol: var(--texte-doux);
@@ -99,10 +101,10 @@
     --texte-doux: #c8c8c8;
     --bord: #3d4356;
     --bord-champ: #929292;
-    --bleu: #8585f6;
-    --bleu-survol: #a0a0ff;
+    --bleu: #ff8547;
+    --bleu-survol: #ffa070;
     --sur-bleu: #161616;
-    --bleu-clair: #353b52;
+    --bleu-clair: #45332f;
     --bouton-fond: var(--texte);
     --bouton-texte: var(--surface);
     --bouton-survol: var(--texte-doux);
