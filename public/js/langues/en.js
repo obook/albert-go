@@ -443,7 +443,7 @@ I18n.TEXTES.en = {
     'recherche.source-web': 'on the web',
     'recherche.rappel': 'You have the recherche_web tool: you can search {source}, '
         + 'and you say so if asked. Use it as soon as an answer needs a precise fact '
-        + 'you are not sure you know. It is {mois}. Cite each fact you find with the number of its source in brackets, for example [1].',
+        + 'you are not sure you know. It is {mois}. Cite each fact you find with the number of its source in brackets, for example [1]. If no result answers the question exactly, first say you did not find it, then give what comes closest.',
     'recherche.resultats': 'Search results:\n{extraits}\n\nNow answer the question from these extracts. Cite each fact with the number of its source in brackets, for example [1]. If no extract answers the question exactly, first say you did not find it, then give what comes closest.',
     'recherche.aucun-mot': 'No words to search for.',
     'calcul.description': 'Computes an arithmetic expression exactly, breaks whole numbers down into prime factors with their GCD and LCM or gives the statistics of a series (count, mean, median, variance, standard deviation, quartiles...), a weighted mean (valeurs and coefficients) or the derivative of an expression in x (derivee). Use it for any calculation, even a simple one, instead of computing in your head.',
