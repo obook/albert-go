@@ -286,6 +286,10 @@ main {
     color: var(--texte-doux);
 }
 .bouton-action:hover { background: var(--accent-clair); color: var(--accent); }
+/* Sous la réponse, les icônes s'effacent devant le texte ; plus bas, le contraste passe sous 3:1 en thème clair. */
+.actions-reponse .bouton-action { opacity: 0.6; }
+.actions-reponse .bouton-action:hover,
+.actions-reponse .bouton-action:focus-visible { opacity: 1; }
 /* Fichier en préparation (image de Commons, PNG). */
 .bouton-action.en-cours { animation: clignote 1.2s infinite ease-in-out; cursor: progress; }
 .bouton-action svg,
