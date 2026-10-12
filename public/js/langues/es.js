@@ -437,13 +437,13 @@ I18n.TEXTES.es = {
         + 'una noticia o una fuente que citar, y cada vez que responderías de memoria '
         + 'sobre un tema preciso. El buscador es {nom}: lo que recibes es todo lo que '
         + 'tienes, dilo si no basta.',
-    'recherche.parametre': 'Las palabras que buscar.',
+    'recherche.parametre': 'Las palabras que buscar, en español.',
     'recherche.description-catalogue': 'Este buscador es un catálogo: solo devuelve un resultado si todas las palabras buscadas aparecen en él. Busca, pues, con dos o tres palabras clave, nunca con una frase.',
     'recherche.source-base': 'en {nom}',
     'recherche.source-web': 'en la web',
     'recherche.rappel': 'Dispones de la herramienta recherche_web: puedes buscar {source} '
         + 'y lo dices si te lo preguntan. Úsala en cuanto una respuesta necesite un dato preciso '
-        + 'que no estés seguro de saber.',
+        + 'que no estés seguro de saber. Estamos en {mois}.',
     'recherche.resultats': 'Resultados de búsqueda:\n{extraits}\n\nResponde ahora a la pregunta a partir de estos extractos. Cita cada dato con el número de su fuente entre corchetes, por ejemplo [1].',
     'recherche.aucun-mot': 'Ninguna palabra que buscar.',
     'calcul.description': 'Calcula exactamente una expresión aritmética, descompone números enteros en factores primos con su MCD y su MCM, o da las estadísticas de una serie (efectivo, media, mediana, varianza, desviación típica, cuartiles...), una media ponderada (valeurs y coefficients) o la derivada de una expresión en x (derivee). Úsala para cualquier cálculo, incluso sencillo, en lugar de calcular de memoria.',

@@ -131,7 +131,9 @@ function avecRappel(messages, cherche) {
         : t('recherche.source-web');
     /* Sans ces rappels, une photo demandée partait en recherche web. */
     const internet = reglages.recherche && globeActif;
-    const rappel = [cherche ? t('recherche.rappel', { source: source }) : '',
+    /* Sans le mois, le modèle croit un fait récent à venir et répond de mémoire. */
+    const mois = new Date().toLocaleDateString(I18n.langue, { month: 'long', year: 'numeric' });
+    const rappel = [cherche ? t('recherche.rappel', { source: source, mois: mois }) : '',
         t(internet ? 'images.rappel' : 'images.absent'),
         internet ? t('services.rappel') : '',
         /* Sans lui, le modèle reprenait une heure déjà donnée et se trompait de jour. */
@@ -227,4 +229,9 @@ async function repondreAvecOutils(cle, requete, signal) {
         ? [...requete.messages, { role: 'user', content: t(consigne, { extraits: extraits.join('\n') }) }]
         : requete.messages;
     return { ...await Albert.repondre(cle, { ...requete, messages: dernier }, signal), recherches: faites };
+}
+
+/* Export pour les tests Node ; ignoré dans le navigateur. */
+if (typeof module !== 'undefined') {
+    module.exports = { avecRappel };
 }

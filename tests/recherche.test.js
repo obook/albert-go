@@ -33,6 +33,8 @@ test('outil : format attendu par le champ tools de l\'API', () => {
     assert.strictEqual(outil.function.name, 'recherche_web');
     assert.deepStrictEqual(outil.function.parameters.required, ['q']);
     assert.ok(outil.function.description.length > 40);
+    /* fr.wikipedia cherché en anglais rendait un autre article. */
+    assert.ok(outil.function.parameters.properties.q.description.includes('en français'));
 });
 
 test('plusieurs moteurs : résultats mêlés, NOMBRE en tout, un échec ignoré', async () => {
@@ -351,4 +353,14 @@ test('garderNomsPropres : chaque nom propre cherché doit figurer dans le nom ou
     ];
     assert.deepStrictEqual(Recherche.garderNomsPropres(images, 'Picasso girl mirror').map(i => i.titre), ['File:The Blue Room.jpg']);
     assert.strictEqual(Recherche.garderNomsPropres(images, 'girl mirror').length, 2);
+});
+
+test('rappel : le mois en cours, sans lequel un fait récent passe pour à venir', () => {
+    globalThis.reglages = { fournisseurs: ['wikipedia'], recherche: true };
+    globalThis.globeActif = true;
+    I18n.langue = 'fr';
+    const { avecRappel } = require('../public/js/tools/recherche/outils-modele.js');
+    const mois = new Date().toLocaleDateString('fr', { month: 'long', year: 'numeric' });
+    const rappel = avecRappel([{ role: 'user', content: 'Qui a gagné ?' }], true)[0].content;
+    assert.ok(rappel.includes('Nous sommes en ' + mois + '.'));
 });
