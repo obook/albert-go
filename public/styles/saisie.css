@@ -68,7 +68,7 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    /* La carte a 0,25rem de plus à gauche, pour le texte : la barre le rattrape, le globe répond à Envoyer. */
+    /* La carte a 0,25rem de plus à gauche, pour le texte : la barre le rattrape, le trombone répond à Envoyer. */
     margin: 0.25rem 0 0 -0.25rem;
 }
 
@@ -100,13 +100,13 @@
 .envoyer.en-cours .icone-arreter { display: block; }
 
 .saisie .fleche { display: none; flex: none; width: 2.25rem; height: 2.25rem; }
-/* Le globe puis le trombone à gauche, à la taille d'Envoyer, les autres boutons à droite. */
+/* Le trombone puis le globe à gauche, à la taille d'Envoyer, les autres boutons à droite. */
 .saisie .joindre, .saisie .recherche-web {
     flex: none;
     border: 0;
     color: var(--texte-doux);
 }
-.saisie .joindre { margin-right: auto; }
+.saisie .recherche-web, .saisie .joindre:has(+ .recherche-web[hidden]) { margin-right: auto; }
 /* Survol à la souris seulement : au doigt, :hover reste collé après un toucher
    et le globe éteint gardait le fond gris de l'état activé. */
 @media (hover: hover) {
