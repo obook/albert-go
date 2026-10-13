@@ -194,7 +194,7 @@ I18n.TEXTES.fr = {
     'reglages.voix-en-ligne': 'Autoriser les voix en ligne',
     'reglages.aide-voix': 'Un moteur de voix en ligne peut collecter et exploiter les données de la conversation.',
     'reglages.outils': 'Outils',
-    'reglages.calcul': 'Calculatrice',
+    'reglages.calcul': 'Calculatrice scientifique',
     'reglages.calendrier': 'Calendrier',
     'reglages.compteur': 'Compteur mots et caractères',
     'reglages.controle': 'Contrôle SIRET et IBAN',

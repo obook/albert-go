@@ -194,7 +194,7 @@ I18n.TEXTES.de = {
     'reglages.voix-en-ligne': 'Online-Stimmen erlauben',
     'reglages.aide-voix': 'Eine Online-Sprachausgabe kann die Daten des Gesprächs sammeln und verwerten.',
     'reglages.outils': 'Werkzeuge',
-    'reglages.calcul': 'Taschenrechner',
+    'reglages.calcul': 'Wissenschaftlicher Taschenrechner',
     'reglages.calendrier': 'Kalender',
     'reglages.compteur': 'Wort- und Zeichenzähler',
     'reglages.controle': 'SIRET- und IBAN-Prüfung',
