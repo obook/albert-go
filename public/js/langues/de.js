@@ -198,7 +198,7 @@ I18n.TEXTES.de = {
     'reglages.calendrier': 'Kalender',
     'reglages.compteur': 'Wort- und Zeichenzähler',
     'reglages.controle': 'SIRET- und IBAN-Prüfung',
-    'reglages.tirage': 'Zufallsziehung',
+    'reglages.tirage': 'Zufallsgenerator',
     'reglages.aide-outils': 'Die KI entscheidet selbst, sie bei Bedarf zu verwenden.',
     'reglages.recherche-active': 'Internet-Werkzeuge',
     'moteur.wikipedia': 'Allgemeine Enzyklopädie',

@@ -198,7 +198,7 @@ I18n.TEXTES.fr = {
     'reglages.calendrier': 'Calendrier',
     'reglages.compteur': 'Compteur mots et caractères',
     'reglages.controle': 'Contrôle SIRET et IBAN',
-    'reglages.tirage': 'Aléatoire',
+    'reglages.tirage': 'Générateur aléatoire',
     'reglages.aide-outils': 'L\'IA décide seule de s\'en servir lorsqu\'elle en a besoin.',
     'reglages.recherche-active': 'Outils Internet',
     'moteur.wikipedia': 'Encyclopédie généraliste',

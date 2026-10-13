@@ -59,7 +59,7 @@ Dans Discussion, cinq outils sont activés par défaut ; on peut les désactiver
 | Outil | Rôle |
 |---|---|
 | Calculatrice scientifique | Calcul exact avec [math.js](https://mathjs.org/) : opérations, puissances, racines, trigonométrie en degrés, logarithmes, fractions exactes, factorielles et combinaisons, unités ; décomposition en facteurs premiers, PGCD et PPCM ; statistiques d'une série (moyenne, médiane, variance, écart-type, quartiles du lycée) ; moyenne pondérée par des coefficients ; dérivée d'une expression en x. Calcul formel avec [Giac](https://www-fourier.univ-grenoble-alpes.fr/~parisse/giac_fr.html), le moteur de Xcas : valeurs exactes, équations, inéquations et systèmes, factorisation et développement, primitives et intégrales, limites, sommes, lois binomiale et normale, suites, tableau de variations. |
-| Aléatoire | Ordre de passage, éléments tirés ou groupes, avec le générateur aléatoire du navigateur. |
+| Générateur aléatoire | Ordre de passage, éléments tirés ou groupes, avec la source de hasard du navigateur. |
 | Calendrier | Date et heure actuelles ou dans N heures, jour de la semaine d'une date, date dans N jours ou N mois, nombre de jours entre deux dates, jours ouvrés et jours fériés en France, report d'une échéance au premier jour ouvré suivant. |
 | Compteur | Nombre de mots et de caractères d'un texte ; occurrences d'une lettre, mot épelé et écrit à l'envers, anagramme vérifiée ; lisibilité (mots par phrase, phrases de plus de 20 mots, mots de 10 lettres ou plus). |
 | Contrôle SIRET et IBAN | Clé de contrôle d'un SIREN, d'un SIRET ou d'un IBAN, pour repérer un numéro mal recopié ; l'existence du numéro n'est pas vérifiée. |

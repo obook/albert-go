@@ -198,7 +198,7 @@ I18n.TEXTES.es = {
     'reglages.calendrier': 'Calendario',
     'reglages.compteur': 'Contador de palabras y caracteres',
     'reglages.controle': 'Control de SIRET e IBAN',
-    'reglages.tirage': 'Sorteo aleatorio',
+    'reglages.tirage': 'Generador aleatorio',
     'reglages.aide-outils': 'La IA decide sola usarlas cuando las necesita.',
     'reglages.recherche-active': 'Herramientas de Internet',
     'moteur.wikipedia': 'Enciclopedia generalista',
