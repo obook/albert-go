@@ -71,3 +71,15 @@ test('heure : l\'heure seule, au format court de la langue', () => {
         I18n.langue = avant;
     }
 });
+
+test('accueil : bouton Calcul formel, six exemples par langue', () => {
+    const fs = require('node:fs');
+    const path = require('node:path');
+    const page = fs.readFileSync(path.join(__dirname, '../public/index.html'), 'utf8');
+    assert.match(page, /data-exemple="bienvenue\.exemple-formel" data-t="bienvenue\.formel"/);
+    for (const langue of I18n.LANGUES) {
+        const texte = fs.readFileSync(path.join(__dirname, '../public/exemples', langue, 'formel.txt'), 'utf8');
+        assert.strictEqual(texte.split(/\n\s*\n/).filter(v => v.trim()).length, 6, langue);
+        assert.ok(I18n.TEXTES[langue]['bienvenue.formel'], langue);
+    }
+});
