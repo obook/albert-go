@@ -99,13 +99,13 @@
 .envoyer.en-cours .icone-arreter { display: block; }
 
 .saisie .fleche { display: none; flex: none; width: 2.25rem; height: 2.25rem; }
-/* Le globe puis le trombone à gauche, les autres boutons à droite. Le globe a la taille d'Envoyer. */
+/* Le globe puis le trombone à gauche, à la taille d'Envoyer, les autres boutons à droite. */
 .saisie .joindre, .saisie .recherche-web {
     flex: none;
     border: 0;
     color: var(--texte-doux);
 }
-.saisie .joindre { width: 2.25rem; height: 2.25rem; margin-right: auto; }
+.saisie .joindre { margin-right: auto; }
 /* Survol à la souris seulement : au doigt, :hover reste collé après un toucher
    et le globe éteint gardait le fond gris de l'état activé. */
 @media (hover: hover) {
