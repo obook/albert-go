@@ -254,7 +254,7 @@ I18n.TEXTES.en = {
 
     /* About. */
     'info.titre': 'About',
-    'info.intro': 'Albert Go lets you chat with the artificial intelligence models of the French interministerial digital directorate (<a href="https://ia.numerique.gouv.fr/outils-ia/albert-api/" target="_blank" rel="noopener noreferrer">DINUM</a>), using your personal API key.',
+    'info.intro': 'Albert Go lets you chat with the artificial intelligence models of the French interministerial digital directorate (<a href="https://ia.numerique.gouv.fr/outils-ia/albert-api/" target="_blank" rel="noopener noreferrer">DINUM</a>) using your API key.',
     'info.donnees': 'Your data',
     'info.donnees.relais': 'Your key and your questions go through an interministerial n8n relay, which keeps nothing, then on to Albert API.',
     'info.donnees.traceurs': 'No account, no cookie, no library loaded from a third-party site. Internet tools are called only if you allow them.',
