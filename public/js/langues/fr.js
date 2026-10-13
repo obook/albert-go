@@ -460,6 +460,7 @@ I18n.TEXTES.fr = {
     'calcul.long': 'Calcul formel trop long, arrêté avant la fin. Essayer une demande plus simple.',
     'calcul.indisponible': 'Calcul formel indisponible : le moteur n\'a pas pu être chargé.',
     'calcul.rappel': 'Calcul, équation, inéquation, valeur exacte, probabilité : appelle l\'outil calcul à chaque fois. Ne calcule jamais de tête.',
+    'calcul.tableau': 'Tableau de variations ci-dessous. La page l\'affiche sous ta réponse : ne le recopie pas et ne le redessine pas, commente-le seulement.\n$${tableau}$$',
     'calcul.ponderee': 'Moyenne pondérée {moyenne} (somme des coefficients {total}).',
     'consigne.date': 'Nous sommes le {date}, il est {heure} : ce jour de la semaine est exact, ne le recalcule pas.',
     'consigne.contexte': 'Tu es le modèle {nom} ({reel}), servi par Albert, l\'IA de l\'État.',

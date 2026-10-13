@@ -378,6 +378,17 @@ test('rappel : le mois en cours, sans lequel un fait récent passe pour à venir
     assert.ok(rappel.includes('dis d\'abord que tu n\'as pas trouvé'));
 });
 
+test('tableau rendu par l\'outil calcul : ajouté par la page sous la réponse, sans doublon', () => {
+    const { avecTableaux } = require('../public/js/tools/recherche/outils-modele.js');
+    const tableau = '$$\\begin{array}{c|cc} x & 0 & 1 \\\\ \\hline f(x) & 2 & 3 \\end{array}$$';
+    const faites = [{ calcul: '2 + 3 = 5' }, { calcul: 'Tableau de variations ci-dessous.\n' + tableau }, { mots: 'braille' }];
+    assert.strictEqual(avecTableaux('La fonction est croissante.', faites), 'La fonction est croissante.\n\n' + tableau);
+    assert.strictEqual(avecTableaux('Résultat : 5.', [{ calcul: '2 + 3 = 5' }]), 'Résultat : 5.');
+    /* Le modèle l'a recopié, aux espaces près : pas de second tableau. */
+    const recopie = 'Voici :\n$$ \\begin{array}{c|cc}\nx & 0 & 1 \\\\ \\hline\nf(x) & 2 & 3 \\end{array} $$';
+    assert.strictEqual(avecTableaux(recopie, faites), recopie);
+});
+
 test('rappel : l\'outil calcul, sans lequel un modèle moyen calcule de tête', () => {
     I18n.langue = 'fr';
     const { avecRappel } = require('../public/js/tools/recherche/outils-modele.js');

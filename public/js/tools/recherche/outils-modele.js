@@ -116,6 +116,21 @@ async function chercherImagesOutil(appel, signal, faites) {
 }
 
 /**
+ * Ajoute sous la réponse les tableaux rendus par l'outil calcul (bloc $$...$$
+ * de sa ligne). Les modèles les recopient mal : la page les affiche elle-même.
+ *
+ * @param {string} texte - Réponse du modèle.
+ * @param {Array<Object>} faites - Appels d'outils de cette réponse.
+ * @returns {string} Réponse suivie des tableaux qu'elle ne contient pas déjà.
+ */
+function avecTableaux(texte, faites) {
+    const serre = s => s.replace(/\s+/g, '');
+    const tableaux = faites.map(f => (/\$\$[\s\S]+\$\$/.exec(f.calcul || '') || [])[0])
+        .filter(tableau => tableau && !serre(texte).includes(serre(tableau).slice(2, -2)));
+    return [texte, ...new Set(tableaux)].join('\n\n');
+}
+
+/**
  * Ajoute à la consigne système le rappel que l'outil est disponible.
  *
  * Interrogé sur ses capacités, un modèle répond souvent qu'il ne sait pas
@@ -196,7 +211,7 @@ async function repondreAvecOutils(cle, requete, signal) {
     const faites = [];
     /* Extraits trouvés, pour le dernier tour. */
     const extraits = [];
-    const rendre = (reponse) => ({ ...reponse, texte: Recherche.citations(reponse.texte), recherches: faites });
+    const rendre = (reponse) => ({ ...reponse, texte: avecTableaux(Recherche.citations(reponse.texte), faites), recherches: faites });
     for (let tour = 0; tour < TOURS_MAX; tour++) {
         let reponse;
         try {
@@ -236,5 +251,5 @@ async function repondreAvecOutils(cle, requete, signal) {
 
 /* Export pour les tests Node ; ignoré dans le navigateur. */
 if (typeof module !== 'undefined') {
-    module.exports = { avecRappel };
+    module.exports = { avecRappel, avecTableaux };
 }

@@ -460,6 +460,7 @@ I18n.TEXTES.es = {
     'calcul.long': 'Cálculo simbólico demasiado largo, detenido antes de terminar. Prueba con una petición más sencilla.',
     'calcul.indisponible': 'Cálculo simbólico no disponible: no se pudo cargar el motor.',
     'calcul.rappel': 'Cálculo, ecuación, inecuación, valor exacto, probabilidad: llama a la herramienta calcul cada vez. Nunca calcules de memoria.',
+    'calcul.tableau': 'Tabla de variación a continuación. La página la muestra bajo tu respuesta: no la copies ni la vuelvas a dibujar, solo coméntala.\n$${tableau}$$',
     'calcul.ponderee': 'Media ponderada {moyenne} (suma de los coeficientes {total}).',
     'consigne.date': 'Hoy es {date}, son las {heure}: este día de la semana es exacto, no lo vuelvas a calcular.',
     'consigne.contexte': 'Eres el modelo {nom} ({reel}), servido por Albert, la IA del Estado francés.',

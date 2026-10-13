@@ -217,6 +217,59 @@ const Formel = {
         return suite;
     },
 
+    /** Début d'une demande de tableau de variations. */
+    TABLEAU: /^\s*tabvar\s*\(/,
+
+    /**
+     * Tableau de variations en LaTeX. derive=1 : dérivée première seule, sur
+     * tout le domaine ; sans lui, Giac réduit une fonction impaire à x >= 0.
+     *
+     * @param {string} commande - Par exemple "tabvar(x^3 - 3x)".
+     * @returns {Promise<string>} Tableau au format array de LaTeX.
+     */
+    async varier(commande) {
+        const entiere = /derive\s*=/.test(commande) ? commande : commande.replace(/\)\s*$/, ', derive=1)');
+        return this.tableau(await this.calculer('latex(' + entiere + ')'));
+    },
+
+    /**
+     * Met le tableau de Giac à la façon du lycée : signes et zéros de la
+     * dérivée, valeurs de f en haut ou en bas selon les flèches, double barre
+     * à une valeur interdite (que Giac donne en deux colonnes).
+     *
+     * @param {string} latex - Sortie de latex(tabvar(...)) : trois lignes x, y' et y.
+     * @returns {string} Tableau au format array de LaTeX.
+     */
+    tableau(latex) {
+        const corps = /\\begin\{array\}\{c*\}([\s\S]*?)\\end\{array\}/.exec(latex);
+        const lignes = corps ? corps[1].split('\\\\').map(ligne => ligne.split('&').map(c => c.trim()
+            .replace(/\\mathrm\{inv\}\\left\(([^()]*)\\right\)/g, '\\frac{1}{$1}').replace(/e\^\{1\}/g, 'e'))) : [];
+        if (lignes.length < 3) {
+            throw new Error(t('calcul.invalide'));
+        }
+        const [[variable, ...x], [, ...derivee], [, ...f]] = lignes;
+        const barre = j => j >= 0 && /\|\|/.test(derivee[j]) && /\|\|/.test(derivee[j + 1] || '');
+        const fleche = j => (/\\(ne|se)arrow/.exec(f[j] || '') || [])[1];
+        /* Une valeur va en haut après une montée ou avant une descente, en bas dans l'autre cas. */
+        const hauteur = (j) => {
+            const haut = fleche(j - 1) === 'ne' || fleche(j + 1) === 'se';
+            const bas = fleche(j - 1) === 'se' || fleche(j + 1) === 'ne';
+            return fleche(j) || haut === bas ? 'milieu' : (haut ? 'haut' : 'bas');
+        };
+        const etage = nom => f.map((c, j) => (hauteur(j) === nom ? c : ''));
+        const rangees = [
+            [variable, ...x.map((c, j) => (barre(j - 1) ? '' : c))],
+            ['f\'(' + variable + ')', ...derivee.map((c, j) => (j > 0 && j < derivee.length - 1 && /^[+\-0]$/.test(c) ? c : ''))],
+            ['', ...etage('haut')],
+            ['f(' + variable + ')', ...etage('milieu')],
+            ['', ...etage('bas')]
+        ].map(rangee => rangee.join(' & '));
+        const colonnes = x.map((c, j) => 'c' + (barre(j) ? '||' : '')).join('');
+        /* arraystretch : sans lui, les filets collent aux lignes. */
+        return ('\\def\\arraystretch{1.4}\\begin{array}{c|' + colonnes + '} ' + rangees[0] + ' \\\\ \\hline ' + rangees[1] + ' \\\\ \\hline '
+            + rangees[2] + ' \\\\ ' + rangees[3] + ' \\\\ ' + rangees[4] + ' \\end{array}').replace(/ +/g, ' ');
+    },
+
     async _lancer(commande) {
         const worker = await this.demarrer();
         return new Promise((resoudre, rejeter) => {
@@ -788,7 +841,9 @@ const OUTILS_LOCAUX = {
             }
             if (a.formel) {
                 try {
-                    return a.formel + ' : ' + await Formel.calculer(a.formel);
+                    return Formel.TABLEAU.test(a.formel)
+                        ? t('calcul.tableau', { tableau: await Formel.varier(a.formel) })
+                        : a.formel + ' : ' + await Formel.calculer(a.formel);
                 } catch (err) {
                     /* Trop long ou moteur absent : rendu comme résultat, l'appelant ne connaît que calcul.invalide. */
                     if (err.message === t('calcul.invalide')) {

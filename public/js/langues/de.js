@@ -460,6 +460,7 @@ I18n.TEXTES.de = {
     'calcul.long': 'Symbolische Rechnung zu lang, vor dem Ende abgebrochen. Eine einfachere Anfrage versuchen.',
     'calcul.indisponible': 'Symbolisches Rechnen nicht verfügbar: Das Rechenmodul konnte nicht geladen werden.',
     'calcul.rappel': 'Rechnung, Gleichung, Ungleichung, exakter Wert, Wahrscheinlichkeit: Rufe jedes Mal das Werkzeug calcul auf. Rechne nie im Kopf.',
+    'calcul.tableau': 'Monotonietabelle unten. Die Seite zeigt sie unter deiner Antwort: weder abschreiben noch neu zeichnen, nur kommentieren.\n$${tableau}$$',
     'calcul.ponderee': 'Gewichteter Mittelwert {moyenne} (Summe der Koeffizienten {total}).',
     'consigne.date': 'Heute ist {date}, es ist {heure}: Dieser Wochentag ist korrekt, berechne ihn nicht neu.',
     'consigne.contexte': 'Du bist das Modell {nom} ({reel}), bereitgestellt von Albert, der KI des französischen Staates.',

@@ -460,6 +460,7 @@ I18n.TEXTES.en = {
     'calcul.long': 'Symbolic computation took too long and was stopped. Try a simpler request.',
     'calcul.indisponible': 'Symbolic computation unavailable: the engine could not be loaded.',
     'calcul.rappel': 'Calculation, equation, inequality, exact value, probability: call the calcul tool every time. Never compute in your head.',
+    'calcul.tableau': 'Table of variations below. The page shows it under your answer: do not copy or redraw it, only comment on it.\n$${tableau}$$',
     'calcul.ponderee': 'Weighted mean {moyenne} (sum of coefficients {total}).',
     'consigne.date': 'Today is {date}, the time is {heure}: this weekday is correct, do not recompute it.',
     'consigne.contexte': 'You are the {nom} model ({reel}), served by Albert, the French State AI.',

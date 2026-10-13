@@ -101,6 +101,29 @@ test('probabilités, suites et tableau de variations', async () => {
     assert.match(await Formel.calculer('tabvar(x^3 - 3x)'), /↘.*↗/);
 });
 
+test('tableau de variations : rendu en LaTeX, sur tout le domaine, valeurs en haut ou en bas', async () => {
+    const attendu = '\\def\\arraystretch{1.4}\\begin{array}{c|ccccccc} x & -\\infty & & -1 & & 1 & & +\\infty \\\\ \\hline '
+        + 'f\'(x) & & + & 0 & - & 0 & + & \\\\ \\hline '
+        + '& & & 2 & & & & +\\infty \\\\ f(x) & & \\nearrow & & \\searrow & & \\nearrow & \\\\ '
+        + '& -\\infty & & & & -2 & & \\end{array}';
+    assert.strictEqual(await Formel.varier('tabvar(x^3 - 3x)'), attendu);
+    assert.strictEqual(await OUTILS_LOCAUX.calcul.executer({ formel: 'tabvar(x^3 - 3x)' }, 'fr'), t('calcul.tableau', { tableau: attendu }));
+});
+
+test('tableau de variations : double barre à une valeur interdite, limites de part et d\'autre', async () => {
+    assert.strictEqual(await Formel.varier('tabvar(1/x)'),
+        '\\def\\arraystretch{1.4}\\begin{array}{c|ccc||ccc} x & -\\infty & & 0 & & & +\\infty \\\\ \\hline '
+        + 'f\'(x) & & - & & & - & \\\\ \\hline '
+        + '& 0 & & & +\\infty & & \\\\ f(x) & & \\searrow & & & \\searrow & \\\\ '
+        + '& & & -\\infty & & & 0 \\end{array}');
+});
+
+test('tableau de variations : valeur sans extremum au milieu, 1/e écrit en fraction, commande refusée', async () => {
+    assert.match(await Formel.varier('tabvar(x^3)'), /f\(x\) & & \\nearrow & 0 & \\nearrow & \\\\/);
+    assert.match(await Formel.varier('tabvar(x*exp(-x))'), /& & & \\frac\{1\}\{e\} & & \\\\ f\(x\)/);
+    await assert.rejects(Formel.varier('tabvar('), { message: t('calcul.invalide') });
+});
+
 test('une variable définie par un calcul ne reste pas pour le suivant', async () => {
     assert.strictEqual(await Formel.calculer('a := 5'), '5');
     assert.strictEqual(await Formel.calculer('a + 1'), 'a+1');
