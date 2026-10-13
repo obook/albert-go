@@ -228,8 +228,42 @@ const Formel = {
      * @returns {Promise<string>} Tableau au format array de LaTeX.
      */
     async varier(commande) {
+        return this.tableau(await this.sortieTableau(commande));
+    },
+
+    /** Sortie LaTeX de Giac pour un tableau de variations, lue par tableau() et lecture(). */
+    sortieTableau(commande) {
         const entiere = /derive\s*=/.test(commande) ? commande : commande.replace(/\)\s*$/, ', derive=1)');
-        return this.tableau(await this.calculer('latex(' + entiere + ')'));
+        return this.calculer('latex(' + entiere + ')');
+    },
+
+    /** Lignes x, y' et y de cette sortie, case par case ; la première case de la ligne x est la variable. */
+    _lignesTableau(latex) {
+        const corps = /\\begin\{array\}\{c*\}([\s\S]*?)\\end\{array\}/.exec(latex);
+        const lignes = corps ? corps[1].split('\\\\').map(ligne => ligne.split('&').map(c => c.trim()
+            .replace(/\\mathrm\{inv\}\\left\(([^()]*)\\right\)/g, '\\frac{1}{$1}').replace(/e\^\{1\}/g, 'e'))) : [];
+        if (lignes.length < 3) {
+            throw new Error(t('calcul.invalide'));
+        }
+        return lignes;
+    },
+
+    /**
+     * Le tableau en trois lignes de texte, pour le modèle : sur le tableau
+     * LaTeX, aux valeurs sur trois étages, il confond maximum et minimum.
+     *
+     * @param {string} latex - Sortie de sortieTableau().
+     * @returns {string} Lignes x, f' et f ; "||" à une valeur interdite.
+     */
+    lecture(latex) {
+        const [[variable, ...x], [, ...derivee], [, ...f]] = this._lignesTableau(latex);
+        const barre = j => /\|\|/.test(derivee[j] || '');
+        return [
+            variable + ' : ' + x.filter((c, j) => c && !(barre(j) && barre(j - 1))).join(' ; '),
+            'f\'(' + variable + ') : ' + derivee.map((c, j) => (barre(j) ? (barre(j - 1) ? '' : '||')
+                : (j > 0 && j < derivee.length - 1 && /^[+\-0]$/.test(c) ? c : ''))).filter(Boolean).join(' ; '),
+            'f(' + variable + ') : ' + f.map((c, j) => (barre(j) && barre(j + 1) ? c + ' ||' : c.replace('\\nearrow', '↗').replace('\\searrow', '↘'))).join(' ')
+        ].join('\n');
     },
 
     /**
@@ -241,13 +275,7 @@ const Formel = {
      * @returns {string} Tableau au format array de LaTeX.
      */
     tableau(latex) {
-        const corps = /\\begin\{array\}\{c*\}([\s\S]*?)\\end\{array\}/.exec(latex);
-        const lignes = corps ? corps[1].split('\\\\').map(ligne => ligne.split('&').map(c => c.trim()
-            .replace(/\\mathrm\{inv\}\\left\(([^()]*)\\right\)/g, '\\frac{1}{$1}').replace(/e\^\{1\}/g, 'e'))) : [];
-        if (lignes.length < 3) {
-            throw new Error(t('calcul.invalide'));
-        }
-        const [[variable, ...x], [, ...derivee], [, ...f]] = lignes;
+        const [[variable, ...x], [, ...derivee], [, ...f]] = this._lignesTableau(latex);
         const barre = j => j >= 0 && /\|\|/.test(derivee[j]) && /\|\|/.test(derivee[j + 1] || '');
         const fleche = j => (/\\(ne|se)arrow/.exec(f[j] || '') || [])[1];
         /* Une valeur va en haut après une montée ou avant une descente, en bas dans l'autre cas. */
@@ -841,9 +869,11 @@ const OUTILS_LOCAUX = {
             }
             if (a.formel) {
                 try {
-                    return Formel.TABLEAU.test(a.formel)
-                        ? t('calcul.tableau', { tableau: await Formel.varier(a.formel) })
-                        : a.formel + ' : ' + await Formel.calculer(a.formel);
+                    if (Formel.TABLEAU.test(a.formel)) {
+                        const sortie = await Formel.sortieTableau(a.formel);
+                        return t('calcul.tableau', { lecture: Formel.lecture(sortie), tableau: Formel.tableau(sortie) });
+                    }
+                    return a.formel + ' : ' + await Formel.calculer(a.formel);
                 } catch (err) {
                     /* Trop long ou moteur absent : rendu comme résultat, l'appelant ne connaît que calcul.invalide. */
                     if (err.message === t('calcul.invalide')) {

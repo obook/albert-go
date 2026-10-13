@@ -13,6 +13,7 @@ Ce qui reste à faire, du plus simple au plus long. Le détail des failles est d
 
 - Tester avec un vrai modèle : outils locaux (groupes, statistiques, compteur), jours ouvrés, services de l'État, courbes (dont l'exemple à trois courbes de l'accueil), calcul formel (Giac).
 - Calcul formel : essayer le chargement de Giac sur iPad (19 Mo, 256 Mo de mémoire réservés au démarrage).
+- Calcul formel dans albert-atelier : son outil calcul est en Python, côté serveur, sans Giac. SymPy, déjà en option dans le projet, est le moteur naturel ; le tableau de variations y reste à construire. Reprendre aussi les libellés "Calculatrice scientifique" et "Générateur aléatoire".
 - API ouvertes à étudier : Tabular API de data.gouv.fr (lire les lignes d'un fichier publié), géocodage inverse et itinéraire de l'IGN, Géorisques.
 - Légifrance et Judilibre : il faut des identifiants PISTE et une route n8n, car la clé ne peut pas rester dans le navigateur.
 - Wiktionnaire et autres services externes : en réflexion, car les mots cherchés partent chez un tiers.

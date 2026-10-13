@@ -176,7 +176,7 @@ test('ommlDocx : nom d\'opérateur en droit, parenthèses et accolade extensible
         '<m:d><m:dPr><m:begChr m:val="("/><m:endChr m:val=")"/></m:dPr><m:e>' + r('1') + '</m:e></m:d>');
     /* Système : accolade ouvrante seule. */
     assert.strictEqual(Rendu.ommlDocx(n('mrow', {}, clos('{'), n('mtable', {}, n('mtr', {}, n('mtd', {}, nombre('1')))))),
-        '<m:d><m:dPr><m:begChr m:val="{"/><m:endChr m:val=""/></m:dPr><m:e><m:m><m:mr><m:e>' + r('1') + '</m:e></m:mr></m:m></m:e></m:d>');
+        '<m:d><m:dPr><m:begChr m:val="{"/><m:endChr m:val=""/></m:dPr><m:e><m:m><m:mPr><m:plcHide m:val="1"/></m:mPr><m:mr><m:e>' + r('1') + '</m:e></m:mr></m:m></m:e></m:d>');
     /* Parenthèses ordinaires : du texte. */
     assert.strictEqual(Rendu.ommlDocx(n('mrow', {}, n('mo', {}, '('), nombre('1'), n('mo', {}, ')'))), r('(') + r('1') + r(')'));
 });
@@ -380,4 +380,52 @@ test('export sans gras (Imprimerie) : ni titres ni en-tête de tableau en gras',
     const tableau = n('DIV', {}, n('TABLE', {}, n('THEAD', {}, n('TR', {}, n('TH', {}, 'Question')))));
     assert.ok(Rendu.corpsDocx(tableau, etatVide()).includes('<w:b/>'));
     assert.ok(!Rendu.corpsDocx(tableau, { ...etatVide(), sansGras: true }).includes('<w:b/>'));
+});
+
+test('ommlDocx : tableau, cases vides gardées et sans repère visible dans Word', () => {
+    const xml = Rendu.ommlDocx(n('mtable', {},
+        n('mtr', {}, n('mtd', {}, n('mi', {}, 'x')), n('mtd', {})),
+        n('mtr', {}, n('mtd', {}), n('mtd', {}, n('mn', {}, '2')))));
+    assert.ok(xml.startsWith('<m:m><m:mPr><m:plcHide m:val="1"/></m:mPr>'));
+    assert.strictEqual((xml.match(/<m:e>/g) || []).length, 4);
+    /* Une case vide désorganise le tableau à l'ouverture dans LibreOffice. */
+    assert.ok(!xml.includes('<m:e></m:e>'));
+});
+
+/* Tableau à filets tel que KaTeX le laisse : mtable et la source LaTeX, seule à garder les barres doubles. */
+const tableauRegle = (valeur = '2') => {
+    const cellule = (...contenu) => n('mtd', {}, ...contenu);
+    const table = n('mtable', { rowlines: 'solid', columnlines: 'solid solid' },
+        n('mtr', {}, cellule(n('mi', {}, 'x')), cellule(nombre('0')), cellule(nombre('1'))),
+        n('mtr', {}, cellule(n('mi', {}, 'f')), cellule(), cellule(nombre(valeur))));
+    /* Le rendu automatique de KaTeX enveloppe la formule d'un <span> nu. */
+    return n('SPAN', {}, n('SPAN', { class: 'katex-display' }, n('SPAN', { class: 'katex' },
+        n('SPAN', { class: 'katex-mathml' }, n('math', {}, n('semantics', {}, n('mrow', {}, table),
+            n('annotation', { encoding: 'application/x-tex' }, '\\begin{array}{c|c||c} x & 0 & 1 \\\\ \\hline f & & 2 \\end{array}')))))));
+};
+
+test('corpsDocx : tableau à filets en LaTeX, seul dans son paragraphe, rendu en vrai tableau', () => {
+    const xml = Rendu.corpsDocx(n('DIV', {}, n('P', {}, tableauRegle())), etatVide());
+    assert.strictEqual((xml.match(/<w:tc>/g) || []).length, 6);
+    assert.strictEqual((xml.match(/<w:bottom /g) || []).length, 3);
+    assert.strictEqual((xml.match(/<w:right w:val="single"/g) || []).length, 2);
+    assert.strictEqual((xml.match(/<w:right w:val="double"/g) || []).length, 2);
+    assert.ok(!xml.includes('<m:m>'));
+    /* Largeurs selon le texte le plus long de chaque colonne : égales ici, 3212 = 9638 / 3. */
+    assert.strictEqual((xml.match(/<w:tcW w:w="3212"/g) || []).length, 6);
+    assert.ok(Rendu.corpsDocx(n('DIV', {}, n('P', {}, tableauRegle('1234567890'))), etatVide()).includes('<w:tcW w:w="6023"'));
+    /* Dans une phrase, il reste une formule : un tableau ne se glisse pas dans un paragraphe. */
+    assert.ok(Rendu.corpsDocx(n('DIV', {}, n('P', {}, 'Voici ', tableauRegle())), etatVide()).includes('<m:m>'));
+});
+
+test('ommlDocx : flèches obliques des Dingbats, crochet d\'intervalle en texte droit', () => {
+    assert.strictEqual(Rendu.ommlDocx(n('mo', {}, String.fromCharCode(0x2197))), r(String.fromCharCode(0x279A)));
+    /* Un crochet seul, comme dans ]a ; b[ : LibreOffice attend sa paire s'il n'est pas marqué texte droit. */
+    assert.strictEqual(Rendu.ommlDocx(n('mo', {}, ']')), '<m:r><m:rPr><m:nor/></m:rPr><m:t xml:space="preserve">]</m:t></m:r>');
+});
+
+test('formule Word d\'un signe seul (case d\'un tableau de variations) : en texte droit', () => {
+    const e = Rendu.ecritureDocx();
+    assert.strictEqual(e.formule(n('mtd', {}, n('mo', {}, '+'))), '<m:oMath><m:r><m:rPr><m:nor/></m:rPr><m:t xml:space="preserve">+</m:t></m:r></m:oMath>');
+    assert.strictEqual(e.formule(n('mtd', {}, n('mn', {}, '2'))), '<m:oMath>' + r('2') + '</m:oMath>');
 });

@@ -257,3 +257,42 @@ test('export sans gras (Imprimerie) : les titres perdent leur gras', () => {
     assert.ok(Rendu.stylesOdt().includes('fo:font-weight="bold"'));
     assert.ok(!Rendu.stylesOdt(true).includes('fo:font-weight="bold"'));
 });
+
+test('starmathOdt : crochets d\'un intervalle français, que LibreOffice ne doit pas chercher à apparier', () => {
+    const o = (signe) => n('mo', {}, signe);
+    assert.strictEqual(Rendu.starmathOdt(n('mrow', {}, o(']'), nombre('1'), o(';'), nombre('2'), o('['))), '{\\] 1 ; 2 \\[}');
+    assert.strictEqual(Rendu.starmathOdt(n('mrow', {}, o('['), nombre('1'), o(';'), nombre('2'), o(']'))), '{\\[ 1 ; 2 \\]}');
+});
+
+/* Tableau à filets tel que KaTeX le laisse : mtable et la source LaTeX, seule à garder les barres doubles. */
+const tableauRegle = (valeur = '2') => {
+    const cellule = (...contenu) => n('mtd', {}, ...contenu);
+    const table = n('mtable', { rowlines: 'solid', columnlines: 'solid solid' },
+        n('mtr', {}, cellule(n('mi', {}, 'x')), cellule(nombre('0')), cellule(nombre('1'))),
+        n('mtr', {}, cellule(n('mi', {}, 'f')), cellule(), cellule(nombre(valeur))));
+    /* Le rendu automatique de KaTeX enveloppe la formule d'un <span> nu. */
+    return n('SPAN', {}, n('SPAN', { class: 'katex-display' }, n('SPAN', { class: 'katex' },
+        n('SPAN', { class: 'katex-mathml' }, n('math', {}, n('semantics', {}, n('mrow', {}, table),
+            n('annotation', { encoding: 'application/x-tex' }, '\\begin{array}{c|c||c} x & 0 & 1 \\\\ \\hline f & & 2 \\end{array}')))))));
+};
+
+test('corpsOdt : tableau à filets en LaTeX, seul dans son paragraphe, rendu en vrai tableau', () => {
+    const etat = etatVide();
+    const xml = Rendu.corpsOdt(n('DIV', {}, n('P', {}, tableauRegle())), etat);
+    for (const style of ['FiletB1', 'FiletB2', 'FiletB', 'Filet1', 'Filet2', 'Filet']) {
+        assert.ok(xml.includes('table:style-name="' + style + '"'), style);
+        assert.ok(Rendu.stylesContenuOdt(etat).includes('style:name="' + style + '"'), style);
+    }
+    /* Largeurs selon le texte le plus long de chaque colonne : égales ici, 17 cm / 3. Sans largeur, LibreOffice coupe les valeurs. */
+    assert.strictEqual((xml.match(/<table:table-column table:style-name="Col567"\/>/g) || []).length, 3);
+    assert.ok(Rendu.stylesContenuOdt(etat).includes('<style:style style:name="Col567" style:family="table-column"><style:table-column-properties style:column-width="5.67cm"/>'));
+    /* Une formule par case remplie, aucune ne garde le tableau entier. */
+    assert.strictEqual(etat.objets.length, 5);
+    assert.ok(etat.objets.every((objet) => !objet.includes('<mtable>')));
+});
+
+test('flèches obliques : celles des Dingbats, que LibreOffice ne remplace pas par des émojis', () => {
+    const [monte, descend] = [String.fromCharCode(0x2197), String.fromCharCode(0x2198)];
+    assert.strictEqual(Rendu.starmathOdt(n('mo', {}, monte)), String.fromCharCode(0x279A));
+    assert.strictEqual(Rendu.mathmlOdt(n('mo', {}, descend)), '<mo>' + String.fromCharCode(0x2798) + '</mo>');
+});

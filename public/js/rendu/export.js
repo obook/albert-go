@@ -142,6 +142,14 @@ Object.assign(Rendu, {
     /* Opérateurs invisibles de MathML (application de fonction, produit implicite) : rien à écrire. */
     INVISIBLES_MATHML: new RegExp('[' + String.fromCharCode(0x2061) + '-' + String.fromCharCode(0x2064) + ']', 'g'),
 
+    /* Flèches d'un tableau de variations : LibreOffice prend les flèches obliques dans une police d'émojis, pas celles des Dingbats. */
+    FLECHES_MATHML: new RegExp('[' + String.fromCharCode(0x2197, 0x2198) + ']', 'g'),
+    FLECHES_EXPORT: { [String.fromCharCode(0x2197)]: String.fromCharCode(0x279A), [String.fromCharCode(0x2198)]: String.fromCharCode(0x2798) },
+
+    flechesTexte(texte) {
+        return texte.replace(this.FLECHES_MATHML, (fleche) => this.FLECHES_EXPORT[fleche]);
+    },
+
     /* Ensembles de nombres : lettre ajourée d'Unicode pour une lettre "double-struck" de KaTeX. */
     ENSEMBLES_MATHML: { C: 0x2102, D: 0x1D53B, N: 0x2115, Q: 0x211A, R: 0x211D, Z: 0x2124 },
 
@@ -286,7 +294,9 @@ Object.assign(Rendu, {
             }
             fermer();
             if (balise === 'P') {
-                ajouter(this.paragrapheExport(this.lignesExport(enfant, etat, {}), etat, courant(), genreSuite));
+                /* Hors d'une liste : un .odt n'accepte pas de tableau dans un élément de liste. */
+                ajouter((liste.niveau === 0 && this.tableauRegleExport(enfant, etat))
+                    || this.paragrapheExport(this.lignesExport(enfant, etat, {}), etat, courant(), genreSuite));
             } else if (/^H[1-6]$/.test(balise)) {
                 ajouter(this.paragrapheExport(this.lignesExport(enfant, etat, {}), etat, e.genreTitre(Math.min(Number(balise[1]), 3))));
             } else if (balise === 'UL' || balise === 'OL') {
@@ -336,6 +346,44 @@ Object.assign(Rendu, {
             }
         }
         return etat.e.finListe(elements, liste);
+    },
+
+    /**
+     * Tableau à filets écrit en LaTeX (array avec \hline ou barres, comme un
+     * tableau de variations), seul dans son paragraphe : un vrai tableau. En
+     * formule, il perdrait ses filets.
+     *
+     * @param {Element} paragraphe - <p> de la réponse.
+     * @param {Object} etat - État de l'export.
+     * @returns {string} XML du tableau, ou '' si le paragraphe n'en est pas un.
+     */
+    tableauRegleExport(paragraphe, etat) {
+        const seul = (parent) => {
+            const contenu = [...parent.childNodes].filter((enfant) => enfant.nodeType === 1 || (enfant.data || '').trim());
+            return contenu.length === 1 && contenu[0].nodeType === 1 ? contenu[0] : null;
+        };
+        /* Le rendu automatique de KaTeX enveloppe la formule d'un <span> nu. */
+        let formule = seul(paragraphe);
+        if (formule && !this.aClasse(formule, 'katex-display')) {
+            formule = seul(formule);
+        }
+        const table = formule && this.aClasse(formule, 'katex-display') && this.descendant(formule, 'MTABLE');
+        const tex = table && this.descendant(formule, 'ANNOTATION');
+        /* Les barres doubles ne sont que dans la source : \begin{array}{c|ccc||ccc}. */
+        const colonnes = tex && /\\begin\{array\}\{([^}]*)\}/.exec(tex.textContent);
+        const sous = table ? (table.getAttribute('rowlines') || '').split(' ') : [];
+        if (!colonnes || !(colonnes[1].includes('|') || sous.includes('solid'))) {
+            return '';
+        }
+        const droites = [...colonnes[1].matchAll(/[a-z](\|*)/g)].map((trouve) => trouve[1].length);
+        const elements = (parent) => [...parent.childNodes].filter((enfant) => enfant.nodeType === 1);
+        const rangees = elements(table).map(elements);
+        /* Largeur d'une colonne selon son texte le plus long : à largeurs égales, une valeur comme 2(1 - sqrt(2)) est coupée. */
+        const poids = droites.map((_, j) => Math.max(3, ...rangees.map((ligne) => (ligne[j] ? ligne[j].textContent.replace(this.INVISIBLES_MATHML, '').length : 0))));
+        return etat.e.tableauRegle(rangees.map((ligne, i) => ligne.map((cellule, j) => {
+            const contenu = etat.e.formule(cellule, etat);
+            return { xml: contenu ? etat.e.paragraphe([contenu], etat.e.genreCentre) : '', bas: sous[i] === 'solid', droite: droites[j] || 0 };
+        })), etat, poids);
     },
 
     /**
