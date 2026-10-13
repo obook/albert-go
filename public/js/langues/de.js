@@ -254,7 +254,7 @@ I18n.TEXTES.de = {
 
     /* Über. */
     'info.titre': 'Über',
-    'info.intro': 'Mit Albert Go chatten Sie mit den KI-Modellen der interministeriellen Digitaldirektion (<a href="https://ia.numerique.gouv.fr/outils-ia/albert-api/" target="_blank" rel="noopener noreferrer">DINUM</a>), mit Ihrem persönlichen API-Schlüssel.',
+    'info.intro': 'Mit Albert Go chatten Sie mit den KI-Modellen der interministeriellen Digitaldirektion (<a href="https://ia.numerique.gouv.fr/outils-ia/albert-api/" target="_blank" rel="noopener noreferrer">DINUM</a>) mit Ihrem API-Schlüssel.',
     'info.donnees': 'Ihre Daten',
     'info.donnees.relais': 'Ihr Schlüssel und Ihre Fragen laufen über ein interministerielles n8n-Relais, das nichts speichert, und dann weiter zu Albert API.',
     'info.donnees.traceurs': 'Kein Konto, kein Cookie, keine Bibliothek von einer fremden Seite. Internet-Werkzeuge werden nur mit Ihrer Erlaubnis aufgerufen.',

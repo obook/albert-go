@@ -254,7 +254,7 @@ I18n.TEXTES.es = {
 
     /* Acerca de. */
     'info.titre': 'Acerca de',
-    'info.intro': 'Albert Go permite charlar con los modelos de inteligencia artificial de la dirección interministerial de lo digital (<a href="https://ia.numerique.gouv.fr/outils-ia/albert-api/" target="_blank" rel="noopener noreferrer">DINUM</a>), con su clave API personal.',
+    'info.intro': 'Albert Go permite charlar con los modelos de inteligencia artificial de la dirección interministerial de lo digital (<a href="https://ia.numerique.gouv.fr/outils-ia/albert-api/" target="_blank" rel="noopener noreferrer">DINUM</a>) con su clave API.',
     'info.donnees': 'Sus datos',
     'info.donnees.relais': 'Su clave y sus preguntas pasan por un relé n8n interministerial, que no guarda nada, y luego van a Albert API.',
     'info.donnees.traceurs': 'Ninguna cuenta, ninguna cookie, ninguna biblioteca cargada desde un sitio ajeno. Llamadas de las herramientas de Internet solo si usted las permite.',
