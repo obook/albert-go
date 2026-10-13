@@ -377,3 +377,13 @@ test('rappel : le mois en cours, sans lequel un fait récent passe pour à venir
     assert.ok(rappel.includes('par exemple [1]'));
     assert.ok(rappel.includes('dis d\'abord que tu n\'as pas trouvé'));
 });
+
+test('rappel : l\'outil calcul, sans lequel un modèle moyen calcule de tête', () => {
+    I18n.langue = 'fr';
+    const { avecRappel } = require('../public/js/tools/recherche/outils-modele.js');
+    const question = [{ role: 'user', content: 'Résous x² - 4 > 0.' }];
+    globalThis.reglages = { fournisseurs: [], recherche: false, calcul: true };
+    assert.ok(avecRappel(question, false)[0].content.includes('appelle l\'outil calcul à chaque fois'));
+    globalThis.reglages = { fournisseurs: [], recherche: false, calcul: false };
+    assert.ok(!avecRappel(question, false)[0].content.includes('outil calcul'));
+});

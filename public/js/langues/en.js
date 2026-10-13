@@ -459,6 +459,7 @@ I18n.TEXTES.en = {
     'calcul.formel': 'For symbolic computation or an exact value: an Xcas command, instead of expression. solve(x^2 - 4 > 0, x), solve([2x + y = 5, x - y = 1], [x, y]), factor(x^3 - 1), expand((x + 1)^3), simplify(sqrt(12) + sqrt(27)), diff(x^2*exp(x), x), integrate(x*exp(x), x), integrate(x^2, x, 0, 1), limit(sin(x)/x, x, 0), limit(1/x, x, inf), sum(2^k, k, 0, n), binomial(n, k, p) for P(X = k), binomial_cdf(n, p, k) for P(X <= k), normald_cdf(mu, sigma, x) for P(X <= x), rsolve(u(n+1) = 2*u(n) + 1, u(n), u(0) = 1) for a sequence, tabvar(x^3 - 3x) for a table of variations. Angles in radians, ln natural, log10 decimal, inf for infinity. Example: factor(x^2 - 5x + 6)',
     'calcul.long': 'Symbolic computation took too long and was stopped. Try a simpler request.',
     'calcul.indisponible': 'Symbolic computation unavailable: the engine could not be loaded.',
+    'calcul.rappel': 'Calculation, equation, inequality, exact value, probability: call the calcul tool every time. Never compute in your head.',
     'calcul.ponderee': 'Weighted mean {moyenne} (sum of coefficients {total}).',
     'consigne.date': 'Today is {date}, the time is {heure}: this weekday is correct, do not recompute it.',
     'consigne.contexte': 'You are the {nom} model ({reel}), served by Albert, the French State AI.',

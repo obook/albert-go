@@ -459,6 +459,7 @@ I18n.TEXTES.es = {
     'calcul.formel': 'Para el cálculo simbólico o un valor exacto: un comando Xcas, en lugar de expression. solve(x^2 - 4 > 0, x), solve([2x + y = 5, x - y = 1], [x, y]), factor(x^3 - 1), expand((x + 1)^3), simplify(sqrt(12) + sqrt(27)), diff(x^2*exp(x), x), integrate(x*exp(x), x), integrate(x^2, x, 0, 1), limit(sin(x)/x, x, 0), limit(1/x, x, inf), sum(2^k, k, 0, n), binomial(n, k, p) para P(X = k), binomial_cdf(n, p, k) para P(X <= k), normald_cdf(mu, sigma, x) para P(X <= x), rsolve(u(n+1) = 2*u(n) + 1, u(n), u(0) = 1) para una sucesión, tabvar(x^3 - 3x) para una tabla de variación. Ángulos en radianes, ln neperiano, log10 decimal, inf para el infinito. Ejemplo: factor(x^2 - 5x + 6)',
     'calcul.long': 'Cálculo simbólico demasiado largo, detenido antes de terminar. Prueba con una petición más sencilla.',
     'calcul.indisponible': 'Cálculo simbólico no disponible: no se pudo cargar el motor.',
+    'calcul.rappel': 'Cálculo, ecuación, inecuación, valor exacto, probabilidad: llama a la herramienta calcul cada vez. Nunca calcules de memoria.',
     'calcul.ponderee': 'Media ponderada {moyenne} (suma de los coeficientes {total}).',
     'consigne.date': 'Hoy es {date}, son las {heure}: este día de la semana es exacto, no lo vuelvas a calcular.',
     'consigne.contexte': 'Eres el modelo {nom} ({reel}), servido por Albert, la IA del Estado francés.',

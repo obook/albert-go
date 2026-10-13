@@ -137,7 +137,9 @@ function avecRappel(messages, cherche) {
         t(internet ? 'images.rappel' : 'images.absent'),
         internet ? t('services.rappel') : '',
         /* Sans lui, le modèle reprenait une heure déjà donnée et se trompait de jour. */
-        reglages.calendrier ? t('calendrier.rappel') : ''].filter(Boolean).join('\n');
+        reglages.calendrier ? t('calendrier.rappel') : '',
+        /* Sans lui, le modèle moyen n'appelait l'outil qu'une fois sur sept (mesuré le 13/10/2026). */
+        reglages.calcul ? t('calcul.rappel') : ''].filter(Boolean).join('\n');
     if (messages[0] && messages[0].role === 'system') {
         return [{ role: 'system', content: messages[0].content + '\n' + rappel }, ...messages.slice(1)];
     }

@@ -459,6 +459,7 @@ I18n.TEXTES.de = {
     'calcul.formel': 'Für symbolisches Rechnen oder einen exakten Wert: ein Xcas-Befehl, statt expression. solve(x^2 - 4 > 0, x), solve([2x + y = 5, x - y = 1], [x, y]), factor(x^3 - 1), expand((x + 1)^3), simplify(sqrt(12) + sqrt(27)), diff(x^2*exp(x), x), integrate(x*exp(x), x), integrate(x^2, x, 0, 1), limit(sin(x)/x, x, 0), limit(1/x, x, inf), sum(2^k, k, 0, n), binomial(n, k, p) für P(X = k), binomial_cdf(n, p, k) für P(X <= k), normald_cdf(mu, sigma, x) für P(X <= x), rsolve(u(n+1) = 2*u(n) + 1, u(n), u(0) = 1) für eine Folge, tabvar(x^3 - 3x) für eine Monotonietabelle. Winkel im Bogenmaß, ln natürlich, log10 dekadisch, inf für unendlich. Beispiel: factor(x^2 - 5x + 6)',
     'calcul.long': 'Symbolische Rechnung zu lang, vor dem Ende abgebrochen. Eine einfachere Anfrage versuchen.',
     'calcul.indisponible': 'Symbolisches Rechnen nicht verfügbar: Das Rechenmodul konnte nicht geladen werden.',
+    'calcul.rappel': 'Rechnung, Gleichung, Ungleichung, exakter Wert, Wahrscheinlichkeit: Rufe jedes Mal das Werkzeug calcul auf. Rechne nie im Kopf.',
     'calcul.ponderee': 'Gewichteter Mittelwert {moyenne} (Summe der Koeffizienten {total}).',
     'consigne.date': 'Heute ist {date}, es ist {heure}: Dieser Wochentag ist korrekt, berechne ihn nicht neu.',
     'consigne.contexte': 'Du bist das Modell {nom} ({reel}), bereitgestellt von Albert, der KI des französischen Staates.',

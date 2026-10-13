@@ -459,6 +459,7 @@ I18n.TEXTES.fr = {
     'calcul.formel': 'Pour le calcul formel ou une valeur exacte : une commande Xcas, à la place de expression. solve(x^2 - 4 > 0, x), solve([2x + y = 5, x - y = 1], [x, y]), factor(x^3 - 1), expand((x + 1)^3), simplify(sqrt(12) + sqrt(27)), diff(x^2*exp(x), x), integrate(x*exp(x), x), integrate(x^2, x, 0, 1), limit(sin(x)/x, x, 0), limit(1/x, x, inf), sum(2^k, k, 0, n), binomial(n, k, p) pour P(X = k), binomial_cdf(n, p, k) pour P(X <= k), normald_cdf(mu, sigma, x) pour P(X <= x), rsolve(u(n+1) = 2*u(n) + 1, u(n), u(0) = 1) pour une suite, tabvar(x^3 - 3x) pour un tableau de variations. Angles en radians, ln népérien, log10 décimal, inf pour l\'infini. Exemple : factor(x^2 - 5x + 6)',
     'calcul.long': 'Calcul formel trop long, arrêté avant la fin. Essayer une demande plus simple.',
     'calcul.indisponible': 'Calcul formel indisponible : le moteur n\'a pas pu être chargé.',
+    'calcul.rappel': 'Calcul, équation, inéquation, valeur exacte, probabilité : appelle l\'outil calcul à chaque fois. Ne calcule jamais de tête.',
     'calcul.ponderee': 'Moyenne pondérée {moyenne} (somme des coefficients {total}).',
     'consigne.date': 'Nous sommes le {date}, il est {heure} : ce jour de la semaine est exact, ne le recalcule pas.',
     'consigne.contexte': 'Tu es le modèle {nom} ({reel}), servi par Albert, l\'IA de l\'État.',
