@@ -67,6 +67,8 @@
         --taille-petite: 0.875rem;
         --taille-bouton: 1rem;
     }
+    /* Tout le texte d'un cran plus gros : 18 px au lieu de 16. Mettre 106.25% pour 17 px. */
+    html { font-size: 112.5%; }
 }
 
 @media (prefers-color-scheme: dark) {

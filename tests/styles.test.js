@@ -64,3 +64,8 @@ test('petits textes : par variable, à 14 px au moins sur grand écran', () => {
         assert.doesNotMatch(horsTelephone, /font-size: 0\.(75|8125|9375)rem/, nom);
     }
 });
+
+test('grand écran : tout le texte agrandi d\'un cran, par la taille de la racine', () => {
+    const base = fs.readFileSync(path.join(DOSSIER, 'base.css'), 'utf8');
+    assert.match(base, /@media \(min-width: 64rem\) \{\s*:root \{[^}]*\}\s*\/\*[^*]*\*\/\s*html \{ font-size: 112\.5%; \}/);
+});
