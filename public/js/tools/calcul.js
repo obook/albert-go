@@ -1,7 +1,7 @@
 /*
  * tools/calcul.js
  * Outils locaux du modèle : calcul (math.js, avec facteurs premiers, PGCD, PPCM, statistiques, moyenne
- * pondérée et dérivée), calendrier (jours ouvrés, fériés et échéances), compteur (mots, lettres, lisibilité), tirage.
+ * pondérée et dérivée ; calcul formel par Giac), calendrier (jours ouvrés, fériés et échéances), compteur (mots, lettres, lisibilité), tirage.
  * Là où les modèles se trompent ; tout reste dans le navigateur.
  *
  * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
@@ -153,6 +153,88 @@ const Calcul = {
         } catch (err) {
             throw new Error(t('calcul.invalide'));
         }
+    }
+};
+
+/* Calcul formel : Giac dans un worker (formel-worker.js), lancé au premier usage. */
+const Formel = {
+    /** Adresse du worker, relative à la page. */
+    WORKER: 'js/tools/formel-worker.js',
+
+    /** Temps laissé à un calcul. Giac ne s'interrompt pas : passé ce délai, le worker est arrêté. */
+    DELAI_MS: 10000,
+
+    /** Temps laissé au chargement de Giac (19 Mo la première fois). */
+    DELAI_CHARGEMENT_MS: 60000,
+
+    /** Début d'une commande Xcas citée dans calcul.formel. */
+    COMMANDE: /^\s*(solve|factor|expand|simplify|diff|integrate|limit|sum|binomial|binomial_cdf|normald_cdf|rsolve|tabvar)\s*\(/,
+
+    /**
+     * Lance le worker s'il ne tourne pas.
+     *
+     * @returns {Promise<Worker>} Résolue quand Giac est prêt.
+     */
+    demarrer() {
+        this._pret ??= new Promise((resoudre, rejeter) => {
+            const worker = new Worker(this.WORKER);
+            const echouer = () => {
+                clearTimeout(minuterie);
+                this.arreter();
+                rejeter(new Error(t('calcul.indisponible')));
+            };
+            const minuterie = setTimeout(echouer, this.DELAI_CHARGEMENT_MS);
+            worker.onerror = echouer;
+            worker.onmessage = (e) => {
+                if (!e.data.pret) {
+                    echouer();
+                    return;
+                }
+                clearTimeout(minuterie);
+                resoudre(worker);
+            };
+            this._worker = worker;
+        });
+        return this._pret;
+    },
+
+    /** Arrête le worker ; le prochain calcul en relance un. */
+    arreter() {
+        this._worker?.terminate();
+        this._worker = this._pret = undefined;
+    },
+
+    /**
+     * Passe une commande à Giac. Les appels se suivent un à un : le délai ne
+     * compte que le calcul demandé.
+     *
+     * @param {string} commande - Commande Xcas, par exemple "factor(x^2 - 5x + 6)".
+     * @returns {Promise<string>} Résultat au format Xcas.
+     */
+    calculer(commande) {
+        const suite = (this._file || Promise.resolve()).then(() => this._lancer(commande));
+        this._file = suite.catch(() => {});
+        return suite;
+    },
+
+    async _lancer(commande) {
+        const worker = await this.demarrer();
+        return new Promise((resoudre, rejeter) => {
+            const minuterie = setTimeout(() => {
+                this.arreter();
+                rejeter(new Error(t('calcul.long')));
+            }, this.DELAI_MS);
+            worker.onmessage = (e) => {
+                clearTimeout(minuterie);
+                const resultat = e.data.resultat;
+                if (typeof resultat === 'string' && !resultat.startsWith('GIAC_ERROR')) {
+                    resoudre(resultat);
+                } else {
+                    rejeter(new Error(t('calcul.invalide')));
+                }
+            };
+            worker.postMessage(String(commande));
+        });
     }
 };
 
@@ -684,7 +766,8 @@ const OUTILS_LOCAUX = {
     /* Une expression math.js ; ou des entiers à décomposer avec leur PGCD et
        leur PPCM, que math.js ne décompose pas ; ou une série statistique,
        aux conventions du lycée que math.js ne suit pas (écart-type sur n,
-       quartiles pris dans la série). */
+       quartiles pris dans la série) ; ou une commande de calcul formel,
+       passée à Giac. */
     calcul: {
         icone: 'calculatrice',
         outil: () => definirOutil('calcul', {
@@ -692,7 +775,8 @@ const OUTILS_LOCAUX = {
             nombres: { type: 'array', items: { type: 'integer' } },
             valeurs: { type: 'array', items: { type: 'number' } },
             coefficients: { type: 'array', items: { type: 'number' } },
-            derivee: { type: 'string' }
+            derivee: { type: 'string' },
+            formel: { type: 'string' }
         }, []),
         executer: async (a, langue) => {
             if (Array.isArray(a.nombres) && a.nombres.length) {
@@ -701,6 +785,17 @@ const OUTILS_LOCAUX = {
             if (Array.isArray(a.valeurs) && a.valeurs.length && Array.isArray(a.coefficients) && a.coefficients.length) {
                 const { moyenne, total } = Statistiques.ponderer(a.valeurs, a.coefficients);
                 return t('calcul.ponderee', { moyenne: formaterNombre(moyenne, langue), total: formaterNombre(total, langue) });
+            }
+            if (a.formel) {
+                try {
+                    return a.formel + ' : ' + await Formel.calculer(a.formel);
+                } catch (err) {
+                    /* Trop long ou moteur absent : rendu comme résultat, l'appelant ne connaît que calcul.invalide. */
+                    if (err.message === t('calcul.invalide')) {
+                        throw err;
+                    }
+                    return err.message;
+                }
             }
             if (a.derivee) {
                 await Calcul.charger();
@@ -714,7 +809,16 @@ const OUTILS_LOCAUX = {
                 return t('calcul.statistiques', f);
             }
             await Calcul.charger();
-            const resultat = Calcul.evaluer(a.expression);
+            let resultat;
+            try {
+                resultat = Calcul.evaluer(a.expression);
+            } catch (err) {
+                /* Les modèles moyens écrivent souvent la commande Xcas dans expression (mesuré le 13/10/2026). */
+                if (Formel.COMMANDE.test(a.expression)) {
+                    return OUTILS_LOCAUX.calcul.executer({ formel: a.expression }, langue);
+                }
+                throw err;
+            }
             return a.expression + ' = ' + (typeof resultat === 'number'
                 ? resultat.toLocaleString(langue, { maximumSignificantDigits: Calcul.CHIFFRES, useGrouping: false })
                 : resultat);
@@ -802,5 +906,5 @@ const OUTILS_LOCAUX = {
 
 /* Export pour les tests Node ; ignoré dans le navigateur. */
 if (typeof module !== 'undefined') {
-    module.exports = { Calcul, Calendrier, Compteur, Controle, Tirage, Statistiques, Facteurs, OUTILS_LOCAUX, definirOutil };
+    module.exports = { Calcul, Formel, Calendrier, Compteur, Controle, Tirage, Statistiques, Facteurs, OUTILS_LOCAUX, definirOutil };
 }
