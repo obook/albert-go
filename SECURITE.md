@@ -101,6 +101,7 @@ Navigateur (Pages) -> webhook n8n -> https://albert.api.etalab.gouv.fr
 | Lien piégé dans une réponse | Liens ouverts avec `rel="noopener noreferrer"`, qui coupe aussi le `Referer` : la page visée ne sait pas d'où vient le clic. |
 | Adresse piégée dans les sources listées sous une réponse | Ces adresses viennent du moteur, pas du modèle. Elles passent par le même contrôle que les liens d'une réponse (`Rendu.urlDangereuse`) avant de devenir cliquables et leur titre est inséré par `textContent`. |
 | Consigne cachée dans une page trouvée par la recherche | Aucun moteur coché par défaut, globe à activer à chaque session, extraits tronqués, aucune capacité hors chercher. Détail en I9. |
+| Commande piégée passée au calcul formel | Giac tourne dans un worker privé de réseau : `XMLHttpRequest`, `fetch` et `WebSocket` sont retirés avant son chargement, sa commande `read` ne peut appeler aucune adresse. Calcul arrêté après 10 secondes, variables effacées entre deux commandes. |
 | Clé ou questions lues sur un poste partagé | Mode partagé par défaut : tout le sensible en `sessionStorage`, effacé à la fermeture. |
 | Page intégrée dans le cadre d'un autre site | La page détecte le cadre et n'affiche qu'un lien vers elle-même. |
 | Texte envoyé à une synthèse vocale en ligne | Voix de l'appareil en priorité. Voix en ligne seulement si l'utilisateur les autorise (désactivé par défaut) et faute de voix locale. |

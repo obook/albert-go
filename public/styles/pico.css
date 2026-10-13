@@ -124,3 +124,8 @@ Ailleurs (Firefox, Safari), la liste du système reste affichée.
     width: auto;
     margin-bottom: 0;
 }
+
+/* Grand écran : rien sous 14 px (--taille-mini, base.css). Pico réduit code à 0.875em. */
+@media (min-width: 64rem) {
+    .pico code { font-size: 1em; }
+}

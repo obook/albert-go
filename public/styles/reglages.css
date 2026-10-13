@@ -267,12 +267,12 @@ n'avaient pas la même largeur. Le préfixe .pico passe devant son sélecteur. *
     padding: 0 0.375rem;
     border: 1px solid var(--bord);
     border-radius: 0.25rem;
-    font-size: 0.75rem;
+    font-size: var(--taille-mini);
 }
 .cartes-choix .description, .cartes-choix .detail { font-size: 0.875rem; color: var(--texte-doux); }
 .cartes-choix .detail {
     font-family: ui-monospace, "Cascadia Mono", "DejaVu Sans Mono", monospace;
-    font-size: 0.75rem;
+    font-size: var(--taille-mini);
     overflow-wrap: anywhere;
 }
 

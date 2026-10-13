@@ -1,0 +1,11 @@
+Solve the inequality x² - 4 > 0.
+
+Solve the system 2x + y = 5 and x - y = 1.
+
+Compute the integral of x·e^x from 0 to 1.
+
+What is the limit of (1 + 1/n)^n as n tends to +∞?
+
+X follows the binomial distribution with n = 10 and p = 0.3. Compute P(X ≤ 3).
+
+Draw up the table of variations of f(x) = x³ - 3x.

@@ -58,8 +58,8 @@ Dans Discussion, cinq outils sont activés par défaut ; on peut les désactiver
 
 | Outil | Rôle |
 |---|---|
-| Calculatrice | Calcul exact avec [math.js](https://mathjs.org/) : opérations, puissances, racines, trigonométrie en degrés, logarithmes, fractions exactes, factorielles et combinaisons, unités ; décomposition en facteurs premiers, PGCD et PPCM ; statistiques d'une série (moyenne, médiane, variance, écart-type, quartiles du lycée) ; moyenne pondérée par des coefficients ; dérivée d'une expression en x. |
-| Tirage aléatoire | Ordre de passage, éléments tirés ou groupes, avec le générateur aléatoire du navigateur. |
+| Calculatrice scientifique | Calcul exact avec [math.js](https://mathjs.org/) : opérations, puissances, racines, trigonométrie en degrés, logarithmes, fractions exactes, factorielles et combinaisons, unités ; décomposition en facteurs premiers, PGCD et PPCM ; statistiques d'une série (moyenne, médiane, variance, écart-type, quartiles du lycée) ; moyenne pondérée par des coefficients ; dérivée d'une expression en x. Calcul formel avec [Giac](https://www-fourier.univ-grenoble-alpes.fr/~parisse/giac_fr.html), le moteur de Xcas : valeurs exactes, équations, inéquations et systèmes, factorisation et développement, primitives et intégrales, limites, sommes, lois binomiale et normale, suites, tableau de variations. |
+| Aléatoire | Ordre de passage, éléments tirés ou groupes, avec le générateur aléatoire du navigateur. |
 | Calendrier | Date et heure actuelles ou dans N heures, jour de la semaine d'une date, date dans N jours ou N mois, nombre de jours entre deux dates, jours ouvrés et jours fériés en France, report d'une échéance au premier jour ouvré suivant. |
 | Compteur | Nombre de mots et de caractères d'un texte ; occurrences d'une lettre, mot épelé et écrit à l'envers, anagramme vérifiée ; lisibilité (mots par phrase, phrases de plus de 20 mots, mots de 10 lettres ou plus). |
 | Contrôle SIRET et IBAN | Clé de contrôle d'un SIREN, d'un SIRET ou d'un IBAN, pour repérer un numéro mal recopié ; l'existence du numéro n'est pas vérifiée. |
@@ -152,6 +152,7 @@ Olivier Booklage, [olivier.booklage@ac-bordeaux.fr](mailto:olivier.booklage@ac-b
 | [Marked](https://github.com/markedjs/marked), [KaTeX](https://katex.org/), [Mermaid](https://mermaid.js.org/), [Pico](https://picocss.com/), [qrcode-generator](https://github.com/kazuhikoarase/qrcode-generator) | MIT |
 | [PDF.js](https://mozilla.github.io/pdf.js/), [math.js](https://mathjs.org/) | Apache 2.0 |
 | [highlight.js](https://highlightjs.org/) | BSD 3-Clause |
+| [Giac](https://www-fourier.univ-grenoble-alpes.fr/~parisse/giac_fr.html), le moteur de calcul formel de Xcas | GPL 3.0 ou ultérieure, texte dans `public/vendor/giac/LICENSE` |
 | Icônes des titres des Réglages, de [Lucide](https://lucide.dev/) | ISC |
 | Logos des éditeurs de modèles (`public/images/editeurs/`) | Marques de leurs éditeurs, reprises de la [page des modèles d'Albert API](https://ia.numerique.gouv.fr/outils-ia/albert-api/mod%C3%A8les/) |
 | Logos des moteurs de recherche (`public/images/moteurs/`) | Marques de leurs éditeurs, reprises de leurs sites ; OpenAlex depuis [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:OpenAlex_logo_icon.svg) (MIT) |

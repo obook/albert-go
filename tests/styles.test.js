@@ -49,3 +49,18 @@ test('feuilles de style : accolades équilibrées, jamais refermées en trop', (
     }
     assert.deepStrictEqual(fautives, []);
 });
+
+test('petits textes : par variable, à 14 px au moins sur grand écran', () => {
+    const lire = nom => fs.readFileSync(path.join(DOSSIER, nom), 'utf8');
+    const grand = /@media \(min-width: 64rem\) \{\s*:root \{([^}]*)\}/.exec(lire('base.css'));
+    assert.ok(grand, 'bloc grand écran absent de base.css');
+    for (const nom of ['--taille-mini', '--taille-petite', '--taille-bouton']) {
+        const valeur = new RegExp(nom + ': ([\\d.]+)rem').exec(grand[1]);
+        assert.ok(valeur && Number(valeur[1]) >= 0.875, nom);
+    }
+    /* Une taille écrite en dur sous 16 px échapperait à la règle ; celles du téléphone (max-width) restent. */
+    for (const nom of fs.readdirSync(DOSSIER).filter(f => f.endsWith('.css'))) {
+        const horsTelephone = lire(nom).replace(/@media \(max-width[^{]*\{(?:[^{}]|\{[^{}]*\})*\}/g, '');
+        assert.doesNotMatch(horsTelephone, /font-size: 0\.(75|8125|9375)rem/, nom);
+    }
+});

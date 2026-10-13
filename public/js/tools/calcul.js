@@ -1,7 +1,7 @@
 /*
  * tools/calcul.js
  * Outils locaux du modèle : calcul (math.js, avec facteurs premiers, PGCD, PPCM, statistiques, moyenne
- * pondérée et dérivée), calendrier (jours ouvrés, fériés et échéances), compteur (mots, lettres, lisibilité), tirage.
+ * pondérée et dérivée ; calcul formel par Giac), calendrier (jours ouvrés, fériés et échéances), compteur (mots, lettres, lisibilité), tirage.
  * Là où les modèles se trompent ; tout reste dans le navigateur.
  *
  * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
@@ -153,6 +153,141 @@ const Calcul = {
         } catch (err) {
             throw new Error(t('calcul.invalide'));
         }
+    }
+};
+
+/* Calcul formel : Giac dans un worker (formel-worker.js), lancé au premier usage. */
+const Formel = {
+    /** Adresse du worker, relative à la page. */
+    WORKER: 'js/tools/formel-worker.js',
+
+    /** Temps laissé à un calcul. Giac ne s'interrompt pas : passé ce délai, le worker est arrêté. */
+    DELAI_MS: 10000,
+
+    /** Temps laissé au chargement de Giac (19 Mo la première fois). */
+    DELAI_CHARGEMENT_MS: 60000,
+
+    /** Début d'une commande Xcas citée dans calcul.formel. */
+    COMMANDE: /^\s*(solve|factor|expand|simplify|diff|integrate|limit|sum|binomial|binomial_cdf|normald_cdf|rsolve|tabvar)\s*\(/,
+
+    /**
+     * Lance le worker s'il ne tourne pas.
+     *
+     * @returns {Promise<Worker>} Résolue quand Giac est prêt.
+     */
+    demarrer() {
+        this._pret ??= new Promise((resoudre, rejeter) => {
+            const worker = new Worker(this.WORKER);
+            const echouer = () => {
+                clearTimeout(minuterie);
+                this.arreter();
+                rejeter(new Error(t('calcul.indisponible')));
+            };
+            const minuterie = setTimeout(echouer, this.DELAI_CHARGEMENT_MS);
+            worker.onerror = echouer;
+            worker.onmessage = (e) => {
+                if (!e.data.pret) {
+                    echouer();
+                    return;
+                }
+                clearTimeout(minuterie);
+                resoudre(worker);
+            };
+            this._worker = worker;
+        });
+        return this._pret;
+    },
+
+    /** Arrête le worker ; le prochain calcul en relance un. */
+    arreter() {
+        this._worker?.terminate();
+        this._worker = this._pret = undefined;
+    },
+
+    /**
+     * Passe une commande à Giac. Les appels se suivent un à un : le délai ne
+     * compte que le calcul demandé.
+     *
+     * @param {string} commande - Commande Xcas, par exemple "factor(x^2 - 5x + 6)".
+     * @returns {Promise<string>} Résultat au format Xcas.
+     */
+    calculer(commande) {
+        const suite = (this._file || Promise.resolve()).then(() => this._lancer(commande));
+        this._file = suite.catch(() => {});
+        return suite;
+    },
+
+    /** Début d'une demande de tableau de variations. */
+    TABLEAU: /^\s*tabvar\s*\(/,
+
+    /**
+     * Tableau de variations en LaTeX. derive=1 : dérivée première seule, sur
+     * tout le domaine ; sans lui, Giac réduit une fonction impaire à x >= 0.
+     *
+     * @param {string} commande - Par exemple "tabvar(x^3 - 3x)".
+     * @returns {Promise<string>} Tableau au format array de LaTeX.
+     */
+    async varier(commande) {
+        const entiere = /derive\s*=/.test(commande) ? commande : commande.replace(/\)\s*$/, ', derive=1)');
+        return this.tableau(await this.calculer('latex(' + entiere + ')'));
+    },
+
+    /**
+     * Met le tableau de Giac à la façon du lycée : signes et zéros de la
+     * dérivée, valeurs de f en haut ou en bas selon les flèches, double barre
+     * à une valeur interdite (que Giac donne en deux colonnes).
+     *
+     * @param {string} latex - Sortie de latex(tabvar(...)) : trois lignes x, y' et y.
+     * @returns {string} Tableau au format array de LaTeX.
+     */
+    tableau(latex) {
+        const corps = /\\begin\{array\}\{c*\}([\s\S]*?)\\end\{array\}/.exec(latex);
+        const lignes = corps ? corps[1].split('\\\\').map(ligne => ligne.split('&').map(c => c.trim()
+            .replace(/\\mathrm\{inv\}\\left\(([^()]*)\\right\)/g, '\\frac{1}{$1}').replace(/e\^\{1\}/g, 'e'))) : [];
+        if (lignes.length < 3) {
+            throw new Error(t('calcul.invalide'));
+        }
+        const [[variable, ...x], [, ...derivee], [, ...f]] = lignes;
+        const barre = j => j >= 0 && /\|\|/.test(derivee[j]) && /\|\|/.test(derivee[j + 1] || '');
+        const fleche = j => (/\\(ne|se)arrow/.exec(f[j] || '') || [])[1];
+        /* Une valeur va en haut après une montée ou avant une descente, en bas dans l'autre cas. */
+        const hauteur = (j) => {
+            const haut = fleche(j - 1) === 'ne' || fleche(j + 1) === 'se';
+            const bas = fleche(j - 1) === 'se' || fleche(j + 1) === 'ne';
+            return fleche(j) || haut === bas ? 'milieu' : (haut ? 'haut' : 'bas');
+        };
+        const etage = nom => f.map((c, j) => (hauteur(j) === nom ? c : ''));
+        const rangees = [
+            [variable, ...x.map((c, j) => (barre(j - 1) ? '' : c))],
+            ['f\'(' + variable + ')', ...derivee.map((c, j) => (j > 0 && j < derivee.length - 1 && /^[+\-0]$/.test(c) ? c : ''))],
+            ['', ...etage('haut')],
+            ['f(' + variable + ')', ...etage('milieu')],
+            ['', ...etage('bas')]
+        ].map(rangee => rangee.join(' & '));
+        const colonnes = x.map((c, j) => 'c' + (barre(j) ? '||' : '')).join('');
+        /* arraystretch : sans lui, les filets collent aux lignes. */
+        return ('\\def\\arraystretch{1.4}\\begin{array}{c|' + colonnes + '} ' + rangees[0] + ' \\\\ \\hline ' + rangees[1] + ' \\\\ \\hline '
+            + rangees[2] + ' \\\\ ' + rangees[3] + ' \\\\ ' + rangees[4] + ' \\end{array}').replace(/ +/g, ' ');
+    },
+
+    async _lancer(commande) {
+        const worker = await this.demarrer();
+        return new Promise((resoudre, rejeter) => {
+            const minuterie = setTimeout(() => {
+                this.arreter();
+                rejeter(new Error(t('calcul.long')));
+            }, this.DELAI_MS);
+            worker.onmessage = (e) => {
+                clearTimeout(minuterie);
+                const resultat = e.data.resultat;
+                if (typeof resultat === 'string' && !resultat.startsWith('GIAC_ERROR')) {
+                    resoudre(resultat);
+                } else {
+                    rejeter(new Error(t('calcul.invalide')));
+                }
+            };
+            worker.postMessage(String(commande));
+        });
     }
 };
 
@@ -684,7 +819,8 @@ const OUTILS_LOCAUX = {
     /* Une expression math.js ; ou des entiers à décomposer avec leur PGCD et
        leur PPCM, que math.js ne décompose pas ; ou une série statistique,
        aux conventions du lycée que math.js ne suit pas (écart-type sur n,
-       quartiles pris dans la série). */
+       quartiles pris dans la série) ; ou une commande de calcul formel,
+       passée à Giac. */
     calcul: {
         icone: 'calculatrice',
         outil: () => definirOutil('calcul', {
@@ -692,7 +828,8 @@ const OUTILS_LOCAUX = {
             nombres: { type: 'array', items: { type: 'integer' } },
             valeurs: { type: 'array', items: { type: 'number' } },
             coefficients: { type: 'array', items: { type: 'number' } },
-            derivee: { type: 'string' }
+            derivee: { type: 'string' },
+            formel: { type: 'string' }
         }, []),
         executer: async (a, langue) => {
             if (Array.isArray(a.nombres) && a.nombres.length) {
@@ -701,6 +838,19 @@ const OUTILS_LOCAUX = {
             if (Array.isArray(a.valeurs) && a.valeurs.length && Array.isArray(a.coefficients) && a.coefficients.length) {
                 const { moyenne, total } = Statistiques.ponderer(a.valeurs, a.coefficients);
                 return t('calcul.ponderee', { moyenne: formaterNombre(moyenne, langue), total: formaterNombre(total, langue) });
+            }
+            if (a.formel) {
+                try {
+                    return Formel.TABLEAU.test(a.formel)
+                        ? t('calcul.tableau', { tableau: await Formel.varier(a.formel) })
+                        : a.formel + ' : ' + await Formel.calculer(a.formel);
+                } catch (err) {
+                    /* Trop long ou moteur absent : rendu comme résultat, l'appelant ne connaît que calcul.invalide. */
+                    if (err.message === t('calcul.invalide')) {
+                        throw err;
+                    }
+                    return err.message;
+                }
             }
             if (a.derivee) {
                 await Calcul.charger();
@@ -714,7 +864,16 @@ const OUTILS_LOCAUX = {
                 return t('calcul.statistiques', f);
             }
             await Calcul.charger();
-            const resultat = Calcul.evaluer(a.expression);
+            let resultat;
+            try {
+                resultat = Calcul.evaluer(a.expression);
+            } catch (err) {
+                /* Les modèles moyens écrivent souvent la commande Xcas dans expression (mesuré le 13/10/2026). */
+                if (Formel.COMMANDE.test(a.expression)) {
+                    return OUTILS_LOCAUX.calcul.executer({ formel: a.expression }, langue);
+                }
+                throw err;
+            }
             return a.expression + ' = ' + (typeof resultat === 'number'
                 ? resultat.toLocaleString(langue, { maximumSignificantDigits: Calcul.CHIFFRES, useGrouping: false })
                 : resultat);
@@ -802,5 +961,5 @@ const OUTILS_LOCAUX = {
 
 /* Export pour les tests Node ; ignoré dans le navigateur. */
 if (typeof module !== 'undefined') {
-    module.exports = { Calcul, Calendrier, Compteur, Controle, Tirage, Statistiques, Facteurs, OUTILS_LOCAUX, definirOutil };
+    module.exports = { Calcul, Formel, Calendrier, Compteur, Controle, Tirage, Statistiques, Facteurs, OUTILS_LOCAUX, definirOutil };
 }

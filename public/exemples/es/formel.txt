@@ -1,0 +1,11 @@
+Resuelve la inecuación x² - 4 > 0.
+
+Resuelve el sistema 2x + y = 5 y x - y = 1.
+
+Calcula la integral de x·e^x entre 0 y 1.
+
+¿Cuál es el límite de (1 + 1/n)^n cuando n tiende a +∞?
+
+X sigue la distribución binomial de parámetros n = 10 y p = 0,3. Calcula P(X ≤ 3).
+
+Haz la tabla de variación de f(x) = x³ - 3x.

@@ -1,0 +1,11 @@
+Löse die Ungleichung x² - 4 > 0.
+
+Löse das Gleichungssystem 2x + y = 5 und x - y = 1.
+
+Berechne das Integral von x·e^x von 0 bis 1.
+
+Was ist der Grenzwert von (1 + 1/n)^n, wenn n gegen +∞ geht?
+
+X ist binomialverteilt mit n = 10 und p = 0,3. Berechne P(X ≤ 3).
+
+Erstelle die Monotonietabelle von f(x) = x³ - 3x.
