@@ -151,7 +151,7 @@ Object.assign(Rendu, {
         const tous = () => suite(fils);
         const rang = (i) => '<mrow>' + (fils[i] ? this.mathmlOdt(fils[i]) : '') + '</mrow>';
         const base = () => (fils[0] && this.texteMathml(fils[0]) ? rang(0) : '<mrow>' + baseHeritee + '</mrow>');
-        const brut = noeud.textContent.replace(this.INVISIBLES_MATHML, '');
+        const brut = this.flechesTexte(noeud.textContent.replace(this.INVISIBLES_MATHML, ''));
         const feuille = (balise, attributs = '') => (brut ? '<' + balise + attributs + '>' + this.echapperXml(brut) + '</' + balise + '>' : '');
         /* Mot (lim, sin, cm) ou lettre droite (chimie) : en texte, car LibreOffice tronque un opérateur de plusieurs lettres. */
         const mot = /^[A-Za-z]+$/.test(brut);
@@ -273,7 +273,7 @@ Object.assign(Rendu, {
         };
         const arg = (i) => '{' + dedans(fils[i]) + '}';
         const base = () => (fils[0] && this.texteMathml(fils[0]) ? arg(0) : '{' + (contexte.base || '') + '}');
-        const brut = noeud.textContent.replace(this.INVISIBLES_MATHML, '');
+        const brut = this.flechesTexte(noeud.textContent.replace(this.INVISIBLES_MATHML, ''));
         const citer = (texte) => '"' + texte.replace(/"/g, "''") + '"';
         const mot = /^[A-Za-z]+$/.test(brut);
         const reserve = this.RESERVES_STARMATH.test(brut);
@@ -285,7 +285,13 @@ Object.assign(Rendu, {
             mtext: () => (brut.trim() ? citer(brut) : (brut ? '~' : '')),
             mspace: () => '~',
             /* Mot (lim, sin) : entre guillemets, sinon LibreOffice le prend pour une commande. */
-            mo: () => ((mot && brut.length > 1) || reserve || (contexte.isole && this.BINAIRES_STARMATH.includes(brut)) ? citer(brut) : brut),
+            mo: () => {
+                /* Crochet hors paire extensible, comme ceux de ]a ; b[ : écrit seul, LibreOffice attend sa paire et met des "?". */
+                if (brut === '[' || brut === ']') {
+                    return '\\' + brut;
+                }
+                return (mot && brut.length > 1) || reserve || (contexte.isole && this.BINAIRES_STARMATH.includes(brut)) ? citer(brut) : brut;
+            },
             mi: () => {
                 const ensemble = noeud.getAttribute('mathvariant') === 'double-struck' && this.ENSEMBLES_MATHML[brut];
                 if (ensemble) {
@@ -331,7 +337,7 @@ Object.assign(Rendu, {
      * @returns {Object} { images, medias, objets (MathML et StarMath des formules), styles, tableaux, e }.
      */
     etatOdt(images) {
-        return { images, medias: [], objets: [], styles: new Set(), tableaux: 0, e: this.ecritureOdt() };
+        return { images, medias: [], objets: [], styles: new Set(), colonnes: new Set(), tableaux: 0, e: this.ecritureOdt() };
     },
 
     /**
@@ -392,6 +398,19 @@ Object.assign(Rendu, {
                         + (texte || '<text:p/>') + '</table:table-cell>').join('') + '</table:table-row>').join('')
                     + '</table:table>';
             },
+            /* Tableau à filets (tableau de variations). Styles Filet : B pour un trait dessous, 1 ou 2 pour un trait simple ou double à droite. */
+            tableauRegle: (lignes, etat, poids) => {
+                etat.tableaux += 1;
+                const total = poids.reduce((somme, p) => somme + p, 0);
+                /* 17 cm, la largeur du style Tableau, partagés selon les poids ; chaque largeur a son style, en centièmes de cm. */
+                const colonnes = poids.map((p) => String(Math.round(1700 * p / total)));
+                colonnes.forEach((largeur) => etat.colonnes.add(largeur));
+                return '<table:table table:name="Tableau' + etat.tableaux + '" table:style-name="Tableau">'
+                    + colonnes.map((largeur) => '<table:table-column table:style-name="Col' + largeur + '"/>').join('')
+                    + lignes.map((ligne) => '<table:table-row>' + ligne.map((c) => '<table:table-cell table:style-name="Filet' + (c.bas ? 'B' : '') + (c.droite || '')
+                        + '" office:value-type="string">' + (c.xml || '<text:p/>') + '</table:table-cell>').join('') + '</table:table-row>').join('')
+                    + '</table:table>';
+            },
             /* Un paragraphe par ligne, en chasse fixe. */
             code: (lignes) => lignes.map((ligne) => '<text:p text:style-name="Code">' + this.texteOdt(ligne) + '</text:p>').join('')
         };
@@ -425,6 +444,14 @@ Object.assign(Rendu, {
             + '<style:style style:name="Formule" style:family="graphic"><style:graphic-properties style:vertical-pos="middle" style:vertical-rel="text"/></style:style>'
             + '<style:style style:name="Tableau" style:family="table"><style:table-properties style:width="17cm" table:align="left" fo:margin-bottom="0.21cm"/></style:style>'
             + '<style:style style:name="Case" style:family="table-cell"><style:table-cell-properties fo:padding="0.1cm" fo:border="0.5pt solid #000000"/></style:style>'
+            /* Colonnes d'un tableau à filets : une largeur par style. */
+            + [...etat.colonnes].sort().map((largeur) => '<style:style style:name="Col' + largeur + '" style:family="table-column"><style:table-column-properties style:column-width="'
+                + (largeur / 100).toFixed(2) + 'cm"/></style:style>').join('')
+            /* Cases d'un tableau à filets (tableauRegle) : aucun bord, sauf dessous (B) et à droite (1 simple, 2 double). */
+            + ['', 'B'].flatMap((bas) => ['', '1', '2'].map((droite) => '<style:style style:name="Filet' + bas + droite + '" style:family="table-cell">'
+                + '<style:table-cell-properties fo:padding="0.1cm" style:vertical-align="middle" fo:border-top="none" fo:border-left="none" fo:border-bottom="'
+                + (bas ? '0.5pt solid #000000' : 'none') + '" fo:border-right="' + { '': 'none', 1: '0.5pt solid #000000', 2: '1.5pt double #000000' }[droite]
+                + (droite === '2' ? '" style:border-line-width-right="0.5pt 0.5pt 0.5pt' : '') + '"/></style:style>')).join('')
             + '<text:list-style style:name="Puces">' + niveaux('bullet', 'text:bullet-char="&#8226;"') + '</text:list-style>'
             + '<text:list-style style:name="Numeros">' + niveaux('number', 'style:num-format="1" style:num-suffix="."') + '</text:list-style>';
     },

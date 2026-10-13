@@ -87,7 +87,7 @@ Object.assign(Rendu, {
         const tous = () => suite(fils);
         const partie = (i) => (fils[i] ? this.ommlDocx(fils[i]) : '');
         const texte = (proprietes = '') => {
-            const lu = this.echapperXml(noeud.textContent.replace(this.INVISIBLES_MATHML, ''));
+            const lu = this.echapperXml(this.flechesTexte(noeud.textContent.replace(this.INVISIBLES_MATHML, '')));
             return lu ? '<m:r>' + proprietes + '<m:t xml:space="preserve">' + lu + '</m:t></m:r>' : '';
         };
         /* Texte droit. LibreOffice ne respecte que la marque "nor" ; sans elle, il lit "lim" comme un mot-clé et casse la formule. */
@@ -97,7 +97,8 @@ Object.assign(Rendu, {
         const formes = {
             annotation: () => '',
             mn: () => texte(),
-            mo: () => texte(/^[A-Za-z]{2,}$/.test(noeud.textContent) ? droit : ''),
+            /* Mot (lim) ou crochet hors paire extensible, comme ceux de ]a ; b[ : sans la marque, LibreOffice casse la formule. */
+            mo: () => texte(/^([A-Za-z]{2,}|[\[\]])$/.test(noeud.textContent) ? droit : ''),
             /* Plusieurs lettres (sin, cm) ou variante "normal" : en droit, pas en italique. */
             mi: () => {
                 const ensemble = noeud.getAttribute('mathvariant') === 'double-struck' && this.ENSEMBLES_MATHML[noeud.textContent];
@@ -143,8 +144,10 @@ Object.assign(Rendu, {
             /* ponytail: somme ou intégrale rendue par deux limites ; m:nary si la taille de l'opérateur compte. */
             munderover: () => '<m:limUpp><m:e><m:limLow><m:e>' + partie(0) + '</m:e><m:lim>' + partie(1) + '</m:lim></m:limLow></m:e><m:lim>'
                 + partie(2) + '</m:lim></m:limUpp>',
-            mtable: () => '<m:m>' + tous() + '</m:m>',
-            mtr: () => '<m:mr>' + fils.map((cellule) => '<m:e>' + this.ommlDocx(cellule) + '</m:e>').join('') + '</m:mr>'
+            /* Tableau de variations : des cases vides. plcHide retire leur repère dans Word ; l'espace
+               sans largeur les garde à leur place quand LibreOffice ouvre le fichier. */
+            mtable: () => '<m:m><m:mPr><m:plcHide m:val="1"/></m:mPr>' + tous() + '</m:m>',
+            mtr: () => '<m:mr>' + fils.map((cellule) => '<m:e>' + (this.ommlDocx(cellule) || '<m:r><m:t>&#8203;</m:t></m:r>') + '</m:e>').join('') + '</m:mr>'
         };
         /* math, semantics, mstyle, mtd et le reste : leurs enfants à la suite. */
         const forme = formes[noeud.tagName.toLowerCase()];
@@ -227,7 +230,9 @@ Object.assign(Rendu, {
             paragraphe: (runs, genre) => this.unParagrapheDocx(runs, genre),
             formule: (maths) => {
                 const omml = this.ommlDocx(maths);
-                return omml ? '<m:oMath>' + omml + '</m:oMath>' : '';
+                /* Signe seul (case d'un tableau de variations) : en texte droit, sinon LibreOffice lui cherche un opérande. */
+                const seul = /^<m:r>(<m:t xml:space="preserve">[+\-\u2212]<\/m:t><\/m:r>)$/.exec(omml);
+                return omml ? '<m:oMath>' + (seul ? '<m:r><m:rPr><m:nor/></m:rPr>' + seul[1] : omml) + '</m:oMath>' : '';
             },
             estFormule: (morceau) => morceau.startsWith('<m:oMath>'),
             centrer: (morceau) => '<m:oMathPara>' + morceau + '</m:oMathPara>',
@@ -259,6 +264,17 @@ Object.assign(Rendu, {
                     + cases.map((ligne) => '<w:tr>' + ligne.map(cellule).join('') + '</w:tr>').join('')
                     /* Paragraphe vide : deux tableaux qui se suivent fusionneraient. */
                     + '</w:tbl><w:p/>';
+            },
+            /* Tableau à filets (tableau de variations) : trait sous une ligne, à droite d'une colonne, double à une valeur interdite. */
+            tableauRegle: (lignes, etat, poids) => {
+                const total = poids.reduce((somme, p) => somme + p, 0);
+                const largeur = (j) => Math.floor(9638 * poids[j] / total);
+                const trait = (cote, genre) => '<w:' + cote + ' w:val="' + genre + '" w:sz="6" w:space="0" w:color="auto"/>';
+                const cellule = (c, j) => '<w:tc><w:tcPr><w:tcW w:w="' + largeur(j) + '" w:type="dxa"/><w:tcBorders>' + (c.bas ? trait('bottom', 'single') : '')
+                    + (c.droite ? trait('right', c.droite > 1 ? 'double' : 'single') : '') + '</w:tcBorders><w:vAlign w:val="center"/></w:tcPr>' + (c.xml || '<w:p/>') + '</w:tc>';
+                return '<w:tbl><w:tblPr><w:tblW w:w="0" w:type="auto"/><w:jc w:val="center"/></w:tblPr><w:tblGrid>'
+                    + poids.map((_, j) => '<w:gridCol w:w="' + largeur(j) + '"/>').join('') + '</w:tblGrid>'
+                    + lignes.map((ligne) => '<w:tr>' + ligne.map(cellule).join('') + '</w:tr>').join('') + '</w:tbl><w:p/>';
             },
             /* Un paragraphe par ligne, en chasse fixe. */
             code: (lignes) => lignes.map((ligne) => '<w:p><w:pPr><w:spacing w:after="0"/></w:pPr>' + this.runDocx(ligne, { code: true }) + '</w:p>').join('')
