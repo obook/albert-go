@@ -107,7 +107,16 @@ test('tableau de variations : rendu en LaTeX, sur tout le domaine, valeurs en ha
         + '& & & 2 & & & & +\\infty \\\\ f(x) & & \\nearrow & & \\searrow & & \\nearrow & \\\\ '
         + '& -\\infty & & & & -2 & & \\end{array}';
     assert.strictEqual(await Formel.varier('tabvar(x^3 - 3x)'), attendu);
-    assert.strictEqual(await OUTILS_LOCAUX.calcul.executer({ formel: 'tabvar(x^3 - 3x)' }, 'fr'), t('calcul.tableau', { tableau: attendu }));
+    assert.ok((await OUTILS_LOCAUX.calcul.executer({ formel: 'tabvar(x^3 - 3x)' }, 'fr')).endsWith('$$' + attendu + '$$'));
+});
+
+/* Dans le tableau LaTeX, les valeurs sur trois étages font confondre maximum et minimum au modèle. */
+test('tableau de variations : lecture en ligne pour le modèle, valeur interdite comprise', async () => {
+    const calcul = OUTILS_LOCAUX.calcul.executer;
+    assert.ok((await calcul({ formel: 'tabvar(x^3 - 3x)' }, 'fr'))
+        .startsWith('x : -\\infty ; -1 ; 1 ; +\\infty\nf\'(x) : + ; 0 ; - ; 0 ; +\nf(x) : -\\infty ↗ 2 ↘ -2 ↗ +\\infty\n'));
+    assert.ok((await calcul({ formel: 'tabvar(1/x)' }, 'fr'))
+        .startsWith('x : -\\infty ; 0 ; +\\infty\nf\'(x) : - ; || ; -\nf(x) : 0 ↘ -\\infty || +\\infty ↘ 0\n'));
 });
 
 test('tableau de variations : double barre à une valeur interdite, limites de part et d\'autre', async () => {
