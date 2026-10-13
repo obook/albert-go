@@ -131,7 +131,7 @@ I18n.TEXTES.en = {
     'bienvenue.formule': 'Write a formula',
     'bienvenue.tirage': 'Draw lots',
     'bienvenue.recherche': 'Search',
-    'bienvenue.exemple-corriger': 'Thank you for you quick anwser, i remain at your disposal.',
+    'bienvenue.exemple-corriger': 'Proofread this text: Thank you for you quick anwser, i remain at your disposal.',
     'bienvenue.exemple-reformuler': 'Please be advised that, owing to the unavailability of a significant proportion of the participants, the meeting originally scheduled has been postponed to a later date, which will be communicated to you in due course.',
     'bienvenue.exemple-traduire': 'Translate into French: Hello, I would like to make an appointment next week.',
     'bienvenue.exemple-rediger': 'Dear Madam,\nleave request 3 to 7 November\nongoing files handed to colleague',

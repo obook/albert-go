@@ -12,12 +12,12 @@ Chaque utilisateur utilise sa propre clé API. Les clés s'obtiennent sur le [pl
 
 | Module | Rôle |
 |---|---|
-| Discussion | Discuter avec Albert. |
-| Correction | Corriger un texte. |
+| Discussion | Discuter avec Albert, qui corrige et traduit aussi sur demande ("Corrige ce texte : ...", "Traduis en anglais : ..."). |
 | Style | Reformuler un texte, avec trois propositions. |
-| Trad | Traduire un texte entre les deux langues choisies. |
 | Courrier | Rédiger un courrier à partir de quelques idées (voir plus bas). |
 | Imprimerie | Construire un document peu à peu à partir de sources déposées (voir plus bas). |
+
+Les modules Correction et Trad sont mis de côté : ils ne sont plus au menu, leurs anciennes conversations restent dans l'historique.
 
 ### Réponses
 
