@@ -46,7 +46,7 @@
     color: var(--texte);
 }
 
-/* Albert interrogé (affichage.js, interroger) : un reflet rouge parcourt le bas de l'en-tête. */
+/* Albert interrogé (affichage.js, interroger) : un reflet orange parcourt le bas de l'en-tête. */
 .entete { position: relative; }
 .interroge .entete::after {
     content: "";
@@ -55,7 +55,7 @@
     right: 0;
     bottom: -1px;
     height: 2px;
-    background: linear-gradient(90deg, transparent, var(--rouge), transparent) no-repeat;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent) no-repeat;
     background-size: 40% 100%;
     animation: balaye 1.2s linear infinite;
 }
