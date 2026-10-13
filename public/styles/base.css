@@ -16,6 +16,10 @@
 :root {
     color-scheme: light;
     --police: "Work Sans", system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", sans-serif;
+    /* Petits textes, remontés sur grand écran (plus bas) : rien sous 14 px, boutons à 16 px, comme Onyxia. */
+    --taille-mini: 0.75rem;
+    --taille-petite: 0.8125rem;
+    --taille-bouton: 0.9375rem;
     /* Gris légèrement bleutés, de la teinte du thème sombre. */
     --fond: #f5f6f9;
     --surface: #ffffff;
@@ -56,6 +60,15 @@
     --code-titre: #8250df;
     --code-type: #953800;
 }
+
+@media (min-width: 64rem) {
+    :root {
+        --taille-mini: 0.875rem;
+        --taille-petite: 0.875rem;
+        --taille-bouton: 1rem;
+    }
+}
+
 @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
         color-scheme: dark;

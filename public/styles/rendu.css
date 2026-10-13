@@ -101,7 +101,7 @@ laissait les colonnes rétrécir jusqu'à une lettre. Trop large, le tableau dé
 .rendu .image-commons { margin: 0.5rem 0 0.75rem; }
 .rendu .image-commons img { display: block; border-radius: 0.25rem; }
 .rendu .cadre-image { position: relative; width: fit-content; }
-.rendu .image-commons figcaption, .rendu .image-absente { margin-top: 0.25rem; font-size: 0.8125rem; color: var(--texte-doux); }
+.rendu .image-commons figcaption, .rendu .image-absente { margin-top: 0.25rem; font-size: var(--taille-petite); color: var(--texte-doux); }
 /* Titre puis crédit, chacun sur sa ligne. */
 .rendu .image-commons figcaption > * { display: block; width: fit-content; }
 /* Guillemets français avec leurs espaces insécables ; le navigateur les colle au texte. */
@@ -120,6 +120,6 @@ laissait les colonnes rétrécir jusqu'à une lettre. Trop large, le tableau dé
     margin-top: -0.5rem;
     color: var(--erreur);
     font-family: ui-monospace, "Cascadia Mono", "DejaVu Sans Mono", monospace;
-    font-size: 0.8125rem;
+    font-size: var(--taille-petite);
     white-space: pre-wrap;
 }
