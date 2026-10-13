@@ -153,7 +153,8 @@ const Lecture = {
         if (!table) {
             return '';
         }
-        let texte = tex;
+        /* Bloc en colonne (aligned, pmatrix) : ni son nom ni les repères d'alignement ne se lisent, une pause par ligne. */
+        let texte = tex.replace(/\\(begin|end)\s*\{[^}]*\}/g, ' ').replace(/&/g, ' ').replace(/\\\\/g, ' , ');
         for (const [motif, remplacement] of table) {
             texte = texte.replace(motif, remplacement);
         }

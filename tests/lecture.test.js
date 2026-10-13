@@ -23,6 +23,11 @@ test('formuleParlee : fractions, puissances, racines, chimie', () => {
     assert.strictEqual(Lecture.formuleParlee('\\ce{2H2 + O2 -> 2H2O}'), '2H2 + O2 donne 2H2O');
 });
 
+test('formuleParlee : calcul en colonne et coordonnées, une pause par ligne, sans le nom du bloc', () => {
+    assert.strictEqual(Lecture.formuleParlee('\\begin{aligned}3x + 1 &= 7 \\\\ x &= 2\\end{aligned}'), '3x + 1 égale 7 , x égale 2');
+    assert.strictEqual(Lecture.formuleParlee('\\vec{u}\\begin{pmatrix}1\\\\2\\end{pmatrix}'), 'u 1 , 2');
+});
+
 test('formuleParlee : les trois autres tables disent la même formule', () => {
     const formule = '\\frac{2}{3} \\times x^2 + \\sqrt{9} = y^{n}';
     assert.strictEqual(Lecture.formuleParlee(formule, 'en'),
