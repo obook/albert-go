@@ -21,13 +21,13 @@ Chaque utilisateur utilise sa propre clé API. Les clés s'obtiennent sur le [pl
 
 ### Réponses
 
-Les réponses acceptent le Markdown, les formules LaTeX et les diagrammes Mermaid ; un diagramme refusé par Mermaid est renvoyé une fois au modèle pour correction. Sous chaque réponse : copier le texte, le lire à voix haute avec une voix installée sur l'appareil ou l'enregistrer en .docx ou en .odt.
+Les réponses acceptent le Markdown, les formules LaTeX et les diagrammes Mermaid, graphiques en barres ou en ligne compris ; un diagramme refusé par Mermaid est renvoyé une fois au modèle pour correction. La courbe d'une fonction est calculée et tracée par la page ; une figure écrite en SVG par le modèle s'affiche après nettoyage. En français, les consignes demandent les notations de France : virgule décimale, intervalles à crochets, calculs en colonne. Sous chaque réponse : copier le texte, le lire à voix haute avec une voix installée sur l'appareil ou l'enregistrer en .docx ou en .odt.
 
 Les deux fichiers sont écrits dans le navigateur, sans bibliothèque : titres, listes, tableaux, code, liens, figures et images en image. Les formules restent modifiables : équations Word dans le .docx, objets LibreOffice Math dans le .odt. Une formule que KaTeX n'a pas su lire garde sa source LaTeX. Les deux formats ont été vérifiés dans LibreOffice, pas dans Microsoft Word.
 
 ### Fichiers joints
 
-Trombone, glisser-déposer ou Ctrl+V : un fichier texte, un PDF, un .docx ou un .odt est lu dans le navigateur, formules comprises pour ces deux derniers ; une image est transcrite par le modèle Medium, un enregistrement audio par whisper (8 minutes environ au plus), puis le texte part avec la question. S'il y a plusieurs voix dans l'enregistrement, chaque tour de parole est précédé de son locuteur. Un PDF scanné n'a pas de texte : il se joint comme image.
+Trombone, glisser-déposer ou Ctrl+V : un fichier texte, un PDF, un .docx ou un .odt est lu dans le navigateur, formules comprises pour ces deux derniers ; une image est transcrite par le modèle Medium, un enregistrement audio par whisper (8 minutes environ au plus), puis le texte part avec la question. S'il y a plusieurs voix dans l'enregistrement, chaque tour de parole est précédé de son locuteur. Dans Discussion et Imprimerie, l'image part aussi telle quelle et c'est un modèle qui lit les images qui répond : celui choisi s'il en est capable, sinon Gemma 4 ou Medium. Un PDF scanné n'a pas de texte : il se joint comme image.
 
 Dans Imprimerie, les fichiers déposés sont les sources du document (voir plus bas).
 
@@ -44,15 +44,17 @@ On dépose des sources (rapport, compte rendu, cours, ancien sujet), puis on dem
 - Les sources cochées partent en entier avec chaque demande. Au moment où on les coche, leur texte ne dépasse pas 60 % du contexte du modèle, soit environ 80 pages avec Large.
 - Seule la version en cours du document accompagne la demande. Les dix dernières versions restent dans le volet, sous "Versions" : un clic en reprend une.
 - La section "Imprimerie" du menu sert à créer, nommer, rouvrir et supprimer les documents : dix au plus, comptés à part des dix conversations de l'historique.
-- Mêmes outils que Discussion : calculatrice, tirage, recherche web.
+- Mêmes outils que Discussion, recherche web comprise.
 
 ### Recherche web
 
-Internet est autorisé au départ, sans moteur de recherche. Dans Réglages, on peut cocher jusqu'à trois moteurs. Le globe de la barre de saisie apparaît quand Internet est autorisé : tant qu'il est activé, les questions peuvent chercher et montrer des images Wikimedia. Les mots cherchés et les pages consultées s'affichent sous la réponse.
+Internet est autorisé au départ, sans moteur de recherche. Dans Réglages, on peut cocher jusqu'à trois moteurs : Wikipédia, Vikidia, HAL, OpenAlex, Internet Archive, Open Library, Google et Mojeek (ces deux derniers avec une clé). Le globe de la barre de saisie apparaît quand Internet est autorisé : tant qu'il est activé, les questions peuvent chercher et montrer des images Wikimedia. Les mots cherchés et les pages consultées s'affichent sous la réponse.
+
+Globe activé, le modèle a aussi dix services de l'État, sans clé : Annuaire de l'administration, Annuaire des entreprises, Annuaire de l'éducation, calendrier scolaire, Base adresse nationale, API Géo (communes), BOAMP (marchés publics), data.gouv.fr, Parcoursup et Hub'eau (eau du robinet).
 
 ### Outils
 
-Dans Discussion, quatre outils sont activés par défaut ; on peut les désactiver dans Réglages > Outils. Tout se passe dans le navigateur. Le modèle décide seul de s'en servir ; quand un outil a servi, son icône apparaît sous la réponse et un clic montre ce qu'il a fait.
+Dans Discussion, cinq outils sont activés par défaut ; on peut les désactiver dans Réglages > Outils. Tout se passe dans le navigateur. Le modèle décide seul de s'en servir ; quand un outil a servi, son icône apparaît sous la réponse et un clic montre ce qu'il a fait.
 
 | Outil | Rôle |
 |---|---|
@@ -60,12 +62,13 @@ Dans Discussion, quatre outils sont activés par défaut ; on peut les désactiv
 | Tirage aléatoire | Ordre de passage, éléments tirés ou groupes, avec le générateur aléatoire du navigateur. |
 | Calendrier | Date et heure actuelles ou dans N heures, jour de la semaine d'une date, date dans N jours ou N mois, nombre de jours entre deux dates, jours ouvrés et jours fériés en France, report d'une échéance au premier jour ouvré suivant. |
 | Compteur | Nombre de mots et de caractères d'un texte ; occurrences d'une lettre, mot épelé et écrit à l'envers, anagramme vérifiée ; lisibilité (mots par phrase, phrases de plus de 20 mots, mots de 10 lettres ou plus). |
+| Contrôle SIRET et IBAN | Clé de contrôle d'un SIREN, d'un SIRET ou d'un IBAN, pour repérer un numéro mal recopié ; l'existence du numéro n'est pas vérifiée. |
 
 Chaque demande donne aussi au modèle son nom. Dans Discussion, la date et l'heure viennent du Calendrier : son icône sous la réponse montre qu'elles viennent de l'appareil et non du modèle. Calendrier désactivé ou dans les autres modules, elles partent avec chaque demande.
 
 ### Réglages
 
-Choix du modèle, température, top-k et contexte. Le curseur de contexte fixe le nombre d'échanges que l'IA reçoit : à 0, seule la dernière question part.
+Choix du modèle, température, top-k et contexte. Le curseur de contexte fixe le nombre d'échanges que l'IA reçoit : à 0, seule la dernière question part. S'y ajoutent un interrupteur par outil, Internet et ses moteurs, les voix en ligne pour la lecture à voix haute et le nom de l'application (12 caractères au plus). Les cartes IA et Outils ont chacune un bouton "Réglages conseillés".
 
 ### Langues
 
@@ -89,7 +92,7 @@ Audit interne et externe, modèle de menaces et plan d'action : [SECURITE.md](SE
 - Elle transite par l'instance n8n : l'administrateur de cette instance peut techniquement la voir. Le workflow n'enregistre aucune exécution, donc aucun en-tête.
 - Le workflow compte par jour les appels acceptés par Albert (ouverture de la page et messages) : le nombre d'appels, rien d'autre, 90 jours au plus. Le total s'affiche dans "À propos", lu sur `albert-go/stats`, public.
 - Le webhook appelle uniquement l'API Albert, dont l'adresse est fixée dans le workflow.
-- La page ne charge aucun script externe. Une politique CSP limite les connexions à l'instance n8n et aux moteurs de recherche. Elle limite les scripts au site lui-même.
+- La page ne charge aucun script externe. Une politique CSP limite les connexions à l'instance n8n, aux moteurs de recherche, à Wikimedia Commons et aux services de l'État. Elle limite les scripts au site lui-même.
 - Le HTML produit à partir des réponses d'Albert est assaini avant affichage : scripts, gestionnaires d'événements et liens `javascript:` sont retirés.
 
 ## Fonctionnement
@@ -124,15 +127,16 @@ Ajouter une langue : un code dans `I18n.LANGUES`, son fichier `public/js/langues
 
 ### Modèles
 
-Modèles disponibles en septembre 2026, selon le type de travail :
+Modèles disponibles en octobre 2026, selon le type de travail :
 
 | Type de travail | Modèle |
 |---|---|
 | Usage courant, raisonnements longs (conseillé) | Large (`gpt-oss-120b`), plus lent |
 | Questions simples, réponse rapide | Small (`ministral-3-8b`) |
 | Compromis qualité et rapidité, lecture d'images | Medium (`mistral-small-3-2-24b`) |
+| Lecture d'images | Gemma 4 31B (`gemma-4-31B-it`) |
 | Programmation | Code (`qwen3-coder-30b`) |
-| Programmation sur de longs documents | Code 2 (`deepseek-v4-flash`) |
+| Programmation sur de longs documents | DeepSeek V4 Flash (`deepseek-v4-flash`) |
 
 Tous les modèles savent utiliser la recherche web pour une question dont la réponse n'est pas dans leurs connaissances, ils décident de l'utiliser d'eux-mêmes.
 
