@@ -2,6 +2,8 @@
 
 `albert-proxy.json` relaie vers Albert les appels de la page (`chat/completions`, `models`, `audio/transcriptions`), qu'Albert refuse en direct faute de CORS. Il compte aussi les appels pour la ligne "Charge n8n" de "À propos", servie sur `albert-go/stats`.
 
+Le code et le corps de la réponse d'Albert repartent tels quels, y compris une erreur. Les nœuds HTTP lisent la réponse en `autodetect` : en `json`, la page HTML d'une panne d'Albert (502 de nginx) faisait échouer le workflow, et la page recevait un 500 "Workflow execution failed" au lieu du 502. Une coupure réseau ou un délai dépassé (120 s) donnent toujours ce 500.
+
 ## Installation
 
 1. Créer la Data table `albert-go-compteur` dans le même projet que le workflow, avec deux colonnes : `jour` (string) et `appels` (number).

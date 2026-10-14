@@ -83,3 +83,11 @@ test('Albert audio : le format de réponse suit la demande, json par défaut', (
     assert.strictEqual(evaluer({ response_format: 'diarized_json' }), 'diarized_json');
     assert.strictEqual(evaluer({}), 'json');
 });
+
+test('Nœuds Albert : réponse lue telle quelle, une page d\'erreur HTML repart avec son code', () => {
+    /* En json, une page 502 de nginx fait échouer le workflow : n8n répond 500 "Workflow execution failed". */
+    for (const nom of ['Albert chat', 'Albert modèles', 'Albert audio']) {
+        assert.deepStrictEqual(trouver(nom).parameters.options.response.response,
+            { fullResponse: true, neverError: true, responseFormat: 'autodetect' }, nom);
+    }
+});
