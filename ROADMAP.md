@@ -30,6 +30,7 @@ Ce qui reste à faire, du plus simple au plus long. Le détail des failles est d
 - Ouvrir un .docx et un .odt produits dans Microsoft Word : seul LibreOffice a servi aux essais.
 - Modèle de l'enseignant : son propre .odt, avec son en-tête et une balise `{contenu}` où Albert Go insère le document, sur le principe d'odtPHP.
 - Recherche dans les sources (collections et `/v1/search` d'Albert) quand elles dépassent le plafond : il faut trois routes de plus dans le relais n8n et les sources seraient alors gardées chez Albert.
+- Variante sans rien garder chez Albert, un vrai RAG dans le navigateur : découper le texte des sources, calculer leurs vecteurs avec `/v1/embeddings` d'Albert (une route de plus dans le relais), les garder dans IndexedDB et n'envoyer avec la question que les passages les plus proches. Utile pour interroger toute une collection d'un coup : les 37 bulletins officiels du dossier de l'utilisateur font environ 2 millions de caractères, quand la limite est à 60 % du contexte (environ 240 000 caractères avec Large). Inutile tant que les sources cochées tiennent dans le contexte : le modèle les lit alors en entier. Point faible : les tableaux des programmes, mal extraits, se couperaient entre deux passages.
 - Mineurs connus : un élément de liste qui commence par un bloc de code ou une image perd son numéro dans le fichier exporté ; le refus d'un fichier ne dit pas lequel ; les grands opérateurs d'une équation Word ne grandissent pas avec leur contenu.
 
 ## Interface
