@@ -78,7 +78,6 @@ I18n.TEXTES.de = {
     'confirmer-suppression.projet': 'Dieses Dokument löschen? Seine Quellen bleiben in der Bibliothek.',
     'documents.nom': 'Name des Dokuments',
     'documents.deposer': 'Quellen hinzufügen',
-    'documents.formats': 'Akzeptierte Formate: PDF, .docx, .odt, Textdateien (.txt, .md, .csv, .tex...), Bilder und Audioaufnahmen.',
     'documents.garde': 'Ihr Text bleibt in diesem Browser gespeichert: keine personenbezogenen Daten hinzufügen.',
     'documents.supprimer': '{nom} aus der Bibliothek löschen',
     'documents.utiliser': '{nom} hier verwenden',
