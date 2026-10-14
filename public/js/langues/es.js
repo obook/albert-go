@@ -288,6 +288,7 @@ I18n.TEXTES.es = {
     'reponse.telecharger-image': 'Descargar la imagen original',
     'reponse.telecharger-docx': 'Descargar en .docx',
     'reponse.telecharger-odt': 'Descargar en .odt',
+    'reponse.imprimer-pdf': 'Imprimir o guardar en PDF',
     'reponse.erreur-diagramme': 'Diagrama no mostrado, error de Mermaid: ',
     'reponse.erreur-courbe': 'Curva no mostrada: escribir una línea y = ... por función (x^2, sqrt(x), sin(x) en radianes) y luego x = inicio .. fin.',
     'reponse.image-absente': 'Imagen no encontrada en Wikimedia Commons.',

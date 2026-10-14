@@ -238,20 +238,43 @@ async function devoiler(element, texte, images) {
 }
 
 /**
- * Boutons qui enregistrent une réponse en fichier : .docx, puis .odt.
+ * Boutons qui enregistrent une réponse : .docx, .odt, puis PDF par l'impression du navigateur.
  *
  * @param {function(): (HTMLElement|Promise<HTMLElement>)} lire - Donne le contenu à enregistrer, une fois prêt.
  * @param {function(): string} sujet - Donne le sujet, pour nommer le fichier.
- * @returns {HTMLButtonElement[]} Les deux boutons.
+ * @returns {HTMLButtonElement[]} Les trois boutons.
  */
 function boutonsExport(lire, sujet) {
-    return ['docx', 'odt'].map((format) => {
+    const fichiers = ['docx', 'odt'].map((format) => {
         const bouton = boutonAction(ICONES[format], t('reponse.telecharger-' + format));
         bouton.addEventListener('click', () => Rendu.telechargerAvecAttente(bouton,
             /* Imprimerie : document sans gras, à l'export comme à l'écran. */
             async () => Rendu[format](await lire(), !!Albert.OUTILS[outilActuel].documents), Rendu.nomFigure(new Date(), format, sujet())));
         return bouton;
     });
+    const pdf = boutonAction(ICONES.pdf, t('reponse.imprimer-pdf'));
+    pdf.addEventListener('click', async () => imprimer(await lire(), sujet()));
+    return [...fichiers, pdf];
+}
+
+/**
+ * Imprime une réponse seule, pour l'enregistrer en PDF : sa copie va dans
+ * #impression, seule partie de la page que garde la feuille d'impression (base.css).
+ * Le rendu est celui de l'écran : formules, schémas et code colorisé compris.
+ *
+ * @param {HTMLElement} contenu - Réponse affichée.
+ * @param {string} sujet - Sujet, pour nommer le fichier PDF proposé.
+ */
+function imprimer(contenu, sujet) {
+    const titre = document.title;
+    $('impression').replaceChildren(contenu.cloneNode(true));
+    /* Le navigateur nomme le PDF d'après le titre de la page. */
+    document.title = Rendu.nomFigure(new Date(), 'pdf', sujet).replace(/\.pdf$/, '');
+    window.addEventListener('afterprint', () => {
+        document.title = titre;
+        $('impression').replaceChildren();
+    }, { once: true });
+    window.print();
 }
 
 /**
