@@ -27,3 +27,19 @@ Combien d'os compte le squelette d'un adulte ?
 Combien d'habitants compte Marseille ?
 
 Qui a écrit Les Misérables et en quelle année le livre est-il paru ?
+
+Montre-moi une photo de la nébuleuse du Crabe.
+
+Montre-moi La Joconde de Léonard de Vinci.
+
+Montre-moi une carte ancienne de Bordeaux.
+
+Montre-moi La Nuit étoilée de Van Gogh.
+
+Montre-moi une photo de la Terre vue depuis la Lune.
+
+Montre-moi une photo de Saturne prise par la sonde Cassini.
+
+Montre-moi une photo de l'Etna en éruption.
+
+Montre-moi la tapisserie de Bayeux.

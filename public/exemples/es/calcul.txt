@@ -27,3 +27,13 @@ Invierto 2000 € al 3 % de interés compuesto durante 10 años. ¿Cuánto tendr
 ¿Cuál es la raíz cuadrada de 2 con 15 decimales?
 
 Un autocar de 52 plazas cuesta 780 € al día. ¿Cuánto paga cada uno si van 47 alumnos y 5 adultos?
+
+¿Cuántos días laborables hay entre el 3 de noviembre y el 19 de diciembre?
+
+¿Qué día de la semana fue el 14 de julio de 1789?
+
+¿Qué fecha cae dentro de 45 días? Si es fin de semana o festivo, pásala al siguiente día laborable.
+
+¿Cuántos días faltan para el 1 de enero?
+
+¿Cuáles son los días festivos en Francia en 2027?

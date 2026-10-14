@@ -157,6 +157,8 @@ main {
     font-size: var(--taille-bouton);
     cursor: pointer;
 }
+/* Idées un cran plus petites : quatorze boutons tiennent au-dessus de la saisie. */
+.suggestion { padding: 0.375rem 0.75rem; font-size: var(--taille-petite); }
 .suggestion:hover, .suggestion:focus-visible,
 .deposer:hover, .deposer:focus-visible { border-color: var(--accent); color: var(--accent); background: var(--accent-clair); }
 
