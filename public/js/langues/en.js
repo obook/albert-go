@@ -486,7 +486,7 @@ I18n.TEXTES.en = {
     'reponse.note-bibliotheque': 'Library sources sent with the question: {lignes}',
     'images.rappel': 'For a photo or an image, use the image_commons tool, not recherche_web, then give the link of a file found. Never describe a file without its link; if none matches, say so.',
     'images.absent': 'You can neither search nor show images: if asked for one, say that the globe in the input bar must be turned on, after allowing Internet in Settings > Tools if it is not shown.',
-    'services.rappel': 'For a public service, a company, a school, school holidays, an address, a municipality, a public contract, a public dataset, a Parcoursup course or tap water quality, use the dedicated tool rather than recherche_web.',
+    'services.rappel': 'For a public service, a company, a school, school holidays, an address, a municipality (postcodes, population), a public contract, a public dataset, a Parcoursup course or tap water quality, use the dedicated tool rather than recherche_web.',
     'annuaire_administration.description': 'Looks up a French public service in the Annuaire de l\'administration (service-public.fr): town hall, prefecture, fund, court, education authority, ministry... Returns address, phone, email, website and opening hours.',
     'annuaire_administration.q': 'Type of service and municipality, for example: mairie Lyon 2e, préfecture Rhône.',
     'entreprise.description': 'Looks up a company, an association or a public body in the French business directory (Sirene): SIREN, head office SIRET, address, NAF code, creation date, active or closed.',
