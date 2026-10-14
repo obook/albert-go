@@ -287,7 +287,19 @@ function imprimer(contenu, sujet) {
     };
     document.addEventListener('pointerdown', remettre, true);
     document.addEventListener('keydown', remettre, true);
+    /* Brave sur iPad ignore print() sans rien dire : sans beforeprint dans la seconde, on le signale. */
+    let ouverte = false;
+    const ouvrir = () => {
+        ouverte = true;
+    };
+    window.addEventListener('beforeprint', ouvrir, { once: true });
     window.print();
+    setTimeout(() => {
+        window.removeEventListener('beforeprint', ouvrir);
+        if (!ouverte) {
+            toast(t('toast.impression-impossible'));
+        }
+    }, 1000);
 }
 
 /**

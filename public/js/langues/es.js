@@ -373,6 +373,7 @@ I18n.TEXTES.es = {
     'toast.reponse-copiee': 'Respuesta copiada.',
     'toast.code-copie': 'Código copiado.',
     'toast.copie-refusee': 'El navegador ha rechazado la copia.',
+    'toast.impression-impossible': 'Este navegador no abre la impresión. Prueba su menú Compartir y luego Imprimir, o abre la página en Safari.',
     'toast.telechargement-en-cours': 'Descargando...',
     'toast.telecharge': 'Archivo descargado: {nom}',
     'toast.telechargement-impossible': 'No se pudo descargar.',

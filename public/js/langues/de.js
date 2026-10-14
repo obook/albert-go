@@ -373,6 +373,7 @@ I18n.TEXTES.de = {
     'toast.reponse-copiee': 'Antwort kopiert.',
     'toast.code-copie': 'Code kopiert.',
     'toast.copie-refusee': 'Der Browser hat das Kopieren abgelehnt.',
+    'toast.impression-impossible': 'Dieser Browser öffnet den Druck nicht. Versuche sein Teilen-Menü und dann Drucken oder öffne die Seite in Safari.',
     'toast.telechargement-en-cours': 'Wird heruntergeladen...',
     'toast.telecharge': 'Datei heruntergeladen: {nom}',
     'toast.telechargement-impossible': 'Download fehlgeschlagen.',
