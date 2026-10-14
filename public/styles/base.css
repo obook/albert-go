@@ -216,6 +216,9 @@ a:hover { color: var(--accent-survol); }
     outline: 3px solid var(--accent);
     outline-offset: 2px;
 }
+/* Après un toucher ou un clic (stockage.js) : pas de contour sur un bouton ou un lien qui reçoit le focus
+   d'office. Au clavier, il revient ; les champs de saisie le gardent toujours. */
+:root[data-saisie="pointeur"] :focus-visible:not(input, textarea, select) { outline: none !important; }
 
 /* Texte lu par les lecteurs d'écran, invisible à l'écran. */
 .visuellement-cache {
