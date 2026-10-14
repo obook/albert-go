@@ -26,4 +26,4 @@ Donne la formule de Héron pour l'aire d'un triangle et un exemple avec des côt
 
 Donne la formule de la concentration massique et un exemple avec 5 g de sel dissous dans 250 mL d'eau.
 
-Donne la formule du théorème de Thalès et un exemple avec des longueurs.
+Donne la formule du poids et calcule le poids d'une personne de 70 kg sur la Terre et sur la Lune.
