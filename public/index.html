@@ -316,7 +316,12 @@
             <!-- Projet : le nom du document sert de titre, au-dessus du fil. -->
             <label for="nom-projet" class="visuellement-cache" data-t="documents.nom"></label>
             <input type="text" id="nom-projet" class="nom-projet" maxlength="40" data-t-attr="placeholder:documents.nom">
-            <!-- Projet vide : une phrase et trois demandes types, masquées dès la première question (CSS). -->
+            <ol id="fil"
+                class="fil"
+                role="log"
+                aria-live="polite"></ol>
+            <!-- Projet vide : une phrase et trois demandes types, masquées dès la première question.
+                 Après le fil, vide et sans hauteur : #fil:empty ~ suffit, sans :has(), que Safari sur iPad recalculait en retard. -->
             <div class="accueil-projet">
                 <p data-t="projet.bienvenue"></p>
                 <div class="suggestions">
@@ -343,10 +348,6 @@
                     <button type="button" class="suggestion" data-exemple="bienvenue.exemple-recherche" data-t="bienvenue.recherche" data-recherche></button>
                 </div>
             </div>
-            <ol id="fil"
-                class="fil"
-                role="log"
-                aria-live="polite"></ol>
         </section>
 
         <!-- Rédiger : proposition en haut, notes en bas (redaction.js). -->
