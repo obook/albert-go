@@ -404,12 +404,17 @@ async function joindreFichiers(fichiers, versBibliotheque = !!Albert.OUTILS[outi
     depotEnCours = versBibliotheque;
     try {
         for (const fichier of versBibliotheque ? fichiers : fichiers.slice(0, 1)) {
+            /* Le volet couvre la saisie et son message d'attente (iPad, téléphone) : le bouton du volet le reprend. */
+            if (versBibliotheque) {
+                $('deposer-documents').textContent = t('piece.lecture', { nom: fichier.name });
+            }
             if (!await joindreFichier(fichier, versBibliotheque)) {
                 return;
             }
         }
     } finally {
         depotEnCours = false;
+        $('deposer-documents').textContent = t('documents.deposer');
     }
 }
 
