@@ -1,0 +1,29 @@
+Escribe una función en Python que calcule la media de una lista de notas.
+
+Escribe un programa en Python que simule 1000 lanzamientos de un dado y cuente cada cara.
+
+Escribe una página HTML con un formulario de inscripción a una excursión escolar: nombre, clase, autorización de los padres.
+
+Escribe el CSS de un botón naranja con esquinas redondeadas que se oscurezca al pasar el ratón.
+
+Escribe una consulta SQL que dé la media de cada alumno a partir de una tabla notas(alumno, asignatura, nota).
+
+Escribe un script en JavaScript que muestre una cuenta atrás hasta las vacaciones.
+
+Escribe una función en Python que diga si un número es primo, con pruebas.
+
+Escribe un script Bash que renombre las fotos de una carpeta con su fecha.
+
+Escribe un programa en Python que dibuje la curva de y = x² con matplotlib.
+
+Escribe una función en JavaScript que compruebe que una dirección de correo electrónico está bien formada.
+
+Escribe un programa en C++ que muestre la tabla de multiplicar del 7.
+
+Escribe una clase Java Alumno con un nombre, una lista de notas y un método media.
+
+Escribe un programa en Python que sortee el orden de intervención de una lista de alumnos.
+
+Escribe una consulta SQL que liste los alumnos ausentes más de tres veces este trimestre.
+
+Escribe el ordenamiento por inserción en Python, comentado línea por línea.

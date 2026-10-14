@@ -1,0 +1,29 @@
+Write a Python function that computes the average of a list of marks.
+
+Write a Python program that simulates 1000 dice rolls and counts each face.
+
+Write an HTML page with a sign-up form for a school trip: name, class, parental consent.
+
+Write the CSS for an orange button with rounded corners that darkens on hover.
+
+Write an SQL query that gives each pupil's average from a table marks(pupil, subject, mark).
+
+Write a JavaScript script that shows a countdown to the holidays.
+
+Write a Python function that tells whether a number is prime, with tests.
+
+Write a Bash script that renames the photos in a folder with their date.
+
+Write a Python program that plots y = x² with matplotlib.
+
+Write a JavaScript function that checks that an email address is well formed.
+
+Write a C++ program that prints the 7 times table.
+
+Write a Java class Pupil with a name, a list of marks and an average method.
+
+Write a Python program that draws the speaking order of a list of pupils at random.
+
+Write an SQL query that lists the pupils absent more than three times this term.
+
+Write insertion sort in Python, commented line by line.

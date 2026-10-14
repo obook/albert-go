@@ -1,0 +1,29 @@
+Schreibe eine Python-Funktion, die den Durchschnitt einer Notenliste berechnet.
+
+Schreibe ein Python-Programm, das 1000 Würfelwürfe simuliert und jede Augenzahl zählt.
+
+Schreibe eine HTML-Seite mit einem Anmeldeformular für einen Schulausflug: Name, Klasse, Einverständnis der Eltern.
+
+Schreibe das CSS für einen orangefarbenen Button mit abgerundeten Ecken, der beim Überfahren dunkler wird.
+
+Schreibe eine SQL-Abfrage, die den Durchschnitt jedes Schülers aus einer Tabelle noten(schueler, fach, note) liefert.
+
+Schreibe ein JavaScript-Skript, das einen Countdown bis zu den Ferien anzeigt.
+
+Schreibe eine Python-Funktion, die prüft, ob eine Zahl eine Primzahl ist, mit Tests.
+
+Schreibe ein Bash-Skript, das die Fotos eines Ordners nach ihrem Datum umbenennt.
+
+Schreibe ein Python-Programm, das die Kurve von y = x² mit matplotlib zeichnet.
+
+Schreibe eine JavaScript-Funktion, die prüft, ob eine E-Mail-Adresse richtig aufgebaut ist.
+
+Schreibe ein C++-Programm, das das Einmaleins der 7 ausgibt.
+
+Schreibe eine Java-Klasse Schueler mit einem Namen, einer Notenliste und einer Methode durchschnitt.
+
+Schreibe ein Python-Programm, das die Reihenfolge der Vorträge einer Schülerliste auslost.
+
+Schreibe eine SQL-Abfrage, die die Schüler auflistet, die in diesem Halbjahr mehr als dreimal gefehlt haben.
+
+Schreibe Insertionsort in Python, Zeile für Zeile kommentiert.

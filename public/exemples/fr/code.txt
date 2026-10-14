@@ -1,0 +1,29 @@
+Écris une fonction Python qui calcule la moyenne d'une liste de notes.
+
+Écris un programme Python qui simule 1 000 lancers de dé et compte chaque face.
+
+Écris une page HTML avec un formulaire d'inscription à une sortie scolaire : nom, classe, autorisation parentale.
+
+Écris la feuille de style CSS d'un bouton orange aux coins arrondis qui fonce au survol.
+
+Écris une requête SQL qui donne la moyenne de chaque élève à partir d'une table notes(eleve, matiere, note).
+
+Écris un script JavaScript qui affiche un compte à rebours jusqu'aux vacances.
+
+Écris une fonction Python qui dit si un nombre est premier, avec des tests.
+
+Écris un script Bash qui renomme les photos d'un dossier avec leur date.
+
+Écris un programme Python qui trace la courbe de y = x² avec matplotlib.
+
+Écris une fonction JavaScript qui vérifie qu'une adresse électronique est bien formée.
+
+Écris un programme en C++ qui affiche la table de multiplication de 7.
+
+Écris une classe Java Eleve avec un nom, une liste de notes et une méthode moyenne.
+
+Écris un programme Python qui tire au sort l'ordre de passage d'une liste d'élèves.
+
+Écris une requête SQL qui liste les élèves absents plus de trois fois ce trimestre.
+
+Écris le tri par insertion en Python, commenté ligne par ligne.
