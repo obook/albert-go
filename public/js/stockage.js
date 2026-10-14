@@ -23,6 +23,15 @@
  */
 const $ = (id) => document.getElementById(id);
 
+/* Dernière action : toucher ou clic, ou clavier. Sur iPad, WebKit montrait le contour de focus après un toucher,
+   sur le premier lien d'une boîte qui s'ouvre (DINUM dans À propos) : base.css le retire hors clavier. */
+document.addEventListener('pointerdown', () => {
+    document.documentElement.dataset.saisie = 'pointeur';
+}, true);
+document.addEventListener('keydown', () => {
+    document.documentElement.dataset.saisie = 'clavier';
+}, true);
+
 /**
  * Ouvre un volet en colonne sans lui laisser le focus, que show() lui donne.
  *
