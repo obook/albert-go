@@ -373,6 +373,7 @@ I18n.TEXTES.en = {
     'toast.reponse-copiee': 'Answer copied.',
     'toast.code-copie': 'Code copied.',
     'toast.copie-refusee': 'The browser refused the copy.',
+    'toast.impression-impossible': 'This browser does not open printing. Try its Share menu, then Print, or open the page in Safari.',
     'toast.telechargement-en-cours': 'Downloading...',
     'toast.telecharge': 'File downloaded: {nom}',
     'toast.telechargement-impossible': 'Download failed.',
