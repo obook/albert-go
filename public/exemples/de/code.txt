@@ -1,29 +1,29 @@
-Schreibe eine Python-Funktion, die den Durchschnitt einer Notenliste berechnet.
+Schreibe Galgenmännchen in Python, mit einer Zeichnung, die bei jedem Fehler wächst.
 
-Schreibe ein Python-Programm, das 1000 Würfelwürfe simuliert und jede Augenzahl zählt.
+Schreibe ein Python-Programm, das π mit der Monte-Carlo-Methode und einer Million Punkten schätzt.
 
-Schreibe eine HTML-Seite mit einem Anmeldeformular für einen Schulausflug: Name, Klasse, Einverständnis der Eltern.
+Schreibe Conways Spiel des Lebens in JavaScript, in einer HTML-Seite mit einem Canvas.
 
-Schreibe das CSS für einen orangefarbenen Button mit abgerundeten Ecken, der beim Überfahren dunkler wird.
+Schreibe die Caesar-Verschlüsselung in Python, mit einer Funktion zum Verschlüsseln und einer zum Entschlüsseln.
 
-Schreibe eine SQL-Abfrage, die den Durchschnitt jedes Schülers aus einer Tabelle noten(schueler, fach, note) liefert.
+Schreibe ein Quiz mit fünf Fragen in HTML und JavaScript, mit der Punktzahl am Ende.
 
-Schreibe ein JavaScript-Skript, das einen Countdown bis zu den Ferien anzeigt.
+Schreibe ein Python-Programm, das ein Sudoku mit Backtracking löst.
 
-Schreibe eine Python-Funktion, die prüft, ob eine Zahl eine Primzahl ist, mit Tests.
+Schreibe eine animierte Analoguhr in HTML, CSS und JavaScript.
 
-Schreibe ein Bash-Skript, das die Fotos eines Ordners nach ihrem Datum umbenennt.
+Schreibe ein Python-Programm mit turtle, das die Koch-Schneeflocke zeichnet.
 
-Schreibe ein Python-Programm, das die Kurve von y = x² mit matplotlib zeichnet.
+Schreibe eine SQL-Abfrage, die die Schüler nach absteigendem Durchschnitt aus einer Tabelle noten(schueler, fach, note) ordnet.
 
-Schreibe eine JavaScript-Funktion, die prüft, ob eine E-Mail-Adresse richtig aufgebaut ist.
+Schreibe ein C++-Programm, das eine Million Würfe mit zwei Würfeln simuliert und die Häufigkeit jeder Summe ausgibt.
 
-Schreibe ein C++-Programm, das das Einmaleins der 7 ausgibt.
+Schreibe das Sieb des Eratosthenes in Python, um die Primzahlen bis 1000 zu finden.
 
-Schreibe eine Java-Klasse Schueler mit einem Namen, einer Notenliste und einer Methode durchschnitt.
+Schreibe ein Python-Programm, das den Fall eines Balls mit Luftwiderstand simuliert und seine Geschwindigkeit mit matplotlib darstellt.
 
-Schreibe ein Python-Programm, das die Reihenfolge der Vorträge einer Schülerliste auslost.
+Schreibe eine Java-Klasse Bankkonto mit Einzahlung, Auszahlung und einem Verlauf der Buchungen.
 
-Schreibe eine SQL-Abfrage, die die Schüler auflistet, die in diesem Halbjahr mehr als dreimal gefehlt haben.
+Schreibe ein Bash-Skript, das einen Ordner in ein datiertes Archiv sichert und nur die letzten sieben behält.
 
-Schreibe Insertionsort in Python, Zeile für Zeile kommentiert.
+Schreibe Insertionsort in Python, Zeile für Zeile kommentiert, mit einem Beispiel Schritt für Schritt.

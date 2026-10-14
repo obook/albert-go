@@ -145,7 +145,7 @@ I18n.TEXTES.fr = {
     'bienvenue.exemple-graphique': 'Trace un graphique en barres des entrées du cinéma : lundi 85, mardi 120, mercredi 240, jeudi 110, vendredi 150, samedi 310.',
     'bienvenue.exemple-figure': 'Dessine un triangle rectangle de côtés 3, 4 et 5 cm.',
     'bienvenue.exemple-formule': 'Donne la formule de l\'aire d\'un disque et un exemple avec r = 3 cm.',
-    'bienvenue.exemple-code': 'Écris une fonction Python qui calcule la moyenne d\'une liste de notes.',
+    'bienvenue.exemple-code': 'Écris le jeu du pendu en Python, avec le dessin du pendu qui se complète à chaque erreur.',
     'bienvenue.exemple-tirage': 'Tire au sort l\'ordre de passage de ces services : accueil, comptabilité, ressources humaines, informatique, logistique.',
     'bienvenue.exemple-recherche': 'Qui a inventé le braille et quand ?',
     'cle.titre': 'Bienvenue sur Albert Go',

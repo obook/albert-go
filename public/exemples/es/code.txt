@@ -1,29 +1,29 @@
-Escribe una función en Python que calcule la media de una lista de notas.
+Escribe el juego del ahorcado en Python, con el dibujo del ahorcado que se completa con cada error.
 
-Escribe un programa en Python que simule 1000 lanzamientos de un dado y cuente cada cara.
+Escribe un programa en Python que estime π por el método de Montecarlo con un millón de puntos.
 
-Escribe una página HTML con un formulario de inscripción a una excursión escolar: nombre, clase, autorización de los padres.
+Escribe el juego de la vida de Conway en JavaScript, en una página HTML con un canvas.
 
-Escribe el CSS de un botón naranja con esquinas redondeadas que se oscurezca al pasar el ratón.
+Escribe el cifrado César en Python, con una función para cifrar y otra para descifrar.
 
-Escribe una consulta SQL que dé la media de cada alumno a partir de una tabla notas(alumno, asignatura, nota).
+Escribe un cuestionario de cinco preguntas en HTML y JavaScript, con la puntuación al final.
 
-Escribe un script en JavaScript que muestre una cuenta atrás hasta las vacaciones.
+Escribe un programa en Python que resuelva un sudoku por vuelta atrás.
 
-Escribe una función en Python que diga si un número es primo, con pruebas.
+Escribe un reloj analógico animado en HTML, CSS y JavaScript.
 
-Escribe un script Bash que renombre las fotos de una carpeta con su fecha.
+Escribe un programa en Python con turtle que dibuje el copo de nieve de Koch.
 
-Escribe un programa en Python que dibuje la curva de y = x² con matplotlib.
+Escribe una consulta SQL que clasifique a los alumnos por media descendente a partir de una tabla notas(alumno, asignatura, nota).
 
-Escribe una función en JavaScript que compruebe que una dirección de correo electrónico está bien formada.
+Escribe un programa en C++ que simule un millón de lanzamientos de dos dados y muestre la frecuencia de cada suma.
 
-Escribe un programa en C++ que muestre la tabla de multiplicar del 7.
+Escribe la criba de Eratóstenes en Python para encontrar los números primos hasta 1000.
 
-Escribe una clase Java Alumno con un nombre, una lista de notas y un método media.
+Escribe un programa en Python que simule la caída de una pelota con rozamiento y dibuje su velocidad con matplotlib.
 
-Escribe un programa en Python que sortee el orden de intervención de una lista de alumnos.
+Escribe una clase Java CuentaBancaria con ingreso, retirada e historial de operaciones.
 
-Escribe una consulta SQL que liste los alumnos ausentes más de tres veces este trimestre.
+Escribe un script Bash que guarde una carpeta en un archivo comprimido con fecha y conserve solo los siete últimos.
 
-Escribe el ordenamiento por inserción en Python, comentado línea por línea.
+Escribe el ordenamiento por inserción en Python, comentado línea por línea, con un ejemplo paso a paso.

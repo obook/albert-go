@@ -1,29 +1,29 @@
-Write a Python function that computes the average of a list of marks.
+Write hangman in Python, with the hangman drawing completed at each wrong guess.
 
-Write a Python program that simulates 1000 dice rolls and counts each face.
+Write a Python program that estimates π with the Monte Carlo method using one million points.
 
-Write an HTML page with a sign-up form for a school trip: name, class, parental consent.
+Write Conway's Game of Life in JavaScript, in an HTML page with a canvas.
 
-Write the CSS for an orange button with rounded corners that darkens on hover.
+Write the Caesar cipher in Python, with one function to encrypt and one to decrypt.
 
-Write an SQL query that gives each pupil's average from a table marks(pupil, subject, mark).
+Write a five-question quiz in HTML and JavaScript, with the score shown at the end.
 
-Write a JavaScript script that shows a countdown to the holidays.
+Write a Python program that solves a Sudoku grid by backtracking.
 
-Write a Python function that tells whether a number is prime, with tests.
+Write an animated analogue clock in HTML, CSS and JavaScript.
 
-Write a Bash script that renames the photos in a folder with their date.
+Write a Python program with turtle that draws the Koch snowflake.
 
-Write a Python program that plots y = x² with matplotlib.
+Write an SQL query that ranks pupils by descending average from a table marks(pupil, subject, mark).
 
-Write a JavaScript function that checks that an email address is well formed.
+Write a C++ program that simulates one million rolls of two dice and prints the frequency of each sum.
 
-Write a C++ program that prints the 7 times table.
+Write the sieve of Eratosthenes in Python to find the prime numbers up to 1000.
 
-Write a Java class Pupil with a name, a list of marks and an average method.
+Write a Python program that simulates a ball falling with air resistance and plots its speed with matplotlib.
 
-Write a Python program that draws the speaking order of a list of pupils at random.
+Write a Java class BankAccount with deposit, withdrawal and a history of operations.
 
-Write an SQL query that lists the pupils absent more than three times this term.
+Write a Bash script that backs up a folder into a dated archive and keeps only the last seven.
 
-Write insertion sort in Python, commented line by line.
+Write insertion sort in Python, commented line by line, with a step-by-step example.

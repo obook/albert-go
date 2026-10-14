@@ -145,7 +145,7 @@ I18n.TEXTES.es = {
     'bienvenue.exemple-graphique': 'Traza un gráfico de barras de las entradas del cine: lunes 85, martes 120, miércoles 240, jueves 110, viernes 150, sábado 310.',
     'bienvenue.exemple-figure': 'Dibuja un triángulo rectángulo de lados 3, 4 y 5 cm.',
     'bienvenue.exemple-formule': 'Da la fórmula del área de un círculo y un ejemplo con r = 3 cm.',
-    'bienvenue.exemple-code': 'Escribe una función en Python que calcule la media de una lista de notas.',
+    'bienvenue.exemple-code': 'Escribe el juego del ahorcado en Python, con el dibujo del ahorcado que se completa con cada error.',
     'bienvenue.exemple-tirage': 'Sortea el orden de intervención de estos servicios: recepción, contabilidad, recursos humanos, informática, logística.',
     'bienvenue.exemple-recherche': '¿Quién inventó el braille y cuándo?',
     'cle.titre': 'Bienvenido a Albert Go',

@@ -145,7 +145,7 @@ I18n.TEXTES.en = {
     'bienvenue.exemple-graphique': 'Draw a bar chart of cinema admissions: Monday 85, Tuesday 120, Wednesday 240, Thursday 110, Friday 150, Saturday 310.',
     'bienvenue.exemple-figure': 'Draw a right-angled triangle with sides 3, 4 and 5 cm.',
     'bienvenue.exemple-formule': 'Give the formula for the area of a circle and an example with r = 3 cm.',
-    'bienvenue.exemple-code': 'Write a Python function that computes the average of a list of marks.',
+    'bienvenue.exemple-code': 'Write hangman in Python, with the hangman drawing completed at each wrong guess.',
     'bienvenue.exemple-tirage': 'Draw the speaking order of these departments: reception, accounting, human resources, IT, logistics.',
     'bienvenue.exemple-recherche': 'Who invented braille, and when?',
     'cle.titre': 'Welcome to Albert Go',

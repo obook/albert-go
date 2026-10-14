@@ -145,7 +145,7 @@ I18n.TEXTES.de = {
     'bienvenue.exemple-graphique': 'Zeichne ein Balkendiagramm der Kinobesucher: Montag 85, Dienstag 120, Mittwoch 240, Donnerstag 110, Freitag 150, Samstag 310.',
     'bienvenue.exemple-figure': 'Zeichne ein rechtwinkliges Dreieck mit den Seiten 3, 4 und 5 cm.',
     'bienvenue.exemple-formule': 'Gib die Formel für den Flächeninhalt eines Kreises und ein Beispiel mit r = 3 cm an.',
-    'bienvenue.exemple-code': 'Schreibe eine Python-Funktion, die den Durchschnitt einer Notenliste berechnet.',
+    'bienvenue.exemple-code': 'Schreibe Galgenmännchen in Python, mit einer Zeichnung, die bei jedem Fehler wächst.',
     'bienvenue.exemple-tirage': 'Lose die Reihenfolge dieser Abteilungen aus: Empfang, Buchhaltung, Personal, IT, Logistik.',
     'bienvenue.exemple-recherche': 'Wer hat die Brailleschrift erfunden, und wann?',
     'cle.titre': 'Willkommen bei Albert Go',
