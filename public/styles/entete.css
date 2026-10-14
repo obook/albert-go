@@ -441,7 +441,8 @@ input.recherche-historique {
     .volet-titre, .resume { grid-column: 2; }
     .fermer-menu, .burger .icone-burger { display: none; }
     .burger .icone-volet { display: block; }
-    .titre-entete { display: block; }
+    /* Masqué sans clé (afficher) : l'accueil n'a pas de conversation. */
+    .titre-entete:not([hidden]) { display: block; }
     /* La marque est dans le volet, le h1 reste pour les lecteurs d'écran. */
     .titre {
         position: absolute;
