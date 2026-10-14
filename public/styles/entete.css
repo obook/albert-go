@@ -341,6 +341,7 @@ input.recherche-historique {
 .titre-conversation {
     flex: 1;
     min-width: 0;
+    min-height: 2.5rem;
     padding: 0.375rem 0.75rem;
     border: 0;
     border-radius: 0.25rem;
@@ -352,24 +353,27 @@ input.recherche-historique {
     overflow: hidden;
     text-overflow: ellipsis;
 }
-.titre-conversation:hover { background: var(--accent-clair); }
 /* "Nouveau projet" : aligné sur les lignes de la liste, qui sont en retrait. */
 .nouveau-projet { display: block; width: calc(100% - 2.5rem); margin-left: 2.5rem; }
 
-/* Cible d'au moins 24 px de côté (RGAA 12.11, taille des cibles tactiles). */
+/* Même taille que les boutons à icône (base.css), au-delà des 24 px du RGAA 12.11. */
 .supprimer-conversation {
     flex: none;
     display: grid;
     place-items: center;
-    width: 2rem;
-    height: 2rem;
+    width: 2.5rem;
+    height: 2.5rem;
     padding: 0;
     border: 0;
     border-radius: 50%;
     background: transparent;
     color: var(--texte-doux);
 }
-.supprimer-conversation:hover { background: var(--accent-clair); color: var(--rouge); }
+/* Survol gris et à la souris seulement : au doigt, la ligne touchée restait orange, comme le module actif. */
+@media (hover: hover) {
+    .titre-conversation:hover { background: var(--bulle); }
+    .supprimer-conversation:hover { background: var(--bulle); color: var(--rouge); }
+}
 .supprimer-conversation svg {
     width: 1.25rem;
     height: 1.25rem;
