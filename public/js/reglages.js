@@ -226,8 +226,9 @@ $('cx-recherche').addEventListener('change', () => {
     ecrire('cx', reglages.cx);
 });
 
-/** Globe activé : les questions ont Internet jusqu'à ce qu'on le désactive. */
-let globeActif = false;
+/** Globe activé : les questions ont Internet jusqu'à ce qu'on le désactive, même après un rechargement
+    (sur iPad, le navigateur recharge souvent un onglet resté en arrière-plan). */
+let globeActif = lire('globe', 'non') === 'oui';
 
 /* Réglages autorise la recherche, le globe l'active.
    Sans autorisation, ni globe ni suggestion "Faire une recherche" ; choix du
@@ -236,6 +237,7 @@ function afficherRecherche() {
     if (!reglages.recherche) {
         globeActif = false;
     }
+    ecrire('globe', globeActif ? 'oui' : 'non');
     /* Premier appel avant modules.js, qui déclare outilActuel : la barre suit au démarrage. */
     const discussion = typeof outilActuel === 'undefined' || !!Albert.OUTILS[outilActuel].fil;
     $('recherche-web').hidden = !reglages.recherche || !discussion;
