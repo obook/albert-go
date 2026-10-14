@@ -23,6 +23,7 @@ const ICONES = {
     /* La réponse en fichier : une page au coin plié, avec l'initiale du format (W pour Word, O pour OpenDocument). */
     docx: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 2h9l5 5v15H5Z"/><path d="M14 2v5h5"/><text x="12" y="19" text-anchor="middle" font-size="10" font-weight="700" fill="currentColor" stroke="none">W</text></svg>',
     odt: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 2h9l5 5v15H5Z"/><path d="M14 2v5h5"/><text x="12" y="19" text-anchor="middle" font-size="10" font-weight="700" fill="currentColor" stroke="none">O</text></svg>',
+    pdf: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 2h9l5 5v15H5Z"/><path d="M14 2v5h5"/><text x="12" y="19" text-anchor="middle" font-size="7" font-weight="700" fill="currentColor" stroke="none">PDF</text></svg>',
     /* Même icône que le bouton de la bibliothèque, dans l'en-tête. */
     bibliotheque: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4v16M10 4v16M15 5l4 15M3 20h18"/></svg>',
     image: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.5"/><path d="M4 18l5-5 4 4 3-3 4 4"/></svg>',

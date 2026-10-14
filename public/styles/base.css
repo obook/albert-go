@@ -67,7 +67,8 @@
     html { font-size: 112.5%; }
 }
 
-@media (prefers-color-scheme: dark) {
+/* Écran seulement : une impression (PDF) sort toujours en thème clair. */
+@media screen and (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
         color-scheme: dark;
         --fond: #222631;
@@ -101,37 +102,39 @@
         --code-type: #ffa657;
     }
 }
-:root[data-theme="dark"] {
-    color-scheme: dark;
-    --fond: #222631;
-    --surface: #2b303d;
-    --texte: #eeeeee;
-    --texte-doux: #c8c8c8;
-    --bord: #3d4356;
-    --bord-champ: #929292;
-    --accent: #ff8547;
-    --accent-survol: #ffa070;
-    --sur-accent: #161616;
-    --accent-clair: #45332f;
-    --pastille-bord: transparent;
-    --bulle: #363b4c;
-    --sur-bulle: #eeeeee;
-    --rouge: #ff6b7a;
-    --erreur: #ff7a6e;
-    --succes: #3bea7e;
-    --jaune-fond: #3a3320;
-    --jaune-bord: #e0b83c;
-    --ombre: 0 1px 3px rgb(0 0 0 / 0.3), 0 4px 14px rgb(0 0 0 / 0.25);
-    --fond-reglages: var(--fond);
-    --bord-carte: var(--bord);
-    --fond-conversation: var(--fond);
-    --fond-volet: var(--surface);
-    --code-mot: #ff7b72;
-    --code-texte: #a5d6ff;
-    --code-commentaire: #9198a1;
-    --code-nombre: #79c0ff;
-    --code-titre: #d2a8ff;
-    --code-type: #ffa657;
+@media screen {
+    :root[data-theme="dark"] {
+        color-scheme: dark;
+        --fond: #222631;
+        --surface: #2b303d;
+        --texte: #eeeeee;
+        --texte-doux: #c8c8c8;
+        --bord: #3d4356;
+        --bord-champ: #929292;
+        --accent: #ff8547;
+        --accent-survol: #ffa070;
+        --sur-accent: #161616;
+        --accent-clair: #45332f;
+        --pastille-bord: transparent;
+        --bulle: #363b4c;
+        --sur-bulle: #eeeeee;
+        --rouge: #ff6b7a;
+        --erreur: #ff7a6e;
+        --succes: #3bea7e;
+        --jaune-fond: #3a3320;
+        --jaune-bord: #e0b83c;
+        --ombre: 0 1px 3px rgb(0 0 0 / 0.3), 0 4px 14px rgb(0 0 0 / 0.25);
+        --fond-reglages: var(--fond);
+        --bord-carte: var(--bord);
+        --fond-conversation: var(--fond);
+        --fond-volet: var(--surface);
+        --code-mot: #ff7b72;
+        --code-texte: #a5d6ff;
+        --code-commentaire: #9198a1;
+        --code-nombre: #79c0ff;
+        --code-titre: #d2a8ff;
+        --code-type: #ffa657;
+    }
 }
 
 /* Work Sans (vendor/work-sans) : police du texte, variable de 100 à 900.
@@ -312,4 +315,15 @@ button {
 
 @media (prefers-reduced-motion: reduce) {
     * { transition: none !important; }
+}
+
+/* Impression d'une réponse en PDF (reponse.js, imprimer) : la copie seule, sans boutons, sur toute la largeur. */
+#impression { display: none; }
+@media print {
+    html, body { height: auto; }
+    body { display: block; background: #ffffff; }
+    body > :not(#impression) { display: none !important; }
+    #impression { display: block; }
+    #impression button { display: none; }
+    #impression .diagramme > svg { min-width: 0 !important; max-width: 100%; }
 }

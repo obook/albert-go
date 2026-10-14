@@ -288,6 +288,7 @@ I18n.TEXTES.de = {
     'reponse.telecharger-image': 'Originalbild herunterladen',
     'reponse.telecharger-docx': 'Als .docx herunterladen',
     'reponse.telecharger-odt': 'Als .odt herunterladen',
+    'reponse.imprimer-pdf': 'Drucken oder als PDF speichern',
     'reponse.erreur-diagramme': 'Diagramm nicht angezeigt, Mermaid-Fehler: ',
     'reponse.erreur-courbe': 'Kurve nicht angezeigt: eine Zeile y = ... pro Funktion (x^2, sqrt(x), sin(x) im Bogenmaß), dann x = Anfang .. Ende.',
     'reponse.image-absente': 'Bild auf Wikimedia Commons nicht gefunden.',
