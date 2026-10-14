@@ -286,12 +286,15 @@ button {
     width: 2.5rem;
     height: 2.5rem;
     padding: 0;
-    border: 2px solid var(--bord);
+    border: 0;
     border-radius: 50%;
     background: transparent;
     color: var(--texte);
 }
-.bouton-icone:hover { border-color: var(--accent); color: var(--accent); }
+/* Sans cercle, comme le trombone et le globe : un fond au survol, à la souris seulement (au doigt, :hover reste collé). */
+@media (hover: hover) {
+    .bouton-icone:hover { background: var(--bulle); }
+}
 .bouton-icone svg, #reglages .carte > summary svg {
     width: 1.25rem;
     height: 1.25rem;
