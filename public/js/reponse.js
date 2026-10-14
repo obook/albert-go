@@ -266,14 +266,27 @@ function boutonsExport(lire, sujet) {
  * @param {string} sujet - Sujet, pour nommer le fichier PDF proposé.
  */
 function imprimer(contenu, sujet) {
+    const copie = contenu.cloneNode(true);
+    /* Identifiants propres à la copie : les flèches d'un schéma visent un identifiant, et
+       la copie, qui reste dans la page, ne doit pas prendre celles de l'original. */
+    let html = copie.innerHTML;
+    for (const { id } of copie.querySelectorAll('[id]')) {
+        html = html.split(id).join('impression-' + id);
+    }
+    copie.innerHTML = html;
+    /* Gardée jusqu'à la prochaine impression : sur iPad, afterprint arrive avant que le PDF
+       soit dessiné, et vider la copie donnait une page blanche. */
+    $('impression').replaceChildren(copie);
+    /* Le navigateur nomme le PDF d'après le titre de la page ; il revient au geste suivant. */
     const titre = document.title;
-    $('impression').replaceChildren(contenu.cloneNode(true));
-    /* Le navigateur nomme le PDF d'après le titre de la page. */
     document.title = Rendu.nomFigure(new Date(), 'pdf', sujet).replace(/\.pdf$/, '');
-    window.addEventListener('afterprint', () => {
+    const remettre = () => {
         document.title = titre;
-        $('impression').replaceChildren();
-    }, { once: true });
+        document.removeEventListener('pointerdown', remettre, true);
+        document.removeEventListener('keydown', remettre, true);
+    };
+    document.addEventListener('pointerdown', remettre, true);
+    document.addEventListener('keydown', remettre, true);
     window.print();
 }
 
