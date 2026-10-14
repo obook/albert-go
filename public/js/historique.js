@@ -106,9 +106,12 @@ function ecrireConversations(liste) {
  * Si le stockage est plein, un toast dit ce qui a été supprimé ou perdu.
  */
 function sauverConversation() {
-    const projet = Albert.OUTILS[outilActuel].documents;
+    const outil = Albert.OUTILS[outilActuel];
+    const projet = outil.documents;
+    /* Discussion : des sources cochées sans question ne font pas une conversation. */
+    const sources = projet || (outil.sources && conversation.length) ? documentsProjet : [];
     const entree = Albert.entreeConversation(conversationId || Date.now().toString(36), outilActuel, conversation,
-        projet ? documentsProjet : [], projet ? nomProjet : '', projet ? conversations.find(c => c.id === conversationId) : null);
+        sources, projet ? nomProjet : '', projet ? conversations.find(c => c.id === conversationId) : null);
     if (!entree) {
         return;
     }

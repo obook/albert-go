@@ -1,8 +1,8 @@
 /*
  * projet.js
- * Module Imprimerie (clé interne "projet") : une bibliothèque de fichiers
- * déposés une fois, communs à tous les documents ; chaque document coche
- * ceux qu'il utilise et se construit peu à peu.
+ * Bibliothèque de fichiers déposés une fois, commune à Discussion et au
+ * module Imprimerie (clé interne "projet") : chaque conversation ou document
+ * coche ceux qu'il utilise ; un document d'Imprimerie se construit peu à peu.
  *
  * Garde la bibliothèque, les sources cochées et le nom du document affiché,
  * et tient leur volet à jour. La lecture des fichiers est dans
@@ -27,7 +27,7 @@ if (!Array.isArray(bibliotheque)) {
     bibliotheque = [];
 }
 
-/** Noms des fichiers de la bibliothèque cochés pour le document affiché. */
+/** Noms des fichiers de la bibliothèque cochés pour la conversation ou le document affiché. */
 let sourcesProjet = [];
 
 /** Fichiers cochés, envoyés avec chaque question : tenus à jour par choisirSources. */
@@ -57,21 +57,21 @@ function montrerBibliotheque() {
 /**
  * Place le volet de la bibliothèque selon le module et l'écran.
  *
- * Dans Imprimerie, sur très grand écran : colonne ouverte, sauf si elle a été repliée.
+ * Dans Discussion et Imprimerie, sur très grand écran : colonne ouverte, sauf si elle a été repliée.
  * Ailleurs, ou sur un écran plus étroit : volet fermé, le bouton de l'en-tête l'ouvre en tiroir.
  */
 function placerBibliotheque() {
     /* Premier appel avant modules.js, qui déclare outilActuel. */
-    const projet = !!reglages.cle && typeof outilActuel !== 'undefined' && !!Albert.OUTILS[outilActuel].documents;
+    const projet = !!reglages.cle && typeof outilActuel !== 'undefined' && !!Albert.OUTILS[outilActuel].sources;
     $('ouvrir-bibliotheque').hidden = !projet;
     const volet = $('bibliotheque');
     const colonne = projet && COLONNE_SOURCES.matches && lire('bibliotheque-volet', null) !== 'replie';
     const enColonne = volet.open && !volet.matches(':modal');
-    /* Déjà en place : colonne voulue et affichée, ou tiroir laissé ouvert dans Imprimerie. */
+    /* Déjà en place : colonne voulue et affichée, ou tiroir laissé ouvert dans un module à sources. */
     if (colonne === enColonne && (projet || !volet.open)) {
         return;
     }
-    /* La colonne glisse quand on entre dans Imprimerie ou qu'on en sort (entete.css). */
+    /* La colonne glisse quand on entre dans un module à sources ou qu'on en sort (entete.css). */
     if (volet.open) {
         volet.close();
     }
@@ -220,7 +220,9 @@ function afficherVersions() {
     const versions = Albert.versionsProjet(conversation);
     /* La version affichée est la dernière de la conversation, reprise ou reçue. */
     const affichee = versions.at(-1);
-    $('versions').hidden = $('trait-versions').hidden = versions.length < 2;
+    /* Discussion : des réponses, pas des versions. Premier appel avant modules.js, qui déclare outilActuel. */
+    const imprimerie = typeof outilActuel !== 'undefined' && !!Albert.OUTILS[outilActuel].documents;
+    $('versions').hidden = $('trait-versions').hidden = versions.length < 2 || !imprimerie;
     $('liste-versions').replaceChildren(...versions.sort((a, b) => b.numero - a.numero).map((version) => {
         const ligne = document.createElement('li');
         /* La version affichée ne se clique pas. */
@@ -411,8 +413,16 @@ function demanderSuppressionSource(nom) {
     $('confirmer-suppression').showModal();
 }
 
+/* Discussion : le volet a son propre sélecteur, le trombone joint au message. */
 $('deposer-documents').addEventListener('click', () => {
-    $('fichier').click();
+    $('fichier-sources').click();
+});
+
+$('fichier-sources').addEventListener('change', () => {
+    const fichiers = [...$('fichier-sources').files];
+    /* Permet de choisir à nouveau le même fichier. */
+    $('fichier-sources').value = '';
+    joindreFichiers(fichiers, true);
 });
 
 /* Glisser-déposer sur le volet, comme sur la saisie. */
@@ -422,7 +432,7 @@ $('bibliotheque').addEventListener('dragover', (e) => {
 
 $('bibliotheque').addEventListener('drop', (e) => {
     e.preventDefault();
-    joindreFichiers([...e.dataTransfer.files]);
+    joindreFichiers([...e.dataTransfer.files], true);
 });
 
 /* Nom du projet : suivi à chaque frappe, enregistré quand le champ est quitté. */

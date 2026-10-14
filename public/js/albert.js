@@ -64,15 +64,16 @@ const Albert = {
     Le nom et l'invite sont dans langues/*.js ; la consigne est le fichier de
     public/prompts/<langue>/ (modules.js).
     */
-    /* fil : conversation envoyée, outils et recherche. documents : fichiers
-       épinglés, envoyés avec chaque question. complement : suite de la consigne. */
+    /* fil : conversation envoyée, outils et recherche. sources : fichiers de la
+       bibliothèque cochés, envoyés avec chaque question. documents : module
+       Imprimerie (un document en versions). complement : suite de la consigne. */
     OUTILS: {
-        discuter: { consigne: 'discuter.txt', fil: true },
+        discuter: { consigne: 'discuter.txt', fil: true, sources: true },
         reformuler: { consigne: 'reformuler.txt' },
         traduire: { consigne: 'traduire.txt' },
         corriger: { consigne: 'corriger.txt' },
         rediger: { consigne: 'rediger.txt', revue: 'revoir.txt' },
-        projet: { consigne: 'discuter.txt', complement: 'projet.txt', fil: true, documents: true }
+        projet: { consigne: 'discuter.txt', complement: 'projet.txt', fil: true, sources: true, documents: true }
     },
 
     /** Part du contexte laissée aux documents d'un projet : le reste sert à la conversation et à la réponse. */
@@ -531,7 +532,7 @@ const Albert = {
     },
 
     /**
-     * Texte des documents d'un projet, mis à la suite de la consigne.
+     * Texte des sources cochées, mis à la suite de la consigne.
      *
      * @param {{nom: string, texte: string}[]} documents - Documents du projet.
      * @returns {string} Un bloc par document, ou '' sans document.
