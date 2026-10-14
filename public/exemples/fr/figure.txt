@@ -24,6 +24,6 @@ Dessine un cercle, un point A sur le cercle et la tangente au cercle en A.
 
 Trace la parabole y = x² - 2x - 3 entre -2 et 4 et marque ses points d'intersection avec l'axe des abscisses.
 
-Dessine le drapeau de l'Union européenne : douze étoiles jaunes en cercle sur fond bleu.
+Dessine les anneaux olympiques : cinq anneaux bleu, jaune, noir, vert et rouge.
 
 Dessine un parallélogramme ABCD, ses diagonales et leur point d'intersection O.
