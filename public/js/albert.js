@@ -948,6 +948,29 @@ const Albert = {
     },
 
     /**
+     * Ligne de l'outil calcul lisible sous la réponse : un tableau de
+     * variations garde sa lecture, sans la consigne au modèle ni le LaTeX,
+     * déjà affiché sous la réponse.
+     *
+     * @param {string} ligne - Ligne rendue au modèle, gardée dans les appels d'outils.
+     * @returns {string} Texte de la note sous la calculatrice.
+     */
+    traceCalcul(ligne) {
+        const debut = ligne.indexOf('$$');
+        if (debut < 0) {
+            return ligne;
+        }
+        /* Format de calcul.tableau : la lecture, la consigne au modèle sur la dernière ligne, puis le tableau. */
+        let lecture = ligne.slice(0, debut).trimEnd().split('\n').slice(0, -1).join('\n').replace(/\\infty/g, '∞');
+        /* Du plus intérieur vers l'extérieur : \frac{\sqrt{3}}{3}. */
+        for (let avant = ''; avant !== lecture;) {
+            avant = lecture;
+            lecture = lecture.replace(/\\sqrt\{([^{}]*)\}/g, '√$1').replace(/\\frac\{([^{}]*)\}\{([^{}]*)\}/g, '$1/$2');
+        }
+        return lecture;
+    },
+
+    /**
      * Libellé d'une conversation enregistrée : l'outil devant le titre.
      *
      * Discuter n'est pas nommé : c'est l'outil par défaut.

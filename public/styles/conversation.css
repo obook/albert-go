@@ -127,6 +127,8 @@ main {
 }
 /* Trace sous une réponse : « Recherche web : ... ». */
 .recherches, .calculs { margin: 0.75rem 0 0; }
+/* Lecture d'un tableau de variations : une ligne pour x, f' et f (Albert.traceCalcul). */
+.calculs { white-space: pre-line; }
 
 /* Entrée dans le chat : fondu court, sauf si le système demande moins d'animations. */
 @media (prefers-reduced-motion: no-preference) {
