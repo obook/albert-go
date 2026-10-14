@@ -235,6 +235,8 @@ hidden et le focus (autofocus, bouton du volet) ne pourrait pas y entrer. */
 .volet-droit details hr { width: auto; margin: 0.5rem 0; }
 /* À droite de l'en-tête, même quand le titre est sorti de l'écran (grand écran). */
 #ouvrir-bibliotheque { flex: none; margin-left: auto; }
+/* Au moins une source cochée : orange, comme le globe actif (saisie.css). L'id l'emporte sur le survol de .bouton-icone. */
+#ouvrir-bibliotheque.sources-cochees { background: var(--accent); border-color: var(--accent); color: var(--sur-accent); }
 .volet-droit .deposer { justify-self: start; }
 #vider-bibliotheque { margin-top: 0.75rem; }
 /* minmax(0, 1fr) : sans lui, un titre de conversation long élargit la

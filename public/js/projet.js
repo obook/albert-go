@@ -128,6 +128,8 @@ const ICONE_RETIRER = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6
 function choisirSources(noms) {
     sourcesProjet = noms.filter(nom => bibliotheque.some(d => d.nom === nom));
     documentsProjet = Albert.sourcesCochees(bibliotheque, sourcesProjet);
+    /* Bouton de l'en-tête en orange tant qu'une source part avec les questions, comme le globe actif. */
+    $('ouvrir-bibliotheque').classList.toggle('sources-cochees', documentsProjet.length > 0);
 }
 
 /**
