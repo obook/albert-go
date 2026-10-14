@@ -56,6 +56,7 @@ async function validerCle() {
     /* Ferme aussi la boîte. */
     afficher();
     placerVolet();
+    $('bienvenue-cle').showModal();
 }
 
 $('form-cle').addEventListener('submit', (e) => {
