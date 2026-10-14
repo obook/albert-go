@@ -123,16 +123,20 @@ function sauverConversation() {
     }
     /* Volet ouvert en permanence sur grand écran : la liste suit. */
     afficherHistorique();
-    afficherTitre();
+    afficherCourante();
 }
 
 /**
- * Titre de l'en-tête sur grand écran : la conversation enregistrée, sinon le module.
+ * Suit la conversation ouverte : titre de l'en-tête sur grand écran (la
+ * conversation enregistrée, sinon le module) et invite de la saisie.
  * Imprimerie garde le module : le nom du document est déjà au-dessus du fil.
  */
-function afficherTitre() {
+function afficherCourante() {
     const entree = conversations.find(c => c.id === conversationId);
     $('titre-entete').textContent = entree && !Albert.estProjet(entree) ? Albert.libelleConversation(entree) : t('module.' + outilActuel);
+    /* Imprimerie, document commencé : on demande une modification. */
+    const commence = Albert.OUTILS[outilActuel].documents && conversation.some(m => m.role === 'assistant');
+    $('saisie').placeholder = t(commence ? 'invite.modifier' : 'invite.' + outilActuel);
 }
 
 /**
@@ -185,7 +189,7 @@ function rouvrirConversation(entree) {
     afficherDocuments();
     conversationId = entree.id;
     retenirCourante(conversationId);
-    afficherTitre();
+    afficherCourante();
     afficherReglages();
     if (outilActuel === 'rediger') {
         rouvrirRedaction(conversation);
@@ -237,7 +241,7 @@ function demanderSuppression(entree, libelle) {
         if (conversationId === entree.id) {
             conversationId = null;
             retenirCourante(null);
-            afficherTitre();
+            afficherCourante();
         }
         afficherHistorique();
         toast(t('toast.conversation-supprimee'));

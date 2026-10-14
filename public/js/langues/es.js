@@ -56,6 +56,7 @@ I18n.TEXTES.es = {
     'outil.projet': 'Imprenta',
     'module.projet': 'Imprenta',
     'invite.projet': 'Pedir la creación de un documento o un cambio',
+    'invite.modifier': 'Pedir un cambio',
     'bibliotheque.titre': 'Biblioteca',
     'bibliotheque.ouvrir': 'Abrir la biblioteca',
     'bibliotheque.ouvrir-une': 'Abrir la biblioteca (1 fuente marcada)',

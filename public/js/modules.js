@@ -151,10 +151,9 @@ function afficherOutil() {
         }
     }
     $('outil-actif').textContent = t('module.' + outilActuel);
-    afficherTitre();
+    afficherCourante();
     /* Seule Discussion a les outils, recherche comprise (outils-modele.js). */
     afficherRecherche();
-    $('saisie').placeholder = t('invite.' + outilActuel);
     $('langues').hidden = outilActuel !== 'traduire';
     /* Projet prend plusieurs fichiers d'un coup. */
     $('fichier').multiple = !!Albert.OUTILS[outilActuel].documents;

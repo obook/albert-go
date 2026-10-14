@@ -56,6 +56,7 @@ I18n.TEXTES.en = {
     'outil.projet': 'Print shop',
     'module.projet': 'Print shop',
     'invite.projet': 'Ask for a new document, or for a change',
+    'invite.modifier': 'Ask for a change',
     'bibliotheque.titre': 'Library',
     'bibliotheque.ouvrir': 'Open the library',
     'bibliotheque.ouvrir-une': 'Open the library (1 source ticked)',
