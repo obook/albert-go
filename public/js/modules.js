@@ -151,6 +151,7 @@ function afficherOutil() {
         }
     }
     $('outil-actif').textContent = t('module.' + outilActuel);
+    afficherTitre();
     /* Seule Discussion a les outils, recherche comprise (outils-modele.js). */
     afficherRecherche();
     $('saisie').placeholder = t('invite.' + outilActuel);

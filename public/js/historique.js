@@ -123,6 +123,16 @@ function sauverConversation() {
     }
     /* Volet ouvert en permanence sur grand écran : la liste suit. */
     afficherHistorique();
+    afficherTitre();
+}
+
+/**
+ * Titre de l'en-tête sur grand écran : la conversation enregistrée, sinon le module.
+ * Imprimerie garde le module : le nom du document est déjà au-dessus du fil.
+ */
+function afficherTitre() {
+    const entree = conversations.find(c => c.id === conversationId);
+    $('titre-entete').textContent = entree && !Albert.estProjet(entree) ? Albert.libelleConversation(entree) : t('module.' + outilActuel);
 }
 
 /**
@@ -175,6 +185,7 @@ function rouvrirConversation(entree) {
     afficherDocuments();
     conversationId = entree.id;
     retenirCourante(conversationId);
+    afficherTitre();
     afficherReglages();
     if (outilActuel === 'rediger') {
         rouvrirRedaction(conversation);
@@ -226,6 +237,7 @@ function demanderSuppression(entree, libelle) {
         if (conversationId === entree.id) {
             conversationId = null;
             retenirCourante(null);
+            afficherTitre();
         }
         afficherHistorique();
         toast(t('toast.conversation-supprimee'));
