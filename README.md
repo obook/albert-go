@@ -31,7 +31,7 @@ Trombone, glisser-déposer ou Ctrl+V : un fichier texte, un PDF, un .docx ou un 
 
 Dans Imprimerie, les fichiers déposés sont les sources du document (voir plus bas).
 
-Dans Discussion, le bouton de bibliothèque de l'en-tête ouvre la même bibliothèque qu'Imprimerie : les sources cochées partent en entier avec chaque question, et la réponse s'appuie sur elles. Le trombone, lui, joint un fichier à la seule question en cours.
+Dans Discussion, le bouton de bibliothèque de l'en-tête ouvre la même bibliothèque qu'Imprimerie : les sources cochées partent en entier avec chaque question, et la réponse s'appuie sur elles. Une icône sous la réponse les signale ; un clic donne leurs noms. Le trombone, lui, joint un fichier à la seule question en cours.
 
 ### Courrier
 

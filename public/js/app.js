@@ -188,13 +188,17 @@ function recevoirReponse(reponse, outil) {
     const langue = outil === 'traduire' ? langueCible : Albert.langueDuTexte(reponse.texte, I18n.langue);
     /* Imprimerie : le gras est retiré avant l'affichage, l'export et la demande suivante. */
     const texte = Albert.OUTILS[outil].documents ? Albert.sansGras(reponse.texte) : reponse.texte;
-    conversation.push({ role: 'assistant', content: texte, langue: langue, recherches: reponse.recherches, usage: reponse.usage });
+    /* Sources cochées : notées avec la réponse, pour son icône de bibliothèque. */
+    const recherches = Albert.OUTILS[outil].sources && documentsProjet.length
+        ? [...(reponse.recherches || []), { bibliotheque: documentsProjet.map(d => d.nom).join(', ') }]
+        : reponse.recherches;
+    conversation.push({ role: 'assistant', content: texte, langue: langue, recherches: recherches, usage: reponse.usage });
     if (Albert.OUTILS[outil].documents) {
         /* Imprimerie : la version prend son heure et son numéro ; au-delà du plafond, la plus ancienne sort. */
         conversation.at(-1).date = Date.now();
         conversation = Albert.limiterVersions(Albert.numeroterVersions(conversation));
     }
-    ajouter('assistant', texte, langue, true, reponse.recherches);
+    ajouter('assistant', texte, langue, true, recherches);
     sauverConversation();
     afficherReglages();
     /* Réponse arrêtée par la longueur : la fin manque, on le dit. */

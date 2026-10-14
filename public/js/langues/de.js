@@ -475,6 +475,8 @@ I18n.TEXTES.de = {
     'etat.images': 'Bildsuche "{mots}"...',
     'reponse.images': 'Bildsuchen anzeigen',
     'reponse.note-images': 'Gesuchte Bilder: {lignes}',
+    'reponse.bibliotheque': 'Quellen aus der Bibliothek anzeigen',
+    'reponse.note-bibliotheque': 'Mit der Frage gesendete Quellen aus der Bibliothek: {lignes}',
     'images.rappel': 'Für ein Foto oder Bild nutze das Werkzeug image_commons, nicht recherche_web, und gib den Link einer gefundenen Datei an. Beschreibe nie eine Datei ohne ihren Link; passt keine, sag es.',
     'images.absent': 'Du kannst keine Bilder suchen oder zeigen: Wird eines gewünscht, sag, dass man den Globus in der Eingabeleiste einschalten muss, nachdem man Internet unter Einstellungen > Werkzeuge erlaubt hat, falls er fehlt.',
     'services.rappel': 'Für eine Behörde, ein Unternehmen, eine Schule, Schulferien, eine Adresse, eine Gemeinde, eine öffentliche Ausschreibung, einen öffentlichen Datensatz, einen Parcoursup-Studiengang oder die Qualität des Leitungswassers verwende das passende Werkzeug statt recherche_web.',
