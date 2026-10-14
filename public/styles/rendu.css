@@ -68,7 +68,9 @@ laissait les colonnes rétrécir jusqu'à une lettre. Trop large, le tableau dé
     text-align: left;
 }
 .rendu th { background: var(--accent-clair); }
-.rendu .katex-display { overflow-x: auto; overflow-y: hidden; }
+/* Défilement en largeur seulement. Le haut d'une fraction dépasse la boîte de KaTeX de quelques pixels :
+   la marge intérieure lui fait place, prise sur la marge extérieure (1em chez KaTeX) pour garder l'espacement. */
+.rendu .katex-display { overflow-x: auto; overflow-y: hidden; margin: 0.6em 0; padding: 0.4em 0; }
 /* Formule trop longue, redessinée en ligne (rendu.js) : centrée, elle passe à la ligne. */
 .rendu .formule-longue { display: block; margin: 1em 0; text-align: center; }
 /* Fond blanc même en thème sombre : Mermaid dessine en thème clair. */
