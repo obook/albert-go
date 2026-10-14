@@ -468,6 +468,16 @@ $('form-question').addEventListener('drop', (e) => {
     joindreFichiers([...e.dataTransfer.files]);
 });
 
+/* Fichier lâché hors de la saisie et du volet : ignoré. Sinon Firefox tente d'ouvrir file:/// et refuse, avec une erreur de sécurité.
+   Un texte glissé garde son comportement : il se dépose dans un champ. */
+for (const evenement of ['dragover', 'drop']) {
+    document.addEventListener(evenement, (e) => {
+        if (e.dataTransfer.types.includes('Files')) {
+            e.preventDefault();
+        }
+    });
+}
+
 /* Image collée (Ctrl+V) dans le champ de saisie. */
 $('saisie').addEventListener('paste', (e) => {
     const fichiers = e.clipboardData ? [...e.clipboardData.files] : [];
