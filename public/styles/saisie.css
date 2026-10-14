@@ -77,8 +77,8 @@
     flex: none;
     display: grid;
     place-items: center;
-    width: 2.5rem;
-    height: 2.5rem;
+    width: 2.25rem;
+    height: 2.25rem;
     padding: 0;
     border: 0;
     border-radius: 50%;
@@ -87,11 +87,11 @@
 }
 .envoyer:hover { background: var(--accent-survol); }
 .envoyer svg {
-    width: 1.25rem;
-    height: 1.25rem;
+    width: 1.125rem;
+    height: 1.125rem;
     fill: none;
     stroke: currentColor;
-    stroke-width: 2.2;
+    stroke-width: 2;
     stroke-linecap: round;
     stroke-linejoin: round;
 }
@@ -100,18 +100,12 @@
 .envoyer.en-cours .icone-arreter { display: block; }
 
 .saisie .fleche { display: none; flex: none; width: 2.25rem; height: 2.25rem; }
-/* Le trombone puis le globe à gauche, à la taille d'Envoyer, les autres boutons à droite. */
+/* Le trombone puis le globe à gauche, les autres boutons à droite. */
 .saisie .joindre, .saisie .recherche-web {
     flex: none;
-    border: 0;
     color: var(--texte-doux);
 }
 .saisie .recherche-web, .saisie .joindre:has(+ .recherche-web[hidden]) { margin-right: auto; }
-/* Survol à la souris seulement : au doigt, :hover reste collé après un toucher
-   et le globe éteint gardait le fond gris de l'état activé. */
-@media (hover: hover) {
-    .saisie .joindre:hover, .saisie .recherche-web:hover { background: var(--bulle); }
-}
 /* Recherche activée : le globe seul en orange, sans fond. */
 .saisie .recherche-web[aria-pressed="true"] { color: var(--accent); }
 
