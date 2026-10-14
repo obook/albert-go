@@ -50,7 +50,7 @@ Globe activé, le modèle a aussi dix services de l'État, sans clé : Annuaire 
 
 ### Outils
 
-Dans Discussion, cinq outils sont activés par défaut ; on peut les désactiver dans Réglages > Outils. Tout se passe dans le navigateur. Le modèle décide seul de s'en servir ; quand un outil a servi, son icône apparaît sous la réponse et un clic montre ce qu'il a fait.
+Dans Discussion, quatre outils sont activés par défaut ; on peut les désactiver dans Réglages > Outils. Tout se passe dans le navigateur. Le modèle décide seul de s'en servir ; quand un outil a servi, son icône apparaît sous la réponse et un clic montre ce qu'il a fait.
 
 | Outil | Rôle |
 |---|---|
@@ -58,7 +58,6 @@ Dans Discussion, cinq outils sont activés par défaut ; on peut les désactiver
 | Générateur aléatoire | Ordre de passage, éléments tirés ou groupes, avec la source de hasard du navigateur. |
 | Calendrier | Date et heure actuelles ou dans N heures, jour de la semaine d'une date, date dans N jours ou N mois, nombre de jours entre deux dates, jours ouvrés et jours fériés en France, report d'une échéance au premier jour ouvré suivant. |
 | Compteur | Nombre de mots et de caractères d'un texte ; occurrences d'une lettre, mot épelé et écrit à l'envers, anagramme vérifiée ; lisibilité (mots par phrase, phrases de plus de 20 mots, mots de 10 lettres ou plus). |
-| Contrôle SIRET et IBAN | Clé de contrôle d'un SIREN, d'un SIRET ou d'un IBAN, pour repérer un numéro mal recopié ; l'existence du numéro n'est pas vérifiée. |
 
 Chaque demande rappelle aussi au modèle son nom, par exemple Large (gpt-oss-120b). Dans Discussion, la date et l'heure viennent du Calendrier : son icône sous la réponse montre qu'elles viennent de l'appareil et non du modèle. Calendrier désactivé ou dans les autres modules, elles partent avec chaque demande.
 
