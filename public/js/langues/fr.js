@@ -56,6 +56,7 @@ I18n.TEXTES.fr = {
     'outil.projet': 'Imprimerie',
     'module.projet': 'Imprimerie',
     'invite.projet': 'Demander la création d\'un document ou une modification',
+    'invite.modifier': 'Demander une modification',
     'bibliotheque.titre': 'Bibliothèque',
     'bibliotheque.ouvrir': 'Ouvrir la bibliothèque',
     'bibliotheque.ouvrir-une': 'Ouvrir la bibliothèque (1 source cochée)',

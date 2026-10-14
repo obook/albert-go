@@ -56,6 +56,7 @@ I18n.TEXTES.de = {
     'outil.projet': 'Druckerei',
     'module.projet': 'Druckerei',
     'invite.projet': 'Die Erstellung eines Dokuments anfordern oder eine Änderung',
+    'invite.modifier': 'Eine Änderung anfordern',
     'bibliotheque.titre': 'Bibliothek',
     'bibliotheque.ouvrir': 'Bibliothek öffnen',
     'bibliotheque.ouvrir-une': 'Bibliothek öffnen (1 Quelle angehakt)',

@@ -326,6 +326,7 @@ function nouvelleConversation() {
     afficherDocuments();
     conversationId = null;
     retenirCourante(null);
+    afficherCourante();
     afficherReglages();
     $('fil').replaceChildren();
     etat('');

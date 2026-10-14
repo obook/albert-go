@@ -713,3 +713,13 @@ test('sansGras : dans Imprimerie, un document ne garde aucun gras, sauf dans le 
     ].join('\n'));
     assert.strictEqual(Albert.sansGras('Sans gras'), 'Sans gras');
 });
+
+/* Sous la calculatrice, la ligne rendue au modèle montrait sa consigne et le tableau en LaTeX (14/10/2026). */
+test('traceCalcul : un tableau de variations garde sa lecture, sans la consigne au modèle ni le LaTeX', () => {
+    const ligne = "x : -\\infty ; -1 ; 1 ; +\\infty\nf'(x) : + ; 0 ; - ; 0 ; +\nf(x) : -\\infty ↗ 2 ↘ -2 ↗ +\\infty\n"
+        + "La page affiche déjà ce tableau de variations sous ta réponse : n'écris aucun tableau, ni en LaTeX ni en Markdown, commente seulement les variations.\n"
+        + '$$\\def\\arraystretch{1.4}\\begin{array}{c|ccc} x & -\\infty & & +\\infty \\end{array}$$';
+    assert.strictEqual(Albert.traceCalcul(ligne), "x : -∞ ; -1 ; 1 ; +∞\nf'(x) : + ; 0 ; - ; 0 ; +\nf(x) : -∞ ↗ 2 ↘ -2 ↗ +∞");
+    assert.strictEqual(Albert.traceCalcul('x : -\\frac{\\sqrt{3}}{3} ; \\frac{1}{e}\nConsigne.\n$$t$$'), 'x : -√3/3 ; 1/e');
+    assert.strictEqual(Albert.traceCalcul('2+2 = 4'), '2+2 = 4');
+});
