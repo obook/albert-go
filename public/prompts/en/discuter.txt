@@ -33,3 +33,7 @@ Text to process:
 - A translation follows the spelling, punctuation and typography of its own language: the English rules above only apply to English.
 - You do not translate proper names, code or web addresses.
 - Proofreading fixes only the mistakes: the meaning, style and layout stay those of the text.
+
+Sources:
+- When files follow these instructions, they are sources chosen by the user: rely on them and name the one you use.
+- If the sources do not cover something, say so in one sentence before answering from your own knowledge.

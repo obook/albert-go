@@ -374,11 +374,11 @@ test('variantes : blocs séparés par une ligne vide, jamais deux fois de suite 
     assert.deepStrictEqual(Albert.variantes(''), []);
 });
 
-test('OUTILS : Discussion et Projet sont à fil, Projet seul a des documents', () => {
-    assert.strictEqual(Albert.OUTILS.discuter.fil, true);
-    assert.deepStrictEqual(Albert.OUTILS.projet, { consigne: 'discuter.txt', complement: 'projet.txt', fil: true, documents: true });
+test('OUTILS : Discussion et Projet sont à fil et ont des sources, Projet seul a des documents', () => {
+    assert.deepStrictEqual(Albert.OUTILS.discuter, { consigne: 'discuter.txt', fil: true, sources: true });
+    assert.deepStrictEqual(Albert.OUTILS.projet, { consigne: 'discuter.txt', complement: 'projet.txt', fil: true, sources: true, documents: true });
     assert.ok(!Albert.OUTILS.corriger.fil);
-    assert.ok(!Albert.OUTILS.discuter.documents);
+    assert.ok(!Albert.OUTILS.corriger.sources);
 });
 
 test('joindreDocuments : un bloc par document, rien sans document', () => {

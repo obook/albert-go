@@ -153,8 +153,8 @@ async function demanderReponse(outil, question, image, modele) {
     /* Chaque outil a sa consigne système ; seuls les modules à fil envoient aussi la conversation. */
     const fil = Albert.OUTILS[outil].fil;
     let texteConsigne = await consigne(outil);
-    /* Projet : les documents partent à chaque question, à la suite de la consigne. */
-    if (Albert.OUTILS[outil].documents && documentsProjet.length) {
+    /* Discussion et Imprimerie : les sources cochées partent à chaque question, à la suite de la consigne. */
+    if (Albert.OUTILS[outil].sources && documentsProjet.length) {
         texteConsigne += '\n\n' + Albert.joindreDocuments(documentsProjet);
     }
     /* Projet : un seul document, seule sa version en cours accompagne la demande. */

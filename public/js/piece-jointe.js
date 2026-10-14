@@ -325,9 +325,10 @@ async function lireContenu(fichier, type, signal, image) {
  * Lit un fichier et le prépare pour la prochaine question.
  *
  * @param {File} fichier - Fichier choisi, déposé ou collé.
+ * @param {boolean} versBibliotheque - true : le fichier rejoint la bibliothèque, pas le message.
  * @returns {Promise<boolean>} true si le fichier est joint.
  */
-async function joindreFichier(fichier) {
+async function joindreFichier(fichier, versBibliotheque) {
     retirerPiece();
     const type = typeFichier(fichier);
     if (!type) {
@@ -350,8 +351,7 @@ async function joindreFichier(fichier) {
             return false;
         }
         lecturePiece = null;
-        if (Albert.OUTILS[outilActuel].documents) {
-            /* Projet : le fichier lu rejoint les documents, pas le message. */
+        if (versBibliotheque) {
             retirerPiece();
             lu = ajouterDocument(piece);
         } else {
@@ -377,25 +377,25 @@ async function joindreFichier(fichier) {
 }
 
 /**
- * Joint les fichiers choisis ou déposés : tous dans Projet, le premier ailleurs.
+ * Joint les fichiers choisis ou déposés : tous vers la bibliothèque, sinon le premier au message.
  *
  * L'un après l'autre : une lecture en cours serait abandonnée par la suivante.
  * Arrêt au premier fichier refusé, pour que son message reste affiché.
  *
  * @param {File[]} fichiers - Fichiers choisis ou déposés.
+ * @param {boolean} [versBibliotheque] - true : ils rejoignent la bibliothèque. Par défaut, dans Projet seulement.
  * @returns {Promise<void>}
  */
-async function joindreFichiers(fichiers) {
-    const projet = !!Albert.OUTILS[outilActuel].documents;
-    /* Projet : un dépôt pendant un autre abandonnerait la lecture en cours et le reste du lot. */
-    if (projet && depotEnCours) {
+async function joindreFichiers(fichiers, versBibliotheque = !!Albert.OUTILS[outilActuel].documents) {
+    /* Bibliothèque : un dépôt pendant un autre abandonnerait la lecture en cours et le reste du lot. */
+    if (versBibliotheque && depotEnCours) {
         etat(t('etat.attendre-lecture'));
         return;
     }
-    depotEnCours = projet;
+    depotEnCours = versBibliotheque;
     try {
-        for (const fichier of projet ? fichiers : fichiers.slice(0, 1)) {
-            if (!await joindreFichier(fichier)) {
+        for (const fichier of versBibliotheque ? fichiers : fichiers.slice(0, 1)) {
+            if (!await joindreFichier(fichier, versBibliotheque)) {
                 return;
             }
         }

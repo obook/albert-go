@@ -227,7 +227,7 @@
         </div>
     </dialog>
 
-    <!-- Bibliothèque du module Imprimerie, commune à tous les documents : volet de droite, symétrique du menu.
+    <!-- Bibliothèque de Discussion et d'Imprimerie, commune à toutes les conversations : volet de droite, symétrique du menu.
          Les fichiers cochés partent avec chaque question (projet.js, entete.css). -->
     <dialog id="bibliotheque" class="volet volet-droit" aria-labelledby="titre-bibliotheque">
         <div class="volet-contenu">
@@ -247,6 +247,11 @@
                     <p class="formats-sources" data-t="documents.garde"></p>
                     <ul id="liste-documents" class="liste-documents"></ul>
                     <button type="button" id="deposer-documents" class="deposer" data-t="documents.deposer"></button>
+                    <input type="file"
+                           id="fichier-sources"
+                           accept="image/*,audio/*,.m4a,.opus,.pdf,.docx,.odt,.txt,.md,.csv,.tsv,.json,.xml,.html,.css,.js,.py,.tex,.sql"
+                           multiple
+                           hidden>
                     <p class="formats-sources" data-t="documents.formats"></p>
                     <!-- Masqué tant que la bibliothèque est vide (projet.js). -->
                     <button type="button" id="vider-bibliotheque" class="deposer" data-t="bibliotheque.vider" hidden></button>

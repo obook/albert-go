@@ -60,10 +60,10 @@ Navigateur (Pages) -> webhook n8n -> https://albert.api.etalab.gouv.fr
   documents et la bibliothèque de sources. En mode
   partagé, activé par défaut, tout cela va dans `sessionStorage` et disparaît à
   la fermeture de l'onglet. Sinon dans `localStorage`, sans limite de durée.
-  Les sources déposées dans le module Imprimerie vont dans une bibliothèque commune
-  à tous les documents (clé `bibliotheque`, dans `SENSIBLES`), gardée selon la même
+  Les sources déposées dans Discussion ou Imprimerie vont dans une bibliothèque commune
+  à toutes les conversations et à tous les documents (clé `bibliotheque`, dans `SENSIBLES`), gardée selon la même
   règle. Seul le texte lu est gardé, pas le fichier d'origine. Les sources cochées
-  pour un document partent à la suite de la consigne système : un
+  pour une conversation ou un document partent à la suite de la consigne système : un
   fichier piégé y aurait l'autorité de la consigne, on n'y dépose que des
   fichiers de confiance.
 - L'effacement est explicite, le navigateur restaurant `sessionStorage` quand on
