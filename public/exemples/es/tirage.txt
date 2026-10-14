@@ -7,3 +7,23 @@ Sortea un color entre: rojo, azul, verde, amarillo, violeta.
 Reparte al azar en dos equipos: león, cebra, jirafa, elefante, hipopótamo, rinoceronte.
 
 Sortea el orden de intervención de estos servicios: recepción, contabilidad, recursos humanos, informática, logística.
+
+Reparte al azar en tres grupos: Lucía, Hugo, Inés, Mateo, Sara, Daniel, Martina, Leo, Paula.
+
+Sortea el orden de las exposiciones: Lucas, Sofía, Javier, Valeria, Marcos, Julia, Gabriel.
+
+Sortea un tema de exposición entre: los volcanes, las abejas, el sistema solar, los océanos, los dinosaurios, las pirámides.
+
+Sortea dos delegados entre: Álvaro, Noa, Pablo, Zoe, Diego, Claudia.
+
+Sortea tres números entre el 1 y el 20.
+
+Lanza un dado de seis caras.
+
+Sortea una capital europea para nuestro próximo viaje virtual: Roma, París, Berlín, Lisboa, Atenas, Praga, Viena.
+
+Reparte al azar en dos equipos para el partido: Nicolás, Alicia, Bruno, Rocío, Iker, Ana, Mario, Elena.
+
+Sortea el ganador de la rifa entre las papeletas del 1 al 50.
+
+Sortea un poema para aprender de memoria entre: Canción del pirata, Romance sonámbulo, Las moscas, Rima LIII.

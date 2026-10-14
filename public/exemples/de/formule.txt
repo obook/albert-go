@@ -7,3 +7,23 @@ Gib die Formel für das Volumen einer Kugel und ein Beispiel mit r = 5 cm an.
 Gib die Formel für Zinseszinsen und ein Beispiel über 5 Jahre zu 3 % an.
 
 Gib die Formel für die Lösungen einer quadratischen Gleichung und ein Beispiel an.
+
+Stelle die Reaktionsgleichung für die Verbrennung von Methan mit Sauerstoff auf.
+
+Stelle die Reaktionsgleichung der Photosynthese auf.
+
+Gib die Formel für die Durchschnittsgeschwindigkeit und ein Beispiel mit 150 km in 1 h 30 min an.
+
+Gib das ohmsche Gesetz und ein Beispiel mit einem Widerstand von 220 Ω an, durch den ein Strom von 50 mA fließt.
+
+Gib die Formel für die kinetische Energie und ein Beispiel für ein Auto mit 1000 kg bei 90 km/h an.
+
+Gib die Formel für das Volumen eines Zylinders und ein Beispiel mit r = 4 cm und h = 10 cm an.
+
+Gib Einsteins Formel E = mc² an und berechne die Energie, die in 1 g Materie steckt.
+
+Gib die Formel von Heron für den Flächeninhalt eines Dreiecks und ein Beispiel mit den Seiten 5, 6 und 7 cm an.
+
+Gib die Formel für die Massenkonzentration und ein Beispiel mit 5 g Salz an, gelöst in 250 ml Wasser.
+
+Gib die Formel für die Gewichtskraft an und berechne die Gewichtskraft einer Person mit 70 kg auf der Erde und auf dem Mond.

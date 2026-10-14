@@ -7,3 +7,23 @@ Lose eine Farbe aus: Rot, Blau, Grün, Gelb, Violett.
 Teile zufällig in zwei Teams auf: Löwe, Zebra, Giraffe, Elefant, Nilpferd, Nashorn.
 
 Lose die Reihenfolge dieser Abteilungen aus: Empfang, Buchhaltung, Personal, IT, Logistik.
+
+Teile zufällig in drei Gruppen auf: Lea, Jonas, Mia, Ben, Emilia, Elias, Hannah, Mehmet, Emma.
+
+Lose die Reihenfolge der Referate aus: Lukas, Sarah, Yusuf, Marie, Leon, Lina, Felix.
+
+Lose ein Referatsthema aus: Vulkane, Bienen, das Sonnensystem, die Ozeane, Dinosaurier, die Pyramiden.
+
+Lose zwei Klassensprecher aus: Ali, Lena, Paul, Sophie, Finn, Clara.
+
+Lose drei Zahlen zwischen 1 und 20 aus.
+
+Würfle mit einem sechsseitigen Würfel.
+
+Lose eine europäische Hauptstadt für unsere nächste virtuelle Reise aus: Rom, Madrid, Paris, Lissabon, Athen, Prag, Wien.
+
+Teile zufällig in zwei Teams für das Spiel auf: Noah, Alice, Jakob, Rosa, Liam, Anna, Matteo, Lena.
+
+Ziehe den Gewinner der Tombola unter den Losnummern 1 bis 50.
+
+Lose ein Gedicht zum Auswendiglernen aus: Erlkönig, Der Panther, Er ist's, Der Zauberlehrling.

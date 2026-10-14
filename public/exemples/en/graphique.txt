@@ -1,0 +1,29 @@
+Draw a bar chart of cinema admissions: Monday 85, Tuesday 120, Wednesday 240, Thursday 110, Friday 150, Saturday 310.
+
+Draw a line chart of this week's temperatures: Monday 12 °C, Tuesday 14 °C, Wednesday 11 °C, Thursday 9 °C, Friday 13 °C, Saturday 16 °C, Sunday 17 °C.
+
+Draw a line chart of the population of France, in millions: 1900: 41, 1950: 42, 1970: 51, 1990: 57, 2010: 63, 2025: 68.
+
+Draw a bar chart of the class averages by subject: French 12.5, maths 11, history 13, English 14, biology 12, PE 15.
+
+Draw a line chart of the school's pupil numbers: 2019: 512, 2020: 530, 2021: 548, 2022: 541, 2023: 563, 2024: 580, 2025: 575.
+
+Draw a bar chart of books borrowed from the school library: September 120, October 185, November 210, December 150, January 230, February 195.
+
+Draw a bar chart of how pupils travel to school: on foot 85, by bike 30, by bus 140, by car 95.
+
+Draw a line chart of rainfall in Brest, in mm: January 120, February 95, March 85, April 70, May 65, June 50, July 45.
+
+Draw the growth curve of a bean plant, in cm: day 1: 0, day 3: 2, day 5: 5, day 7: 9, day 9: 14, day 11: 18.
+
+Draw a bar chart of the class's favourite sports: football 9, basketball 6, swimming 5, dance 4, tennis 3, judo 2.
+
+Draw a line chart of the CO2 concentration in the atmosphere, in ppm: 1960: 317, 1980: 339, 2000: 370, 2010: 390, 2020: 414, 2024: 424.
+
+Draw a bar chart of the school's electricity consumption, in kWh: October 3,200, November 4,100, December 4,800, January 5,000, February 4,300.
+
+Draw a bar chart of France's medals at the Paris 2024 Olympic Games: gold 16, silver 26, bronze 22.
+
+Draw a line chart of cake sales at the school fair: 2 pm: 25, 3 pm: 48, 4 pm: 62, 5 pm: 40, 6 pm: 15.
+
+Draw a bar chart of the heights of the highest mountains in France, in m: Mont Blanc 4,806, Barre des Écrins 4,102, Grande Casse 3,855, Vignemale 3,298.

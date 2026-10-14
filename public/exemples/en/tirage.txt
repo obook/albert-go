@@ -7,3 +7,23 @@ Draw one colour from: red, blue, green, yellow, purple.
 Split at random into two teams: lion, zebra, giraffe, elephant, hippopotamus, rhinoceros.
 
 Draw the speaking order of these departments: reception, accounting, human resources, IT, logistics.
+
+Split at random into three groups: Lily, Harry, Isla, Tom, Jade, Nathan, Chloe, Malik, Emma.
+
+Draw the speaking order for the presentations: Lucas, Sarah, Yusuf, Megan, Adam, Lucy, Gabriel.
+
+Draw one presentation topic from: volcanoes, bees, the solar system, the oceans, dinosaurs, the pyramids.
+
+Draw two class representatives from: Ryan, Lina, Paul, Zoe, Ethan, Amelia.
+
+Draw three numbers from 1 to 20.
+
+Roll a six-sided die.
+
+Draw one European capital for our next virtual trip: Rome, Madrid, Berlin, Lisbon, Athens, Prague, Vienna.
+
+Split at random into two teams for the match: Noah, Alice, Sam, Rose, Liam, Anna, Max, Ella.
+
+Draw the raffle winner from tickets 1 to 50.
+
+Draw one poem to learn by heart from: The Tyger, Daffodils, The Owl and the Pussy-Cat, The Road Not Taken.

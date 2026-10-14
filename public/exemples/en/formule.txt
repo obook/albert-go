@@ -7,3 +7,23 @@ Give the formula for the volume of a sphere and an example with r = 5 cm.
 Give the formula for compound interest and an example over 5 years at 3%.
 
 Give the formula for the solutions of a quadratic equation and an example.
+
+Write the balanced equation for the combustion of methane in oxygen.
+
+Write the overall equation for photosynthesis.
+
+Give the formula for average speed and an example with 150 km covered in 1 hour 30 minutes.
+
+Give Ohm's law and an example with a 220 Ω resistor carrying a current of 50 mA.
+
+Give the formula for kinetic energy and an example for a 1,000 kg car travelling at 90 km/h.
+
+Give the formula for the volume of a cylinder and an example with r = 4 cm and h = 10 cm.
+
+Give Einstein's equation E = mc² and calculate the energy contained in 1 g of matter.
+
+Give Heron's formula for the area of a triangle and an example with sides of 5, 6 and 7 cm.
+
+Give the formula for mass concentration and an example with 5 g of salt dissolved in 250 mL of water.
+
+Give the formula for weight and calculate the weight of a 70 kg person on Earth and on the Moon.
