@@ -78,7 +78,7 @@ I18n.TEXTES.fr = {
     'confirmer-suppression.projet': 'Supprimer ce document ? Ses sources restent dans la bibliothèque.',
     'documents.nom': 'Nom du document',
     'documents.deposer': 'Déposer des sources',
-    'documents.garde': 'Le texte est gardé dans le navigateur, n\'y déposez pas de données personnelles.',
+    'documents.garde': 'Le texte reste dans le navigateur, n\'y déposez pas de données personnelles.',
     'documents.supprimer': 'Supprimer {nom} de la bibliothèque',
     'documents.utiliser': 'Utiliser {nom} ici',
     'documents.telecharger': 'Télécharger le texte : {nom}',
