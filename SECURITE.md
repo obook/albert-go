@@ -115,7 +115,7 @@ embarquées et de la configuration du dépôt.
 **Intégrité des bibliothèques.** Comparaison octet par octet avec le paquet npm
 officiel, le 2026-09-21 : KaTeX 0.16.47 (`auto-render`, `mhchem`, 20 polices),
 Mermaid 11.17.2, Pico 2.1.1 et qrcode-generator 2.0.4 sont identiques,
-highlight.js 11.12.0 et pdf.js 6.3.289 aussi (le 2026-09-24). Marked 17.0.1 ne
+highlight.js 11.12.0 et pdf.js 6.3.289 aussi (le 2026-09-24 ; pdf.js en version legacy depuis le 2026-10-14, comparée de même). Marked 17.0.1 ne
 l'est pas, voir I11. `npm audit` sur les sept versions, le 2026-09-24 : rien.
 
 **Constats**
