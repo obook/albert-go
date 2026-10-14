@@ -219,6 +219,8 @@ a:hover { color: var(--accent-survol); }
 /* Après un toucher ou un clic (stockage.js) : pas de contour sur un bouton ou un lien qui reçoit le focus
    d'office. Au clavier, il revient ; les champs de saisie le gardent toujours. */
 :root[data-saisie="pointeur"] :focus-visible:not(input, textarea, select) { outline: none !important; }
+/* Pico colore aussi en orange un titre de section qui a le focus (la carte IA des Réglages, à l'ouverture). */
+:root[data-saisie="pointeur"] summary:focus-visible { --pico-primary: var(--texte); }
 
 /* Texte lu par les lecteurs d'écran, invisible à l'écran. */
 .visuellement-cache {
