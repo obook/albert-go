@@ -17,6 +17,10 @@ Chaque utilisateur a sa propre clé API. Les clés s'obtiennent sur la [page d'A
 
 Les modules Correction, Style, Courrier et Trad sont mis de côté : ils ne sont plus au menu, mais leurs anciennes conversations se rouvrent depuis l'historique.
 
+### Idées pour commencer
+
+Une discussion vide propose quatorze idées, rangées par famille : texte (corriger, reformuler, traduire, analyser), calcul (calcul, calcul formel, formule, tirage au sort), visuel (graphique, figure, schéma), code, puis Internet (recherche, services de l'État). Chaque clic remplit la saisie avec un autre exemple, parmi ceux de `public/exemples/<langue>/` : quinze ou plus par idée, dix pour chacune des trois idées d'Imprimerie.
+
 ### Réponses
 
 Les réponses acceptent le Markdown, les formules LaTeX et les diagrammes Mermaid, graphiques en barres ou en ligne compris ; quand Mermaid refuse un diagramme, la page le renvoie une fois au modèle pour correction. La page calcule et trace elle-même la courbe d'une fonction ; elle nettoie une figure écrite en SVG par le modèle avant de l'afficher. En français, les consignes demandent les notations de France : virgule décimale, intervalles à crochets, calculs en colonne. Sous chaque réponse : copier le texte, le lire à voix haute avec une voix installée sur l'appareil, l'enregistrer en .docx ou en .odt et l'imprimer seule en PDF par l'impression du navigateur ("Enregistrer au format PDF"), avec le rendu de l'écran en thème clair.
@@ -44,7 +48,7 @@ On dépose des sources dans la bibliothèque (rapport, compte rendu, cours, anci
 
 ### Recherche web
 
-Internet est autorisé au départ, sans moteur de recherche. Dans Réglages, on peut cocher jusqu'à trois moteurs : Wikipédia, Vikidia, HAL, OpenAlex, Internet Archive, Open Library, Google et Mojeek (ces deux derniers avec une clé). Le globe de la barre de saisie apparaît quand Internet est autorisé : tant qu'il est activé, le modèle peut chercher et montrer des images Wikimedia. Les mots cherchés et les pages consultées s'affichent sous la réponse.
+Internet est autorisé au départ, sans moteur de recherche. Dans Réglages, on peut cocher jusqu'à trois moteurs : Wikipédia, Vikidia, HAL, OpenAlex, Internet Archive, Open Library, Google et Mojeek (ces deux derniers avec une clé). Le globe de la barre de saisie apparaît quand Internet est autorisé : tant qu'il est activé, le modèle peut chercher et montrer des images Wikimedia. Le navigateur garde son état d'un chargement à l'autre. Les mots cherchés et les pages consultées s'affichent sous la réponse. Quand la recherche ne trouve rien, le modèle le dit sans compléter de mémoire.
 
 Globe activé, le modèle a aussi dix services de l'État, sans clé : Annuaire de l'administration, Annuaire des entreprises, Annuaire de l'éducation, calendrier scolaire, Base adresse nationale, API Géo (communes), BOAMP (marchés publics), data.gouv.fr, Parcoursup et Hub'eau (eau du robinet).
 
