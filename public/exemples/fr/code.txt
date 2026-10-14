@@ -1,0 +1,29 @@
+Écris le jeu du pendu en Python, avec le dessin du pendu qui se complète à chaque erreur.
+
+Écris un programme Python qui estime π par la méthode de Monte-Carlo avec un million de points.
+
+Écris le jeu de la vie de Conway en JavaScript, dans une page HTML avec un canvas.
+
+Écris le chiffrement de César en Python, avec une fonction pour chiffrer et une pour déchiffrer.
+
+Écris un quiz de cinq questions en HTML et JavaScript, avec le score affiché à la fin.
+
+Écris un programme Python qui résout une grille de Sudoku par retour arrière.
+
+Écris une horloge analogique animée en HTML, CSS et JavaScript.
+
+Écris un programme Python avec turtle qui dessine le flocon de Koch.
+
+Écris une requête SQL qui classe les élèves par moyenne décroissante à partir d'une table notes(eleve, matiere, note).
+
+Écris un programme C++ qui simule un million de lancers de deux dés et affiche la fréquence de chaque somme.
+
+Écris le crible d'Ératosthène en Python pour trouver les nombres premiers jusqu'à 1 000.
+
+Écris un programme Python qui simule la chute d'une balle avec frottements et trace sa vitesse avec matplotlib.
+
+Écris une classe Java CompteBancaire avec dépôt, retrait et historique des opérations.
+
+Écris un script Bash qui sauvegarde un dossier dans une archive datée et ne garde que les sept dernières.
+
+Écris le tri par insertion en Python, commenté ligne par ligne, avec un exemple pas à pas.
