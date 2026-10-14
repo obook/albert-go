@@ -58,6 +58,8 @@ I18n.TEXTES.en = {
     'invite.projet': 'Ask for a new document, or for a change',
     'bibliotheque.titre': 'Library',
     'bibliotheque.ouvrir': 'Open the library',
+    'bibliotheque.ouvrir-une': 'Open the library (1 source ticked)',
+    'bibliotheque.ouvrir-coches': 'Open the library ({nombre} sources ticked)',
     'bibliotheque.fermer': 'Close the library',
     'bibliotheque.vider': 'Empty the library',
     'versions.titre': 'Versions',
