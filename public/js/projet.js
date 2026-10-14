@@ -43,15 +43,8 @@ const COLONNE_SOURCES = matchMedia('(min-width: 80rem)');
  * Affiche la bibliothèque en colonne, sans lui donner le focus.
  */
 function montrerBibliotheque() {
-    const avant = document.activeElement;
-    $('bibliotheque').show();
+    montrerSansFocus($('bibliotheque'));
     $('ouvrir-bibliotheque').setAttribute('aria-expanded', 'true');
-    /* show() prend le focus : on le rend. */
-    if (avant && avant !== document.body) {
-        avant.focus();
-    } else {
-        document.activeElement.blur();
-    }
 }
 
 /**

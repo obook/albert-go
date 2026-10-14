@@ -23,6 +23,24 @@
  */
 const $ = (id) => document.getElementById(id);
 
+/**
+ * Ouvre un volet en colonne sans lui laisser le focus, que show() lui donne.
+ *
+ * @param {HTMLDialogElement} volet - Menu ou bibliothèque.
+ */
+function montrerSansFocus(volet) {
+    const avant = document.activeElement;
+    volet.show();
+    if (avant && avant !== document.body) {
+        avant.focus();
+    }
+    /* L'élément d'avant a pu être masqué entre-temps (le bouton Saisir de l'accueil) : sur iPad, le focus
+       restait dans le volet, et la boîte de bienvenue l'y rendait en fermant, cerclé d'orange. */
+    if (volet.contains(document.activeElement)) {
+        document.activeElement.blur();
+    }
+}
+
 /* Langue de l'interface, avant le premier texte affiché : celle du
    navigateur au premier lancement, puis celle choisie dans les réglages. */
 try {

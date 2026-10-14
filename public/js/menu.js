@@ -83,16 +83,9 @@ const GRAND_ECRAN = matchMedia('(min-width: 64rem)');
  * Affiche le volet en colonne, sans lui donner le focus.
  */
 function montrerVolet() {
-    const avant = document.activeElement;
     afficherHistorique();
-    $('menu').show();
+    montrerSansFocus($('menu'));
     $('ouvrir-menu').setAttribute('aria-expanded', 'true');
-    /* show() prend le focus : on le rend. */
-    if (avant && avant !== document.body) {
-        avant.focus();
-    } else {
-        document.activeElement.blur();
-    }
 }
 
 /**
