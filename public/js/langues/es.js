@@ -135,7 +135,7 @@ I18n.TEXTES.es = {
     'bienvenue.tirage': 'Sortear',
     'bienvenue.recherche': 'Buscar',
     'bienvenue.exemple-corriger': 'Corrige este texto: Le agradesco su rapida respuesta y quedo a su dispocición.',
-    'bienvenue.exemple-reformuler': 'Le informamos de que, habida cuenta de la indisponibilidad de una parte significativa de los participantes, la celebración de la reunión inicialmente programada queda aplazada a una fecha posterior que se le comunicará a la mayor brevedad.',
+    'bienvenue.exemple-reformuler': 'Reformula este texto: Le informamos de que, habida cuenta de la indisponibilidad de una parte significativa de los participantes, la celebración de la reunión inicialmente programada queda aplazada a una fecha posterior que se le comunicará a la mayor brevedad.',
     'bienvenue.exemple-traduire': 'Traduce al inglés: Hola, quisiera pedir cita para la semana que viene.',
     'bienvenue.exemple-rediger': 'Señora:\nsolicitud vacaciones 3 al 7 de noviembre\nexpedientes en curso confiados compañero',
     'bienvenue.exemple-calcul': '¿Cuánto es el {p} % de {n}?',
