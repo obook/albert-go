@@ -325,8 +325,10 @@ function bulleReponse(texte, titre, langue, animer = false, recherches = null) {
     }
     const contenu = document.createElement('div');
     contenu.className = 'texte rendu';
-    /* Images Commons montrées seulement si l'outil d'images a servi à cette réponse. */
-    const imagesCherchees = (recherches || []).some(r => r && r.image_commons);
+    /* Images Commons montrées si cette réponse a eu Internet (globe activé) : outil d'images, recherche
+       ou service de l'État. Le modèle écrit parfois le lien d'une photo sans l'outil d'images, quand
+       une recherche qui ne trouve pas a pris tous ses tours. */
+    const imagesCherchees = (recherches || []).some(r => r && (r.image_commons || 'mots' in r));
     /* Imprimerie : pas de Markdown brut dévoilé, le document arrive rendu et monte en fondu (conversation.css). */
     const projet = !!Albert.OUTILS[outilActuel].documents;
     const pret = animer && !projet ? devoiler(contenu, texte, imagesCherchees) : Rendu.afficher(contenu, texte, imagesCherchees);
