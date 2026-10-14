@@ -20,7 +20,7 @@ Ce qui reste à faire, du plus simple au plus long. Le détail des failles est d
 
 ## Documents et exports
 
-- PDF illisible sur l'iPad d'un collègue (Chrome), relevé le 14/10/2026 : "Document illisible" par le trombone comme par la bibliothèque, avec un fichier local, pas seulement depuis OneDrive. Sur ordinateur, le même PDF passe. Déjà fait sans effet : pdf.js en version legacy, puis sa version dans l'adresse contre le cache du service worker (`de442db`). À relever : version d'iPadOS, commit affiché dans "À propos", essai dans Safari. Le message cache l'erreur de pdf.js (`lireContenu`, `piece-jointe.js`) : l'afficher le temps du diagnostic, la console étant hors de portée sur iPad.
+- PDF illisible sur l'iPad d'un collègue (Chrome), relevé le 14/10/2026 : "Document illisible" par le trombone comme par la bibliothèque, avec un fichier local, pas seulement depuis OneDrive. Sur ordinateur, le même PDF passe. Déjà fait sans effet : pdf.js en version legacy, puis sa version dans l'adresse contre le cache du service worker (`de442db`). À relever : version d'iPadOS, commit affiché dans "À propos", essai dans Safari. Le message donne maintenant l'erreur de pdf.js entre parenthèses (`lireContenu`, `piece-jointe.js`) : la relever, puis retirer cet ajout une fois le bug compris.
 - Imprimerie : essayer un long document avec un vrai modèle. Le rendu du document entier n'est vérifié que sur un sujet court, avec Small et Medium.
 - Ouvrir un .docx et un .odt produits dans Microsoft Word : seul LibreOffice a servi aux essais.
 - Modèle de l'enseignant : son propre .odt, avec son en-tête et une balise `{contenu}` où Albert Go insère le document, sur le principe d'odtPHP.

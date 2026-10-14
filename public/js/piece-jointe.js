@@ -308,8 +308,9 @@ async function lireContenu(fichier, type, signal, image) {
         }
         /* Une erreur de lecture passerait sinon pour une panne du relais. */
         const texte = await (/\.pdf$/i.test(fichier.name) ? lirePdf(fichier) : lireDocument(fichier))
-            .catch(() => {
-                throw new Error(t('erreur.document-illisible'));
+            .catch((err) => {
+                /* Erreur de lecture recopiée le temps du diagnostic iPad (ROADMAP.md) : la console y est hors de portée. */
+                throw new Error(t('erreur.document-illisible') + ' (' + String(err).slice(0, 200) + ')');
             });
         if (!texte.trim()) {
             throw new Error(t('erreur.document-vide'));
