@@ -78,7 +78,6 @@ I18n.TEXTES.es = {
     'confirmer-suppression.projet': '¿Eliminar este documento? Sus fuentes quedan en la biblioteca.',
     'documents.nom': 'Nombre del documento',
     'documents.deposer': 'Añadir fuentes',
-    'documents.formats': 'Formatos aceptados: PDF, .docx, .odt, archivos de texto (.txt, .md, .csv, .tex...), imágenes y grabaciones de audio.',
     'documents.garde': 'Su texto se guarda en este navegador: no añada datos personales.',
     'documents.supprimer': 'Eliminar {nom} de la biblioteca',
     'documents.utiliser': 'Usar {nom} aquí',

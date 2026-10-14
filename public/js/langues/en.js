@@ -78,7 +78,6 @@ I18n.TEXTES.en = {
     'confirmer-suppression.projet': 'Delete this document? Its sources stay in the library.',
     'documents.nom': 'Document name',
     'documents.deposer': 'Add sources',
-    'documents.formats': 'Accepted formats: PDF, .docx, .odt, text files (.txt, .md, .csv, .tex...), images and audio recordings.',
     'documents.garde': 'Their text is kept in this browser: do not add personal data.',
     'documents.supprimer': 'Delete {nom} from the library',
     'documents.utiliser': 'Use {nom} here',
