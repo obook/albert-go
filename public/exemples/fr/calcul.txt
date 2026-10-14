@@ -27,3 +27,13 @@ Un capital de 2 000 € est placé à 3 % d'intérêts composés pendant 10 ans.
 Quelle est la racine carrée de 2 avec 15 décimales ?
 
 Un car de 52 places coûte 780 € la journée. Combien paie chacun si 47 élèves et 5 adultes partent ?
+
+Combien de jours ouvrés y a-t-il entre le 3 novembre et le 19 décembre ?
+
+Quel jour de la semaine était le 14 juillet 1789 ?
+
+Quelle date tombe dans 45 jours ? Si c'est un week-end ou un jour férié, reporte-la au premier jour ouvré.
+
+Combien de jours reste-t-il avant le 1er janvier ?
+
+Quels sont les jours fériés en France en 2027 ?
