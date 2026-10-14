@@ -113,22 +113,33 @@ function rangerBouton() {
 }
 
 /**
- * Ouvre le volet en colonne sur grand écran, le referme sinon.
- * Sans clé, l'accueil s'affiche volet fermé.
+ * Fait une action sur la colonne sans la faire glisser : seul le bouton anime.
+ *
+ * @param {Function} action - Ouverture ou fermeture du volet.
  */
-function placerVolet() {
-    /* Pas de glissement ici (chargement, changement de format) : seul le bouton anime. */
+function sansGlissement(action) {
     document.body.classList.add('sans-glisse');
-    if ($('menu').open) {
-        $('menu').close();
-    }
-    if (GRAND_ECRAN.matches && reglages.cle && lire('volet', null) !== 'replie') {
-        montrerVolet();
-    }
-    rangerBouton();
+    action();
     /* Lire une taille calcule les styles tant que les transitions sont coupées. */
     void document.body.offsetWidth;
     document.body.classList.remove('sans-glisse');
+}
+
+/**
+ * Ouvre le volet en colonne sur grand écran, le referme sinon.
+ * Sans clé, l'accueil s'affiche volet fermé.
+ * Sans glissement : chargement, changement de format.
+ */
+function placerVolet() {
+    sansGlissement(() => {
+        if ($('menu').open) {
+            $('menu').close();
+        }
+        if (GRAND_ECRAN.matches && reglages.cle && lire('volet', null) !== 'replie') {
+            montrerVolet();
+        }
+        rangerBouton();
+    });
 }
 GRAND_ECRAN.addEventListener('change', placerVolet);
 placerVolet();
@@ -140,8 +151,11 @@ $('menu').addEventListener('click', (e) => {
            Imprimerie, Nouveau document compris), Réglages (et le résumé qui les ouvre), Partager ou À propos
            la replie, comme son bouton.
            Imprimerie la garde ouverte pour sa liste. */
-        const replie = ['nouvelle', 'ouvrir-reglages', 'resume-reglages', 'ouvrir-partage', 'ouvrir-info'];
-        if (bouton && (bouton.dataset.outil || replie.includes(bouton.id) || bouton.classList.contains('titre-conversation'))) {
+        const boites = ['ouvrir-reglages', 'resume-reglages', 'ouvrir-partage', 'ouvrir-info'];
+        if (bouton && boites.includes(bouton.id)) {
+            /* Une boîte s'ouvre : un glissement se verrait à travers son fond flou. */
+            sansGlissement(() => $('ouvrir-menu').click());
+        } else if (bouton && (bouton.dataset.outil || bouton.id === 'nouvelle' || bouton.classList.contains('titre-conversation'))) {
             $('ouvrir-menu').click();
         }
         return;
