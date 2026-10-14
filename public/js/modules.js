@@ -15,7 +15,8 @@
 
 /** Outil actif : clé de Albert.OUTILS. */
 let outilActuel = lire('outil', 'discuter');
-if (!Albert.OUTILS[outilActuel]) {
+/* Module inconnu ou retiré du menu (bouton en commentaire dans index.html) : retour à Discussion. L'historique le rouvre encore. */
+if (!Albert.OUTILS[outilActuel] || !(Albert.OUTILS[outilActuel].documents || document.querySelector('[data-outil="' + outilActuel + '"]'))) {
     outilActuel = 'discuter';
 }
 
