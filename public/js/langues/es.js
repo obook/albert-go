@@ -58,6 +58,8 @@ I18n.TEXTES.es = {
     'invite.projet': 'Pedir la creación de un documento o un cambio',
     'bibliotheque.titre': 'Biblioteca',
     'bibliotheque.ouvrir': 'Abrir la biblioteca',
+    'bibliotheque.ouvrir-une': 'Abrir la biblioteca (1 fuente marcada)',
+    'bibliotheque.ouvrir-coches': 'Abrir la biblioteca ({nombre} fuentes marcadas)',
     'bibliotheque.fermer': 'Cerrar la biblioteca',
     'bibliotheque.vider': 'Vaciar la biblioteca',
     'versions.titre': 'Versiones',

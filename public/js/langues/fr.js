@@ -58,6 +58,8 @@ I18n.TEXTES.fr = {
     'invite.projet': 'Demander la création d\'un document ou une modification',
     'bibliotheque.titre': 'Bibliothèque',
     'bibliotheque.ouvrir': 'Ouvrir la bibliothèque',
+    'bibliotheque.ouvrir-une': 'Ouvrir la bibliothèque (1 source cochée)',
+    'bibliotheque.ouvrir-coches': 'Ouvrir la bibliothèque ({nombre} sources cochées)',
     'bibliotheque.fermer': 'Fermer la bibliothèque',
     'bibliotheque.vider': 'Vider la bibliothèque',
     'versions.titre': 'Versions',

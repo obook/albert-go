@@ -128,8 +128,6 @@ const ICONE_RETIRER = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6
 function choisirSources(noms) {
     sourcesProjet = noms.filter(nom => bibliotheque.some(d => d.nom === nom));
     documentsProjet = Albert.sourcesCochees(bibliotheque, sourcesProjet);
-    /* Bouton de l'en-tête en orange tant qu'une source part avec les questions, comme le globe actif. */
-    $('ouvrir-bibliotheque').classList.toggle('sources-cochees', documentsProjet.length > 0);
 }
 
 /**
@@ -176,8 +174,17 @@ function reprendreSources() {
 
 /**
  * Met le résumé du volet à jour : fichiers cochés, taille de la bibliothèque, part du contexte.
+ *
+ * Le bouton de l'en-tête suit : orange et nombre de sources dans son libellé tant qu'une source
+ * part avec les questions. Appelée aussi au changement de langue, qui remet le libellé simple.
  */
 function afficherResumeSources() {
+    const nombre = documentsProjet.length;
+    const bouton = $('ouvrir-bibliotheque');
+    const libelle = t(nombre === 0 ? 'bibliotheque.ouvrir' : nombre === 1 ? 'bibliotheque.ouvrir-une' : 'bibliotheque.ouvrir-coches', { nombre: nombre });
+    bouton.classList.toggle('sources-cochees', nombre > 0);
+    bouton.setAttribute('aria-label', libelle);
+    bouton.title = libelle;
     const part = Albert.partDocuments(documentsProjet, modeleActuel().contexte);
     $('resume-documents').textContent = t(part === null ? 'documents.resume' : 'documents.resume-part',
         { coches: documentsProjet.length, nombre: bibliotheque.length, pourcent: part });
