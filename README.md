@@ -33,7 +33,7 @@ Dans Discussion, le bouton de bibliothèque de l'en-tête ouvre la même bibliot
 
 ### Imprimerie
 
-On dépose des sources (rapport, compte rendu, cours, ancien sujet), puis on demande un document : note de synthèse, courrier, évaluation avec barème. Chaque demande suivante le modifie : Albert rend le document entier, mis à jour. Seule la dernière version s'affiche, sans les demandes ; elle s'enregistre en .docx ou en .odt.
+On dépose des sources dans la bibliothèque (rapport, compte rendu, cours, ancien sujet), on coche celles qui doivent servir, puis on demande un document : note de synthèse, courrier, évaluation avec barème. Une source déposée mais pas cochée ne part pas avec la demande. Chaque demande suivante le modifie : Albert rend le document entier, mis à jour. Seule la dernière version s'affiche, sans les demandes ; elle s'enregistre en .docx ou en .odt.
 
 - Les fichiers déposés vont dans une bibliothèque commune à tous les documents et aux conversations de Discussion. Chaque document coche ceux qu'il utilise ; un clic sur un nom télécharge le texte gardé, pas le fichier d'origine.
 - Seul le texte des fichiers est gardé, dans le navigateur, selon la même règle que les conversations (voir Sécurité). Supprimer un document laisse ses sources dans la bibliothèque : on les en retire une par une ou toutes d'un coup avec "Vider la bibliothèque".
