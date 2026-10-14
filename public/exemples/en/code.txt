@@ -1,29 +1,35 @@
 Write hangman in Python, with the hangman drawing completed at each wrong guess.
 
-Write a Python program that estimates π with the Monte Carlo method using one million points.
-
 Write Conway's Game of Life in JavaScript, in an HTML page with a canvas.
-
-Write the Caesar cipher in Python, with one function to encrypt and one to decrypt.
-
-Write a five-question quiz in HTML and JavaScript, with the score shown at the end.
-
-Write a Python program that solves a Sudoku grid by backtracking.
-
-Write an animated analogue clock in HTML, CSS and JavaScript.
-
-Write a Python program with turtle that draws the Koch snowflake.
-
-Write an SQL query that ranks pupils by descending average from a table marks(pupil, subject, mark).
 
 Write a C++ program that simulates one million rolls of two dice and prints the frequency of each sum.
 
-Write the sieve of Eratosthenes in Python to find the prime numbers up to 1000.
+Write the Caesar cipher in Java, with one method to encrypt and one to decrypt.
 
-Write a Python program that simulates a ball falling with air resistance and plots its speed with matplotlib.
-
-Write a Java class BankAccount with deposit, withdrawal and a history of operations.
+Write an SQL query that ranks pupils by descending average from a table marks(pupil, subject, mark).
 
 Write a Bash script that backs up a folder into a dated archive and keeps only the last seven.
 
-Write insertion sort in Python, commented line by line, with a step-by-step example.
+Write a Python program that estimates π with the Monte Carlo method using one million points.
+
+Write a five-question quiz in HTML and JavaScript, with the score shown at the end.
+
+Write a C++ program that solves a Sudoku grid by backtracking.
+
+Write two-player noughts and crosses in Java, in the console.
+
+Write the SQL queries that create a library database (books, pupils, loans) and list the overdue books.
+
+Write a Bash script that renames the photos in a folder with the date they were taken.
+
+Write a Python program with turtle that draws the Koch snowflake.
+
+Write an animated analogue clock in HTML, CSS and JavaScript.
+
+Write the sieve of Eratosthenes in C++ to find the prime numbers up to one million.
+
+Write insertion sort in Java, commented line by line, with a step-by-step example.
+
+Write an SQL query that gives, for each subject, the best mark and the pupil who got it.
+
+Write a Bash script that counts the words in each text file of a folder and shows the ranking.

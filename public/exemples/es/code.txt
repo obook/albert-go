@@ -1,29 +1,35 @@
 Escribe el juego del ahorcado en Python, con el dibujo del ahorcado que se completa con cada error.
 
-Escribe un programa en Python que estime π por el método de Montecarlo con un millón de puntos.
-
 Escribe el juego de la vida de Conway en JavaScript, en una página HTML con un canvas.
-
-Escribe el cifrado César en Python, con una función para cifrar y otra para descifrar.
-
-Escribe un cuestionario de cinco preguntas en HTML y JavaScript, con la puntuación al final.
-
-Escribe un programa en Python que resuelva un sudoku por vuelta atrás.
-
-Escribe un reloj analógico animado en HTML, CSS y JavaScript.
-
-Escribe un programa en Python con turtle que dibuje el copo de nieve de Koch.
-
-Escribe una consulta SQL que clasifique a los alumnos por media descendente a partir de una tabla notas(alumno, asignatura, nota).
 
 Escribe un programa en C++ que simule un millón de lanzamientos de dos dados y muestre la frecuencia de cada suma.
 
-Escribe la criba de Eratóstenes en Python para encontrar los números primos hasta 1000.
+Escribe el cifrado César en Java, con un método para cifrar y otro para descifrar.
 
-Escribe un programa en Python que simule la caída de una pelota con rozamiento y dibuje su velocidad con matplotlib.
-
-Escribe una clase Java CuentaBancaria con ingreso, retirada e historial de operaciones.
+Escribe una consulta SQL que clasifique a los alumnos por media descendente a partir de una tabla notas(alumno, asignatura, nota).
 
 Escribe un script Bash que guarde una carpeta en un archivo comprimido con fecha y conserve solo los siete últimos.
 
-Escribe el ordenamiento por inserción en Python, comentado línea por línea, con un ejemplo paso a paso.
+Escribe un programa en Python que estime π por el método de Montecarlo con un millón de puntos.
+
+Escribe un cuestionario de cinco preguntas en HTML y JavaScript, con la puntuación al final.
+
+Escribe un programa en C++ que resuelva un sudoku por vuelta atrás.
+
+Escribe el tres en raya para dos jugadores en Java, en la consola.
+
+Escribe las consultas SQL que crean una base de datos de biblioteca (libros, alumnos, préstamos) y listan los libros con retraso.
+
+Escribe un script Bash que renombre las fotos de una carpeta con su fecha de captura.
+
+Escribe un programa en Python con turtle que dibuje el copo de nieve de Koch.
+
+Escribe un reloj analógico animado en HTML, CSS y JavaScript.
+
+Escribe la criba de Eratóstenes en C++ para encontrar los números primos hasta un millón.
+
+Escribe el ordenamiento por inserción en Java, comentado línea por línea, con un ejemplo paso a paso.
+
+Escribe una consulta SQL que dé, para cada asignatura, la mejor nota y el alumno que la obtuvo.
+
+Escribe un script Bash que cuente las palabras de cada archivo de texto de una carpeta y muestre la clasificación.
