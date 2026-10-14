@@ -7,3 +7,23 @@ Da la fórmula del volumen de una esfera y un ejemplo con r = 5 cm.
 Da la fórmula del interés compuesto y un ejemplo a 5 años al 3 %.
 
 Da la fórmula de las soluciones de una ecuación de segundo grado y un ejemplo.
+
+Escribe la ecuación química de la combustión del metano con oxígeno.
+
+Escribe la ecuación global de la fotosíntesis.
+
+Da la fórmula de la velocidad media y un ejemplo con 150 km recorridos en 1 h 30 min.
+
+Da la ley de Ohm y un ejemplo con una resistencia de 220 Ω por la que circula una corriente de 50 mA.
+
+Da la fórmula de la energía cinética y un ejemplo para un coche de 1000 kg que circula a 90 km/h.
+
+Da la fórmula del volumen de un cilindro y un ejemplo con r = 4 cm y h = 10 cm.
+
+Da la relación de Einstein E = mc² y calcula la energía contenida en 1 g de materia.
+
+Da la fórmula de Herón para el área de un triángulo y un ejemplo con lados de 5, 6 y 7 cm.
+
+Da la fórmula de la concentración en masa y un ejemplo con 5 g de sal disueltos en 250 mL de agua.
+
+Da la fórmula del peso y calcula el peso de una persona de 70 kg en la Tierra y en la Luna.

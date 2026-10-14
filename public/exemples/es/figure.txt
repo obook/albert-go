@@ -6,4 +6,24 @@ Dibuja un cuadrado y sus dos diagonales.
 
 Dibuja un hexágono regular inscrito en un círculo.
 
-Dibuja la curva de la función cuadrado entre -3 y 3.
+Dibuja las curvas de f(x) = x, g(x) = x² y h(x) = x³ entre -2 y 2.
+
+Dibuja una flor de seis pétalos construida con compás dentro de un círculo.
+
+Dibuja el sistema solar: el Sol y los ocho planetas en orden, con sus nombres.
+
+Dibuja un cubo en perspectiva caballera, con las aristas ocultas en línea discontinua.
+
+Dibuja las curvas de las funciones seno y coseno entre -2π y 2π.
+
+Dibuja un triángulo y sus tres medianas, que se cortan en el baricentro G.
+
+Dibuja un reloj que marque las tres y cuarto.
+
+Dibuja una circunferencia, un punto A sobre ella y la recta tangente a la circunferencia en A.
+
+Dibuja la parábola y = x² - 2x - 3 para x entre -2 y 4, marcando sus puntos de corte con el eje de abscisas.
+
+Dibuja los anillos olímpicos: cinco anillos azul, amarillo, negro, verde y rojo.
+
+Dibuja un paralelogramo ABCD, sus diagonales y su punto de intersección O.

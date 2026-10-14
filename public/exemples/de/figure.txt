@@ -7,3 +7,23 @@ Zeichne ein Quadrat und seine beiden Diagonalen.
 Zeichne ein regelmäßiges Sechseck, das einem Kreis einbeschrieben ist.
 
 Zeichne die Graphen von y = x, y = x² und y = x³ zwischen -2 und 2.
+
+Zeichne eine sechsblättrige Rosette, die mit dem Zirkel in einem Kreis konstruiert ist.
+
+Zeichne das Sonnensystem: die Sonne und die acht Planeten in der richtigen Reihenfolge, mit ihren Namen.
+
+Zeichne einen Würfel im Schrägbild, die verdeckten Kanten gestrichelt.
+
+Zeichne die Graphen von y = sin(x) und y = cos(x) zwischen -2π und 2π.
+
+Zeichne ein Dreieck mit seinen drei Seitenhalbierenden, die sich im Schwerpunkt S schneiden.
+
+Zeichne eine Uhr, die 3:15 Uhr anzeigt.
+
+Zeichne einen Kreis, einen Punkt A auf dem Kreis und die Tangente an den Kreis im Punkt A.
+
+Zeichne die Parabel y = x² - 2x - 3 zwischen -2 und 4 und markiere ihre Schnittpunkte mit der x-Achse.
+
+Zeichne die olympischen Ringe: fünf Ringe in Blau, Gelb, Schwarz, Grün und Rot.
+
+Zeichne ein Parallelogramm ABCD, seine Diagonalen und ihren Schnittpunkt O.

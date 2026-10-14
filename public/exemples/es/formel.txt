@@ -9,3 +9,21 @@ Calcula la integral de x·e^x entre 0 y 1.
 X sigue la distribución binomial de parámetros n = 10 y p = 0,3. Calcula P(X ≤ 3).
 
 Haz la tabla de variación de f(x) = x³ - 3x.
+
+Factoriza x³ - 6x² + 11x - 6.
+
+Calcula la derivada de f(x) = ln(x² + 1).
+
+Da una primitiva de f(x) = x·cos(x).
+
+Resuelve la ecuación e^(2x) - 3e^x + 2 = 0.
+
+¿Cuál es el límite de sen(x)/x cuando x tiende a 0?
+
+X sigue la distribución normal de media 100 y desviación típica 15. Calcula P(85 ≤ X ≤ 115).
+
+Resuelve z² + 2z + 5 = 0 en el conjunto de los números complejos.
+
+Haz la tabla de variación de f(x) = (2x + 1)/(x - 1).
+
+Calcula la inversa de la matriz [[2, 1], [5, 3]].

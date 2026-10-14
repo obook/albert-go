@@ -9,3 +9,21 @@ Was ist der Grenzwert von (1 + 1/n)^n, wenn n gegen +∞ geht?
 X ist binomialverteilt mit n = 10 und p = 0,3. Berechne P(X ≤ 3).
 
 Erstelle die Monotonietabelle von f(x) = x³ - 3x.
+
+Faktorisiere x³ - 6x² + 11x - 6.
+
+Berechne die Ableitung von f(x) = ln(x² + 1).
+
+Gib eine Stammfunktion von f(x) = x·cos(x) an.
+
+Löse die Gleichung e^(2x) - 3e^x + 2 = 0.
+
+Was ist der Grenzwert von sin(x)/x, wenn x gegen 0 geht?
+
+X ist normalverteilt mit Erwartungswert 100 und Standardabweichung 15. Berechne P(85 ≤ X ≤ 115).
+
+Löse z² + 2z + 5 = 0 in der Menge der komplexen Zahlen.
+
+Erstelle die Monotonietabelle von f(x) = (2x + 1)/(x - 1).
+
+Berechne die Inverse der Matrix [[2, 1], [5, 3]].

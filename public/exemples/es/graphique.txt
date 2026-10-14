@@ -1,0 +1,29 @@
+Haz un gráfico de barras de las entradas del cine: lunes 85, martes 120, miércoles 240, jueves 110, viernes 150, sábado 310.
+
+Haz un gráfico de líneas de las temperaturas de la semana: lunes 12 °C, martes 14 °C, miércoles 11 °C, jueves 9 °C, viernes 13 °C, sábado 16 °C, domingo 17 °C.
+
+Haz un gráfico de líneas de la población de Francia, en millones: 1900: 41, 1950: 42, 1970: 51, 1990: 57, 2010: 63, 2025: 68.
+
+Haz un gráfico de barras de las medias de la clase por asignatura: lengua 12,5, matemáticas 11, historia 13, inglés 14, biología 12, educación física 15.
+
+Haz un gráfico de líneas de la evolución del número de alumnos del instituto: 2019: 512, 2020: 530, 2021: 548, 2022: 541, 2023: 563, 2024: 580, 2025: 575.
+
+Haz un gráfico de barras de los libros prestados en la biblioteca del centro: septiembre 120, octubre 185, noviembre 210, diciembre 150, enero 230, febrero 195.
+
+Haz un gráfico de barras de cómo vienen los alumnos al centro: a pie 85, en bici 30, en autobús 140, en coche 95.
+
+Haz un gráfico de líneas de las precipitaciones en Brest, en mm: enero 120, febrero 95, marzo 85, abril 70, mayo 65, junio 50, julio 45.
+
+Haz un gráfico de líneas del crecimiento de una planta de judía, en cm: día 1: 0, día 3: 2, día 5: 5, día 7: 9, día 9: 14, día 11: 18.
+
+Haz un gráfico de barras de los deportes preferidos de la clase: fútbol 9, baloncesto 6, natación 5, danza 4, tenis 3, judo 2.
+
+Haz un gráfico de líneas de la concentración de CO2 en la atmósfera, en ppm: 1960: 317, 1980: 339, 2000: 370, 2010: 390, 2020: 414, 2024: 424.
+
+Haz un gráfico de barras del consumo de electricidad del colegio, en kWh: octubre 3200, noviembre 4100, diciembre 4800, enero 5000, febrero 4300.
+
+Haz un gráfico de barras de las medallas de Francia en los Juegos de París 2024: oro 16, plata 26, bronce 22.
+
+Haz un gráfico de líneas de la venta de pasteles en la fiesta del colegio: 14 h: 25, 15 h: 48, 16 h: 62, 17 h: 40, 18 h: 15.
+
+Haz un gráfico de barras de la altura de las montañas más altas de Francia, en m: Mont Blanc 4806, Barre des Écrins 4102, Grande Casse 3855, Vignemale 3298.

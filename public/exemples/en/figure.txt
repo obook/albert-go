@@ -7,3 +7,23 @@ Draw a square and its two diagonals.
 Draw a regular hexagon inscribed in a circle.
 
 Draw the curve of the square function between -3 and 3.
+
+Draw a six-petal rosette constructed with a compass inside a circle.
+
+Draw the solar system: the Sun and the eight planets in order, with their names.
+
+Draw a cube in oblique perspective, with the hidden edges shown as dashed lines.
+
+Draw the curves of y = sin(x) and y = cos(x) between -2π and 2π.
+
+Draw a triangle and its three medians, which meet at the centroid G.
+
+Draw a clock showing a quarter past three.
+
+Draw a circle, a point A on the circle and the tangent to the circle at A.
+
+Draw the parabola y = x² - 2x - 3 between -2 and 4 and mark the points where it crosses the x-axis.
+
+Draw the Olympic rings: five rings in blue, yellow, black, green and red.
+
+Draw a parallelogram ABCD, its diagonals and their point of intersection O.

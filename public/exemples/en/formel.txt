@@ -9,3 +9,21 @@ What is the limit of (1 + 1/n)^n as n tends to +∞?
 X follows the binomial distribution with n = 10 and p = 0.3. Compute P(X ≤ 3).
 
 Draw up the table of variations of f(x) = x³ - 3x.
+
+Factorise x³ - 6x² + 11x - 6.
+
+Compute the derivative of f(x) = ln(x² + 1).
+
+Find an antiderivative of f(x) = x·cos(x).
+
+Solve the equation e^(2x) - 3e^x + 2 = 0.
+
+What is the limit of sin(x)/x as x tends to 0?
+
+X follows the normal distribution with mean 100 and standard deviation 15. Compute P(85 ≤ X ≤ 115).
+
+Solve z² + 2z + 5 = 0 over the complex numbers.
+
+Draw up the table of variations of f(x) = (2x + 1)/(x - 1).
+
+Compute the inverse of the matrix [[2, 1], [5, 3]].

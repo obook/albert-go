@@ -205,53 +205,6 @@ for (const bouton of document.querySelectorAll('[data-outil]')) {
     });
 }
 
-/**
- * Question de calcul tirée au hasard : un pourcentage ou une division.
- *
- * Un pourcentage d'un entier tombe juste (deux décimales au plus). Une division
- * peut ne pas tomber juste : "environ" seulement si le résultat a plus de deux décimales.
- *
- * @returns {string} Par exemple "Combien font 35 % de 437 ?" ou "Combien font environ 413 divisé par 7 ?".
- */
-function exempleCalcul() {
-    if (Math.random() < 0.5) {
-        const pourcent = 5 + 5 * Math.floor(Math.random() * 19);
-        const nombre = 20 + Math.floor(Math.random() * 981);
-        return t('bienvenue.exemple-calcul', { p: pourcent, n: nombre.toLocaleString(I18n.langue) });
-    }
-    const dividende = 100 + Math.floor(Math.random() * 900);
-    const diviseur = 3 + Math.floor(Math.random() * 7);
-    const deuxDecimales = (dividende * 100) % diviseur === 0;
-    return t(deuxDecimales ? 'bienvenue.exemple-division' : 'bienvenue.exemple-division-environ',
-        { a: dividende, b: diviseur });
-}
-
-/**
- * Entrées d'un cinéma tirées au hasard, mais vraisemblables : creux le lundi,
- * pics le mercredi (sortie des films) et le samedi.
- *
- * @returns {string} Par exemple "... : lundi 85, mardi 120, mercredi 240, jeudi 110, vendredi 150, samedi 310."
- */
-function exempleGraphique() {
-    const base = 60 + Math.floor(Math.random() * 61);
-    const poids = { lun: 1, mar: 1.4, mer: 2.6, jeu: 1.3, ven: 1.7, sam: 3.2 };
-    const visiteurs = {};
-    for (const [jour, p] of Object.entries(poids)) {
-        visiteurs[jour] = Math.round(base * p * (0.85 + Math.random() * 0.3));
-    }
-    return t('bienvenue.exemple-graphique', visiteurs);
-}
-
-/** Exemples fabriqués ici, sans fichier : tirés au hasard, ou texte unique. */
-const EXEMPLES_ALEATOIRES = {
-    'bienvenue.exemple-calcul': exempleCalcul,
-    'bienvenue.exemple-graphique': exempleGraphique,
-    /* Demandes types de Projet : un seul texte, sans fichier d'exemples. */
-    'projet.exemple-evaluation': () => t('projet.exemple-evaluation'),
-    'projet.exemple-synthese': () => t('projet.exemple-synthese'),
-    'projet.exemple-courrier': () => t('projet.exemple-courrier')
-};
-
 /** Variantes lues dans public/exemples (promesses, par fichier), et dernière proposée. */
 const exemplesLus = {};
 const dernierExemple = {};
@@ -260,12 +213,12 @@ const dernierExemple = {};
  * Exemple tiré dans exemples/<langue>/<nom>.txt, jamais deux fois de suite le même.
  * Fichier absent ou illisible : l'exemple des fichiers de langue.
  *
- * @param {string} cle - Clé de l'exemple, "bienvenue.exemple-corriger" par exemple.
+ * @param {string} cle - Clé de l'exemple : "bienvenue.exemple-corriger" lit corriger.txt, "projet.exemple-courrier" projet-courrier.txt.
  * @param {string} langue - Code de langue du fichier.
  * @returns {Promise<string>} Texte à mettre dans la saisie.
  */
 async function exempleFichier(cle, langue) {
-    const chemin = 'exemples/' + langue + '/' + cle.replace('bienvenue.exemple-', '') + '.txt';
+    const chemin = 'exemples/' + langue + '/' + cle.replace('bienvenue.exemple-', '').replace('projet.exemple-', 'projet-') + '.txt';
     if (!exemplesLus[chemin]) {
         exemplesLus[chemin] = fetch(chemin)
             .then(res => (res.ok ? res.text() : ''))
@@ -290,9 +243,7 @@ for (const bouton of document.querySelectorAll('.suggestion')) {
         const cle = bouton.dataset.exemple;
         /* Traduire vers la langue de l'interface : l'exemple est pris dans une autre langue. */
         const autreLangue = outilActuel === 'traduire' && langueCible === I18n.langue;
-        const aleatoire = !autreLangue && EXEMPLES_ALEATOIRES[cle];
-        champ.value = aleatoire ? aleatoire()
-            : await exempleFichier(cle, autreLangue ? (langueCible === 'en' ? 'fr' : 'en') : I18n.langue);
+        champ.value = await exempleFichier(cle, autreLangue ? (langueCible === 'en' ? 'fr' : 'en') : I18n.langue);
         /* "Faire une recherche" active le globe, s'il ne l'est pas déjà. */
         if (bouton.dataset.recherche !== undefined && !globeActif) {
             $('recherche-web').click();

@@ -9,3 +9,21 @@ Quelle est la limite de (1 + 1/n)^n quand n tend vers +∞ ?
 X suit la loi binomiale de paramètres n = 10 et p = 0,3. Calcule P(X ≤ 3).
 
 Dresse le tableau de variations de f(x) = x³ - 3x.
+
+Factorise x³ - 6x² + 11x - 6.
+
+Calcule la dérivée de f(x) = ln(x² + 1).
+
+Donne une primitive de f(x) = x·cos(x).
+
+Résous l'équation e^(2x) - 3e^x + 2 = 0.
+
+Quelle est la limite de sin(x)/x quand x tend vers 0 ?
+
+X suit la loi normale de moyenne 100 et d'écart-type 15. Calcule P(85 ≤ X ≤ 115).
+
+Résous z² + 2z + 5 = 0 dans l'ensemble des nombres complexes.
+
+Dresse le tableau de variations de f(x) = (2x + 1)/(x - 1).
+
+Calcule l'inverse de la matrice [[2, 1], [5, 3]].

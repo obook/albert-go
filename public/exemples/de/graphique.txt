@@ -1,0 +1,29 @@
+Erstelle ein Balkendiagramm der Kinobesucher: Montag 85, Dienstag 120, Mittwoch 240, Donnerstag 110, Freitag 150, Samstag 310.
+
+Erstelle ein Liniendiagramm der Temperaturen dieser Woche: Montag 12 °C, Dienstag 14 °C, Mittwoch 11 °C, Donnerstag 9 °C, Freitag 13 °C, Samstag 16 °C, Sonntag 17 °C.
+
+Erstelle ein Liniendiagramm der Bevölkerung Frankreichs in Millionen: 1900: 41, 1950: 42, 1970: 51, 1990: 57, 2010: 63, 2025: 68.
+
+Erstelle ein Balkendiagramm der Durchschnittspunkte der Klasse pro Fach: Deutsch 12,5, Mathe 11, Geschichte 13, Englisch 14, Biologie 12, Sport 15.
+
+Erstelle ein Liniendiagramm der Schülerzahlen unserer Schule: 2019: 512, 2020: 530, 2021: 548, 2022: 541, 2023: 563, 2024: 580, 2025: 575.
+
+Erstelle ein Balkendiagramm der ausgeliehenen Bücher in der Schulbibliothek: September 120, Oktober 185, November 210, Dezember 150, Januar 230, Februar 195.
+
+Erstelle ein Balkendiagramm zum Schulweg der Schüler: zu Fuß 85, mit dem Fahrrad 30, mit dem Bus 140, mit dem Auto 95.
+
+Erstelle ein Liniendiagramm der Niederschläge in Brest in mm: Januar 120, Februar 95, März 85, April 70, Mai 65, Juni 50, Juli 45.
+
+Erstelle ein Liniendiagramm zum Wachstum einer Bohnenpflanze in cm: Tag 1: 0, Tag 3: 2, Tag 5: 5, Tag 7: 9, Tag 9: 14, Tag 11: 18.
+
+Erstelle ein Balkendiagramm der Lieblingssportarten der Klasse: Fußball 9, Basketball 6, Schwimmen 5, Tanzen 4, Tennis 3, Judo 2.
+
+Erstelle ein Liniendiagramm der CO2-Konzentration in der Atmosphäre in ppm: 1960: 317, 1980: 339, 2000: 370, 2010: 390, 2020: 414, 2024: 424.
+
+Erstelle ein Balkendiagramm des Stromverbrauchs der Schule in kWh: Oktober 3200, November 4100, Dezember 4800, Januar 5000, Februar 4300.
+
+Erstelle ein Balkendiagramm der Medaillen Frankreichs bei den Olympischen Spielen 2024 in Paris: Gold 16, Silber 26, Bronze 22.
+
+Erstelle ein Liniendiagramm der Kuchenverkäufe beim Schulfest: 14 Uhr: 25, 15 Uhr: 48, 16 Uhr: 62, 17 Uhr: 40, 18 Uhr: 15.
+
+Erstelle ein Balkendiagramm der höchsten Berge Frankreichs in m: Mont Blanc 4806, Barre des Écrins 4102, Grande Casse 3855, Vignemale 3298.

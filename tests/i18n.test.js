@@ -72,14 +72,20 @@ test('heure : l\'heure seule, au format court de la langue', () => {
     }
 });
 
-test('accueil : bouton Calcul formel, six exemples par langue', () => {
+test('accueil : chaque fichier d\'exemples a autant d\'exemples dans chaque langue', () => {
     const fs = require('node:fs');
     const path = require('node:path');
     const page = fs.readFileSync(path.join(__dirname, '../public/index.html'), 'utf8');
     assert.match(page, /data-exemple="bienvenue\.exemple-formel" data-t="bienvenue\.formel"/);
+    const dossier = path.join(__dirname, '../public/exemples');
+    const compter = (langue, fichier) => fs.readFileSync(path.join(dossier, langue, fichier), 'utf8')
+        .split(/\n\s*\n/).filter(v => v.trim()).length;
+    for (const fichier of fs.readdirSync(path.join(dossier, 'fr'))) {
+        for (const langue of I18n.LANGUES) {
+            assert.strictEqual(compter(langue, fichier), compter('fr', fichier), langue + '/' + fichier);
+        }
+    }
     for (const langue of I18n.LANGUES) {
-        const texte = fs.readFileSync(path.join(__dirname, '../public/exemples', langue, 'formel.txt'), 'utf8');
-        assert.strictEqual(texte.split(/\n\s*\n/).filter(v => v.trim()).length, 6, langue);
         assert.ok(I18n.TEXTES[langue]['bienvenue.formel'], langue);
     }
 });
