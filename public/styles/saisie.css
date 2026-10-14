@@ -112,8 +112,8 @@
 @media (hover: hover) {
     .saisie .joindre:hover, .saisie .recherche-web:hover { background: var(--bulle); }
 }
-/* Recherche activée : globe sur rond d'accent, comme le bouton Envoyer. */
-.saisie .recherche-web[aria-pressed="true"] { background: var(--accent); color: var(--sur-accent); }
+/* Recherche activée : le globe seul en orange, sans fond. */
+.saisie .recherche-web[aria-pressed="true"] { color: var(--accent); }
 
 /* Fichier glissé au-dessus de la carte. */
 .saisie.depot {
