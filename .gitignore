@@ -1,2 +1,5 @@
 # Clés locales, jamais dans le dépôt.
 .env
+
+# Playwright pour tests/ipad.webkit.js, installé sans être enregistré.
+node_modules/

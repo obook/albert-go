@@ -115,8 +115,11 @@ Navigateur -> webhook n8n -> API Albert
 ```bash
 ./local.sh     # sert la page sur http://localhost:8642 et l'ouvre dans le navigateur
 node --test    # tests
+node --test tests/ipad.webkit.js    # la page dans WebKit, le moteur de l'iPad (Playwright, voir l'en-tête du fichier)
 ./images-lancement.sh    # refait les images de lancement iOS (nouvel écran : une ligne dans ECRANS)
 ```
+
+Chaque MR lance les deux sur la forge (`.gitlab-ci.yml`). Un manque relevé sur un vrai iPad s'ajoute à `SAFARI_ANCIEN` dans `tests/ipad.webkit.js` : le WebKit de Playwright est plus récent que Safari sur un iPad pas à jour.
 
 Le webhook n'accepte que deux origines : l'adresse Pages du projet et `http://localhost:8642`.
 

@@ -1,3 +1,13 @@
+# À chaque MR : tests unitaires, puis Albert Go dans WebKit, le moteur de l'iPad.
+tests:
+  image: mcr.microsoft.com/playwright:v1.63.0-noble
+  script:
+    - node --test tests/*.test.js
+    - npm i --no-save --no-audit --no-fund playwright@1.63.0
+    - node --test tests/ipad.webkit.js
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+
 # Publie public/ sur Pages : https://booklageolivier.forge.apps.education.fr/albert-go/
 pages:
   image: alpine:latest
