@@ -150,7 +150,7 @@ I18n.TEXTES.de = {
     'bienvenue.exemple-formule': 'Gib die Formel für den Flächeninhalt eines Kreises und ein Beispiel mit r = 3 cm an.',
     'bienvenue.exemple-code': 'Schreibe Galgenmännchen in Python, mit einer Zeichnung, die bei jedem Fehler wächst.',
     'bienvenue.exemple-tirage': 'Lose die Reihenfolge dieser Abteilungen aus: Empfang, Buchhaltung, Personal, IT, Logistik.',
-    'bienvenue.exemple-recherche': 'Wer hat die Brailleschrift erfunden und wann?',
+    'bienvenue.exemple-recherche': 'Wer hat die Brailleschrift erfunden und wann? Zeig auch ein Porträt von Louis Braille.',
     'bienvenue.exemple-services': 'Wann sind dieses Jahr die Allerheiligenferien in Paris (Zone C)?',
     'cle.titre': 'Willkommen bei Albert Go',
     'cle.bienvenue': 'Ihr Schlüssel wurde akzeptiert. Stellen Sie Ihre erste Frage oder wählen Sie ein Modul im Menü.',

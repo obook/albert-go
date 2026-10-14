@@ -150,7 +150,7 @@ I18n.TEXTES.es = {
     'bienvenue.exemple-formule': 'Da la fórmula del área de un círculo y un ejemplo con r = 3 cm.',
     'bienvenue.exemple-code': 'Escribe el juego del ahorcado en Python, con el dibujo del ahorcado que se completa con cada error.',
     'bienvenue.exemple-tirage': 'Sortea el orden de intervención de estos servicios: recepción, contabilidad, recursos humanos, informática, logística.',
-    'bienvenue.exemple-recherche': '¿Quién inventó el braille y cuándo?',
+    'bienvenue.exemple-recherche': '¿Quién inventó el braille y cuándo? Muestra también un retrato de Louis Braille.',
     'bienvenue.exemple-services': '¿Cuáles son las fechas de las vacaciones de Todos los Santos en París (zona C) este año?',
     'cle.titre': 'Bienvenido a Albert Go',
     'cle.bienvenue': 'Su clave ha sido aceptada. Haga su primera pregunta o elija un módulo en el menú.',

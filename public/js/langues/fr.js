@@ -150,7 +150,7 @@ I18n.TEXTES.fr = {
     'bienvenue.exemple-formule': 'Donne la formule de l\'aire d\'un disque et un exemple avec r = 3 cm.',
     'bienvenue.exemple-code': 'Écris le jeu du pendu en Python, avec le dessin du pendu qui se complète à chaque erreur.',
     'bienvenue.exemple-tirage': 'Tire au sort l\'ordre de passage de ces services : accueil, comptabilité, ressources humaines, informatique, logistique.',
-    'bienvenue.exemple-recherche': 'Qui a inventé le braille et quand ?',
+    'bienvenue.exemple-recherche': 'Qui a inventé le braille et quand ? Montre aussi un portrait de Louis Braille.',
     'bienvenue.exemple-services': 'Quelles sont les dates des vacances de la Toussaint à Paris (zone C) cette année ?',
     'cle.titre': 'Bienvenue sur Albert Go',
     'cle.bienvenue': 'Votre clé est acceptée. Posez votre première question ou choisissez un module dans le menu.',

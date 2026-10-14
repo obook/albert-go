@@ -150,7 +150,7 @@ I18n.TEXTES.en = {
     'bienvenue.exemple-formule': 'Give the formula for the area of a circle and an example with r = 3 cm.',
     'bienvenue.exemple-code': 'Write hangman in Python, with the hangman drawing completed at each wrong guess.',
     'bienvenue.exemple-tirage': 'Draw the speaking order of these departments: reception, accounting, human resources, IT, logistics.',
-    'bienvenue.exemple-recherche': 'Who invented braille and when?',
+    'bienvenue.exemple-recherche': 'Who invented braille and when? Also show a portrait of Louis Braille.',
     'bienvenue.exemple-services': 'What are the dates of the All Saints\' holidays in Paris (zone C) this year?',
     'cle.titre': 'Welcome to Albert Go',
     'cle.bienvenue': 'Your key is accepted. Ask your first question or choose a module in the menu.',
