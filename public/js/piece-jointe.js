@@ -23,6 +23,10 @@ const EXTENSIONS_TEXTE = /\.(txt|md|csv|tsv|json|xml|html|css|js|py|tex|sql)$/i;
 /** Documents dont on extrait le texte. */
 const EXTENSIONS_DOCUMENT = /\.(pdf|docx|odt)$/i;
 
+/* Version de pdf.js dans son adresse : le service worker garde le fichier tant qu'elle ne change pas.
+   Sans elle, un appareil gardait l'ancienne version moderne, illisible sur un iPad sans Safari 18.2. */
+const PDFJS = '6.3.289-legacy';
+
 /** Espaces de noms du texte : .docx puis .odt. */
 const XML_DOCX = 'http://schemas.openxmlformats.org/wordprocessingml/2006/main';
 const XML_ODT = 'urn:oasis:names:tc:opendocument:xmlns:text:1.0';
@@ -147,8 +151,8 @@ async function audioEnWav(fichier) {
  * @returns {Promise<string>} Texte extrait.
  */
 async function lirePdf(fichier) {
-    const pdfjs = await import(new URL('vendor/pdfjs/pdf.min.mjs', document.baseURI).href);
-    pdfjs.GlobalWorkerOptions.workerSrc = 'vendor/pdfjs/pdf.worker.min.mjs';
+    const pdfjs = await import(new URL('vendor/pdfjs/pdf.min.mjs?v=' + PDFJS, document.baseURI).href);
+    pdfjs.GlobalWorkerOptions.workerSrc = 'vendor/pdfjs/pdf.worker.min.mjs?v=' + PDFJS;
     /* Sans eval : la CSP l'interdit. */
     const chargement = pdfjs.getDocument({ data: await fichier.arrayBuffer(), isEvalSupported: false });
     const pdf = await chargement.promise;
