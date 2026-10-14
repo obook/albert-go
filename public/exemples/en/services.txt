@@ -1,29 +1,29 @@
-What are the dates of the All Saints' holidays in zone A this year?
+What are the dates of the All Saints' holidays in Paris (zone C) this year?
 
-Which state lower secondary schools (collèges) are there in Mérignac?
+Which state lower secondary schools (collèges) are there in the 11th arrondissement of Paris?
 
-What is the quality of the tap water in Bordeaux?
+What is the quality of the tap water in Lyon?
 
-What are the address and opening hours of Pessac town hall?
+What are the address and opening hours of Marseille town hall?
 
-How many inhabitants does Libourne have and which department is it in?
+How many inhabitants does Toulouse have and which department is it in?
 
-Which public contracts for school transport are published in Gironde?
+Which public contracts for school transport are published in the Nord department?
 
-What is the SIREN number of the Office national des forêts?
+What is the SIREN number of the City of Nantes?
 
-Which computing BTS courses does Parcoursup offer in Toulouse?
+Which computing BTS courses does Parcoursup offer in Strasbourg?
 
-What are the dates of the summer holidays for zone C?
+What are the dates of the summer holidays in Bordeaux (zone A)?
 
-Which vocational upper secondary schools are there in Périgueux?
+Which vocational upper secondary schools are there in Lille?
 
-Which datasets about schools can be found on data.gouv.fr?
+Which datasets about transport in Rennes can be found on data.gouv.fr?
 
-Where is the prefecture of Gironde and what are its opening hours?
+Where is the prefecture of the Rhône, in Lyon, and what are its opening hours?
 
 What are the GPS coordinates of 10 rue de la Paix in Paris?
 
-Does the tap water in Rennes meet the standards? Give the latest results.
+Does the tap water in Montpellier meet the standards? Give the latest results.
 
-What are the postcodes of Saint-Denis, in Seine-Saint-Denis?
+What are the postcodes of Nice?

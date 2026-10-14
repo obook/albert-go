@@ -1,29 +1,29 @@
-¿Cuáles son las fechas de las vacaciones de Todos los Santos en la zona A este año?
+¿Cuáles son las fechas de las vacaciones de Todos los Santos en París (zona C) este año?
 
-¿Qué collèges públicos hay en Mérignac?
+¿Qué collèges públicos hay en el distrito 11 de París?
 
-¿Cuál es la calidad del agua del grifo en Burdeos?
+¿Cuál es la calidad del agua del grifo en Lyon?
 
-¿Cuáles son la dirección y el horario del ayuntamiento de Pessac?
+¿Cuáles son la dirección y el horario del ayuntamiento de Marsella?
 
-¿Cuántos habitantes tiene Libourne y en qué departamento está?
+¿Cuántos habitantes tiene Toulouse y en qué departamento está?
 
-¿Qué contratos públicos de transporte escolar se han publicado en Gironda?
+¿Qué contratos públicos de transporte escolar se han publicado en el departamento del Norte?
 
-¿Cuál es el número SIREN de la Office national des forêts?
+¿Cuál es el número SIREN del Ayuntamiento de Nantes?
 
-¿Qué formaciones de BTS en informática ofrece Parcoursup en Toulouse?
+¿Qué formaciones de BTS en informática ofrece Parcoursup en Estrasburgo?
 
-¿Cuáles son las fechas de las vacaciones de verano para la zona C?
+¿Cuáles son las fechas de las vacaciones de verano en Burdeos (zona A)?
 
-¿Qué institutos de formación profesional hay en Périgueux?
+¿Qué institutos de formación profesional hay en Lille?
 
-¿Qué conjuntos de datos sobre escuelas hay en data.gouv.fr?
+¿Qué conjuntos de datos sobre el transporte en Rennes hay en data.gouv.fr?
 
-¿Dónde está la prefectura de Gironda y cuál es su horario?
+¿Dónde está la prefectura del Ródano, en Lyon, y cuál es su horario?
 
 ¿Cuáles son las coordenadas GPS del 10 rue de la Paix en París?
 
-¿Cumple las normas el agua del grifo de Rennes? Da los últimos resultados.
+¿Cumple las normas el agua del grifo de Montpellier? Da los últimos resultados.
 
-¿Cuáles son los códigos postales de Saint-Denis, en Seine-Saint-Denis?
+¿Cuáles son los códigos postales de Niza?
