@@ -20,12 +20,7 @@ Ce qui reste à faire, du plus simple au plus long. Le détail des failles est d
 
 ## Documents et exports
 
-- PDF illisible sur l'iPad d'un collègue (Chrome), relevé le 14/10/2026 : "Document illisible" par le trombone comme par la bibliothèque, avec un fichier local, pas seulement depuis OneDrive. Sur ordinateur, le même PDF passe. Déjà fait sans effet : pdf.js en version legacy, puis sa version dans l'adresse contre le cache du service worker (`de442db`). Le message donne maintenant l'erreur de pdf.js entre parenthèses (`lireContenu`, `piece-jointe.js`) : la retirer une fois le bug compris. Test prévu sur un iPad personnel :
-  1. Vérifier dans "À propos" que le commit est `a2aed4f` ou plus récent ; sinon recharger la page.
-  2. Déposer par le trombone un PDF qui passe sur ordinateur (un programme de physique-chimie).
-  3. Relever le texte entre parenthèses après "Document illisible", ou en faire une capture.
-  4. Relever la version d'iPadOS (Réglages, Général, Informations).
-  5. Refaire l'essai dans Safari : Chrome sur iPad utilise le même moteur.
+- PDF illisible sur iPad, relevé le 14/10/2026 : `getTextContent` de pdf.js parcourt un flux par `for await`, que WebKit ne sait pas faire, donc aucun navigateur de l'iPad. `lirePdf` lit maintenant le flux à la main (`tests/pdf.test.js`). Reste à le confirmer sur l'iPad, puis à retirer l'erreur de pdf.js recopiée entre parenthèses après "Document illisible" (`lireContenu`, `piece-jointe.js`).
 - Imprimerie : essayer un long document avec un vrai modèle. Le rendu du document entier n'est vérifié que sur un sujet court, avec Small et Medium.
 - Ouvrir un .docx et un .odt produits dans Microsoft Word : seul LibreOffice a servi aux essais.
 - Modèle de l'enseignant : son propre .odt, avec son en-tête et une balise `{contenu}` où Albert Go insère le document, sur le principe d'odtPHP.

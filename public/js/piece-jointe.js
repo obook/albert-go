@@ -158,8 +158,12 @@ async function lirePdf(fichier) {
     const pdf = await chargement.promise;
     let texte = '';
     for (let n = 1; n <= pdf.numPages && texte.length <= TEXTE_MAX; n++) {
-        const contenu = await (await pdf.getPage(n)).getTextContent();
-        texte += contenu.items.map((bout) => bout.str + (bout.hasEOL ? '\n' : '')).join('') + '\n\n';
+        /* Pas getTextContent : il parcourt un flux par for await, que WebKit ne sait pas faire (tous les navigateurs de l'iPad). */
+        const lecteur = (await pdf.getPage(n)).streamTextContent().getReader();
+        for (let morceau = await lecteur.read(); !morceau.done; morceau = await lecteur.read()) {
+            texte += morceau.value.items.map((bout) => bout.str + (bout.hasEOL ? '\n' : '')).join('');
+        }
+        texte += '\n\n';
     }
     chargement.destroy();
     return texte;
