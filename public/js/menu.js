@@ -136,9 +136,11 @@ placerVolet();
 $('menu').addEventListener('click', (e) => {
     const bouton = e.target.closest('button');
     if (GRAND_ECRAN.matches) {
-        /* Colonne : choisir un module, une nouvelle discussion ou une ligne d'historique (discussions et
-           Imprimerie, Nouveau document compris) la replie, comme son bouton. Imprimerie la garde ouverte pour sa liste. */
-        if (bouton && (bouton.dataset.outil || bouton.id === 'nouvelle' || bouton.classList.contains('titre-conversation'))) {
+        /* Colonne : choisir un module, une nouvelle discussion, une ligne d'historique (discussions et
+           Imprimerie, Nouveau document compris), Partager ou À propos la replie, comme son bouton.
+           Imprimerie la garde ouverte pour sa liste. */
+        const replie = ['nouvelle', 'ouvrir-partage', 'ouvrir-info'];
+        if (bouton && (bouton.dataset.outil || replie.includes(bouton.id) || bouton.classList.contains('titre-conversation'))) {
             $('ouvrir-menu').click();
         }
         return;

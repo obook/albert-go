@@ -32,10 +32,6 @@
     --accent-survol: #9c3600;
     --sur-accent: #ffffff;
     --accent-clair: #fef0e6;
-    /* Boutons de l'accueil : gris en clair, clairs en sombre. */
-    --bouton-fond: var(--bord);
-    --bouton-texte: var(--texte);
-    --bouton-survol: var(--bord-carte);
     /* Pastilles 1, 2, 3 de l'accueil : cerclées de noir en clair seulement. */
     --pastille-bord: var(--texte);
     /* Bulle de la question : gris, séparée de l'accent des liens et titres. */
@@ -84,9 +80,6 @@
         --accent-survol: #ffa070;
         --sur-accent: #161616;
         --accent-clair: #45332f;
-    --bouton-fond: var(--texte);
-    --bouton-texte: var(--surface);
-    --bouton-survol: var(--texte-doux);
     --pastille-bord: transparent;
         --bulle: #363b4c;
         --sur-bulle: #eeeeee;
@@ -120,9 +113,6 @@
     --accent-survol: #ffa070;
     --sur-accent: #161616;
     --accent-clair: #45332f;
-    --bouton-fond: var(--texte);
-    --bouton-texte: var(--surface);
-    --bouton-survol: var(--texte-doux);
     --pastille-bord: transparent;
     --bulle: #363b4c;
     --sur-bulle: #eeeeee;

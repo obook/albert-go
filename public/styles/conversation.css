@@ -82,23 +82,23 @@ main {
 }
 .accueil .etapes > li::before { top: 50%; transform: translateY(-50%); }
 /* Bouton compact : il ne doit pas écraser le mot "Clé" à côté.
-   Couleurs par thème : --bouton-* dans base.css.
+   Orange de l'application, comme Envoyer.
    Trait, graisse et soulignement fixés : "Demander" est un lien, que Pico ne met pas en bouton. */
 .accueil .etapes .bouton-principal {
     width: auto;
     margin: 0;
     padding: 0.25rem 1rem;
     /* Trait de la couleur du fond : pas de cadre visible, même hauteur que les boutons de Pico. */
-    border: 1px solid var(--bouton-fond);
-    background: var(--bouton-fond);
-    color: var(--bouton-texte);
+    border: 1px solid var(--accent);
+    background: var(--accent);
+    color: var(--sur-accent);
     font-size: var(--taille-bouton);
     font-weight: 400;
     text-decoration: none;
 }
 .accueil .etapes .bouton-principal:hover {
-    border-color: var(--bouton-survol);
-    background: var(--bouton-survol);
+    border-color: var(--accent-survol);
+    background: var(--accent-survol);
 }
 /* Focus : contour net au clavier, rien après un clic (aucun bouton ne paraît choisi). */
 .accueil .etapes .bouton-principal:focus { box-shadow: none; }
