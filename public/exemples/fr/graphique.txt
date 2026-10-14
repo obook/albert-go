@@ -1,0 +1,29 @@
+Trace un graphique en barres des entrées du cinéma : lundi 85, mardi 120, mercredi 240, jeudi 110, vendredi 150, samedi 310.
+
+Trace la courbe des températures de la semaine : lundi 12 °C, mardi 14 °C, mercredi 11 °C, jeudi 9 °C, vendredi 13 °C, samedi 16 °C, dimanche 17 °C.
+
+Trace la courbe de la population de la France, en millions : 1900 : 41, 1950 : 42, 1970 : 51, 1990 : 57, 2010 : 63, 2025 : 68.
+
+Trace un graphique en barres des moyennes de la classe par matière : français 12,5, maths 11, histoire 13, anglais 14, SVT 12, sport 15.
+
+Trace l'évolution du nombre d'élèves du collège : 2019 : 512, 2020 : 530, 2021 : 548, 2022 : 541, 2023 : 563, 2024 : 580, 2025 : 575.
+
+Trace un graphique en barres des livres empruntés au CDI : septembre 120, octobre 185, novembre 210, décembre 150, janvier 230, février 195.
+
+Trace un graphique en barres des moyens de transport des élèves : à pied 85, à vélo 30, en bus 140, en voiture 95.
+
+Trace la courbe des précipitations à Brest, en mm : janvier 120, février 95, mars 85, avril 70, mai 65, juin 50, juillet 45.
+
+Trace la courbe de croissance d'un plant de haricot, en cm : jour 1 : 0, jour 3 : 2, jour 5 : 5, jour 7 : 9, jour 9 : 14, jour 11 : 18.
+
+Trace un graphique en barres des sports préférés de la classe : football 9, basket 6, natation 5, danse 4, tennis 3, judo 2.
+
+Trace la courbe de la concentration de CO2 dans l'atmosphère, en ppm : 1960 : 317, 1980 : 339, 2000 : 370, 2010 : 390, 2020 : 414, 2024 : 424.
+
+Trace un graphique en barres de la consommation d'électricité de l'école, en kWh : octobre 3 200, novembre 4 100, décembre 4 800, janvier 5 000, février 4 300.
+
+Trace un graphique en barres des médailles de la France aux Jeux de Paris 2024 : or 16, argent 26, bronze 22.
+
+Trace la courbe des ventes de gâteaux à la kermesse : 14 h : 25, 15 h : 48, 16 h : 62, 17 h : 40, 18 h : 15.
+
+Trace un graphique en barres de la hauteur des plus hautes montagnes de France, en m : mont Blanc 4 806, Barre des Écrins 4 102, Grande Casse 3 855, Vignemale 3 298.

@@ -7,3 +7,23 @@ Donne la formule du volume d'une sphère et un exemple avec r = 5 cm.
 Donne la formule des intérêts composés et un exemple sur 5 ans à 3 %.
 
 Donne la formule des solutions d'une équation du second degré et un exemple.
+
+Écris l'équation de la combustion du méthane dans le dioxygène.
+
+Écris l'équation bilan de la photosynthèse.
+
+Donne la formule de la vitesse moyenne et un exemple avec 150 km parcourus en 1 h 30.
+
+Donne la loi d'Ohm et un exemple avec une résistance de 220 Ω traversée par un courant de 50 mA.
+
+Donne la formule de l'énergie cinétique et un exemple pour une voiture de 1 000 kg roulant à 90 km/h.
+
+Donne la formule du volume d'un cylindre et un exemple avec r = 4 cm et h = 10 cm.
+
+Donne la relation d'Einstein E = mc² et calcule l'énergie contenue dans 1 g de matière.
+
+Donne la formule de Héron pour l'aire d'un triangle et un exemple avec des côtés de 5, 6 et 7 cm.
+
+Donne la formule de la concentration massique et un exemple avec 5 g de sel dissous dans 250 mL d'eau.
+
+Donne la formule du théorème de Thalès et un exemple avec des longueurs.

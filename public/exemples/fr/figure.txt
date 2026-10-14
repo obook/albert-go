@@ -7,3 +7,23 @@ Dessine un carré et ses deux diagonales.
 Dessine un hexagone régulier inscrit dans un cercle.
 
 Trace les courbes de y = x, y = x² et y = x³ entre -2 et 2.
+
+Dessine une rosace à six pétales construite au compas dans un cercle.
+
+Dessine le système solaire : le Soleil et les huit planètes dans l'ordre, avec leur nom.
+
+Dessine un cube en perspective cavalière, avec les arêtes cachées en pointillés.
+
+Trace les courbes de y = sin(x) et y = cos(x) entre -2π et 2π.
+
+Dessine un triangle et ses trois médianes, qui se coupent au centre de gravité G.
+
+Dessine une horloge qui indique 3 h 15.
+
+Dessine un cercle, un point A sur le cercle et la tangente au cercle en A.
+
+Trace la parabole y = x² - 2x - 3 entre -2 et 4 et marque ses points d'intersection avec l'axe des abscisses.
+
+Dessine le drapeau de l'Union européenne : douze étoiles jaunes en cercle sur fond bleu.
+
+Dessine un parallélogramme ABCD, ses diagonales et leur point d'intersection O.

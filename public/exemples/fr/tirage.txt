@@ -7,3 +7,23 @@ Tire au sort une couleur parmi : rouge, bleu, vert, jaune, violet.
 Répartis au hasard en deux équipes : lion, zèbre, girafe, éléphant, hippopotame, rhinocéros.
 
 Tire au sort l'ordre de passage de ces services : accueil, comptabilité, ressources humaines, informatique, logistique.
+
+Répartis au hasard en trois groupes : Léa, Hugo, Inès, Tom, Jade, Nathan, Chloé, Malik, Emma.
+
+Tire au sort l'ordre de passage des exposés : Lucas, Sarah, Yanis, Manon, Adam, Louise, Gabriel.
+
+Tire au sort un sujet d'exposé parmi : les volcans, les abeilles, le système solaire, les océans, les dinosaures, les pyramides.
+
+Tire au sort deux délégués parmi : Rayan, Lina, Paul, Zoé, Ethan, Camille.
+
+Tire au sort trois numéros parmi les nombres de 1 à 20.
+
+Lance un dé à six faces.
+
+Tire au sort une capitale européenne pour notre prochain voyage virtuel : Rome, Madrid, Berlin, Lisbonne, Athènes, Prague, Vienne.
+
+Répartis au hasard en deux équipes pour le match : Noah, Alice, Sacha, Rose, Liam, Anna, Mathis, Léna.
+
+Tire au sort le gagnant de la tombola parmi les tickets 1 à 50.
+
+Tire au sort une poésie à apprendre parmi : Le Corbeau et le Renard, Demain dès l'aube, Le Dormeur du val, Liberté.
