@@ -315,7 +315,16 @@ function bulleReponse(texte, titre, langue, animer = false, recherches = null) {
         carte.append(note);
         actions.append(boutonTrace(note, ICONES.image, t('reponse.images')));
     }
-    const cherchees = (recherches || []).filter(r => r && !r.image_commons && !Object.keys(OUTILS_LOCAUX).some(nom => r[nom]));
+    const sources = (recherches || []).filter(r => r && r.bibliotheque).map(r => r.bibliotheque);
+    if (sources.length) {
+        const note = document.createElement('p');
+        note.className = 'note calculs';
+        note.textContent = t('reponse.note-bibliotheque', { lignes: sources.join(' ; ') });
+        note.hidden = true;
+        carte.append(note);
+        actions.append(boutonTrace(note, ICONES.bibliotheque, t('reponse.bibliotheque')));
+    }
+    const cherchees = (recherches || []).filter(r => r && !r.image_commons && !r.bibliotheque && !Object.keys(OUTILS_LOCAUX).some(nom => r[nom]));
     if (cherchees.length) {
         const note = elementRecherches(cherchees);
         note.hidden = true;

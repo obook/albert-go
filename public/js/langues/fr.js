@@ -475,6 +475,8 @@ I18n.TEXTES.fr = {
     'etat.images': 'Recherche d\'images « {mots} »...',
     'reponse.images': 'Voir les images cherchées',
     'reponse.note-images': 'Images cherchées : {lignes}',
+    'reponse.bibliotheque': 'Voir les sources de la bibliothèque',
+    'reponse.note-bibliotheque': 'Sources de la bibliothèque jointes à la question : {lignes}',
     'images.rappel': 'Pour une photo ou une image, utilise l\'outil image_commons, pas recherche_web, puis donne le lien d\'un fichier trouvé. Ne décris jamais un fichier sans son lien ; si aucun ne correspond, dis-le.',
     'images.absent': 'Tu ne peux ni chercher ni montrer d\'image : si on t\'en demande une, dis qu\'il faut activer le globe de la barre de saisie, après avoir autorisé Internet dans Réglages > Outils s\'il n\'apparaît pas.',
     'services.rappel': 'Pour un service public, une entreprise, un établissement scolaire, des vacances scolaires, une adresse, une commune, un marché public, un jeu de données publiques, une formation Parcoursup ou la qualité de l\'eau du robinet, utilise l\'outil dédié plutôt que recherche_web.',
