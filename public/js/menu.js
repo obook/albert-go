@@ -136,9 +136,9 @@ placerVolet();
 $('menu').addEventListener('click', (e) => {
     const bouton = e.target.closest('button');
     if (GRAND_ECRAN.matches) {
-        /* Colonne : choisir un module ou une nouvelle discussion la replie, comme son bouton.
-           Imprimerie la garde ouverte pour sa liste, comme sur téléphone. */
-        if (bouton && (bouton.dataset.outil || bouton.id === 'nouvelle')) {
+        /* Colonne : choisir un module, une nouvelle discussion ou une ligne d'historique (discussions et
+           Imprimerie, Nouveau document compris) la replie, comme son bouton. Imprimerie la garde ouverte pour sa liste. */
+        if (bouton && (bouton.dataset.outil || bouton.id === 'nouvelle' || bouton.classList.contains('titre-conversation'))) {
             $('ouvrir-menu').click();
         }
         return;
