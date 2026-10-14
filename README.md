@@ -4,7 +4,7 @@ Chatbot minimal pour [Albert](https://ia.numerique.gouv.fr/outils-ia/albert-api/
 
 Essayer Albert Go en ligne : https://booklageolivier.forge.apps.education.fr/albert-go/
 
-Chaque utilisateur utilise sa propre clé API. Les clés s'obtiennent sur la [page d'Albert API](https://ia.numerique.gouv.fr/outils-ia/albert-api/).
+Chaque utilisateur a sa propre clé API. Les clés s'obtiennent sur la [page d'Albert API](https://ia.numerique.gouv.fr/outils-ia/albert-api/).
 
 ## Fonctionnalités
 
@@ -12,30 +12,24 @@ Chaque utilisateur utilise sa propre clé API. Les clés s'obtiennent sur la [pa
 
 | Module | Rôle |
 |---|---|
-| Discussion | Discuter avec Albert, qui corrige et traduit aussi sur demande ("Corrige ce texte : ...", "Traduis en anglais : ..."). |
-| Style | Reformuler un texte, avec trois propositions. |
-| Courrier | Rédiger un courrier à partir de quelques idées (voir plus bas). |
+| Discussion | Discuter avec Albert, qui corrige, reformule et traduit aussi sur demande ("Corrige ce texte : ...", "Reformule ce texte : ...", "Traduis en anglais : ..."). |
 | Imprimerie | Construire un document peu à peu à partir de sources déposées (voir plus bas). |
 
-Les modules Correction et Trad sont mis de côté : ils ne sont plus au menu, leurs anciennes conversations restent dans l'historique.
+Les modules Correction, Style, Courrier et Trad sont mis de côté : ils ne sont plus au menu, mais leurs anciennes conversations se rouvrent depuis l'historique.
 
 ### Réponses
 
-Les réponses acceptent le Markdown, les formules LaTeX et les diagrammes Mermaid, graphiques en barres ou en ligne compris ; un diagramme refusé par Mermaid est renvoyé une fois au modèle pour correction. La courbe d'une fonction est calculée et tracée par la page ; une figure écrite en SVG par le modèle s'affiche après nettoyage. En français, les consignes demandent les notations de France : virgule décimale, intervalles à crochets, calculs en colonne. Sous chaque réponse : copier le texte, le lire à voix haute avec une voix installée sur l'appareil ou l'enregistrer en .docx ou en .odt.
+Les réponses acceptent le Markdown, les formules LaTeX et les diagrammes Mermaid, graphiques en barres ou en ligne compris ; quand Mermaid refuse un diagramme, la page le renvoie une fois au modèle pour correction. La page calcule et trace elle-même la courbe d'une fonction ; elle nettoie une figure écrite en SVG par le modèle avant de l'afficher. En français, les consignes demandent les notations de France : virgule décimale, intervalles à crochets, calculs en colonne. Sous chaque réponse : copier le texte, le lire à voix haute avec une voix installée sur l'appareil ou l'enregistrer en .docx ou en .odt.
 
-Les deux fichiers sont écrits dans le navigateur, sans bibliothèque : titres, listes, tableaux, code, liens, figures et images en image. Les formules restent modifiables : équations Word dans le .docx, objets LibreOffice Math dans le .odt. Une formule que KaTeX n'a pas su lire garde sa source LaTeX. Les deux formats ont été vérifiés dans LibreOffice, pas dans Microsoft Word.
+La page écrit les deux fichiers dans le navigateur, sans bibliothèque : titres, listes, tableaux, code, liens, figures et images en image. Les formules restent modifiables : équations Word dans le .docx, objets LibreOffice Math dans le .odt. Une formule que KaTeX n'a pas su lire garde sa source LaTeX. Les deux formats sont vérifiés dans LibreOffice ; Microsoft Word reste à essayer.
 
 ### Fichiers joints
 
-Trombone, glisser-déposer ou Ctrl+V : un fichier texte, un PDF, un .docx ou un .odt est lu dans le navigateur, formules comprises pour ces deux derniers ; une image est transcrite par le modèle Medium, un enregistrement audio par whisper (8 minutes environ au plus), puis le texte part avec la question. S'il y a plusieurs voix dans l'enregistrement, chaque tour de parole est précédé de son locuteur. Dans Discussion et Imprimerie, l'image part aussi telle quelle et c'est un modèle qui lit les images qui répond : celui choisi s'il en est capable, sinon Gemma 4 ou Medium. Un PDF scanné n'a pas de texte : il se joint comme image.
+Trombone, glisser-déposer ou Ctrl+V : la page lit dans le navigateur un fichier texte, un PDF, un .docx ou un .odt, formules comprises pour ces deux derniers ; le modèle Medium transcrit une image et whisper un enregistrement audio (8 minutes environ au plus), puis le texte part avec la question. Quand l'enregistrement a plusieurs voix, la transcription nomme le locuteur de chaque tour de parole. Dans Discussion et Imprimerie, l'image part aussi telle quelle et un modèle qui lit les images répond : celui choisi s'il en est capable, sinon Gemma 4 ou Medium. Un PDF scanné n'a pas de texte : il se joint comme image.
 
 Dans Imprimerie, les fichiers déposés sont les sources du document (voir plus bas).
 
-Dans Discussion, le bouton de bibliothèque de l'en-tête ouvre la même bibliothèque qu'Imprimerie : les sources cochées partent en entier avec chaque question, et la réponse s'appuie sur elles. Une icône sous la réponse les signale ; un clic donne leurs noms. Le trombone, lui, joint un fichier à la seule question en cours.
-
-### Courrier
-
-On écrit une formule d'appel ("Madame,", "Monsieur le directeur,") puis les idées principales. À chaque pause de frappe, Albert propose le courrier rédigé et corrigé.
+Dans Discussion, le bouton de bibliothèque de l'en-tête ouvre la même bibliothèque qu'Imprimerie : les sources cochées partent en entier avec chaque question et la réponse s'appuie sur elles. Une icône sous la réponse les signale ; un clic donne leurs noms. Le trombone, lui, joint un fichier à la seule question en cours.
 
 ### Imprimerie
 
@@ -43,14 +37,14 @@ On dépose des sources (rapport, compte rendu, cours, ancien sujet), puis on dem
 
 - Les fichiers déposés vont dans une bibliothèque commune à tous les documents et aux conversations de Discussion. Chaque document coche ceux qu'il utilise ; un clic sur un nom télécharge le texte gardé, pas le fichier d'origine.
 - Seul le texte des fichiers est gardé, dans le navigateur, selon la même règle que les conversations (voir Sécurité). Supprimer un document laisse ses sources dans la bibliothèque : on les en retire une par une ou toutes d'un coup avec "Vider la bibliothèque".
-- Les sources cochées partent en entier avec chaque demande. Au moment où on les coche, leur texte ne dépasse pas 60 % du contexte du modèle, soit environ 80 pages avec Large.
+- Les sources cochées partent en entier avec chaque demande. On ne peut en cocher que 60 % du contexte du modèle au plus, soit environ 80 pages avec Large.
 - Seule la version en cours du document accompagne la demande. Les dix dernières versions restent dans le volet, sous "Versions" : un clic en reprend une.
 - La section "Imprimerie" du menu sert à créer, nommer, rouvrir et supprimer les documents : dix au plus, comptés à part des dix conversations de l'historique.
 - Mêmes outils que Discussion, recherche web comprise.
 
 ### Recherche web
 
-Internet est autorisé au départ, sans moteur de recherche. Dans Réglages, on peut cocher jusqu'à trois moteurs : Wikipédia, Vikidia, HAL, OpenAlex, Internet Archive, Open Library, Google et Mojeek (ces deux derniers avec une clé). Le globe de la barre de saisie apparaît quand Internet est autorisé : tant qu'il est activé, les questions peuvent chercher et montrer des images Wikimedia. Les mots cherchés et les pages consultées s'affichent sous la réponse.
+Internet est autorisé au départ, sans moteur de recherche. Dans Réglages, on peut cocher jusqu'à trois moteurs : Wikipédia, Vikidia, HAL, OpenAlex, Internet Archive, Open Library, Google et Mojeek (ces deux derniers avec une clé). Le globe de la barre de saisie apparaît quand Internet est autorisé : tant qu'il est activé, le modèle peut chercher et montrer des images Wikimedia. Les mots cherchés et les pages consultées s'affichent sous la réponse.
 
 Globe activé, le modèle a aussi dix services de l'État, sans clé : Annuaire de l'administration, Annuaire des entreprises, Annuaire de l'éducation, calendrier scolaire, Base adresse nationale, API Géo (communes), BOAMP (marchés publics), data.gouv.fr, Parcoursup et Hub'eau (eau du robinet).
 
@@ -66,7 +60,7 @@ Dans Discussion, cinq outils sont activés par défaut ; on peut les désactiver
 | Compteur | Nombre de mots et de caractères d'un texte ; occurrences d'une lettre, mot épelé et écrit à l'envers, anagramme vérifiée ; lisibilité (mots par phrase, phrases de plus de 20 mots, mots de 10 lettres ou plus). |
 | Contrôle SIRET et IBAN | Clé de contrôle d'un SIREN, d'un SIRET ou d'un IBAN, pour repérer un numéro mal recopié ; l'existence du numéro n'est pas vérifiée. |
 
-Chaque demande donne aussi au modèle son nom. Dans Discussion, la date et l'heure viennent du Calendrier : son icône sous la réponse montre qu'elles viennent de l'appareil et non du modèle. Calendrier désactivé ou dans les autres modules, elles partent avec chaque demande.
+Chaque demande rappelle aussi au modèle son nom, par exemple Large (gpt-oss-120b). Dans Discussion, la date et l'heure viennent du Calendrier : son icône sous la réponse montre qu'elles viennent de l'appareil et non du modèle. Calendrier désactivé ou dans les autres modules, elles partent avec chaque demande.
 
 ### Réglages
 
@@ -80,8 +74,8 @@ Interface en français, anglais, espagnol et allemand. Au premier lancement, la 
 
 La page vise la conformité [RGAA](https://accessibilite.numerique.gouv.fr/). Aucun audit n'a encore été mené.
 
-- Langue déclarée sur `<html>` et mise à jour avec la langue choisie, chaque champ a une étiquette visible.
-- Tout se fait au clavier. Le focus est visible et revient dans la zone de saisie après chaque réponse.
+- Langue déclarée sur `<html>` et mise à jour avec la langue choisie. Chaque champ a une étiquette visible.
+- Tout se fait au clavier, avec un focus visible qui revient dans la zone de saisie après chaque réponse. Après un toucher ou un clic, un bouton qui reçoit le focus d'office n'a pas de contour.
 - Les nouveaux messages et l'état ("Albert réfléchit...", erreurs) sont annoncés aux lecteurs d'écran.
 - Thème clair ou sombre selon le réglage du système, contrastes d'au moins 4,5:1 pour le texte.
 
@@ -95,7 +89,7 @@ Audit interne et externe, modèle de menaces et plan d'action : [SECURITE.md](SE
 - Le workflow compte par jour les appels acceptés par Albert (ouverture de la page et messages) : le nombre d'appels, rien d'autre, 90 jours au plus. Le total s'affiche dans "À propos", lu sur `albert-go/stats`, public.
 - Le webhook appelle uniquement l'API Albert, dont l'adresse est fixée dans le workflow.
 - La page ne charge aucun script externe. Une politique CSP limite les connexions à l'instance n8n, aux moteurs de recherche, à Wikimedia Commons et aux services de l'État. Elle limite les scripts au site lui-même.
-- Le HTML produit à partir des réponses d'Albert est assaini avant affichage : scripts, gestionnaires d'événements et liens `javascript:` sont retirés.
+- La page assainit le HTML tiré des réponses d'Albert avant de l'afficher : elle retire scripts, gestionnaires d'événements et liens `javascript:`.
 
 ## Fonctionnement
 
@@ -143,7 +137,7 @@ Modèles disponibles en octobre 2026, selon le type de travail :
 | Programmation | Code (`qwen3-coder-30b`) |
 | Programmation sur de longs documents | DeepSeek V4 Flash (`deepseek-v4-flash`) |
 
-Tous les modèles savent utiliser la recherche web pour une question dont la réponse n'est pas dans leurs connaissances, ils décident de l'utiliser d'eux-mêmes.
+Les modèles décident seuls de lancer une recherche web quand la réponse dépasse leurs connaissances.
 
 ## Auteur
 
