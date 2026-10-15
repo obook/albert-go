@@ -186,12 +186,11 @@ function avecDate(messages) {
  * ouverts répondent de mémoire sans jamais appeler l'outil. Les tours
  * suivants laissent le modèle libre, pour qu'il rédige sa réponse.
  *
- * @param {string} cle - Clé API Albert.
  * @param {Object} requete - Corps de la demande (model, messages...).
  * @param {AbortSignal} signal - Pour annuler avec la question.
  * @returns {Promise<Object>} Réponse d'Albert.repondre.
  */
-async function repondreAvecOutils(cle, requete, signal) {
+async function repondreAvecOutils(requete, signal) {
     /* Internet autorisé dans Réglages et globe activé : recherche (si un
        moteur coché peut répondre), images Wikimedia et services de l'État. */
     const internet = reglages.recherche && globeActif;
@@ -204,7 +203,7 @@ async function repondreAvecOutils(cle, requete, signal) {
         outils.unshift(Recherche.outil(moteursActifs()));
     }
     if (!outils.length) {
-        return Albert.repondre(cle, requete, signal);
+        return Albert.repondre(requete, signal);
     }
     const messages = [...requete.messages];
     /* Recherches faites, rendues avec la réponse pour la trace sous la bulle. */
@@ -215,7 +214,7 @@ async function repondreAvecOutils(cle, requete, signal) {
     for (let tour = 0; tour < TOURS_MAX; tour++) {
         let reponse;
         try {
-            reponse = await Albert.repondre(cle, {
+            reponse = await Albert.repondre({
                 ...requete,
                 messages: avecRappel(messages, cherche),
                 tools: outils,
@@ -225,7 +224,7 @@ async function repondreAvecOutils(cle, requete, signal) {
             if (cherche) {
                 toast(t('toast.recherche-indisponible'));
             }
-            return rendre(await Albert.repondre(cle, { ...requete, messages: avecDate(messages) }, signal));
+            return rendre(await Albert.repondre({ ...requete, messages: avecDate(messages) }, signal));
         }
         const appels = (reponse.message && reponse.message.tool_calls) || [];
         if (!appels.length) {
@@ -246,7 +245,7 @@ async function repondreAvecOutils(cle, requete, signal) {
     const dernier = extraits.length
         ? [...requete.messages, { role: 'user', content: t(consigne, { extraits: extraits.join('\n') }) }]
         : requete.messages;
-    return rendre(await Albert.repondre(cle, { ...requete, messages: dernier }, signal));
+    return rendre(await Albert.repondre({ ...requete, messages: dernier }, signal));
 }
 
 /* Export pour les tests Node ; ignoré dans le navigateur. */

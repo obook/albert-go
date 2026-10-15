@@ -285,7 +285,7 @@ async function lireDocument(fichier) {
 async function lireContenu(fichier, type, signal, image) {
     if (type === 'image') {
         etat(t('etat.lecture-image'));
-        return Albert.transcrire(reglages.cle, image, signal);
+        return Albert.transcrire(image, signal);
     }
     if (type === 'audio') {
         if (fichier.size > AUDIO_MAX) {
@@ -300,7 +300,7 @@ async function lireContenu(fichier, type, signal, image) {
             throw new Error(t('erreur.audio-long'));
         }
         etat(t('etat.lecture-audio'));
-        const texte = await Albert.transcrireAudio(reglages.cle, audio, mp3 ? fichier.name : 'audio.wav', signal);
+        const texte = await Albert.transcrireAudio(audio, mp3 ? fichier.name : 'audio.wav', signal);
         if (!texte.trim()) {
             throw new Error(t('erreur.audio-vide'));
         }

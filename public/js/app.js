@@ -169,7 +169,7 @@ async function demanderReponse(outil, question, image, modele) {
     }
     /* Seuls les modules à fil proposent les outils calcul et recherche : les autres rendent un texte. */
     const envoi = fil ? repondreAvecOutils : Albert.repondre.bind(Albert);
-    return envoi(reglages.cle, {
+    return envoi({
         model: modele.id,
         temperature: reglages.temperature,
         ...Albert.topK(reglages.topK),

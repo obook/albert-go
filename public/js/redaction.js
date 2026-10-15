@@ -146,7 +146,7 @@ async function demanderRedaction(champ, demande, attente) {
     annulationRedaction = annulation;
     afficherStatut(t(attente), 'attente');
     try {
-        const reponse = await Albert.repondre(reglages.cle, {
+        const reponse = await Albert.repondre({
             model: modeleActuel().id,
             temperature: reglages.temperature,
             ...Albert.topK(reglages.topK),
