@@ -65,8 +65,11 @@ consigne du serveur, mais peut en ajouter une après : garantie plus faible
 que la MR !19 de l'atelier, qui interdisait tout message `system` venu de
 la page.
 
-Un 429 d'Albert est relayé avec son `Retry-After` ; quota journalier
-épuisé : 503 explicite.
+Un 429 d'Albert est relayé tel quel, avec son `Retry-After` ; la
+régulation du serveur répond aussi 429 quand le modèle est saturé.
+
+Dossier de configuration : `~/.config/albert-go/` (les clés de
+`~/.config/albert-atelier/` sont à recopier).
 
 ## Interface
 
@@ -77,7 +80,8 @@ Un 429 d'Albert est relayé avec son `Retry-After` ; quota journalier
 - Service worker retiré (une page en cache masquerait le renvoi vers
   `/kiosque`) ; le manifeste reste (icône iPad).
 - À propos : crédits des deux projets et des élèves, licence.
-- Vérification "le relais répond" : `/v1/models` au lieu de `/stats`.
+- Surveillance du relais n8n retirée (sonde `/stats`, origines
+  autorisées) : un serveur arrêté refuse la connexion tout de suite.
 
 ## Kiosque
 
