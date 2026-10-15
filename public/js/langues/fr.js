@@ -407,7 +407,7 @@ I18n.TEXTES.fr = {
     'etat.recherche': 'Recherche de « {mots} »...',
 
     /* Erreurs. */
-    'erreur.cle-refusee': 'Clé du serveur refusée par Albert : vérifiez le fichier keys.',
+    'erreur.cle-refusee': 'Clé du serveur refusée par Albert : vérifiez api_key dans le fichier config.',
     'erreur.quota': 'Quota atteint. Réessayez dans une minute.',
     'erreur.reponse-illisible': 'Réponse illisible d\'Albert. Réessayez.',
     'erreur.http': 'Erreur {status}.',

@@ -1,6 +1,18 @@
-# Configuration d'Albert Go : copier ce fichier en "config", ici ou dans
-# ~/.config/albert-go/. Les clés API vont dans un fichier "keys" à côté,
-# une par ligne. config et keys ne sont jamais versionnés (.gitignore).
+# Configuration d'Albert Go
+#
+# Copier ce fichier en "config" dans ce dossier (ou dans ~/.config/albert-go/),
+# puis coller la clé API après api_key=. Le fichier config n'est jamais
+# versionné (.gitignore) : la clé reste sur ce poste.
+#
+# Les lignes qui commencent par # sont ignorées.
+
+# Adresse d'Albert API.
 api_base=https://albert.api.etalab.gouv.fr
-model=
+
+# Clé API, obtenue sur https://ia.numerique.gouv.fr/outils-ia/albert-api/
+api_key=
+
+# Mode kiosque : l'enseignant ouvre une session sur /kiosque avec sa propre
+# clé, les élèves la rejoignent par un lien et un code. Retirer le # pour
+# l'activer (ou lancer ./local.sh --kiosque).
 #kiosque=oui

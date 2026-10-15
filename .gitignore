@@ -1,8 +1,7 @@
 # Clés locales, jamais dans le dépôt.
 .env
-# Configuration dans le dépôt (serveur/config.py) : clés API et certificat.
+# Configuration dans le dépôt (serveur/config.py) : clé API et certificat.
 /config
-/keys
 /cert.pem
 /key.pem
 

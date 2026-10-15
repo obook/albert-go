@@ -13,11 +13,10 @@ Albert Go tourne sur un serveur : un poste de l'établissement, ou une clé USB 
 ```
 
 ```bash
-cp config.exemple config  # URL d'Albert, modèle, kiosque
-nano keys                 # une clé API par ligne, utilisées à tour de rôle
+cp config.exemple config  # puis coller la clé API après api_key=
 ```
 
-`config` et `keys` restent dans le dossier du dépôt, ignorés par git. Sans eux, le serveur les cherche dans `~/.config/albert-go/` ; le terminal affiche au lancement le fichier utilisé. Les clés s'obtiennent sur la [page d'Albert API](https://ia.numerique.gouv.fr/outils-ia/albert-api/).
+`config` reste dans le dossier du dépôt, ignoré par git. Sans lui, le serveur le cherche dans `~/.config/albert-go/` ; le terminal affiche au lancement le fichier utilisé. Les clés s'obtiennent sur la [page d'Albert API](https://ia.numerique.gouv.fr/outils-ia/albert-api/).
 
 ## Kiosque
 
@@ -108,7 +107,7 @@ La page vise la conformité [RGAA](https://accessibilite.numerique.gouv.fr/). Au
 Audit interne et externe, modèle de menaces et plan d'action : [SECURITE.md](SECURITE.md).
 
 - Par défaut, les questions, les conversations, les documents et la bibliothèque de sources sont gardés dans `sessionStorage` et effacés après la fermeture de l'onglet (au chargement suivant). Interrupteur activé, ils restent dans `localStorage`, sans limite de durée.
-- La clé API reste sur le serveur (fichier `keys`) : la page ne la voit jamais, et le serveur ignore l'en-tête `Authorization` qu'elle enverrait.
+- La clé API reste sur le serveur (fichier `config`) : la page ne la voit jamais, et le serveur ignore l'en-tête `Authorization` qu'elle enverrait.
 - Le serveur relaie trois routes d'Albert seulement (`/v1/models`, `/v1/chat/completions`, `/v1/audio/transcriptions`), corps limité à 10 Mo, 16 Mo pour l'audio.
 - La page ne charge aucun script externe. Une politique CSP limite les connexions au serveur lui-même, aux moteurs de recherche, à Wikimedia Commons et aux services de l'État. Elle limite les scripts au site lui-même.
 - La page assainit le HTML tiré des réponses d'Albert avant de l'afficher : elle retire scripts, gestionnaires d'événements et liens `javascript:`.

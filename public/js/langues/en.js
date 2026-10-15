@@ -407,7 +407,7 @@ I18n.TEXTES.en = {
     'etat.recherche': 'Searching for "{mots}"...',
 
     /* Errors. */
-    'erreur.cle-refusee': 'Server key refused by Albert: check the keys file.',
+    'erreur.cle-refusee': 'Server key refused by Albert: check api_key in the config file.',
     'erreur.quota': 'Quota reached. Try again in a minute.',
     'erreur.reponse-illisible': 'Unreadable answer from Albert. Try again.',
     'erreur.http': 'Error {status}.',

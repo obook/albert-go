@@ -1,9 +1,8 @@
-"""Configuration du serveur : URL d'Albert, modèle, kiosque, clés API.
+"""Configuration du serveur : URL d'Albert, modèle, kiosque, clé API.
 
-Dossier ALBERT_PORTABLE_DIR (clé USB), sinon la racine du dépôt si elle a
-un fichier config ou keys (modèle : config.exemple), sinon ~/.config/albert-go/ :
-    config : lignes nom=valeur (api_base, model, kiosque), # pour commenter ;
-    keys   : une clé API par ligne, utilisées à tour de rôle.
+Fichier config, lignes nom=valeur (api_base, api_key, kiosque), # pour
+commenter. Dossier ALBERT_PORTABLE_DIR (clé USB), sinon la racine du dépôt si
+elle a un fichier config (modèle : config.exemple), sinon ~/.config/albert-go/.
 
 Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
 Auteurs : O. Booklage ; Romain P., Luce P.B., Théossian S.D. (L'Atelier d'Albert)
@@ -11,7 +10,6 @@ Licence : GPL-3.0-or-later
 """
 
 import os
-import threading
 
 
 DEPOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -22,14 +20,13 @@ def _config_dir():
     portable = os.environ.get("ALBERT_PORTABLE_DIR", "").strip()
     if portable:
         return portable, "portable"
-    if any(os.path.exists(os.path.join(DEPOT, nom)) for nom in ("config", "keys")):
+    if os.path.exists(os.path.join(DEPOT, "config")):
         return DEPOT, "dépôt"
     return os.path.join(os.path.expanduser("~"), ".config", "albert-go"), "standard"
 
 
 CONFIG_DIR, MODE = _config_dir()
 CONFIG_FILE = os.path.join(CONFIG_DIR, "config")
-KEYS_FILE = os.path.join(CONFIG_DIR, "keys")
 API_BASE_DEFAUT = "https://albert.api.etalab.gouv.fr"
 
 
@@ -47,7 +44,10 @@ def _lignes(chemin):
 
 
 def load_config():
-    """URL d'Albert, modèle par défaut et mode kiosque lus dans le fichier config."""
+    """URL d'Albert, mode kiosque et clé API lus dans le fichier config.
+
+    Le fichier est relu à chaque appel : une clé corrigée sert sans redémarrer.
+    """
     valeurs = {}
     for ligne in _lignes(CONFIG_FILE):
         if "=" in ligne:
@@ -55,46 +55,20 @@ def load_config():
             valeurs[nom.strip()] = valeur.strip()
     return {
         "api_base": valeurs.get("api_base", API_BASE_DEFAUT),
-        "model": valeurs.get("model", ""),
         "kiosque": valeurs.get("kiosque", "non") == "oui",
+        "api_key": valeurs.get("api_key", ""),
     }
 
 
-def load_web_keys():
-    """Clés API du fichier keys, dans l'ordre."""
-    return _lignes(KEYS_FILE)
-
-
-_rang = 0
-_verrou = threading.Lock()
-
-
-def prochaine_cle():
-    """Clé suivante, à tour de rôle ; None si le fichier keys est vide.
-
-    Le fichier est relu à chaque appel : une clé corrigée sert sans redémarrer.
-    """
-    global _rang
-    cles = load_web_keys()
-    if not cles:
-        return None
-    with _verrou:
-        _rang += 1
-        return cles[(_rang - 1) % len(cles)]
-
-
-def reinitialiser_pour_tests():
-    """Repart de la première clé (réservé aux tests)."""
-    global _rang
-    with _verrou:
-        _rang = 0
+def chemin_config():
+    """Fichier de config utilisé, avec ~ pour le dossier personnel."""
+    home = os.path.expanduser("~")
+    chemin = str(CONFIG_FILE)
+    return "~" + chemin[len(home):] if chemin.startswith(home + os.sep) else chemin
 
 
 def config_affichee():
-    """Ligne de lancement : fichier de config utilisé, avec ~ pour le dossier personnel."""
-    home = os.path.expanduser("~")
-    chemin = str(CONFIG_FILE)
-    if chemin.startswith(home + os.sep):
-        chemin = "~" + chemin[len(home):]
+    """Ligne de lancement : fichier de config utilisé."""
+    chemin = chemin_config()
     absent = "" if os.path.exists(CONFIG_FILE) else " (absent : valeurs par défaut)"
     return f"Configuration ({MODE}) : {chemin}{absent}"

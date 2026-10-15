@@ -407,7 +407,7 @@ I18n.TEXTES.es = {
     'etat.recherche': 'Buscando "{mots}"...',
 
     /* Errores. */
-    'erreur.cle-refusee': 'Clave del servidor rechazada por Albert: revise el archivo keys.',
+    'erreur.cle-refusee': 'Clave del servidor rechazada por Albert: revise api_key en el archivo config.',
     'erreur.quota': 'Cuota alcanzada. Inténtelo dentro de un minuto.',
     'erreur.reponse-illisible': 'Respuesta ilegible de Albert. Inténtelo de nuevo.',
     'erreur.http': 'Error {status}.',
