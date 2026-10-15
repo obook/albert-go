@@ -211,15 +211,15 @@ test('naviguer : bornes de l\'historique', () => {
 });
 
 test('messageErreur : clé refusée', () => {
-    assert.match(Albert.messageErreur(401, { detail: 'Not authenticated' }), /Clé refusée/);
+    assert.match(Albert.messageErreur(401, { detail: 'Not authenticated' }), /Clé du serveur refusée/);
 });
 
 test('messageErreur : quota', () => {
     assert.match(Albert.messageErreur(429, null), /Quota/);
 });
 
-test('messageErreur : relais hors service', () => {
-    assert.match(Albert.messageErreur(503, null), /indisponible/);
+test('messageErreur : Albert injoignable derrière le serveur', () => {
+    assert.match(Albert.messageErreur(502, null), /Albert ne répond pas/);
 });
 
 test('messageErreur : détail texte repris, détail objet ignoré', () => {

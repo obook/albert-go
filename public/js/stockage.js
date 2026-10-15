@@ -76,7 +76,7 @@ if (window.top !== window.self) {
 }
 
 /* Données effacées à la fermeture de l'onglet en mode partagé. */
-const SENSIBLES = ['cle', 'cle-recherche', 'historique', 'conversations', 'bibliotheque'];
+const SENSIBLES = ['cle-recherche', 'historique', 'conversations', 'bibliotheque'];
 
 /** Mode partagé : clé, questions et conversations en sessionStorage. */
 let partage = false;
@@ -269,7 +269,6 @@ function echangesLus() {
 
 /** Réglages de l'utilisateur, lus au démarrage. */
 const reglages = {
-    cle: lire('cle', null),
     modele: lire('modele', Albert.CONSEILLES.modele),
     /* Une valeur illisible donnerait NaN, envoyé en "temperature": null. */
     temperature: temperatureLue(),

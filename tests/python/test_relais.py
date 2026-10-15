@@ -107,10 +107,11 @@ def test_albert_injoignable_502(mini, albert, tmp_path, monkeypatch):
     assert "detail" in reponse.json()
 
 
-def test_sans_cle_503(mini, albert, tmp_path):
+def test_sans_cle_500_avec_le_detail(mini, albert, tmp_path):
+    # 500 et non 503 : la page affiche le détail d'un 500, et dit "Albert ne répond pas" pour un 503.
     (tmp_path / "keys").write_text("", encoding="utf-8")
     config.reinitialiser_pour_tests()
     reponse = mini.get("/v1/models")
-    assert reponse.status_code == 503
+    assert reponse.status_code == 500
     assert "keys" in reponse.json()["detail"]
     assert albert.recues == []

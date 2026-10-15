@@ -128,7 +128,7 @@ function placerVolet() {
         if ($('menu').open) {
             $('menu').close();
         }
-        if (GRAND_ECRAN.matches && reglages.cle && lire('volet', null) !== 'replie') {
+        if (GRAND_ECRAN.matches && lire('volet', null) !== 'replie') {
             montrerVolet();
         }
         rangerBouton();
@@ -174,13 +174,12 @@ $('principal').addEventListener('click', () => {
 });
 
 /**
- * Ouvre la boîte "Partager" avec l'adresse publique et son QR code.
+ * Ouvre la boîte "Partager" avec l'adresse de la page et son QR code.
  *
- * Toujours l'adresse publique : partager localhost n'aurait pas de sens.
  * Le QR code est calculé dans le navigateur (vendor/qrcode-generator).
  */
 function ouvrirPartage() {
-    const adresse = Albert.URL_PUBLIQUE;
+    const adresse = location.origin + '/';
     /* 0 : taille choisie par la bibliothèque ; M : 15 % de correction d'erreur. */
     const code = qrcode(0, 'M');
     code.addData(adresse);
@@ -216,48 +215,9 @@ function texteVersion() {
     return t('version.format', { commit: VERSION.commit, date: date });
 }
 
-/**
- * "appel" ou "appels" selon la règle de la langue : 1,3 appel en français, 1.3 calls en anglais.
- *
- * @param {number} nombre - Nombre affiché.
- * @returns {string} Le mot accordé.
- */
-function motAppel(nombre) {
-    return t(new Intl.PluralRules(I18n.langue).select(nombre) === 'one' ? 'info.appel' : 'info.appels.pluriel');
-}
-
 $('ouvrir-info').addEventListener('click', () => {
     $('version').textContent = texteVersion();
-    /* Affiché tant que les stats ne sont pas arrivées, et gardé si elles échouent. */
-    $('appels').textContent = t('info.appels-hs');
-    $('appels').hidden = false;
-    Albert.appels().then(({ total, parHeure }) => {
-        const h = Math.round(parHeure * 10) / 10;
-        $('appels').textContent = t('info.appels', {
-            n: total.toLocaleString(I18n.langue),
-            h: h.toLocaleString(I18n.langue),
-            motN: motAppel(total),
-            motH: motAppel(h)
-        });
-    }).catch(() => {});
     $('info').showModal();
-});
-
-$('changer-cle').addEventListener('click', () => {
-    /* Sinon Échap reprendrait la réponse précédente. */
-    $('confirmer-cle').returnValue = '';
-    $('confirmer-cle').showModal();
-});
-
-$('confirmer-cle').addEventListener('close', () => {
-    if ($('confirmer-cle').returnValue !== 'oui') {
-        return;
-    }
-    reglages.cle = null;
-    ecrire('cle', null);
-    afficher();
-    placerVolet();
-    toast(t('toast.cle-effacee'));
 });
 
 $('theme').addEventListener('click', () => {

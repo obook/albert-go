@@ -59,28 +59,18 @@ const ICONES = {
 let minuteurToast = null;
 
 /**
- * Affiche l'écran de la clé ou celui de la conversation.
+ * Affiche la conversation ou la rédaction, selon le module.
  */
 function afficher() {
-    const connecte = !!reglages.cle;
-    $('accueil').hidden = connecte;
     const redaction = outilActuel === 'rediger';
-    $('chat').hidden = !connecte || redaction;
-    $('saisie-zone').hidden = !connecte || redaction;
-    $('redaction').hidden = !connecte || !redaction;
-    for (const id of ['ouvrir-reglages', 'nouvelle', 'resume-reglages', 'trait-outils', 'menu-outils', 'menu-projets', 'trait-historique', 'menu-historique', 'trait-cle', 'changer-cle', 'titre-entete']) {
-        $(id).hidden = !connecte;
+    $('chat').hidden = redaction;
+    $('saisie-zone').hidden = redaction;
+    $('redaction').hidden = !redaction;
+    /* Masquées dans index.html au chargement, comme avant avec l'écran de clé. */
+    for (const id of ['ouvrir-reglages', 'nouvelle', 'resume-reglages', 'trait-outils', 'menu-outils', 'menu-projets', 'trait-historique', 'menu-historique', 'titre-entete']) {
+        $(id).hidden = false;
     }
-    if (connecte) {
-        if ($('dialogue-cle').open) {
-            $('dialogue-cle').close();
-        }
-        focusSaisie();
-    } else {
-        /* Écran de la clé : effacement à la fermeture toujours proposé par défaut. */
-        $('partage-accueil').checked = false;
-    }
-    /* Sans clé, ni volet ni bouton de bibliothèque. */
+    focusSaisie();
     placerBibliotheque();
 }
 
@@ -303,28 +293,6 @@ function annulerAuDefilement(curseur) {
         /* Pour que l'écouteur du curseur enregistre la valeur revenue. */
         curseur.dispatchEvent(new Event('input'));
     });
-}
-
-/**
- * Écrit un message sous le champ de la clé.
- *
- * Le lien est ajouté à la fin, sous le nom "Albert Go", suivi du point final.
- *
- * @param {string} texte - Message, ou chaîne vide pour effacer.
- * @param {boolean} erreur - true pour l'afficher comme une erreur.
- * @param {string} [lien] - Adresse d'un lien ajouté après le texte.
- */
-function messageCle(texte, erreur, lien) {
-    $('message-cle').textContent = texte;
-    if (lien) {
-        const ancre = document.createElement('a');
-        ancre.href = lien;
-        ancre.textContent = 'Albert Go';
-        ancre.target = '_blank';
-        ancre.rel = 'noopener noreferrer';
-        $('message-cle').append(ancre, '.');
-    }
-    $('message-cle').classList.toggle('erreur', erreur);
 }
 
 /**

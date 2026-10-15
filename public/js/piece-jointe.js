@@ -44,7 +44,7 @@ const IMAGE_MAX = 1600;
 /** Enregistrements reconnus quand le navigateur ne donne pas de type audio/. */
 const EXTENSIONS_AUDIO = /\.(mp3|wav|m4a|aac|ogg|oga|opus|flac|webm)$/i;
 
-/** Taille maximale d'un enregistrement envoyé, en octets : n8n refuse au-delà de 16 Mo. */
+/** Taille maximale d'un enregistrement envoyé, en octets : le serveur refuse au-delà de 16 Mo. */
 const AUDIO_MAX = 15000000;
 
 /** Fréquence du WAV envoyé : celle de whisper, 16 kHz en mono (environ 8 minutes dans AUDIO_MAX). */

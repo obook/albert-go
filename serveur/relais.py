@@ -62,7 +62,8 @@ def relayer(handler, methode, chemin, corps=b"", type_contenu=None):
             return
     cle = config.prochaine_cle()
     if not cle:
-        repondre_json(handler, 503, {"detail": f"Aucune clé API sur le serveur : ajoutez-en une dans {config.KEYS_FILE}."})
+        # 500 : la page affiche ce détail, alors qu'un 503 y devient "Albert ne répond pas".
+        repondre_json(handler, 500, {"detail": f"Aucune clé API sur le serveur : ajoutez-en une dans {config.KEYS_FILE}."})
         return
     en_tetes = {"Authorization": f"Bearer {cle}"}
     if type_contenu:
