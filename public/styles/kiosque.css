@@ -14,6 +14,8 @@
     border: 1px solid var(--bord-carte);
     border-radius: 1rem;
     box-shadow: var(--ombre);
+    /* body est une grille (base.css) : sans start, la carte s'étire jusqu'en bas de l'écran. */
+    align-self: start;
 }
 .kiosque .marque { margin: 0 0 1rem; font-size: 1.5rem; color: var(--texte); }
 .kiosque h1 { margin: 0 0 0.5rem; font-size: 1.25rem; font-weight: 700; }

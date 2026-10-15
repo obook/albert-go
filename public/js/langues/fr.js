@@ -278,6 +278,7 @@ I18n.TEXTES.fr = {
     'info.reponses.texte': 'L\'IA peut se tromper ou inventer. Vérifiez ses réponses avant de les utiliser et ne lui confiez pas de données personnelles.',
     'info.projet': 'Le projet',
     'info.projet.texte': 'Réalisation : <a href="mailto:olivier.booklage@ac-bordeaux.fr">Olivier Booklage</a> (académie de Bordeaux)<br>Source : <a href="https://forge.apps.education.fr/booklageolivier/albert-go" target="_blank" rel="noopener noreferrer">la forge des communs numériques</a>',
+    'info.credits': 'Le serveur et le kiosque viennent de L\'Atelier d\'Albert, écrit avec Romain P., Luce P.B. et Théossian S.D. (NSI, Trophées NSI 2026). Logiciel libre sous licence GPL v3 ou ultérieure.',
     'info.version': 'Version : ',
     'version.format': '{commit} du {date}',
 

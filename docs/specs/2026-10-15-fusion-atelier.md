@@ -52,7 +52,9 @@ Repris de l'atelier : `serveur.py` (lancement, adresses réseau, `--port`,
 | `GET /v1/models` | Relayé à Albert avec la clé |
 | `POST /v1/chat/completions` | Relayé en flux SSE |
 | `POST /v1/audio/transcriptions` | Relayé, 16 Mo au plus |
-| `/kiosque`, `/api/kiosque-*`, `/api/qrcode` | Kiosque |
+| `/kiosque`, `/api/kiosque-*`, `/serveur.js` | Kiosque |
+
+Le QR code reste calculé dans le navigateur (`vendor/qrcode-generator`) ; `/serveur.js` donne à la page ses adresses réseau et sa session, la CSP interdisant les scripts en ligne.
 
 Le serveur ignore l'en-tête `Authorization` reçu et met sa clé, ou celle
 de la session en kiosque. Corps limité à 10 Mo.
