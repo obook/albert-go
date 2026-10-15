@@ -89,3 +89,12 @@ test('accueil : chaque fichier d\'exemples a autant d\'exemples dans chaque lang
         assert.ok(I18n.TEXTES[langue]['bienvenue.formel'], langue);
     }
 });
+
+test('aucun texte ne décrit l\'ancien relais n8n ni une clé gardée dans la page', () => {
+    for (const langue of I18n.LANGUES) {
+        const textes = I18n.TEXTES[langue];
+        const fautifs = Object.keys(textes).filter(c => /incubat|inkubator|n8n/i.test(textes[c]));
+        assert.deepStrictEqual(fautifs, [], langue);
+        assert.doesNotMatch(textes['partage.texte'], /clé|key|clave|schlüssel/i, langue);
+    }
+});

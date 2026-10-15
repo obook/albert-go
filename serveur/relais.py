@@ -18,6 +18,7 @@ from serveur import config, proxy, regulation
 # Au-delà des 120 s de la page (Albert.DELAI_MS) : c'est elle qui abandonne.
 DELAI_LECTURE = 130.0
 EN_TETES_RECOPIES = ("content-type", "retry-after")
+MODELE_MAX = 100
 
 
 def repondre_json(handler, statut, donnees, en_tetes=None):
@@ -39,7 +40,8 @@ def _modele(corps):
     except ValueError:
         return None
     modele = donnees.get("model") if isinstance(donnees, dict) else None
-    return modele if isinstance(modele, str) else None
+    # Un nom démesuré créerait une fenêtre de régulation par requête : fenêtre commune.
+    return modele if isinstance(modele, str) and len(modele) <= MODELE_MAX else None
 
 
 def _retry_after(valeur):
@@ -55,7 +57,7 @@ def relayer(handler, methode, chemin, corps=b"", type_contenu=None):
     throttler = None
     if chemin == "/v1/chat/completions":
         throttler = regulation.obtenir_throttler(api_base, _modele(corps))
-        attente = throttler.delai_avant_prochaine_requete(debounce=False)
+        attente = throttler.reserver()
         if attente > 0:
             repondre_json(handler, 429, {"detail": "Albert est très demandé, patientez."},
                           {"Retry-After": str(math.ceil(attente))})
@@ -78,8 +80,6 @@ def relayer(handler, methode, chemin, corps=b"", type_contenu=None):
                         continue
                     if throttler and reponse.status_code == 429:
                         throttler.record_rate_limit(_retry_after(reponse.headers.get("retry-after")))
-                    elif throttler and reponse.status_code < 400:
-                        throttler.record_request()
                     handler.send_response(reponse.status_code)
                     for nom in EN_TETES_RECOPIES:
                         if nom in reponse.headers:
@@ -88,9 +88,13 @@ def relayer(handler, methode, chemin, corps=b"", type_contenu=None):
                     handler.end_headers()
                     envoye = True
                     # iter_bytes décompresse : la page reçoit toujours du texte lisible.
-                    for morceau in reponse.iter_bytes():
-                        handler.wfile.write(morceau)
-                        handler.wfile.flush()
+                    try:
+                        for morceau in reponse.iter_bytes():
+                            handler.wfile.write(morceau)
+                            handler.wfile.flush()
+                    except OSError:
+                        # Page partie (Arrêter, délai dépassé) : rien à signaler.
+                        handler.close_connection = True
                     return
         except httpx.ProxyError:
             if not envoye and essai == 1 and proxy.basculer_sans_proxy():

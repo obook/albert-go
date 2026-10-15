@@ -11,7 +11,8 @@
 set -eu
 
 DOSSIER="$(cd "$(dirname "$0")" && pwd)"
-if [ ! -x "$DOSSIER/.venv/bin/python" ]; then
+# httpx et non le seul .venv : une installation interrompue (proxy) est reprise.
+if ! "$DOSSIER/.venv/bin/python" -c "import httpx" 2>/dev/null; then
     python3 -m venv "$DOSSIER/.venv"
     "$DOSSIER/.venv/bin/python" -m pip install -q -r "$DOSSIER/serveur/requirements.txt"
 fi

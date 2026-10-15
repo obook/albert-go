@@ -5,8 +5,10 @@ Auteurs : O. Booklage ; Romain P., Luce P.B., Théossian S.D. (L'Atelier d'Alber
 Licence : GPL-3.0-or-later
 """
 
+import email.utils
 import http.server
 import os
+import shutil
 import socket
 import ssl
 import sys
@@ -42,6 +44,9 @@ SANS_CACHE = (".html", ".js", ".mjs", ".css", ".txt", ".webmanifest")
 class Gestionnaire(http.server.BaseHTTPRequestHandler):
     """Sert public/ et relaie les trois routes /v1 d'Albert."""
 
+    # Client muet (iPad en veille) : sa connexion se ferme au bout d'une minute.
+    timeout = 60
+
     def do_GET(self):
         chemin = urllib.parse.urlsplit(self.path).path
         if chemin.startswith("/v1/"):
@@ -57,12 +62,24 @@ class Gestionnaire(http.server.BaseHTTPRequestHandler):
         if taille_max is None:
             relais.repondre_json(self, 404, {"detail": "Route inconnue."})
             return
-        taille = int(self.headers.get("Content-Length") or 0)
+        try:
+            taille = int(self.headers.get("Content-Length") or 0)
+        except ValueError:
+            taille = -1
+        # Négative, read() lirait sans limite jusqu'à la fin du flux.
+        if taille < 0:
+            relais.repondre_json(self, 400, {"detail": "Content-Length invalide."})
+            self.close_connection = True
+            return
         if taille > taille_max:
             relais.repondre_json(self, 413, {"detail": "Requête trop grosse."})
             self.close_connection = True
             return
         corps = self.rfile.read(taille) if taille else b""
+        # Client parti en cours d'envoi : rien ne part chez Albert.
+        if len(corps) != taille:
+            self.close_connection = True
+            return
         relais.relayer(self, methode, chemin, corps, self.headers.get("Content-Type"))
 
     def _fichier(self, chemin):
@@ -77,14 +94,23 @@ class Gestionnaire(http.server.BaseHTTPRequestHandler):
             self.send_error(404)
             return
         extension = os.path.splitext(fichier)[1]
-        with open(fichier, "rb") as f:
-            contenu = f.read()
+        etat = os.stat(fichier)
+        # Le navigateur renvoie la date reçue telle quelle : la comparaison exacte suffit.
+        date = email.utils.formatdate(etat.st_mtime, usegmt=True)
+        cache = "no-cache" if extension in SANS_CACHE else "public, max-age=86400"
+        if self.headers.get("If-Modified-Since") == date:
+            self.send_response(304)
+            self.send_header("Cache-Control", cache)
+            self.end_headers()
+            return
         self.send_response(200)
         self.send_header("Content-Type", TYPES.get(extension, "application/octet-stream"))
-        self.send_header("Content-Length", str(len(contenu)))
-        self.send_header("Cache-Control", "no-cache" if extension in SANS_CACHE else "public, max-age=86400")
+        self.send_header("Content-Length", str(etat.st_size))
+        self.send_header("Last-Modified", date)
+        self.send_header("Cache-Control", cache)
         self.end_headers()
-        self.wfile.write(contenu)
+        with open(fichier, "rb") as f:
+            shutil.copyfileobj(f, self.wfile)
 
     def log_message(self, *args):
         pass
@@ -96,7 +122,9 @@ def creer_serveur(port=8913, utiliser_ssl=False):
     if utiliser_ssl:
         contexte = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
         contexte.load_cert_chain(certificat.CERT_FILE, certificat.KEY_FILE)
-        serveur.socket = contexte.wrap_socket(serveur.socket, server_side=True)
+        # Poignée TLS à la première lecture, dans le fil du client : un client
+        # muet ne bloque plus accept() pour toute la classe.
+        serveur.socket = contexte.wrap_socket(serveur.socket, server_side=True, do_handshake_on_connect=False)
     return serveur
 
 

@@ -115,3 +115,71 @@ def test_sans_cle_500_avec_le_detail(mini, albert, tmp_path):
     assert reponse.status_code == 500
     assert "keys" in reponse.json()["detail"]
     assert albert.recues == []
+
+
+def test_nom_de_modele_demesure_sans_fenetre_dediee(mini, albert):
+    """Un client du réseau ne doit pas faire grossir la mémoire avec des noms de modèle géants."""
+    from serveur import regulation
+    geant = "m" * 1000
+    mini.post("/v1/chat/completions", json={"model": geant, "messages": []})
+    assert all(geant not in cle for cle in regulation._throttlers)
+
+
+def test_rafale_comptee_avant_la_reponse_d_albert(mini, albert, monkeypatch):
+    """Deux élèves en même temps, plafond d'une requête : la seconde attend sans partir chez Albert."""
+    from concurrent.futures import ThreadPoolExecutor
+    from serveur import regulation
+    monkeypatch.setitem(regulation.RPM_PAR_MODELE, "m", 1)
+    def lente(gestionnaire):
+        time.sleep(1)
+        gestionnaire.send_response(200)
+        gestionnaire.send_header("Content-Type", "application/json")
+        gestionnaire.end_headers()
+        gestionnaire.wfile.write(b"{}")
+    albert.reponses["/v1/chat/completions"] = lente
+    with ThreadPoolExecutor(2) as groupe:
+        statuts = sorted(groupe.map(lambda _: mini.post("/v1/chat/completions", json={"model": "m"}).status_code, range(2)))
+    assert statuts == [200, 429]
+    assert len(albert.recues) == 1
+
+
+def test_page_qui_abandonne_sans_trace_dans_le_terminal(albert):
+    """Bouton Arrêter en plein flux : pas de trace d'erreur dans le terminal du serveur."""
+    erreurs = []
+
+    class Gestionnaire(BaseHTTPRequestHandler):
+        def do_POST(self):
+            n = int(self.headers.get("Content-Length") or 0)
+            relais.relayer(self, "POST", self.path, self.rfile.read(n), self.headers.get("Content-Type"))
+
+        def log_message(self, *args):
+            pass
+
+    class Serveur(ThreadingHTTPServer):
+        def handle_error(self, requete, adresse):
+            erreurs.append(adresse)
+
+    def flux(gestionnaire):
+        gestionnaire.send_response(200)
+        gestionnaire.send_header("Content-Type", "text/event-stream")
+        gestionnaire.end_headers()
+        gestionnaire.wfile.write(b"data: 1\n\n")
+        gestionnaire.wfile.flush()
+        albert.attente.wait(5)
+        try:
+            for _ in range(200):
+                gestionnaire.wfile.write(b"x" * 65536)
+                gestionnaire.wfile.flush()
+        except OSError:
+            pass
+    albert.reponses["/v1/chat/completions"] = flux
+    serveur = Serveur(("127.0.0.1", 0), Gestionnaire)
+    fil = threading.Thread(target=serveur.serve_forever, daemon=True)
+    fil.start()
+    with httpx.Client(base_url=f"http://127.0.0.1:{serveur.server_address[1]}", timeout=10) as client:
+        with client.stream("POST", "/v1/chat/completions", json={"model": "m", "stream": True}) as reponse:
+            next(reponse.iter_bytes())
+    albert.attente.set()
+    time.sleep(2)
+    serveur.shutdown()
+    assert erreurs == []

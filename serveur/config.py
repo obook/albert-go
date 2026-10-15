@@ -9,7 +9,6 @@ Auteurs : O. Booklage ; Romain P., Luce P.B., Théossian S.D. (L'Atelier d'Alber
 Licence : GPL-3.0-or-later
 """
 
-import itertools
 import os
 import threading
 
@@ -59,27 +58,29 @@ def load_web_keys():
     return _lignes(KEYS_FILE)
 
 
-_cycle = None
+_rang = 0
 _verrou = threading.Lock()
 
 
 def prochaine_cle():
-    """Clé suivante, à tour de rôle ; None si le fichier keys est vide."""
-    global _cycle
+    """Clé suivante, à tour de rôle ; None si le fichier keys est vide.
+
+    Le fichier est relu à chaque appel : une clé corrigée sert sans redémarrer.
+    """
+    global _rang
+    cles = load_web_keys()
+    if not cles:
+        return None
     with _verrou:
-        if _cycle is None:
-            cles = load_web_keys()
-            if not cles:
-                return None
-            _cycle = itertools.cycle(cles)
-        return next(_cycle)
+        _rang += 1
+        return cles[(_rang - 1) % len(cles)]
 
 
 def reinitialiser_pour_tests():
-    """Relit le fichier keys au prochain appel (réservé aux tests)."""
-    global _cycle
+    """Repart de la première clé (réservé aux tests)."""
+    global _rang
     with _verrou:
-        _cycle = None
+        _rang = 0
 
 
 def config_affichee():

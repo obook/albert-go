@@ -89,7 +89,9 @@ Lancé par `--kiosque` ou `kiosque=oui` dans `config` ; sinon, Albert Go
 seul. Discussion et Imprimerie ne changent pas.
 
 - Page `/kiosque` de l'atelier (connexion prof et élève, code à 4
-  chiffres), au thème d'Albert Go.
+  chiffres), au thème d'Albert Go : sans choix "Mode de travail", titre
+  et phrase d'accueil réécrits pour Albert Go (remarque du 15 octobre sur
+  la page de l'atelier v3.1.0).
 - Cookies signés, rôle lié à la session, expiration, déconnexion : code
   de l'atelier inchangé.
 - Mode unique : les réglages du prof, injectés dans la page, sont les

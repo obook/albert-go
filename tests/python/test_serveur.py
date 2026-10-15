@@ -52,3 +52,61 @@ def test_audio_jusqu_a_16_mo(client, albert):
     corps = b"x" * (12 * 1024 * 1024)
     reponse = client.post("/v1/audio/transcriptions", content=corps, headers={"Content-Type": "multipart/form-data; boundary=b"})
     assert reponse.status_code == 200
+
+
+def _brute(client, en_tetes, corps=b""):
+    """Requête POST écrite à la main : httpx corrigerait l'en-tête Content-Length."""
+    connexion = http.client.HTTPConnection("127.0.0.1", client.base_url.port, timeout=5)
+    connexion.putrequest("POST", "/v1/chat/completions")
+    for nom, valeur in en_tetes.items():
+        connexion.putheader(nom, valeur)
+    connexion.endheaders()
+    if corps:
+        connexion.send(corps)
+    return connexion.getresponse().status
+
+
+def test_content_length_negatif_ou_invalide_400(client, albert):
+    assert _brute(client, {"Content-Type": "application/json", "Content-Length": "-1"}, b'{"model": "m"}') == 400
+    assert _brute(client, {"Content-Type": "application/json", "Content-Length": "abc"}) == 400
+    assert albert.recues == []
+
+
+def test_fichier_inchange_304(client):
+    """Revalidation : un fichier inchangé ne repart pas (Giac pèse 19 Mo)."""
+    premiere = client.get("/js/albert.js")
+    date = premiere.headers["Last-Modified"]
+    seconde = client.get("/js/albert.js", headers={"If-Modified-Since": date})
+    assert seconde.status_code == 304
+    assert seconde.content == b""
+
+
+def test_ssl_un_client_muet_ne_bloque_pas_les_autres(albert, tmp_path, monkeypatch):
+    """Un iPad en veille au milieu de la poignée TLS ne doit pas figer la classe."""
+    import shutil
+    import socket
+    import subprocess
+    import threading
+
+    import httpx
+    import pytest
+
+    from serveur import certificat
+    from serveur.serveur import creer_serveur
+    if not shutil.which("openssl"):
+        pytest.skip("openssl absent")
+    cert, cle = tmp_path / "cert.pem", tmp_path / "key.pem"
+    subprocess.run(["openssl", "req", "-x509", "-newkey", "rsa:2048", "-nodes", "-days", "1", "-subj", "/CN=localhost",
+                    "-keyout", str(cle), "-out", str(cert)], check=True, capture_output=True)
+    monkeypatch.setattr(certificat, "CERT_FILE", str(cert))
+    monkeypatch.setattr(certificat, "KEY_FILE", str(cle))
+    serveur = creer_serveur(port=0, utiliser_ssl=True)
+    threading.Thread(target=serveur.serve_forever, daemon=True).start()
+    port = serveur.server_address[1]
+    muet = socket.create_connection(("127.0.0.1", port))
+    try:
+        reponse = httpx.get(f"https://127.0.0.1:{port}/", verify=False, timeout=3)
+        assert reponse.status_code == 200
+    finally:
+        muet.close()
+        serveur.shutdown()

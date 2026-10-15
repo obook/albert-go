@@ -57,3 +57,12 @@ def test_ligne_de_lancement_fichier_absent(tmp_path):
     with patch.object(config, "CONFIG_FILE", str(fichier)), \
          patch.dict(os.environ, {"HOME": "/ailleurs", "ALBERT_PORTABLE_DIR": str(tmp_path)}):
         assert config.config_affichee() == f"Configuration (portable) : {fichier} (absent : valeurs par défaut)"
+
+
+def test_cle_corrigee_prise_sans_redemarrer(tmp_path):
+    """L'enseignant corrige le fichier keys : la clé suivante est la nouvelle."""
+    with _dossier(tmp_path, cles="sk-ancienne\n"):
+        config.reinitialiser_pour_tests()
+        assert config.prochaine_cle() == "sk-ancienne"
+        (tmp_path / "keys").write_text("sk-nouvelle\n", encoding="utf-8")
+        assert config.prochaine_cle() == "sk-nouvelle"

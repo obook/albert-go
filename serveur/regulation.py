@@ -8,8 +8,9 @@ clés : le plafond vaut pour le compte, pas pour la clé (mesure du
 17 septembre 2026 sur le serveur de classe). Les limites viennent d'une
 table ; /v1/me/info ne dit pas quel routeur sert quel modèle.
 
-delai_avant_prochaine_requete() ne bloque pas : le relais répond 429
-avec Retry-After au lieu de faire attendre la page.
+reserver() ne bloque pas : elle prend une place dans la fenêtre, ou
+renvoie le délai à patienter ; le relais répond alors 429 avec
+Retry-After au lieu de faire attendre la page.
 """
 
 import re
@@ -99,6 +100,19 @@ class Throttler:
         """
         with self._verrou:
             return self._calculer_delai(debounce)
+
+    def reserver(self):
+        """Prend une place dans la fenêtre si elle est libre ; renvoie 0, sinon le délai.
+
+        Sous le même verrou que le calcul : vingt élèves qui envoient en
+        même temps ne passent pas tous avant la première réponse d'Albert.
+        """
+        with self._verrou:
+            delai = self._calculer_delai(debounce=False)
+            if delai <= 0:
+                self._requetes.ajouter(1)
+                self._dernier_slot = time.monotonic()
+            return delai
 
     def _calculer_delai(self, debounce=True):
         """Renvoie le délai d'attente recommandé. Doit être appelée sous verrou."""
