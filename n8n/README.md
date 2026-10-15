@@ -13,4 +13,4 @@ Le code et le corps de la réponse d'Albert repartent tels quels, y compris une 
 
 Une ligne par jour : `jour` et `appels`, incrémenté à chaque appel accepté par Albert. Rien sur la clé ; n8n ajoute seulement à chaque ligne l'heure de sa création et de sa dernière modification. `/stats` renvoie ces lignes et supprime celles de plus de 90 jours : la table ne dépasse pas 90 lignes. Deux appels simultanés peuvent n'en compter qu'un.
 
-Le compteur était auparavant gardé dans `$getWorkflowStaticData`. Depuis n8n 2.41.6, installé sur l'instance interministérielle le 2 octobre 2026, ces données repartent de zéro à chaque exécution en mode queue ([issue n8n #39653](https://github.com/n8n-io/n8n/issues/39653)). L'historique a été perdu ce jour-là.
+Le compteur était auparavant gardé dans `$getWorkflowStaticData`. Depuis n8n 2.41.6, installé sur l'instance de l'incubateur de l'Éducation nationale le 2 octobre 2026, ces données repartent de zéro à chaque exécution en mode queue ([issue n8n #39653](https://github.com/n8n-io/n8n/issues/39653)). L'historique a été perdu ce jour-là.

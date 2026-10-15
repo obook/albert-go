@@ -1,6 +1,6 @@
 # n8n sur SSPCloud (message épinglé du salon Tchap n8n)
 
-Autre possibilité d'hébergement que la plateforme n8n interministérielle utilisée par Albert Go : une instance n8n personnelle sur SSPCloud. Texte publié sur le salon, adapté : tirets longs et points de suspension remplacés par de l'ASCII, noms d'outils d'IA remplacés par un terme générique.
+Autre possibilité d'hébergement que l'instance n8n de l'incubateur de l'Éducation nationale utilisée par Albert Go : une instance n8n personnelle sur SSPCloud. Texte publié sur le salon, adapté : tirets longs et points de suspension remplacés par de l'ASCII, noms d'outils d'IA remplacés par un terme générique.
 
 > Bonjour,
 >
@@ -47,7 +47,7 @@ Autre possibilité d'hébergement que la plateforme n8n interministérielle util
 
 1. Tester le relais : importer `albert-proxy.json` et le modifier sans toucher à celui en service.
 2. Relayer un moteur de recherche web sans CORS (Marginalia, SearXNG).
-3. Relais de secours si la plateforme interministérielle tombe.
+3. Relais de secours si l'instance de l'incubateur tombe.
 
 Pas pour le relais en service : beta, compte personnel.
 
@@ -58,4 +58,4 @@ Un webhook appelle le moteur côté serveur et renvoie les résultats avec les e
 - Pour : la clé du moteur reste dans n8n, les utilisateurs n'en fournissent pas.
 - Contre : l'admin n8n voit les mots cherchés ; quota partagé entre tous.
 
-SSPCloud pour prototyper, l'instance interministérielle en service.
+SSPCloud pour prototyper, l'instance de l'incubateur en service.
