@@ -16,7 +16,7 @@ Albert Go tourne sur un serveur : un poste de l'établissement, ou une clé USB 
 cp .env-exemple .env      # puis coller la clé API après ALBERT_API_KEY=
 ```
 
-`.env` reste dans le dossier du dépôt, ignoré par git ; le terminal affiche au lancement le fichier utilisé. Les clés s'obtiennent sur la [page d'Albert API](https://ia.numerique.gouv.fr/outils-ia/albert-api/).
+`.env` reste dans le dossier du dépôt, ignoré par git ; le terminal affiche au lancement le fichier utilisé. Installation sur un poste de l'établissement, avec démarrage automatique et mise à jour : [DEPLOIEMENT.md](DEPLOIEMENT.md). Les clés s'obtiennent sur la [page d'Albert API](https://ia.numerique.gouv.fr/outils-ia/albert-api/).
 
 ## Kiosque
 
