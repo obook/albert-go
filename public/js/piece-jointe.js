@@ -10,7 +10,7 @@
  * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
  * Auteur : O. Booklage
  * Date : Septembre 2026
- * Licence : Licence Ouverte 2.0 (Etalab), SPDX etalab-2.0
+ * Licence : GPL-3.0-or-later
  */
 'use strict';
 
@@ -44,7 +44,7 @@ const IMAGE_MAX = 1600;
 /** Enregistrements reconnus quand le navigateur ne donne pas de type audio/. */
 const EXTENSIONS_AUDIO = /\.(mp3|wav|m4a|aac|ogg|oga|opus|flac|webm)$/i;
 
-/** Taille maximale d'un enregistrement envoyé, en octets : n8n refuse au-delà de 16 Mo. */
+/** Taille maximale d'un enregistrement envoyé, en octets : le serveur refuse au-delà de 16 Mo. */
 const AUDIO_MAX = 15000000;
 
 /** Fréquence du WAV envoyé : celle de whisper, 16 kHz en mono (environ 8 minutes dans AUDIO_MAX). */
@@ -285,7 +285,7 @@ async function lireDocument(fichier) {
 async function lireContenu(fichier, type, signal, image) {
     if (type === 'image') {
         etat(t('etat.lecture-image'));
-        return Albert.transcrire(reglages.cle, image, signal);
+        return Albert.transcrire(image, signal);
     }
     if (type === 'audio') {
         if (fichier.size > AUDIO_MAX) {
@@ -300,7 +300,7 @@ async function lireContenu(fichier, type, signal, image) {
             throw new Error(t('erreur.audio-long'));
         }
         etat(t('etat.lecture-audio'));
-        const texte = await Albert.transcrireAudio(reglages.cle, audio, mp3 ? fichier.name : 'audio.wav', signal);
+        const texte = await Albert.transcrireAudio(audio, mp3 ? fichier.name : 'audio.wav', signal);
         if (!texte.trim()) {
             throw new Error(t('erreur.audio-vide'));
         }

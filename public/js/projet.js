@@ -12,7 +12,7 @@
  * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
  * Auteur : O. Booklage
  * Date : Octobre 2026
- * Licence : Licence Ouverte 2.0 (Etalab), SPDX etalab-2.0
+ * Licence : GPL-3.0-or-later
  */
 'use strict';
 
@@ -55,7 +55,7 @@ function montrerBibliotheque() {
  */
 function placerBibliotheque() {
     /* Premier appel avant modules.js, qui déclare outilActuel. */
-    const projet = !!reglages.cle && typeof outilActuel !== 'undefined' && !!Albert.OUTILS[outilActuel].sources;
+    const projet = typeof outilActuel !== 'undefined' && !!Albert.OUTILS[outilActuel].sources;
     $('ouvrir-bibliotheque').hidden = !projet;
     const volet = $('bibliotheque');
     const colonne = projet && COLONNE_SOURCES.matches && lire('bibliotheque-volet', null) !== 'replie';

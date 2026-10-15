@@ -11,7 +11,7 @@
  * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
  * Auteur : O. Booklage
  * Date : Septembre 2026
- * Licence : Licence Ouverte 2.0 (Etalab), SPDX etalab-2.0
+ * Licence : GPL-3.0-or-later
  */
 'use strict';
 
@@ -76,7 +76,7 @@ if (window.top !== window.self) {
 }
 
 /* Données effacées à la fermeture de l'onglet en mode partagé. */
-const SENSIBLES = ['cle', 'cle-recherche', 'historique', 'conversations', 'bibliotheque'];
+const SENSIBLES = ['cle-recherche', 'historique', 'conversations', 'bibliotheque'];
 
 /** Mode partagé : clé, questions et conversations en sessionStorage. */
 let partage = false;
@@ -269,7 +269,6 @@ function echangesLus() {
 
 /** Réglages de l'utilisateur, lus au démarrage. */
 const reglages = {
-    cle: lire('cle', null),
     modele: lire('modele', Albert.CONSEILLES.modele),
     /* Une valeur illisible donnerait NaN, envoyé en "temperature": null. */
     temperature: temperatureLue(),

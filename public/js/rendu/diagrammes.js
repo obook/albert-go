@@ -7,7 +7,7 @@
  * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
  * Auteur : O. Booklage
  * Date : Septembre 2026
- * Licence : Licence Ouverte 2.0 (Etalab), SPDX etalab-2.0
+ * Licence : GPL-3.0-or-later
  */
 'use strict';
 
@@ -83,7 +83,7 @@ Object.assign(Rendu, {
     corrigerMermaid(code, erreur) {
         if (!this._corrections.has(code)) {
             const demande = Albert.demandeCorrectionMermaid(modeleActuel().id, code, erreur);
-            this._corrections.set(code, Albert.repondre(reglages.cle, demande, new AbortController().signal)
+            this._corrections.set(code, Albert.repondre(demande, new AbortController().signal)
                 .then((reponse) => Albert.codeMermaid(reponse.texte))
                 .catch((err) => {
                     this._corrections.delete(code);

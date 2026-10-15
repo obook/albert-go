@@ -7,7 +7,7 @@
  * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
  * Auteur : O. Booklage
  * Date : Septembre 2026
- * Licence : Licence Ouverte 2.0 (Etalab), SPDX etalab-2.0
+ * Licence : GPL-3.0-or-later
  */
 'use strict';
 
@@ -87,5 +87,14 @@ test('accueil : chaque fichier d\'exemples a autant d\'exemples dans chaque lang
     }
     for (const langue of I18n.LANGUES) {
         assert.ok(I18n.TEXTES[langue]['bienvenue.formel'], langue);
+    }
+});
+
+test('aucun texte ne décrit l\'ancien relais n8n ni une clé gardée dans la page', () => {
+    for (const langue of I18n.LANGUES) {
+        const textes = I18n.TEXTES[langue];
+        const fautifs = Object.keys(textes).filter(c => /incubat|inkubator|n8n/i.test(textes[c]));
+        assert.deepStrictEqual(fautifs, [], langue);
+        assert.doesNotMatch(textes['partage.texte'], /clé|key|clave|schlüssel/i, langue);
     }
 });

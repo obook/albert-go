@@ -2,7 +2,7 @@
  * albert.js
  * Client de l'API Albert.
  *
- * Albert ne gère pas CORS : toutes les requêtes passent par le relais n8n.
+ * Toutes les requêtes passent par le serveur d'Albert Go (serveur/), qui ajoute la clé.
  * Aucun accès au DOM, pour pouvoir être testé sous Node (tests/albert.test.js).
  * Les textes visibles et ceux envoyés au modèle viennent de langues/*.js (t).
  * Utilisé par stockage.js, reglages.js, piece-jointe.js et app.js.
@@ -10,25 +10,16 @@
  * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
  * Auteur : O. Booklage
  * Date : Septembre 2026
- * Licence : Licence Ouverte 2.0 (Etalab), SPDX etalab-2.0
+ * Licence : GPL-3.0-or-later
  */
 'use strict';
 
 const Albert = {
-    /** Adresse du relais n8n. */
-    BASE: 'https://n8n.incubateur.education.gouv.fr/webhook/albert-go/v1',
-
-    /** Adresse publique de la page, affichée dans la boîte "Partager". */
-    URL_PUBLIQUE: 'https://booklageolivier.forge.apps.education.fr/albert-go/',
-
-    /* Même liste que allowedOrigins dans le workflow n8n. */
-    ORIGINES: ['https://booklageolivier.forge.apps.education.fr', 'http://localhost:8642'],
+    /** Relais du serveur d'Albert Go, qui ajoute la clé. */
+    BASE: '/v1',
 
     /** Délai maximal d'une réponse, en millisecondes. */
     DELAI_MS: 120000,
-
-    /** Attente avant de vérifier que le relais répond encore (via /stats). */
-    SONDE_MS: 10000,
 
     /** Nombre de questions gardées pour les flèches de la saisie. */
     HISTORIQUE_MAX: 30,
@@ -132,13 +123,11 @@ const Albert = {
     /**
      * Demande la liste des modèles à Albert.
      *
-     * @param {string} cle - Clé API de l'utilisateur.
      * @returns {Promise<Object[]>} Les modèles de conversation, triés.
      * @throws {Error} Si Albert refuse la requête ; err.status donne le code HTTP.
      */
-    async modeles(cle) {
+    async modeles() {
         const res = await fetch(this.BASE + '/models', {
-            headers: { 'Authorization': 'Bearer ' + cle },
             signal: AbortSignal.timeout(20000)
         });
         const corps = await res.json().catch(() => null);
@@ -148,24 +137,6 @@ const Albert = {
             throw erreur;
         }
         return this.normaliserModeles((corps && corps.data) || []);
-    },
-
-    /**
-     * Appels sur 90 jours (clé acceptée par Albert), comptés par le relais.
-     *
-     * @returns {Promise<{total: number, parHeure: number}>} Somme des jours, et moyenne horaire depuis le premier jour.
-     */
-    async appels() {
-        const res = await fetch(this.BASE.replace('/v1', '/stats'), { signal: AbortSignal.timeout(10000) });
-        if (!res.ok) {
-            throw new Error(res.status);
-        }
-        const jours = await res.json();
-        const total = Object.values(jours).reduce((n, jour) => n + jour.appels, 0);
-        /* ponytail: moyenne depuis minuit UTC du premier jour, compteur par heure si le rythme récent compte. */
-        const debut = Date.parse(Object.keys(jours).sort()[0] + 'T00:00:00Z');
-        const heures = Math.max(1, (Date.now() - debut) / 3600000);
-        return { total, parHeure: total ? total / heures : 0 };
     },
 
     /**
@@ -270,35 +241,19 @@ const Albert = {
     /**
      * Envoie une requête de conversation à Albert.
      *
-     * @param {string} cle - Clé API de l'utilisateur.
      * @param {Object} requete - Corps au format chat/completions (model, messages...).
      * @param {AbortSignal} annulation - Signal du bouton Arrêter.
      * @returns {Promise<{texte: string, usage: ?Object, coupee: boolean}>} Réponse, consommation, et coupee si la longueur l'a arrêtée.
      * @throws {Error} Si Albert refuse la requête, ou si elle est annulée.
      */
-    async repondre(cle, requete, annulation) {
-        /* Relais bloqué : Scalingo ne rend son 504 sans CORS qu'après 60 s.
-           Si /stats ne répond pas non plus, inutile d'attendre. */
-        const sonde = new AbortController();
-        const minuterie = setTimeout(() => {
-            this.appels().catch(() => sonde.abort(new Error(t('erreur.relais-hs'))));
-        }, this.SONDE_MS);
-        let res, corps;
-        try {
-            res = await fetch(this.BASE + '/chat/completions', {
-                method: 'POST',
-                headers: { 'Authorization': 'Bearer ' + cle, 'Content-Type': 'application/json' },
-                body: JSON.stringify(this.plafonnee(requete)),
-                signal: AbortSignal.any([annulation, sonde.signal, AbortSignal.timeout(this.DELAI_MS)])
-            });
-            corps = await res.json().catch(() => null);
-        } finally {
-            clearTimeout(minuterie);
-        }
-        /* Sonde échouée pendant la lecture du corps, avalée par le catch du json. */
-        if (sonde.signal.aborted) {
-            throw sonde.signal.reason;
-        }
+    async repondre(requete, annulation) {
+        const res = await fetch(this.BASE + '/chat/completions', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(this.plafonnee(requete)),
+            signal: AbortSignal.any([annulation, AbortSignal.timeout(this.DELAI_MS)])
+        });
+        const corps = await res.json().catch(() => null);
         if (!res.ok) {
             throw new Error(this.messageErreur(res.status, corps));
         }
@@ -360,13 +315,12 @@ const Albert = {
     /**
      * Fait lire une image par le modèle de vision.
      *
-     * @param {string} cle - Clé API de l'utilisateur.
      * @param {string} dataUrl - Image en data URL (JPEG).
      * @param {AbortSignal} annulation - Signal pour abandonner la lecture.
      * @returns {Promise<string>} Texte trouvé dans l'image.
      */
-    transcrire(cle, dataUrl, annulation) {
-        return this.repondre(cle, {
+    transcrire(dataUrl, annulation) {
+        return this.repondre({
             model: this.MODELE_VISION,
             temperature: 0,
             messages: [{ role: 'user', content: [
@@ -407,21 +361,19 @@ const Albert = {
     /**
      * Fait transcrire un enregistrement par le modèle audio.
      *
-     * @param {string} cle - Clé API de l'utilisateur.
      * @param {Blob} audio - Enregistrement MP3 ou WAV.
      * @param {string} nom - Nom du fichier, avec son extension.
      * @param {AbortSignal} annulation - Signal pour abandonner la lecture.
      * @returns {Promise<string>} Texte entendu, par locuteur s'il y a plusieurs voix.
      * @throws {Error} Si Albert refuse l'enregistrement.
      */
-    async transcrireAudio(cle, audio, nom, annulation) {
+    async transcrireAudio(audio, nom, annulation) {
         const formulaire = new FormData();
         formulaire.append('file', audio, nom);
         formulaire.append('model', this.MODELE_AUDIO);
         formulaire.append('response_format', 'diarized_json');
         const res = await fetch(this.BASE + '/audio/transcriptions', {
             method: 'POST',
-            headers: { 'Authorization': 'Bearer ' + cle },
             body: formulaire,
             signal: AbortSignal.any([annulation, AbortSignal.timeout(this.DELAI_MS)])
         });
@@ -1145,7 +1097,7 @@ const Albert = {
         if (status === 429) {
             return t('erreur.quota');
         }
-        /* Le reverse proxy répond seul quand n8n est arrêté. */
+        /* Le serveur répond 502 quand Albert ne répond pas. */
         if ([502, 503, 504].includes(status)) {
             return t('erreur.relais-hs');
         }

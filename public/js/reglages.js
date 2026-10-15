@@ -10,7 +10,7 @@
  * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
  * Auteur : O. Booklage
  * Date : Septembre 2026
- * Licence : Licence Ouverte 2.0 (Etalab), SPDX etalab-2.0
+ * Licence : GPL-3.0-or-later
  */
 'use strict';
 
@@ -63,19 +63,14 @@ function afficherModeles() {
 }
 
 /**
- * Charge la liste réelle des modèles au démarrage.
- *
- * Clé refusée (révoquée, expirée) : elle est effacée et l'écran de la clé
- * revient. Relais injoignable : la liste de secours reste.
+ * Charge la liste réelle des modèles au démarrage. Serveur ou Albert
+ * injoignable : la liste de secours reste.
  *
  * @returns {Promise<void>}
  */
 async function chargerModeles() {
-    if (!reglages.cle) {
-        return;
-    }
     try {
-        const liste = await Albert.modeles(reglages.cle);
+        const liste = await Albert.modeles();
         if (!liste.length) {
             return;
         }
@@ -83,11 +78,8 @@ async function chargerModeles() {
         afficherModeles();
         afficherReglages();
     } catch (err) {
+        /* Clé du serveur refusée : le dire ; injoignable : la liste de secours reste. */
         if (err.status === 401 || err.status === 403) {
-            reglages.cle = null;
-            ecrire('cle', null);
-            afficher();
-            placerVolet();
             toast(err.message);
         }
     }

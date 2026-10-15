@@ -8,19 +8,11 @@ tests:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
 
-# Publie public/ sur Pages : https://booklageolivier.forge.apps.education.fr/albert-go/
-pages:
-  image: alpine:latest
+# À chaque MR : tests du serveur Python.
+tests-serveur:
+  image: python:3.12-slim
   script:
-    # Version affichée dans "À propos" : commit publié et sa date.
-    # Bloc littéral : sans lui, YAML lit "commit: ..." comme une clé.
-    - |
-      echo "const VERSION = { commit: '${CI_COMMIT_SHORT_SHA}', date: '${CI_COMMIT_TIMESTAMP}' };" > public/js/version.js
-    # Adresses des feuilles et scripts propres à chaque version : pas de mélange en cache.
-    - sed -i "s/?v=dev/?v=${CI_COMMIT_SHORT_SHA}/g" public/index.html
-    - echo "Publication de public/"
-  artifacts:
-    paths:
-      - public
+    - pip install -q -r serveur/requirements.txt pytest
+    - python -m pytest -q
   rules:
-    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'

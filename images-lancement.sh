@@ -5,7 +5,7 @@
 # Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
 # Auteur : O. Booklage
 # Date : Octobre 2026
-# Licence : Licence Ouverte 2.0 (Etalab), SPDX etalab-2.0
+# Licence : GPL-3.0-or-later
 #
 # iOS ne montre le logo à l'ouverture que s'il trouve une image à la taille
 # exacte de l'écran. Nouvel appareil : ajouter sa ligne à ECRANS, relancer,

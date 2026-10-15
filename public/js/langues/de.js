@@ -7,7 +7,7 @@
  * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
  * Auteur : O. Booklage
  * Date : Septembre 2026
- * Licence : Licence Ouverte 2.0 (Etalab), SPDX etalab-2.0
+ * Licence : GPL-3.0-or-later
  */
 'use strict';
 
@@ -22,7 +22,6 @@ I18n.TEXTES.de = {
     'menu.reglages': 'Einstellungen',
     'menu.partager': 'Teilen',
     'menu.apropos': 'Über',
-    'menu.changer-cle': 'Schlüssel löschen und beenden',
     'historique.vide': 'Noch kein Gespräch.',
     'historique.rechercher': 'Gespräch suchen',
     'historique.aucune': 'Kein Gespräch gefunden.',
@@ -113,14 +112,6 @@ I18n.TEXTES.de = {
     'langue.la': 'Latein',
 
     /* Schlüsselbildschirm. */
-    'cle.intro': 'Die KI des französischen Staates zum Chatten, Korrigieren, Umformulieren, Übersetzen und Schreiben. Zugang nur für Beschäftigte im öffentlichen Dienst.',
-    'cle.etape-acces': 'Noch kein Schlüssel?',
-    'cle.etape-saisie': 'Ich habe einen Schlüssel',
-    'cle.exemple': 'sk-...',
-    'cle.souvenir': 'Im Browser behalten, jederzeit löschbar',
-    'cle.ou-va': 'Wohin geht mein Schlüssel?',
-    'cle.saisir': 'Eingeben',
-    'cle.titre-boite': 'API-Schlüssel',
     'bienvenue.texte': 'Ein paar Ideen für den Anfang',
     'bienvenue.corriger': 'Korrigieren',
     'bienvenue.reformuler': 'Umformulieren',
@@ -152,12 +143,6 @@ I18n.TEXTES.de = {
     'bienvenue.exemple-tirage': 'Lose die Reihenfolge dieser Abteilungen aus: Empfang, Buchhaltung, Personal, IT, Logistik.',
     'bienvenue.exemple-recherche': 'Wer hat die Brailleschrift erfunden und wann? Zeig auch ein Porträt von Louis Braille.',
     'bienvenue.exemple-services': 'Wann sind dieses Jahr die Allerheiligenferien in Paris (Zone C)?',
-    'cle.titre': 'Willkommen bei Albert Go',
-    'cle.bienvenue': 'Ihr Schlüssel wurde akzeptiert. Stellen Sie Ihre erste Frage oder wählen Sie ein Modul im Menü.',
-    'cle.label': 'Schlüssel',
-    'cle.stockee': '<ul><li>Standardmäßig wird er beim Schließen des Tabs gelöscht.</li><li>Wenn Sie "Im Browser behalten" aktivieren, bleibt er im Speicher <code>localStorage</code> des Browsers, bis Sie im Menü "Schlüssel löschen und beenden" wählen.</li><li>Er verlässt diesen Browser nur, um Albert zu erreichen, über das <a href="https://n8n.incubateur.education.gouv.fr" target="_blank" rel="noopener noreferrer">Relais des Inkubators der Éducation nationale</a>, das ihn nicht speichert.</li></ul>',
-    'cle.demander': 'Beantragen',
-    'cle.verification': 'Schlüssel wird geprüft...',
 
     /* Eingabe. */
     'chat.aria': 'Gespräch',
@@ -197,6 +182,7 @@ I18n.TEXTES.de = {
     'reglages.aide-top-k-un': 'Immer das wahrscheinlichste Wort: fast kein Zufall mehr.',
     'reglages.aide-top-k-tous': 'Ein Wort wird zufällig aus allen möglichen Wörtern gezogen, um den Text zu erzeugen.',
     'reglages.contexte': 'Kontext',
+    'reglages.donnees': 'Daten',
     'reglages.lecture': 'Vorlesen',
     'reglages.voix-en-ligne': 'Online-Stimmen erlauben',
     'reglages.aide-voix': 'Eine Online-Sprachausgabe kann die Daten des Gesprächs sammeln und verwerten.',
@@ -220,7 +206,6 @@ I18n.TEXTES.de = {
     'reglages.cx': 'ID der Suchmaschine',
     'reglages.moteur-aucun': 'Keine zusätzliche Suchmaschine (höchstens drei)',
     'reglages.aide-recherche': 'Internet-Werkzeuge können die Daten des Gesprächs sammeln und verwerten. Die gelieferten Texte werden nicht geprüft.',
-    'reglages.cle-note': 'In diesem Browser ist ein Schlüssel gespeichert.',
     'reglages.nom': 'Name der App',
     'reglages.aide-nom': 'Höchstens 12 Zeichen.',
     'reglages.conseilles': 'Empfohlene Einstellungen',
@@ -230,8 +215,8 @@ I18n.TEXTES.de = {
     'contexte.echanges-un': 'Kontext: {n} Wechsel',
     'contexte.complet': 'Voller Kontext',
     'contexte.pourcent': 'Voller Kontext ({pourcent} % belegt)',
-    'partage.actif': 'Beim Schließen bleiben Schlüssel, Gespräche und Bibliothek erhalten.',
-    'partage.inactif': 'Beim Schließen werden Schlüssel, Gespräche und Bibliothek gelöscht.',
+    'partage.actif': 'Beim Schließen bleiben Gespräche und Bibliothek erhalten.',
+    'partage.inactif': 'Beim Schließen werden Gespräche und Bibliothek gelöscht.',
     'reglages.aide-echanges': 'Gedächtnis: Die KI erhält die {n} vorherigen Wechsel.',
     'reglages.aide-echanges-un': 'Gedächtnis: Die KI erhält den vorherigen Wechsel.',
     'reglages.aide-echanges-aucun': 'Gedächtnis: Die KI hat kein Gedächtnis.',
@@ -252,11 +237,9 @@ I18n.TEXTES.de = {
     'dialogue.fermer': 'Schließen',
     'dialogue.oui': 'Ja',
     'dialogue.non': 'Nein',
-    'confirmer-changer-cle.titre': 'Schlüssel löschen und beenden?',
-    'confirmer-changer-cle.texte': 'Der Schlüssel wird aus dem Browserspeicher gelöscht, danach kehren Sie zur Startseite zurück.',
     'confirmer-suppression.titre': 'Dieses Gespräch löschen?',
     'partage.titre': 'Teilen',
-    'partage.texte': 'Scannen Sie den QR-Code oder kopieren Sie die Adresse, Ihr Schlüssel wird nicht geteilt.',
+    'partage.texte': 'Scannen Sie den QR-Code oder kopieren Sie die Adresse.',
     'partage.qr': 'QR-Code der Adresse von Albert Go',
     'partage.adresse': 'Adresse von Albert Go',
     'partage.copier': 'Kopieren',
@@ -265,7 +248,7 @@ I18n.TEXTES.de = {
     'info.titre': 'Über',
     'info.intro': 'Mit Albert Go chatten Sie mit den KI-Modellen der interministeriellen Digitaldirektion (<a href="https://ia.numerique.gouv.fr/outils-ia/albert-api/" target="_blank" rel="noopener noreferrer">DINUM</a>) mit Ihrem API-Schlüssel.',
     'info.donnees': 'Ihre Daten',
-    'info.donnees.relais': 'Ihr Schlüssel und Ihre Fragen laufen über das Relais des Inkubators der Éducation nationale, das nichts speichert, und dann weiter zu Albert API.',
+    'info.donnees.relais': 'Ihre Fragen laufen über den Albert-Go-Server, der den Schlüssel verwahrt, und dann weiter zu Albert API.',
     'info.donnees.traceurs': 'Kein Konto, kein Cookie, keine Bibliothek von einer fremden Seite. Internet-Werkzeuge werden nur mit Ihrer Erlaubnis aufgerufen.',
     'info.clavier': 'Tastatur',
     'info.clavier.texte': 'Eingabe: senden. Umschalt+Eingabe: neue Zeile. Pfeil auf und ab: vorherige Fragen.',
@@ -274,10 +257,6 @@ I18n.TEXTES.de = {
     'info.projet': 'Das Projekt',
     'info.projet.texte': 'Autor: <a href="mailto:olivier.booklage@ac-bordeaux.fr">Olivier Booklage</a> (Académie de Bordeaux)<br>Quelle: <a href="https://forge.apps.education.fr/booklageolivier/albert-go" target="_blank" rel="noopener noreferrer">Forge des communs numériques</a>',
     'info.version': 'Version: ',
-    'info.appels': 'n8n-Last: {n} {motN} in 90 Tagen mit {h} {motH}/h',
-    'info.appels-hs': 'n8n-Last: nicht verfügbar',
-    'info.appel': 'Aufruf',
-    'info.appels.pluriel': 'Aufrufe',
     'version.format': '{commit} vom {date}',
 
     /* Antworten. */
@@ -377,8 +356,6 @@ I18n.TEXTES.de = {
     'toast.telechargement-en-cours': 'Wird heruntergeladen...',
     'toast.telecharge': 'Datei heruntergeladen: {nom}',
     'toast.telechargement-impossible': 'Download fehlgeschlagen.',
-    'toast.cle-effacee': 'Schlüssel aus dem Browser gelöscht',
-    'toast.relais-retabli': 'Das Relais des Inkubators der Éducation nationale ist verfügbar.',
     'toast.partage-impossible': 'Wechsel nicht möglich: Die Daten passen nicht in den neuen Speicher.',
     'toast.conversation-supprimee': 'Gespräch gelöscht.',
     'toast.conversation-longue': 'Gespräch zu lang zum Speichern. Es bleibt am Bildschirm, bis der Tab geschlossen wird.',
@@ -406,16 +383,15 @@ I18n.TEXTES.de = {
     'etat.recherche': 'Suche nach "{mots}"...',
 
     /* Fehler. */
-    'erreur.cle-refusee': 'Schlüssel von Albert abgelehnt. Prüfen oder wechseln Sie ihn.',
+    'erreur.cle-refusee': 'Serverschlüssel von Albert abgelehnt: prüfen Sie die Datei keys.',
     'erreur.quota': 'Kontingent erreicht. Versuchen Sie es in einer Minute erneut.',
     'erreur.reponse-illisible': 'Unlesbare Antwort von Albert. Versuchen Sie es erneut.',
     'erreur.http': 'Fehler {status}.',
     'erreur.http-detail': 'Fehler {status}: {detail}',
-    'erreur.relais': 'Das Relais des Inkubators der Éducation nationale ist nicht erreichbar. Prüfen Sie die Verbindung.',
-    'erreur.relais-hs': 'Das Relais des Inkubators der Éducation nationale ist nicht verfügbar. Versuchen Sie es später erneut.',
+    'erreur.relais': 'Der Albert-Go-Server antwortet nicht mehr, später erneut versuchen.',
+    'erreur.relais-hs': 'Albert antwortet nicht. Versuchen Sie es später erneut.',
     'erreur.hors-ligne': 'Sie sind offline. Prüfen Sie die Verbindung.',
     'erreur.timeout': 'Albert antwortet nicht. Versuchen Sie es erneut.',
-    'erreur.origine': 'Das n8n-Relais akzeptiert die Adresse {origine} nicht. Öffnen Sie ',
     'erreur.consigne': 'Die Systemanweisung des Werkzeugs {outil} fehlt.',
     'erreur.format': 'Format nicht unterstützt: nur Bilder, Audio, PDF, .docx, .odt und Textdateien.',
     'erreur.fichier-long': 'Datei zu lang: höchstens 200 kB.',

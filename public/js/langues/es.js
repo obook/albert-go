@@ -7,7 +7,7 @@
  * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
  * Auteur : O. Booklage
  * Date : Septembre 2026
- * Licence : Licence Ouverte 2.0 (Etalab), SPDX etalab-2.0
+ * Licence : GPL-3.0-or-later
  */
 'use strict';
 
@@ -22,7 +22,6 @@ I18n.TEXTES.es = {
     'menu.reglages': 'Ajustes',
     'menu.partager': 'Compartir',
     'menu.apropos': 'Acerca de',
-    'menu.changer-cle': 'Borrar la clave y salir',
     'historique.vide': 'Ninguna conversación por ahora.',
     'historique.rechercher': 'Buscar una conversación',
     'historique.aucune': 'Ninguna conversación encontrada.',
@@ -113,14 +112,6 @@ I18n.TEXTES.es = {
     'langue.la': 'Latín',
 
     /* Pantalla de la clave. */
-    'cle.intro': 'La IA del Estado francés para charlar, corregir, reformular, traducir y redactar. Acceso reservado a los agentes públicos.',
-    'cle.etape-acces': '¿Todavía sin clave?',
-    'cle.etape-saisie': 'Tengo una clave',
-    'cle.exemple': 'sk-...',
-    'cle.souvenir': 'Conservarla en este navegador, borrable en cualquier momento',
-    'cle.ou-va': '¿Adónde va mi clave?',
-    'cle.saisir': 'Introducir',
-    'cle.titre-boite': 'Clave API',
     'bienvenue.texte': 'Algunas ideas para empezar',
     'bienvenue.corriger': 'Corregir',
     'bienvenue.reformuler': 'Reformular',
@@ -152,12 +143,6 @@ I18n.TEXTES.es = {
     'bienvenue.exemple-tirage': 'Sortea el orden de intervención de estos servicios: recepción, contabilidad, recursos humanos, informática, logística.',
     'bienvenue.exemple-recherche': '¿Quién inventó el braille y cuándo? Muestra también un retrato de Louis Braille.',
     'bienvenue.exemple-services': '¿Cuáles son las fechas de las vacaciones de Todos los Santos en París (zona C) este año?',
-    'cle.titre': 'Bienvenido a Albert Go',
-    'cle.bienvenue': 'Su clave ha sido aceptada. Haga su primera pregunta o elija un módulo en el menú.',
-    'cle.label': 'Clave',
-    'cle.stockee': '<ul><li>Por defecto, se borra al cerrar la pestaña.</li><li>Si activa "Conservarla", se queda en el almacenamiento <code>localStorage</code> del navegador hasta que elija "Borrar la clave y salir" en el menú.</li><li>Solo sale de este navegador para llegar a Albert, a través del <a href="https://n8n.incubateur.education.gouv.fr" target="_blank" rel="noopener noreferrer">relé de la incubadora de la Éducation nationale</a>, que no la guarda.</li></ul>',
-    'cle.demander': 'Solicitar',
-    'cle.verification': 'Comprobando la clave...',
 
     /* Entrada. */
     'chat.aria': 'Conversación',
@@ -197,6 +182,7 @@ I18n.TEXTES.es = {
     'reglages.aide-top-k-un': 'Siempre la palabra más probable: casi sin azar.',
     'reglages.aide-top-k-tous': 'Se sortea una palabra entre todas las palabras posibles para generar el texto.',
     'reglages.contexte': 'Contexto',
+    'reglages.donnees': 'Datos',
     'reglages.lecture': 'Lectura en voz alta',
     'reglages.voix-en-ligne': 'Permitir las voces en línea',
     'reglages.aide-voix': 'Un motor de voz en línea puede recopilar y explotar los datos de la conversación.',
@@ -220,7 +206,6 @@ I18n.TEXTES.es = {
     'reglages.cx': 'ID del buscador',
     'reglages.moteur-aucun': 'Ningún buscador adicional (tres como máximo)',
     'reglages.aide-recherche': 'Las herramientas de Internet pueden recopilar y explotar los datos de la conversación. Los textos que traen no están verificados.',
-    'reglages.cle-note': 'Hay una clave guardada en este navegador.',
     'reglages.nom': 'Nombre de la aplicación',
     'reglages.aide-nom': 'Hasta 12 caracteres.',
     'reglages.conseilles': 'Ajustes recomendados',
@@ -230,8 +215,8 @@ I18n.TEXTES.es = {
     'contexte.echanges-un': 'Contexto: {n} intercambio',
     'contexte.complet': 'Contexto completo',
     'contexte.pourcent': 'Contexto completo ({pourcent} % usado)',
-    'partage.actif': 'Al cerrar, la clave, las conversaciones y la biblioteca se conservarán.',
-    'partage.inactif': 'Al cerrar, la clave, las conversaciones y la biblioteca se borrarán.',
+    'partage.actif': 'Al cerrar, las conversaciones y la biblioteca se conservarán.',
+    'partage.inactif': 'Al cerrar, las conversaciones y la biblioteca se borrarán.',
     'reglages.aide-echanges': 'Memoria: la IA recibe los {n} intercambios anteriores.',
     'reglages.aide-echanges-un': 'Memoria: la IA recibe el intercambio anterior.',
     'reglages.aide-echanges-aucun': 'Memoria: la IA no tiene memoria.',
@@ -252,11 +237,9 @@ I18n.TEXTES.es = {
     'dialogue.fermer': 'Cerrar',
     'dialogue.oui': 'Sí',
     'dialogue.non': 'No',
-    'confirmer-changer-cle.titre': '¿Borrar la clave y salir?',
-    'confirmer-changer-cle.texte': 'La clave se borrará del almacenamiento del navegador y usted volverá a la pantalla de inicio.',
     'confirmer-suppression.titre': '¿Eliminar esta conversación?',
     'partage.titre': 'Compartir',
-    'partage.texte': 'Escanee el código QR o copie la dirección, su clave no se comparte.',
+    'partage.texte': 'Escanee el código QR o copie la dirección.',
     'partage.qr': 'Código QR de la dirección de Albert Go',
     'partage.adresse': 'Dirección de Albert Go',
     'partage.copier': 'Copiar',
@@ -265,7 +248,7 @@ I18n.TEXTES.es = {
     'info.titre': 'Acerca de',
     'info.intro': 'Albert Go permite charlar con los modelos de inteligencia artificial de la dirección interministerial de lo digital (<a href="https://ia.numerique.gouv.fr/outils-ia/albert-api/" target="_blank" rel="noopener noreferrer">DINUM</a>) con su clave API.',
     'info.donnees': 'Sus datos',
-    'info.donnees.relais': 'Su clave y sus preguntas pasan por el relé de la incubadora de la Éducation nationale, que no guarda nada, y luego van a Albert API.',
+    'info.donnees.relais': 'Sus preguntas pasan por el servidor de Albert Go, que guarda la clave, y luego van a Albert API.',
     'info.donnees.traceurs': 'Ninguna cuenta, ninguna cookie, ninguna biblioteca cargada desde un sitio ajeno. Llamadas de las herramientas de Internet solo si usted las permite.',
     'info.clavier': 'Teclado',
     'info.clavier.texte': 'Intro: enviar. Mayús+Intro: nueva línea. Flechas arriba y abajo: preguntas anteriores.',
@@ -274,10 +257,6 @@ I18n.TEXTES.es = {
     'info.projet': 'El proyecto',
     'info.projet.texte': 'Autor: <a href="mailto:olivier.booklage@ac-bordeaux.fr">Olivier Booklage</a> (Académie de Bordeaux)<br>Fuente: <a href="https://forge.apps.education.fr/booklageolivier/albert-go" target="_blank" rel="noopener noreferrer">Forge des communs numériques</a>',
     'info.version': 'Versión: ',
-    'info.appels': 'Carga n8n: {n} {motN} en 90 días a {h} {motH}/h',
-    'info.appels-hs': 'Carga n8n: no disponible',
-    'info.appel': 'llamada',
-    'info.appels.pluriel': 'llamadas',
     'version.format': '{commit} del {date}',
 
     /* Respuestas. */
@@ -377,8 +356,6 @@ I18n.TEXTES.es = {
     'toast.telechargement-en-cours': 'Descargando...',
     'toast.telecharge': 'Archivo descargado: {nom}',
     'toast.telechargement-impossible': 'No se pudo descargar.',
-    'toast.cle-effacee': 'Clave borrada del navegador',
-    'toast.relais-retabli': 'El relé de la incubadora de la Éducation nationale está disponible.',
     'toast.partage-impossible': 'Cambio imposible: los datos no caben en el nuevo almacenamiento.',
     'toast.conversation-supprimee': 'Conversación eliminada.',
     'toast.conversation-longue': 'Conversación demasiado larga para guardarla. Se queda en pantalla hasta cerrar la pestaña.',
@@ -406,16 +383,15 @@ I18n.TEXTES.es = {
     'etat.recherche': 'Buscando "{mots}"...',
 
     /* Errores. */
-    'erreur.cle-refusee': 'Clave rechazada por Albert. Compruébela o cámbiela.',
+    'erreur.cle-refusee': 'Clave del servidor rechazada por Albert: revise el archivo keys.',
     'erreur.quota': 'Cuota alcanzada. Inténtelo dentro de un minuto.',
     'erreur.reponse-illisible': 'Respuesta ilegible de Albert. Inténtelo de nuevo.',
     'erreur.http': 'Error {status}.',
     'erreur.http-detail': 'Error {status}: {detail}',
-    'erreur.relais': 'No se puede contactar con el relé de la incubadora de la Éducation nationale. Compruebe la conexión.',
-    'erreur.relais-hs': 'El relé de la incubadora de la Éducation nationale no está disponible. Inténtelo más tarde.',
+    'erreur.relais': 'El servidor de Albert Go ya no responde, volver a intentarlo más tarde.',
+    'erreur.relais-hs': 'Albert no responde. Vuelva a intentarlo más tarde.',
     'erreur.hors-ligne': 'Está sin conexión. Compruebe la conexión.',
     'erreur.timeout': 'Albert no responde. Inténtelo de nuevo.',
-    'erreur.origine': 'El relé n8n no aceptará la dirección {origine}. Abra ',
     'erreur.consigne': 'Falta la consigna de la herramienta {outil}.',
     'erreur.format': 'Formato no admitido: solo imágenes, audio, PDF, .docx, .odt y archivos de texto.',
     'erreur.fichier-long': 'Archivo demasiado largo: 200 kB como máximo.',

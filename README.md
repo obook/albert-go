@@ -2,9 +2,17 @@
 
 Chatbot minimal pour [Albert](https://ia.numerique.gouv.fr/outils-ia/albert-api/), l'IA de l'État portée par la DINUM.
 
-Essayer Albert Go en ligne : https://booklageolivier.forge.apps.education.fr/albert-go/
+Albert Go tourne sur un serveur : un poste de l'établissement, ou une clé USB (à venir). Le serveur garde la clé API et relaie les questions vers Albert.
 
-Chaque utilisateur a sa propre clé API. Les clés s'obtiennent sur la [page d'Albert API](https://ia.numerique.gouv.fr/outils-ia/albert-api/).
+## Lancer le serveur
+
+```bash
+./local.sh                # http://localhost:8913, ouvre le navigateur
+./local.sh --no-browser   # sans ouvrir le navigateur
+./local.sh --ssl          # HTTPS, certificat auto-signé
+```
+
+Clé API : une par ligne dans `~/.config/albert-go/keys` (plusieurs clés servent à tour de rôle). Les clés s'obtiennent sur la [page d'Albert API](https://ia.numerique.gouv.fr/outils-ia/albert-api/). Le fichier `~/.config/albert-go/config` règle l'URL d'Albert (`api_base=`) ; le terminal affiche au lancement le fichier utilisé.
 
 ## Fonctionnalités
 
@@ -86,39 +94,37 @@ La page vise la conformité [RGAA](https://accessibilite.numerique.gouv.fr/). Au
 
 Audit interne et externe, modèle de menaces et plan d'action : [SECURITE.md](SECURITE.md).
 
-- Par défaut, la clé, les questions, les conversations, les documents et la bibliothèque de sources sont gardés dans `sessionStorage` et effacés après la fermeture de l'onglet (au chargement suivant). Interrupteur activé, ils restent dans `localStorage`, sans limite de durée.
-- La clé part dans l'en-tête `Authorization`, jamais dans l'URL.
-- Elle transite par l'instance n8n : l'administrateur de cette instance peut techniquement la voir. Le workflow n'enregistre aucune exécution, donc aucun en-tête.
-- Le workflow compte par jour les appels acceptés par Albert (ouverture de la page et messages) : le nombre d'appels, rien d'autre, 90 jours au plus. Le total s'affiche dans "À propos", lu sur `albert-go/stats`, public.
-- Le webhook appelle uniquement l'API Albert, dont l'adresse est fixée dans le workflow.
-- La page ne charge aucun script externe. Une politique CSP limite les connexions à l'instance n8n, aux moteurs de recherche, à Wikimedia Commons et aux services de l'État. Elle limite les scripts au site lui-même.
+- Par défaut, les questions, les conversations, les documents et la bibliothèque de sources sont gardés dans `sessionStorage` et effacés après la fermeture de l'onglet (au chargement suivant). Interrupteur activé, ils restent dans `localStorage`, sans limite de durée.
+- La clé API reste sur le serveur (fichier `keys`) : la page ne la voit jamais, et le serveur ignore l'en-tête `Authorization` qu'elle enverrait.
+- Le serveur relaie trois routes d'Albert seulement (`/v1/models`, `/v1/chat/completions`, `/v1/audio/transcriptions`), corps limité à 10 Mo, 16 Mo pour l'audio.
+- La page ne charge aucun script externe. Une politique CSP limite les connexions au serveur lui-même, aux moteurs de recherche, à Wikimedia Commons et aux services de l'État. Elle limite les scripts au site lui-même.
 - La page assainit le HTML tiré des réponses d'Albert avant de l'afficher : elle retire scripts, gestionnaires d'événements et liens `javascript:`.
 
 ## Fonctionnement
 
-L'API Albert n'accepte pas les appels directs depuis une page web (pas d'en-têtes CORS). La page passe donc par un webhook n8n hébergé par l'incubateur de l'Éducation nationale, qui relaie la requête vers Albert.
+La page passe par le serveur d'Albert Go, qui ajoute la clé et relaie la requête vers Albert.
 
 ```
-Navigateur -> webhook n8n -> API Albert
+Navigateur -> serveur d'Albert Go -> API Albert
 ```
 
-- `public/` : la page (HTML, CSS, JavaScript), publiée sur Pages, avec les bibliothèques embarquées dans `public/vendor/`.
+- `serveur/` : le serveur Python (relais, configuration, régulation du débit par modèle), repris de L'Atelier d'Albert.
+- `public/` : la page (HTML, CSS, JavaScript), servie par le serveur, avec les bibliothèques embarquées dans `public/vendor/`.
 - `public/js/rendu/` : le rendu des réponses (schémas, courbes, images) et leur export : `export.js` parcourt la réponse affichée, `docx.js` et `odt.js` écrivent le fichier.
 - `public/js/tools/` : les outils proposés au modèle (calculs, jours ouvrés, recherche web, images de Commons, services de l'État).
-- `n8n/albert-proxy.json` : le workflow n8n, installation dans `n8n/README.md`.
+- `n8n/albert-proxy.json` : l'ancien relais n8n de la page en ligne, installation dans `n8n/README.md`.
 
 ## Développement
 
 ```bash
-./local.sh     # sert la page sur http://localhost:8642 et l'ouvre dans le navigateur
-node --test    # tests
+./local.sh     # lance le serveur sur http://localhost:8913 et ouvre le navigateur
+node --test    # tests de la page
+.venv/bin/python -m pytest    # tests du serveur (.venv créé par local.sh)
 node --test tests/ipad.webkit.js    # la page dans WebKit, le moteur de l'iPad (Playwright, voir l'en-tête du fichier)
 ./images-lancement.sh    # refait les images de lancement iOS (nouvel écran : une ligne dans ECRANS)
 ```
 
-Chaque MR lance les deux sur la forge (`.gitlab-ci.yml`). Un manque relevé sur un vrai iPad s'ajoute à `SAFARI_ANCIEN` dans `tests/ipad.webkit.js` : le WebKit de Playwright est plus récent que Safari sur un iPad pas à jour.
-
-Le webhook n'accepte que deux origines : l'adresse Pages du projet et `http://localhost:8642`.
+Chaque MR lance ces tests sur la forge (`.gitlab-ci.yml`). Un manque relevé sur un vrai iPad s'ajoute à `SAFARI_ANCIEN` dans `tests/ipad.webkit.js` : le WebKit de Playwright est plus récent que Safari sur un iPad pas à jour.
 
 ### Traductions
 
@@ -150,7 +156,7 @@ Olivier Booklage, [olivier.booklage@ac-bordeaux.fr](mailto:olivier.booklage@ac-b
 
 | Composant | Licence |
 |---|---|
-| Albert Go | [Licence Ouverte 2.0](https://www.data.gouv.fr/pages/legal/licences/etalab-2.0) (Etalab), texte dans `LICENSE` |
+| Albert Go | GPL 3.0 ou ultérieure, texte dans `LICENSE` ; le serveur reprend le code de L'Atelier d'Albert, écrit avec Romain P., Luce P.B. et Théossian S.D. (NSI, Trophées NSI 2026) |
 | [Marked](https://github.com/markedjs/marked), [KaTeX](https://katex.org/), [Mermaid](https://mermaid.js.org/), [Pico](https://picocss.com/), [qrcode-generator](https://github.com/kazuhikoarase/qrcode-generator) | MIT |
 | [PDF.js](https://mozilla.github.io/pdf.js/), [math.js](https://mathjs.org/) | Apache 2.0 |
 | [highlight.js](https://highlightjs.org/) | BSD 3-Clause |
@@ -159,6 +165,6 @@ Olivier Booklage, [olivier.booklage@ac-bordeaux.fr](mailto:olivier.booklage@ac-b
 | Logos des éditeurs de modèles (`public/images/editeurs/`) | Marques de leurs éditeurs, reprises de la [page des modèles d'Albert API](https://ia.numerique.gouv.fr/outils-ia/albert-api/mod%C3%A8les/) |
 | Logos des moteurs de recherche (`public/images/moteurs/`) | Marques de leurs éditeurs, reprises de leurs sites ; OpenAlex depuis [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:OpenAlex_logo_icon.svg) (MIT) |
 
-Giac est sous GPL : la page publiée avec lui suit cette licence. Le code d'Albert Go, pris seul, reste sous Licence Ouverte 2.0. Les sources de Giac sont sur le site de son auteur : [giac_stable.tgz](https://www-fourier.univ-grenoble-alpes.fr/~parisse/giac/giac_stable.tgz).
+Les sources de Giac sont sur le site de son auteur : [giac_stable.tgz](https://www-fourier.univ-grenoble-alpes.fr/~parisse/giac/giac_stable.tgz).
 
 Versions et provenance des bibliothèques : `public/vendor/README.md`.

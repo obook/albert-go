@@ -7,7 +7,7 @@
  * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
  * Auteur : O. Booklage
  * Date : Septembre 2026
- * Licence : Licence Ouverte 2.0 (Etalab), SPDX etalab-2.0
+ * Licence : GPL-3.0-or-later
  */
 'use strict';
 
@@ -22,7 +22,6 @@ I18n.TEXTES.fr = {
     'menu.reglages': 'Réglages',
     'menu.partager': 'Partager',
     'menu.apropos': 'À propos',
-    'menu.changer-cle': 'Effacer la clé et quitter',
     'historique.vide': 'Aucune discussion pour l\'instant.',
     'historique.rechercher': 'Rechercher une discussion',
     'historique.aucune': 'Aucune discussion trouvée.',
@@ -113,14 +112,6 @@ I18n.TEXTES.fr = {
     'langue.la': 'Latin',
 
     /* Écran de la clé. */
-    'cle.intro': 'L\'IA de l\'État pour discuter, corriger, reformuler, traduire et rédiger. Accès réservé aux agents publics.',
-    'cle.etape-acces': 'Pas encore de clé ?',
-    'cle.etape-saisie': 'J\'ai une clé',
-    'cle.exemple': 'sk-...',
-    'cle.souvenir': 'La conserver dans ce navigateur, effaçable à tout moment',
-    'cle.ou-va': 'Où va ma clé ?',
-    'cle.saisir': 'Saisir',
-    'cle.titre-boite': 'Clé API',
     'bienvenue.texte': 'Quelques idées pour commencer',
     'bienvenue.corriger': 'Corriger',
     'bienvenue.reformuler': 'Reformuler',
@@ -152,12 +143,6 @@ I18n.TEXTES.fr = {
     'bienvenue.exemple-tirage': 'Tire au sort l\'ordre de passage de ces services : accueil, comptabilité, ressources humaines, informatique, logistique.',
     'bienvenue.exemple-recherche': 'Qui a inventé le braille et quand ? Montre aussi un portrait de Louis Braille.',
     'bienvenue.exemple-services': 'Quelles sont les dates des vacances de la Toussaint à Paris (zone C) cette année ?',
-    'cle.titre': 'Bienvenue sur Albert Go',
-    'cle.bienvenue': 'Votre clé est acceptée. Posez votre première question ou choisissez un module dans le menu.',
-    'cle.label': 'Clé',
-    'cle.stockee': '<ul><li>Par défaut, elle est effacée quand vous fermez l\'onglet.</li><li>Si vous activez "La conserver", elle reste dans le stockage <code>localStorage</code> du navigateur jusqu\'à ce que vous choisissiez "Effacer la clé et quitter" dans le menu.</li><li>Elle ne quitte ce navigateur que pour joindre Albert, en passant par le <a href="https://n8n.incubateur.education.gouv.fr" target="_blank" rel="noopener noreferrer">relais de l\'incubateur de l\'Éducation nationale</a>, qui ne l\'enregistre pas.</li></ul>',
-    'cle.demander': 'Demander',
-    'cle.verification': 'Vérification de la clé...',
 
     /* Saisie. */
     'chat.aria': 'Conversation',
@@ -197,6 +182,7 @@ I18n.TEXTES.fr = {
     'reglages.aide-top-k-un': 'Toujours le mot le plus probable : presque plus de hasard.',
     'reglages.aide-top-k-tous': 'Tirage d\'un mot au hasard parmi tous les mots possibles pour générer le texte.',
     'reglages.contexte': 'Contexte',
+    'reglages.donnees': 'Données',
     'reglages.lecture': 'Lecture à voix haute',
     'reglages.voix-en-ligne': 'Autoriser les voix en ligne',
     'reglages.aide-voix': 'Un moteur de voix en ligne peut collecter et exploiter les données de la conversation.',
@@ -220,7 +206,6 @@ I18n.TEXTES.fr = {
     'reglages.cx': 'ID du moteur de recherche',
     'reglages.moteur-aucun': 'Aucun moteur supplémentaire (trois au plus)',
     'reglages.aide-recherche': 'Les outils Internet peuvent collecter et exploiter les données de la conversation. Les textes qu\'ils rapportent ne sont pas vérifiés.',
-    'reglages.cle-note': 'Une clé est enregistrée dans ce navigateur.',
     'reglages.nom': 'Nom de l\'application',
     'reglages.aide-nom': '12 caractères au plus.',
     'reglages.conseilles': 'Réglages conseillés',
@@ -230,8 +215,8 @@ I18n.TEXTES.fr = {
     'contexte.echanges-un': 'Contexte : {n} échange',
     'contexte.complet': 'Contexte complet',
     'contexte.pourcent': 'Contexte complet ({pourcent} % utilisé)',
-    'partage.actif': 'À la fermeture, la clé, les conversations et la bibliothèque seront conservées.',
-    'partage.inactif': 'À la fermeture, la clé, les conversations et la bibliothèque seront effacées.',
+    'partage.actif': 'À la fermeture, les conversations et la bibliothèque seront conservées.',
+    'partage.inactif': 'À la fermeture, les conversations et la bibliothèque seront effacées.',
     'reglages.aide-echanges': 'Mémoire : l\'IA reçoit les {n} échanges précédents.',
     'reglages.aide-echanges-un': 'Mémoire : l\'IA reçoit l\'échange précédent.',
     'reglages.aide-echanges-aucun': 'Mémoire : l\'IA n\'a aucune mémoire.',
@@ -252,11 +237,9 @@ I18n.TEXTES.fr = {
     'dialogue.fermer': 'Fermer',
     'dialogue.oui': 'Oui',
     'dialogue.non': 'Non',
-    'confirmer-changer-cle.titre': 'Effacer la clé et quitter ?',
-    'confirmer-changer-cle.texte': 'La clé sera effacée du stockage du navigateur, puis vous reviendrez à l\'accueil.',
     'confirmer-suppression.titre': 'Supprimer cette discussion ?',
     'partage.titre': 'Partager',
-    'partage.texte': 'Scannez le QR code ou copiez l\'adresse, votre clé n\'est pas partagée.',
+    'partage.texte': 'Scannez le QR code ou copiez l\'adresse.',
     'partage.qr': 'QR code de l\'adresse d\'Albert Go',
     'partage.adresse': 'Adresse d\'Albert Go',
     'partage.copier': 'Copier',
@@ -265,7 +248,7 @@ I18n.TEXTES.fr = {
     'info.titre': 'À propos',
     'info.intro': 'Albert Go permet de discuter avec les modèles d\'intelligence artificielle de la direction interministérielle du numérique (<a href="https://ia.numerique.gouv.fr/outils-ia/albert-api/" target="_blank" rel="noopener noreferrer">DINUM</a>) avec votre clé API.',
     'info.donnees': 'Vos données',
-    'info.donnees.relais': 'Votre clé et vos questions traversent le relais de l\'incubateur de l\'Éducation nationale, qui ne conserve rien, puis vont vers Albert API.',
+    'info.donnees.relais': 'Vos questions passent par le serveur d\'Albert Go, qui garde la clé, puis vont vers Albert API.',
     'info.donnees.traceurs': 'Aucun compte, aucun cookie, aucune bibliothèque chargée depuis un site tiers. Appels des outils Internet seulement si vous les autorisez.',
     'info.clavier': 'Clavier',
     'info.clavier.texte': 'Entrée : envoyer. Maj+Entrée : nouvelle ligne. Flèches haut et bas : questions précédentes.',
@@ -274,10 +257,6 @@ I18n.TEXTES.fr = {
     'info.projet': 'Le projet',
     'info.projet.texte': 'Réalisation : <a href="mailto:olivier.booklage@ac-bordeaux.fr">Olivier Booklage</a> (académie de Bordeaux)<br>Source : <a href="https://forge.apps.education.fr/booklageolivier/albert-go" target="_blank" rel="noopener noreferrer">la forge des communs numériques</a>',
     'info.version': 'Version : ',
-    'info.appels': 'Charge n8n : {n} {motN} sur 90 jours à {h} {motH}/h',
-    'info.appels-hs': 'Charge n8n : indisponible',
-    'info.appel': 'appel',
-    'info.appels.pluriel': 'appels',
     'version.format': '{commit} du {date}',
 
     /* Réponses. */
@@ -377,8 +356,6 @@ I18n.TEXTES.fr = {
     'toast.telechargement-en-cours': 'Téléchargement en cours...',
     'toast.telecharge': 'Fichier téléchargé : {nom}',
     'toast.telechargement-impossible': 'Téléchargement impossible.',
-    'toast.cle-effacee': 'Clé effacée du navigateur',
-    'toast.relais-retabli': 'Relais de l\'incubateur de l\'Éducation nationale disponible.',
     'toast.partage-impossible': 'Changement impossible : les données ne tiennent pas dans le nouveau stockage.',
     'toast.conversation-supprimee': 'Discussion supprimée.',
     'toast.conversation-longue': 'Conversation trop longue pour être enregistrée. Elle reste affichée jusqu\'à la fermeture de l\'onglet.',
@@ -406,16 +383,15 @@ I18n.TEXTES.fr = {
     'etat.recherche': 'Recherche de « {mots} »...',
 
     /* Erreurs. */
-    'erreur.cle-refusee': 'Clé refusée par Albert. Vérifiez-la ou changez-la.',
+    'erreur.cle-refusee': 'Clé du serveur refusée par Albert : vérifiez le fichier keys.',
     'erreur.quota': 'Quota atteint. Réessayez dans une minute.',
     'erreur.reponse-illisible': 'Réponse illisible d\'Albert. Réessayez.',
     'erreur.http': 'Erreur {status}.',
     'erreur.http-detail': 'Erreur {status} : {detail}',
-    'erreur.relais': 'Relais de l\'incubateur de l\'Éducation nationale injoignable. Vérifiez la connexion.',
-    'erreur.relais-hs': 'Relais de l\'incubateur de l\'Éducation nationale indisponible. Réessayez plus tard.',
+    'erreur.relais': 'Le serveur d\'Albert Go ne répond plus, réessayer plus tard.',
+    'erreur.relais-hs': 'Albert ne répond pas. Réessayez plus tard.',
     'erreur.hors-ligne': 'Vous êtes hors ligne. Vérifiez la connexion.',
     'erreur.timeout': 'Albert ne répond pas. Réessayez.',
-    'erreur.origine': 'Le relais n8n n\'acceptera pas l\'adresse {origine}. Ouvrez ',
     'erreur.consigne': 'Consigne de l\'outil {outil} introuvable.',
     'erreur.format': 'Format non pris en charge : images, audio, PDF, .docx, .odt et fichiers texte uniquement.',
     'erreur.fichier-long': 'Fichier trop long : 200 Ko au plus.',

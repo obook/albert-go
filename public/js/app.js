@@ -9,7 +9,7 @@
  * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
  * Auteur : O. Booklage
  * Date : Septembre 2026
- * Licence : Licence Ouverte 2.0 (Etalab), SPDX etalab-2.0
+ * Licence : GPL-3.0-or-later
  */
 'use strict';
 
@@ -17,83 +17,17 @@
 let annulation = null;
 
 /**
- * Message affiché quand le relais refuse l'origine de la page.
- *
- * @returns {{texte: string, lien: string}} Message, et adresse du lien final.
- */
-function messageOrigine() {
-    return {
-        texte: t('erreur.origine', { origine: location.origin }),
-        lien: Albert.URL_PUBLIQUE
-    };
-}
-
-/** Délai entre deux vérifications du relais en panne. */
-const RELAIS_MS = 30000;
-let relaisEnPanne = false;
-let minuteurRelais = null;
-
-/**
- * Vérifie le relais jusqu'à sa reprise, puis l'annonce.
- *
- * Onglet caché : pas de requête, on attend son retour.
- */
-function verifierRelais() {
-    clearTimeout(minuteurRelais);
-    if (document.hidden) {
-        minuteurRelais = setTimeout(verifierRelais, RELAIS_MS);
-        return;
-    }
-    Albert.appels().then(() => {
-        relaisEnPanne = false;
-        /* Pas pendant une réponse : la ligne d'état sert alors à l'attente. */
-        if ($('etat').textContent === t('erreur.relais-hs')) {
-            etat(t('toast.relais-retabli'), false, true);
-        }
-        toast(t('toast.relais-retabli'));
-    }).catch(() => {
-        minuteurRelais = setTimeout(verifierRelais, RELAIS_MS);
-    });
-}
-
-/**
- * Note la panne du relais et lance la surveillance, une seule fois.
- */
-function signalerPanneRelais() {
-    if (!relaisEnPanne) {
-        relaisEnPanne = true;
-        minuteurRelais = setTimeout(verifierRelais, RELAIS_MS);
-    }
-}
-
-/**
  * Message d'erreur à afficher après un échec d'envoi.
- *
- * Réseau coupé et CORS refusé donnent la même TypeError :
- * le navigateur ne dit pas lequel.
- *
- * Le lien remplace l'adresse publique écrite en entier, trop longue pour
- * l'écran d'un téléphone.
  *
  * @param {Error} err - Erreur reçue.
  * @returns {{texte: string, lien: ?string}} Message, et adresse du lien final.
  */
 function messageEchec(err) {
-    if (err instanceof TypeError && !Albert.ORIGINES.includes(location.origin)) {
-        return messageOrigine();
-    }
     if (err instanceof TypeError) {
-        if (navigator.onLine) {
-            signalerPanneRelais();
-        }
         return { texte: t(navigator.onLine ? 'erreur.relais' : 'erreur.hors-ligne'), lien: null };
     }
     if (err.name === 'TimeoutError') {
         return { texte: t('erreur.timeout'), lien: null };
-    }
-    /* Tous les échecs passent ici : c'est là qu'on repère la panne du relais. */
-    if (err.message === t('erreur.relais-hs')) {
-        signalerPanneRelais();
     }
     return { texte: err.message, lien: null };
 }
@@ -169,7 +103,7 @@ async function demanderReponse(outil, question, image, modele) {
     }
     /* Seuls les modules à fil proposent les outils calcul et recherche : les autres rendent un texte. */
     const envoi = fil ? repondreAvecOutils : Albert.repondre.bind(Albert);
-    return envoi(reglages.cle, {
+    return envoi({
         model: modele.id,
         temperature: reglages.temperature,
         ...Albert.topK(reglages.topK),
@@ -432,36 +366,18 @@ async function verifierVersion() {
 document.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'visible') {
         verifierVersion();
-        if (relaisEnPanne) {
-            verifierRelais();
-        }
     }
 });
 
 /* Démarrage. */
 verifierVersion();
-/* Relais vérifié en arrière-plan : la panne s'annonce avant la première question. */
-Albert.appels().catch(() => {
-    etat(t('erreur.relais-hs'), true);
-    toast(t('erreur.relais-hs'));
-    signalerPanneRelais();
-});
 I18n.appliquer();
 afficherReglages();
 afficherTheme();
 afficherOutil();
 afficher();
-/* Origine refusée : le dire avant la saisie, et fermer le champ, elle ne servirait à rien. */
-if (!Albert.ORIGINES.includes(location.origin)) {
-    const origine = messageOrigine();
-    messageCle(origine.texte, true, origine.lien);
-    $('cle').disabled = true;
-    $('form-cle').querySelector('button[type="submit"]').disabled = true;
-}
 reprendreSources();
-if (reglages.cle) {
-    rouvrirCourante();
-}
+rouvrirCourante();
 chargerModeles();
 
 /* Appli publiée : ses fichiers sont gardés dans le navigateur, elle s'ouvre sans attendre le réseau (sw.js).

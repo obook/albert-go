@@ -13,7 +13,7 @@
  * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
  * Auteur : O. Booklage
  * Date : Octobre 2026
- * Licence : Licence Ouverte 2.0 (Etalab), SPDX etalab-2.0
+ * Licence : GPL-3.0-or-later
  */
 'use strict';
 
@@ -64,10 +64,9 @@ test("iPad (WebKit) : la page se charge sans erreur et un PDF entre dans la bibl
         serveur.close();
     });
     const contexte = await navigateur.newContext({ ...devices['iPad (gen 7)'], serviceWorkers: 'block' });
-    /* Rien hors de la page : Albert refuserait la clé d'essai, et l'application l'effacerait. */
+    /* Rien hors de la page : ni Albert ni les moteurs de recherche. */
     await contexte.route((url) => url.origin !== origine, (route) => route.abort());
     await contexte.addInitScript(SAFARI_ANCIEN);
-    await contexte.addInitScript(() => sessionStorage.setItem('albert-go.cle', 'essai'));
     const page = await contexte.newPage();
     const erreurs = [];
     page.on('pageerror', (err) => erreurs.push(String(err)));

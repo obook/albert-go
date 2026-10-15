@@ -9,7 +9,7 @@
  * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
  * Auteur : O. Booklage
  * Date : Septembre 2026
- * Licence : Licence Ouverte 2.0 (Etalab), SPDX etalab-2.0
+ * Licence : GPL-3.0-or-later
  */
 'use strict';
 
@@ -211,30 +211,15 @@ test('naviguer : bornes de l\'historique', () => {
 });
 
 test('messageErreur : clé refusée', () => {
-    assert.match(Albert.messageErreur(401, { detail: 'Not authenticated' }), /Clé refusée/);
+    assert.match(Albert.messageErreur(401, { detail: 'Not authenticated' }), /Clé du serveur refusée/);
 });
 
 test('messageErreur : quota', () => {
     assert.match(Albert.messageErreur(429, null), /Quota/);
 });
 
-test('messageErreur : relais hors service', () => {
-    assert.match(Albert.messageErreur(503, null), /indisponible/);
-});
-
-test('repondre : relais bloqué, la sonde /stats arrête la requête', async () => {
-    const fetchOrigine = globalThis.fetch;
-    const sondeOrigine = Albert.SONDE_MS;
-    Albert.SONDE_MS = 10;
-    globalThis.fetch = (url, options) => url.endsWith('/stats')
-        ? Promise.reject(new TypeError('bloqué'))
-        : new Promise((_, rejeter) => options.signal.addEventListener('abort', () => rejeter(options.signal.reason)));
-    try {
-        await assert.rejects(Albert.repondre('cle', {}, new AbortController().signal), /indisponible/);
-    } finally {
-        globalThis.fetch = fetchOrigine;
-        Albert.SONDE_MS = sondeOrigine;
-    }
+test('messageErreur : Albert injoignable derrière le serveur', () => {
+    assert.match(Albert.messageErreur(502, null), /Albert ne répond pas/);
 });
 
 test('messageErreur : détail texte repris, détail objet ignoré', () => {
@@ -303,22 +288,6 @@ test('codeMermaid : bloc ```mermaid retiré s\'il y en a un', () => {
     assert.strictEqual(Albert.codeMermaid('Voici :\n```mermaid\nflowchart LR\n A --> B\n```\nFin.'), 'flowchart LR\n A --> B');
     assert.strictEqual(Albert.codeMermaid('```\ngraph TD\n A --> B\n```'), 'graph TD\n A --> B');
     assert.strictEqual(Albert.codeMermaid('  graph TD\n A --> B\n'), 'graph TD\n A --> B');
-});
-
-test('appels : somme des jours et moyenne horaire depuis le premier jour', async () => {
-    const avant = global.fetch;
-    const maintenant = Date.now;
-    global.fetch = async url => {
-        assert.ok(url.endsWith('/webhook/albert-go/stats'));
-        return { ok: true, json: async () => ({ '2026-09-25': { appels: 4 }, '2026-09-26': { appels: 3 } }) };
-    };
-    try {
-        Date.now = () => Date.parse('2026-09-26T10:00:00Z');
-        assert.deepStrictEqual(await Albert.appels(), { total: 7, parHeure: 7 / 34 });
-    } finally {
-        global.fetch = avant;
-        Date.now = maintenant;
-    }
 });
 
 test('langueDuTexte : traductions faites dans Chat', () => {
@@ -608,7 +577,7 @@ test('repondre : le plafond part bien dans la requête', async () => {
         return { ok: true, status: 200, json: async () => ({ choices: [{ message: { content: 'ok' } }] }) };
     };
     try {
-        await Albert.repondre('cle', { model: 'm', temperature: 1.5, messages: [] }, new AbortController().signal);
+        await Albert.repondre({ model: 'm', temperature: 1.5, messages: [] }, new AbortController().signal);
         assert.strictEqual(envoye.max_tokens, Albert.JETONS_EXPERIENCE);
     } finally {
         globalThis.fetch = avant;
@@ -620,9 +589,9 @@ test('repondre : une réponse coupée par la longueur est signalée', async () =
     let fin = 'length';
     globalThis.fetch = async () => ({ ok: true, status: 200, json: async () => ({ choices: [{ message: { content: 'ok' }, finish_reason: fin }] }) });
     try {
-        assert.strictEqual((await Albert.repondre('cle', { model: 'm', messages: [] }, new AbortController().signal)).coupee, true);
+        assert.strictEqual((await Albert.repondre({ model: 'm', messages: [] }, new AbortController().signal)).coupee, true);
         fin = 'stop';
-        assert.strictEqual((await Albert.repondre('cle', { model: 'm', messages: [] }, new AbortController().signal)).coupee, false);
+        assert.strictEqual((await Albert.repondre({ model: 'm', messages: [] }, new AbortController().signal)).coupee, false);
     } finally {
         globalThis.fetch = avant;
     }
@@ -722,4 +691,20 @@ test('traceCalcul : un tableau de variations garde sa lecture, sans la consigne 
     assert.strictEqual(Albert.traceCalcul(ligne), "x : -∞ ; -1 ; 1 ; +∞\nf'(x) : + ; 0 ; - ; 0 ; +\nf(x) : -∞ ↗ 2 ↘ -2 ↗ +∞");
     assert.strictEqual(Albert.traceCalcul('x : -\\frac{\\sqrt{3}}{3} ; \\frac{1}{e}\nConsigne.\n$$t$$'), 'x : -√3/3 ; 1/e');
     assert.strictEqual(Albert.traceCalcul('2+2 = 4'), '2+2 = 4');
+});
+
+test('repondre : appelle /v1 du serveur, sans clé', async () => {
+    const avant = globalThis.fetch;
+    let appel = null;
+    globalThis.fetch = async (url, options) => {
+        appel = { url, options };
+        return { ok: true, status: 200, json: async () => ({ choices: [{ message: { content: 'ok' } }] }) };
+    };
+    try {
+        await Albert.repondre({ model: 'm', messages: [] }, new AbortController().signal);
+        assert.strictEqual(appel.url, '/v1/chat/completions');
+        assert.strictEqual(appel.options.headers.Authorization, undefined);
+    } finally {
+        globalThis.fetch = avant;
+    }
 });

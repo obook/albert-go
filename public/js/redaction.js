@@ -8,7 +8,7 @@
  * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
  * Auteur : O. Booklage
  * Date : Septembre 2026
- * Licence : Licence Ouverte 2.0 (Etalab), SPDX etalab-2.0
+ * Licence : GPL-3.0-or-later
  */
 'use strict';
 
@@ -146,7 +146,7 @@ async function demanderRedaction(champ, demande, attente) {
     annulationRedaction = annulation;
     afficherStatut(t(attente), 'attente');
     try {
-        const reponse = await Albert.repondre(reglages.cle, {
+        const reponse = await Albert.repondre({
             model: modeleActuel().id,
             temperature: reglages.temperature,
             ...Albert.topK(reglages.topK),

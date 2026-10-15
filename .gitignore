@@ -3,3 +3,6 @@
 
 # Playwright pour tests/ipad.webkit.js, installé sans être enregistré.
 node_modules/
+.venv/
+__pycache__/
+.pytest_cache/
