@@ -41,9 +41,9 @@ def test_env_partage_avec_d_autres_outils(tmp_path):
 def test_ligne_de_lancement_avec_tilde(tmp_path):
     fichier = tmp_path / ".env"
     fichier.write_text("ALBERT_KIOSQUE=oui\n", encoding="utf-8")
-    with patch.multiple(config, CONFIG_FILE=str(fichier), MODE="standard"), \
+    with patch.multiple(config, CONFIG_FILE=str(fichier), MODE="dépôt"), \
          patch.dict(os.environ, {"HOME": str(tmp_path)}):
-        assert config.config_affichee() == "Configuration (standard) : " + os.path.join("~", ".env")
+        assert config.config_affichee() == "Configuration (dépôt) : " + os.path.join("~", ".env")
 
 
 def test_ligne_de_lancement_fichier_absent(tmp_path):
@@ -53,15 +53,11 @@ def test_ligne_de_lancement_fichier_absent(tmp_path):
         assert config.config_affichee() == f"Configuration (portable) : {fichier} (absent : valeurs par défaut)"
 
 
-def test_dossier_du_depot_si_env(tmp_path):
-    """Un .env à la racine du dépôt : il passe avant ~/.config/albert-go."""
-    depot = tmp_path / "depot"
-    depot.mkdir()
-    with patch.object(config, "DEPOT", str(depot)), \
-         patch.dict(os.environ, {"HOME": str(tmp_path), "ALBERT_PORTABLE_DIR": ""}):
-        assert config._config_dir() == (os.path.join(str(tmp_path), ".config", "albert-go"), "standard")
-        (depot / ".env").write_text("ALBERT_API_KEY=sk\n", encoding="utf-8")
-        assert config._config_dir() == (str(depot), "dépôt")
+def test_dossier_du_depot_sauf_cle_usb(tmp_path):
+    """Le .env est à la racine du dépôt, même absent ; ALBERT_PORTABLE_DIR passe avant."""
+    with patch.object(config, "DEPOT", str(tmp_path)), \
+         patch.dict(os.environ, {"ALBERT_PORTABLE_DIR": ""}):
+        assert config._config_dir() == (str(tmp_path), "dépôt")
         with patch.dict(os.environ, {"ALBERT_PORTABLE_DIR": "/media/cle"}):
             assert config._config_dir() == ("/media/cle", "portable")
 

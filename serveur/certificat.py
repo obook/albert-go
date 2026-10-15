@@ -3,7 +3,7 @@
 # Licence : GPL-3.0-or-later
 """Generation d'un certificat SSL auto-signe pour le mode HTTPS.
 
-Cree un certificat dans ~/.config/albert-atelier/, valable un an, avec
+Cree un certificat dans le dossier du .env, valable un an, avec
 l'adresse IP locale en SAN (Subject Alternative Name). Le certificat
 est renouvele automatiquement s'il a expire.
 

@@ -2,7 +2,7 @@
 .env
 # Modèle du .env versionné.
 !.env-exemple
-# Certificat HTTPS quand le .env est dans le dépôt (serveur/certificat.py).
+# Certificat HTTPS (serveur/certificat.py).
 /cert.pem
 /key.pem
 

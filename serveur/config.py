@@ -2,7 +2,7 @@
 
 Fichier .env, lignes NOM=valeur (ALBERT_API_URL, ALBERT_API_KEY, ALBERT_KIOSQUE),
 # pour commenter ; modèle : .env-exemple. Dossier ALBERT_PORTABLE_DIR (clé USB),
-sinon la racine du dépôt si elle a un .env, sinon ~/.config/albert-go/.
+sinon la racine du dépôt.
 
 Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
 Auteurs : O. Booklage ; Romain P., Luce P.B., Théossian S.D. (L'Atelier d'Albert)
@@ -20,9 +20,7 @@ def _config_dir():
     portable = os.environ.get("ALBERT_PORTABLE_DIR", "").strip()
     if portable:
         return portable, "portable"
-    if os.path.exists(os.path.join(DEPOT, ".env")):
-        return DEPOT, "dépôt"
-    return os.path.join(os.path.expanduser("~"), ".config", "albert-go"), "standard"
+    return DEPOT, "dépôt"
 
 
 CONFIG_DIR, MODE = _config_dir()
