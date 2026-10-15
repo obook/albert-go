@@ -36,6 +36,7 @@ I18n.TEXTES.es = {
     'kiosque.erreur.aucune-session': 'No hay ninguna sesión abierta. Pida el enlace a su profesor.',
     'kiosque.erreur.code': 'Código incorrecto.',
     'kiosque.erreur.action': 'Solicitud desconocida.',
+    'kiosque.erreur.terminee': 'Sesión terminada: pida el nuevo enlace a su profesor.',
     'kiosque.bandeau': 'Sesión de clase abierta: código {code}.',
     'kiosque.partage': 'Los alumnos escanean el código QR y luego introducen el código {code}.',
     'kiosque.deconnexion': 'Salir de la sesión',

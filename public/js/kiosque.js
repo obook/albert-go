@@ -63,10 +63,9 @@ function valeurStockee(valeur) {
 
 /* Sauté sous Node, où le fichier n'est chargé que pour ses tests. */
 if (typeof document !== 'undefined' && Kiosque) {
-    /* Poste partagé : conversations et bibliothèque restent dans l'onglet. */
-    if (!partage) {
-        changerPartage(true);
-    }
+    /* Poste partagé : conversations et bibliothèque restent dans l'onglet. En mémoire
+       seulement : les données personnelles du prof, en localStorage, restent intactes. */
+    partage = true;
     $('partage-reglage').closest('fieldset').hidden = true;
 
     if (Kiosque.role === 'eleve' && Kiosque.reglages) {
@@ -111,23 +110,19 @@ if (typeof document !== 'undefined' && Kiosque) {
     }
 
     $('deconnexion-kiosque').hidden = false;
+    /* fetch et non un formulaire : la CSP de la page interdit l'envoi de formulaires (form-action 'none'). */
     $('deconnexion-kiosque').addEventListener('click', () => {
-        const formulaire = document.createElement('form');
-        formulaire.method = 'post';
-        formulaire.action = '/kiosque';
-        const action = document.createElement('input');
-        action.type = 'hidden';
-        action.name = 'action';
-        action.value = 'logout';
-        formulaire.append(action);
-        document.body.append(formulaire);
-        formulaire.submit();
+        fetch('/kiosque', { method: 'POST', body: new URLSearchParams({ action: 'logout' }), redirect: 'manual' })
+            .catch(() => {})
+            .finally(() => {
+                location.href = '/kiosque';
+            });
     });
 
     setInterval(() => {
         fetch('/api/kiosque-status').then(r => r.json()).then((statut) => {
             if (!statut.active) {
-                location.href = '/kiosque';
+                location.href = '/kiosque?erreur=terminee';
             }
         }).catch(() => {
             /* Coupure réseau ponctuelle : on réessaie au tour suivant. */

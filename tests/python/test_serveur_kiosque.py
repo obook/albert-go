@@ -106,11 +106,30 @@ def test_deconnexion_d_un_eleve_garde_la_session(kiosque_client):
     assert kiosque.session_active()
 
 
-def test_statut_public(kiosque_client):
-    assert kiosque_client.get("/api/kiosque-status").json() == {"active": False, "temps_restant": 0}
+def test_statut_lie_au_cookie(kiosque_client):
+    """La garde de la page ne regarde que la session de ce navigateur."""
+    assert kiosque_client.get("/api/kiosque-status").json()["active"] is False
     _ouvrir(kiosque_client)
     statut = kiosque_client.get("/api/kiosque-status").json()
     assert statut["active"] and statut["temps_restant"] > 3500
+    kiosque_client.cookies.clear()
+    assert kiosque_client.get("/api/kiosque-status").json()["active"] is False
+
+
+def test_ancienne_session_renvoyee_avec_message(kiosque_client):
+    """Le prof rouvre une session : l'ancien navigateur est renvoyé vers /kiosque, avec le motif."""
+    _ouvrir(kiosque_client)
+    ancien = kiosque_client.cookies.get("kiosque-session")
+    _ouvrir(kiosque_client)
+    kiosque_client.cookies.clear()
+    kiosque_client.cookies.set("kiosque-session", ancien)
+    assert kiosque_client.get("/api/kiosque-status").json()["active"] is False
+    assert kiosque_client.get("/").headers["Location"] == "/kiosque?erreur=terminee"
+
+
+def test_cle_non_ascii_sans_coupure(kiosque_client):
+    reponse = _ouvrir(kiosque_client, "sk-\u200babc")
+    assert reponse.headers["Location"] == "/kiosque?erreur=cle-refusee"
 
 
 def test_serveur_js_hors_kiosque(client):

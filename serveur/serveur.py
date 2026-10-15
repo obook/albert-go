@@ -59,7 +59,9 @@ class Gestionnaire(http.server.BaseHTTPRequestHandler):
         elif self.server.kiosque and chemin == "/kiosque":
             self._fichier("/kiosque.html")
         elif self.server.kiosque and chemin == "/api/kiosque-status":
-            relais.repondre_json(self, 200, {"active": kiosque.session_active(), "temps_restant": kiosque.temps_restant()})
+            # Session de ce navigateur : une page d'une ancienne session n'est plus "active".
+            relais.repondre_json(self, 200, {"active": kiosque.role_de_la_requete(self) is not None,
+                                             "temps_restant": kiosque.temps_restant()})
         elif not self._porte_kiosque(chemin):
             return
         elif chemin.startswith("/v1/"):
@@ -125,6 +127,9 @@ class Gestionnaire(http.server.BaseHTTPRequestHandler):
             return True
         if chemin.startswith("/v1/"):
             self._session_terminee()
+        elif kiosque.valeur_cookie(self) is not None:
+            # Cookie d'une session finie ou remplacée : la page de connexion dit pourquoi.
+            self._rediriger("/kiosque?erreur=terminee")
         else:
             self._rediriger("/kiosque")
         return False

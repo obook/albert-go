@@ -9,7 +9,7 @@
 'use strict';
 
 /** Codes d'erreur du serveur (serveur/serveur.py, _kiosque_post). */
-const ERREURS_KIOSQUE = ['cle-requise', 'cle-refusee', 'aucune-session', 'code', 'action'];
+const ERREURS_KIOSQUE = ['cle-requise', 'cle-refusee', 'aucune-session', 'code', 'action', 'terminee'];
 
 (() => {
     let langue = null;

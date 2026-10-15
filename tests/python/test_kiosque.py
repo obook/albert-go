@@ -88,3 +88,34 @@ def test_reglages_bornes():
                        "recherche": True, "calcul": False, "fournisseurs": ["wikipedia", "vikidia", "hal"]}
     assert kiosque.valider_reglages({"modele": "x" * 10000, "temperature": True}) == {}
     assert kiosque.valider_reglages({"temperature": 7}) == {"temperature": 2}
+
+
+def test_code_faux_ralenti_et_en_file(monkeypatch):
+    """10 000 codes à essayer : un code faux coûte une pause, les essais passent un par un."""
+    from concurrent.futures import ThreadPoolExecutor
+    monkeypatch.setattr(kiosque, "PAUSE_CODE_FAUX", 0.3)
+    token, code = kiosque.creer_session("sk", "1h")
+    faux = "0000" if code != "0000" else "1111"
+    debut = time.monotonic()
+    with ThreadPoolExecutor(2) as groupe:
+        assert list(groupe.map(lambda _: kiosque.verifier_code(token, faux), range(2))) == [False, False]
+    assert time.monotonic() - debut >= 0.6
+
+
+def test_cle_acceptee_bascule_sans_proxy_sur_407(albert, monkeypatch):
+    """Proxy d'établissement qui répond 407 : un second essai sans proxy, comme le relais."""
+    from serveur import proxy
+    monkeypatch.setattr(proxy, "_ignorer_proxy", False)
+    reponses = iter([407, 200])
+    def modeles(gestionnaire):
+        gestionnaire.send_response(next(reponses))
+        gestionnaire.end_headers()
+    albert.reponses["/v1/models"] = modeles
+    assert kiosque.cle_acceptee("sk-prof")
+    assert len(albert.recues) == 2
+
+
+def test_cle_non_ascii_refusee_sans_appel(albert):
+    """Clé collée avec un caractère invisible : refusée proprement, rien ne part chez Albert."""
+    assert not kiosque.cle_acceptee("sk-​abc")
+    assert albert.recues == []

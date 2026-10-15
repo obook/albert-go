@@ -27,9 +27,12 @@ COOKIE = "kiosque-session"
 DUREES = {"1h": 3600, "2h": 7200, "3h": 10800, "journee": 28800}
 ROLES = {"enseignant", "eleve"}
 OUTILS = ("recherche", "calcul", "tirage", "calendrier", "compteur")
+# Un code faux coûte une seconde, essais en file : les 10 000 codes prennent des heures.
+PAUSE_CODE_FAUX = 1.0
 
 _session = None
 _verrou = threading.Lock()
+_verrou_essais = threading.Lock()
 # Secret tiré au lancement : les cookies ne survivent pas à un redémarrage.
 _secret = secrets.token_bytes(32)
 
@@ -90,8 +93,7 @@ def infos_enseignant():
         return {"token": session["token"], "code": session["code"]} if session else None
 
 
-def verifier_code(token, code):
-    """Jeton et code de la session, comparés en temps constant."""
+def _code_juste(token, code):
     if not (token.isascii() and code.isascii()):
         return False
     with _verrou:
@@ -99,6 +101,15 @@ def verifier_code(token, code):
         if session is None:
             return False
         return hmac.compare_digest(session["token"], token) and hmac.compare_digest(session["code"], code)
+
+
+def verifier_code(token, code):
+    """Jeton et code de la session, comparés en temps constant ; un code faux est ralenti."""
+    juste = _code_juste(token, code)
+    if not juste:
+        with _verrou_essais:
+            time.sleep(PAUSE_CODE_FAUX)
+    return juste
 
 
 def cookie(role):
@@ -190,11 +201,23 @@ def valider_reglages(corps):
 
 
 def cle_acceptee(cle):
-    """La clé ouvre-t-elle la liste des modèles d'Albert ?"""
-    api_base = config.load_config()["api_base"].rstrip("/")
-    try:
-        with proxy.creer_client_http(httpx.Timeout(10.0)) as http:
-            reponse = http.get(api_base + "/v1/models", headers={"Authorization": f"Bearer {cle}"})
-    except httpx.HTTPError:
+    """La clé ouvre-t-elle la liste des modèles d'Albert ? Proxy refusé : un essai sans, comme le relais."""
+    # Un caractère invisible collé avec la clé ne passerait pas dans l'en-tête HTTP.
+    if not cle.isascii():
         return False
-    return reponse.status_code == 200
+    api_base = config.load_config()["api_base"].rstrip("/")
+    proxy.tester_acces_direct(api_base)
+    for essai in (1, 2):
+        try:
+            with proxy.creer_client_http(httpx.Timeout(10.0)) as http:
+                reponse = http.get(api_base + "/v1/models", headers={"Authorization": f"Bearer {cle}"})
+        except httpx.ProxyError:
+            if essai == 1 and proxy.basculer_sans_proxy():
+                continue
+            return False
+        except httpx.HTTPError:
+            return False
+        if reponse.status_code == 407 and essai == 1 and proxy.basculer_sans_proxy():
+            continue
+        return reponse.status_code == 200
+    return False
