@@ -1,7 +1,8 @@
-# Clés locales, jamais dans le dépôt.
+# Configuration albert-go serveur, jamais dans le dépôt.
 .env
-# Configuration dans le dépôt (serveur/config.py) : clé API et certificat.
-/config
+# Modèle du .env versionné.
+!.env-exemple
+# Certificat HTTPS quand le .env est dans le dépôt (serveur/certificat.py).
 /cert.pem
 /key.pem
 

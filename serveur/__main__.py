@@ -39,7 +39,7 @@ def main():
         print("  Mode kiosque : l'enseignant ouvre la session sur /kiosque")
     else:
         if not config.load_config()["api_key"]:
-            print(f"  Aucune clé API : ajoutez api_key=... dans {config.chemin_config()}")
+            print(f"  Aucune clé API : ajoutez ALBERT_API_KEY=... dans {config.chemin_config()}")
     print("Ctrl+C pour arrêter")
     if not args.no_browser:
         threading.Timer(0.5, webbrowser.open, [f"{protocole}://localhost:{args.port}"]).start()

@@ -1,8 +1,8 @@
-"""Configuration du serveur : URL d'Albert, modèle, kiosque, clé API.
+"""Configuration du serveur : URL d'Albert, kiosque, clé API.
 
-Fichier config, lignes nom=valeur (api_base, api_key, kiosque), # pour
-commenter. Dossier ALBERT_PORTABLE_DIR (clé USB), sinon la racine du dépôt si
-elle a un fichier config (modèle : config.exemple), sinon ~/.config/albert-go/.
+Fichier .env, lignes NOM=valeur (ALBERT_API_URL, ALBERT_API_KEY, ALBERT_KIOSQUE),
+# pour commenter ; modèle : .env-exemple. Dossier ALBERT_PORTABLE_DIR (clé USB),
+sinon la racine du dépôt si elle a un .env, sinon ~/.config/albert-go/.
 
 Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
 Auteurs : O. Booklage ; Romain P., Luce P.B., Théossian S.D. (L'Atelier d'Albert)
@@ -20,13 +20,13 @@ def _config_dir():
     portable = os.environ.get("ALBERT_PORTABLE_DIR", "").strip()
     if portable:
         return portable, "portable"
-    if os.path.exists(os.path.join(DEPOT, "config")):
+    if os.path.exists(os.path.join(DEPOT, ".env")):
         return DEPOT, "dépôt"
     return os.path.join(os.path.expanduser("~"), ".config", "albert-go"), "standard"
 
 
 CONFIG_DIR, MODE = _config_dir()
-CONFIG_FILE = os.path.join(CONFIG_DIR, "config")
+CONFIG_FILE = os.path.join(CONFIG_DIR, ".env")
 API_BASE_DEFAUT = "https://albert.api.etalab.gouv.fr"
 
 
@@ -44,19 +44,25 @@ def _lignes(chemin):
 
 
 def load_config():
-    """URL d'Albert, mode kiosque et clé API lus dans le fichier config.
+    """URL d'Albert, mode kiosque et clé API lus dans le .env.
 
-    Le fichier est relu à chaque appel : une clé corrigée sert sans redémarrer.
+    Les lignes des autres outils (graft) sont ignorées. Le fichier est relu à
+    chaque appel : une clé corrigée sert sans redémarrer.
     """
     valeurs = {}
     for ligne in _lignes(CONFIG_FILE):
         if "=" in ligne:
             nom, _, valeur = ligne.partition("=")
-            valeurs[nom.strip()] = valeur.strip()
+            valeur = valeur.strip()
+            if len(valeur) >= 2 and valeur[0] == valeur[-1] and valeur[0] in "\"'":
+                valeur = valeur[1:-1]
+            valeurs[nom.strip()] = valeur
+    # Avec ou sans /v1, comme ALBERT_API_URL de llm-proxy : le relais l'ajoute.
+    api_base = (valeurs.get("ALBERT_API_URL") or API_BASE_DEFAUT).rstrip("/").removesuffix("/v1")
     return {
-        "api_base": valeurs.get("api_base", API_BASE_DEFAUT),
-        "kiosque": valeurs.get("kiosque", "non") == "oui",
-        "api_key": valeurs.get("api_key", ""),
+        "api_base": api_base,
+        "kiosque": valeurs.get("ALBERT_KIOSQUE", "non") == "oui",
+        "api_key": valeurs.get("ALBERT_API_KEY", ""),
     }
 
 

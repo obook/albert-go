@@ -54,7 +54,7 @@ def _retry_after(valeur):
 def relayer(handler, methode, chemin, corps=b"", type_contenu=None, cle=None):
     """Relaie une requête /v1/... vers Albert et recopie sa réponse.
 
-    cle : celle de la session kiosque ; sinon celle du fichier config.
+    cle : celle de la session kiosque ; sinon celle du .env.
     """
     reglages = config.load_config()
     api_base = reglages["api_base"].rstrip("/")
@@ -69,7 +69,7 @@ def relayer(handler, methode, chemin, corps=b"", type_contenu=None, cle=None):
     cle = cle or reglages["api_key"]
     if not cle:
         # 500 : la page affiche ce détail, alors qu'un 503 y devient "Albert ne répond pas".
-        repondre_json(handler, 500, {"detail": f"Aucune clé API sur le serveur : ajoutez api_key=... dans {config.chemin_config()}."})
+        repondre_json(handler, 500, {"detail": f"Aucune clé API sur le serveur : ajoutez ALBERT_API_KEY=... dans {config.chemin_config()}."})
         return
     en_tetes = {"Authorization": f"Bearer {cle}"}
     if type_contenu:

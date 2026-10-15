@@ -13,15 +13,15 @@ Albert Go tourne sur un serveur : un poste de l'établissement, ou une clé USB 
 ```
 
 ```bash
-cp config.exemple config  # puis coller la clé API après api_key=
+cp .env-exemple .env      # puis coller la clé API après ALBERT_API_KEY=
 ```
 
-`config` reste dans le dossier du dépôt, ignoré par git. Sans lui, le serveur le cherche dans `~/.config/albert-go/` ; le terminal affiche au lancement le fichier utilisé. Les clés s'obtiennent sur la [page d'Albert API](https://ia.numerique.gouv.fr/outils-ia/albert-api/).
+`.env` reste dans le dossier du dépôt, ignoré par git. Sans lui, le serveur le cherche dans `~/.config/albert-go/` ; le terminal affiche au lancement le fichier utilisé. Les clés s'obtiennent sur la [page d'Albert API](https://ia.numerique.gouv.fr/outils-ia/albert-api/).
 
 ## Kiosque
 
 ```bash
-./local.sh --kiosque      # ou kiosque=oui dans config
+./local.sh --kiosque      # ou ALBERT_KIOSQUE=oui dans .env
 ```
 
 L'enseignant ouvre `/kiosque`, saisit sa clé Albert API et choisit la durée (1 h, 2 h, 3 h ou la journée). Il partage ensuite le lien (bouton Partager, QR code) et le code à 4 chiffres affiché dans le bandeau. Les élèves rejoignent la session sans voir la clé ; ses réglages sont leurs valeurs de départ. Conversations et bibliothèque restent dans l'onglet. Fermer la session (menu, "Quitter la session") renvoie toute la classe vers `/kiosque`.
@@ -107,7 +107,7 @@ La page vise la conformité [RGAA](https://accessibilite.numerique.gouv.fr/). Au
 Audit interne et externe, modèle de menaces et plan d'action : [SECURITE.md](SECURITE.md).
 
 - Par défaut, les questions, les conversations, les documents et la bibliothèque de sources sont gardés dans `sessionStorage` et effacés après la fermeture de l'onglet (au chargement suivant). Interrupteur activé, ils restent dans `localStorage`, sans limite de durée.
-- La clé API reste sur le serveur (fichier `config`) : la page ne la voit jamais, et le serveur ignore l'en-tête `Authorization` qu'elle enverrait.
+- La clé API reste sur le serveur (fichier `.env`) : la page ne la voit jamais, et le serveur ignore l'en-tête `Authorization` qu'elle enverrait.
 - Le serveur relaie trois routes d'Albert seulement (`/v1/models`, `/v1/chat/completions`, `/v1/audio/transcriptions`), corps limité à 10 Mo, 16 Mo pour l'audio.
 - La page ne charge aucun script externe. Une politique CSP limite les connexions au serveur lui-même, aux moteurs de recherche, à Wikimedia Commons et aux services de l'État. Elle limite les scripts au site lui-même.
 - La page assainit le HTML tiré des réponses d'Albert avant de l'afficher : elle retire scripts, gestionnaires d'événements et liens `javascript:`.
