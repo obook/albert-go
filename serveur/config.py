@@ -1,6 +1,7 @@
 """Configuration du serveur : URL d'Albert, modèle, kiosque, clés API.
 
-Dossier ~/.config/albert-go/, ou ALBERT_PORTABLE_DIR (clé USB) :
+Dossier ALBERT_PORTABLE_DIR (clé USB), sinon la racine du dépôt si elle a
+un fichier config ou keys (modèle : config.exemple), sinon ~/.config/albert-go/ :
     config : lignes nom=valeur (api_base, model, kiosque), # pour commenter ;
     keys   : une clé API par ligne, utilisées à tour de rôle.
 
@@ -13,14 +14,20 @@ import os
 import threading
 
 
+DEPOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
 def _config_dir():
+    """Dossier de configuration et son mode, affiché au lancement."""
     portable = os.environ.get("ALBERT_PORTABLE_DIR", "").strip()
     if portable:
-        return portable
-    return os.path.join(os.path.expanduser("~"), ".config", "albert-go")
+        return portable, "portable"
+    if any(os.path.exists(os.path.join(DEPOT, nom)) for nom in ("config", "keys")):
+        return DEPOT, "dépôt"
+    return os.path.join(os.path.expanduser("~"), ".config", "albert-go"), "standard"
 
 
-CONFIG_DIR = _config_dir()
+CONFIG_DIR, MODE = _config_dir()
 CONFIG_FILE = os.path.join(CONFIG_DIR, "config")
 KEYS_FILE = os.path.join(CONFIG_DIR, "keys")
 API_BASE_DEFAUT = "https://albert.api.etalab.gouv.fr"
@@ -89,6 +96,5 @@ def config_affichee():
     chemin = str(CONFIG_FILE)
     if chemin.startswith(home + os.sep):
         chemin = "~" + chemin[len(home):]
-    mode = "portable" if os.environ.get("ALBERT_PORTABLE_DIR", "").strip() else "standard"
     absent = "" if os.path.exists(CONFIG_FILE) else " (absent : valeurs par défaut)"
-    return f"Configuration ({mode}) : {chemin}{absent}"
+    return f"Configuration ({MODE}) : {chemin}{absent}"

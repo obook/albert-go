@@ -1,0 +1,6 @@
+# Configuration d'Albert Go : copier ce fichier en "config", ici ou dans
+# ~/.config/albert-go/. Les clés API vont dans un fichier "keys" à côté,
+# une par ligne. config et keys ne sont jamais versionnés (.gitignore).
+api_base=https://albert.api.etalab.gouv.fr
+model=
+#kiosque=oui

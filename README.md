@@ -12,12 +12,17 @@ Albert Go tourne sur un serveur : un poste de l'établissement, ou une clé USB 
 ./local.sh --ssl          # HTTPS, certificat auto-signé
 ```
 
-Clé API : une par ligne dans `~/.config/albert-go/keys` (plusieurs clés servent à tour de rôle). Les clés s'obtiennent sur la [page d'Albert API](https://ia.numerique.gouv.fr/outils-ia/albert-api/). Le fichier `~/.config/albert-go/config` règle l'URL d'Albert (`api_base=`) ; le terminal affiche au lancement le fichier utilisé.
+```bash
+cp config.exemple config  # URL d'Albert, modèle, kiosque
+nano keys                 # une clé API par ligne, utilisées à tour de rôle
+```
+
+`config` et `keys` restent dans le dossier du dépôt, ignorés par git. Sans eux, le serveur les cherche dans `~/.config/albert-go/` ; le terminal affiche au lancement le fichier utilisé. Les clés s'obtiennent sur la [page d'Albert API](https://ia.numerique.gouv.fr/outils-ia/albert-api/).
 
 ## Kiosque
 
 ```bash
-./local.sh --kiosque      # ou kiosque=oui dans ~/.config/albert-go/config
+./local.sh --kiosque      # ou kiosque=oui dans config
 ```
 
 L'enseignant ouvre `/kiosque`, saisit sa clé Albert API et choisit la durée (1 h, 2 h, 3 h ou la journée). Il partage ensuite le lien (bouton Partager, QR code) et le code à 4 chiffres affiché dans le bandeau. Les élèves rejoignent la session sans voir la clé ; ses réglages sont leurs valeurs de départ. Conversations et bibliothèque restent dans l'onglet. Fermer la session (menu, "Quitter la session") renvoie toute la classe vers `/kiosque`.

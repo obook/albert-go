@@ -1,5 +1,10 @@
 # Clés locales, jamais dans le dépôt.
 .env
+# Configuration dans le dépôt (serveur/config.py) : clés API et certificat.
+/config
+/keys
+/cert.pem
+/key.pem
 
 # Playwright pour tests/ipad.webkit.js, installé sans être enregistré.
 node_modules/
