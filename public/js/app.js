@@ -380,10 +380,8 @@ reprendreSources();
 rouvrirCourante();
 chargerModeles();
 
-/* Appli publiée : ses fichiers sont gardés dans le navigateur, elle s'ouvre sans attendre le réseau (sw.js).
-   Pas en local : un fichier modifié doit se voir au premier rechargement. */
-if ('serviceWorker' in navigator && VERSION.commit !== 'locale') {
-    navigator.serviceWorker.register('sw.js').catch(() => {
-        /* Navigation privée ou navigateur ancien : l'appli marche sans. */
-    });
+/* Plus de service worker : une page servie depuis le cache masquerait le renvoi vers /kiosque.
+   Un navigateur qui en garde un d'une ancienne version le retire. */
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then(liste => liste.forEach(r => r.unregister())).catch(() => {});
 }
