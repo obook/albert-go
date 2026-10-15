@@ -15,7 +15,16 @@ def _dossier(tmp_path, contenu=None):
 def test_valeurs_par_defaut(tmp_path):
     with _dossier(tmp_path):
         assert config.load_config() == {
-            "api_base": "https://albert.api.etalab.gouv.fr", "kiosque": False, "api_key": ""}
+            "api_base": "https://albert.api.etalab.gouv.fr", "kiosque": False, "api_key": "",
+            "port": 8913, "https": False}
+
+
+def test_port_et_https(tmp_path):
+    with _dossier(tmp_path, "ALBERT_PORT=8920\nALBERT_HTTPS=oui\n"):
+        cfg = config.load_config()
+    assert (cfg["port"], cfg["https"]) == (8920, True)
+    with _dossier(tmp_path, "ALBERT_PORT=huit\n"):
+        assert config.load_config()["port"] == 8913
 
 
 def test_lecture_et_commentaires(tmp_path):
@@ -35,7 +44,8 @@ def test_env_partage_avec_d_autres_outils(tmp_path):
     contenu = 'GRAFT_API_KEY=sk-graft\nALBERT_API_KEY="sk-albert"\nALBERT_API_URL=\'https://albert.api.etalab.gouv.fr/v1/\'\n'
     with _dossier(tmp_path, contenu):
         assert config.load_config() == {
-            "api_base": "https://albert.api.etalab.gouv.fr", "kiosque": False, "api_key": "sk-albert"}
+            "api_base": "https://albert.api.etalab.gouv.fr", "kiosque": False, "api_key": "sk-albert",
+            "port": 8913, "https": False}
 
 
 def test_ligne_de_lancement_avec_tilde(tmp_path):

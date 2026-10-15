@@ -1,6 +1,7 @@
-"""Configuration du serveur : URL d'Albert, kiosque, clé API.
+"""Configuration du serveur : URL d'Albert, clé API, kiosque, port, HTTPS.
 
-Fichier .env, lignes NOM=valeur (ALBERT_API_URL, ALBERT_API_KEY, ALBERT_KIOSQUE),
+Fichier .env, lignes NOM=valeur (ALBERT_API_URL, ALBERT_API_KEY, ALBERT_KIOSQUE,
+ALBERT_PORT, ALBERT_HTTPS ; ALBERT_MISE_A_JOUR est lu par deploiement/demarrage.sh),
 # pour commenter ; modèle : .env-exemple. Dossier ALBERT_PORTABLE_DIR (clé USB),
 sinon la racine du dépôt.
 
@@ -26,6 +27,7 @@ def _config_dir():
 CONFIG_DIR, MODE = _config_dir()
 CONFIG_FILE = os.path.join(CONFIG_DIR, ".env")
 API_BASE_DEFAUT = "https://albert.api.etalab.gouv.fr"
+PORT_DEFAUT = 8913
 
 
 def _lignes(chemin):
@@ -42,7 +44,7 @@ def _lignes(chemin):
 
 
 def load_config():
-    """URL d'Albert, mode kiosque et clé API lus dans le .env.
+    """URL d'Albert, mode kiosque, clé API, port et HTTPS lus dans le .env.
 
     Les lignes des autres outils (graft) sont ignorées. Le fichier est relu à
     chaque appel : une clé corrigée sert sans redémarrer.
@@ -61,6 +63,8 @@ def load_config():
         "api_base": api_base,
         "kiosque": valeurs.get("ALBERT_KIOSQUE", "non") == "oui",
         "api_key": valeurs.get("ALBERT_API_KEY", ""),
+        "port": int(valeurs["ALBERT_PORT"]) if valeurs.get("ALBERT_PORT", "").isdigit() else PORT_DEFAUT,
+        "https": valeurs.get("ALBERT_HTTPS", "non") == "oui",
     }
 
 
