@@ -119,3 +119,10 @@ def test_serveur_js_hors_kiosque(client):
     donnees = json.loads(texte.text.removeprefix("var SERVEUR = ").removesuffix(";\n"))
     assert donnees["kiosque"] is None
     assert isinstance(donnees["adresses"], list)
+
+
+def test_page_de_connexion_sans_mode_de_travail(kiosque_client):
+    page = kiosque_client.get("/kiosque").text
+    assert 'name="cle_api"' in page and 'name="duree"' in page and 'name="code"' in page
+    assert 'name="niveau"' not in page
+    assert "<title>Albert Go</title>" in page

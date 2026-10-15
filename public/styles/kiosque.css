@@ -1,0 +1,41 @@
+/*
+ * kiosque.css
+ * Page de connexion au kiosque, et bandeau du prof sur la page de la classe.
+ *
+ * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
+ * Licence : GPL-3.0-or-later
+ */
+
+.kiosque {
+    max-width: 28rem;
+    margin: 10vh auto;
+    padding: 2rem;
+    background: var(--surface);
+    border: 1px solid var(--bord-carte);
+    border-radius: 1rem;
+    box-shadow: var(--ombre);
+}
+.kiosque .marque { margin: 0 0 1rem; font-size: 1.5rem; color: var(--texte); }
+.kiosque h1 { margin: 0 0 0.5rem; font-size: 1.25rem; font-weight: 700; }
+.kiosque p { margin: 0 0 1rem; color: var(--texte-doux); }
+.kiosque form { display: grid; gap: 0.5rem; }
+.kiosque .bouton-principal { margin-top: 0.5rem; }
+.kiosque .erreur { margin: 0; color: var(--erreur); font-weight: 700; }
+.kiosque .erreur:empty { display: none; }
+
+@media (max-width: 40rem) {
+    .kiosque { margin: 1rem; padding: 1.25rem; }
+}
+
+.bandeau-kiosque {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem 1rem;
+    padding: 0.5rem 1rem;
+    background: var(--jaune-fond);
+    border-bottom: 1px solid var(--jaune-bord);
+    color: var(--texte);
+    font-size: var(--taille-petite);
+}
