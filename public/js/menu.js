@@ -1,6 +1,6 @@
 /*
  * menu.js
- * Menu latéral : historique, thème, partage, à propos, changement de clé.
+ * Menu latéral : historique, thème, partage, à propos.
  *
  * Même organisation que le menu d'albert-droid. Les entrées "Nouvelle
  * conversation", "Historique" et "Réglages" sont gérées par app.js,
@@ -9,7 +9,7 @@
  * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
  * Auteur : O. Booklage
  * Date : Septembre 2026
- * Licence : Licence Ouverte 2.0 (Etalab), SPDX etalab-2.0
+ * Licence : GPL-3.0-or-later
  */
 'use strict';
 
