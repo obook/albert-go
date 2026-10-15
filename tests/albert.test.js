@@ -709,6 +709,14 @@ test('repondre : appelle /v1 du serveur, sans clé', async () => {
     }
 });
 
-test('messageErreur : session de classe terminée', () => {
-    assert.match(Albert.messageErreur(401, { detail: 'x', kiosque: 'terminee' }), /session de classe est terminée/);
+test('messageErreur : session de classe terminée, retour à la connexion', () => {
+    globalThis.location = { href: '/' };
+    try {
+        Albert.messageErreur(401, { detail: 'Not authenticated' });
+        assert.strictEqual(location.href, '/');
+        assert.match(Albert.messageErreur(401, { detail: 'x', kiosque: 'terminee' }), /session de classe est terminée/);
+        assert.strictEqual(location.href, '/kiosque?erreur=terminee');
+    } finally {
+        delete globalThis.location;
+    }
 });
