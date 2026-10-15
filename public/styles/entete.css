@@ -417,7 +417,7 @@ input.recherche-historique {
     }
     body:has(> #menu[open]) { --colonne-menu: 20rem; }
     body, .entete { background: var(--fond-conversation); }
-    .entete, .barre-langues, main, .saisie-zone { grid-column: 2; }
+    .entete, .bandeau-kiosque, .barre-langues, main, .saisie-zone { grid-column: 2; }
     .entete { border-bottom-color: transparent; }
     .volet:not(.volet-droit) {
         position: static;

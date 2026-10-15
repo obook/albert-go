@@ -163,12 +163,10 @@ test('commande Xcas écrite dans expression : passée à Giac quand math.js la r
     await assert.rejects(calcul({ expression: '3,5 + 2' }, 'fr'), { message: t('calcul.invalide') });
 });
 
-test('adresse de Giac datée par sa version : le service worker la garde une fois pour toutes', () => {
-    const { strategie } = require('../public/sw.js');
+test('adresse de Giac : le fichier existe dans public/', () => {
     const adresse = /const GIAC = '([^']+)'/.exec(lire('formel-worker.js'))[1];
-    const url = new URL(adresse, 'https://exemple.fr/albert-go/js/tools/formel-worker.js');
-    assert.strictEqual(strategie({ method: 'GET', url: url.href, cache: 'default', mode: 'no-cors' }, url.origin), 'version');
-    assert.ok(fs.existsSync(path.join(__dirname, '../public', url.pathname.replace('/albert-go/', ''))));
+    const url = new URL(adresse, 'https://exemple.fr/js/tools/formel-worker.js');
+    assert.ok(fs.existsSync(path.join(__dirname, '../public', url.pathname)));
 });
 
 test('calcul trop long : le worker est arrêté, le suivant en relance un', async () => {

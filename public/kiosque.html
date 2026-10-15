@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<!--
+  kiosque.html
+  Connexion au kiosque : le prof ouvre la session avec sa clé, l'élève
+  rejoint avec le code (lien partagé : ?token=...). Servie par le serveur
+  en mode kiosque (serveur/serveur.py) ; textes dans langues/*.js.
+
+  Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
+  Licence : GPL-3.0-or-later
+-->
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'">
+    <title>Albert Go</title>
+    <link rel="icon" href="images/icone-192.png" type="image/png">
+    <script src="js/theme.js?v=dev"></script>
+    <link rel="stylesheet" href="vendor/pico/pico.conditional.min.css?v=dev">
+    <link rel="stylesheet" href="styles/base.css?v=dev">
+    <link rel="stylesheet" href="styles/pico.css?v=dev">
+    <link rel="stylesheet" href="styles/kiosque.css?v=dev">
+</head>
+<body>
+    <main class="kiosque pico">
+        <p class="marque">Albert Go</p>
+
+        <section id="kiosque-prof" aria-labelledby="titre-prof">
+            <h1 id="titre-prof" data-t="kiosque.ouvrir-titre"></h1>
+            <p data-t="kiosque.ouvrir-texte"></p>
+            <p id="erreur-prof" class="erreur" role="alert"></p>
+            <form method="post" action="/kiosque">
+                <input type="hidden" name="action" value="login">
+                <label for="cle-api" data-t="kiosque.cle"></label>
+                <input type="password" id="cle-api" name="cle_api" autocomplete="off" spellcheck="false" required>
+                <label for="duree" data-t="kiosque.duree"></label>
+                <select id="duree" name="duree">
+                    <option value="1h" data-t="kiosque.duree-1h"></option>
+                    <option value="2h" selected data-t="kiosque.duree-2h"></option>
+                    <option value="3h" data-t="kiosque.duree-3h"></option>
+                    <option value="journee" data-t="kiosque.duree-journee"></option>
+                </select>
+                <button type="submit" class="bouton-principal" data-t="kiosque.ouvrir"></button>
+            </form>
+        </section>
+
+        <section id="kiosque-eleve" aria-labelledby="titre-eleve" hidden>
+            <h1 id="titre-eleve" data-t="kiosque.rejoindre-titre"></h1>
+            <p data-t="kiosque.rejoindre-texte"></p>
+            <p id="erreur-eleve" class="erreur" role="alert"></p>
+            <form method="post" action="/kiosque">
+                <input type="hidden" name="action" value="code">
+                <input type="hidden" name="token" id="token">
+                <label for="code" data-t="kiosque.code"></label>
+                <input type="text" id="code" name="code" maxlength="4" pattern="[0-9]{4}"
+                       inputmode="numeric" autocomplete="off" required>
+                <button type="submit" class="bouton-principal" data-t="kiosque.rejoindre"></button>
+            </form>
+        </section>
+    </main>
+    <script src="js/i18n.js?v=dev"></script>
+    <script src="js/langues/fr.js?v=dev"></script>
+    <script src="js/langues/en.js?v=dev"></script>
+    <script src="js/langues/es.js?v=dev"></script>
+    <script src="js/langues/de.js?v=dev"></script>
+    <script src="js/kiosque-connexion.js?v=dev"></script>
+</body>
+</html>

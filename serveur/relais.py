@@ -51,8 +51,11 @@ def _retry_after(valeur):
         return None
 
 
-def relayer(handler, methode, chemin, corps=b"", type_contenu=None):
-    """Relaie une requête /v1/... vers Albert et recopie sa réponse."""
+def relayer(handler, methode, chemin, corps=b"", type_contenu=None, cle=None):
+    """Relaie une requête /v1/... vers Albert et recopie sa réponse.
+
+    cle : celle de la session kiosque ; sinon une clé du fichier keys.
+    """
     api_base = config.load_config()["api_base"].rstrip("/")
     throttler = None
     if chemin == "/v1/chat/completions":
@@ -62,7 +65,7 @@ def relayer(handler, methode, chemin, corps=b"", type_contenu=None):
             repondre_json(handler, 429, {"detail": "Albert est très demandé, patientez."},
                           {"Retry-After": str(math.ceil(attente))})
             return
-    cle = config.prochaine_cle()
+    cle = cle or config.prochaine_cle()
     if not cle:
         # 500 : la page affiche ce détail, alors qu'un 503 y devient "Albert ne répond pas".
         repondre_json(handler, 500, {"detail": f"Aucune clé API sur le serveur : ajoutez-en une dans {config.KEYS_FILE}."})

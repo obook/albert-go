@@ -20,10 +20,12 @@ def main():
     options.add_argument("--port", type=int, default=8913)
     options.add_argument("--ssl", action="store_true", help="HTTPS avec un certificat auto-signé")
     options.add_argument("--no-browser", action="store_true", help="ne pas ouvrir le navigateur")
+    options.add_argument("--kiosque", action="store_true", help="sessions de classe : l'enseignant saisit sa clé sur /kiosque")
     args = options.parse_args()
+    mode_kiosque = args.kiosque or config.load_config()["kiosque"]
     utiliser_ssl = args.ssl and certificat.generer_certificat()
     try:
-        serveur = creer_serveur(args.port, utiliser_ssl)
+        serveur = creer_serveur(args.port, utiliser_ssl, mode_kiosque)
     except OSError:
         print(f"Erreur : le port {args.port} est déjà utilisé. Essayez --port {args.port + 1}.")
         return
@@ -33,8 +35,11 @@ def main():
     for ip in adresses_locales():
         print(f"  Réseau  : {protocole}://{ip}:{args.port}")
     print(f"  {config.config_affichee()}")
-    cles = len(config.load_web_keys())
-    print(f"  Clés API : {cles}" if cles else f"  Aucune clé API : ajoutez-en une dans {config.KEYS_FILE}")
+    if mode_kiosque:
+        print("  Mode kiosque : l'enseignant ouvre la session sur /kiosque")
+    else:
+        cles = len(config.load_web_keys())
+        print(f"  Clés API : {cles}" if cles else f"  Aucune clé API : ajoutez-en une dans {config.KEYS_FILE}")
     print("Ctrl+C pour arrêter")
     if not args.no_browser:
         threading.Timer(0.5, webbrowser.open, [f"{protocole}://localhost:{args.port}"]).start()

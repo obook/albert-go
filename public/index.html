@@ -70,6 +70,9 @@
     <link rel="stylesheet" href="styles/saisie.css?v=dev">
     <link rel="stylesheet" href="styles/reglages.css?v=dev">
     <link rel="stylesheet" href="styles/pico.css?v=dev">
+    <link rel="stylesheet" href="styles/kiosque.css?v=dev">
+    <!-- Adresses réseau et session kiosque, écrites par le serveur pour chaque page (sans cache). -->
+    <script src="serveur.js"></script>
     <script src="js/theme.js?v=dev"></script>
     <script src="js/i18n.js?v=dev"></script>
     <script src="js/langues/fr.js?v=dev"></script>
@@ -226,6 +229,11 @@
             <button type="button" class="entree" id="ouvrir-info">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-5M12 8h.01"/></svg>
                 <span data-t="menu.apropos"></span>
+            </button>
+            <!-- Kiosque : le prof ferme la session, l'élève la quitte (kiosque.js). -->
+            <button type="button" class="entree danger" id="deconnexion-kiosque" hidden>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5M21 12H9"/></svg>
+                <span data-t="kiosque.deconnexion"></span>
             </button>
         </div>
     </dialog>
@@ -654,6 +662,7 @@
                 <section>
                     <h3 data-t="info.projet"></h3>
                     <p data-t-html="info.projet.texte"></p>
+                    <p data-t="info.credits"></p>
                     <p><span data-t="info.version"></span><span id="version"></span></p>
                 </section>
             </div>
@@ -687,6 +696,8 @@
     <script src="js/stockage.js?v=dev"></script>
     <script src="js/projet.js?v=dev"></script>
     <script src="js/affichage.js?v=dev"></script>
+    <!-- Avant reglages.js : les réglages du prof sont recopiés avant que la boîte Réglages soit remplie. -->
+    <script src="js/kiosque.js?v=dev"></script>
     <script src="js/reponse.js?v=dev"></script>
     <script src="js/reglages.js?v=dev"></script>
     <script src="js/historique.js?v=dev"></script>

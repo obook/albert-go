@@ -79,3 +79,18 @@ def client(albert):
 
 def gzipe(texte):
     return gzip.compress(texte.encode("utf-8"))
+
+
+@pytest.fixture
+def kiosque_client(albert):
+    """Client httpx vers un serveur en mode kiosque ; ne suit pas les redirections."""
+    from serveur import kiosque
+    from serveur.serveur import creer_serveur
+    kiosque.terminer_session()
+    serveur = creer_serveur(port=0, mode_kiosque=True)
+    threading.Thread(target=serveur.serve_forever, daemon=True).start()
+    with httpx.Client(base_url=f"http://127.0.0.1:{serveur.server_address[1]}", timeout=10,
+                      follow_redirects=False) as c:
+        yield c
+    serveur.shutdown()
+    kiosque.terminer_session()

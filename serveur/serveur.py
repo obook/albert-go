@@ -7,14 +7,16 @@ Licence : GPL-3.0-or-later
 
 import email.utils
 import http.server
+import json
 import os
 import shutil
 import socket
 import ssl
 import sys
 import urllib.parse
+from urllib.parse import parse_qs, urlencode
 
-from serveur import certificat, relais
+from serveur import certificat, kiosque, relais
 
 RACINE = os.path.realpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir, "public"))
 ROUTES = {
@@ -39,6 +41,9 @@ TYPES = {
 }
 # Le navigateur revalide page, scripts et styles ; images et polices restent en cache.
 SANS_CACHE = (".html", ".js", ".mjs", ".css", ".txt", ".webmanifest")
+# Pages réservées à une session en kiosque ; le reste de public/ est public.
+PAGES_PROTEGEES = {"/", "/index.html"}
+FORMULAIRE_MAX = 4096
 
 
 class Gestionnaire(http.server.BaseHTTPRequestHandler):
@@ -49,13 +54,29 @@ class Gestionnaire(http.server.BaseHTTPRequestHandler):
 
     def do_GET(self):
         chemin = urllib.parse.urlsplit(self.path).path
-        if chemin.startswith("/v1/"):
+        if chemin == "/serveur.js":
+            self._serveur_js()
+        elif self.server.kiosque and chemin == "/kiosque":
+            self._fichier("/kiosque.html")
+        elif self.server.kiosque and chemin == "/api/kiosque-status":
+            # Session de ce navigateur : une page d'une ancienne session n'est plus "active".
+            relais.repondre_json(self, 200, {"active": kiosque.role_de_la_requete(self) is not None,
+                                             "temps_restant": kiosque.temps_restant()})
+        elif not self._porte_kiosque(chemin):
+            return
+        elif chemin.startswith("/v1/"):
             self._relayer("GET", chemin)
         else:
             self._fichier(chemin)
 
     def do_POST(self):
-        self._relayer("POST", urllib.parse.urlsplit(self.path).path)
+        chemin = urllib.parse.urlsplit(self.path).path
+        if self.server.kiosque and chemin == "/kiosque":
+            self._kiosque_post()
+        elif self.server.kiosque and chemin == "/api/kiosque-reglages":
+            self._reglages_prof()
+        elif self._porte_kiosque(chemin):
+            self._relayer("POST", chemin)
 
     def _relayer(self, methode, chemin):
         taille_max = ROUTES.get((methode, chemin))
@@ -80,7 +101,123 @@ class Gestionnaire(http.server.BaseHTTPRequestHandler):
         if len(corps) != taille:
             self.close_connection = True
             return
-        relais.relayer(self, methode, chemin, corps, self.headers.get("Content-Type"))
+        cle = None
+        if self.server.kiosque:
+            cle = kiosque.cle_api()
+            if not cle:
+                self._session_terminee()
+                return
+        relais.relayer(self, methode, chemin, corps, self.headers.get("Content-Type"), cle)
+
+    def _session_terminee(self):
+        relais.repondre_json(self, 401, {"detail": "Session de classe terminée.", "kiosque": "terminee"})
+
+    def _rediriger(self, adresse, cookie=None):
+        self.send_response(302)
+        self.send_header("Location", adresse)
+        if cookie is not None:
+            self.send_header("Set-Cookie", cookie)
+        self.end_headers()
+
+    def _porte_kiosque(self, chemin):
+        """En kiosque, sans session valide : 302 vers /kiosque (page) ou 401 (/v1). True si la requête passe."""
+        if not self.server.kiosque or (chemin not in PAGES_PROTEGEES and not chemin.startswith("/v1/")):
+            return True
+        if kiosque.role_de_la_requete(self):
+            return True
+        if chemin.startswith("/v1/"):
+            self._session_terminee()
+        elif kiosque.valeur_cookie(self) is not None:
+            # Cookie d'une session finie ou remplacée : la page de connexion dit pourquoi.
+            self._rediriger("/kiosque?erreur=terminee")
+        else:
+            self._rediriger("/kiosque")
+        return False
+
+    def _formulaire(self):
+        """Champs d'un formulaire POST (4 Ko au plus), ou None après avoir répondu 400."""
+        try:
+            taille = int(self.headers.get("Content-Length") or 0)
+        except ValueError:
+            taille = -1
+        if not 0 <= taille <= FORMULAIRE_MAX:
+            relais.repondre_json(self, 400, {"detail": "Formulaire invalide."})
+            self.close_connection = True
+            return None
+        texte = self.rfile.read(taille).decode("utf-8", "replace")
+        return {nom: valeurs[0] for nom, valeurs in parse_qs(texte).items()}
+
+    def _kiosque_post(self):
+        champs = self._formulaire()
+        if champs is None:
+            return
+        action = champs.get("action", "")
+        role = kiosque.role_de_la_requete(self)
+        if action == "login":
+            cle = champs.get("cle_api", "").strip()[:500]
+            if not cle:
+                self._rediriger("/kiosque?erreur=cle-requise")
+            elif not kiosque.cle_acceptee(cle):
+                self._rediriger("/kiosque?erreur=cle-refusee")
+            else:
+                kiosque.creer_session(cle, champs.get("duree", "2h"))
+                self._rediriger("/", f"{kiosque.COOKIE}={kiosque.cookie('enseignant')}; Path=/; HttpOnly; SameSite=Lax")
+        elif action == "code":
+            token, code = champs.get("token", "").strip(), champs.get("code", "").strip()
+            if not kiosque.session_active():
+                self._rediriger("/kiosque?erreur=aucune-session")
+            elif not kiosque.verifier_code(token, code):
+                self._rediriger("/kiosque?" + urlencode({"erreur": "code", "token": token}))
+            elif role == "enseignant":
+                # Le prof qui essaie le lien élève dans son navigateur reste prof.
+                self._rediriger("/")
+            else:
+                self._rediriger("/", f"{kiosque.COOKIE}={kiosque.cookie('eleve')}; Path=/; HttpOnly; SameSite=Lax")
+        elif action == "logout":
+            # Seul le prof (rôle signé) ferme la session de la classe.
+            if role == "enseignant":
+                kiosque.terminer_session()
+            efface = None
+            if kiosque.valeur_cookie(self) is not None:
+                efface = f"{kiosque.COOKIE}=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0"
+            self._rediriger("/kiosque", efface)
+        else:
+            self._rediriger("/kiosque?erreur=action")
+
+    def _reglages_prof(self):
+        if kiosque.role_de_la_requete(self) != "enseignant":
+            relais.repondre_json(self, 403, {"detail": "Réservé à l'enseignant."})
+            return
+        try:
+            taille = int(self.headers.get("Content-Length") or 0)
+            corps = json.loads(self.rfile.read(taille)) if 0 < taille <= FORMULAIRE_MAX else None
+        except ValueError:
+            corps = None
+        if not isinstance(corps, dict):
+            relais.repondre_json(self, 400, {"detail": "Réglages invalides."})
+            return
+        kiosque.enregistrer_reglages(kiosque.valider_reglages(corps))
+        relais.repondre_json(self, 200, {"ok": True})
+
+    def _serveur_js(self):
+        """Adresses réseau et session de cette page ; la CSP interdit les scripts en ligne."""
+        port = self.server.server_address[1]
+        protocole = "https" if self.server.ssl else "http"
+        session = None
+        role = kiosque.role_de_la_requete(self) if self.server.kiosque else None
+        if role == "enseignant":
+            session = dict(kiosque.infos_enseignant() or {}, role=role)
+        elif role == "eleve":
+            session = {"role": role, "reglages": kiosque.reglages()}
+        donnees = {"adresses": [f"{protocole}://{ip}:{port}" for ip in self.server.adresses], "kiosque": session}
+        texte = "var SERVEUR = " + json.dumps(donnees, ensure_ascii=False).replace("</", "<\\/") + ";\n"
+        contenu = texte.encode("utf-8")
+        self.send_response(200)
+        self.send_header("Content-Type", "application/javascript; charset=utf-8")
+        self.send_header("Content-Length", str(len(contenu)))
+        self.send_header("Cache-Control", "no-store")
+        self.end_headers()
+        self.wfile.write(contenu)
 
     def _fichier(self, chemin):
         relatif = urllib.parse.unquote(chemin).lstrip("/") or "index.html"
@@ -116,9 +253,12 @@ class Gestionnaire(http.server.BaseHTTPRequestHandler):
         pass
 
 
-def creer_serveur(port=8913, utiliser_ssl=False):
+def creer_serveur(port=8913, utiliser_ssl=False, mode_kiosque=False):
     """Serveur prêt à lancer (serve_forever) sur toutes les interfaces."""
     serveur = http.server.ThreadingHTTPServer(("0.0.0.0", port), Gestionnaire)
+    serveur.kiosque = mode_kiosque
+    serveur.ssl = utiliser_ssl
+    serveur.adresses = adresses_locales()
     if utiliser_ssl:
         contexte = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
         contexte.load_cert_chain(certificat.CERT_FILE, certificat.KEY_FILE)
