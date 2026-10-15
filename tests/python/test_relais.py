@@ -101,19 +101,19 @@ def test_reponse_lente_non_coupee(mini, albert, monkeypatch):
 
 
 def test_albert_injoignable_502(mini, albert, tmp_path, monkeypatch):
-    (tmp_path / "config").write_text("api_base=http://127.0.0.1:9\n", encoding="utf-8")
+    (tmp_path / ".env").write_text("ALBERT_API_URL=http://127.0.0.1:9\nALBERT_API_KEY=sk-serveur\n", encoding="utf-8")
     reponse = mini.get("/v1/models")
     assert reponse.status_code == 502
     assert "detail" in reponse.json()
 
 
-def test_sans_cle_500_avec_le_detail(mini, albert, tmp_path):
+def test_sans_cle_500_avec_le_detail(mini, albert, tmp_path, monkeypatch):
     # 500 et non 503 : la page affiche le détail d'un 500, et dit "Albert ne répond pas" pour un 503.
-    (tmp_path / "keys").write_text("", encoding="utf-8")
-    config.reinitialiser_pour_tests()
+    (tmp_path / ".env").write_text(f"ALBERT_API_URL={albert.url}\n", encoding="utf-8")
+    monkeypatch.setenv("HOME", str(tmp_path))
     reponse = mini.get("/v1/models")
     assert reponse.status_code == 500
-    assert "keys" in reponse.json()["detail"]
+    assert reponse.json()["detail"] == "Aucune clé API sur le serveur : ajoutez ALBERT_API_KEY=... dans ~/.env."
     assert albert.recues == []
 
 

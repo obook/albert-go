@@ -407,7 +407,7 @@ I18n.TEXTES.de = {
     'etat.recherche': 'Suche nach "{mots}"...',
 
     /* Fehler. */
-    'erreur.cle-refusee': 'Serverschlüssel von Albert abgelehnt: prüfen Sie die Datei keys.',
+    'erreur.cle-refusee': 'Serverschlüssel von Albert abgelehnt: prüfen Sie ALBERT_API_KEY in der Datei .env.',
     'erreur.quota': 'Kontingent erreicht. Versuchen Sie es in einer Minute erneut.',
     'erreur.reponse-illisible': 'Unlesbare Antwort von Albert. Versuchen Sie es erneut.',
     'erreur.http': 'Fehler {status}.',

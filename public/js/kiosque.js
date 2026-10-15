@@ -68,6 +68,13 @@ if (typeof document !== 'undefined' && Kiosque) {
     partage = true;
     $('partage-reglage').closest('fieldset').hidden = true;
 
+    if (Kiosque.role === 'eleve') {
+        /* Volet fermé au démarrage (menu.js). Choix rangé dans l'onglet : le volet
+           du prof, sur le même navigateur, garde le sien. */
+        SENSIBLES.push('volet');
+        ecrire('volet', 'replie');
+    }
+
     if (Kiosque.role === 'eleve' && Kiosque.reglages) {
         /* Une fois par session : l'élève peut ensuite changer ses réglages. */
         let deja = null;

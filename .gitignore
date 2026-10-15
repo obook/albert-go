@@ -1,5 +1,12 @@
-# Clés locales, jamais dans le dépôt.
+# Configuration albert-go serveur, jamais dans le dépôt.
 .env
+# Modèle du .env versionné.
+!.env-exemple
+# Certificat HTTPS (serveur/certificat.py).
+/cert.pem
+/key.pem
+# Journal du démarrage automatique (deploiement/demarrage.sh).
+/albert-go.log*
 
 # Playwright pour tests/ipad.webkit.js, installé sans être enregistré.
 node_modules/

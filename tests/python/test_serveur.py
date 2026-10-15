@@ -22,7 +22,7 @@ def test_fichier_absent_404(client):
 
 
 def test_chemin_hors_public_refuse(client):
-    for chemin in ("/../serveur/config.py", "/%2e%2e/serveur/config.py", "/js/../../pytest.ini"):
+    for chemin in ("/../serveur/config.py", "/%2e%2e/serveur/config.py", "/js/../../pytest.ini", "/%2e%2e/.env"):
         assert client.get(chemin).status_code in (403, 404)
 
 

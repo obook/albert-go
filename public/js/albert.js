@@ -1091,8 +1091,12 @@ const Albert = {
      * @returns {string} Message pour l'utilisateur.
      */
     messageErreur(status, corps) {
-        /* Kiosque : la session du prof est finie ou fermée (serveur/serveur.py). */
+        /* Kiosque : la session du prof est finie ou fermée (serveur/serveur.py).
+           Retour à la connexion : la page ne peut plus rien demander à Albert. */
         if (status === 401 && corps && corps.kiosque === 'terminee') {
+            if (typeof location !== 'undefined') {
+                location.href = '/kiosque?erreur=terminee';
+            }
             return t('kiosque.terminee');
         }
         if (status === 401 || status === 403) {

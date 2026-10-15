@@ -55,11 +55,8 @@ def albert(tmp_path, monkeypatch):
     for nom in ("HTTP_PROXY", "HTTPS_PROXY", "ALL_PROXY", "http_proxy", "https_proxy", "all_proxy"):
         monkeypatch.delenv(nom, raising=False)
     faux = FauxAlbert()
-    (tmp_path / "config").write_text(f"api_base={faux.url}\n", encoding="utf-8")
-    (tmp_path / "keys").write_text("sk-serveur\n", encoding="utf-8")
-    monkeypatch.setattr(config, "CONFIG_FILE", str(tmp_path / "config"))
-    monkeypatch.setattr(config, "KEYS_FILE", str(tmp_path / "keys"))
-    config.reinitialiser_pour_tests()
+    (tmp_path / ".env").write_text(f"ALBERT_API_URL={faux.url}\nALBERT_API_KEY=sk-serveur\n", encoding="utf-8")
+    monkeypatch.setattr(config, "CONFIG_FILE", str(tmp_path / ".env"))
     regulation.reinitialiser_pour_tests()
     yield faux
     faux.attente.set()

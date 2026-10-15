@@ -6,7 +6,7 @@
 # Auteur : O. Booklage
 # Licence : GPL-3.0-or-later
 #
-# Options transmises au serveur : --port N, --ssl, --no-browser.
+# Options transmises au serveur : --port N, --ssl, --no-browser, --kiosque.
 #
 set -eu
 
@@ -17,4 +17,5 @@ if ! "$DOSSIER/.venv/bin/python" -c "import httpx" 2>/dev/null; then
     "$DOSSIER/.venv/bin/python" -m pip install -q -r "$DOSSIER/serveur/requirements.txt"
 fi
 cd "$DOSSIER"
-exec .venv/bin/python -m serveur "$@"
+# Chemin complet : deploiement/redemarrage.sh arrête le serveur de ce dossier seulement.
+exec "$DOSSIER/.venv/bin/python" -m serveur "$@"

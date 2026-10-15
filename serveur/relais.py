@@ -54,9 +54,10 @@ def _retry_after(valeur):
 def relayer(handler, methode, chemin, corps=b"", type_contenu=None, cle=None):
     """Relaie une requête /v1/... vers Albert et recopie sa réponse.
 
-    cle : celle de la session kiosque ; sinon une clé du fichier keys.
+    cle : celle de la session kiosque ; sinon celle du .env.
     """
-    api_base = config.load_config()["api_base"].rstrip("/")
+    reglages = config.load_config()
+    api_base = reglages["api_base"].rstrip("/")
     throttler = None
     if chemin == "/v1/chat/completions":
         throttler = regulation.obtenir_throttler(api_base, _modele(corps))
@@ -65,10 +66,10 @@ def relayer(handler, methode, chemin, corps=b"", type_contenu=None, cle=None):
             repondre_json(handler, 429, {"detail": "Albert est très demandé, patientez."},
                           {"Retry-After": str(math.ceil(attente))})
             return
-    cle = cle or config.prochaine_cle()
+    cle = cle or reglages["api_key"]
     if not cle:
         # 500 : la page affiche ce détail, alors qu'un 503 y devient "Albert ne répond pas".
-        repondre_json(handler, 500, {"detail": f"Aucune clé API sur le serveur : ajoutez-en une dans {config.KEYS_FILE}."})
+        repondre_json(handler, 500, {"detail": f"Aucune clé API sur le serveur : ajoutez ALBERT_API_KEY=... dans {config.chemin_config()}."})
         return
     en_tetes = {"Authorization": f"Bearer {cle}"}
     if type_contenu:
