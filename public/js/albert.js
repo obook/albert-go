@@ -1091,6 +1091,10 @@ const Albert = {
      * @returns {string} Message pour l'utilisateur.
      */
     messageErreur(status, corps) {
+        /* Kiosque : la session du prof est finie ou fermée (serveur/serveur.py). */
+        if (status === 401 && corps && corps.kiosque === 'terminee') {
+            return t('kiosque.terminee');
+        }
         if (status === 401 || status === 403) {
             return t('erreur.cle-refusee');
         }

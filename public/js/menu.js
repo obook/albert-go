@@ -174,12 +174,15 @@ $('principal').addEventListener('click', () => {
 });
 
 /**
- * Ouvre la boîte "Partager" avec l'adresse de la page et son QR code.
+ * Ouvre la boîte "Partager" avec l'adresse réseau du serveur et son QR code.
  *
  * Le QR code est calculé dans le navigateur (vendor/qrcode-generator).
  */
 function ouvrirPartage() {
-    const adresse = location.origin + '/';
+    /* Adresse réseau du serveur (cartes physiques d'abord) ; en kiosque, le prof partage le lien élève. */
+    const base = Serveur.adresses[0] || location.origin;
+    const adresse = Kiosque && Kiosque.token ? base + '/kiosque?token=' + encodeURIComponent(Kiosque.token) : base + '/';
+    $('texte-partage').textContent = Kiosque && Kiosque.code ? t('kiosque.partage', { code: Kiosque.code }) : t('partage.texte');
     /* 0 : taille choisie par la bibliothèque ; M : 15 % de correction d'erreur. */
     const code = qrcode(0, 'M');
     code.addData(adresse);
