@@ -7,7 +7,8 @@ guide ANSSI-PA-102 sur les systèmes d'IA générative. Auto-évaluation, sans r
 
 Albert Go est une page statique publiée sur Pages (Forge des communs numériques
 éducatifs). Chacun y saisit sa propre clé API Albert. Albert n'envoyant pas
-d'en-têtes CORS, la page passe par un webhook n8n interministériel.
+d'en-têtes CORS, la page passe par un webhook n8n,
+le relais de l'incubateur de l'Éducation nationale.
 
 ```
 Navigateur (Pages) -> webhook n8n -> https://albert.api.etalab.gouv.fr
