@@ -1,0 +1,7 @@
+# Copiés ou téléchargés pour fabriquer les paquets (.gitlab-ci.yml).
+app/
+python-linux/
+python-win/
+dist/
+# Configuration des essais en local (data/.env).
+data/

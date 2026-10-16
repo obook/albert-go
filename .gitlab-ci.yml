@@ -16,3 +16,78 @@ tests-serveur:
     - python -m pytest -q
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+
+# Sur un tag vX.Y.Z : Albert Go pour clé USB (Electron, Python embarqué), puis la release.
+variables:
+  PAQUETS: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/albert-go/${CI_COMMIT_TAG}"
+
+paquet-linux:
+  stage: build
+  image: node:22-bookworm-slim
+  variables:
+    # appimagetool s'extrait sans FUSE.
+    APPIMAGE_EXTRACT_AND_RUN: "1"
+  rules:
+    - if: '$CI_COMMIT_TAG =~ /^v/'
+    # En MR qui touche au paquet : fabriqué, pas déposé.
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+      changes: [standalone/**/*, serveur/requirements.txt, .gitlab-ci.yml]
+  script:
+    - apt-get update -qq && apt-get install -y -qq curl git
+    - cd standalone
+    - curl -fsSL "https://github.com/astral-sh/python-build-standalone/releases/download/20241016/cpython-3.12.7+20241016-x86_64-unknown-linux-gnu-install_only.tar.gz" | tar -xz
+    - mv python python-linux
+    - python-linux/bin/python3 -m pip install -q -r ../serveur/requirements.txt
+    - npm ci
+    - if [ -n "$CI_COMMIT_TAG" ]; then npm pkg set version="${CI_COMMIT_TAG#v}"; fi
+    - npm run build -- --linux AppImage
+    - 'if [ -n "$CI_COMMIT_TAG" ]; then curl -fsS -H "JOB-TOKEN: ${CI_JOB_TOKEN}" --upload-file dist/*.AppImage "${PAQUETS}/Albert-Go-${CI_COMMIT_TAG}-linux.AppImage"; fi'
+
+paquet-windows:
+  stage: build
+  image: node:22-bookworm-slim
+  rules:
+    - if: '$CI_COMMIT_TAG =~ /^v/'
+    # En MR qui touche au paquet : fabriqué, pas déposé.
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+      changes: [standalone/**/*, serveur/requirements.txt, .gitlab-ci.yml]
+  script:
+    - apt-get update -qq && apt-get install -y -qq curl git zip unzip python3-pip
+    - cd standalone
+    - curl -fsSLo python-win.zip https://www.python.org/ftp/python/3.12.7/python-3.12.7-embed-amd64.zip
+    - unzip -q python-win.zip -d python-win && rm python-win.zip
+    # Chemins de Python : ses paquets, et le serveur dans resources\albert-go.
+    - printf 'python312.zip\n.\nLib\\site-packages\n..\\albert-go\nimport site\n' > python-win/python312._pth
+    - 'python3 -m pip install -q --platform win_amd64 --python-version 3.12 --only-binary=:all: --target python-win/Lib/site-packages -r ../serveur/requirements.txt'
+    - npm ci
+    - if [ -n "$CI_COMMIT_TAG" ]; then npm pkg set version="${CI_COMMIT_TAG#v}"; fi
+    # dir et non portable : pas besoin de Wine.
+    - npm run build -- --win dir
+    - (cd dist/win-unpacked && zip -qr "../../Albert-Go-${CI_COMMIT_TAG}-win64.zip" .)
+    - 'if [ -n "$CI_COMMIT_TAG" ]; then curl -fsS -H "JOB-TOKEN: ${CI_JOB_TOKEN}" --upload-file "Albert-Go-${CI_COMMIT_TAG}-win64.zip" "${PAQUETS}/Albert-Go-${CI_COMMIT_TAG}-win64.zip"; fi'
+
+release:
+  stage: deploy
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  rules:
+    - if: '$CI_COMMIT_TAG =~ /^v/'
+  script:
+    - echo "Release ${CI_COMMIT_TAG}"
+  release:
+    tag_name: $CI_COMMIT_TAG
+    name: Albert Go $CI_COMMIT_TAG
+    description: |
+      Albert Go sur clé USB : le serveur et Python sont embarqués, rien à installer.
+
+      - Linux : rendre l'AppImage exécutable, puis la lancer.
+      - Windows : décompresser l'archive, puis lancer Albert Go.exe.
+
+      Au premier lancement, un dossier data/ apparaît à côté de l'application : coller la clé API dans data/.env, ou y activer le kiosque (ALBERT_KIOSQUE=oui).
+    assets:
+      links:
+        - name: Albert Go Linux x64 (AppImage)
+          url: ${PAQUETS}/Albert-Go-${CI_COMMIT_TAG}-linux.AppImage
+          link_type: package
+        - name: Albert Go Windows x64 (archive)
+          url: ${PAQUETS}/Albert-Go-${CI_COMMIT_TAG}-win64.zip
+          link_type: package

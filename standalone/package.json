@@ -1,0 +1,49 @@
+{
+  "name": "albert-go",
+  "version": "4.0.0",
+  "description": "Albert Go sur clé USB : serveur Python embarqué dans Electron",
+  "author": "O. Booklage",
+  "license": "GPL-3.0-or-later",
+  "private": true,
+  "main": "main.js",
+  "scripts": {
+    "start": "electron . --no-sandbox",
+    "prebuild": "node prebuild.js",
+    "build": "electron-builder"
+  },
+  "build": {
+    "appId": "fr.education.albert-go",
+    "productName": "Albert Go",
+    "artifactName": "Albert-Go-${version}.${ext}",
+    "copyright": "GPL-3.0-or-later",
+    "files": [
+      "main.js",
+      "preload.js"
+    ],
+    "afterPack": "./sans-sandbox.js",
+    "extraResources": [
+      {
+        "from": "app",
+        "to": "albert-go"
+      },
+      "dictionnaires"
+    ],
+    "linux": {
+      "category": "Education",
+      "icon": "../public/images/icone-512.png",
+      "extraResources": [
+        "python-linux"
+      ]
+    },
+    "win": {
+      "signAndEditExecutable": false,
+      "extraResources": [
+        "python-win"
+      ]
+    }
+  },
+  "devDependencies": {
+    "electron": "^44.8.0",
+    "electron-builder": "^26.15.3"
+  }
+}
