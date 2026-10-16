@@ -44,6 +44,10 @@
         {
           "from": "../.env-exemple",
           "to": ".env-exemple"
+        },
+        {
+          "from": "../docs/documentation.pdf",
+          "to": "documentation.pdf"
         }
       ]
     }

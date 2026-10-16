@@ -84,9 +84,9 @@ Les [releases](https://forge.apps.education.fr/booklageolivier/albert-go/-/relea
 - Linux : `chmod +x Albert-Go-*-linux.AppImage`, puis la lancer (`--kiosque` pour le kiosque).
 - Windows : décompresser l'archive, puis lancer `Albert Go.exe`.
 
-La configuration est le `.env` à côté de l'application, créé au premier lancement s'il manque (réglages ci-dessus, sauf `ALBERT_MISE_A_JOUR`). Sous Windows, l'archive contient aussi le modèle `.env-exemple`, à copier en `.env` pour régler avant le premier lancement. La clé sert dès qu'elle est enregistrée ; kiosque, port et HTTPS demandent de relancer l'application.
+La configuration est le `.env` à côté de l'application, créé au premier lancement s'il manque (réglages ci-dessus, sauf `ALBERT_MISE_A_JOUR`). Sous Windows, l'archive contient aussi le modèle `.env-exemple`, à copier en `.env` pour régler avant le premier lancement. La clé sert dès qu'elle est enregistrée ; kiosque, port et HTTPS demandent de relancer l'application. La notice d'utilisation, `docs/documentation.pdf`, est dans l'archive Windows et en lien sur chaque release.
 
-La CI fabrique les paquets sur un tag `vX.Y.Z` (jobs `paquet-linux` et `paquet-windows`). En local, dans `standalone/` : Python comme dans `paquet-linux`, puis `npm ci` et `npm run build -- --linux AppImage` ; `npm start` lance l'application depuis le dépôt.
+La CI fabrique les paquets sur un tag `vX.Y.Z` (jobs `paquet-linux` et `paquet-windows`). Avant le tag, changer `\version` dans `docs/documentation.tex` et recompiler le PDF (commande en tête du fichier) : la CI refuse une notice qui annonce une autre version. En local, dans `standalone/` : Python comme dans `paquet-linux`, puis `npm ci` et `npm run build -- --linux AppImage` ; `npm start` lance l'application depuis le dépôt.
 
 ## Dépannage
 

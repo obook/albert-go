@@ -52,7 +52,9 @@ paquet-windows:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
       changes: [standalone/**/*, serveur/requirements.txt, .gitlab-ci.yml]
   script:
-    - apt-get update -qq && apt-get install -y -qq curl git zip unzip python3-pip
+    - apt-get update -qq && apt-get install -y -qq curl git zip unzip python3-pip poppler-utils
+    # La notice, livrée dans l'archive, doit annoncer la version du tag.
+    - 'if [ -n "$CI_COMMIT_TAG" ] && ! pdftotext -l 1 docs/documentation.pdf - | grep -qx "Version ${CI_COMMIT_TAG}"; then echo "docs/documentation.pdf n''annonce pas ${CI_COMMIT_TAG} : changer \\version, recompiler, commiter."; exit 1; fi'
     - cd standalone
     - curl -fsSLo python-win.zip https://www.python.org/ftp/python/3.12.7/python-3.12.7-embed-amd64.zip
     - unzip -q python-win.zip -d python-win && rm python-win.zip
@@ -65,6 +67,7 @@ paquet-windows:
     - npm run build -- --win dir
     - (cd dist/win-unpacked && zip -qr "../../Albert-Go-${CI_COMMIT_TAG}-win64.zip" .)
     - 'if [ -n "$CI_COMMIT_TAG" ]; then curl -fsS -H "JOB-TOKEN: ${CI_JOB_TOKEN}" --upload-file "Albert-Go-${CI_COMMIT_TAG}-win64.zip" "${PAQUETS}/Albert-Go-${CI_COMMIT_TAG}-win64.zip"; fi'
+    - 'if [ -n "$CI_COMMIT_TAG" ]; then curl -fsS -H "JOB-TOKEN: ${CI_JOB_TOKEN}" --upload-file ../docs/documentation.pdf "${PAQUETS}/Albert-Go-${CI_COMMIT_TAG}-documentation.pdf"; fi'
 
 release:
   stage: deploy
@@ -91,6 +94,9 @@ release:
         - name: Albert Go Windows x64 (archive)
           url: ${PAQUETS}/Albert-Go-${CI_COMMIT_TAG}-win64.zip
           link_type: package
+        - name: Notice (PDF)
+          url: ${PAQUETS}/Albert-Go-${CI_COMMIT_TAG}-documentation.pdf
+          link_type: other
 
 # Pages : un renvoi vers les releases à la place de l'ancienne version en ligne.
 pages:
