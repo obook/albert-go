@@ -41,14 +41,19 @@ const ERREURS_KIOSQUE = ['cle-requise', 'cle-refusee', 'aucune-session', 'code',
         document.getElementById(token ? 'erreur-eleve' : 'erreur-prof').textContent = t('kiosque.erreur.' + erreur);
     }
     document.getElementById(token ? 'code' : 'cle-api').focus();
-    /* Albert met quelques secondes à vérifier la clé : le bouton le montre. */
-    const bouton = document.querySelector('#kiosque-prof button');
-    document.querySelector('#kiosque-prof form').addEventListener('submit', () => {
-        bouton.disabled = true;
-        bouton.setAttribute('aria-busy', 'true');
-        bouton.textContent = t('cle.verification');
-        document.getElementById('erreur-prof').textContent = '';
-    });
+    /* Albert met quelques secondes à vérifier la clé, la page de l'invité à se charger : le bouton le montre. */
+    for (const form of document.querySelectorAll('form')) {
+        form.addEventListener('submit', () => {
+            const bouton = form.querySelector('button');
+            bouton.disabled = true;
+            bouton.setAttribute('aria-busy', 'true');
+            if (form.closest('#kiosque-prof')) {
+                bouton.textContent = t('cle.verification');
+            }
+            /* Le message d'erreur suit le formulaire. */
+            form.nextElementSibling.textContent = '';
+        });
+    }
     /* Retour arrière : la page reviendrait du cache avec le bouton figé. */
     window.addEventListener('pageshow', (event) => { if (event.persisted) location.reload(); });
 })();
