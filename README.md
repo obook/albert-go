@@ -20,7 +20,7 @@ Albert Go s'utilise de trois façons :
 cp .env-exemple .env      # puis coller la clé API après ALBERT_API_KEY=
 ```
 
-`.env` reste dans le dossier du dépôt, ignoré par git ; le terminal affiche au lancement le fichier utilisé. Installation sur un poste de l'établissement, avec démarrage automatique et mise à jour : [DEPLOIEMENT.md](DEPLOIEMENT.md). Les clés s'obtiennent sur la [page d'Albert API](https://ia.numerique.gouv.fr/outils-ia/albert-api/).
+`.env` reste dans le dossier du dépôt, ignoré par git ; le terminal affiche au lancement le fichier utilisé. Installation sur un poste de l'établissement, avec démarrage automatique et mise à jour : [docs/DEPLOIEMENT.md](docs/DEPLOIEMENT.md). Les clés s'obtiennent sur la [page d'Albert API](https://ia.numerique.gouv.fr/outils-ia/albert-api/).
 
 ## Kiosque
 
@@ -108,7 +108,7 @@ La page vise la conformité [RGAA](https://accessibilite.numerique.gouv.fr/). Au
 
 ## Sécurité
 
-Audit interne et externe, modèle de menaces et plan d'action : [SECURITE.md](SECURITE.md).
+Audit interne et externe, modèle de menaces et plan d'action : [docs/SECURITE.md](docs/SECURITE.md).
 
 - Par défaut, les questions, les conversations, les documents et la bibliothèque de sources sont gardés dans `sessionStorage` et effacés après la fermeture de l'onglet (au chargement suivant). Interrupteur activé, ils restent dans `localStorage`, sans limite de durée.
 - Sur un serveur, la clé API reste dans le fichier `.env` : la page ne la voit jamais et le serveur ignore l'en-tête `Authorization` qu'elle enverrait.

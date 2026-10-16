@@ -2,7 +2,7 @@
 #
 # Nom : demarrage.sh
 # Description : Lance le serveur d'Albert Go au démarrage de la machine
-#               (crontab @reboot, voir DEPLOIEMENT.md) : attente du réseau,
+#               (crontab @reboot, voir docs/DEPLOIEMENT.md) : attente du réseau,
 #               git pull, dépendances, puis le serveur, qui garde la main.
 # Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
 # Auteur : O. Booklage, d'après L'Atelier d'Albert (Romain P., Luce P.B., Théossian S.D.)
