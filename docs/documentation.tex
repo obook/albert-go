@@ -86,7 +86,7 @@ Albert Go est un chatbot, c'est-à-dire un agent conversationnel : vous écrivez
 Albert API n'autorise pas une page web à l'interroger directement : un relais lui transmet les questions. Ce relais dépend du mode de fonctionnement :
 \begin{itemize}
   \item \emph{Version en ligne}, sur le site Pages de la forge : chacun saisit sa clé API dans la page, qui la garde dans le navigateur. Un relais n8n de l'incubateur de l'Éducation nationale transmet les questions à Albert (\autoref{sec:en-ligne}).
-  \item \emph{Serveur de l'établissement} : le serveur Python d'Albert Go tourne sur un poste de l'établissement et transmet directement les questions à Albert, avec la clé API de son fichier \code{.env}. Les appareils du réseau l'ouvrent dans leur navigateur, à l'adresse que donne l'établissement. Pour l'installer, suivez \texttt{DEPLOIEMENT.md} (\autoref{sec:plus-loin}).
+  \item \emph{Serveur de l'établissement} : le serveur Python d'Albert Go tourne sur un poste de l'établissement et transmet directement les questions à Albert, avec la clé API de son fichier \code{.env}. Les appareils du réseau l'ouvrent dans leur navigateur, à l'adresse que donne l'établissement. Pour l'installer, suivez \texttt{docs/DEPLOIEMENT.md} (\autoref{sec:plus-loin}).
   \item \emph{Version autonome} : le même serveur, embarqué avec Python dans une application pour Linux ou Windows. Elle s'ouvre dans sa propre fenêtre, sans installation, depuis l'ordinateur ou une clé USB (\autoref{sec:installation}).
 \end{itemize}
 
@@ -337,7 +337,7 @@ Vérifiez qu'ils sont sur le même réseau que l'ordinateur qui fait tourner Alb
 \begin{itemize}
   \item Version en ligne : \url{https://booklageolivier.forge.apps.education.fr/albert-go/}.
   \item Code source, nouvelles versions et signalement des problèmes : \url{https://forge.apps.education.fr/booklageolivier/albert-go}.
-  \item Installation sur un poste de l'établissement, avec démarrage automatique : fichier \texttt{DEPLOIEMENT.md} du dépôt.
+  \item Installation sur un poste de l'établissement, avec démarrage automatique : fichier \texttt{docs/DEPLOIEMENT.md} du dépôt.
   \item Albert API et ses modèles : \url{https://ia.numerique.gouv.fr/outils-ia/albert-api/}.
 \end{itemize}
 

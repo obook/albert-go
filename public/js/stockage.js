@@ -59,7 +59,7 @@ try {
 }
 
 /*
-Dans le cadre d'un autre site : un lien seul, puis arrêt (SECURITE.md, E2).
+Dans le cadre d'un autre site : un lien seul, puis arrêt (docs/SECURITE.md, E2).
 Pages ne permet pas l'en-tête X-Frame-Options.
 Les scripts suivants échouent alors dès leur premier accès au DOM.
 */
