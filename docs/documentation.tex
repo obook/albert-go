@@ -1,7 +1,8 @@
 % !TeX TS-program = lualatex
 % docs/documentation.tex
 %
-% Notice de la version autonome d'Albert Go, livrée avec les paquets de la release.
+% Notice d'utilisation d'Albert Go (version en ligne, serveur, version autonome),
+% livrée avec les paquets de la release.
 % Compilation : trois passes, puis contrôle des débordements.
 %   cd docs && for p in 1 2 3; do lualatex -interaction=nonstopmode documentation.tex; done
 %   grep -c "Overfull" documentation.log     # doit rendre 0
@@ -15,7 +16,7 @@
 \documentclass[a4paper, 11pt]{article}
 
 \newcommand{\titre}{Albert Go}
-\newcommand{\sousTitre}{Notice de la version autonome}
+\newcommand{\sousTitre}{Notice d'utilisation}
 \newcommand{\version}{v4.0.1}
 \newcommand{\auteur}{O. Booklage}
 \newcommand{\projet}{Albert Go}
@@ -50,8 +51,7 @@
 {\large \today\par}
 
 \vfill
-{\footnotesize Notice d'utilisation\\
-Licence GPL v3 ou ultérieure\\
+{\footnotesize Licence GPL v3 ou ultérieure\\
 \url{https://forge.apps.education.fr/booklageolivier/albert-go}}
 \vspace{1cm}
 \end{titlepage}
@@ -78,28 +78,40 @@ Licence GPL v3 ou ultérieure\\
 \section{Présentation}
 \label{sec:presentation}
 
-Avec Albert Go, vous discutez avec Albert, l'IA de l'État portée par la direction interministérielle du numérique (DINUM). Albert corrige, reformule et traduit vos textes, fait des calculs, trace des graphiques et rédige des documents à partir de vos sources.
+Albert Go est un chatbot, c'est-à-dire un agent conversationnel : vous écrivez vos questions et Albert, l'IA de l'État portée par la direction interministérielle du numérique (DINUM), y répond comme dans une discussion. Albert corrige, reformule et traduit vos textes, fait des calculs, trace des graphiques et rédige des documents à partir de vos sources.
 
 \subsection{Modes de fonctionnement}
 \label{sec:modes}
 
 Albert API n'autorise pas une page web à l'interroger directement : un relais lui transmet les questions. Selon ce relais, Albert Go fonctionne de trois façons.
 \begin{itemize}
-  \item \emph{Version en ligne}, sur le site Pages de la forge : chacun saisit sa clé API dans la page, qui la garde dans le navigateur. Un relais n8n de l'incubateur de l'Éducation nationale transmet les questions à Albert. Adresse : \url{https://booklageolivier.forge.apps.education.fr/albert-go/}.
-  \item \emph{Serveur de l'établissement} : le serveur Python d'Albert Go tourne sur un poste de l'établissement et transmet directement les questions à Albert, avec la clé API de son fichier \code{.env}. Les appareils du réseau l'ouvrent dans leur navigateur. Son installation est décrite dans \texttt{DEPLOIEMENT.md} (\autoref{sec:plus-loin}).
-  \item \emph{Version autonome}, objet de cette notice : le même serveur, embarqué avec Python dans une application pour Linux ou Windows. Elle s'ouvre dans sa propre fenêtre, sans installation, depuis l'ordinateur ou une clé USB. La page affichée dans la fenêtre ne voit jamais la clé API.
+  \item \emph{Version en ligne}, sur le site Pages de la forge : chacun saisit sa clé API dans la page, qui la garde dans le navigateur. Un relais n8n de l'incubateur de l'Éducation nationale transmet les questions à Albert (\autoref{sec:en-ligne}).
+  \item \emph{Serveur de l'établissement} : le serveur Python d'Albert Go tourne sur un poste de l'établissement et transmet directement les questions à Albert, avec la clé API de son fichier \code{.env}. Les appareils du réseau l'ouvrent dans leur navigateur, à l'adresse que donne l'établissement. Son installation est décrite dans \texttt{DEPLOIEMENT.md} (\autoref{sec:plus-loin}).
+  \item \emph{Version autonome} : le même serveur, embarqué avec Python dans une application pour Linux ou Windows. Elle s'ouvre dans sa propre fenêtre, sans installation, depuis l'ordinateur ou une clé USB (\autoref{sec:installation}).
 \end{itemize}
+
+Sur un serveur, la page affichée ne voit jamais la clé API.
 
 \subsection{Prérequis}
 
-Pour la version autonome, il vous faut :
+Il vous faut :
 \begin{itemize}
-  \item un ordinateur sous Linux ou sous Windows, en 64 bits ;
   \item un accès à Internet ;
-  \item une clé Albert API. Pour la créer, connectez-vous avec vos identifiants d'agent de l'État sur \url{https://ia.numerique.gouv.fr/outils-ia/albert-api/} (bouton \emph{Utilisez Albert API}). En kiosque, seule la clé de l'enseignant sert (\autoref{sec:kiosque}).
+  \item pour la version en ligne ou le serveur de l'établissement, un ordinateur, une tablette ou un téléphone avec un navigateur récent ;
+  \item pour la version autonome, un ordinateur sous Linux ou sous Windows, en 64 bits ;
+  \item une clé Albert API, sauf sur le serveur de l'établissement, qui a la sienne. Pour la créer, connectez-vous avec vos identifiants d'agent de l'État sur \url{https://ia.numerique.gouv.fr/outils-ia/albert-api/} (bouton \emph{Utilisez Albert API}). En kiosque, seule la clé de l'enseignant sert.
 \end{itemize}
 
-\section{Installation}
+\section{Version en ligne}
+\label{sec:en-ligne}
+
+Ouvrez \url{https://booklageolivier.forge.apps.education.fr/albert-go/} dans votre navigateur. L'accueil propose deux étapes : \emph{Demander} mène à la page d'Albert API pour créer une clé, \emph{Saisir} ouvre la boîte \emph{Clé API}.
+
+Collez votre clé, puis cliquez sur \emph{OK}. Albert Go la vérifie auprès d'Albert : acceptée, elle ouvre la discussion ; refusée, elle n'est pas enregistrée.
+
+Au départ, la clé est effacée quand vous fermez l'onglet. Activez \emph{La conserver dans ce navigateur} pour la garder d'une visite à l'autre. \emph{Effacer la clé et quitter}, dans le menu, l'efface et ramène à l'accueil : utilisez-le sur un ordinateur partagé.
+
+\section{Version autonome : installation}
 \label{sec:installation}
 
 Chaque version d'Albert Go a un fichier par système, sur la page des versions :
@@ -127,7 +139,7 @@ Copiez sur la clé l'AppImage pour Linux ou le dossier décompressé pour Window
 
 Sous Linux, l'AppImage ne se lance pas depuis une clé formatée en FAT32 : formatez la clé en exFAT, que Windows lit aussi.
 
-\section{Premier lancement}
+\section{Version autonome : premier lancement}
 \label{sec:lancement}
 
 Au premier lancement, Albert Go crée à côté de l'AppImage ou de \texttt{Albert Go.exe} le fichier \code{.env}, qui contient sa configuration. Ouvrez-le avec un éditeur de texte (Bloc-notes sous Windows), collez votre clé API après \code{ALBERT_API_KEY=}, puis enregistrez :
@@ -151,10 +163,10 @@ Albert Go ignore les lignes qui commencent par \code{#}. Après un changement du
 \textbf{Réglage} & \textbf{Défaut} & \textbf{Effet} \\
 \hline
 \code{ALBERT_API_KEY} & vide & Votre clé Albert API ; inutile en kiosque. \\
+\code{ALBERT_API_URL} & & Adresse d'Albert API, à laisser telle quelle. \\
+\code{ALBERT_HTTPS} & \code{non} & \code{oui} : connexion chiffrée par un certificat auto-signé ; les navigateurs des élèves affichent un avertissement à la première visite. \\
 \code{ALBERT_KIOSQUE} & \code{non} & \code{oui} : sessions de classe (\autoref{sec:kiosque}). \\
 \code{ALBERT_PORT} & \code{8913} & Port du serveur ; s'il est occupé, Albert Go prend l'un des neuf suivants. \\
-\code{ALBERT_HTTPS} & \code{non} & \code{oui} : connexion chiffrée par un certificat auto-signé ; les navigateurs des élèves affichent un avertissement à la première visite. \\
-\code{ALBERT_API_URL} & & Adresse d'Albert API, à laisser telle quelle. \\
 \hline
 \end{tabularx}
 
@@ -166,7 +178,7 @@ Albert Go ignore les lignes qui commencent par \code{#}. Après un changement du
 \phantomsection
 \addcontentsline{toc}{part}{Utiliser Albert Go}
 
-\section{La fenêtre}
+\section{L'écran}
 \label{sec:fenetre}
 
 Le bouton \emph{Menu}, en haut à gauche, ouvre le volet :
@@ -181,7 +193,7 @@ Le bouton en haut à droite ouvre la bibliothèque de sources (\autoref{sec:impr
 
 Au clavier, Entrée envoie la question, Maj+Entrée passe à la ligne et les flèches haut et bas rappellent les questions précédentes. Ctrl+plus, Ctrl+moins et Ctrl+0 règlent la taille de l'affichage, comme Ctrl+molette. F5 recharge la page.
 
-Le clic droit propose couper, copier et coller ; sur un mot souligné dans la saisie, il propose aussi des corrections en français. Les liens des réponses s'ouvrent dans votre navigateur habituel.
+Dans la version autonome, le clic droit propose couper, copier et coller ; sur un mot souligné dans la saisie, il propose aussi des corrections en français. Les liens des réponses s'ouvrent dans votre navigateur habituel.
 
 \section{Discussion}
 \label{sec:discussion}
@@ -204,7 +216,7 @@ Le trombone, le glisser-déposer ou Ctrl+V joignent un fichier à la question en
 Les réponses peuvent contenir des formules, des tableaux, des schémas et des graphiques. Sous chaque réponse, des boutons servent à :
 \begin{itemize}
   \item copier la réponse ;
-  \item la lire à voix haute, avec une voix installée sur l'ordinateur ;
+  \item la lire à voix haute, avec une voix installée sur l'appareil ;
   \item la télécharger en .docx ou en .odt, formules modifiables comprises ;
   \item l'imprimer ou l'enregistrer en PDF.
 \end{itemize}
@@ -239,7 +251,7 @@ Dans les \emph{Réglages}, vous pouvez ajouter jusqu'à trois moteurs de recherc
 
 \subsection{Outils}
 
-Albert a quatre outils, activés au départ. Il décide seul de s'en servir et tout le calcul se fait sur l'ordinateur.
+Albert a quatre outils, activés au départ. Il décide seul de s'en servir et tout le calcul se fait sur l'appareil.
 \begin{itemize}
   \item \emph{Calculatrice scientifique} : calcul exact, statistiques d'une série et calcul formel (équations, factorisation, primitives, tableau de variations).
   \item \emph{Générateur aléatoire} : ordre de passage, tirage au sort, groupes.
@@ -257,30 +269,32 @@ Vous y activez ou désactivez chaque outil et Internet, choisissez les moteurs d
 \section{Le kiosque}
 \label{sec:kiosque}
 
-Le kiosque ouvre Albert Go à une classe : l'enseignant ouvre une session avec sa clé et les élèves la rejoignent depuis leur appareil, sans voir la clé.
+Le kiosque ouvre Albert Go à une classe : l'enseignant ouvre une session avec sa clé et les élèves la rejoignent depuis leur appareil, sans voir la clé. Il demande un serveur : celui de l'établissement ou la version autonome.
 
 \subsection{Ouvrir une session}
 
 \begin{enumerate}
-  \item Lancez Albert Go en kiosque : \code{ALBERT_KIOSQUE=oui} dans le \code{.env} ou, sous Linux, l'option \code{--kiosque} après le nom de l'AppImage.
-  \item Dans la fenêtre \emph{Ouvrir une session de classe}, saisissez votre clé Albert API et choisissez une durée d'une à trois heures ou la journée.
+  \item Lancez Albert Go en kiosque : \code{ALBERT_KIOSQUE=oui} dans le \code{.env} ou, pour l'AppImage, l'option \code{--kiosque} après son nom.
+  \item Sur la page \emph{Ouvrir une session de classe}, saisissez votre clé Albert API et choisissez une durée d'une à trois heures ou la journée.
   \item Le bandeau affiche le code de la session, à quatre chiffres. \emph{Partager}, dans le menu, affiche l'adresse d'Albert Go et son QR code.
 \end{enumerate}
 
 \subsection{Rejoindre la session}
 
-Les élèves scannent le QR code ou saisissent l'adresse dans leur navigateur, puis le code à quatre chiffres. Leurs appareils doivent être sur le même réseau que l'ordinateur de l'enseignant. Vos réglages sont leurs valeurs de départ et leurs conversations restent dans leur navigateur.
+Les élèves scannent le QR code ou saisissent l'adresse dans leur navigateur, puis le code à quatre chiffres. Leurs appareils doivent être sur le même réseau que l'ordinateur qui fait tourner Albert Go. Vos réglages sont leurs valeurs de départ et leurs conversations restent dans leur navigateur.
 
-L'ordinateur de l'enseignant sert la classe : gardez la fenêtre d'Albert Go ouverte pendant la session. \emph{Quitter la session}, dans le menu, ferme la session pour toute la classe.
+Avec la version autonome, l'ordinateur de l'enseignant sert la classe : gardez la fenêtre d'Albert Go ouverte pendant la session. \emph{Quitter la session}, dans le menu, ferme la session pour toute la classe.
 
 \section{Vos données}
 \label{sec:donnees}
 
-Votre clé API reste dans le fichier \code{.env}. Sur une clé USB, elle voyage avec la clé : ne la prêtez pas.
+Dans la version en ligne, votre clé API reste dans le navigateur (\autoref{sec:en-ligne}). Elle n'en sort que pour joindre Albert par le relais n8n, qui ne l'enregistre pas.
 
-Vos questions passent par le serveur d'Albert Go, sur votre ordinateur, puis vont vers Albert API. Ne confiez pas de données personnelles à Albert.
+Sur un serveur, la clé reste dans le fichier \code{.env}. Sur une clé USB, elle voyage avec la clé : ne la prêtez pas.
 
-Au départ, Albert Go efface les conversations, les documents et la bibliothèque à la fermeture. Pour les garder, activez l'interrupteur de la carte \emph{Données} dans \emph{Réglages} : Albert Go les enregistre alors dans le profil de l'utilisateur sur l'ordinateur, pas sur la clé USB.
+Vos questions passent par le relais n8n ou par le serveur d'Albert Go, puis vont vers Albert API. Ne confiez pas de données personnelles à Albert.
+
+Au départ, Albert Go efface les conversations, les documents et la bibliothèque à la fermeture. Pour les garder, activez l'interrupteur de la carte \emph{Données} dans \emph{Réglages} : Albert Go les enregistre alors dans le navigateur. La version autonome les enregistre dans le profil de l'utilisateur sur l'ordinateur, pas sur la clé USB.
 
 %
 % Annexes
@@ -299,7 +313,7 @@ Au départ, Albert Go efface les conversations, les documents et la bibliothèqu
 
 Vérifiez que son exécution est autorisée (\autoref{sec:installation}) et que la clé n'est pas en FAT32. Lancée depuis un terminal, l'AppImage affiche la cause. Si le message parle de \code{libfuse.so.2}, installez le paquet \code{libfuse2} (\code{libfuse2t64} sous Ubuntu 24.04).
 
-\subsection*{Albert Go ne démarre pas}
+\subsection*{La version autonome ne démarre pas}
 
 Une fenêtre \emph{Albert Go ne démarre pas} donne la cause. Si les dix ports à partir de 8913 sont occupés, fermez le programme qui les utilise ou choisissez un autre port avec \code{ALBERT_PORT} dans le \code{.env}.
 
@@ -307,7 +321,9 @@ Une fenêtre \emph{Albert Go ne démarre pas} donne la cause. Si les dix ports �
 
 \begin{itemize}
   \item \emph{Aucune clé API sur le serveur} : la clé manque dans le \code{.env} (\autoref{sec:lancement}).
-  \item \emph{Clé du serveur refusée par Albert} : la clé est mal recopiée ou n'est plus valable.
+  \item \emph{Clé du serveur refusée par Albert} : la clé du \code{.env} est mal recopiée ou n'est plus valable.
+  \item \emph{Clé refusée par Albert}, dans la version en ligne : la clé n'est plus valable. \emph{Effacer la clé et quitter}, dans le menu, permet d'en saisir une autre.
+  \item \emph{Relais de l'incubateur de l'Éducation nationale indisponible} : le relais de la version en ligne ne répond pas ; réessayez plus tard.
   \item \emph{Quota atteint} : réessayez dans une minute.
 \end{itemize}
 
@@ -319,6 +335,7 @@ Vérifiez qu'ils sont sur le même réseau que l'ordinateur de l'enseignant et q
 \label{sec:plus-loin}
 
 \begin{itemize}
+  \item Version en ligne : \url{https://booklageolivier.forge.apps.education.fr/albert-go/}.
   \item Code source, nouvelles versions et signalement des problèmes : \url{https://forge.apps.education.fr/booklageolivier/albert-go}.
   \item Installation sur un poste de l'établissement, avec démarrage automatique : fichier \texttt{DEPLOIEMENT.md} du dépôt.
   \item Albert API et ses modèles : \url{https://ia.numerique.gouv.fr/outils-ia/albert-api/}.
