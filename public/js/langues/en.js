@@ -508,6 +508,7 @@ I18n.TEXTES.en = {
     'consigne.contexte': 'You are the {nom} model ({reel}), served by Albert, the French State AI.',
     'recherche.aucun-resultat': 'No result.',
     'recherche.impossible': 'Search failed: {message}',
+    'recherche.impossible-modele': 'The search failed ({message}). First say that you could not search. Add no address, date, number or name from memory.',
     'recherche.moteur-injoignable': '{nom} unreachable ({status}).',
     'recherche.moteur-refus': 'request refused by {nom}.',
     'images.description': 'Searches real images on Wikimedia Commons and returns the link to their page. Use it whenever a photo or an image is asked for. Then cite one of these links, never an invented file name.',

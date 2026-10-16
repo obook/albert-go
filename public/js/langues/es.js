@@ -508,6 +508,7 @@ I18n.TEXTES.es = {
     'consigne.contexte': 'Eres el modelo {nom} ({reel}), servido por Albert, la IA del Estado francés.',
     'recherche.aucun-resultat': 'Ningún resultado.',
     'recherche.impossible': 'Búsqueda imposible: {message}',
+    'recherche.impossible-modele': 'La búsqueda ha fallado ({message}). Di primero que no has podido buscar. No añadas de memoria ninguna dirección, fecha, cifra ni nombre.',
     'recherche.moteur-injoignable': '{nom} inalcanzable ({status}).',
     'recherche.moteur-refus': 'petición rechazada por {nom}.',
     'images.description': 'Busca imágenes reales en Wikimedia Commons y devuelve el enlace a su página. Úsala cuando se pida una foto o una imagen. Cita después uno de esos enlaces, nunca un nombre de archivo inventado.',
