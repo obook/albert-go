@@ -19,7 +19,7 @@ for (const nom of ['serveur', 'public', '.env-exemple', 'LICENSE']) {
     });
 }
 
-// Comme l'ancienne publication sur Pages : commit et date, et ?v=<commit> contre les mélanges en cache.
+// Comme l'ancienne publication sur Pages : commit et date dans version.js ; ?v=<commit> contre les mélanges en cache.
 const git = (args) => execSync(`git ${args}`, { cwd: DEPOT, encoding: 'utf-8' }).trim();
 const commit = git('rev-parse --short HEAD');
 fs.writeFileSync(path.join(APP, 'public', 'js', 'version.js'),

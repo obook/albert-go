@@ -11,7 +11,7 @@ const path = require('path');
 const fs = require('fs');
 
 const isWin = process.platform === 'win32';
-// Python, dictionnaire, et serveur avec sa page (copiés par prebuild.js) ; hors paquet, le dépôt.
+// Python, dictionnaire et serveur avec sa page (copiés par prebuild.js) ; hors paquet, le dépôt.
 const RES_DIR = app.isPackaged ? process.resourcesPath : __dirname;
 const APP_DIR = app.isPackaged ? path.join(RES_DIR, 'albert-go') : path.join(__dirname, '..');
 // .env à côté de l'AppImage ou du .exe ; hors paquet, celui du dépôt.
