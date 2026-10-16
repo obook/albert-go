@@ -342,7 +342,9 @@ const Albert = {
             throw sonde.signal.reason;
         }
         if (!res.ok) {
-            throw new Error(this.messageErreur(res.status, corps));
+            const erreur = new Error(this.messageErreur(res.status, corps));
+            erreur.status = res.status;
+            throw erreur;
         }
         /* Un relais en panne peut rendre un corps vide avec un code 200. */
         const choix = corps && corps.choices && corps.choices[0];
