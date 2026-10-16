@@ -14,7 +14,7 @@
 #
 set -eu
 
-PUBLIC="$(cd "$(dirname "$0")" && pwd)/public"
+PUBLIC="$(cd "$(dirname "$0")/.." && pwd)/public"
 SORTIE="$PUBLIC/images/lancement"
 FOND='#000091'
 # Largeur du logo, en points CSS.
