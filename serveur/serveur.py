@@ -58,6 +58,9 @@ class Gestionnaire(http.server.BaseHTTPRequestHandler):
             self._serveur_js()
         elif self.server.kiosque and chemin == "/kiosque":
             self._fichier("/kiosque.html")
+        elif chemin == "/kiosque":
+            # Sans kiosque, une page d'une ancienne session y mène encore : l'accueil plutôt qu'un 404.
+            self._rediriger("/")
         elif self.server.kiosque and chemin == "/api/kiosque-status":
             # Session de ce navigateur : une page d'une ancienne session n'est plus "active".
             relais.repondre_json(self, 200, {"active": kiosque.role_de_la_requete(self) is not None,
