@@ -86,7 +86,7 @@ release:
       Version autonome d'Albert Go : le serveur et Python sont embarqués, rien à installer.
 
       - Linux : décompresser l'archive, puis lancer l'AppImage.
-      - Windows : décompresser l'archive, puis lancer Albert Go.exe.
+      - Windows : décompresser l'archive, puis lancer Albert-Go.exe.
 
       La configuration est le fichier .env à côté de l'application, créé au premier lancement s'il manque : y coller la clé API ou y activer le kiosque (ALBERT_KIOSQUE=oui). Chaque archive contient aussi la notice (documentation.pdf) et le modèle .env-exemple.
     assets:

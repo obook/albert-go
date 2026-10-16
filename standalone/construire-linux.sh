@@ -29,4 +29,4 @@ npm ci
 # appimagetool s'extrait sans FUSE.
 APPIMAGE_EXTRACT_AND_RUN=1 npm run build -- --linux AppImage
 
-ls -l "dist/Albert-Go-$(node -p "require('./package.json').version").AppImage"
+ls -l dist/Albert-Go.AppImage
