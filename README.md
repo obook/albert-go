@@ -175,7 +175,7 @@ Olivier Booklage, [olivier.booklage@ac-bordeaux.fr](mailto:olivier.booklage@ac-b
 
 | Composant | Licence |
 |---|---|
-| Albert Go | GPL 3.0 ou ultérieure, texte dans `LICENSE` ; le serveur reprend le code de L'Atelier d'Albert, écrit par Romain P., Luce P.B. et Théossian S.D. (NSI, Trophées NSI 2026) |
+| Albert Go | GPL 3.0 ou ultérieure, texte dans `LICENSE` ; le serveur reprend le code de L'Atelier d'Albert, écrit par Romain P., Luce P.B. et Théossian S.D. (Trophées NSI 2026) |
 | [Marked](https://github.com/markedjs/marked), [KaTeX](https://katex.org/), [Mermaid](https://mermaid.js.org/), [Pico](https://picocss.com/), [qrcode-generator](https://github.com/kazuhikoarase/qrcode-generator) | MIT |
 | [PDF.js](https://mozilla.github.io/pdf.js/), [math.js](https://mathjs.org/) | Apache 2.0 |
 | [highlight.js](https://highlightjs.org/) | BSD 3-Clause |
