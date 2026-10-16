@@ -3,5 +3,3 @@ app/
 python-linux/
 python-win/
 dist/
-# Configuration des essais en local (data/.env).
-data/
