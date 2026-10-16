@@ -78,9 +78,8 @@ async function executerOutil(appel, signal, faites) {
         return Recherche.formater(numerotes) || t('recherche.aucun-resultat');
     } catch (err) {
         /* Sinon le modèle répond de mémoire sans que rien ne le dise. */
-        const echec = t('recherche.impossible', { message: err.message });
-        toast(echec);
-        return echec;
+        toast(t('recherche.impossible', { message: err.message }));
+        return t('recherche.impossible-modele', { message: err.message });
     }
 }
 
@@ -109,9 +108,8 @@ async function chercherImagesOutil(appel, signal, faites) {
         faites.push({ image_commons: mots });
         return images.map((i) => '- ' + i.url + (i.desc ? ' : ' + i.desc : '')).join('\n') || t('images.aucune');
     } catch (err) {
-        const echec = t('recherche.impossible', { message: err.message });
-        toast(echec);
-        return echec;
+        toast(t('recherche.impossible', { message: err.message }));
+        return t('recherche.impossible-modele', { message: err.message });
     }
 }
 
@@ -250,5 +248,5 @@ async function repondreAvecOutils(requete, signal) {
 
 /* Export pour les tests Node ; ignoré dans le navigateur. */
 if (typeof module !== 'undefined') {
-    module.exports = { avecRappel, avecTableaux };
+    module.exports = { avecRappel, avecTableaux, executerOutil };
 }

@@ -398,3 +398,22 @@ test('rappel : l\'outil calcul, sans lequel un modèle moyen calcule de tête', 
     globalThis.reglages = { fournisseurs: [], recherche: false, calcul: false };
     assert.ok(!avecRappel(question, false)[0].content.includes('outil calcul'));
 });
+
+/* Recherche en échec : le modèle répondait de mémoire (mairie de Marseille, 16/10/2026). */
+test('executerOutil : une recherche en échec interdit au modèle de répondre de mémoire', async () => {
+    I18n.langue = 'fr';
+    globalThis.Recherche = Recherche;
+    globalThis.Services = require('../public/js/tools/services.js');
+    globalThis.OUTILS_LOCAUX = {};
+    globalThis.etat = () => {};
+    const toasts = [];
+    globalThis.toast = (message) => toasts.push(message);
+    globalThis.fetch = async () => {
+        throw new TypeError('NetworkError when attempting to fetch resource.');
+    };
+    const { executerOutil } = require('../public/js/tools/recherche/outils-modele.js');
+    const appel = { function: { name: 'annuaire_administration', arguments: '{"q":"mairie Marseille"}' } };
+    const rendu = await executerOutil(appel, new AbortController().signal, []);
+    assert.match(toasts[0], /^Recherche impossible : NetworkError/);
+    assert.match(rendu, /N'ajoute de mémoire aucune adresse/);
+});

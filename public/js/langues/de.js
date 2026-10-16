@@ -508,6 +508,7 @@ I18n.TEXTES.de = {
     'consigne.contexte': 'Du bist das Modell {nom} ({reel}), bereitgestellt von Albert, der KI des französischen Staates.',
     'recherche.aucun-resultat': 'Kein Ergebnis.',
     'recherche.impossible': 'Suche fehlgeschlagen: {message}',
+    'recherche.impossible-modele': 'Die Suche ist fehlgeschlagen ({message}). Sag zuerst, dass du nicht suchen konntest. Füge aus dem Gedächtnis keine Adresse, kein Datum, keine Zahl und keinen Namen hinzu.',
     'recherche.moteur-injoignable': '{nom} nicht erreichbar ({status}).',
     'recherche.moteur-refus': 'Anfrage von {nom} abgelehnt.',
     'images.description': 'Sucht echte Bilder auf Wikimedia Commons und gibt den Link zu ihrer Seite zurück. Immer verwenden, wenn ein Foto oder Bild gewünscht wird. Danach einen dieser Links nennen, nie einen erfundenen Dateinamen.',
