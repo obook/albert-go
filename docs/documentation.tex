@@ -80,9 +80,19 @@ Licence GPL v3 ou ultérieure\\
 
 Avec Albert Go, vous discutez avec Albert, l'IA de l'État portée par la direction interministérielle du numérique (DINUM). Albert corrige, reformule et traduit vos textes, fait des calculs, trace des graphiques et rédige des documents à partir de vos sources.
 
-La version autonome s'ouvre dans sa propre fenêtre et ne demande aucune installation : elle embarque le serveur d'Albert Go et Python. Le serveur garde votre clé API et relaie vos questions vers Albert ; la page affichée dans la fenêtre ne voit jamais la clé.
+\subsection{Modes de fonctionnement}
+\label{sec:modes}
 
-Il vous faut :
+Albert API n'autorise pas une page web à l'interroger directement : un relais lui transmet les questions. Selon ce relais, Albert Go fonctionne de trois façons.
+\begin{itemize}
+  \item \emph{Version en ligne}, sur le site Pages de la forge : chacun saisit sa clé API dans la page, qui la garde dans le navigateur. Un relais n8n de l'incubateur de l'Éducation nationale transmet les questions à Albert. Adresse : \url{https://booklageolivier.forge.apps.education.fr/albert-go/}.
+  \item \emph{Serveur de l'établissement} : le serveur Python d'Albert Go tourne sur un poste de l'établissement et transmet directement les questions à Albert, avec la clé API de son fichier \code{.env}. Les appareils du réseau l'ouvrent dans leur navigateur. Son installation est décrite dans \texttt{DEPLOIEMENT.md} (\autoref{sec:plus-loin}).
+  \item \emph{Version autonome}, objet de cette notice : le même serveur, embarqué avec Python dans une application pour Linux ou Windows. Elle s'ouvre dans sa propre fenêtre, sans installation, depuis l'ordinateur ou une clé USB. La page affichée dans la fenêtre ne voit jamais la clé API.
+\end{itemize}
+
+\subsection{Prérequis}
+
+Pour la version autonome, il vous faut :
 \begin{itemize}
   \item un ordinateur sous Linux ou sous Windows, en 64 bits ;
   \item un accès à Internet ;
@@ -306,6 +316,7 @@ Une fenêtre \emph{Albert Go ne démarre pas} donne la cause. Si les dix ports �
 Vérifiez qu'ils sont sur le même réseau que l'ordinateur de l'enseignant et qu'ils saisissent l'adresse donnée par \emph{Partager}. Le pare-feu de l'ordinateur doit laisser entrer les connexions vers Albert Go.
 
 \section{Pour aller plus loin}
+\label{sec:plus-loin}
 
 \begin{itemize}
   \item Code source, nouvelles versions et signalement des problèmes : \url{https://forge.apps.education.fr/booklageolivier/albert-go}.
