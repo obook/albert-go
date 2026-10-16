@@ -59,18 +59,32 @@ const ICONES = {
 let minuteurToast = null;
 
 /**
- * Affiche la conversation ou la rédaction, selon le module.
+ * Affiche l'écran de la clé ou celui de la conversation.
  */
 function afficher() {
+    const connecte = Albert.pret();
+    $('accueil').hidden = connecte;
     const redaction = outilActuel === 'rediger';
-    $('chat').hidden = redaction;
-    $('saisie-zone').hidden = redaction;
-    $('redaction').hidden = !redaction;
-    /* Masquées dans index.html au chargement, comme avant avec l'écran de clé. */
+    $('chat').hidden = !connecte || redaction;
+    $('saisie-zone').hidden = !connecte || redaction;
+    $('redaction').hidden = !connecte || !redaction;
     for (const id of ['ouvrir-reglages', 'nouvelle', 'resume-reglages', 'trait-outils', 'menu-outils', 'menu-projets', 'trait-historique', 'menu-historique', 'titre-entete']) {
-        $(id).hidden = false;
+        $(id).hidden = !connecte;
     }
-    focusSaisie();
+    /* Clé de l'utilisateur : en ligne seulement. */
+    for (const id of ['trait-cle', 'changer-cle', 'note-cle']) {
+        $(id).hidden = !Albert.cle;
+    }
+    if (connecte) {
+        if ($('dialogue-cle').open) {
+            $('dialogue-cle').close();
+        }
+        focusSaisie();
+    } else {
+        /* Écran de la clé : effacement à la fermeture toujours proposé par défaut. */
+        $('partage-accueil').checked = false;
+    }
+    /* Sans clé, ni volet ni bouton de bibliothèque. */
     placerBibliotheque();
 }
 
@@ -114,7 +128,7 @@ pour que le lecteur d'écran annonce toujours le même nom, suivi de l'état.
  * @returns {string} Texte à afficher.
  */
 function textePartage(actif) {
-    return t(actif ? 'partage.actif' : 'partage.inactif');
+    return Albert.texte(actif ? 'partage.actif' : 'partage.inactif');
 }
 
 /**
@@ -296,9 +310,31 @@ function annulerAuDefilement(curseur) {
 }
 
 /**
+ * Écrit un message sous le champ de la clé.
+ *
+ * Le lien est ajouté à la fin, sous le nom "Albert Go", suivi du point final.
+ *
+ * @param {string} texte - Message ou chaîne vide pour effacer.
+ * @param {boolean} erreur - true pour l'afficher comme une erreur.
+ * @param {string} [lien] - Adresse d'un lien ajouté après le texte.
+ */
+function messageCle(texte, erreur, lien) {
+    $('message-cle').textContent = texte;
+    if (lien) {
+        const ancre = document.createElement('a');
+        ancre.href = lien;
+        ancre.textContent = 'Albert Go';
+        ancre.target = '_blank';
+        ancre.rel = 'noopener noreferrer';
+        $('message-cle').append(ancre, '.');
+    }
+    $('message-cle').classList.toggle('erreur', erreur);
+}
+
+/**
  * Écrit un message dans la ligne d'état sous la saisie.
  *
- * @param {string} texte - Message, ou chaîne vide pour effacer.
+ * @param {string} texte - Message ou chaîne vide pour effacer.
  * @param {boolean} [erreur] - true pour l'afficher comme une erreur.
  * @param {boolean} [succes] - true pour l'afficher en vert.
  */

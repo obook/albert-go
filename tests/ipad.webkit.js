@@ -67,6 +67,11 @@ test("iPad (WebKit) : la page se charge sans erreur et un PDF entre dans la bibl
     /* Rien hors de la page : ni Albert ni les moteurs de recherche. */
     await contexte.route((url) => url.origin !== origine, (route) => route.abort());
     await contexte.addInitScript(SAFARI_ANCIEN);
+    /* Comme sur Pages : pas de serveur.js, donc version en ligne, ici avec une clé déjà saisie. */
+    await contexte.addInitScript(() => {
+        localStorage.setItem('albert-go.cle', 'sk-test');
+        sessionStorage.setItem('albert-go.cle', 'sk-test');
+    });
     const page = await contexte.newPage();
     const erreurs = [];
     page.on('pageerror', (err) => erreurs.push(String(err)));
@@ -75,6 +80,10 @@ test("iPad (WebKit) : la page se charge sans erreur et un PDF entre dans la bibl
     await page.click('#ouvrir-bibliotheque');
     await page.setInputFiles('#fichier-sources', path.join(__dirname, 'fixtures', 'programme.pdf'));
     await page.waitForFunction(() => !depotEnCours);
+
+    /* "À propos" lit la charge du relais : sa ligne doit exister (16/10/2026). */
+    await page.evaluate(() => $('ouvrir-info').click());
+    await page.evaluate(() => $('info').close());
 
     const { textes, etat } = await page.evaluate(() => ({ textes: bibliotheque.map((d) => d.texte), etat: $('etat').textContent }));
     assert.match(textes.join(''), /physique-chimie/, 'PDF non lu, message affiché : ' + etat);

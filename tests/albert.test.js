@@ -20,6 +20,9 @@ const path = require('node:path');
 require('../public/js/i18n.js');
 const Albert = require('../public/js/albert.js');
 
+/* Sous Node, pas de serveur.js : les tests supposent un serveur, sauf ceux de la version en ligne. */
+Albert.EN_LIGNE = false;
+
 test('messagesAEnvoyer : nombre d\'échanges relus', () => {
     const conv = ['a', 'b', 'c', 'd', 'e', 'f', 'g'].map((content, i) => ({ role: i % 2 ? 'assistant' : 'user', content }));
     const envoyes = n => Albert.messagesAEnvoyer(conv, n).map(m => m.content).join('');
@@ -706,6 +709,32 @@ test('repondre : appelle /v1 du serveur, sans clé', async () => {
         assert.strictEqual(appel.options.headers.Authorization, undefined);
     } finally {
         globalThis.fetch = avant;
+    }
+});
+
+test('version en ligne : relais n8n et clé de l\'utilisateur', async () => {
+    const avant = globalThis.fetch;
+    const appels = [];
+    globalThis.fetch = async (url, options) => {
+        appels.push({ url, options });
+        return { ok: true, status: 200, json: async () => ({ choices: [{ message: { content: 'ok' } }], data: [] }) };
+    };
+    Albert.EN_LIGNE = true;
+    Albert.cle = 'sk-test';
+    try {
+        assert.strictEqual(Albert.pret(), true);
+        await Albert.repondre({ model: 'm', messages: [] }, new AbortController().signal);
+        await Albert.modeles('sk-autre');
+        assert.strictEqual(appels[0].url, Albert.RELAIS + '/chat/completions');
+        assert.strictEqual(appels[0].options.headers.Authorization, 'Bearer sk-test');
+        assert.strictEqual(appels[1].options.headers.Authorization, 'Bearer sk-autre');
+        assert.match(Albert.messageErreur(401, null), /^Clé refusée/);
+        Albert.cle = null;
+        assert.strictEqual(Albert.pret(), false);
+    } finally {
+        globalThis.fetch = avant;
+        Albert.EN_LIGNE = false;
+        Albert.cle = null;
     }
 });
 
