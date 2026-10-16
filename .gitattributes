@@ -1,0 +1,2 @@
+# Scripts Windows gardés en CRLF : cmd lit mal les fins de ligne LF.
+*.bat -text
