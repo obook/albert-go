@@ -1,7 +1,7 @@
 {
   "name": "albert-go",
   "version": "4.0.0",
-  "description": "Albert Go sur clé USB : serveur Python embarqué dans Electron",
+  "description": "Version autonome d'Albert Go : serveur Python embarqué dans Electron",
   "author": "O. Booklage",
   "license": "GPL-3.0-or-later",
   "private": true,
