@@ -36,7 +36,7 @@ I18n.TEXTES.en = {
     'kiosque.erreur.aucune-session': 'No session open. Ask your teacher for the link.',
     'kiosque.erreur.code': 'Wrong code.',
     'kiosque.erreur.action': 'Unknown request.',
-    'kiosque.erreur.terminee': 'Session ended: ask your teacher for the new link.',
+    'kiosque.erreur.terminee': 'Session ended.',
     'kiosque.bandeau': 'Class session open: code {code}.',
     'kiosque.partage': 'Students scan the QR code, then enter the code {code}.',
     'kiosque.deconnexion': 'Leave the session',

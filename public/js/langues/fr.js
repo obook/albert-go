@@ -36,7 +36,7 @@ I18n.TEXTES.fr = {
     'kiosque.erreur.aucune-session': 'Aucune session ouverte. Demandez le lien à votre enseignant.',
     'kiosque.erreur.code': 'Code incorrect.',
     'kiosque.erreur.action': 'Demande inconnue.',
-    'kiosque.erreur.terminee': 'Session terminée : demandez le nouveau lien à votre enseignant.',
+    'kiosque.erreur.terminee': 'Session terminée.',
     'kiosque.bandeau': 'Session de classe ouverte : code {code}.',
     'kiosque.partage': 'Les élèves scannent le QR code, puis saisissent le code {code}.',
     'kiosque.deconnexion': 'Quitter la session',

@@ -36,7 +36,7 @@ I18n.TEXTES.de = {
     'kiosque.erreur.aucune-session': 'Keine Sitzung geöffnet. Fragen Sie Ihre Lehrkraft nach dem Link.',
     'kiosque.erreur.code': 'Falscher Code.',
     'kiosque.erreur.action': 'Unbekannte Anfrage.',
-    'kiosque.erreur.terminee': 'Sitzung beendet: Fragen Sie Ihre Lehrkraft nach dem neuen Link.',
+    'kiosque.erreur.terminee': 'Sitzung beendet.',
     'kiosque.bandeau': 'Klassensitzung geöffnet: Code {code}.',
     'kiosque.partage': 'Die Schüler scannen den QR-Code und geben dann den Code {code} ein.',
     'kiosque.deconnexion': 'Sitzung verlassen',
