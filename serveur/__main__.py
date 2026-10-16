@@ -16,8 +16,9 @@ from serveur.serveur import adresses_locales, creer_serveur
 
 
 def main():
-    # Ligne par ligne même dans un tube ou un fichier (Electron, autostart).
-    sys.stdout.reconfigure(line_buffering=True)
+    # Ligne par ligne même dans un tube ou un fichier (Electron, autostart), en UTF-8 aussi sous Windows.
+    sys.stdout.reconfigure(encoding="utf-8", line_buffering=True)
+    sys.stderr.reconfigure(encoding="utf-8")
     options = argparse.ArgumentParser(prog="albert-go")
     options.add_argument("--port", type=int)
     options.add_argument("--ssl", action="store_true", help="HTTPS avec un certificat auto-signé")

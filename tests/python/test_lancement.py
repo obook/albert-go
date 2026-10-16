@@ -10,10 +10,10 @@ RACINE = Path(__file__).resolve().parents[2]
 
 
 def test_banniere_lue_a_travers_un_tube(tmp_path):
-    """Electron et l'autostart lisent la sortie par un tube : elle doit partir tout de suite."""
-    env = {**os.environ, "ALBERT_PORTABLE_DIR": str(tmp_path)}
+    """Electron et l'autostart lisent la sortie par un tube : tout de suite, en UTF-8 même sous Windows (cp1252)."""
+    env = {**os.environ, "ALBERT_PORTABLE_DIR": str(tmp_path), "PYTHONIOENCODING": "cp1252"}
     processus = subprocess.Popen([sys.executable, "-m", "serveur", "--port", "0", "--no-browser"],
-                                 cwd=RACINE, env=env, stdout=subprocess.PIPE, text=True)
+                                 cwd=RACINE, env=env, stdout=subprocess.PIPE, encoding="utf-8", errors="replace")
     lignes = []
     lecteur = threading.Thread(target=lambda: lignes.extend(processus.stdout.readline() for _ in range(3)), daemon=True)
     lecteur.start()
