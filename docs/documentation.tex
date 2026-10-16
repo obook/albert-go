@@ -83,10 +83,10 @@ Albert Go est un chatbot, c'est-à-dire un agent conversationnel : vous écrivez
 \subsection{Modes de fonctionnement}
 \label{sec:modes}
 
-Albert API n'autorise pas une page web à l'interroger directement : un relais lui transmet les questions. Selon ce relais, Albert Go fonctionne de trois façons.
+Albert API n'autorise pas une page web à l'interroger directement : un relais lui transmet les questions. Ce relais dépend du mode de fonctionnement :
 \begin{itemize}
   \item \emph{Version en ligne}, sur le site Pages de la forge : chacun saisit sa clé API dans la page, qui la garde dans le navigateur. Un relais n8n de l'incubateur de l'Éducation nationale transmet les questions à Albert (\autoref{sec:en-ligne}).
-  \item \emph{Serveur de l'établissement} : le serveur Python d'Albert Go tourne sur un poste de l'établissement et transmet directement les questions à Albert, avec la clé API de son fichier \code{.env}. Les appareils du réseau l'ouvrent dans leur navigateur, à l'adresse que donne l'établissement. Son installation est décrite dans \texttt{DEPLOIEMENT.md} (\autoref{sec:plus-loin}).
+  \item \emph{Serveur de l'établissement} : le serveur Python d'Albert Go tourne sur un poste de l'établissement et transmet directement les questions à Albert, avec la clé API de son fichier \code{.env}. Les appareils du réseau l'ouvrent dans leur navigateur, à l'adresse que donne l'établissement. Pour l'installer, suivez \texttt{DEPLOIEMENT.md} (\autoref{sec:plus-loin}).
   \item \emph{Version autonome} : le même serveur, embarqué avec Python dans une application pour Linux ou Windows. Elle s'ouvre dans sa propre fenêtre, sans installation, depuis l'ordinateur ou une clé USB (\autoref{sec:installation}).
 \end{itemize}
 
@@ -98,18 +98,18 @@ Il vous faut :
 \begin{itemize}
   \item un accès à Internet ;
   \item pour la version en ligne ou le serveur de l'établissement, un ordinateur, une tablette ou un téléphone avec un navigateur récent ;
-  \item pour la version autonome, un ordinateur sous Linux ou sous Windows, en 64 bits ;
+  \item pour la version autonome, un ordinateur sous Linux ou sous Windows, en 64~bits ;
   \item une clé Albert API, sauf sur le serveur de l'établissement, qui a la sienne. Pour la créer, connectez-vous avec vos identifiants d'agent de l'État sur \url{https://ia.numerique.gouv.fr/outils-ia/albert-api/} (bouton \emph{Utilisez Albert API}). En kiosque, seule la clé de l'enseignant sert.
 \end{itemize}
 
 \section{Version en ligne}
 \label{sec:en-ligne}
 
-Ouvrez \url{https://booklageolivier.forge.apps.education.fr/albert-go/} dans votre navigateur. L'accueil propose deux étapes : \emph{Demander} mène à la page d'Albert API pour créer une clé, \emph{Saisir} ouvre la boîte \emph{Clé API}.
+Ouvrez \url{https://booklageolivier.forge.apps.education.fr/albert-go/} dans votre navigateur. Sur l'accueil, \emph{Demander} mène à la page d'Albert API pour créer une clé et \emph{Saisir} ouvre la boîte \emph{Clé API}.
 
-Collez votre clé, puis cliquez sur \emph{OK}. Albert Go la vérifie auprès d'Albert : acceptée, elle ouvre la discussion ; refusée, elle n'est pas enregistrée.
+Collez votre clé, puis cliquez sur \emph{OK} : Albert Go la vérifie auprès d'Albert. Si Albert l'accepte, la discussion s'ouvre ; sinon, Albert Go ne l'enregistre pas et affiche la raison du refus.
 
-Au départ, la clé est effacée quand vous fermez l'onglet. Activez \emph{La conserver dans ce navigateur} pour la garder d'une visite à l'autre. \emph{Effacer la clé et quitter}, dans le menu, l'efface et ramène à l'accueil : utilisez-le sur un ordinateur partagé.
+Au départ, Albert Go efface la clé quand vous fermez l'onglet. Activez \emph{La conserver dans ce navigateur} pour la garder d'une visite à l'autre. \emph{Effacer la clé et quitter}, dans le menu, l'efface et ramène à l'accueil : utilisez-le sur un ordinateur partagé.
 
 \section{Version autonome : installation}
 \label{sec:installation}
@@ -131,13 +131,13 @@ chmod +x Albert-Go-*-linux.AppImage
 
 Téléchargez l'archive \code{Albert-Go-...-win64.zip}, décompressez-la (clic droit, \emph{Extraire tout}), puis lancez \texttt{Albert Go.exe} dans le dossier obtenu. Gardez le dossier entier : l'exécutable ne fonctionne pas sans les fichiers qui l'entourent.
 
-L'exécutable n'est pas signé. Si Windows affiche \emph{Windows a protégé votre ordinateur}, cliquez sur \emph{Informations complémentaires}, puis sur \emph{Exécuter quand même}.
+L'exécutable n'est pas signé : si Windows affiche \emph{Windows a protégé votre ordinateur}, cliquez sur \emph{Informations complémentaires}, puis sur \emph{Exécuter quand même}.
 
 \subsection{Sur une clé USB}
 
-Copiez sur la clé l'AppImage pour Linux ou le dossier décompressé pour Windows. Une même clé peut porter les deux : chaque version lit le fichier \code{.env} posé à côté d'elle.
+Copiez sur la clé USB l'AppImage pour Linux ou le dossier décompressé pour Windows. Une même clé USB peut porter les deux : chaque version lit le fichier \code{.env} posé à côté d'elle.
 
-Sous Linux, l'AppImage ne se lance pas depuis une clé formatée en FAT32 : formatez la clé en exFAT, que Windows lit aussi.
+Sous Linux, l'AppImage ne se lance pas depuis une clé USB formatée en FAT32 : formatez-la en exFAT, que Windows lit aussi.
 
 \section{Version autonome : premier lancement}
 \label{sec:lancement}
@@ -209,7 +209,7 @@ Traduis en anglais : ...
 
 \subsection{Joindre un fichier}
 
-Le trombone, le glisser-déposer ou Ctrl+V joignent un fichier à la question en cours : texte, PDF, .docx, .odt, image ou enregistrement audio de 8 minutes environ au plus. Albert Go lit le texte des documents ; Albert transcrit les images et les enregistrements. Un PDF scanné n'a pas de texte : joignez-le comme image.
+Le trombone, le glisser-déposer ou Ctrl+V joignent un fichier à la question en cours : texte, PDF, .docx, .odt, image ou enregistrement audio de 8~minutes environ au plus. Albert Go lit le texte des documents ; Albert transcrit les images et les enregistrements. Un PDF scanné n'a pas de texte : joignez-le comme image.
 
 \subsection{Les réponses}
 
@@ -290,7 +290,7 @@ Avec la version autonome, l'ordinateur de l'enseignant sert la classe : gardez l
 
 Dans la version en ligne, votre clé API reste dans le navigateur (\autoref{sec:en-ligne}). Elle n'en sort que pour joindre Albert par le relais n8n, qui ne l'enregistre pas.
 
-Sur un serveur, la clé reste dans le fichier \code{.env}. Sur une clé USB, elle voyage avec la clé : ne la prêtez pas.
+Sur un serveur, la clé API reste dans le fichier \code{.env}. Avec la version autonome sur une clé USB, la clé API voyage avec elle : ne prêtez pas cette clé USB.
 
 Vos questions passent par le relais n8n ou par le serveur d'Albert Go, puis vont vers Albert API. Ne confiez pas de données personnelles à Albert.
 
@@ -311,7 +311,7 @@ Au départ, Albert Go efface les conversations, les documents et la bibliothèqu
 
 \subsection*{L'AppImage ne se lance pas}
 
-Vérifiez que son exécution est autorisée (\autoref{sec:installation}) et que la clé n'est pas en FAT32. Lancée depuis un terminal, l'AppImage affiche la cause. Si le message parle de \code{libfuse.so.2}, installez le paquet \code{libfuse2} (\code{libfuse2t64} sous Ubuntu 24.04).
+Vérifiez que son exécution est autorisée (\autoref{sec:installation}) et que la clé USB n'est pas en FAT32. Lancée depuis un terminal, l'AppImage affiche la cause. Si le message parle de \code{libfuse.so.2}, installez le paquet \code{libfuse2} (\code{libfuse2t64} sous Ubuntu 24.04).
 
 \subsection*{La version autonome ne démarre pas}
 
@@ -329,7 +329,7 @@ Une fenêtre \emph{Albert Go ne démarre pas} donne la cause. Si les dix ports �
 
 \subsection*{Les élèves n'atteignent pas la session}
 
-Vérifiez qu'ils sont sur le même réseau que l'ordinateur de l'enseignant et qu'ils saisissent l'adresse donnée par \emph{Partager}. Le pare-feu de l'ordinateur doit laisser entrer les connexions vers Albert Go.
+Vérifiez qu'ils sont sur le même réseau que l'ordinateur qui fait tourner Albert Go et qu'ils saisissent l'adresse donnée par \emph{Partager}. Le pare-feu de l'ordinateur doit laisser entrer les connexions vers Albert Go.
 
 \section{Pour aller plus loin}
 \label{sec:plus-loin}
