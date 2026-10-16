@@ -23,10 +23,10 @@ nano .env
 | Réglage du `.env` | Défaut | Effet |
 |---|---|---|
 | `ALBERT_API_KEY` | vide | Clé API du serveur ; inutile en kiosque |
-| `ALBERT_KIOSQUE` | `non` | `oui` : l'enseignant ouvre une session de classe sur `/kiosque` avec sa clé |
-| `ALBERT_PORT` | `8913` | Port du serveur ; s'il est occupé, l'un des neuf suivants |
 | `ALBERT_HTTPS` | `non` | `oui` : certificat auto-signé, avertissement du navigateur à la première visite |
+| `ALBERT_KIOSQUE` | `non` | `oui` : l'enseignant ouvre une session de classe sur `/kiosque` avec sa clé |
 | `ALBERT_MISE_A_JOUR` | `oui` | `git pull` à chaque démarrage ; `non` fige la version |
+| `ALBERT_PORT` | `8913` | Port du serveur ; s'il est occupé, l'un des neuf suivants |
 
 Ne modifier aucun autre fichier du dépôt.
 
