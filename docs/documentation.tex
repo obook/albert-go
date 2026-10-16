@@ -100,7 +100,7 @@ Sur un serveur, la page affichée ne voit jamais la clé API.
   \item \emph{Version autonome} : votre clé Albert API et un ordinateur 64~bits sous Linux ou sous Windows.
 \end{itemize}
 
-Pour créer une clé Albert API, connectez-vous avec vos identifiants d'agent de l'État sur \url{https://ia.numerique.gouv.fr/outils-ia/albert-api/} (bouton \emph{Utilisez Albert API}). En kiosque, les élèves n'ont pas besoin de clé : seule celle de l'enseignant sert.
+Pour créer une clé Albert API, connectez-vous avec vos identifiants d'agent de l'État sur \url{https://ia.numerique.gouv.fr/outils-ia/albert-api/} (bouton \emph{Utilisez Albert API}). En kiosque, les postes invités n'ont pas besoin de clé : seule celle du poste maître sert.
 
 \section{Version en ligne}
 \label{sec:en-ligne}
@@ -164,7 +164,7 @@ Albert Go ignore les lignes qui commencent par \code{#}. Après un changement du
 \hline
 \code{ALBERT_API_KEY} & vide & Votre clé Albert API ; inutile en kiosque. \\
 \code{ALBERT_API_URL} & & Adresse d'Albert API, à laisser telle quelle. \\
-\code{ALBERT_HTTPS} & \code{non} & \code{oui} : connexion chiffrée par un certificat auto-signé ; les navigateurs des élèves affichent un avertissement à la première visite. \\
+\code{ALBERT_HTTPS} & \code{non} & \code{oui} : connexion chiffrée par un certificat auto-signé ; les navigateurs des postes invités affichent un avertissement à la première visite. \\
 \code{ALBERT_KIOSQUE} & \code{non} & \code{oui} : sessions avec invités (\autoref{sec:kiosque}). \\
 \code{ALBERT_PORT} & \code{8913} & Port du serveur ; s'il est occupé, Albert Go prend l'un des neuf suivants. \\
 \hline
@@ -269,10 +269,11 @@ Vous y activez ou désactivez chaque outil et Internet, choisissez les moteurs d
 \section{Le kiosque}
 \label{sec:kiosque}
 
-Le kiosque ouvre Albert Go à une classe : l'enseignant ouvre une session avec sa clé et les élèves la rejoignent depuis leur appareil, sans voir la clé. Il demande un serveur : celui de l'établissement ou la version autonome.
+Le kiosque partage Albert Go entre un poste maître et des postes invités : le poste maître ouvre une session avec sa clé et les postes invités la rejoignent, sans voir la clé. Il demande un serveur : celui de l'établissement ou la version autonome.
 
 \subsection{Ouvrir une session}
 
+Sur le poste maître :
 \begin{enumerate}
   \item Lancez Albert Go en kiosque : \code{ALBERT_KIOSQUE=oui} dans le \code{.env} ou, pour l'AppImage, l'option \code{--kiosque} après son nom.
   \item Sur la page \emph{Ouvrir une session}, saisissez votre clé Albert API et choisissez une durée d'une à trois heures ou la journée.
@@ -281,9 +282,9 @@ Le kiosque ouvre Albert Go à une classe : l'enseignant ouvre une session avec s
 
 \subsection{Rejoindre la session}
 
-Les élèves scannent le QR code ou saisissent l'adresse dans leur navigateur, puis le code à quatre chiffres. Leurs appareils doivent être sur le même réseau que l'ordinateur qui fait tourner Albert Go. Vos réglages sont leurs valeurs de départ et leurs conversations restent dans leur navigateur.
+Sur chaque poste invité, scannez le QR code ou saisissez l'adresse dans le navigateur, puis le code à quatre chiffres. Les postes invités doivent être sur le même réseau que l'ordinateur qui fait tourner Albert Go. Les réglages du poste maître sont leurs valeurs de départ et leurs conversations restent dans leur navigateur.
 
-Avec la version autonome, l'ordinateur de l'enseignant sert la classe : gardez la fenêtre d'Albert Go ouverte pendant la session. \emph{Quitter la session}, dans le menu, ferme la session pour toute la classe.
+Avec la version autonome, le poste maître sert aussi les postes invités : gardez la fenêtre d'Albert Go ouverte pendant la session. \emph{Quitter la session}, dans le menu du poste maître, la ferme pour tous les postes invités.
 
 \section{Vos données}
 \label{sec:donnees}
@@ -327,7 +328,7 @@ Une fenêtre \emph{Albert Go ne démarre pas} donne la cause. Si les dix ports �
   \item \emph{Quota atteint} : réessayez dans une minute.
 \end{itemize}
 
-\subsection*{Les élèves n'atteignent pas la session}
+\subsection*{Les postes invités n'atteignent pas la session}
 
 Vérifiez qu'ils sont sur le même réseau que l'ordinateur qui fait tourner Albert Go et qu'ils saisissent l'adresse donnée par \emph{Partager}. Le pare-feu de l'ordinateur doit laisser entrer les connexions vers Albert Go.
 
