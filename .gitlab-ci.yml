@@ -80,7 +80,7 @@ release:
     tag_name: $CI_COMMIT_TAG
     name: Albert Go $CI_COMMIT_TAG
     description: |
-      Albert Go sur clé USB : le serveur et Python sont embarqués, rien à installer.
+      Version autonome d'Albert Go : le serveur et Python sont embarqués, rien à installer.
 
       - Linux : rendre l'AppImage exécutable, puis la lancer.
       - Windows : décompresser l'archive, puis lancer Albert Go.exe.

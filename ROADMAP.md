@@ -32,6 +32,7 @@ Ce qui reste à faire, du plus simple au plus long. Le détail des failles est d
 ## Serveur
 
 - Niveau et matière (MR 2 du plan de fusion avec l'atelier) : choix dans le volet, consigne du serveur avec les extraits des programmes du BO dans `programmes/`.
+- llm-proxy : inutile, `regulation.py` gère déjà le quota. À revoir si d'autres outils partagent le compte Albert sur radio-host.
 
 ## Interface
 
