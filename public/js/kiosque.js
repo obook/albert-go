@@ -27,13 +27,17 @@ const NOMS_STOCKES = { topK: 'top-k' };
 const SONDAGE_KIOSQUE_MS = 20000;
 
 /**
- * Page où mène "Quitter la session".
+ * Page où mènent "Quitter la session" et la fin de la session.
  *
  * @param {Object} session - Session de cette page (Serveur.kiosque).
- * @returns {string} L'invité lit qu'il a quitté la session ; le prof retrouve son formulaire.
+ * @param {boolean} [terminee] - true si la session est finie ou fermée par le prof.
+ * @returns {string} L'invité lit un message seul ; le prof retrouve son formulaire.
  */
-function adresseDeSortie(session) {
-    return session.role === 'eleve' ? '/kiosque?quittee' : '/kiosque';
+function adresseDeSortie(session, terminee = false) {
+    if (session.role === 'eleve') {
+        return terminee ? '/kiosque?terminee' : '/kiosque?quittee';
+    }
+    return terminee ? '/kiosque?erreur=terminee' : '/kiosque';
 }
 
 /**
@@ -139,7 +143,7 @@ if (typeof document !== 'undefined' && Kiosque) {
     setInterval(() => {
         fetch('/api/kiosque-status').then(r => r.json()).then((statut) => {
             if (!statut.active) {
-                location.href = '/kiosque?erreur=terminee';
+                location.href = adresseDeSortie(Kiosque, true);
             }
         }).catch(() => {
             /* Coupure réseau ponctuelle : on réessaie au tour suivant. */

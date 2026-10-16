@@ -1180,10 +1180,11 @@ const Albert = {
      */
     messageErreur(status, corps) {
         /* Kiosque : la session du prof est finie ou fermée (serveur/serveur.py).
-           Retour à la connexion : la page ne peut plus rien demander à Albert. */
+           Retour à la connexion : la page ne peut plus rien demander à Albert ; l'invité y lit un message seul. */
         if (status === 401 && corps && corps.kiosque === 'terminee') {
             if (typeof location !== 'undefined') {
-                location.href = '/kiosque?erreur=terminee';
+                const eleve = typeof SERVEUR !== 'undefined' && SERVEUR.kiosque && SERVEUR.kiosque.role === 'eleve';
+                location.href = eleve ? '/kiosque?terminee' : '/kiosque?erreur=terminee';
             }
             return t('kiosque.terminee');
         }

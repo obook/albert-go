@@ -31,7 +31,9 @@ test('valeurStockee : comme stockage.js les écrit', () => {
 });
 
 /* L'invité qui quittait la session tombait sur le formulaire du prof (16/10/2026). */
-test('adresseDeSortie : l\'invité lit qu\'il a quitté la session, le prof retrouve son formulaire', () => {
+test('adresseDeSortie : l\'invité lit un message, le prof retrouve son formulaire', () => {
     assert.strictEqual(adresseDeSortie({ role: 'eleve' }), '/kiosque?quittee');
     assert.strictEqual(adresseDeSortie({ role: 'enseignant' }), '/kiosque');
+    assert.strictEqual(adresseDeSortie({ role: 'eleve' }, true), '/kiosque?terminee');
+    assert.strictEqual(adresseDeSortie({ role: 'enseignant' }, true), '/kiosque?erreur=terminee');
 });
