@@ -150,7 +150,9 @@ test('chercherBase : un service répond comme une base de Recherche', async () =
     };
     const [r] = await Recherche.chercherBase(TABLE.etablissement_scolaire, 'lycée "Ampère" Lyon');
     /* Guillemets retirés par Recherche.replis : ils fermeraient la requête. */
-    assert.match(decodeURIComponent(vue), /where="lycée Ampère Lyon"/);
+    assert.match(decodeURIComponent(vue), /where=search\(nom_etablissement, .*nom_commune, .*"lycée Ampère Lyon"\)/);
+    /* "Lille" trouvait chaque établissement de l'académie de Lille. */
+    assert.doesNotMatch(decodeURIComponent(vue), /academie|mail|web/);
     assert.strictEqual(r.title, 'Lycée Ampère (Lyon)');
     assert.match(r.url, /0690023A/);
 });

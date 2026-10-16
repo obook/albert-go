@@ -17,17 +17,21 @@
 
 /**
  * Adresse d'un jeu Opendatasoft (API Explore 2.1) : les enregistrements qui
- * contiennent tous les mots.
+ * contiennent tous les mots, dans les champs donnés ou dans tous.
  *
  * @param {string} base - Site Opendatasoft.
  * @param {string} jeu - Identifiant du jeu de données.
  * @param {string} q - Mots cherchés.
  * @param {number} n - Nombre d'enregistrements.
  * @param {string} [suite] - Paramètres ajoutés tels quels.
+ * @param {string} [champs] - Champs où chercher, séparés par des virgules.
  * @returns {string} Adresse de la requête.
  */
-const opendatasoft = (base, jeu, q, n, suite = '') => base + '/api/explore/v2.1/catalog/datasets/' + jeu
-    + '/records?limit=' + n + '&where=' + encodeURIComponent('"' + q.replace(/"/g, ' ') + '"') + suite;
+const opendatasoft = (base, jeu, q, n, suite = '', champs = '') => {
+    const mots = '"' + q.replace(/"/g, ' ') + '"';
+    return base + '/api/explore/v2.1/catalog/datasets/' + jeu + '/records?limit=' + n
+        + '&where=' + encodeURIComponent(champs ? 'search(' + champs + ', ' + mots + ')' : mots) + suite;
+};
 
 /** Liste rangée en texte JSON, comme dans l'Annuaire de l'administration ; vide si illisible. */
 const listeJson = (valeur) => {
@@ -99,7 +103,9 @@ const Services = {
         },
         etablissement_scolaire: {
             nom: 'Annuaire de l\'éducation',
-            adresse: (q, n) => opendatasoft('https://data.education.gouv.fr', 'fr-en-annuaire-education', q, n),
+            /* Pas tout le texte : "Lille" ramenait toute l'académie (champ académie, courriels @ac-lille.fr). */
+            adresse: (q, n) => opendatasoft('https://data.education.gouv.fr', 'fr-en-annuaire-education', q, n, '',
+                'nom_etablissement, type_etablissement, nom_commune, code_postal, identifiant_de_l_etablissement'),
             extraire: (corps) => (corps.results || []).map(r => ({
                 title: r.nom_etablissement + ' (' + r.nom_commune + ')',
                 url: 'https://data.education.gouv.fr/explore/dataset/fr-en-annuaire-education/table/?q='
