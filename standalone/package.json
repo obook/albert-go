@@ -36,7 +36,8 @@
       ]
     },
     "win": {
-      "signAndEditExecutable": false,
+      "icon": "../public/images/icone-512.png",
+      "signExecutable": false,
       "extraResources": [
         "python-win"
       ],
