@@ -164,10 +164,10 @@ const Services = {
                     (r.code_departement || []).length && 'département ' + r.code_departement.join(', '))
             }))
         },
-        /* Catalogue : tous les mots doivent figurer dans le jeu. */
+        /* Recherche de l'API v2 : la v1 exige chaque mot tel quel ("transports Rennes" n'y trouve rien). */
         donnees_publiques: {
             nom: 'data.gouv.fr',
-            adresse: (q, n) => 'https://www.data.gouv.fr/api/1/datasets/?page_size=' + n + '&q=' + encodeURIComponent(q),
+            adresse: (q, n) => 'https://www.data.gouv.fr/api/2/datasets/search/?page_size=' + n + '&q=' + encodeURIComponent(q),
             extraire: (corps) => (corps.data || []).map(d => ({ title: d.title, url: d.page, desc: d.description }))
         },
         /* Une ligne par session depuis 2020 : on garde la plus récente.

@@ -90,6 +90,12 @@ test('adresse : lien vers le Géoportail à la position trouvée', () => {
     assert.match(a.desc, /code INSEE 75107/);
 });
 
+/* L'API v1 exige chaque mot tel quel : "transports Rennes" n'y trouvait rien (16/10/2026). */
+test('donnees_publiques : recherche de l\'API v2, souple sur les mots', () => {
+    assert.match(TABLE.donnees_publiques.adresse('transports Rennes', 5),
+        /^https:\/\/www\.data\.gouv\.fr\/api\/2\/datasets\/search\/\?page_size=5&q=transports%20Rennes$/);
+});
+
 test('marches_publics : champs choisis, du plus récent au plus ancien', () => {
     const adresse = decodeURIComponent(TABLE.marches_publics.adresse('nettoyage Lyon', 5));
     assert.match(adresse, /where="nettoyage Lyon"/);
