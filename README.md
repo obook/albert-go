@@ -140,7 +140,7 @@ python3 -m http.server 8642 -d public    # la version en ligne, sans serveur (or
 node --test    # tests de la page
 .venv/bin/python -m pytest    # tests du serveur (.venv créé par local.sh)
 node --test tests/ipad.webkit.js    # la page dans WebKit, le moteur de l'iPad (Playwright, voir l'en-tête du fichier)
-./images-lancement.sh    # refait les images de lancement iOS (nouvel écran : une ligne dans ECRANS)
+outils/images-lancement.sh    # refait les images de lancement iOS (nouvel écran : une ligne dans ECRANS)
 ```
 
 Chaque MR lance ces tests sur la forge (`.gitlab-ci.yml`). Un manque relevé sur un vrai iPad s'ajoute à `SAFARI_ANCIEN` dans `tests/ipad.webkit.js` : le WebKit de Playwright est plus récent que Safari sur un iPad pas à jour.
