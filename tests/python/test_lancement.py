@@ -40,3 +40,24 @@ def test_port_lu_dans_le_env(tmp_path):
     processus.terminate()
     processus.wait(5)
     assert lignes[1].strip() == f"Local   : http://localhost:{port}"
+
+
+def test_port_occupe_le_suivant(tmp_path):
+    """Port du .env occupé (autre logiciel, autre Albert Go) : le serveur prend un des suivants."""
+    import socket
+    with socket.socket() as occupant:
+        occupant.bind(("0.0.0.0", 0))
+        occupant.listen()
+        port = occupant.getsockname()[1]
+        (tmp_path / ".env").write_text(f"ALBERT_PORT={port}\n", encoding="utf-8")
+        env = {**os.environ, "ALBERT_PORTABLE_DIR": str(tmp_path)}
+        processus = subprocess.Popen([sys.executable, "-m", "serveur", "--no-browser"],
+                                     cwd=RACINE, env=env, stdout=subprocess.PIPE, text=True)
+        lignes = []
+        lecteur = threading.Thread(target=lambda: lignes.extend(processus.stdout.readline() for _ in range(2)), daemon=True)
+        lecteur.start()
+        lecteur.join(10)
+        processus.terminate()
+        processus.wait(5)
+    ports = [f"Local   : http://localhost:{p}" for p in range(port + 1, port + 10)]
+    assert lignes[1].strip() in ports

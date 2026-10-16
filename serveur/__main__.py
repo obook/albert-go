@@ -29,16 +29,23 @@ def main():
     if args.port is None:
         args.port = reglages["port"]
     utiliser_ssl = (args.ssl or reglages["https"]) and certificat.generer_certificat()
-    try:
-        serveur = creer_serveur(args.port, utiliser_ssl, mode_kiosque)
-    except OSError:
-        print(f"Erreur : le port {args.port} est déjà utilisé. Essayez --port {args.port + 1}.")
+    serveur = None
+    # Port occupé : les suivants, dix en tout.
+    for port in range(args.port, args.port + 10):
+        try:
+            serveur = creer_serveur(port, utiliser_ssl, mode_kiosque)
+            break
+        except OSError:
+            pass
+    if serveur is None:
+        print(f"Erreur : les ports {args.port} à {args.port + 9} sont déjà utilisés.")
         return
+    port = serveur.server_address[1]
     protocole = "https" if utiliser_ssl else "http"
     print("Albert Go démarré")
-    print(f"  Local   : {protocole}://localhost:{args.port}")
+    print(f"  Local   : {protocole}://localhost:{port}")
     for ip in adresses_locales():
-        print(f"  Réseau  : {protocole}://{ip}:{args.port}")
+        print(f"  Réseau  : {protocole}://{ip}:{port}")
     print(f"  {config.config_affichee()}")
     if mode_kiosque:
         print("  Mode kiosque : l'enseignant ouvre la session sur /kiosque")
@@ -47,7 +54,7 @@ def main():
             print(f"  Aucune clé API : ajoutez ALBERT_API_KEY=... dans {config.chemin_config()}")
     print("Ctrl+C pour arrêter")
     if not args.no_browser:
-        threading.Timer(0.5, webbrowser.open, [f"{protocole}://localhost:{args.port}"]).start()
+        threading.Timer(0.5, webbrowser.open, [f"{protocole}://localhost:{port}"]).start()
     try:
         serveur.serve_forever()
     except KeyboardInterrupt:
