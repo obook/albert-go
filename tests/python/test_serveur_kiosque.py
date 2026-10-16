@@ -145,3 +145,10 @@ def test_page_de_connexion_sans_mode_de_travail(kiosque_client):
     assert 'name="cle_api"' in page and 'name="duree"' in page and 'name="code"' in page
     assert 'name="niveau"' not in page
     assert "<title>Albert Go</title>" in page
+
+
+def test_sans_kiosque_la_page_kiosque_renvoie_a_l_accueil(client):
+    # Une page ouverte pendant une ancienne session kiosque y mène encore (Pixel 8, 16/10/2026).
+    for adresse in ("/kiosque", "/kiosque?erreur=terminee"):
+        reponse = client.get(adresse)
+        assert reponse.status_code == 302 and reponse.headers["Location"] == "/"

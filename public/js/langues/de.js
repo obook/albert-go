@@ -27,6 +27,7 @@ I18n.TEXTES.de = {
     'kiosque.duree-3h': '3 Stunden',
     'kiosque.duree-journee': 'Ganzer Tag (8 h)',
     'kiosque.ouvrir': 'Sitzung öffnen',
+    'kiosque.quittee': 'Sie haben die Sitzung verlassen.',
     'kiosque.rejoindre-titre': 'Der Sitzung beitreten',
     'kiosque.rejoindre-texte': 'Geben Sie den 4-stelligen Code Ihrer Lehrkraft ein.',
     'kiosque.code': 'Zugangscode',
