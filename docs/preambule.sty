@@ -1,0 +1,133 @@
+% !TeX TS-program = lualatex
+% docs/preambule.sty
+%
+% Préambule de la notice d'Albert Go, repris de la documentation de LLM Proxy.
+%
+% Variables attendues, à définir avant \usepackage{preambule} :
+%   \titre, \sousTitre, \version, \auteur, \projet
+%
+% Auteur : O. Booklage
+% Licence : GPL-3.0-or-later
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{preambule}[2026/10/16 Préambule de la notice d'Albert Go]
+
+%
+% Géométrie de la page
+%
+\usepackage[a4paper, left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm]{geometry}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+
+%
+% Langue et fonte
+%
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage{fourier}
+\else
+  \usepackage{fourier-otf}
+\fi
+
+% Babel français met un tiret cadratin en puce : tiret simple à tous les niveaux.
+\AtBeginDocument{%
+  \renewcommand{\labelitemi}{\normalfont -}%
+  \renewcommand{\labelitemii}{\normalfont -}%
+  \renewcommand{\labelitemiii}{\normalfont -}%
+  \renewcommand{\labelitemiv}{\normalfont -}%
+}
+
+%
+% Bibliothèques complémentaires
+%
+\usepackage{tabularx}
+\usepackage{graphicx}
+\graphicspath{{../public/images/}}
+\usepackage{xcolor}
+\usepackage{lastpage}
+
+%
+% Mise en forme des sections
+%
+\usepackage{sectsty}
+\sectionfont{\fontsize{16}{19}\selectfont\bfseries}
+% Chaque section commence en haut d'une page, sauf celle qui suit un \part,
+% qui reste sur la page du titre de partie. \sautSectionfalse lève la règle.
+\usepackage{etoolbox}
+\newif\ifapresPart
+\apresPartfalse
+\newif\ifsautSection
+\sautSectiontrue
+\pretocmd{\part}{\clearpage\apresParttrue}{}{\PackageWarning{preambule}{pretocmd part echoue}}
+\pretocmd{\section}{\ifsautSection\ifapresPart\apresPartfalse\else\clearpage\fi\fi}{}{\PackageWarning{preambule}{pretocmd section echoue}}
+\subsectionfont{\fontsize{13}{16}\selectfont\bfseries}
+\subsubsectionfont{\fontsize{11}{13}\selectfont\bfseries}
+
+%
+% En-tête et pied de page
+%
+\usepackage{fancyhdr}
+\setlength{\headheight}{15pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\normalfont\rmfamily \projet}
+\fancyhead[R]{\normalfont\rmfamily \version}
+\fancyfoot[L]{\normalfont\rmfamily \auteur}
+\fancyfoot[C]{\normalfont\rmfamily Page~\thepage{}~sur~\pageref*{LastPage}}
+\fancyfoot[R]{\normalfont\rmfamily \today}
+
+%
+% Table des matières, hyperref et métadonnées PDF
+%
+% Points de conduite aussi sur les sections, que la classe article n'en munit pas.
+\usepackage{tocloft}
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+\renewcommand{\cftsecfont}{\normalfont}
+\renewcommand{\cftsecpagefont}{\normalfont}
+\setlength{\cftbeforesecskip}{4pt}
+
+\usepackage{hyperref}
+\hypersetup{
+  pdftitle  = {\titre},
+  pdfsubject = {\sousTitre},
+  pdfauthor  = {\auteur},
+  pdfcreator  = {LuaLaTeX with TeX Live},
+  colorlinks = true,
+  linkcolor  = black,
+  urlcolor   = blue!60!black,
+}
+
+%
+% Code en ligne cassable en fin de ligne (paquet url, chargé par hyperref)
+%
+\DeclareUrlCommand\code{\urlstyle{tt}}
+
+% URLs cassables n'importe où : pas de lien qui dépasse la marge.
+\usepackage{xurl}
+
+% Étirement de dernière chance pour les lignes légèrement trop larges.
+\emergencystretch=3em
+
+%
+% Extraits de fichiers et de commandes
+%
+\usepackage{listings}
+\lstdefinestyle{albertbase}{
+  basicstyle       = \ttfamily\footnotesize,
+  showstringspaces = false,
+  breaklines       = true,
+  frame            = single,
+  backgroundcolor  = \color{black!5},
+  keepspaces       = true,
+  columns          = fullflexible,
+  rulecolor        = \color{black!30},
+  framerule        = 0.4pt,
+  xleftmargin      = 1em,
+  xrightmargin     = 0.5em,
+}
+
+\lstnewenvironment{plain_code}[1][]{%
+  \lstset{style=albertbase, language=, #1}%
+}{}
