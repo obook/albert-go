@@ -50,6 +50,7 @@ def main():
     if mode_kiosque:
         print("  Mode kiosque : l'enseignant ouvre la session sur /kiosque")
     else:
+        # La version autonome (standalone/main.js) lit cette ligne et "Ctrl+C" pour avertir.
         if not config.load_config()["api_key"]:
             print(f"  Aucune clé API : ajoutez ALBERT_API_KEY=... dans {config.chemin_config()}")
     print("Ctrl+C pour arrêter")
