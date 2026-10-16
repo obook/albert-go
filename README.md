@@ -2,6 +2,8 @@
 
 Chatbot minimal pour [Albert](https://ia.numerique.gouv.fr/outils-ia/albert-api/), l'IA de l'État portée par la DINUM.
 
+![Albert Go : une réponse d'Albert avec le schéma du parcours d'une loi et une photo du palais de l'Élysée](media/albert-go.png)
+
 Albert Go s'utilise :
 
 - en ligne, sur [Pages](https://booklageolivier.forge.apps.education.fr/albert-go/) : chacun saisit sa clé API, gardée dans le navigateur ; le relais n8n de l'incubateur de l'Éducation nationale transmet les questions à Albert ;
