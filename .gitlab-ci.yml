@@ -91,3 +91,16 @@ release:
         - name: Albert Go Windows x64 (archive)
           url: ${PAQUETS}/Albert-Go-${CI_COMMIT_TAG}-win64.zip
           link_type: package
+
+# Pages : un renvoi vers les releases à la place de l'ancienne version en ligne.
+pages:
+  stage: deploy
+  image: alpine:latest
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+  script:
+    - cp public/images/favicon.svg public/vendor/work-sans/work-sans-latin-wght-normal.woff2 deploiement/pages/
+    - rm -rf public && mv deploiement/pages public
+  artifacts:
+    paths:
+      - public
