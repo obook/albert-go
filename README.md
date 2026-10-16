@@ -2,7 +2,7 @@
 
 Chatbot minimal pour [Albert](https://ia.numerique.gouv.fr/outils-ia/albert-api/), l'IA de l'État portée par la DINUM.
 
-Albert Go s'utilise de trois façons :
+Albert Go s'utilise :
 
 - en ligne, sur [Pages](https://booklageolivier.forge.apps.education.fr/albert-go/) : chacun saisit sa clé API, gardée dans le navigateur ; le relais n8n de l'incubateur de l'Éducation nationale transmet les questions à Albert ;
 - sur un poste de l'établissement : le serveur Python garde la clé API et relaie les questions vers Albert ;
@@ -23,7 +23,7 @@ Le mode d'emploi est dans la notice : [docs/documentation.pdf](docs/documentatio
 cp .env-exemple .env      # puis coller la clé API après ALBERT_API_KEY=
 ```
 
-`.env` reste dans le dossier du dépôt, ignoré par git ; le terminal affiche au lancement le fichier utilisé. Installation sur un poste de l'établissement, avec démarrage automatique et mise à jour : [docs/DEPLOIEMENT.md](docs/DEPLOIEMENT.md). Les clés s'obtiennent sur la [page d'Albert API](https://ia.numerique.gouv.fr/outils-ia/albert-api/).
+`.env` reste dans le dossier du dépôt, ignoré par git ; le terminal affiche au lancement le fichier utilisé. Installation sur un poste de l'établissement, avec démarrage automatique et mise à jour : [docs/DEPLOIEMENT.md](docs/DEPLOIEMENT.md). Pour créer une clé : [page d'Albert API](https://ia.numerique.gouv.fr/outils-ia/albert-api/).
 
 ## Fonctionnement
 
@@ -51,7 +51,7 @@ node --test tests/ipad.webkit.js    # la page dans WebKit, le moteur de l'iPad (
 outils/images-lancement.sh    # refait les images de lancement iOS (nouvel écran : une ligne dans ECRANS)
 ```
 
-Chaque MR lance ces tests sur la forge (`.gitlab-ci.yml`). Un manque relevé sur un vrai iPad s'ajoute à `SAFARI_ANCIEN` dans `tests/ipad.webkit.js` : le WebKit de Playwright est plus récent que Safari sur un iPad pas à jour.
+La forge lance ces tests à chaque MR (`.gitlab-ci.yml`). Un manque relevé sur un vrai iPad s'ajoute à `SAFARI_ANCIEN` dans `tests/ipad.webkit.js` : le WebKit de Playwright est plus récent que Safari sur un iPad pas à jour.
 
 ### Traductions
 
@@ -70,7 +70,7 @@ Audit, modèle de menaces et plan d'action : [docs/SECURITE.md](docs/SECURITE.md
 
 ## Accessibilité
 
-La page vise la conformité [RGAA](https://accessibilite.numerique.gouv.fr/), sans audit à ce jour : tout se fait au clavier, les messages sont annoncés aux lecteurs d'écran, le texte a un contraste d'au moins 4,5:1 en thème clair comme en thème sombre.
+La page vise la conformité [RGAA](https://accessibilite.numerique.gouv.fr/), sans audit à ce jour : tout se fait au clavier et les lecteurs d'écran annoncent les nouveaux messages ; le texte garde un contraste d'au moins 4,5:1 dans les deux thèmes.
 
 ## Auteur
 
