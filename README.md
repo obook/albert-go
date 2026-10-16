@@ -2,7 +2,7 @@
 
 Chatbot minimal pour [Albert](https://ia.numerique.gouv.fr/outils-ia/albert-api/), l'IA de l'État portée par la DINUM.
 
-Albert Go tourne sur un serveur : un poste de l'établissement, ou une clé USB (version autonome des [releases](https://forge.apps.education.fr/booklageolivier/albert-go/-/releases)). Le serveur garde la clé API et relaie les questions vers Albert.
+Albert Go tourne sur un serveur : un poste de l'établissement ou une clé USB (version autonome des [releases](https://forge.apps.education.fr/booklageolivier/albert-go/-/releases)). Le serveur garde la clé API et relaie les questions vers Albert.
 
 ## Lancer le serveur
 

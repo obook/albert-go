@@ -1,0 +1,98 @@
+<!doctype html>
+<!-- Page publiée sur Pages (.gitlab-ci.yml) à la place de l'ancienne version en ligne. -->
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Albert Go</title>
+    <link rel="icon" href="favicon.svg">
+    <style>
+        @font-face {
+            font-family: "Work Sans";
+            src: url("work-sans-latin-wght-normal.woff2") format("woff2");
+            font-weight: 100 900;
+            font-display: swap;
+        }
+        /* Couleurs de public/styles/base.css. */
+        :root {
+            color-scheme: light dark;
+            --fond: #f5f6f9;
+            --surface: #ffffff;
+            --texte: #161616;
+            --texte-doux: #3a3a3a;
+            --bord: #dde0e8;
+            --accent: #c24400;
+            --accent-survol: #9c3600;
+            --sur-accent: #ffffff;
+        }
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --fond: #222631;
+                --surface: #2b303d;
+                --texte: #eeeeee;
+                --texte-doux: #c8c8c8;
+                --bord: #3d4356;
+                --accent: #ff8547;
+                --accent-survol: #ffa070;
+                --sur-accent: #161616;
+            }
+        }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            padding: 1rem;
+            box-sizing: border-box;
+            background: var(--fond);
+            color: var(--texte);
+            font: 1rem/1.5 "Work Sans", system-ui, sans-serif;
+        }
+        main {
+            max-width: 32rem;
+            padding: 2rem 1.5rem;
+            background: var(--surface);
+            border: 1px solid var(--bord);
+            border-radius: 12px;
+        }
+        h1 {
+            margin: 0 0 1rem;
+            font-size: 1.75rem;
+            font-weight: 600;
+        }
+        p {
+            margin: 0 0 1rem;
+            color: var(--texte-doux);
+        }
+        a {
+            color: var(--accent);
+        }
+        .bouton {
+            display: inline-block;
+            margin: 0.5rem 0 1rem;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            background: var(--accent);
+            color: var(--sur-accent);
+            font-weight: 500;
+            text-decoration: none;
+        }
+        .bouton:hover {
+            background: var(--accent-survol);
+        }
+        .discret {
+            margin: 0;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <h1>Albert Go</h1>
+        <p>Albert Go ne s'utilise plus à cette adresse. Vous le lancez maintenant depuis une clé USB ou un serveur de l'établissement. Vous ne saisissez plus la clé API dans le navigateur.</p>
+        <a class="bouton" href="https://forge.apps.education.fr/booklageolivier/albert-go/-/releases/permalink/latest">Télécharger Albert Go</a>
+        <p>Pour un poste de l'établissement&nbsp;: <a href="https://forge.apps.education.fr/booklageolivier/albert-go/-/blob/main/DEPLOIEMENT.md">notice d'installation</a>.</p>
+        <p class="discret"><a href="https://forge.apps.education.fr/booklageolivier/albert-go">Code source</a> sur la Forge des communs numériques éducatifs.</p>
+    </main>
+</body>
+</html>

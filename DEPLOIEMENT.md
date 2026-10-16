@@ -93,6 +93,6 @@ La CI fabrique les paquets sur un tag `vX.Y.Z` (jobs `paquet-linux` et `paquet-w
 | Symptôme | Cause et remède |
 |---|---|
 | Rien au démarrage | `crontab -l` doit montrer la ligne `@reboot` ; lancer `./deploiement/demarrage.sh` à la main et lire le journal |
-| `les ports 8913 à 8922 sont déjà utilisés` dans le journal | D'autres serveurs occupent les ports : `redemarrage.sh`, ou changer `ALBERT_PORT` |
+| `les ports 8913 à 8922 sont déjà utilisés` dans le journal | D'autres serveurs occupent les ports : `redemarrage.sh` ou changer `ALBERT_PORT` |
 | `git pull a échoué` dans le journal | Fichier modifié sur place : `git status`, puis `git checkout -- <fichier>` |
 | `Pas de réseau après 60 s` | Voir "WiFi sans ouverture de session" |

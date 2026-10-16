@@ -56,7 +56,7 @@ paquet-windows:
     - cd standalone
     - curl -fsSLo python-win.zip https://www.python.org/ftp/python/3.12.7/python-3.12.7-embed-amd64.zip
     - unzip -q python-win.zip -d python-win && rm python-win.zip
-    # Chemins de Python : ses paquets, et le serveur dans resources\albert-go.
+    # Chemins de Python : ses paquets et le serveur dans resources\albert-go.
     - printf 'python312.zip\n.\nLib\\site-packages\n..\\albert-go\nimport site\n' > python-win/python312._pth
     - 'python3 -m pip install -q --platform win_amd64 --python-version 3.12 --only-binary=:all: --target python-win/Lib/site-packages -r ../serveur/requirements.txt'
     - npm ci
@@ -82,7 +82,7 @@ release:
       - Linux : rendre l'AppImage exécutable, puis la lancer.
       - Windows : décompresser l'archive, puis lancer Albert Go.exe.
 
-      La configuration est le fichier .env à côté de l'application, créé au premier lancement s'il manque : y coller la clé API, ou y activer le kiosque (ALBERT_KIOSQUE=oui).
+      La configuration est le fichier .env à côté de l'application, créé au premier lancement s'il manque : y coller la clé API ou y activer le kiosque (ALBERT_KIOSQUE=oui).
     assets:
       links:
         - name: Albert Go Linux x64 (AppImage)
@@ -91,3 +91,16 @@ release:
         - name: Albert Go Windows x64 (archive)
           url: ${PAQUETS}/Albert-Go-${CI_COMMIT_TAG}-win64.zip
           link_type: package
+
+# Pages : un renvoi vers les releases à la place de l'ancienne version en ligne.
+pages:
+  stage: deploy
+  image: alpine:latest
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+  script:
+    - cp public/images/favicon.svg public/vendor/work-sans/work-sans-latin-wght-normal.woff2 deploiement/pages/
+    - rm -rf public && mv deploiement/pages public
+  artifacts:
+    paths:
+      - public
