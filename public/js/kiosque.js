@@ -1,6 +1,6 @@
 /*
  * kiosque.js
- * Le kiosque autour de l'interface : mode partagé forcé, réglages du prof
+ * Le kiosque autour de l'interface : mode partagé forcé chez l'invité, réglages du prof
  * comme valeurs de départ des élèves, bandeau et déconnexion, retour à
  * /kiosque quand la session se termine. Rien à faire hors kiosque.
  *
@@ -77,12 +77,11 @@ function valeurStockee(valeur) {
 
 /* Sauté sous Node, où le fichier n'est chargé que pour ses tests. */
 if (typeof document !== 'undefined' && Kiosque) {
-    /* Poste partagé : conversations et bibliothèque restent dans l'onglet. En mémoire
-       seulement : les données personnelles du prof, en localStorage, restent intactes. */
-    partage = true;
-    $('partage-reglage').closest('fieldset').hidden = true;
-
     if (Kiosque.role === 'eleve') {
+        /* Poste invité : conversations et bibliothèque restent dans l'onglet. En mémoire
+           seulement : les données du prof, en localStorage, restent intactes. Le poste maître garde son choix. */
+        partage = true;
+        $('partage-reglage').closest('fieldset').hidden = true;
         /* Volet fermé au démarrage (menu.js). Choix rangé dans l'onglet : le volet
            du prof, sur le même navigateur, garde le sien. */
         SENSIBLES.push('volet');
