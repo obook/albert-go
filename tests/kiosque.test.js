@@ -9,7 +9,7 @@
 
 const { test } = require('node:test');
 const assert = require('node:assert');
-const { reglagesProf, reglagesAppliques, valeurStockee } = require('../public/js/kiosque.js');
+const { reglagesProf, reglagesAppliques, valeurStockee, adresseDeSortie } = require('../public/js/kiosque.js');
 
 test('reglagesProf : seulement les réglages partagés', () => {
     const r = { modele: 'm', temperature: 0.2, topK: 40, echanges: 11, recherche: true, calcul: true,
@@ -28,4 +28,10 @@ test('valeurStockee : comme stockage.js les écrit', () => {
     assert.strictEqual(valeurStockee(false), 'non');
     assert.strictEqual(valeurStockee(['a', 'b']), 'a,b');
     assert.strictEqual(valeurStockee(0.2), '0.2');
+});
+
+/* L'invité qui quittait la session tombait sur le formulaire du prof (16/10/2026). */
+test('adresseDeSortie : l\'invité lit qu\'il a quitté la session, le prof retrouve son formulaire', () => {
+    assert.strictEqual(adresseDeSortie({ role: 'eleve' }), '/kiosque?quittee');
+    assert.strictEqual(adresseDeSortie({ role: 'enseignant' }), '/kiosque');
 });

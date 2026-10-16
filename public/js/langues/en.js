@@ -27,6 +27,7 @@ I18n.TEXTES.en = {
     'kiosque.duree-3h': '3 hours',
     'kiosque.duree-journee': 'Full day (8 h)',
     'kiosque.ouvrir': 'Open the session',
+    'kiosque.quittee': 'You have left the session.',
     'kiosque.rejoindre-titre': 'Join the session',
     'kiosque.rejoindre-texte': 'Enter the 4-digit code given by your teacher.',
     'kiosque.code': 'Access code',

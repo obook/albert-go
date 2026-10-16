@@ -27,6 +27,16 @@ const NOMS_STOCKES = { topK: 'top-k' };
 const SONDAGE_KIOSQUE_MS = 20000;
 
 /**
+ * Page où mène "Quitter la session".
+ *
+ * @param {Object} session - Session de cette page (Serveur.kiosque).
+ * @returns {string} L'invité lit qu'il a quitté la session ; le prof retrouve son formulaire.
+ */
+function adresseDeSortie(session) {
+    return session.role === 'eleve' ? '/kiosque?quittee' : '/kiosque';
+}
+
+/**
  * Réglages du prof à envoyer au serveur.
  *
  * @param {Object} r - Réglages de la page (stockage.js).
@@ -122,7 +132,7 @@ if (typeof document !== 'undefined' && Kiosque) {
         fetch('/kiosque', { method: 'POST', body: new URLSearchParams({ action: 'logout' }), redirect: 'manual' })
             .catch(() => {})
             .finally(() => {
-                location.href = '/kiosque';
+                location.href = adresseDeSortie(Kiosque);
             });
     });
 
@@ -139,5 +149,5 @@ if (typeof document !== 'undefined' && Kiosque) {
 
 /* Export pour les tests Node ; ignoré dans le navigateur. */
 if (typeof module !== 'undefined') {
-    module.exports = { reglagesProf, reglagesAppliques, valeurStockee };
+    module.exports = { reglagesProf, reglagesAppliques, valeurStockee, adresseDeSortie };
 }
