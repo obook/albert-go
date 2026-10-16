@@ -76,6 +76,8 @@ La page vise la conformité [RGAA](https://accessibilite.numerique.gouv.fr/), sa
 
 Olivier Booklage, [olivier.booklage@ac-bordeaux.fr](mailto:olivier.booklage@ac-bordeaux.fr)
 
+Le serveur et le kiosque viennent de L'Atelier d'Albert, écrit par Romain P., Luce P.B. et Théossian S.D. (Trophées NSI 2026).
+
 ## Licences
 
 | Composant | Licence |
