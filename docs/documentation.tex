@@ -120,11 +120,11 @@ Chaque version d'Albert Go a un fichier par système, sur la page des versions :
 
 \subsection{Sous Linux}
 
-Téléchargez le fichier \code{Albert-Go-...-linux.AppImage}, puis autorisez son exécution dans les propriétés du fichier ou dans un terminal ouvert dans son dossier :
+Téléchargez l'archive \code{Albert-Go-...-linux.zip}, décompressez-la, puis lancez l'AppImage dans le dossier obtenu. Si elle ne se lance pas, autorisez son exécution dans les propriétés du fichier ou dans un terminal ouvert dans ce dossier :
 
 \begin{plain_code}
-chmod +x Albert-Go-*-linux.AppImage
-./Albert-Go-*-linux.AppImage
+chmod +x Albert-Go-*.AppImage
+./Albert-Go-*.AppImage
 \end{plain_code}
 
 \subsection{Sous Windows}
@@ -135,7 +135,7 @@ L'exécutable n'est pas signé : si Windows affiche \emph{Windows a protégé vo
 
 \subsection{Sur une clé USB}
 
-Copiez sur la clé USB l'AppImage pour Linux ou le dossier décompressé pour Windows. Une même clé USB peut porter les deux : chaque version lit le fichier \code{.env} posé à côté d'elle.
+Copiez sur la clé USB le dossier décompressé, pour Linux ou pour Windows. Une même clé USB peut porter les deux : chaque version lit le fichier \code{.env} posé à côté d'elle.
 
 Sous Linux, l'AppImage ne se lance pas depuis une clé USB formatée en FAT32 : formatez-la en exFAT, que Windows lit aussi.
 
@@ -150,7 +150,7 @@ ALBERT_API_KEY=votre_cle_api
 
 La clé sert dès que le fichier est enregistré, sans relancer Albert Go. Tant qu'elle manque, une fenêtre \emph{Aucune clé API} le rappelle au lancement, avec un bouton pour ouvrir le fichier. Chaque question reçoit aussi une erreur qui donne le chemin du \code{.env}.
 
-Sous Linux, le gestionnaire de fichiers cache les noms qui commencent par un point : Ctrl+H les affiche. L'archive Windows contient aussi le modèle \code{.env-exemple}, que vous pouvez copier en \code{.env} pour tout régler avant le premier lancement.
+Sous Linux, le gestionnaire de fichiers cache les noms qui commencent par un point : Ctrl+H les affiche. Chaque archive contient aussi le modèle \code{.env-exemple}, que vous pouvez copier en \code{.env} pour tout régler avant le premier lancement.
 
 Fermer la fenêtre arrête Albert Go. Lancé une seconde fois, il ramène au premier plan la fenêtre déjà ouverte.
 

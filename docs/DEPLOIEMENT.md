@@ -81,10 +81,10 @@ sudo nmcli connection modify "Nom_du_WiFi" wifi-sec.psk-flags 0 wifi-sec.psk "MO
 
 Les [releases](https://forge.apps.education.fr/booklageolivier/albert-go/-/releases) fournissent Albert Go avec son serveur et Python, sans installation :
 
-- Linux : `chmod +x Albert-Go-*-linux.AppImage`, puis la lancer (`--kiosque` pour le kiosque).
+- Linux : décompresser l'archive, puis lancer l'AppImage (`--kiosque` pour le kiosque).
 - Windows : décompresser l'archive, puis lancer `Albert Go.exe`.
 
-La configuration est le `.env` à côté de l'application, créé au premier lancement s'il manque (réglages ci-dessus, sauf `ALBERT_MISE_A_JOUR`). Sous Windows, l'archive contient aussi le modèle `.env-exemple`, à copier en `.env` pour régler avant le premier lancement. La clé sert dès qu'elle est enregistrée ; kiosque, port et HTTPS demandent de relancer l'application. La notice d'utilisation, `docs/documentation.pdf`, est dans l'archive Windows et en lien sur chaque release.
+La configuration est le `.env` à côté de l'application, créé au premier lancement s'il manque (réglages ci-dessus, sauf `ALBERT_MISE_A_JOUR`). Chaque archive contient aussi le modèle `.env-exemple`, à copier en `.env` pour régler avant le premier lancement. La clé sert dès qu'elle est enregistrée ; kiosque, port et HTTPS demandent de relancer l'application. La notice d'utilisation, `docs/documentation.pdf`, est dans chaque archive et en lien sur chaque release.
 
 La CI fabrique les paquets sur un tag `vX.Y.Z` (jobs `paquet-linux` et `paquet-windows`). Avant le tag, changer `\version` dans `docs/documentation.tex` et recompiler le PDF (commande en tête du fichier) : la CI refuse une notice qui annonce une autre version. En local : `standalone/construire-linux.sh` fabrique l'AppImage et, sous Windows, `standalone\construire-windows.bat` le dossier et l'archive, tous deux dans `standalone/dist/`. Dans `standalone/`, `npm start` lance l'application depuis le dépôt.
 

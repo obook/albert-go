@@ -33,7 +33,7 @@ paquet-linux:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
       changes: [standalone/**/*, serveur/requirements.txt, .gitlab-ci.yml]
   script:
-    - apt-get update -qq && apt-get install -y -qq curl git
+    - apt-get update -qq && apt-get install -y -qq curl git zip
     - cd standalone
     - curl -fsSL "https://github.com/astral-sh/python-build-standalone/releases/download/20241016/cpython-3.12.7+20241016-x86_64-unknown-linux-gnu-install_only.tar.gz" | tar -xz
     - mv python python-linux
@@ -41,7 +41,10 @@ paquet-linux:
     - npm ci
     - if [ -n "$CI_COMMIT_TAG" ]; then npm pkg set version="${CI_COMMIT_TAG#v}"; fi
     - npm run build -- --linux AppImage
-    - 'if [ -n "$CI_COMMIT_TAG" ]; then curl -fsS -H "JOB-TOKEN: ${CI_JOB_TOKEN}" --upload-file dist/*.AppImage "${PAQUETS}/Albert-Go-${CI_COMMIT_TAG}-linux.AppImage"; fi'
+    # Comme l'archive Windows : l'AppImage, la notice et le modèle de .env.
+    - mkdir archive && cp dist/*.AppImage ../docs/documentation.pdf ../.env-exemple archive/
+    - (cd archive && zip -qr "../Albert-Go-${CI_COMMIT_TAG}-linux.zip" .)
+    - 'if [ -n "$CI_COMMIT_TAG" ]; then curl -fsS -H "JOB-TOKEN: ${CI_JOB_TOKEN}" --upload-file "Albert-Go-${CI_COMMIT_TAG}-linux.zip" "${PAQUETS}/Albert-Go-${CI_COMMIT_TAG}-linux.zip"; fi'
 
 paquet-windows:
   stage: build
@@ -82,14 +85,14 @@ release:
     description: |
       Version autonome d'Albert Go : le serveur et Python sont embarqués, rien à installer.
 
-      - Linux : rendre l'AppImage exécutable, puis la lancer.
+      - Linux : décompresser l'archive, puis lancer l'AppImage.
       - Windows : décompresser l'archive, puis lancer Albert Go.exe.
 
-      La configuration est le fichier .env à côté de l'application, créé au premier lancement s'il manque : y coller la clé API ou y activer le kiosque (ALBERT_KIOSQUE=oui).
+      La configuration est le fichier .env à côté de l'application, créé au premier lancement s'il manque : y coller la clé API ou y activer le kiosque (ALBERT_KIOSQUE=oui). Chaque archive contient aussi la notice (documentation.pdf) et le modèle .env-exemple.
     assets:
       links:
-        - name: Albert Go Linux x64 (AppImage)
-          url: ${PAQUETS}/Albert-Go-${CI_COMMIT_TAG}-linux.AppImage
+        - name: Albert Go Linux x64 (archive)
+          url: ${PAQUETS}/Albert-Go-${CI_COMMIT_TAG}-linux.zip
           link_type: package
         - name: Albert Go Windows x64 (archive)
           url: ${PAQUETS}/Albert-Go-${CI_COMMIT_TAG}-win64.zip
