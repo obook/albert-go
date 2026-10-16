@@ -12,7 +12,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:">
     <title>Albert Go</title>
     <link rel="icon" href="images/icone-192.png" type="image/png">
     <script src="js/theme.js?v=dev"></script>
@@ -28,7 +28,6 @@
         <section id="kiosque-prof" aria-labelledby="titre-prof">
             <h1 id="titre-prof" data-t="kiosque.ouvrir-titre"></h1>
             <p data-t="kiosque.ouvrir-texte"></p>
-            <p id="erreur-prof" class="erreur" role="alert"></p>
             <form method="post" action="/kiosque">
                 <input type="hidden" name="action" value="login">
                 <label for="cle-api" data-t="kiosque.cle"></label>
@@ -42,6 +41,7 @@
                 </select>
                 <button type="submit" class="bouton-principal" data-t="kiosque.ouvrir"></button>
             </form>
+            <p id="erreur-prof" class="erreur" role="alert"></p>
         </section>
 
         <!-- Message seul de l'invité qui a quitté la session ou dont la session est terminée. -->
@@ -52,7 +52,6 @@
         <section id="kiosque-eleve" aria-labelledby="titre-eleve" hidden>
             <h1 id="titre-eleve" data-t="kiosque.rejoindre-titre"></h1>
             <p data-t="kiosque.rejoindre-texte"></p>
-            <p id="erreur-eleve" class="erreur" role="alert"></p>
             <form method="post" action="/kiosque">
                 <input type="hidden" name="action" value="code">
                 <input type="hidden" name="token" id="token">
@@ -61,6 +60,7 @@
                        inputmode="numeric" autocomplete="off" required>
                 <button type="submit" class="bouton-principal" data-t="kiosque.rejoindre"></button>
             </form>
+            <p id="erreur-eleve" class="erreur" role="alert"></p>
         </section>
     </main>
     <script src="js/i18n.js?v=dev"></script>
