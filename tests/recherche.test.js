@@ -417,3 +417,35 @@ test('executerOutil : une recherche en échec interdit au modèle de répondre d
     assert.match(toasts[0], /^Recherche impossible : NetworkError/);
     assert.match(rendu, /N'ajoute de mémoire aucune adresse/);
 });
+
+/* Relais bloqué (NoScript) : "Recherche indisponible avec ce modèle", puis une réponse sans recherche (16/10/2026). */
+test('repondreAvecOutils : réseau en échec, pas de repli sans outils ni reproche au modèle', async () => {
+    I18n.langue = 'fr';
+    globalThis.Albert = require('../public/js/albert.js');
+    Albert.EN_LIGNE = false;
+    globalThis.definirOutil = require('../public/js/tools/calcul.js').definirOutil;
+    globalThis.reglages = { recherche: true, fournisseurs: ['wikipedia'], calcul: false };
+    globalThis.globeActif = true;
+    const toasts = [];
+    globalThis.toast = (message) => toasts.push(message);
+    const { repondreAvecOutils } = require('../public/js/tools/recherche/outils-modele.js');
+    let appels = 0;
+    globalThis.fetch = async () => {
+        appels++;
+        throw new TypeError('NetworkError when attempting to fetch resource.');
+    };
+    await assert.rejects(repondreAvecOutils({ model: 'm', messages: [{ role: 'user', content: 'Qui ?' }] },
+        new AbortController().signal), TypeError);
+    assert.strictEqual(appels, 1);
+    assert.deepStrictEqual(toasts, []);
+    /* Le modèle qui refuse les outils garde son repli. */
+    appels = 0;
+    globalThis.fetch = async () => (++appels === 1
+        ? { ok: false, status: 400, json: async () => ({ detail: 'tools not supported' }) }
+        : { ok: true, status: 200, json: async () => ({ choices: [{ message: { content: 'ok' } }] }) });
+    const reponse = await repondreAvecOutils({ model: 'm', messages: [{ role: 'user', content: 'Qui ?' }] },
+        new AbortController().signal);
+    assert.strictEqual(reponse.texte, 'ok');
+    assert.strictEqual(appels, 2);
+    assert.deepStrictEqual(toasts, ['Recherche indisponible avec ce modèle.']);
+});

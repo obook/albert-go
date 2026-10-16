@@ -219,6 +219,11 @@ async function repondreAvecOutils(requete, signal) {
                 tool_choice: cherche && tour === 0 ? 'required' : 'auto'
             }, signal);
         } catch (err) {
+            /* Repli sans outils pour un modèle qui les refuse. Réseau, relais, délai, arrêt, clé
+               ou quota échoueraient pareil : l'erreur remonte telle quelle. */
+            if (!err.status || [401, 403, 429, 502, 503, 504].includes(err.status)) {
+                throw err;
+            }
             if (cherche) {
                 toast(t('toast.recherche-indisponible'));
             }
@@ -248,5 +253,5 @@ async function repondreAvecOutils(requete, signal) {
 
 /* Export pour les tests Node ; ignoré dans le navigateur. */
 if (typeof module !== 'undefined') {
-    module.exports = { avecRappel, avecTableaux, executerOutil };
+    module.exports = { avecRappel, avecTableaux, executerOutil, repondreAvecOutils };
 }
