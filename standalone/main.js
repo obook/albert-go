@@ -11,7 +11,7 @@ const path = require('path');
 const fs = require('fs');
 
 const isWin = process.platform === 'win32';
-// Python, dictionnaire et serveur avec sa page (copiés par prebuild.js) ; hors paquet, le dépôt.
+// Python, dictionnaires et serveur avec sa page (copiés par prebuild.js) ; hors paquet, le dépôt.
 const RES_DIR = app.isPackaged ? process.resourcesPath : __dirname;
 const APP_DIR = app.isPackaged ? path.join(RES_DIR, 'albert-go') : path.join(__dirname, '..');
 // .env à côté de l'AppImage ou du .exe ; hors paquet, celui du dépôt.
@@ -140,17 +140,19 @@ function ouvrirFenetre() {
     fenetre.loadURL(adresse);
 }
 
-// Dictionnaire français embarqué, copié là où Chromium le cherche : pas de téléchargement chez Google.
-// ponytail : français seul ; embarquer les .bdic anglais, espagnol et allemand si les postes sont hors ligne.
-function installerDictionnaire() {
-    const nom = 'fr-FR-3-0.bdic';
-    const cible = path.join(app.getPath('userData'), 'Dictionaries', nom);
+// Dictionnaires embarqués des quatre langues, copiés là où Chromium les cherche :
+// le correcteur marche hors ligne, sans téléchargement chez Google.
+function installerDictionnaires() {
+    const source = path.join(RES_DIR, 'dictionnaires');
+    const dossier = path.join(app.getPath('userData'), 'Dictionaries');
     try {
-        if (fs.existsSync(cible)) return;
-        fs.mkdirSync(path.dirname(cible), { recursive: true });
-        fs.copyFileSync(path.join(RES_DIR, 'dictionnaires', nom), cible);
+        fs.mkdirSync(dossier, { recursive: true });
+        for (const nom of fs.readdirSync(source).filter((n) => n.endsWith('.bdic'))) {
+            const cible = path.join(dossier, nom);
+            if (!fs.existsSync(cible)) fs.copyFileSync(path.join(source, nom), cible);
+        }
     } catch (err) {
-        console.error('Dictionnaire non installé :', err.message);
+        console.error('Dictionnaires non installés :', err.message);
     }
 }
 
@@ -177,7 +179,7 @@ if (!app.requestSingleInstanceLock()) {
             if (!fs.existsSync(env)) fs.copyFileSync(path.join(APP_DIR, '.env-exemple'), env);
             const demarrage = await demarrerServeur();
             adresse = demarrage.adresse;
-            installerDictionnaire();
+            installerDictionnaires();
             ouvrirFenetre();
             if (demarrage.sansCle) avertirSansCle(env);
         } catch (err) {

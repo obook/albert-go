@@ -1,12 +1,12 @@
-# Dictionnaire du correcteur orthographique
+# Dictionnaires du correcteur orthographique
 
-`fr-FR-3-0.bdic` : dictionnaire français au format de Chromium, celui
-qu'Electron 33 télécharge d'ordinaire chez Google. `main.js` le copie
-au premier lancement dans le dossier `Dictionaries` du profil : le
-correcteur marche hors ligne et sans appel à un serveur tiers.
+Les quatre langues de l'interface, au format de Chromium : `fr-FR-3-0.bdic`,
+`en-US-10-1.bdic`, `es-ES-3-0.bdic` et `de-DE-3-0.bdic`. Electron les
+télécharge d'ordinaire chez Google ; `main.js` les copie au premier lancement
+dans le dossier `Dictionaries` du profil : le correcteur marche hors ligne et
+sans appel à un serveur tiers.
 
-Les autres langues de l'interface (anglais, espagnol, allemand) se
-téléchargent encore à la demande.
-
-Source : dictionnaires Hunspell de Chromium (`hunspell_dictionaries.zip`
-des releases d'Electron). Français : Dicollecte, licence MPL 2.0.
+Source : dictionnaires Hunspell de Chromium (`hunspell_dictionaries.zip` de
+la release 44.8.0 d'Electron), avec leurs licences dans l'archive (`LICENSE`
+et `COPYING*`). Français : Dicollecte, licence MPL 2.0. Anglais : SCOWL.
+Allemand : de_DE_neu d'OpenOffice.org.
