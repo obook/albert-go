@@ -1,6 +1,6 @@
 # Déploiement
 
-Albert Go sur un poste de l'établissement (Raspberry Pi, Ubuntu).
+Albert Go sur un poste de l'établissement (Raspberry Pi, Ubuntu) ou sur une [clé USB](#clé-usb).
 
 ## Prérequis
 
@@ -24,7 +24,7 @@ nano .env
 |---|---|---|
 | `ALBERT_API_KEY` | vide | Clé API du serveur ; inutile en kiosque |
 | `ALBERT_KIOSQUE` | `non` | `oui` : l'enseignant ouvre une session de classe sur `/kiosque` avec sa clé |
-| `ALBERT_PORT` | `8913` | Port du serveur |
+| `ALBERT_PORT` | `8913` | Port du serveur ; s'il est occupé, l'un des neuf suivants |
 | `ALBERT_HTTPS` | `non` | `oui` : certificat auto-signé, avertissement du navigateur à la première visite |
 | `ALBERT_MISE_A_JOUR` | `oui` | `git pull` à chaque démarrage ; `non` fige la version |
 
@@ -77,11 +77,22 @@ sudo nmcli connection modify "Nom_du_WiFi" wifi-sec.psk-flags 0 wifi-sec.psk "MO
 
 `/etc/NetworkManager/system-connections/Nom_du_WiFi.nmconnection` doit contenir `psk-flags=0`.
 
+## Clé USB
+
+Les [releases](https://forge.apps.education.fr/booklageolivier/albert-go/-/releases) fournissent Albert Go avec son serveur et Python, sans installation :
+
+- Linux : `chmod +x Albert-Go-*-linux.AppImage`, puis la lancer (`--kiosque` pour le kiosque).
+- Windows : décompresser l'archive, puis lancer `Albert Go.exe`.
+
+Au premier lancement, un dossier `data/` apparaît à côté de l'application, avec le `.env` à compléter (réglages ci-dessus, sauf `ALBERT_MISE_A_JOUR`). La clé sert dès qu'elle est enregistrée ; kiosque, port et HTTPS demandent de relancer l'application.
+
+La CI fabrique les paquets sur un tag `vX.Y.Z` (jobs `paquet-linux` et `paquet-windows`). En local, dans `standalone/` : Python comme dans `paquet-linux`, puis `npm ci` et `npm run build -- --linux AppImage` ; `npm start` lance l'application depuis le dépôt.
+
 ## Dépannage
 
 | Symptôme | Cause et remède |
 |---|---|
 | Rien au démarrage | `crontab -l` doit montrer la ligne `@reboot` ; lancer `./deploiement/demarrage.sh` à la main et lire le journal |
-| `le port 8913 est déjà utilisé` dans le journal | Un autre serveur occupe le port : `redemarrage.sh`, ou changer `ALBERT_PORT` |
+| `les ports 8913 à 8922 sont déjà utilisés` dans le journal | D'autres serveurs occupent les ports : `redemarrage.sh`, ou changer `ALBERT_PORT` |
 | `git pull a échoué` dans le journal | Fichier modifié sur place : `git status`, puis `git checkout -- <fichier>` |
 | `Pas de réseau après 60 s` | Voir "WiFi sans ouverture de session" |
