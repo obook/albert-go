@@ -84,7 +84,7 @@ Les [releases](https://forge.apps.education.fr/booklageolivier/albert-go/-/relea
 - Linux : `chmod +x Albert-Go-*-linux.AppImage`, puis la lancer (`--kiosque` pour le kiosque).
 - Windows : décompresser l'archive, puis lancer `Albert Go.exe`.
 
-Au premier lancement, un dossier `data/` apparaît à côté de l'application, avec le `.env` à compléter (réglages ci-dessus, sauf `ALBERT_MISE_A_JOUR`). La clé sert dès qu'elle est enregistrée ; kiosque, port et HTTPS demandent de relancer l'application.
+La configuration est le `.env` à côté de l'application, créé au premier lancement s'il manque (réglages ci-dessus, sauf `ALBERT_MISE_A_JOUR`). La clé sert dès qu'elle est enregistrée ; kiosque, port et HTTPS demandent de relancer l'application.
 
 La CI fabrique les paquets sur un tag `vX.Y.Z` (jobs `paquet-linux` et `paquet-windows`). En local, dans `standalone/` : Python comme dans `paquet-linux`, puis `npm ci` et `npm run build -- --linux AppImage` ; `npm start` lance l'application depuis le dépôt.
 

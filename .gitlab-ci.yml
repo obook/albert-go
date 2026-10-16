@@ -82,7 +82,7 @@ release:
       - Linux : rendre l'AppImage exécutable, puis la lancer.
       - Windows : décompresser l'archive, puis lancer Albert Go.exe.
 
-      Au premier lancement, un dossier data/ apparaît à côté de l'application : coller la clé API dans data/.env, ou y activer le kiosque (ALBERT_KIOSQUE=oui).
+      La configuration est le fichier .env à côté de l'application, créé au premier lancement s'il manque : y coller la clé API, ou y activer le kiosque (ALBERT_KIOSQUE=oui).
     assets:
       links:
         - name: Albert Go Linux x64 (AppImage)

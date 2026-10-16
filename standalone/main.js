@@ -14,10 +14,9 @@ const isWin = process.platform === 'win32';
 // Python, dictionnaire, et serveur avec sa page (copiés par prebuild.js) ; hors paquet, le dépôt.
 const RES_DIR = app.isPackaged ? process.resourcesPath : __dirname;
 const APP_DIR = app.isPackaged ? path.join(RES_DIR, 'albert-go') : path.join(__dirname, '..');
-// Configuration (data/.env) à côté de l'AppImage ou du .exe.
-const EXE_DIR = process.env.APPIMAGE ? path.dirname(process.env.APPIMAGE)
-    : app.isPackaged ? path.dirname(process.execPath) : __dirname;
-const DATA_DIR = path.join(EXE_DIR, 'data');
+// .env à côté de l'AppImage ou du .exe ; hors paquet, celui du dépôt.
+const CONFIG_DIR = process.env.APPIMAGE ? path.dirname(process.env.APPIMAGE)
+    : app.isPackaged ? path.dirname(process.execPath) : APP_DIR;
 
 let serveur = null;
 let fenetre = null;
@@ -39,7 +38,7 @@ function demarrerServeur() {
         if (process.argv.includes('--kiosque')) args.push('--kiosque');
         serveur = spawn(python(), args, {
             cwd: APP_DIR,
-            env: { ...process.env, ALBERT_PORTABLE_DIR: DATA_DIR, PYTHONDONTWRITEBYTECODE: '1' },
+            env: { ...process.env, ALBERT_PORTABLE_DIR: CONFIG_DIR, PYTHONDONTWRITEBYTECODE: '1' },
             windowsHide: true,
         });
         let sortie = '';
@@ -172,9 +171,8 @@ if (!app.requestSingleInstanceLock()) {
 
     app.whenReady().then(async () => {
         try {
-            fs.mkdirSync(DATA_DIR, { recursive: true });
             // Premier lancement : le modèle commenté, où coller la clé API.
-            const env = path.join(DATA_DIR, '.env');
+            const env = path.join(CONFIG_DIR, '.env');
             if (!fs.existsSync(env)) fs.copyFileSync(path.join(APP_DIR, '.env-exemple'), env);
             adresse = await demarrerServeur();
             installerDictionnaire();
