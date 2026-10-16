@@ -29,6 +29,10 @@ Ce qui reste à faire, du plus simple au plus long. Le détail des failles est d
 - Stockage : passer à IndexedDB (directement ou avec Dexie) ou à OPFS si le quota du localStorage gêne ou pour garder images et PDF avec les conversations. OPFS n'écrit hors d'un worker que depuis Safari 26.
 - Mineurs connus : un élément de liste qui commence par un bloc de code ou une image perd son numéro dans le fichier exporté ; le refus d'un fichier ne dit pas lequel ; les grands opérateurs d'une équation Word ne grandissent pas avec leur contenu.
 
+## Serveur
+
+- Niveau et matière (MR 2 du plan de fusion avec l'atelier) : choix dans le volet, consigne du serveur avec les extraits des programmes du BO dans `programmes/`.
+
 ## Interface
 
 - Grand écran : le titre de la conversation dans le bouton du volet, comme sur L'Assistant de la DINUM. Le titre existe déjà (`Albert.libelleConversation`).
