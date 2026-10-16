@@ -16,7 +16,7 @@ Le mode d'emploi est dans la notice : [docs/documentation.pdf](docs/documentatio
 ./local.sh                # http://localhost:8913, ouvre le navigateur
 ./local.sh --no-browser   # sans ouvrir le navigateur
 ./local.sh --ssl          # HTTPS, certificat auto-signé
-./local.sh --kiosque      # kiosque (ALBERT_KIOSQUE=oui dans .env)
+./local.sh --kiosque      # kiosque : un poste maître, des postes invités (ALBERT_KIOSQUE=oui dans .env)
 ```
 
 ```bash
