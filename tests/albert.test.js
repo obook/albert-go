@@ -745,7 +745,12 @@ test('messageErreur : session terminée, retour à la connexion', () => {
         assert.strictEqual(location.href, '/');
         assert.match(Albert.messageErreur(401, { detail: 'x', kiosque: 'terminee' }), /La session est terminée/);
         assert.strictEqual(location.href, '/kiosque?erreur=terminee');
+        /* L'invité lit un message seul, sans le formulaire du prof. */
+        globalThis.SERVEUR = { kiosque: { role: 'eleve' } };
+        Albert.messageErreur(401, { detail: 'x', kiosque: 'terminee' });
+        assert.strictEqual(location.href, '/kiosque?terminee');
     } finally {
         delete globalThis.location;
+        delete globalThis.SERVEUR;
     }
 });

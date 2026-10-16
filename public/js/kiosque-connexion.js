@@ -2,7 +2,8 @@
  * kiosque-connexion.js
  * Page /kiosque : langue de l'interface, formulaire du prof ou de l'élève
  * (?token=... dans le lien partagé), message d'erreur renvoyé par le serveur,
- * ou message seul pour l'invité qui vient de quitter la session (?quittee).
+ * ou message seul pour l'invité qui a quitté la session (?quittee) ou dont la
+ * session est terminée (?terminee).
  *
  * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
  * Licence : GPL-3.0-or-later
@@ -22,9 +23,11 @@ const ERREURS_KIOSQUE = ['cle-requise', 'cle-refusee', 'aucune-session', 'code',
     I18n.definir(langue || I18n.defaut());
     I18n.appliquer();
     const params = new URLSearchParams(location.search);
-    if (params.has('quittee')) {
+    const fin = ['quittee', 'terminee'].find(f => params.has(f));
+    if (fin) {
         document.getElementById('kiosque-prof').hidden = true;
-        document.getElementById('kiosque-quittee').hidden = false;
+        document.getElementById('kiosque-fin').hidden = false;
+        document.getElementById('titre-fin').textContent = t('kiosque.' + fin);
         return;
     }
     const token = params.get('token');
