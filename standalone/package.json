@@ -39,6 +39,12 @@
       "signAndEditExecutable": false,
       "extraResources": [
         "python-win"
+      ],
+      "extraFiles": [
+        {
+          "from": "../.env-exemple",
+          "to": ".env-exemple"
+        }
       ]
     }
   },
