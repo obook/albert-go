@@ -2,7 +2,9 @@
  * albert.js
  * Client de l'API Albert.
  *
- * Toutes les requêtes passent par le serveur d'Albert Go (serveur/), qui ajoute la clé.
+ * Sur un serveur d'Albert Go (serveur/), les requêtes passent par lui et il ajoute
+ * sa clé. Sur Pages, sans serveur, elles passent par le relais n8n avec la clé de
+ * l'utilisateur : Albert ne gère pas CORS.
  * Aucun accès au DOM, pour pouvoir être testé sous Node (tests/albert.test.js).
  * Les textes visibles et ceux envoyés au modèle viennent de langues/*.js (t).
  * Utilisé par stockage.js, reglages.js, piece-jointe.js et app.js.
@@ -15,8 +17,58 @@
 'use strict';
 
 const Albert = {
-    /** Relais du serveur d'Albert Go, qui ajoute la clé. */
-    BASE: '/v1',
+    /** Version en ligne (Pages) : pas de serveur d'Albert Go pour écrire serveur.js. */
+    EN_LIGNE: typeof SERVEUR === 'undefined',
+
+    /** Clé de l'utilisateur, en ligne seulement (cle.js) ; un serveur garde la sienne. */
+    cle: null,
+
+    /** Relais n8n de la version en ligne. */
+    RELAIS: 'https://n8n.incubateur.education.gouv.fr/webhook/albert-go/v1',
+
+    /** Adresse publique de la version en ligne, affichée dans la boîte "Partager". */
+    URL_PUBLIQUE: 'https://booklageolivier.forge.apps.education.fr/albert-go/',
+
+    /* Même liste que allowedOrigins dans le workflow n8n. */
+    ORIGINES: ['https://booklageolivier.forge.apps.education.fr', 'http://localhost:8642'],
+
+    /** Attente avant de vérifier que le relais répond encore (via /stats). */
+    SONDE_MS: 10000,
+
+    /** Adresse des appels : le relais n8n en ligne, sinon le serveur d'Albert Go. */
+    get BASE() {
+        return this.EN_LIGNE ? this.RELAIS : '/v1';
+    },
+
+    /**
+     * Albert est joignable : par un serveur ou en ligne avec une clé.
+     *
+     * @returns {boolean} true si la page peut interroger Albert.
+     */
+    pret() {
+        return !this.EN_LIGNE || !!this.cle;
+    },
+
+    /**
+     * En-têtes d'une requête, avec la clé de l'utilisateur en ligne.
+     *
+     * @param {Object} [autres] - Autres en-têtes.
+     * @param {?string} [cle] - Clé à envoyer, celle enregistrée par défaut.
+     * @returns {Object} En-têtes de fetch.
+     */
+    entetes(autres = {}, cle = this.cle) {
+        return this.EN_LIGNE && cle ? { ...autres, 'Authorization': 'Bearer ' + cle } : autres;
+    },
+
+    /**
+     * Texte propre à la version en ligne s'il en existe un (clé suivie de -en-ligne).
+     *
+     * @param {string} cle - Clé du texte.
+     * @returns {string} Le texte traduit.
+     */
+    texte(cle) {
+        return t(this.EN_LIGNE ? cle + '-en-ligne' : cle);
+    },
 
     /** Délai maximal d'une réponse, en millisecondes. */
     DELAI_MS: 120000,
@@ -123,11 +175,13 @@ const Albert = {
     /**
      * Demande la liste des modèles à Albert.
      *
+     * @param {?string} [cle] - En ligne, clé à essayer ; celle enregistrée par défaut.
      * @returns {Promise<Object[]>} Les modèles de conversation, triés.
      * @throws {Error} Si Albert refuse la requête ; err.status donne le code HTTP.
      */
-    async modeles() {
+    async modeles(cle = this.cle) {
         const res = await fetch(this.BASE + '/models', {
+            headers: this.entetes({}, cle),
             signal: AbortSignal.timeout(20000)
         });
         const corps = await res.json().catch(() => null);
@@ -137,6 +191,24 @@ const Albert = {
             throw erreur;
         }
         return this.normaliserModeles((corps && corps.data) || []);
+    },
+
+    /**
+     * En ligne, appels sur 90 jours (clé acceptée par Albert), comptés par le relais.
+     *
+     * @returns {Promise<{total: number, parHeure: number}>} Somme des jours et moyenne horaire depuis le premier jour.
+     */
+    async appels() {
+        const res = await fetch(this.RELAIS.replace('/v1', '/stats'), { signal: AbortSignal.timeout(10000) });
+        if (!res.ok) {
+            throw new Error(res.status);
+        }
+        const jours = await res.json();
+        const total = Object.values(jours).reduce((n, jour) => n + jour.appels, 0);
+        /* ponytail: moyenne depuis minuit UTC du premier jour, compteur par heure si le rythme récent compte. */
+        const debut = Date.parse(Object.keys(jours).sort()[0] + 'T00:00:00Z');
+        const heures = Math.max(1, (Date.now() - debut) / 3600000);
+        return { total, parHeure: total ? total / heures : 0 };
     },
 
     /**
@@ -247,13 +319,28 @@ const Albert = {
      * @throws {Error} Si Albert refuse la requête, ou si elle est annulée.
      */
     async repondre(requete, annulation) {
-        const res = await fetch(this.BASE + '/chat/completions', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(this.plafonnee(requete)),
-            signal: AbortSignal.any([annulation, AbortSignal.timeout(this.DELAI_MS)])
-        });
-        const corps = await res.json().catch(() => null);
+        /* En ligne, relais bloqué : Scalingo ne rend son 504 sans CORS qu'après 60 s.
+           Si /stats ne répond pas non plus, inutile d'attendre. */
+        const sonde = new AbortController();
+        const minuterie = this.EN_LIGNE ? setTimeout(() => {
+            this.appels().catch(() => sonde.abort(new Error(this.texte('erreur.relais-hs'))));
+        }, this.SONDE_MS) : null;
+        let res, corps;
+        try {
+            res = await fetch(this.BASE + '/chat/completions', {
+                method: 'POST',
+                headers: this.entetes({ 'Content-Type': 'application/json' }),
+                body: JSON.stringify(this.plafonnee(requete)),
+                signal: AbortSignal.any([annulation, sonde.signal, AbortSignal.timeout(this.DELAI_MS)])
+            });
+            corps = await res.json().catch(() => null);
+        } finally {
+            clearTimeout(minuterie);
+        }
+        /* Sonde échouée pendant la lecture du corps, avalée par le catch du json. */
+        if (sonde.signal.aborted) {
+            throw sonde.signal.reason;
+        }
         if (!res.ok) {
             throw new Error(this.messageErreur(res.status, corps));
         }
@@ -374,6 +461,7 @@ const Albert = {
         formulaire.append('response_format', 'diarized_json');
         const res = await fetch(this.BASE + '/audio/transcriptions', {
             method: 'POST',
+            headers: this.entetes(),
             body: formulaire,
             signal: AbortSignal.any([annulation, AbortSignal.timeout(this.DELAI_MS)])
         });
@@ -1100,14 +1188,14 @@ const Albert = {
             return t('kiosque.terminee');
         }
         if (status === 401 || status === 403) {
-            return t('erreur.cle-refusee');
+            return this.texte('erreur.cle-refusee');
         }
         if (status === 429) {
             return t('erreur.quota');
         }
-        /* Le serveur répond 502 quand Albert ne répond pas. */
+        /* Le serveur répond 502 quand Albert ne répond pas ; en ligne, le reverse proxy répond seul quand n8n est arrêté. */
         if ([502, 503, 504].includes(status)) {
-            return t('erreur.relais-hs');
+            return this.texte('erreur.relais-hs');
         }
         const detail = corps && (typeof corps.detail === 'string' ? corps.detail : corps.message);
         if (!detail) {

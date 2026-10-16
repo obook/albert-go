@@ -55,7 +55,7 @@ function montrerBibliotheque() {
  */
 function placerBibliotheque() {
     /* Premier appel avant modules.js, qui déclare outilActuel. */
-    const projet = typeof outilActuel !== 'undefined' && !!Albert.OUTILS[outilActuel].sources;
+    const projet = Albert.pret() && typeof outilActuel !== 'undefined' && !!Albert.OUTILS[outilActuel].sources;
     $('ouvrir-bibliotheque').hidden = !projet;
     const volet = $('bibliotheque');
     const colonne = projet && COLONNE_SOURCES.matches && lire('bibliotheque-volet', null) !== 'replie';

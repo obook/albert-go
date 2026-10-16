@@ -2,7 +2,11 @@
 
 Chatbot minimal pour [Albert](https://ia.numerique.gouv.fr/outils-ia/albert-api/), l'IA de l'État portée par la DINUM.
 
-Albert Go tourne sur un serveur : un poste de l'établissement ou une clé USB (version autonome des [releases](https://forge.apps.education.fr/booklageolivier/albert-go/-/releases)). Le serveur garde la clé API et relaie les questions vers Albert.
+Albert Go s'utilise de trois façons :
+
+- en ligne, sur [Pages](https://booklageolivier.forge.apps.education.fr/albert-go/) : chacun saisit sa clé API, gardée dans le navigateur ; le relais n8n de l'incubateur de l'Éducation nationale transmet les questions à Albert ;
+- sur un poste de l'établissement : le serveur Python garde la clé API et relaie les questions vers Albert ;
+- sur une clé USB : la version autonome des [releases](https://forge.apps.education.fr/booklageolivier/albert-go/-/releases) embarque ce serveur et Python.
 
 ## Lancer le serveur
 
@@ -107,29 +111,32 @@ La page vise la conformité [RGAA](https://accessibilite.numerique.gouv.fr/). Au
 Audit interne et externe, modèle de menaces et plan d'action : [SECURITE.md](SECURITE.md).
 
 - Par défaut, les questions, les conversations, les documents et la bibliothèque de sources sont gardés dans `sessionStorage` et effacés après la fermeture de l'onglet (au chargement suivant). Interrupteur activé, ils restent dans `localStorage`, sans limite de durée.
-- La clé API reste sur le serveur (fichier `.env`) : la page ne la voit jamais, et le serveur ignore l'en-tête `Authorization` qu'elle enverrait.
+- Sur un serveur, la clé API reste dans le fichier `.env` : la page ne la voit jamais et le serveur ignore l'en-tête `Authorization` qu'elle enverrait.
+- En ligne, la clé saisie reste dans le navigateur, effacée à la fermeture de l'onglet sauf si l'utilisateur choisit de la garder. Elle ne part que vers le relais n8n, qui ne l'enregistre pas.
 - Le serveur relaie trois routes d'Albert seulement (`/v1/models`, `/v1/chat/completions`, `/v1/audio/transcriptions`), corps limité à 10 Mo, 16 Mo pour l'audio.
 - La page ne charge aucun script externe. Une politique CSP limite les connexions au serveur lui-même, aux moteurs de recherche, à Wikimedia Commons et aux services de l'État. Elle limite les scripts au site lui-même.
 - La page assainit le HTML tiré des réponses d'Albert avant de l'afficher : elle retire scripts, gestionnaires d'événements et liens `javascript:`.
 
 ## Fonctionnement
 
-La page passe par le serveur d'Albert Go, qui ajoute la clé et relaie la requête vers Albert.
+Sur un serveur, la page passe par lui : il ajoute la clé et relaie la requête vers Albert. Sur Pages, sans le `serveur.js` qu'écrit le serveur, la page envoie la clé de l'utilisateur au relais n8n (`public/js/albert.js`).
 
 ```
-Navigateur -> serveur d'Albert Go -> API Albert
+Serveur :  Navigateur -> serveur d'Albert Go -> API Albert
+En ligne : Navigateur -> relais n8n -> API Albert
 ```
 
 - `serveur/` : le serveur Python (relais, configuration, régulation du débit par modèle), repris de L'Atelier d'Albert.
-- `public/` : la page (HTML, CSS, JavaScript), servie par le serveur, avec les bibliothèques embarquées dans `public/vendor/`.
+- `public/` : la page (HTML, CSS, JavaScript), servie par le serveur ou publiée sur Pages, avec les bibliothèques embarquées dans `public/vendor/`.
 - `public/js/rendu/` : le rendu des réponses (schémas, courbes, images) et leur export : `export.js` parcourt la réponse affichée, `docx.js` et `odt.js` écrivent le fichier.
 - `public/js/tools/` : les outils proposés au modèle (calculs, jours ouvrés, recherche web, images de Commons, services de l'État).
-- `n8n/albert-proxy.json` : l'ancien relais n8n de la page en ligne, installation dans `n8n/README.md`.
+- `n8n/albert-proxy.json` : le relais n8n de la version en ligne, installation dans `n8n/README.md`.
 
 ## Développement
 
 ```bash
 ./local.sh     # lance le serveur sur http://localhost:8913 et ouvre le navigateur
+python3 -m http.server 8642 -d public    # la version en ligne, sans serveur (origine acceptée par le relais n8n)
 node --test    # tests de la page
 .venv/bin/python -m pytest    # tests du serveur (.venv créé par local.sh)
 node --test tests/ipad.webkit.js    # la page dans WebKit, le moteur de l'iPad (Playwright, voir l'en-tête du fichier)

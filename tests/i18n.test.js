@@ -90,10 +90,12 @@ test('accueil : chaque fichier d\'exemples a autant d\'exemples dans chaque lang
     }
 });
 
-test('aucun texte ne décrit l\'ancien relais n8n ni une clé gardée dans la page', () => {
+test('le relais n8n n\'apparaît que dans les textes de la version en ligne', () => {
+    /* Textes propres à la version en ligne (cle.js, Albert.appels, Albert.texte). */
+    const enLigne = /^(cle\.|info\.appels|toast\.relais-retabli$|erreur\.origine$)|-en-ligne$/;
     for (const langue of I18n.LANGUES) {
         const textes = I18n.TEXTES[langue];
-        const fautifs = Object.keys(textes).filter(c => /incubat|inkubator|n8n/i.test(textes[c]));
+        const fautifs = Object.keys(textes).filter(c => /incubat|inkubator|n8n/i.test(textes[c]) && !enLigne.test(c));
         assert.deepStrictEqual(fautifs, [], langue);
         assert.doesNotMatch(textes['partage.texte'], /clé|key|clave|schlüssel/i, langue);
     }

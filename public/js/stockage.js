@@ -76,7 +76,7 @@ if (window.top !== window.self) {
 }
 
 /* Données effacées à la fermeture de l'onglet en mode partagé. */
-const SENSIBLES = ['cle-recherche', 'historique', 'conversations', 'bibliotheque'];
+const SENSIBLES = ['cle', 'cle-recherche', 'historique', 'conversations', 'bibliotheque'];
 
 /** Mode partagé : clé, questions et conversations en sessionStorage. */
 let partage = false;
@@ -286,6 +286,11 @@ const reglages = {
     cx: lire('cx', Recherche.CX),
     cleRecherche: lire('cle-recherche', null)
 };
+
+/* En ligne, la clé de l'utilisateur ; un serveur garde la sienne. */
+if (Albert.EN_LIGNE) {
+    Albert.cle = lire('cle', null);
+}
 if (typeof Lecture !== 'undefined') {
     Lecture.enLigne = reglages.voixEnLigne;
 }

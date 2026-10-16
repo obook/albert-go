@@ -17,17 +17,83 @@
 let annulation = null;
 
 /**
+ * Message affiché quand le relais refuse l'origine de la page.
+ *
+ * @returns {{texte: string, lien: string}} Message et adresse du lien final.
+ */
+function messageOrigine() {
+    return {
+        texte: t('erreur.origine', { origine: location.origin }),
+        lien: Albert.URL_PUBLIQUE
+    };
+}
+
+/** Délai entre deux vérifications du relais en panne. */
+const RELAIS_MS = 30000;
+let relaisEnPanne = false;
+let minuteurRelais = null;
+
+/**
+ * Vérifie le relais jusqu'à sa reprise, puis l'annonce.
+ *
+ * Onglet caché : pas de requête, on attend son retour.
+ */
+function verifierRelais() {
+    clearTimeout(minuteurRelais);
+    if (document.hidden) {
+        minuteurRelais = setTimeout(verifierRelais, RELAIS_MS);
+        return;
+    }
+    Albert.appels().then(() => {
+        relaisEnPanne = false;
+        /* Pas pendant une réponse : la ligne d'état sert alors à l'attente. */
+        if ($('etat').textContent === Albert.texte('erreur.relais-hs')) {
+            etat(t('toast.relais-retabli'), false, true);
+        }
+        toast(t('toast.relais-retabli'));
+    }).catch(() => {
+        minuteurRelais = setTimeout(verifierRelais, RELAIS_MS);
+    });
+}
+
+/**
+ * Note la panne du relais et lance la surveillance, une seule fois.
+ */
+function signalerPanneRelais() {
+    if (!relaisEnPanne) {
+        relaisEnPanne = true;
+        minuteurRelais = setTimeout(verifierRelais, RELAIS_MS);
+    }
+}
+
+/**
  * Message d'erreur à afficher après un échec d'envoi.
  *
+ * Réseau coupé et CORS refusé donnent la même TypeError :
+ * le navigateur ne dit pas lequel.
+ *
+ * Le lien remplace l'adresse publique écrite en entier, trop longue pour
+ * l'écran d'un téléphone.
+ *
  * @param {Error} err - Erreur reçue.
- * @returns {{texte: string, lien: ?string}} Message, et adresse du lien final.
+ * @returns {{texte: string, lien: ?string}} Message et adresse du lien final.
  */
 function messageEchec(err) {
+    if (err instanceof TypeError && Albert.EN_LIGNE && !Albert.ORIGINES.includes(location.origin)) {
+        return messageOrigine();
+    }
     if (err instanceof TypeError) {
-        return { texte: t(navigator.onLine ? 'erreur.relais' : 'erreur.hors-ligne'), lien: null };
+        if (navigator.onLine && Albert.EN_LIGNE) {
+            signalerPanneRelais();
+        }
+        return { texte: navigator.onLine ? Albert.texte('erreur.relais') : t('erreur.hors-ligne'), lien: null };
     }
     if (err.name === 'TimeoutError') {
         return { texte: t('erreur.timeout'), lien: null };
+    }
+    /* Tous les échecs passent ici : c'est là qu'on repère la panne du relais. */
+    if (Albert.EN_LIGNE && err.message === Albert.texte('erreur.relais-hs')) {
+        signalerPanneRelais();
     }
     return { texte: err.message, lien: null };
 }
@@ -366,18 +432,38 @@ async function verifierVersion() {
 document.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'visible') {
         verifierVersion();
+        if (relaisEnPanne) {
+            verifierRelais();
+        }
     }
 });
 
 /* Démarrage. */
 verifierVersion();
+/* En ligne, relais vérifié en arrière-plan : la panne s'annonce avant la première question. */
+if (Albert.EN_LIGNE) {
+    Albert.appels().catch(() => {
+        etat(Albert.texte('erreur.relais-hs'), true);
+        toast(Albert.texte('erreur.relais-hs'));
+        signalerPanneRelais();
+    });
+}
 I18n.appliquer();
 afficherReglages();
 afficherTheme();
 afficherOutil();
 afficher();
+/* Origine refusée : le dire avant la saisie et fermer le champ, qui ne servirait à rien. */
+if (Albert.EN_LIGNE && !Albert.ORIGINES.includes(location.origin)) {
+    const origine = messageOrigine();
+    messageCle(origine.texte, true, origine.lien);
+    $('cle').disabled = true;
+    $('form-cle').querySelector('button[type="submit"]').disabled = true;
+}
 reprendreSources();
-rouvrirCourante();
+if (Albert.pret()) {
+    rouvrirCourante();
+}
 chargerModeles();
 
 /* Plus de service worker : une page servie depuis le cache masquerait le renvoi vers /kiosque.

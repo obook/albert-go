@@ -63,12 +63,16 @@ function afficherModeles() {
 }
 
 /**
- * Charge la liste réelle des modèles au démarrage. Serveur ou Albert
- * injoignable : la liste de secours reste.
+ * Charge la liste réelle des modèles au démarrage. Serveur, relais ou Albert
+ * injoignable : la liste de secours reste. En ligne, une clé refusée
+ * (révoquée, expirée) est effacée et l'écran de la clé revient.
  *
  * @returns {Promise<void>}
  */
 async function chargerModeles() {
+    if (!Albert.pret()) {
+        return;
+    }
     try {
         const liste = await Albert.modeles();
         if (!liste.length) {
@@ -78,8 +82,13 @@ async function chargerModeles() {
         afficherModeles();
         afficherReglages();
     } catch (err) {
-        /* Clé du serveur refusée : le dire ; injoignable : la liste de secours reste. */
         if (err.status === 401 || err.status === 403) {
+            if (Albert.cle) {
+                Albert.cle = null;
+                ecrire('cle', null);
+                afficher();
+                placerVolet();
+            }
             toast(err.message);
         }
     }
