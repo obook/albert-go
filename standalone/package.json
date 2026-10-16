@@ -14,7 +14,7 @@
   "build": {
     "appId": "fr.education.albert-go",
     "productName": "Albert Go",
-    "artifactName": "Albert-Go-${version}.${ext}",
+    "artifactName": "Albert-Go.${ext}",
     "copyright": "GPL-3.0-or-later",
     "files": [
       "main.js",
@@ -36,6 +36,7 @@
       ]
     },
     "win": {
+      "executableName": "Albert-Go",
       "icon": "../public/images/icone-512.png",
       "signExecutable": false,
       "extraResources": [

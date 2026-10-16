@@ -123,13 +123,13 @@ Chaque version d'Albert Go a un fichier par système, sur la page des versions :
 Téléchargez l'archive \code{Albert-Go-...-linux.zip}, décompressez-la, puis lancez l'AppImage dans le dossier obtenu. Si elle ne se lance pas, autorisez son exécution dans les propriétés du fichier ou dans un terminal ouvert dans ce dossier :
 
 \begin{plain_code}
-chmod +x Albert-Go-*.AppImage
-./Albert-Go-*.AppImage
+chmod +x Albert-Go.AppImage
+./Albert-Go.AppImage
 \end{plain_code}
 
 \subsection{Sous Windows}
 
-Téléchargez l'archive \code{Albert-Go-...-win64.zip}, décompressez-la (clic droit, \emph{Extraire tout}), puis lancez \texttt{Albert Go.exe} dans le dossier obtenu. Gardez le dossier entier : l'exécutable ne fonctionne pas sans les fichiers qui l'entourent.
+Téléchargez l'archive \code{Albert-Go-...-win64.zip}, décompressez-la (clic droit, \emph{Extraire tout}), puis lancez \texttt{Albert-Go.exe} dans le dossier obtenu. Gardez le dossier entier : l'exécutable ne fonctionne pas sans les fichiers qui l'entourent.
 
 L'exécutable n'est pas signé : si Windows affiche \emph{Windows a protégé votre ordinateur}, cliquez sur \emph{Informations complémentaires}, puis sur \emph{Exécuter quand même}.
 
@@ -142,7 +142,7 @@ Sous Linux, l'AppImage ne se lance pas depuis une clé USB formatée en FAT32 : 
 \section{Version autonome : premier lancement}
 \label{sec:lancement}
 
-Au premier lancement, Albert Go crée à côté de l'AppImage ou de \texttt{Albert Go.exe} le fichier \code{.env}, qui contient sa configuration. Ouvrez-le avec un éditeur de texte (Bloc-notes sous Windows), collez votre clé API après \code{ALBERT_API_KEY=}, puis enregistrez :
+Au premier lancement, Albert Go crée à côté de l'AppImage ou de \texttt{Albert-Go.exe} le fichier \code{.env}, qui contient sa configuration. Ouvrez-le avec un éditeur de texte (Bloc-notes sous Windows), collez votre clé API après \code{ALBERT_API_KEY=}, puis enregistrez :
 
 \begin{plain_code}
 ALBERT_API_KEY=votre_cle_api
