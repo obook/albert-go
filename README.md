@@ -42,6 +42,8 @@ En ligne : Navigateur -> relais n8n -> API Albert
 - `public/js/tools/` : les outils proposés au modèle (calculs, jours ouvrés, recherche web, images de Commons, services de l'État).
 - `n8n/albert-proxy.json` : le relais n8n de la version en ligne, installation dans `n8n/README.md`.
 
+Albert Go est un harnais agentique limité : dans Discussion, le modèle choisit un outil, la page l'exécute et lui rend le résultat, deux tours au plus (`public/js/tools/recherche/outils-modele.js`). Les outils, activés dans Réglages, lisent ou calculent sans rien modifier.
+
 ## Développement
 
 ```bash
