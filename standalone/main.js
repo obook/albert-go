@@ -11,6 +11,8 @@ const path = require('path');
 const fs = require('fs');
 
 const isWin = process.platform === 'win32';
+// Sous Linux, Chromium ne lit les voix de speech-dispatcher (Piper...) qu'avec cette option.
+if (process.platform === 'linux') app.commandLine.appendSwitch('enable-speech-dispatcher');
 // Python, dictionnaires et serveur avec sa page (copiés par prebuild.js) ; hors paquet, le dépôt.
 const RES_DIR = app.isPackaged ? process.resourcesPath : __dirname;
 const APP_DIR = app.isPackaged ? path.join(RES_DIR, 'albert-go') : path.join(__dirname, '..');
