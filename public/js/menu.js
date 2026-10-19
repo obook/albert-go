@@ -179,11 +179,13 @@ $('principal').addEventListener('click', () => {
  * Le QR code est calculé dans le navigateur (vendor/qrcode-generator).
  */
 function ouvrirPartage() {
-    /* En kiosque, l'adresse réseau du serveur (cartes physiques d'abord) et le lien élève.
-       Sinon l'adresse publique : hors kiosque, le serveur refuse les autres postes. */
+    /* Serveur : son adresse réseau (cartes physiques d'abord) et, en kiosque, le lien élève.
+       En ligne, et pour l'application ou la clé USB hors kiosque (le serveur refuse alors
+       les autres postes), l'adresse publique. */
     const base = Serveur.adresses[0] || location.origin;
+    const portable = Serveur.portable && !Kiosque;
     let adresse = base + '/';
-    if (Albert.EN_LIGNE || !Kiosque) {
+    if (Albert.EN_LIGNE || portable) {
         adresse = Albert.URL_PUBLIQUE;
     } else if (Kiosque && Kiosque.token) {
         adresse = base + '/kiosque?token=' + encodeURIComponent(Kiosque.token);
@@ -193,8 +195,8 @@ function ouvrirPartage() {
         texte = t('partage.texte-en-ligne');
     } else if (Kiosque && Kiosque.code) {
         texte = t('kiosque.partage', { code: Kiosque.code });
-    } else if (!Albert.EN_LIGNE) {
-        /* Hors kiosque, le lien ne mène pas à ce serveur : le dire. */
+    } else if (portable) {
+        /* Le lien ne mène pas à cette application : le dire. */
         texte = t('partage.en-ligne');
     }
     $('texte-partage').textContent = texte;

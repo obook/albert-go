@@ -35,18 +35,31 @@ def test_routes_relayees(client, albert):
     assert [r["chemin"] for r in albert.recues] == ["/v1/models", "/v1/chat/completions"]
 
 
-def test_autre_poste_refuse_hors_kiosque(client, albert):
+def _adresse_reseau(client):
+    """Adresse réseau du serveur de test : en s'y joignant, il voit un poste distant."""
     from serveur.serveur import adresses_locales
     ips = adresses_locales()
     if not ips:
         pytest.skip("aucune adresse réseau")
-    # Le serveur se joint lui-même par son adresse réseau : il voit un poste distant.
-    reponse = httpx.get(f"http://{ips[0]}:{client.base_url.port}/v1/models", timeout=5)
+    return f"http://{ips[0]}:{client.base_url.port}"
+
+
+def test_portable_refuse_les_autres_postes(client, albert, monkeypatch):
+    from serveur import config
+    monkeypatch.setattr(config, "MODE", "portable")
+    reponse = httpx.get(_adresse_reseau(client) + "/v1/models", timeout=5)
     assert reponse.status_code == 403
     assert reponse.json()["reseau"] == "refuse"
     assert albert.recues == []
     # La page reste servie : l'autre poste lit le message d'erreur.
-    assert httpx.get(f"http://{ips[0]}:{client.base_url.port}/", timeout=5).status_code == 200
+    assert httpx.get(_adresse_reseau(client) + "/", timeout=5).status_code == 200
+
+
+def test_serveur_partage_sert_le_reseau(client, albert, monkeypatch):
+    from serveur import config
+    monkeypatch.setattr(config, "MODE", "dépôt")
+    assert httpx.get(_adresse_reseau(client) + "/v1/models", timeout=5).status_code == 200
+    assert albert.recues[0]["auth"] == "Bearer sk-serveur"
 
 
 def test_route_inconnue_404(client, albert):
