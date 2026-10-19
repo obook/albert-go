@@ -193,7 +193,7 @@ html { touch-action: manipulation; }
 body {
     margin: 0;
     display: grid;
-    /* En-tête, bandeau du kiosque et langues de Traduire (lignes vides si masqués), conversation, saisie. */
+    /* Bandeau du kiosque, en-tête et langues de Traduire (lignes vides si masqués), conversation, saisie. */
     grid-template-rows: auto auto auto minmax(0, 1fr) auto;
     /* Jamais plus large que l'écran, même avec un texte agrandi. */
     grid-template-columns: minmax(0, 1fr);
@@ -205,8 +205,8 @@ body {
 }
 
 /* Place fixe dans la grille : une ligne masquée ne décale pas les autres. */
-.entete { grid-row: 1; }
-.bandeau-kiosque { grid-row: 2; }
+.bandeau-kiosque { grid-row: 1; }
+.entete { grid-row: 2; }
 .barre-langues { grid-row: 3; }
 main { grid-row: 4; }
 .saisie-zone { grid-row: 5; }

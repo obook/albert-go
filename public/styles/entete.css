@@ -417,12 +417,14 @@ input.recherche-historique {
     }
     body:has(> #menu[open]) { --colonne-menu: 20rem; }
     body, .entete { background: var(--fond-conversation); }
-    .entete, .bandeau-kiosque, .barre-langues, main, .saisie-zone { grid-column: 2; }
+    .entete, .barre-langues, main, .saisie-zone { grid-column: 2; }
+    /* Bandeau du kiosque au-dessus de tout, volets compris. */
+    .bandeau-kiosque { grid-column: 1 / -1; }
     .entete { border-bottom-color: transparent; }
     .volet:not(.volet-droit) {
         position: static;
         grid-column: 1;
-        grid-row: 1 / -1;
+        grid-row: 2 / -1;
         /* Largeur fixe calée à droite : c'est la colonne qui le fait glisser. */
         width: 20rem;
         max-width: none;
@@ -463,7 +465,7 @@ input.recherche-historique {
     .volet-droit {
         position: static;
         grid-column: 3;
-        grid-row: 1 / -1;
+        grid-row: 2 / -1;
         width: 20rem;
         max-width: none;
         background: var(--fond-volet);

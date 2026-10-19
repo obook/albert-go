@@ -126,7 +126,7 @@ if (typeof document !== 'undefined' && Kiosque) {
         partager.textContent = t('menu.partager');
         partager.addEventListener('click', () => ouvrirPartage());
         bandeau.append(t('kiosque.bandeau', { code: Kiosque.code }), partager);
-        document.querySelector('.entete').after(bandeau);
+        document.querySelector('.entete').before(bandeau);
     }
 
     $('deconnexion-kiosque').hidden = false;
