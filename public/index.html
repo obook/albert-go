@@ -682,6 +682,29 @@
         </form>
     </dialog>
 
+    <dialog id="cle-absente"
+            class="reglages pico"
+            aria-labelledby="titre-cle-absente"
+            aria-describedby="texte-cle-absente">
+        <form method="dialog">
+            <h2 id="titre-cle-absente" data-t="cle-absente.titre"></h2>
+            <p id="texte-cle-absente"></p>
+            <div class="boutons-dialogue">
+                <button type="submit"
+                        value="plus-tard"
+                        class="bouton-texte outline"
+                        data-t="cle-absente.plus-tard"></button>
+                <button type="submit"
+                        id="ouvrir-env"
+                        value="ouvrir"
+                        class="bouton-principal"
+                        autofocus
+                        hidden
+                        data-t="cle-absente.ouvrir"></button>
+            </div>
+        </form>
+    </dialog>
+
     <dialog id="confirmer-suppression"
             class="reglages pico"
             aria-labelledby="titre-confirmer-suppression"

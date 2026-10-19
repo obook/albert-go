@@ -465,6 +465,18 @@ if (Albert.pret()) {
     rouvrirCourante();
 }
 chargerModeles();
+/* Serveur sans clé : le dire dès l'ouverture plutôt qu'à la première question.
+   Le bouton d'ouverture du .env n'existe que dans l'application (standalone/preload.js). */
+if (Serveur.cleAbsente) {
+    $('texte-cle-absente').textContent = t('cle-absente.texte', { chemin: Serveur.cleAbsente });
+    $('ouvrir-env').hidden = !window.Application;
+    $('cle-absente').addEventListener('close', () => {
+        if ($('cle-absente').returnValue === 'ouvrir') {
+            window.Application.ouvrirEnv();
+        }
+    });
+    $('cle-absente').showModal();
+}
 
 /* Plus de service worker : une page servie depuis le cache masquerait le renvoi vers /kiosque.
    Un navigateur qui en garde un d'une ancienne version le retire. */

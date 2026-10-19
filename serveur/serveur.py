@@ -16,7 +16,7 @@ import sys
 import urllib.parse
 from urllib.parse import parse_qs, urlencode
 
-from serveur import certificat, kiosque, relais
+from serveur import certificat, config, kiosque, relais
 
 RACINE = os.path.realpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir, "public"))
 ROUTES = {
@@ -212,7 +212,13 @@ class Gestionnaire(http.server.BaseHTTPRequestHandler):
             session = dict(kiosque.infos_enseignant() or {}, role=role)
         elif role == "eleve":
             session = {"role": role, "reglages": kiosque.reglages()}
-        donnees = {"adresses": [f"{protocole}://{ip}:{port}" for ip in self.server.adresses], "kiosque": session}
+        donnees = {
+            "adresses": [f"{protocole}://{ip}:{port}" for ip in self.server.adresses],
+            "kiosque": session,
+            "portable": config.MODE == "portable",
+            # Fichier où coller la clé, si elle manque ; relu à chaque page, la clé ajoutée compte sans redémarrage.
+            "cleAbsente": None if self.server.kiosque or config.load_config()["api_key"] else config.chemin_config(),
+        }
         texte = "var SERVEUR = " + json.dumps(donnees, ensure_ascii=False).replace("</", "<\\/") + ";\n"
         contenu = texte.encode("utf-8")
         self.send_response(200)
