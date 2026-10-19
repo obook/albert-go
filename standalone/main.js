@@ -31,8 +31,7 @@ function python() {
     return fs.existsSync(venv) ? venv : (isWin ? 'python' : 'python3');
 }
 
-// Résout à la fin de la bannière du serveur avec son adresse et l'absence de clé,
-// rejette s'il s'arrête avant.
+// Résout à la fin de la bannière du serveur avec son adresse, rejette s'il s'arrête avant.
 function demarrerServeur() {
     return new Promise((resolve, reject) => {
         const args = ['-m', 'serveur', '--no-browser'];
@@ -47,7 +46,7 @@ function demarrerServeur() {
             process.stdout.write(d);
             sortie += d;
             const local = sortie.match(/Local\s*: (\S+)/);
-            if (local && sortie.includes('Ctrl+C')) resolve({ adresse: local[1], sansCle: sortie.includes('Aucune clé API') });
+            if (local && sortie.includes('Ctrl+C')) resolve(local[1]);
         });
         serveur.stderr.on('data', (d) => {
             process.stderr.write(d);
@@ -177,31 +176,16 @@ if (!app.requestSingleInstanceLock()) {
             // Premier lancement : le modèle commenté, où coller la clé API.
             const env = path.join(CONFIG_DIR, '.env');
             if (!fs.existsSync(env)) fs.copyFileSync(path.join(APP_DIR, '.env-exemple'), env);
-            const demarrage = await demarrerServeur();
-            adresse = demarrage.adresse;
+            adresse = await demarrerServeur();
             installerDictionnaires();
+            // Bouton de la boîte "Aucune clé API" de la page ; chemin fixe, rien n'est pris de la page.
+            ipcMain.on('ouvrir-env', () => shell.openPath(env));
             ouvrirFenetre();
-            if (demarrage.sansCle) avertirSansCle(env);
         } catch (err) {
             arreterServeur();
             dialog.showErrorBox('Albert Go ne démarre pas', err.message);
             app.quit();
         }
-    });
-}
-
-// Clé absente du .env, hors kiosque : le dire dès l'ouverture plutôt qu'à la première question.
-function avertirSansCle(env) {
-    dialog.showMessageBox(fenetre, {
-        type: 'warning',
-        title: 'Albert Go',
-        message: 'Aucune clé API',
-        detail: `Collez votre clé Albert API après ALBERT_API_KEY= dans ${env}, puis enregistrez : Albert Go la prend sans redémarrer.`,
-        buttons: ['Ouvrir le fichier .env', 'Plus tard'],
-        defaultId: 0,
-        cancelId: 1,
-    }).then(({ response }) => {
-        if (response === 0) shell.openPath(env);
     });
 }
 

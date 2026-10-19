@@ -1,10 +1,13 @@
-// Zoom à la molette et langue du correcteur, transmis à main.js.
+// Zoom à la molette, langue du correcteur et ouverture du .env, transmis à main.js.
 //
 // Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
 // Licence : GPL-3.0-or-later
 'use strict';
 
-const { ipcRenderer } = require('electron');
+const { contextBridge, ipcRenderer } = require('electron');
+
+// Boîte "Aucune clé API" de la page (app.js) : ouvre le .env dans l'éditeur du système.
+contextBridge.exposeInMainWorld('Application', { ouvrirEnv: () => ipcRenderer.send('ouvrir-env') });
 
 window.addEventListener('wheel', (e) => {
     if (!e.ctrlKey) return;
