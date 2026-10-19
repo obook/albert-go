@@ -138,6 +138,13 @@ const Lecture = {
     /** Autorise les voix en ligne (réglage de l'utilisateur). */
     enLigne: false,
 
+    /**
+     * Firefox n'a pas de voix en ligne à lui : toutes viennent du système. Sous Linux, il
+     * déclare pourtant celles de speech-dispatcher en ligne (Piper compris).
+     * ponytail: user-agent falsifiable, et un moteur distant branché sur speech-dispatcher passerait.
+     */
+    firefox: typeof navigator !== 'undefined' && /Firefox\//.test(navigator.userAgent),
+
     /** Bouton de la lecture en cours, ou null. */
     _bouton: null,
 
@@ -248,7 +255,7 @@ const Lecture = {
         /* Les navigateurs écrivent "ru-RU" ou "ru_RU". */
         const deLaLangue = speechSynthesis.getVoices()
             .filter(v => v.lang.toLowerCase().replace('_', '-').split('-')[0] === langue);
-        const locales = deLaLangue.filter(v => v.localService);
+        const locales = deLaLangue.filter(v => v.localService || this.firefox);
         /* eSpeak en dernier : sa voix est peu naturelle. */
         const locale = locales.find(v => !/espeak/i.test(v.name)) || locales[0];
         if (locale) {

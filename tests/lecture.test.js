@@ -64,6 +64,17 @@ test('voix : locale d\'abord, en ligne seulement si autorisée', () => {
     delete global.speechSynthesis;
 });
 
+test('voix : dans Firefox, une voix système déclarée en ligne sert sans le réglage', () => {
+    const piper = { name: 'Piper', lang: 'fr_FR', localService: false };
+    global.speechSynthesis = { getVoices: () => [piper] };
+    Lecture.enLigne = false;
+    Lecture.firefox = true;
+    assert.strictEqual(Lecture.voix(), piper);
+    Lecture.firefox = false;
+    assert.strictEqual(Lecture.voix(), null);
+    delete global.speechSynthesis;
+});
+
 test('voix : langue demandée, "ru-RU" comme "ru_RU", jamais une voix française pour du russe', () => {
     const francaise = { name: 'Piper fr', lang: 'fr-FR', localService: true };
     const russe = { name: 'Piper ru', lang: 'ru_RU', localService: true };
