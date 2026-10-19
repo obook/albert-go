@@ -19,7 +19,7 @@ I18n.TEXTES.en = {
     'menu.nouvelle': 'New conversation',
     'menu.outils': 'Tools',
     'kiosque.ouvrir-titre': 'Open a session',
-    'kiosque.ouvrir-texte': 'Enter your Albert API key. Your guests join the session with a code, without seeing the key.',
+    'kiosque.ouvrir-texte': 'Enter your Albert API key. Your guests join the kiosk session with a code, without seeing the key.',
     'kiosque.cle': 'Albert API key',
     'kiosque.duree': 'Session length',
     'kiosque.duree-1h': '1 hour',
@@ -38,7 +38,7 @@ I18n.TEXTES.en = {
     'kiosque.erreur.code': 'Wrong code.',
     'kiosque.erreur.action': 'Unknown request.',
     'kiosque.erreur.terminee': 'Session ended.',
-    'kiosque.bandeau': 'Session open: code {code}.',
+    'kiosque.bandeau': 'Kiosk session: code {code}.',
     'kiosque.partage': 'Guests scan the QR code, then enter the code {code}.',
     'kiosque.deconnexion': 'Leave the session',
     'kiosque.terminee': 'The session has ended.',
@@ -297,6 +297,7 @@ I18n.TEXTES.en = {
     'info.intro': 'Albert Go lets you chat with the artificial intelligence models of the French interministerial digital directorate (<a href="https://ia.numerique.gouv.fr/outils-ia/albert-api/" target="_blank" rel="noopener noreferrer">DINUM</a>) using your API key.',
     'info.donnees': 'Your data',
     'info.donnees.relais': 'Your questions go through the Albert Go server, which holds the key, then on to Albert API.',
+    'info.donnees.relais-en-ligne': 'Your questions and your key go through the Éducation nationale incubator relay, which does not store them, then on to Albert API.',
     'info.donnees.relais-portable': 'Your questions go to Albert API; the application keeps the key.',
     'info.donnees.traceurs': 'No account, no cookie, no library loaded from a third-party site. Internet tools are called only if you allow them.',
     'info.clavier': 'Keyboard',
@@ -440,6 +441,7 @@ I18n.TEXTES.en = {
 
     /* Errors. */
     'erreur.cle-refusee': 'Server key refused by Albert: check ALBERT_API_KEY in the .env file.',
+    'erreur.poste-distant': 'This server\'s key only works on the computer running it. For a class, open a kiosk session.',
     'erreur.cle-refusee-en-ligne': 'Key refused by Albert. Check it or change it.',
     'erreur.quota': 'Quota reached. Try again in a minute.',
     'erreur.reponse-illisible': 'Unreadable answer from Albert. Try again.',

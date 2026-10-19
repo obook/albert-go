@@ -2,6 +2,9 @@
 
 import http.client
 
+import httpx
+import pytest
+
 
 def test_page_servie(client):
     reponse = client.get("/")
@@ -30,6 +33,20 @@ def test_routes_relayees(client, albert):
     assert client.get("/v1/models").status_code == 200
     assert client.post("/v1/chat/completions", json={"model": "m"}).status_code == 200
     assert [r["chemin"] for r in albert.recues] == ["/v1/models", "/v1/chat/completions"]
+
+
+def test_autre_poste_refuse_hors_kiosque(client, albert):
+    from serveur.serveur import adresses_locales
+    ips = adresses_locales()
+    if not ips:
+        pytest.skip("aucune adresse réseau")
+    # Le serveur se joint lui-même par son adresse réseau : il voit un poste distant.
+    reponse = httpx.get(f"http://{ips[0]}:{client.base_url.port}/v1/models", timeout=5)
+    assert reponse.status_code == 403
+    assert reponse.json()["reseau"] == "refuse"
+    assert albert.recues == []
+    # La page reste servie : l'autre poste lit le message d'erreur.
+    assert httpx.get(f"http://{ips[0]}:{client.base_url.port}/", timeout=5).status_code == 200
 
 
 def test_route_inconnue_404(client, albert):

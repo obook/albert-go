@@ -217,6 +217,10 @@ test('messageErreur : clé refusée', () => {
     assert.match(Albert.messageErreur(401, { detail: 'Not authenticated' }), /Clé du serveur refusée/);
 });
 
+test('messageErreur : autre poste refusé par le serveur hors kiosque', () => {
+    assert.match(Albert.messageErreur(403, { detail: 'x', reseau: 'refuse' }), /session kiosque/);
+});
+
 test('messageErreur : quota', () => {
     assert.match(Albert.messageErreur(429, null), /Quota/);
 });

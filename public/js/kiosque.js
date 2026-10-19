@@ -17,11 +17,6 @@
 const Serveur = typeof SERVEUR !== 'undefined' ? SERVEUR : { adresses: [], kiosque: null };
 const Kiosque = Serveur.kiosque;
 
-/* Application standalone : pas de serveur distant, la clé reste sur le poste. */
-if (Serveur.portable) {
-    document.querySelector('[data-t="info.donnees.relais"]').dataset.t = 'info.donnees.relais-portable';
-}
-
 /** Réglages que le prof donne à ses élèves comme valeurs de départ. */
 const REGLAGES_PARTAGES = ['modele', 'temperature', 'topK', 'echanges', 'recherche', 'calcul', 'tirage', 'calendrier', 'compteur', 'fournisseurs'];
 

@@ -1190,6 +1190,10 @@ const Albert = {
             }
             return t('kiosque.terminee');
         }
+        /* Serveur hors kiosque appelé depuis un autre poste (serveur/serveur.py). */
+        if (status === 403 && corps && corps.reseau === 'refuse') {
+            return t('erreur.poste-distant');
+        }
         if (status === 401 || status === 403) {
             return this.texte('erreur.cle-refusee');
         }

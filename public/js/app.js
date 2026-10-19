@@ -448,6 +448,10 @@ if (Albert.EN_LIGNE) {
         signalerPanneRelais();
     });
 }
+/* "À propos" : la clé passe par le relais n8n en ligne, reste sur le poste dans l'application standalone. */
+if (Albert.EN_LIGNE || Serveur.portable) {
+    document.querySelector('[data-t="info.donnees.relais"]').dataset.t = Albert.EN_LIGNE ? 'info.donnees.relais-en-ligne' : 'info.donnees.relais-portable';
+}
 I18n.appliquer();
 afficherReglages();
 afficherTheme();

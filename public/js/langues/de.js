@@ -19,7 +19,7 @@ I18n.TEXTES.de = {
     'menu.nouvelle': 'Neues Gespräch',
     'menu.outils': 'Werkzeuge',
     'kiosque.ouvrir-titre': 'Sitzung öffnen',
-    'kiosque.ouvrir-texte': 'Geben Sie Ihren Albert-API-Schlüssel ein. Ihre Gäste treten der Sitzung mit einem Code bei, ohne den Schlüssel zu sehen.',
+    'kiosque.ouvrir-texte': 'Geben Sie Ihren Albert-API-Schlüssel ein. Ihre Gäste treten der Kiosk-Sitzung mit einem Code bei, ohne den Schlüssel zu sehen.',
     'kiosque.cle': 'Albert-API-Schlüssel',
     'kiosque.duree': 'Dauer der Sitzung',
     'kiosque.duree-1h': '1 Stunde',
@@ -38,7 +38,7 @@ I18n.TEXTES.de = {
     'kiosque.erreur.code': 'Falscher Code.',
     'kiosque.erreur.action': 'Unbekannte Anfrage.',
     'kiosque.erreur.terminee': 'Sitzung beendet.',
-    'kiosque.bandeau': 'Sitzung geöffnet: Code {code}.',
+    'kiosque.bandeau': 'Kiosk-Sitzung: Code {code}.',
     'kiosque.partage': 'Die Gäste scannen den QR-Code und geben dann den Code {code} ein.',
     'kiosque.deconnexion': 'Sitzung verlassen',
     'kiosque.terminee': 'Die Sitzung ist beendet.',
@@ -297,6 +297,7 @@ I18n.TEXTES.de = {
     'info.intro': 'Mit Albert Go chatten Sie mit den KI-Modellen der interministeriellen Digitaldirektion (<a href="https://ia.numerique.gouv.fr/outils-ia/albert-api/" target="_blank" rel="noopener noreferrer">DINUM</a>) mit Ihrem API-Schlüssel.',
     'info.donnees': 'Ihre Daten',
     'info.donnees.relais': 'Ihre Fragen laufen über den Albert-Go-Server, der den Schlüssel verwahrt, und dann weiter zu Albert API.',
+    'info.donnees.relais-en-ligne': 'Ihre Fragen und Ihr Schlüssel laufen über das Relais des Inkubators der Éducation nationale, das sie nicht speichert, und dann weiter zu Albert API.',
     'info.donnees.relais-portable': 'Ihre Fragen gehen an Albert API; die Anwendung verwahrt den Schlüssel.',
     'info.donnees.traceurs': 'Kein Konto, kein Cookie, keine Bibliothek von einer fremden Seite. Internet-Werkzeuge werden nur mit Ihrer Erlaubnis aufgerufen.',
     'info.clavier': 'Tastatur',
@@ -440,6 +441,7 @@ I18n.TEXTES.de = {
 
     /* Fehler. */
     'erreur.cle-refusee': 'Serverschlüssel von Albert abgelehnt: prüfen Sie ALBERT_API_KEY in der Datei .env.',
+    'erreur.poste-distant': 'Der Schlüssel dieses Servers gilt nur auf dem Rechner, auf dem er läuft. Für eine Klasse öffnen Sie eine Kiosk-Sitzung.',
     'erreur.cle-refusee-en-ligne': 'Schlüssel von Albert abgelehnt. Prüfen oder wechseln Sie ihn.',
     'erreur.quota': 'Kontingent erreicht. Versuchen Sie es in einer Minute erneut.',
     'erreur.reponse-illisible': 'Unlesbare Antwort von Albert. Versuchen Sie es erneut.',

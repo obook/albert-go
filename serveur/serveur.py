@@ -7,6 +7,7 @@ Licence : GPL-3.0-or-later
 
 import email.utils
 import http.server
+import ipaddress
 import json
 import os
 import shutil
@@ -85,6 +86,11 @@ class Gestionnaire(http.server.BaseHTTPRequestHandler):
         taille_max = ROUTES.get((methode, chemin))
         if taille_max is None:
             relais.repondre_json(self, 404, {"detail": "Route inconnue."})
+            return
+        # Hors kiosque, la clé du .env ne sert qu'à ce poste : sans code ni durée, le réseau l'utiliserait librement.
+        if not self.server.kiosque and not ipaddress.ip_address(self.client_address[0]).is_loopback:
+            relais.repondre_json(self, 403, {"detail": "Clé réservée à ce poste.", "reseau": "refuse"})
+            self.close_connection = True
             return
         try:
             taille = int(self.headers.get("Content-Length") or 0)

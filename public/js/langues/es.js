@@ -19,7 +19,7 @@ I18n.TEXTES.es = {
     'menu.nouvelle': 'Nueva conversación',
     'menu.outils': 'Herramientas',
     'kiosque.ouvrir-titre': 'Abrir una sesión',
-    'kiosque.ouvrir-texte': 'Introduzca su clave de Albert API. Sus invitados se unen a la sesión con un código, sin ver la clave.',
+    'kiosque.ouvrir-texte': 'Introduzca su clave de Albert API. Sus invitados se unen a la sesión de quiosco con un código, sin ver la clave.',
     'kiosque.cle': 'Clave de Albert API',
     'kiosque.duree': 'Duración de la sesión',
     'kiosque.duree-1h': '1 hora',
@@ -38,7 +38,7 @@ I18n.TEXTES.es = {
     'kiosque.erreur.code': 'Código incorrecto.',
     'kiosque.erreur.action': 'Solicitud desconocida.',
     'kiosque.erreur.terminee': 'Sesión terminada.',
-    'kiosque.bandeau': 'Sesión abierta: código {code}.',
+    'kiosque.bandeau': 'Sesión de quiosco: código {code}.',
     'kiosque.partage': 'Los invitados escanean el código QR y luego introducen el código {code}.',
     'kiosque.deconnexion': 'Salir de la sesión',
     'kiosque.terminee': 'La sesión ha terminado.',
@@ -297,6 +297,7 @@ I18n.TEXTES.es = {
     'info.intro': 'Albert Go permite charlar con los modelos de inteligencia artificial de la dirección interministerial de lo digital (<a href="https://ia.numerique.gouv.fr/outils-ia/albert-api/" target="_blank" rel="noopener noreferrer">DINUM</a>) con su clave API.',
     'info.donnees': 'Sus datos',
     'info.donnees.relais': 'Sus preguntas pasan por el servidor de Albert Go, que guarda la clave, y luego van a Albert API.',
+    'info.donnees.relais-en-ligne': 'Sus preguntas y su clave pasan por el relé de la incubadora de la Éducation nationale, que no las guarda, y luego van a Albert API.',
     'info.donnees.relais-portable': 'Sus preguntas van a Albert API; la aplicación conserva la clave.',
     'info.donnees.traceurs': 'Ninguna cuenta, ninguna cookie, ninguna biblioteca cargada desde un sitio ajeno. Llamadas de las herramientas de Internet solo si usted las permite.',
     'info.clavier': 'Teclado',
@@ -440,6 +441,7 @@ I18n.TEXTES.es = {
 
     /* Errores. */
     'erreur.cle-refusee': 'Clave del servidor rechazada por Albert: revise ALBERT_API_KEY en el archivo .env.',
+    'erreur.poste-distant': 'La clave de este servidor solo sirve en el equipo que lo ejecuta. Para una clase, abra una sesión de quiosco.',
     'erreur.cle-refusee-en-ligne': 'Clave rechazada por Albert. Compruébela o cámbiela.',
     'erreur.quota': 'Cuota alcanzada. Inténtelo dentro de un minuto.',
     'erreur.reponse-illisible': 'Respuesta ilegible de Albert. Inténtelo de nuevo.',

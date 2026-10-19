@@ -179,11 +179,11 @@ $('principal').addEventListener('click', () => {
  * Le QR code est calculé dans le navigateur (vendor/qrcode-generator).
  */
 function ouvrirPartage() {
-    /* En ligne, l'adresse publique ; sinon l'adresse réseau du serveur (cartes physiques d'abord)
-       et, en kiosque, le lien élève. */
+    /* En kiosque, l'adresse réseau du serveur (cartes physiques d'abord) et le lien élève.
+       Sinon l'adresse publique : hors kiosque, le serveur refuse les autres postes. */
     const base = Serveur.adresses[0] || location.origin;
     let adresse = base + '/';
-    if (Albert.EN_LIGNE) {
+    if (Albert.EN_LIGNE || !Kiosque) {
         adresse = Albert.URL_PUBLIQUE;
     } else if (Kiosque && Kiosque.token) {
         adresse = base + '/kiosque?token=' + encodeURIComponent(Kiosque.token);
