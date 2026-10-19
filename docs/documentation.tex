@@ -17,7 +17,7 @@
 
 \newcommand{\titre}{Albert Go}
 \newcommand{\sousTitre}{Notice d'utilisation}
-\newcommand{\version}{v4.0.2}
+\newcommand{\version}{v4.0.3}
 \newcommand{\auteur}{O. Booklage}
 \newcommand{\projet}{Albert Go}
 
@@ -86,7 +86,7 @@ Albert Go est un chatbot, c'est-à-dire un agent conversationnel : vous écrivez
 Albert API n'autorise pas une page web à l'interroger directement : un relais lui transmet les questions. Ce relais dépend du mode de fonctionnement :
 \begin{itemize}
   \item \emph{Version en ligne}, sur le site Pages de la forge : chacun saisit sa clé API dans la page, qui la garde dans le navigateur. Un relais n8n de l'incubateur de l'Éducation nationale transmet les questions à Albert (\autoref{sec:en-ligne}).
-  \item \emph{Serveur de l'établissement} : le serveur Python d'Albert Go tourne sur un poste de l'établissement et transmet directement les questions à Albert, avec la clé API de son fichier \code{.env}. Les appareils du réseau l'ouvrent dans leur navigateur, à l'adresse que donne l'établissement. Pour l'installer, suivez \texttt{docs/DEPLOIEMENT.md} (\autoref{sec:plus-loin}).
+  \item \emph{Serveur centralisé} : le serveur Python d'Albert Go tourne sur un poste du réseau et transmet directement les questions à Albert, avec la clé API de son fichier \code{.env}. Les appareils du réseau l'ouvrent dans leur navigateur, à l'adresse que donne son administrateur. Pour l'installer, suivez \texttt{docs/DEPLOIEMENT.md} (\autoref{sec:plus-loin}).
   \item \emph{Version autonome} : le même serveur, embarqué avec Python dans une application pour Linux ou Windows. Elle s'ouvre dans sa propre fenêtre, sans installation, depuis l'ordinateur ou une clé USB (\autoref{sec:installation}).
 \end{itemize}
 
@@ -96,7 +96,7 @@ Sur un serveur, la page affichée ne voit jamais la clé API.
 
 \begin{itemize}
   \item \emph{Version en ligne} : votre clé Albert API et un ordinateur, une tablette ou un téléphone avec un navigateur récent.
-  \item \emph{Serveur de l'établissement} : un appareil avec un navigateur, sur le réseau de l'établissement. Le serveur a sa propre clé.
+  \item \emph{Serveur centralisé} : un appareil avec un navigateur, sur le même réseau que le serveur. Le serveur a sa propre clé.
   \item \emph{Version autonome} : votre clé Albert API et un ordinateur 64~bits sous Linux ou sous Windows.
 \end{itemize}
 
@@ -269,7 +269,7 @@ Vous y activez ou désactivez chaque outil et Internet, choisissez les moteurs d
 \section{Le kiosque}
 \label{sec:kiosque}
 
-Le kiosque partage Albert Go entre un poste maître et des postes invités : le poste maître ouvre une session avec sa clé et les postes invités la rejoignent, sans voir la clé. Il demande un serveur : celui de l'établissement ou la version autonome.
+Le kiosque partage Albert Go entre un poste maître et des postes invités : le poste maître ouvre une session avec sa clé et les postes invités la rejoignent, sans voir la clé. Il demande un serveur : un serveur centralisé ou la version autonome.
 
 \subsection{Ouvrir une session}
 
@@ -323,6 +323,7 @@ Une fenêtre \emph{Albert Go ne démarre pas} donne la cause. Si les dix ports �
 \begin{itemize}
   \item \emph{Aucune clé API sur le serveur} : la clé manque dans le \code{.env} (\autoref{sec:lancement}).
   \item \emph{Clé du serveur refusée par Albert} : la clé du \code{.env} est mal recopiée ou n'est plus valable.
+  \item \emph{La clé de ce serveur ne sert qu'au poste qui le lance} : un autre poste a ouvert l'adresse de la version autonome, qui ne sert que son ordinateur hors kiosque. Pour plusieurs postes, ouvrez une session kiosque.
   \item \emph{Clé refusée par Albert}, dans la version en ligne : la clé n'est plus valable. \emph{Effacer la clé et quitter}, dans le menu, permet d'en saisir une autre.
   \item \emph{Relais de l'incubateur de l'Éducation nationale indisponible} : le relais de la version en ligne ne répond pas ; réessayez plus tard.
   \item \emph{Quota atteint} : réessayez dans une minute.
@@ -332,7 +333,7 @@ Une fenêtre \emph{Albert Go ne démarre pas} donne la cause. Si les dix ports �
 
 Vérifiez qu'ils sont sur le même réseau que l'ordinateur qui fait tourner Albert Go et qu'ils saisissent l'adresse donnée par \emph{Partager}. Le pare-feu de l'ordinateur doit laisser entrer les connexions vers Albert Go.
 
-Sous Windows, le pare-feu peut bloquer les postes invités sans rien afficher, surtout quand Albert Go est lancé depuis une clé USB. Lancé depuis une copie sur l'ordinateur, Albert Go déclenche en principe la demande d'autorisation de Windows. Sur un ordinateur géré par l'établissement, cette autorisation relève de son administrateur.
+Sous Windows, le pare-feu peut bloquer les postes invités sans rien afficher, surtout quand Albert Go est lancé depuis une clé USB. Lancé depuis une copie sur l'ordinateur, Albert Go déclenche en principe la demande d'autorisation de Windows. Sur un ordinateur géré par un service informatique, c'est à ce service de la donner.
 
 \section{Pour aller plus loin}
 \label{sec:plus-loin}
@@ -340,7 +341,7 @@ Sous Windows, le pare-feu peut bloquer les postes invités sans rien afficher, s
 \begin{itemize}
   \item Version en ligne : \url{https://booklageolivier.forge.apps.education.fr/albert-go/}.
   \item Code source, nouvelles versions et signalement des problèmes : \url{https://forge.apps.education.fr/booklageolivier/albert-go}.
-  \item Installation sur un poste de l'établissement, avec démarrage automatique : fichier \texttt{docs/DEPLOIEMENT.md} du dépôt.
+  \item Serveur centralisé avec démarrage automatique : fichier \texttt{docs/DEPLOIEMENT.md} du dépôt.
   \item Albert API et ses modèles : \url{https://ia.numerique.gouv.fr/outils-ia/albert-api/}.
 \end{itemize}
 

@@ -7,7 +7,7 @@ Chatbot minimal pour [Albert](https://ia.numerique.gouv.fr/outils-ia/albert-api/
 Albert Go s'utilise :
 
 - en ligne, sur [Pages](https://booklageolivier.forge.apps.education.fr/albert-go/) : chacun saisit sa clé API, gardée dans le navigateur ; le relais n8n de l'incubateur de l'Éducation nationale transmet les questions à Albert ;
-- sur un poste de l'établissement : le serveur Python garde la clé API et relaie les questions vers Albert ;
+- en serveur centralisé, sur un poste du réseau : le serveur Python garde la clé API et relaie les questions vers Albert ;
 - sur une clé USB : la version autonome des [releases](https://forge.apps.education.fr/booklageolivier/albert-go/-/releases) embarque ce serveur et Python.
 
 Le mode d'emploi est dans la notice : [docs/documentation.pdf](docs/documentation.pdf) (installation, discussion, Imprimerie, outils, kiosque, dépannage).
@@ -25,7 +25,7 @@ Le mode d'emploi est dans la notice : [docs/documentation.pdf](docs/documentatio
 cp .env-exemple .env      # puis coller la clé API après ALBERT_API_KEY=
 ```
 
-`.env` reste dans le dossier du dépôt, ignoré par git ; le terminal affiche au lancement le fichier utilisé. Installation sur un poste de l'établissement, avec démarrage automatique et mise à jour : [docs/DEPLOIEMENT.md](docs/DEPLOIEMENT.md). Pour créer une clé : [page d'Albert API](https://ia.numerique.gouv.fr/outils-ia/albert-api/).
+`.env` reste dans le dossier du dépôt, ignoré par git ; le terminal affiche au lancement le fichier utilisé. Installation d'un serveur centralisé, avec démarrage automatique et mise à jour : [docs/DEPLOIEMENT.md](docs/DEPLOIEMENT.md). Pour créer une clé : [page d'Albert API](https://ia.numerique.gouv.fr/outils-ia/albert-api/).
 
 ## Fonctionnement
 

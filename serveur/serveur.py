@@ -88,7 +88,7 @@ class Gestionnaire(http.server.BaseHTTPRequestHandler):
             relais.repondre_json(self, 404, {"detail": "Route inconnue."})
             return
         # Application ou clé USB hors kiosque : la clé du .env ne sert qu'à ce poste, sinon le réseau l'utiliserait
-        # sans code ni durée. Un serveur partagé, lui, sert le réseau avec sa clé (docs/DEPLOIEMENT.md).
+        # sans code ni durée. Un serveur centralisé, lui, sert le réseau avec sa clé (docs/DEPLOIEMENT.md).
         portable = config.MODE == "portable" and not self.server.kiosque
         if portable and not ipaddress.ip_address(self.client_address[0]).is_loopback:
             relais.repondre_json(self, 403, {"detail": "Clé réservée à ce poste.", "reseau": "refuse"})

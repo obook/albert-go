@@ -12,7 +12,7 @@ Servies depuis Pages, sans CDN : aucune adresse IP n'est transmise à un tiers.
 | `highlight/` | 11.12.0 | Couleurs du code, chargé au premier bloc de code (`highlight.min.js` : les langages courants) | BSD-3-Clause | paquet npm `@highlightjs/cdn-assets@11.12.0`, https://github.com/highlightjs/highlight.js |
 | `mathjs/` | 15.2.0 | Calculatrice du modèle (`lib/browser/math.js`, avec `LICENSE` et `NOTICE`), chargé au premier calcul | Apache-2.0 | paquet npm `mathjs@15.2.0`, https://github.com/josdejong/mathjs |
 | `giac/` | 1.9.0 | Calcul formel du modèle (`giacwasm.js`, WebAssembly inclus, avec `LICENSE`), chargé au premier calcul formel, dans un worker | GPL-3.0-or-later | archive `giacjs.tar.gz`, https://www-fourier.univ-grenoble-alpes.fr/~parisse/giac_fr.html ; sources : https://www-fourier.univ-grenoble-alpes.fr/~parisse/giac/giac_stable.tgz |
-| `luciole/` | 2019 | Police du logo (`Luciole-Regular.woff2`) | CC BY 4.0, Luciole © Laurent Bourcellier & Jonathan Perez | https://www.luciole-vision.com/, archive `Luciole_webfonts.zip` |
+| `luciole/` | 2019 | Police du logo (`Luciole-Regular.woff2`) | CC BY 4.0, Luciole (c) Laurent Bourcellier & Jonathan Perez | https://www.luciole-vision.com/, archive `Luciole_webfonts.zip` |
 | `work-sans/` | 5.3.0 | Police du texte, variable : latin et latin étendu, romain et italique (quatre `.woff2`) | OFL-1.1, texte dans `LICENSE` | paquet npm `@fontsource-variable/work-sans@5.3.0`, https://github.com/weiweihuanghuang/Work-Sans |
 | `qrcode-generator/` | 2.0.4 | QR code de la boîte "Partager" (`dist/qrcode.js`) | MIT, en tête du fichier : le paquet npm ne livre pas de fichier de licence | paquet npm `qrcode-generator@2.0.4`, https://github.com/kazuhikoarase/qrcode-generator |
 

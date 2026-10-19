@@ -55,7 +55,7 @@ def test_portable_refuse_les_autres_postes(client, albert, monkeypatch):
     assert httpx.get(_adresse_reseau(client) + "/", timeout=5).status_code == 200
 
 
-def test_serveur_partage_sert_le_reseau(client, albert, monkeypatch):
+def test_serveur_centralise_sert_le_reseau(client, albert, monkeypatch):
     from serveur import config
     monkeypatch.setattr(config, "MODE", "dépôt")
     assert httpx.get(_adresse_reseau(client) + "/v1/models", timeout=5).status_code == 200

@@ -103,7 +103,7 @@ def test_code_faux_ralenti_et_en_file(monkeypatch):
 
 
 def test_cle_acceptee_bascule_sans_proxy_sur_407(albert, monkeypatch):
-    """Proxy d'établissement qui répond 407 : un second essai sans proxy, comme le relais."""
+    """Proxy du réseau qui répond 407 : un second essai sans proxy, comme le relais."""
     from serveur import proxy
     monkeypatch.setattr(proxy, "_ignorer_proxy", False)
     reponses = iter([407, 200])

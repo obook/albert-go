@@ -50,11 +50,9 @@ Navigateur (Pages) -> webhook n8n -> https://albert.api.etalab.gouv.fr
 
 ### Stockage dans le navigateur (préfixe `albert-go.`)
 
-- **Fichiers de l'application** : un service worker (`public/sw.js`) garde la page,
-  les scripts, les styles, les images et les consignes dans le cache du navigateur,
-  pour un démarrage rapide et hors connexion. Il ne garde aucune donnée de
-  l'utilisateur et laisse passer toutes les requêtes vers Albert, le relais et les
-  moteurs. Il n'est pas enregistré en local.
+- **Fichiers de l'application** : aucun cache propre à Albert Go. Le service worker
+  publié sur Pages (`deploiement/pages/sw.js`) efface seulement celui d'une ancienne
+  version, puis se retire.
 
 - **Sensible** (liste `SENSIBLES` de `stockage.js`) : clé Albert, clé de
   recherche, 30 dernières questions, 10 dernières conversations, 10 derniers
@@ -105,7 +103,7 @@ Navigateur (Pages) -> webhook n8n -> https://albert.api.etalab.gouv.fr
 | Commande piégée passée au calcul formel | Giac tourne dans un worker privé de réseau : `XMLHttpRequest`, `fetch` et `WebSocket` sont retirés avant son chargement, sa commande `read` ne peut appeler aucune adresse. Calcul arrêté après 10 secondes, variables effacées entre deux commandes. |
 | Clé ou questions lues sur un poste partagé | Mode partagé par défaut : tout le sensible en `sessionStorage`, effacé à la fermeture. |
 | Page intégrée dans le cadre d'un autre site | La page détecte le cadre et n'affiche qu'un lien vers elle-même. |
-| Texte envoyé à une synthèse vocale en ligne | Voix de l'appareil en priorité. Voix en ligne seulement si l'utilisateur les autorise (désactivé par défaut) et faute de voix locale. |
+| Texte envoyé à une synthèse vocale en ligne | Voix de l'appareil en priorité. Voix en ligne seulement si l'utilisateur les autorise (désactivé par défaut) et faute de voix locale. Dans Firefox, qui n'a pas de voix en ligne à lui, toutes les voix sont acceptées : sous Linux, il déclare en ligne celles de speech-dispatcher. Limite : un moteur distant branché sur speech-dispatcher passerait. |
 | Fichier joint piégé | Texte lu comme du texte (200 Ko au plus), images redessinées dans un canevas puis converties en JPEG, audio décodé par le navigateur puis réécrit en WAV (le MP3 part tel quel, vers Albert seulement). Le résultat n'apparaît qu'à travers la réponse, donc assaini. Dans Imprimerie, le texte gardé se télécharge aussi, toujours comme fichier texte (`Albert.nomTexte`) : une page ou un script déposé revient en `.txt`. |
 
 ## Audit interne
@@ -151,7 +149,7 @@ Boîte noire depuis un poste extérieur, le 2026-09-21, avec `curl` et `openssl`
 | E1 | Moyenne | Reconduit du 2026-09-18. Pas de limite de débit. Le webhook reste appelable hors navigateur, où CORS ne s'applique pas. Revérifié : cinq requêtes sans clé toutes servies, corps de 2 Mo lu en entier avant le 401. Depuis I8, Albert n'est plus sollicité sans clé : l'abus se limite aux ressources de n8n. | Demander une limite de débit par adresse IP aux administrateurs. |
 | E3 | Faible | Reconduit du 2026-09-18. Pages n'envoie pas `X-Content-Type-Options: nosniff`. Sans effet ici : tous les fichiers sont servis avec leur type exact. | À signaler à l'équipe de la Forge. |
 | E5 | Info | Le HSTS de Pages n'a ni `includeSubDomains` ni `preload`. Pages n'accepte pas d'en-tête sur mesure. | À signaler avec E3. |
-| E6 | Info | Recherche activée, le navigateur appelle le moteur en direct : celui-ci voit l'adresse IP de l'utilisateur et les mots de la requête. Pas un défaut, mais un périmètre nouveau depuis le dernier audit. | Le dire dans l'aide des réglages (I9) et dans la section RGPD. |
+| E6 | Info | Recherche activée, le navigateur appelle le moteur en direct : celui-ci voit l'adresse IP de l'utilisateur et les mots de la requête. Ce périmètre est nouveau depuis le dernier audit. | Le dire dans l'aide des réglages (I9) et dans la section RGPD. |
 
 ## Suivi des corrections
 
@@ -223,7 +221,7 @@ lesquelles il a prise ou qu'il déplace vers quelqu'un d'autre.
 | R8 Besoin d'en connaître | Couverte | La clé appartient à l'utilisateur, le relais n'en garde rien. Aucun compte, aucun identifiant. |
 | R9 Pas d'usage automatisé pour des actions critiques | Sans objet | La réponse est du texte affiché. Aucune action n'en découle. |
 | R10 Accès à privilèges maîtrisés | Couverte, côté utilisateur | Une clé par personne, vérifiée auprès d'Albert avant d'être enregistrée, jamais enregistrée si elle est refusée. Le projet n'administre aucun accès. |
-| R13 Passerelle sécurisée si exposition Internet | Partielle | Le relais fait office de passerelle : TLS 1.3, CORS à deux origines, trois chemins dont le compteur public, 401 sans clé, rien de conservé. Il lui manque une limite de débit (E1). |
+| R13 Passerelle sécurisée si exposition Internet | Partielle | Le relais est la passerelle : TLS 1.3, CORS à deux origines, trois chemins dont le compteur public, 401 sans clé, rien de conservé. Il lui manque une limite de débit (E1). |
 | R20 Intégrité des fichiers | Partielle | Page statique publiée par la CI, chaîne de version sur chaque ressource, bibliothèques comparées à leur source. Pas de signature ni d'empreinte publiée. |
 | R22 Chaîne de déploiement sécurisée | Couverte | Publication automatique depuis la branche par défaut. Le commit publié est écrit dans la page : on vérifie de l'extérieur que la production est bien le dépôt. Refait ce jour. |
 | R23 Audit de sécurité avant production | Non couverte | Aucune revue externe. Ce document en tient lieu, à ses limites près. |

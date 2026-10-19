@@ -1,6 +1,6 @@
 # Déploiement
 
-Albert Go sur un poste de l'établissement (Raspberry Pi, Ubuntu) ou sur une [clé USB](#clé-usb).
+Albert Go en serveur centralisé sur un poste du réseau (Raspberry Pi, Ubuntu) ou sur une [clé USB](#clé-usb).
 
 ## Prérequis
 
@@ -24,7 +24,7 @@ nano .env
 |---|---|---|
 | `ALBERT_API_KEY` | vide | Clé API du serveur ; inutile en kiosque |
 | `ALBERT_HTTPS` | `non` | `oui` : certificat auto-signé, avertissement du navigateur à la première visite |
-| `ALBERT_KIOSQUE` | `non` | `oui` : l'enseignant ouvre une session de classe sur `/kiosque` avec sa clé |
+| `ALBERT_KIOSQUE` | `non` | `oui` : le poste maître ouvre une session sur `/kiosque` avec sa clé, les postes invités la rejoignent avec un code |
 | `ALBERT_MISE_A_JOUR` | `oui` | `git pull` à chaque démarrage ; `non` fige la version |
 | `ALBERT_PORT` | `8913` | Port du serveur ; s'il est occupé, l'un des neuf suivants |
 
@@ -66,7 +66,7 @@ tail -f ~/albert-go/albert-go.log
 
 ## WiFi sans ouverture de session
 
-NetworkManager range le mot de passe WiFi dans le trousseau de l'utilisateur, ouvert seulement à la connexion : au boot, pas de réseau.
+NetworkManager range le mot de passe WiFi dans le trousseau de l'utilisateur, ouvert seulement à la connexion : au démarrage, pas de réseau.
 
 1. Dans les réglages WiFi, cocher "Disponible pour tous les utilisateurs".
 2. Ranger le mot de passe dans le fichier système :

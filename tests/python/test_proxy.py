@@ -3,7 +3,7 @@
 # Licence : GPL-3.0-or-later
 """Tests du module api/proxy.py -- bascule sans proxy en cas de 407.
 
-Sur certains réseaux d'établissement, le proxy système exige une
+Sur certains réseaux d'administration, le proxy système exige une
 authentification : la première requête échoue en 407 et le client
 doit réessayer sans proxy, puis mémoriser ce choix pour la session.
 """

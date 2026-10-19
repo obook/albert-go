@@ -3,7 +3,7 @@
 # Licence : GPL-3.0-or-later
 """Bascule automatique sans proxy en cas de refus du proxy système.
 
-Sur certains réseaux d'établissement, Windows déclare un proxy système
+Sur certains réseaux d'administration, Windows déclare un proxy système
 qui échoue (authentification exigée, délai dépassé, inspection TLS),
 même quand l'accès direct à Albert fonctionne.
 
