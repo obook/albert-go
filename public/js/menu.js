@@ -189,7 +189,9 @@ function ouvrirPartage() {
         adresse = base + '/kiosque?token=' + encodeURIComponent(Kiosque.token);
     }
     let texte = t('partage.texte');
-    if (Kiosque && Kiosque.code) {
+    if (Albert.EN_LIGNE) {
+        texte = t('partage.texte-en-ligne');
+    } else if (Kiosque && Kiosque.code) {
         texte = t('kiosque.partage', { code: Kiosque.code });
     } else if (!Albert.EN_LIGNE) {
         /* Hors kiosque, le lien ne mène pas à ce serveur : le dire. */

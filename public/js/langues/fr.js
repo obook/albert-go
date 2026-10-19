@@ -288,6 +288,7 @@ I18n.TEXTES.fr = {
     'confirmer-suppression.titre': 'Supprimer cette discussion ?',
     'partage.titre': 'Partager',
     'partage.texte': 'Scannez le QR code ou copiez l\'adresse.',
+    'partage.texte-en-ligne': 'Scannez le QR code ou copiez l\'adresse. Votre clé n\'est pas partagée : chacun utilise la sienne.',
     'partage.en-ligne': 'Lien vers Albert Go en ligne : chacun y saisit sa propre clé.',
     'partage.qr': 'QR code de l\'adresse d\'Albert Go',
     'partage.adresse': 'Adresse d\'Albert Go',
