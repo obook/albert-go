@@ -188,7 +188,14 @@ function ouvrirPartage() {
     } else if (Kiosque && Kiosque.token) {
         adresse = base + '/kiosque?token=' + encodeURIComponent(Kiosque.token);
     }
-    $('texte-partage').textContent = Kiosque && Kiosque.code ? t('kiosque.partage', { code: Kiosque.code }) : t('partage.texte');
+    let texte = t('partage.texte');
+    if (Kiosque && Kiosque.code) {
+        texte = t('kiosque.partage', { code: Kiosque.code });
+    } else if (!Albert.EN_LIGNE) {
+        /* Hors kiosque, le lien ne mène pas à ce serveur : le dire. */
+        texte = t('partage.en-ligne');
+    }
+    $('texte-partage').textContent = texte;
     /* 0 : taille choisie par la bibliothèque ; M : 15 % de correction d'erreur. */
     const code = qrcode(0, 'M');
     code.addData(adresse);

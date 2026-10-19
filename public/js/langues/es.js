@@ -288,6 +288,7 @@ I18n.TEXTES.es = {
     'confirmer-suppression.titre': '¿Eliminar esta conversación?',
     'partage.titre': 'Compartir',
     'partage.texte': 'Escanee el código QR o copie la dirección.',
+    'partage.en-ligne': 'Enlace a Albert Go en línea: cada uno introduce allí su propia clave.',
     'partage.qr': 'Código QR de la dirección de Albert Go',
     'partage.adresse': 'Dirección de Albert Go',
     'partage.copier': 'Copiar',
