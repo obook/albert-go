@@ -118,6 +118,7 @@ main {
 /* anywhere : le message d'origine refusée contient des adresses sans espace. */
 .message-cle { font-size: 0.875rem; color: var(--texte-doux); overflow-wrap: anywhere; }
 .message-cle.erreur { color: var(--erreur); font-weight: 700; }
+.message-cle .points { margin-left: 0.5rem; }
 
 .hors-cadre { padding: 2rem; text-align: center; }
 

@@ -15,7 +15,7 @@
 
 /**
  * Vérifie la clé saisie auprès d'Albert. Acceptée, elle est enregistrée et
- * le chat s'ouvre ; refusée, la boîte se ferme et un toast dit pourquoi.
+ * le chat s'ouvre ; refusée ou non vérifiée, la boîte se ferme et l'accueil dit pourquoi.
  *
  * @returns {Promise<void>}
  */
@@ -23,13 +23,20 @@ async function validerCle() {
     const cle = $('cle').value.trim();
     const bouton = $('form-cle').querySelector('button[type="submit"]');
     bouton.disabled = true;
-    messageCle(t('cle.verification'), false);
+    /* Points animés à la place des points de suspension, que garde le bouton du kiosque. */
+    messageCle(t('cle.verification').replace(/\.+$/, ''), false);
+    const points = document.createElement('span');
+    points.className = 'points';
+    points.append(document.createElement('span'), document.createElement('span'), document.createElement('span'));
+    $('message-cle').append(points);
     try {
         const liste = await Albert.modeles(cle);
-        if (liste.length) {
-            modelesDispo = liste;
-            afficherModeles();
+        /* Réponse sans modèles : n8n a répondu sans passer par Albert, la clé n'est pas vérifiée. */
+        if (!liste.length) {
+            throw new Error(Albert.texte('erreur.relais-hs'));
         }
+        modelesDispo = liste;
+        afficherModeles();
     } catch (err) {
         const echec = messageEchec(err);
         /* Copie hors de l'adresse officielle : la boîte reste, avec le lien vers la bonne. */
@@ -38,7 +45,8 @@ async function validerCle() {
         } else {
             messageCle('', false);
             $('dialogue-cle').close();
-            toast(echec.texte);
+            /* Sur l'accueil et non en toast : un toast disparaît avant d'être lu. Délai dépassé : c'est le relais qui se tait. */
+            $('echec-cle').textContent = err.name === 'TimeoutError' ? Albert.texte('erreur.relais-hs') : echec.texte;
         }
         return;
     } finally {
@@ -67,6 +75,7 @@ $('form-cle').addEventListener('submit', (e) => {
 
 /* La boîte de saisie s'ouvre depuis l'accueil et se ferme après la vérification. */
 $('ouvrir-cle').addEventListener('click', () => {
+    $('echec-cle').textContent = '';
     $('dialogue-cle').showModal();
     $('cle').focus();
 });
