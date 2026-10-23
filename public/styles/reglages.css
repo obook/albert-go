@@ -38,10 +38,8 @@ label.interrupteur {
     background: var(--surface);
     color: var(--texte);
 }
-.reglages::backdrop {
-    background: rgb(0 0 0 / 0.5);
-    backdrop-filter: blur(4px);
-}
+/* Fond assombri sans flou : backdrop-filter ralentit fortement Firefox quand il dessine sans la carte graphique. */
+.reglages::backdrop { background: rgb(0 0 0 / 0.5); }
 @media (prefers-reduced-motion: no-preference) {
     .reglages[open] { animation: apparition 150ms ease-out; }
 }

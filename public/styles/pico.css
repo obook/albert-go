@@ -20,6 +20,8 @@
     --pico-font-family: var(--police);
     --pico-font-size: 1rem;
     --pico-line-height: 1.5;
+    /* Pas de flou : Firefox sans carte graphique ralentit fortement (même retrait dans reglages.css). */
+    --pico-modal-overlay-backdrop-filter: none;
     --pico-color: var(--texte);
     --pico-muted-color: var(--texte-doux);
     --pico-background-color: var(--surface);
