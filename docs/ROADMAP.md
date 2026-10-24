@@ -44,7 +44,7 @@ Paramètres de l'API standard d'OpenAI, déclarés par Albert (spécification 0.
 - `frequency_penalty` et `presence_penalty` (-2 à 2) : comparer les deux. Une valeur négative devrait faire répéter le modèle.
 - `max_completion_tokens` : couper la réponse, pour montrer les tokens et la raison d'arrêt `length`.
 - `stop` : arrêter la réponse sur une séquence choisie.
-- `top_p` : la version standard de `top_k`. `top_k` n'est pas dans l'API d'OpenAI ; Albert l'accepte sans le déclarer, et rien ne prouve qu'il le transmet au modèle. À décider : remplacer `top_k` par `top_p`.
+- `top_p` : un second filtre à côté du curseur `top_k`, qui garde les mots les plus probables jusqu'à p % de probabilité cumulée.
 - Vérifier que le relais n8n transmet ces paramètres à Albert.
 
 ## Interface
