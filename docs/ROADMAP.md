@@ -34,6 +34,19 @@ Ce qui reste à faire, du plus simple au plus long. Le détail des failles est d
 - Niveau et matière (MR 2 du plan de fusion avec l'atelier) : choix dans le volet, consigne du serveur avec les extraits des programmes du BO dans `programmes/`.
 - llm-proxy : inutile, `regulation.py` gère déjà le quota. À revoir si d'autres outils partagent le compte Albert sur radio-host.
 
+## Réglages du modèle
+
+Paramètres de l'API standard d'OpenAI, déclarés par Albert (spécification 0.8.0, lue le 25/10/2026). Aucun n'est testé avec Albert.
+
+- `logprobs` et `top_logprobs` : montrer, au survol de chaque mot, les autres mots possibles et leur probabilité.
+- `seed` : rejouer la même réponse avec la même graine. Albert ne promet qu'un "best effort".
+- `n` : plusieurs réponses côte à côte, pour voir l'effet de la température. Chaque réponse compte dans le quota.
+- `frequency_penalty` et `presence_penalty` (-2 à 2) : comparer les deux. Une valeur négative devrait faire répéter le modèle.
+- `max_completion_tokens` : couper la réponse, pour montrer les tokens et la raison d'arrêt `length`.
+- `stop` : arrêter la réponse sur une séquence choisie.
+- `top_p` : la version standard de `top_k`. `top_k` n'est pas dans l'API d'OpenAI ; Albert l'accepte sans le déclarer, et rien ne prouve qu'il le transmet au modèle. À décider : remplacer `top_k` par `top_p`.
+- Vérifier que le relais n8n transmet ces paramètres à Albert.
+
 ## Interface
 
 - Grand écran : le titre de la conversation dans le bouton du volet, comme sur L'Assistant de la DINUM. Le titre existe déjà (`Albert.libelleConversation`).
