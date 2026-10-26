@@ -1,6 +1,6 @@
 # Feuille de route
 
-Ce qui reste à faire, du plus simple au plus long. Le détail des failles est dans [SECURITE.md](SECURITE.md).
+Ce qui reste à faire, du plus simple au plus long. Le détail des failles est dans [SECURITE.md](docs/SECURITE.md).
 
 ## Sécurité
 
