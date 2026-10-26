@@ -440,7 +440,8 @@ const Albert = {
         /* Arrondi avant le choix : 999,6 Wh s'écrirait sinon "1 000 Wh". */
         const arrondi = Number(valeur.toPrecision(2));
         const [nombre, prefixe] = arrondi < 1 ? [valeur * 1000, 'm'] : arrondi >= 1000 ? [valeur / 1000, 'k'] : [valeur, ''];
-        return nombre.toLocaleString(langue, { maximumSignificantDigits: 2 }) + ' ' + prefixe + unite;
+        /* Insécables : le nombre et son unité ne se séparent pas en fin de ligne. */
+        return (nombre.toLocaleString(langue, { maximumSignificantDigits: 2 }) + ' ' + prefixe + unite).replace(/ /g, '\u00a0');
     },
 
     /**
@@ -451,7 +452,7 @@ const Albert = {
      * @returns {string} Par exemple "12,4 k".
      */
     jetons(n, langue) {
-        return n > 999 ? (n / 1000).toLocaleString(langue, { maximumFractionDigits: 1 }) + ' k' : n.toLocaleString(langue);
+        return n > 999 ? (n / 1000).toLocaleString(langue, { maximumFractionDigits: 1 }) + '\u00a0k' : n.toLocaleString(langue);
     },
 
     /**

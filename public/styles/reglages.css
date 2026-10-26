@@ -155,11 +155,10 @@ label.interrupteur {
     display: grid;
     gap: 0.375rem;
 }
-/* Empreinte : l'icône, la grandeur, le chiffre à droite. */
+/* Empreinte : l'icône, puis une phrase qui revient à la ligne si le texte est grand. */
 .info .empreinte { padding-left: 0; list-style: none; gap: 0.75rem; }
 .empreinte li { display: flex; align-items: center; gap: 0.5rem; }
 .empreinte svg { flex: none; }
-.empreinte .valeur { margin-left: auto; white-space: nowrap; }
 
 /* min-width 0 : par défaut, une fieldset refuse d'être plus étroite que son contenu. */
 fieldset {

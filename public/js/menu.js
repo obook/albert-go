@@ -272,8 +272,8 @@ $('ouvrir-empreinte').addEventListener('click', () => {
     }
     $('empreinte-jetons').textContent = tn('empreinte.lus', lus, { n: Albert.jetons(lus, I18n.langue) })
         + ' · ' + tn('empreinte.ecrits', ecrits, { n: Albert.jetons(ecrits, I18n.langue) });
-    $('empreinte-energie').textContent = Albert.petiteUnite(kwh * 1000, 'Wh', I18n.langue);
-    $('empreinte-gaz').textContent = Albert.petiteUnite(kgco2 * 1000, 'g CO2eq', I18n.langue);
+    $('empreinte-energie').textContent = t('empreinte.energie', { valeur: Albert.petiteUnite(kwh * 1000, 'Wh', I18n.langue) });
+    $('empreinte-gaz').textContent = t('empreinte.gaz', { valeur: Albert.petiteUnite(kgco2 * 1000, 'g CO2eq', I18n.langue) });
     $('empreinte-telephone').textContent = Albert.recharge(kwh);
     const note = !renseignes ? t('empreinte.vide')
         : renseignes < appels ? t('empreinte.partielle', { n: renseignes, total: appels }) : '';
