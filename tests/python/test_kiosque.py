@@ -1,6 +1,7 @@
 """Tests de serveur/kiosque.py : sessions, cookies signés, réglages du prof."""
 
 import time
+from types import SimpleNamespace
 
 import pytest
 
@@ -119,3 +120,11 @@ def test_cle_non_ascii_refusee_sans_appel(albert):
     """Clé collée avec un caractère invisible : refusée proprement, rien ne part chez Albert."""
     assert not kiosque.cle_acceptee("sk-​abc")
     assert albert.recues == []
+
+
+def test_cookie_lu_malgre_un_cookie_mal_forme_d_une_autre_appli():
+    # Sur localhost, le navigateur envoie aussi les cookies des autres applis locales.
+    requete = lambda entete: SimpleNamespace(headers={"Cookie": entete})
+    assert kiosque.valeur_cookie(requete('prefs={"a":1,"b":2}; kiosque-session=jeton.eleve.sig')) == "jeton.eleve.sig"
+    assert kiosque.valeur_cookie(requete("theme=sombre")) is None
+    assert kiosque.valeur_cookie(SimpleNamespace(headers={})) is None

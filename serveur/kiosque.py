@@ -17,7 +17,6 @@ import re
 import secrets
 import threading
 import time
-from http.cookies import SimpleCookie
 
 import httpx
 
@@ -143,13 +142,12 @@ def role_du_cookie(valeur):
 
 def valeur_cookie(handler):
     """Valeur du cookie de session envoyé par le navigateur, ou None."""
-    cookies = SimpleCookie()
-    try:
-        cookies.load(handler.headers.get("Cookie", ""))
-    except Exception:
-        return None
-    morceau = cookies.get(COOKIE)
-    return morceau.value if morceau else None
+    # Pas de SimpleCookie : un cookie mal formé d'une autre appli sur localhost lui fait perdre les suivants.
+    for morceau in (handler.headers.get("Cookie") or "").split(";"):
+        nom, egal, valeur = morceau.strip().partition("=")
+        if egal and nom == COOKIE:
+            return valeur
+    return None
 
 
 def role_de_la_requete(handler):
