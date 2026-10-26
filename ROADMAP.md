@@ -4,7 +4,8 @@ Ce qui reste à faire, du plus simple au plus long. Le détail des failles est d
 
 ## Sécurité
 
-- [ ] **I13** : passer à Mermaid 12.2.0, qui embarque sa propre copie de KaTeX (KaTeX 0.18.11 fait le 26/10/2026). Mermaid 12 exige Safari 17.4 et change l'allure des diagrammes (`layout: 'dagre'` pour garder l'ancienne) : vérifier d'abord la version des iPad.
+- [ ] **I13** : passer à Mermaid 12.2.0, qui embarque sa propre copie de KaTeX (KaTeX 0.18.11 fait le 26/10/2026). Mermaid 12 exige Safari 17.4 et change l'allure des diagrammes (`layout: 'dagre'` pour garder l'ancienne) : vérifier d'abord la version des iPad des élèves (Réglages > Général > Informations > Version d'iPadOS, 17.4 au moins).
+- [ ] albert-atelier : passer aussi KaTeX de 0.16.47 à 0.18.11, même avis (GHSA-238p-pmpm-9mq7).
 - [ ] **E1** : demander aux administrateurs n8n une limite de débit par adresse IP sur le relais.
 - [ ] **E3, E5** : signaler à l'équipe de la Forge les en-têtes de sécurité manquants sur Pages.
 - [x] Relire `SECURITE.md` depuis le compteur d'appels : certaines lignes disent encore que le relais ne garde rien.
