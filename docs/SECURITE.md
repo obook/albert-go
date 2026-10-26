@@ -96,7 +96,7 @@ Navigateur (Pages) -> webhook n8n -> https://albert.api.etalab.gouv.fr
 | Interception réseau | HTTPS de bout en bout. Pages et n8n en TLS 1.3, repli TLS 1.2 avec AEAD, certificats valides. HSTS de deux ans sur Pages. |
 | Détournement du relais | URL cible fixée dans le workflow, deux chemins seulement, traversée refusée (404). |
 | Conservation de la clé côté serveur | Sauvegarde des exécutions n8n désactivée, vérifiée après un appel réel. |
-| Bibliothèque compromise | Sept bibliothèques, aucune dépendance de construction. Six identiques octet pour octet au paquet npm, la septième en I11. `npm audit` : rien. |
+| Bibliothèque compromise | Sept bibliothèques, aucune dépendance de construction. Toutes identiques octet pour octet au paquet npm. `npm audit` : rien. |
 | Lien piégé dans une réponse | Liens ouverts avec `rel="noopener noreferrer"`, qui coupe aussi le `Referer` : la page visée ne sait pas d'où vient le clic. |
 | Adresse piégée dans les sources listées sous une réponse | Ces adresses viennent du moteur, pas du modèle. Elles passent par le même contrôle que les liens d'une réponse (`Rendu.urlDangereuse`) avant de devenir cliquables et leur titre est inséré par `textContent`. |
 | Consigne cachée dans une page trouvée par la recherche | Aucun moteur coché par défaut, globe à activer à chaque session, extraits tronqués, aucune capacité hors chercher. Détail en I9. |
@@ -114,8 +114,8 @@ embarquées et de la configuration du dépôt.
 **Intégrité des bibliothèques.** Comparaison octet par octet avec le paquet npm
 officiel, le 2026-09-21 : KaTeX 0.16.47 (`auto-render`, `mhchem`, 20 polices),
 Mermaid 11.17.2, Pico 2.1.1 et qrcode-generator 2.0.4 sont identiques,
-highlight.js 11.12.0 et pdf.js 6.3.289 aussi (le 2026-09-24 ; pdf.js en version legacy depuis le 2026-10-14, comparée de même). Marked 17.0.1 ne
-l'est pas, voir I11. `npm audit` sur les sept versions, le 2026-09-24 : rien.
+highlight.js 11.12.0 et pdf.js 6.3.289 aussi (le 2026-09-24 ; pdf.js en version legacy depuis le 2026-10-14, comparée de même). Marked 17.0.1
+aussi depuis le 2026-09-22 (I11). `npm audit` sur les sept versions, le 2026-09-24 : rien.
 
 **Constats**
 
@@ -163,7 +163,7 @@ Boîte noire depuis un poste extérieur, le 2026-09-21, avec `curl` et `openssl`
 | I8 | Corrigé le 2026-09-18 : nœud "Clé présente ?". Revérifié en ligne ce jour. |
 | I9 | Corrigé le 2026-09-26 : pages consultées en liens sous la réponse. L'aide des outils Internet dit que leurs textes ne sont pas vérifiés. |
 | I10 | Corrigé le 2026-09-21 : `encodeURIComponent(this.CX)`. |
-| I11 | Ouvert : prendre le Marked du paquet npm. |
+| I11 | Corrigé le 2026-09-22 : Marked repris du paquet npm. Revérifié identique le 2026-10-26. |
 | I12 | Corrigé le 2026-09-21 : `.gitignore` au dépôt. Le `.env` reste, il sert aux outils du poste. |
 | E1 | Ouvert : limite de débit à demander aux administrateurs. |
 | E2 | Corrigé le 2026-09-18 : affichage bloqué dans un cadre. |
@@ -215,7 +215,7 @@ lesquelles il a prise ou qu'il déplace vers quelqu'un d'autre.
 
 | Reco | Statut | Ce qu'il en est |
 |------|--------|-----------------|
-| R3 Confiance dans les bibliothèques externes | Partielle | Sept bibliothèques embarquées, aucune dépendance de construction, aucun CDN. Six vérifiées octet pour octet, la septième par équivalence de sortie (I11). Vérification manuelle, à refaire à chaque mise à jour. |
+| R3 Confiance dans les bibliothèques externes | Partielle | Sept bibliothèques embarquées, aucune dépendance de construction, aucun CDN. Toutes vérifiées octet pour octet. Vérification manuelle, à refaire à chaque mise à jour. |
 | R5 Principes DevSecOps | Partielle | 35 tests à chaque étape, audit rejoué à chaque changement de périmètre. Pas d'analyse automatique avant fusion. |
 | R7 Confidentialité dès la conception | Couverte | Rien ne quitte le navigateur en dehors d'Albert et, sur activation, du moteur. Mode partagé par défaut : tout le sensible s'efface à la fermeture de l'onglet. |
 | R8 Besoin d'en connaître | Couverte | La clé appartient à l'utilisateur, le relais n'en garde rien. Aucun compte, aucun identifiant. |
