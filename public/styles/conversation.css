@@ -140,12 +140,10 @@ main {
 }
 
 /* Chat vide : bienvenue et suggestions, seulement dans Chat et avant la première question. */
-.bienvenue, .accueil-projet { display: none; margin: 10vh auto 0; max-width: 36rem; text-align: center; }
+.bienvenue, .accueil-projet { display: none; margin: 2rem auto 0; max-width: 36rem; text-align: center; }
 .chat[data-module="discuter"] #fil:empty ~ .bienvenue,
 .chat[data-module="projet"] #fil:empty ~ .accueil-projet { display: grid; gap: 0.75rem; }
 .bienvenue p, .accueil-projet p { margin: 0; color: var(--texte-doux); }
-/* Sous la carte Documents : moins de vide qu'en tête de Discussion. */
-.accueil-projet { margin-top: 2rem; }
 .suggestions { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; margin-top: 0.5rem; }
 .suggestion, .deposer {
     padding: 0.5rem 1rem;
