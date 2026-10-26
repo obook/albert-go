@@ -294,7 +294,7 @@ button {
 @media (hover: hover) {
     .bouton-icone:hover { background: var(--bulle); }
 }
-.bouton-icone svg, #reglages .carte > summary svg {
+.bouton-icone svg, #reglages .carte > summary svg, .empreinte svg {
     width: 1.25rem;
     height: 1.25rem;
     fill: none;

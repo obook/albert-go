@@ -144,7 +144,7 @@ $('menu').addEventListener('click', (e) => {
            Imprimerie, Nouveau document compris), Réglages (et le résumé qui les ouvre), Partager ou À propos
            la replie, comme son bouton.
            Imprimerie la garde ouverte pour sa liste. */
-        const boites = ['ouvrir-reglages', 'resume-reglages', 'ouvrir-partage', 'ouvrir-info'];
+        const boites = ['ouvrir-reglages', 'resume-reglages', 'ouvrir-partage', 'ouvrir-empreinte', 'ouvrir-info'];
         if (bouton && boites.includes(bouton.id)) {
             /* Une boîte s'ouvre : un glissement se verrait à travers son fond flou. */
             sansGlissement(() => $('ouvrir-menu').click());
@@ -260,6 +260,27 @@ $('ouvrir-info').addEventListener('click', () => {
         });
     }).catch(() => {});
     $('info').showModal();
+});
+
+$('ouvrir-empreinte').addEventListener('click', () => {
+    const { kwh, kgco2, appels, renseignes, lus, ecrits, depuis } = Albert.empreinte;
+    $('empreinte-depuis').textContent = tn('empreinte.depuis', appels, { heure: I18n.heure(depuis), n: appels });
+    $('empreinte-chiffres').hidden = !appels;
+    /* Les jetons viennent à chaque appel, l'empreinte pas toujours. */
+    for (const ligne of document.querySelectorAll('#empreinte-chiffres .carbone')) {
+        ligne.hidden = !renseignes;
+    }
+    $('empreinte-jetons').textContent = tn('empreinte.lus', lus, { n: Albert.jetons(lus, I18n.langue) })
+        + ' · ' + tn('empreinte.ecrits', ecrits, { n: Albert.jetons(ecrits, I18n.langue) });
+    $('empreinte-energie').textContent = Albert.petiteUnite(kwh * 1000, 'Wh', I18n.langue);
+    $('empreinte-gaz').textContent = Albert.petiteUnite(kgco2 * 1000, 'g CO2eq', I18n.langue);
+    $('empreinte-telephone').textContent = Albert.recharge(kwh);
+    const note = !renseignes ? t('empreinte.vide')
+        : renseignes < appels ? t('empreinte.partielle', { n: renseignes, total: appels }) : '';
+    $('empreinte-note').textContent = note;
+    $('empreinte-note').hidden = !note;
+    $('empreinte-source').hidden = !renseignes;
+    $('empreinte').showModal();
 });
 
 $('changer-cle').addEventListener('click', () => {
