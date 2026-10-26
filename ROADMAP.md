@@ -4,9 +4,10 @@ Ce qui reste à faire, du plus simple au plus long. Le détail des failles est d
 
 ## Sécurité
 
+- [ ] **I13** : passer à KaTeX 0.18.2 ou plus et à Mermaid 12.2.0, qui embarque sa propre copie de KaTeX.
 - [ ] **E1** : demander aux administrateurs n8n une limite de débit par adresse IP sur le relais.
 - [ ] **E3, E5** : signaler à l'équipe de la Forge les en-têtes de sécurité manquants sur Pages.
-- [ ] Relire `SECURITE.md` depuis le compteur d'appels : certaines lignes disent encore que le relais ne garde rien.
+- [x] Relire `SECURITE.md` depuis le compteur d'appels : certaines lignes disent encore que le relais ne garde rien.
 
 ## Outils du modèle
 
@@ -37,7 +38,7 @@ Ce qui reste à faire, du plus simple au plus long. Le détail des failles est d
 
 Paramètres de l'API standard d'OpenAI, déclarés par Albert (spécification 0.8.0, lue le 25/10/2026). Tous acceptés par Albert, essayés par le relais le 26/10/2026 avec Medium et Large.
 
-- [ ] `logprobs` et `top_logprobs` : montrer, au survol de chaque mot, les autres mots possibles et leur probabilité. Avec Large, la liste commence par les tokens de sa réflexion, à sauter.
+- [ ] `logprobs` et `top_logprobs` : montrer, quand on touche un mot (les élèves sont sur iPad : pas de survol), les autres mots possibles et leur probabilité. Avec Large, la liste commence par les tokens de sa réflexion, à sauter.
 - [ ] `seed` : rejouer la même réponse avec la même graine. Albert ne promet qu'un "best effort", mais le texte est revenu identique deux fois sur les deux modèles.
 - [ ] `n` : plusieurs réponses côte à côte, pour voir l'effet de la température. Chaque réponse compte dans le quota.
 - [ ] `frequency_penalty` et `presence_penalty` (-2 à 2) : comparer les deux. Une valeur négative devrait faire répéter le modèle.

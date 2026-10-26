@@ -44,7 +44,7 @@ Navigateur (Pages) -> webhook n8n -> https://albert.api.etalab.gouv.fr
   `data.geopf.fr`, `geo.api.gouv.fr`, `boamp-datadila.opendatasoft.com`,
   `data.enseignementsup-recherche.gouv.fr`, `hubeau.eaufrance.fr`). Les
   noms des dirigeants d'entreprise ne sont pas transmis au modèle.
-- **Aucun CDN, aucune télémétrie.** Les sept bibliothèques sont servies depuis
+- **Aucun CDN, aucune télémétrie.** Les neuf bibliothèques sont servies depuis
   Pages, le QR code est calculé dans le navigateur et la version affichée dans
   "À propos" est écrite au déploiement : aucune requête vers la forge.
 
@@ -78,6 +78,8 @@ Navigateur (Pages) -> webhook n8n -> https://albert.api.etalab.gouv.fr
 - Trois webhooks publics, `POST .../v1/chat/completions`, `GET .../v1/models`
   et `POST .../v1/audio/transcriptions`.
   Sans `Authorization: Bearer`, 401 sans relais.
+- Un quatrième, `GET .../stats`, sans clé : le nombre d'appels par jour, seule
+  donnée que le relais garde (90 jours).
 - CORS : l'adresse Pages et `http://localhost:8642`. Toute autre origine reçoit
   `Access-Control-Allow-Origin: null`.
 - Sauvegarde des exécutions désactivée : n8n n'enregistre ni en-têtes ni clé.
@@ -94,9 +96,9 @@ Navigateur (Pages) -> webhook n8n -> https://albert.api.etalab.gouv.fr
 | Vol de la clé par injection de script (XSS) | CSP `default-src 'self'`, aucun script en ligne. Questions et mots cherchés insérés par `textContent`. HTML des réponses assaini : balises actives retirées, gestionnaires `on*`, attributs `style` et URL `javascript:`, `vbscript:`, `data:` non-image supprimés. KaTeX en `trust: false`, Mermaid en `securityLevel: 'strict'`. Blocs ```svg du modèle : seul le `<svg>` est gardé, sans `script`, `style`, `foreignObject`, `animate`, `set`, gestionnaire ni URL exécutable ; son cadre a `contain: paint`. |
 | Exfiltration par la page | `connect-src` limité au relais, à Wikipédia et aux deux moteurs. `img-src` limité à la page et aux miniatures de Wikimedia, `form-action 'none'`, `base-uri 'none'`. |
 | Interception réseau | HTTPS de bout en bout. Pages et n8n en TLS 1.3, repli TLS 1.2 avec AEAD, certificats valides. HSTS de deux ans sur Pages. |
-| Détournement du relais | URL cible fixée dans le workflow, deux chemins seulement, traversée refusée (404). |
+| Détournement du relais | URL cible fixée dans le workflow, quatre chemins seulement, traversée refusée (404). |
 | Conservation de la clé côté serveur | Sauvegarde des exécutions n8n désactivée, vérifiée après un appel réel. |
-| Bibliothèque compromise | Sept bibliothèques, aucune dépendance de construction. Toutes identiques octet pour octet au paquet npm. `npm audit` : rien. |
+| Bibliothèque compromise | Neuf bibliothèques, aucune dépendance de construction. Huit identiques octet pour octet au paquet npm, Giac vient de l'archive de son auteur. `npm audit` : un avis sur KaTeX (I13). |
 | Lien piégé dans une réponse | Liens ouverts avec `rel="noopener noreferrer"`, qui coupe aussi le `Referer` : la page visée ne sait pas d'où vient le clic. |
 | Adresse piégée dans les sources listées sous une réponse | Ces adresses viennent du moteur, pas du modèle. Elles passent par le même contrôle que les liens d'une réponse (`Rendu.urlDangereuse`) avant de devenir cliquables et leur titre est inséré par `textContent`. |
 | Consigne cachée dans une page trouvée par la recherche | Aucun moteur coché par défaut, globe à activer à chaque session, extraits tronqués, aucune capacité hors chercher. Détail en I9. |
@@ -115,7 +117,10 @@ embarquées et de la configuration du dépôt.
 officiel, le 2026-09-21 : KaTeX 0.16.47 (`auto-render`, `mhchem`, 20 polices),
 Mermaid 11.17.2, Pico 2.1.1 et qrcode-generator 2.0.4 sont identiques,
 highlight.js 11.12.0 et pdf.js 6.3.289 aussi (le 2026-09-24 ; pdf.js en version legacy depuis le 2026-10-14, comparée de même). Marked 17.0.1
-aussi depuis le 2026-09-22 (I11). `npm audit` sur les sept versions, le 2026-09-24 : rien.
+aussi depuis le 2026-09-22 (I11), math.js 15.2.0 aussi (le 2026-10-26). Giac 1.9.0
+vient d'une archive de son auteur, sans paquet npm à comparer. `npm audit` sur
+les sept versions, le 2026-09-24 : rien. Rejoué le 2026-10-26 sur les huit
+paquets npm : un avis sur KaTeX, voir I13.
 
 **Constats**
 
@@ -125,6 +130,7 @@ aussi depuis le 2026-09-22 (I11). `npm audit` sur les sept versions, le 2026-09-
 | I10 | Faible | L'identifiant `cx` n'est pas encodé dans l'adresse Google, contrairement à la clé et à la question. Seul l'utilisateur remplit ce champ et l'hôte reste fixe : il ne peut nuire qu'à lui-même. | `encodeURIComponent(this.CX)`. |
 | I11 | Faible | Le Marked embarqué vient de jsDelivr (`Minified by jsDelivr using Terser v5.39.0`), un fichier généré à la demande : impossible à vérifier octet pour octet, contrairement aux quatre autres. Contrôle de repli : sortie identique à `marked@17.0.1/lib/marked.umd.js` sur 14 entrées, dont HTML brut et URL `javascript:`. | Embarquer `lib/marked.umd.js` du paquet npm. |
 | I12 | Élevée | Pas de `.gitignore` dans le dépôt. Un `.env` portant une vraie clé Albert est à la racine du répertoire de travail, ignoré seulement par le `~/.config/git/ignore` du poste. Il n'a jamais été suivi et l'arbre suivi ne contient aucun secret, mais la protection ne suit pas le dépôt : ailleurs, un `git add .` publierait la clé. | Ajouter un `.gitignore`. |
+| I13 | Faible | `npm audit`, le 2026-10-26 : KaTeX avant 0.18.2 lit `trust` et ses autres réglages jusque dans `Object.prototype` (GHSA-238p-pmpm-9mq7). Une pollution de prototype ailleurs dans la page activerait les liens et ressources externes dans les formules du modèle, insérées après l'assainissement. Aucune pollution de ce type connue ici. Mermaid 11.17.2 embarque sa propre copie de KaTeX. | Passer à KaTeX 0.18.2 ou plus et à Mermaid 12.2.0. |
 
 ## Audit externe
 
@@ -165,6 +171,7 @@ Boîte noire depuis un poste extérieur, le 2026-09-21, avec `curl` et `openssl`
 | I10 | Corrigé le 2026-09-21 : `encodeURIComponent(this.CX)`. |
 | I11 | Corrigé le 2026-09-22 : Marked repris du paquet npm. Revérifié identique le 2026-10-26. |
 | I12 | Corrigé le 2026-09-21 : `.gitignore` au dépôt. Le `.env` reste, il sert aux outils du poste. |
+| I13 | Ouvert : KaTeX 0.18.2 et Mermaid 12.2.0. |
 | E1 | Ouvert : limite de débit à demander aux administrateurs. |
 | E2 | Corrigé le 2026-09-18 : affichage bloqué dans un cadre. |
 | E3, E5 | Ouverts : à signaler à l'équipe de la Forge. |
@@ -174,12 +181,12 @@ Boîte noire depuis un poste extérieur, le 2026-09-21, avec `curl` et `openssl`
 ## Pratiques de développement
 
 - Aucune dépendance de construction : ni bundler ni `npm install` pour publier.
-- Sept bibliothèques embarquées, versions et provenances dans
+- Neuf bibliothèques embarquées, versions et provenances dans
   `public/vendor/README.md`. Aucun appel à un CDN.
 - Pas de code dynamique : aucun `eval`, aucun script en ligne (interdit par la CSP).
 - Textes insérés par `textContent`. `data-t-html`, seul chemin par `innerHTML`,
   ne reçoit que du HTML écrit dans `public/js/langues/`.
-- 35 tests `node --test`, tous au vert le 2026-09-21.
+- 288 tests `node --test` et un test WebKit pour l'iPad, tous au vert le 2026-10-26.
 - Publication par la CI sur la branche par défaut seulement, avec le commit et
   sa date dans la page et une chaîne de version sur chaque ressource.
 
@@ -215,17 +222,17 @@ lesquelles il a prise ou qu'il déplace vers quelqu'un d'autre.
 
 | Reco | Statut | Ce qu'il en est |
 |------|--------|-----------------|
-| R3 Confiance dans les bibliothèques externes | Partielle | Sept bibliothèques embarquées, aucune dépendance de construction, aucun CDN. Toutes vérifiées octet pour octet. Vérification manuelle, à refaire à chaque mise à jour. |
-| R5 Principes DevSecOps | Partielle | 35 tests à chaque étape, audit rejoué à chaque changement de périmètre. Pas d'analyse automatique avant fusion. |
+| R3 Confiance dans les bibliothèques externes | Partielle | Neuf bibliothèques embarquées, aucune dépendance de construction, aucun CDN. Huit vérifiées octet pour octet, Giac sans paquet npm à comparer. KaTeX à mettre à jour (I13). Vérification manuelle, à refaire à chaque mise à jour. |
+| R5 Principes DevSecOps | Partielle | 288 tests à chaque étape, audit rejoué à chaque changement de périmètre. Pas d'analyse automatique avant fusion. |
 | R7 Confidentialité dès la conception | Couverte | Rien ne quitte le navigateur en dehors d'Albert et, sur activation, du moteur. Mode partagé par défaut : tout le sensible s'efface à la fermeture de l'onglet. |
 | R8 Besoin d'en connaître | Couverte | La clé appartient à l'utilisateur, le relais n'en garde rien. Aucun compte, aucun identifiant. |
 | R9 Pas d'usage automatisé pour des actions critiques | Sans objet | La réponse est du texte affiché. Aucune action n'en découle. |
 | R10 Accès à privilèges maîtrisés | Couverte, côté utilisateur | Une clé par personne, vérifiée auprès d'Albert avant d'être enregistrée, jamais enregistrée si elle est refusée. Le projet n'administre aucun accès. |
-| R13 Passerelle sécurisée si exposition Internet | Partielle | Le relais est la passerelle : TLS 1.3, CORS à deux origines, trois chemins dont le compteur public, 401 sans clé, rien de conservé. Il lui manque une limite de débit (E1). |
+| R13 Passerelle sécurisée si exposition Internet | Partielle | Le relais est la passerelle : TLS 1.3, CORS à deux origines, quatre chemins dont le compteur public, 401 sans clé sur les trois autres, seul le nombre d'appels par jour est gardé. Il lui manque une limite de débit (E1). |
 | R20 Intégrité des fichiers | Partielle | Page statique publiée par la CI, chaîne de version sur chaque ressource, bibliothèques comparées à leur source. Pas de signature ni d'empreinte publiée. |
 | R22 Chaîne de déploiement sécurisée | Couverte | Publication automatique depuis la branche par défaut. Le commit publié est écrit dans la page : on vérifie de l'extérieur que la production est bien le dépôt. Refait ce jour. |
 | R23 Audit de sécurité avant production | Non couverte | Aucune revue externe. Ce document en tient lieu, à ses limites près. |
-| R24 Tests fonctionnels avant production | Couverte | 35 tests `node --test`, plus les tests en boîte noire ci-dessus. |
+| R24 Tests fonctionnels avant production | Couverte | 288 tests `node --test` et un test WebKit, plus les tests en boîte noire ci-dessus. |
 | R25 Filtrage des entrées et des sorties | Partielle | En sortie, le HTML est assaini et les liens comme les adresses des sources passent par `Rendu.urlDangereuse`. En entrée, les fichiers joints sont bornés et convertis, mais les pages trouvées par la recherche ne sont pas filtrées (I9). |
 | R26 Interactions maîtrisées | Couverte | Destinations fermées par la CSP et vérifiées en ligne. Aucune destination découverte à l'exécution, aucun CDN, aucune télémétrie. |
 | R27 Limiter les actions automatiques sur entrées non maîtrisées | Partielle | Le modèle décide seul quand chercher, sur du texte venu du web ouvert (I9). Cette décision ne déclenche qu'un `GET` vers le moteur et la réponse reste du texte. |
