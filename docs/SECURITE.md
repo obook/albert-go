@@ -98,7 +98,7 @@ Navigateur (Pages) -> webhook n8n -> https://albert.api.etalab.gouv.fr
 | Interception réseau | HTTPS de bout en bout. Pages et n8n en TLS 1.3, repli TLS 1.2 avec AEAD, certificats valides. HSTS de deux ans sur Pages. |
 | Détournement du relais | URL cible fixée dans le workflow, quatre chemins seulement, traversée refusée (404). |
 | Conservation de la clé côté serveur | Sauvegarde des exécutions n8n désactivée, vérifiée après un appel réel. |
-| Bibliothèque compromise | Neuf bibliothèques, aucune dépendance de construction. Huit identiques octet pour octet au paquet npm, Giac vient de l'archive de son auteur. `npm audit` : un avis sur KaTeX (I13). |
+| Bibliothèque compromise | Neuf bibliothèques, aucune dépendance de construction. Huit identiques octet pour octet au paquet npm, Giac vient de l'archive de son auteur. `npm audit` : un avis sur la KaTeX de Mermaid (I13). |
 | Lien piégé dans une réponse | Liens ouverts avec `rel="noopener noreferrer"`, qui coupe aussi le `Referer` : la page visée ne sait pas d'où vient le clic. |
 | Adresse piégée dans les sources listées sous une réponse | Ces adresses viennent du moteur, pas du modèle. Elles passent par le même contrôle que les liens d'une réponse (`Rendu.urlDangereuse`) avant de devenir cliquables et leur titre est inséré par `textContent`. |
 | Consigne cachée dans une page trouvée par la recherche | Aucun moteur coché par défaut, globe à activer à chaque session, extraits tronqués, aucune capacité hors chercher. Détail en I9. |
@@ -117,10 +117,11 @@ embarquées et de la configuration du dépôt.
 officiel, le 2026-09-21 : KaTeX 0.16.47 (`auto-render`, `mhchem`, 20 polices),
 Mermaid 11.17.2, Pico 2.1.1 et qrcode-generator 2.0.4 sont identiques,
 highlight.js 11.12.0 et pdf.js 6.3.289 aussi (le 2026-09-24 ; pdf.js en version legacy depuis le 2026-10-14, comparée de même). Marked 17.0.1
-aussi depuis le 2026-09-22 (I11), math.js 15.2.0 aussi (le 2026-10-26). Giac 1.9.0
+aussi depuis le 2026-09-22 (I11), math.js 15.2.0 et KaTeX 0.18.11 aussi (le 2026-10-26). Giac 1.9.0
 vient d'une archive de son auteur, sans paquet npm à comparer. `npm audit` sur
 les sept versions, le 2026-09-24 : rien. Rejoué le 2026-10-26 sur les huit
-paquets npm : un avis sur KaTeX, voir I13.
+paquets npm : un avis sur KaTeX, voir I13. Après le passage à KaTeX 0.18.11, il ne
+vise plus que la copie de KaTeX dans Mermaid.
 
 **Constats**
 
@@ -171,7 +172,7 @@ Boîte noire depuis un poste extérieur, le 2026-09-21, avec `curl` et `openssl`
 | I10 | Corrigé le 2026-09-21 : `encodeURIComponent(this.CX)`. |
 | I11 | Corrigé le 2026-09-22 : Marked repris du paquet npm. Revérifié identique le 2026-10-26. |
 | I12 | Corrigé le 2026-09-21 : `.gitignore` au dépôt. Le `.env` reste, il sert aux outils du poste. |
-| I13 | Ouvert : KaTeX 0.18.2 et Mermaid 12.2.0. |
+| I13 | En partie corrigé le 2026-10-26 : KaTeX 0.18.11. Reste la copie de KaTeX dans Mermaid 11.17.2 : Mermaid 12 exige Safari 17.4, version des iPad à vérifier d'abord. |
 | E1 | Ouvert : limite de débit à demander aux administrateurs. |
 | E2 | Corrigé le 2026-09-18 : affichage bloqué dans un cadre. |
 | E3, E5 | Ouverts : à signaler à l'équipe de la Forge. |
@@ -222,7 +223,7 @@ lesquelles il a prise ou qu'il déplace vers quelqu'un d'autre.
 
 | Reco | Statut | Ce qu'il en est |
 |------|--------|-----------------|
-| R3 Confiance dans les bibliothèques externes | Partielle | Neuf bibliothèques embarquées, aucune dépendance de construction, aucun CDN. Huit vérifiées octet pour octet, Giac sans paquet npm à comparer. KaTeX à mettre à jour (I13). Vérification manuelle, à refaire à chaque mise à jour. |
+| R3 Confiance dans les bibliothèques externes | Partielle | Neuf bibliothèques embarquées, aucune dépendance de construction, aucun CDN. Huit vérifiées octet pour octet, Giac sans paquet npm à comparer. Mermaid à mettre à jour (I13). Vérification manuelle, à refaire à chaque mise à jour. |
 | R5 Principes DevSecOps | Partielle | 288 tests à chaque étape, audit rejoué à chaque changement de périmètre. Pas d'analyse automatique avant fusion. |
 | R7 Confidentialité dès la conception | Couverte | Rien ne quitte le navigateur en dehors d'Albert et, sur activation, du moteur. Mode partagé par défaut : tout le sensible s'efface à la fermeture de l'onglet. |
 | R8 Besoin d'en connaître | Couverte | La clé appartient à l'utilisateur, le relais n'en garde rien. Aucun compte, aucun identifiant. |

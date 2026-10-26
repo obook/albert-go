@@ -5,7 +5,7 @@ Servies depuis Pages, sans CDN : aucune adresse IP n'est transmise à un tiers.
 | Dossier | Version | Rôle | Licence | Provenance |
 |---|---|---|---|---|
 | `marked/` | 17.0.1 | Markdown vers HTML (`lib/marked.umd.js`, avec sa carte de sources) | MIT | paquet npm `marked@17.0.1`, https://github.com/markedjs/marked |
-| `katex/` | 0.16.47 | Formules LaTeX, avec `contrib/mhchem.min.js` pour la chimie `\ce{...}` | MIT | paquet npm `katex@0.16.47`, https://github.com/KaTeX/KaTeX |
+| `katex/` | 0.18.11 | Formules LaTeX, avec `contrib/mhchem.min.js` pour la chimie `\ce{...}` | MIT | paquet npm `katex@0.18.11`, https://github.com/KaTeX/KaTeX |
 | `mermaid/` | 11.17.2 | Diagrammes, chargé au premier diagramme | MIT | paquet npm `mermaid@11.17.2`, https://github.com/mermaid-js/mermaid |
 | `pico/` | 2.1.1 | Champs de formulaire (`css/pico.conditional.min.css` : seulement dans les éléments `.pico`) | MIT | paquet npm `@picocss/pico@2.1.1`, https://github.com/picocss/pico |
 | `pdfjs/` | 6.3.289 | Texte des PDF joints, chargé au premier PDF (`legacy/build/pdf.min.mjs` et `legacy/build/pdf.worker.min.mjs`). Version legacy : la version moderne appelle `Promise.try`, absent de Safari avant 18.2, et tout PDF était illisible sur un iPad moins à jour. À chaque mise à jour, changer `PDFJS` dans `piece-jointe.js` | Apache-2.0 | paquet npm `pdfjs-dist@6.3.289`, https://github.com/mozilla/pdf.js |
