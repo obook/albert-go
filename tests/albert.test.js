@@ -778,14 +778,17 @@ test('repondre : cumule l\'empreinte d\'Albert, valeur haute, les jetons, et com
 });
 
 test('petiteUnite : l\'unité, son millième sous 1, son millier au-dessus de 999', () => {
-    assert.strictEqual(Albert.petiteUnite(0.00099, 'Wh', 'fr'), '0,99 mWh');
-    assert.strictEqual(Albert.petiteUnite(0.42, 'g CO2eq', 'fr'), '420 mg CO2eq');
-    assert.strictEqual(Albert.petiteUnite(12.3, 'Wh', 'en'), '12 Wh');
-    assert.strictEqual(Albert.petiteUnite(1234, 'Wh', 'fr'), '1,2 kWh');
-    assert.strictEqual(Albert.petiteUnite(1500, 'g CO2eq', 'fr'), '1,5 kg CO2eq');
+    /* Espaces insécables : le nombre et son unité restent sur la même ligne. */
+    assert.doesNotMatch(Albert.petiteUnite(0.42, 'g CO2eq', 'fr'), / /);
+    const unite = (...args) => Albert.petiteUnite(...args).replace(/\s/g, ' ');
+    assert.strictEqual(unite(0.00099, 'Wh', 'fr'), '0,99 mWh');
+    assert.strictEqual(unite(0.42, 'g CO2eq', 'fr'), '420 mg CO2eq');
+    assert.strictEqual(unite(12.3, 'Wh', 'en'), '12 Wh');
+    assert.strictEqual(unite(1234, 'Wh', 'fr'), '1,2 kWh');
+    assert.strictEqual(unite(1500, 'g CO2eq', 'fr'), '1,5 kg CO2eq');
     /* Arrondi d'abord : jamais "1 000 Wh" ni "1 000 mWh". */
-    assert.strictEqual(Albert.petiteUnite(999.6, 'Wh', 'fr'), '1 kWh');
-    assert.strictEqual(Albert.petiteUnite(0.9996, 'Wh', 'fr'), '1 Wh');
+    assert.strictEqual(unite(999.6, 'Wh', 'fr'), '1 kWh');
+    assert.strictEqual(unite(0.9996, 'Wh', 'fr'), '1 Wh');
 });
 
 test('recharge : part d\'une recharge de téléphone, en pourcentage sous une recharge', () => {
@@ -808,6 +811,7 @@ test('recharge : part d\'une recharge de téléphone, en pourcentage sous une re
 test('jetons : en k au-dessus de 999', () => {
     /* toLocaleString sépare les milliers par une espace insécable en français. */
     const jetons = (n, langue) => Albert.jetons(n, langue).replace(/\s/g, ' ');
+    assert.doesNotMatch(Albert.jetons(12440, 'fr'), / /);
     assert.strictEqual(jetons(999, 'fr'), '999');
     assert.strictEqual(jetons(1000, 'fr'), '1 k');
     assert.strictEqual(jetons(12440, 'fr'), '12,4 k');
