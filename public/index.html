@@ -222,6 +222,10 @@
                 <span data-t="menu.reglages"></span>
             </button>
             <button type="button" class="entree" id="theme"></button>
+            <button type="button" class="entree" id="ouvrir-empreinte">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 20h10"/><path d="M10 20c5.5-2.5.8-6.4 3-10"/><path d="M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8z"/><path d="M14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4 1-4.9 2z"/></svg>
+                <span data-t="menu.empreinte"></span>
+            </button>
             <button type="button" class="entree" id="ouvrir-partage">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>
                 <span data-t="menu.partager"></span>
@@ -786,6 +790,41 @@
                     <p id="appels" hidden></p>
                     <p><span data-t="info.version"></span><span id="version"></span></p>
                 </section>
+            </div>
+
+            <button type="submit" class="bouton-principal" data-t="dialogue.fermer"></button>
+        </form>
+    </dialog>
+
+    <!-- Chiffres posés à l'ouverture (menu.js), cumulés par Albert.noterEmpreinte. -->
+    <dialog id="empreinte" class="reglages info" aria-labelledby="titre-empreinte">
+        <form method="dialog">
+            <h2 id="titre-empreinte" data-t="empreinte.titre"></h2>
+            <div class="carte-texte">
+                <p id="empreinte-depuis"></p>
+                <ul id="empreinte-chiffres" class="empreinte">
+                    <li>
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.39 4.39a1 1 0 0 0 1.68-.474 2.5 2.5 0 1 1 3.014 3.015 1 1 0 0 0-.474 1.68l1.683 1.682a2.414 2.414 0 0 1 0 3.414L19.61 15.39a1 1 0 0 1-1.68-.474 2.5 2.5 0 1 0-3.014 3.015 1 1 0 0 1 .474 1.68l-1.683 1.682a2.414 2.414 0 0 1-3.414 0L8.61 19.61a1 1 0 0 0-1.68.474 2.5 2.5 0 1 1-3.014-3.015 1 1 0 0 0 .474-1.68l-1.683-1.682a2.414 2.414 0 0 1 0-3.414L4.39 8.61a1 1 0 0 1 1.68.474 2.5 2.5 0 1 0 3.014-3.015 1 1 0 0 1-.474-1.68l1.683-1.682a2.414 2.414 0 0 1 3.414 0z"/></svg>
+                        <span data-t="empreinte.jetons"></span>
+                        <span id="empreinte-jetons" class="valeur"></span>
+                    </li>
+                    <li class="carbone">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
+                        <span data-t="empreinte.energie"></span>
+                        <span id="empreinte-energie" class="valeur"></span>
+                    </li>
+                    <li class="carbone">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M17 18h1"/><path d="M12 18h1"/><path d="M7 18h1"/></svg>
+                        <span data-t="empreinte.gaz"></span>
+                        <span id="empreinte-gaz" class="valeur"></span>
+                    </li>
+                    <li class="carbone">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg>
+                        <span id="empreinte-telephone"></span>
+                    </li>
+                </ul>
+                <p id="empreinte-note" hidden></p>
+                <p id="empreinte-source" data-t="empreinte.source"></p>
             </div>
 
             <button type="submit" class="bouton-principal" data-t="dialogue.fermer"></button>

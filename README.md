@@ -91,7 +91,7 @@ Le serveur et le kiosque viennent de L'Atelier d'Albert, écrit par Romain P., L
 | [PDF.js](https://mozilla.github.io/pdf.js/), [math.js](https://mathjs.org/) | Apache 2.0 |
 | [highlight.js](https://highlightjs.org/) | BSD 3-Clause |
 | [Giac](https://www-fourier.univ-grenoble-alpes.fr/~parisse/giac_fr.html), le moteur de calcul formel de Xcas | GPL 3.0 ou ultérieure, texte dans `public/vendor/giac/LICENSE` |
-| Icônes des titres des Réglages, de [Lucide](https://lucide.dev/) | ISC |
+| Icônes des titres des Réglages et de la boîte Empreinte, de [Lucide](https://lucide.dev/) | ISC |
 | Logos des éditeurs de modèles (`public/images/editeurs/`) | Marques de leurs éditeurs, reprises de la [page des modèles d'Albert API](https://ia.numerique.gouv.fr/outils-ia/albert-api/mod%C3%A8les/) |
 | Logos des moteurs de recherche (`public/images/moteurs/`) | Marques de leurs éditeurs, reprises de leurs sites ; OpenAlex depuis [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:OpenAlex_logo_icon.svg) (MIT) |
 

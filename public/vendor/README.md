@@ -16,6 +16,6 @@ Servies depuis Pages, sans CDN : aucune adresse IP n'est transmise à un tiers.
 | `work-sans/` | 5.3.0 | Police du texte, variable : latin et latin étendu, romain et italique (quatre `.woff2`) | OFL-1.1, texte dans `LICENSE` | paquet npm `@fontsource-variable/work-sans@5.3.0`, https://github.com/weiweihuanghuang/Work-Sans |
 | `qrcode-generator/` | 2.0.4 | QR code de la boîte "Partager" (`dist/qrcode.js`) | MIT, en tête du fichier : le paquet npm ne livre pas de fichier de licence | paquet npm `qrcode-generator@2.0.4`, https://github.com/kazuhikoarase/qrcode-generator |
 
-Icônes des titres des Réglages : trois tracés de Lucide 0.460.0 (`cpu`, `wrench`, `smartphone`) copiés dans `index.html`. Licence ISC, https://lucide.dev
+Icônes des titres des Réglages et de la boîte Empreinte : tracés de Lucide 0.460.0 (`cpu`, `wrench`, `smartphone`, `sprout`, `puzzle`, `zap`, `factory`) copiés dans `index.html`. Licence ISC, https://lucide.dev
 
 Mise à jour : prendre les fichiers dans le paquet npm officiel (`https://registry.npmjs.org/<nom>/-/<nom>-<version>.tgz`), puis vérifier avec `npm audit` sur un `package.json` listant les neuf versions (Luciole et Giac ne sont pas sur npm : reprendre l'archive de leur site ; pour Giac, changer aussi la version dans l'adresse de `js/tools/formel-worker.js`).
