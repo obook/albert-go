@@ -39,7 +39,7 @@ I18n.TEXTES.fr = {
     'kiosque.erreur.action': 'Demande inconnue.',
     'kiosque.erreur.terminee': 'Session terminée.',
     'kiosque.bandeau': 'Session kiosque : code {code}.',
-    'kiosque.partage': 'Les invités scannent le QR code, puis saisissent le code {code}.',
+    'kiosque.partage': 'Les invités scannent le QR code, puis saisissent le code {code}. Ils suivent les réglages de ce poste.',
     'kiosque.deconnexion': 'Quitter la session',
     'kiosque.terminee': 'La session est terminée.',
     'menu.historique': 'Historique des discussions',

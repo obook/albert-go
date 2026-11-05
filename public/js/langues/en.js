@@ -39,7 +39,7 @@ I18n.TEXTES.en = {
     'kiosque.erreur.action': 'Unknown request.',
     'kiosque.erreur.terminee': 'Session ended.',
     'kiosque.bandeau': 'Kiosk session: code {code}.',
-    'kiosque.partage': 'Guests scan the QR code, then enter the code {code}.',
+    'kiosque.partage': 'Guests scan the QR code, then enter the code {code}. They follow this computer\'s settings.',
     'kiosque.deconnexion': 'Leave the session',
     'kiosque.terminee': 'The session has ended.',
     'menu.historique': 'Conversation history',

@@ -89,6 +89,9 @@ def test_reglages_bornes():
                        "recherche": True, "calcul": False, "fournisseurs": ["wikipedia", "vikidia", "hal"]}
     assert kiosque.valider_reglages({"modele": "x" * 10000, "temperature": True}) == {}
     assert kiosque.valider_reglages({"temperature": 7}) == {"temperature": 2}
+    assert kiosque.valider_reglages({"nom": " Mythos 5.2 "}) == {"nom": "Mythos 5.2"}
+    assert kiosque.valider_reglages({"nom": "x" * 50})["nom"] == "x" * 12
+    assert kiosque.valider_reglages({"nom": "a\nb"}) == {}
 
 
 def test_code_faux_ralenti_et_en_file(monkeypatch):

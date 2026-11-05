@@ -64,8 +64,12 @@ class Gestionnaire(http.server.BaseHTTPRequestHandler):
             self._rediriger("/")
         elif self.server.kiosque and chemin == "/api/kiosque-status":
             # Session de ce navigateur : une page d'une ancienne session n'est plus "active".
-            relais.repondre_json(self, 200, {"active": kiosque.role_de_la_requete(self) is not None,
-                                             "temps_restant": kiosque.temps_restant()})
+            role = kiosque.role_de_la_requete(self)
+            statut = {"active": role is not None, "temps_restant": kiosque.temps_restant()}
+            # L'invité suit les réglages du poste maître pendant la session.
+            if role == "eleve":
+                statut["reglages"] = kiosque.reglages()
+            relais.repondre_json(self, 200, statut)
         elif not self._porte_kiosque(chemin):
             return
         elif chemin.startswith("/v1/"):
