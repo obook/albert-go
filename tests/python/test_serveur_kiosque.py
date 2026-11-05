@@ -89,6 +89,21 @@ def test_reglages_du_prof_transmis_aux_eleves(kiosque_client):
     assert kiosque_client.post("/api/kiosque-reglages", json={"temperature": 2}).status_code == 403
 
 
+def test_eleve_suit_les_reglages_pendant_la_session(kiosque_client):
+    _ouvrir(kiosque_client)
+    infos = _serveur_js(kiosque_client)["kiosque"]
+    prof = dict(kiosque_client.cookies)
+    assert "reglages" not in kiosque_client.get("/api/kiosque-status").json()
+    kiosque_client.cookies.clear()
+    kiosque_client.post("/kiosque", data={"action": "code", "token": infos["token"], "code": infos["code"]})
+    eleve = dict(kiosque_client.cookies)
+    kiosque_client.cookies = prof
+    kiosque_client.post("/api/kiosque-reglages", json={"calcul": False, "nom": "Mythos"})
+    kiosque_client.cookies = eleve
+    reglages = kiosque_client.get("/api/kiosque-status").json()["reglages"]
+    assert reglages["calcul"] is False and reglages["nom"] == "Mythos"
+
+
 def test_deconnexion_du_prof_termine_la_session(kiosque_client):
     _ouvrir(kiosque_client)
     reponse = kiosque_client.post("/kiosque", data={"action": "logout"})

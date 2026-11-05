@@ -148,7 +148,6 @@ for (const [nom, local] of Object.entries(OUTILS_LOCAUX)) {
     caseOutil.type = 'checkbox';
     caseOutil.setAttribute('role', 'switch');
     caseOutil.setAttribute('aria-describedby', 'aide-outils');
-    caseOutil.checked = reglages[nom];
     caseOutil.addEventListener('change', () => {
         reglages[nom] = caseOutil.checked;
         ecrire(nom, reglages[nom] ? 'oui' : 'non');
@@ -166,8 +165,17 @@ for (const [nom, local] of Object.entries(OUTILS_LOCAUX)) {
 /* Même globe que sous une réponse qui a cherché sur le web. */
 $('recherche-reglage').insertAdjacentHTML('afterend', '<span class="icone-outil">' + ICONES.globe + '</span>');
 $('recherche-web').innerHTML = ICONES.globe;
-$('recherche-reglage').checked = reglages.recherche;
 $('cle-recherche').value = reglages.cleRecherche || '';
+
+/** Cases des outils locaux et d'Internet, d'après reglages. */
+function afficherOutils() {
+    const cases = $('outils-locaux').querySelectorAll('input');
+    Object.keys(OUTILS_LOCAUX).forEach((nom, i) => {
+        cases[i].checked = reglages[nom];
+    });
+    $('recherche-reglage').checked = reglages.recherche;
+}
+afficherOutils();
 
 /** Moteur coché qui demande une clé, s'il y en a un. */
 function moteurAvecCle() {
@@ -304,12 +312,9 @@ $('outils-conseilles').addEventListener('click', () => {
         reglages[nom] = true;
         ecrire(nom, 'oui');
     }
-    for (const caseOutil of $('outils-locaux').querySelectorAll('input')) {
-        caseOutil.checked = true;
-    }
     reglages.recherche = true;
     ecrire('recherche', 'oui');
-    $('recherche-reglage').checked = true;
+    afficherOutils();
     choisirMoteurs([]);
     afficherMoteurs();
     afficherRecherche();

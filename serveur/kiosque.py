@@ -195,6 +195,10 @@ def valider_reglages(corps):
     moteurs = corps.get("fournisseurs")
     if isinstance(moteurs, list):
         propres["fournisseurs"] = [m for m in moteurs if isinstance(m, str) and re.fullmatch(r"[a-z-]{1,30}", m)][:3]
+    # Nom de l'application : 12 caractères dans les Réglages, vide pour "Albert Go".
+    nom = corps.get("nom")
+    if isinstance(nom, str) and nom.isprintable():
+        propres["nom"] = nom.strip()[:12]
     return propres
 
 

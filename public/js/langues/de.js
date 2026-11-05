@@ -39,7 +39,7 @@ I18n.TEXTES.de = {
     'kiosque.erreur.action': 'Unbekannte Anfrage.',
     'kiosque.erreur.terminee': 'Sitzung beendet.',
     'kiosque.bandeau': 'Kiosk-Sitzung: Code {code}.',
-    'kiosque.partage': 'Die Gäste scannen den QR-Code und geben dann den Code {code} ein.',
+    'kiosque.partage': 'Die Gäste scannen den QR-Code und geben dann den Code {code} ein. Sie übernehmen die Einstellungen dieses Rechners.',
     'kiosque.deconnexion': 'Sitzung verlassen',
     'kiosque.terminee': 'Die Sitzung ist beendet.',
     'menu.historique': 'Gesprächsverlauf',

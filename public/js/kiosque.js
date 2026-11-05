@@ -18,7 +18,7 @@ const Serveur = typeof SERVEUR !== 'undefined' ? SERVEUR : { adresses: [], kiosq
 const Kiosque = Serveur.kiosque;
 
 /** Réglages que le prof donne à ses élèves comme valeurs de départ. */
-const REGLAGES_PARTAGES = ['modele', 'temperature', 'topK', 'echanges', 'recherche', 'calcul', 'tirage', 'calendrier', 'compteur', 'fournisseurs'];
+const REGLAGES_PARTAGES = ['modele', 'temperature', 'topK', 'echanges', 'recherche', 'calcul', 'tirage', 'calendrier', 'compteur', 'fournisseurs', 'nom'];
 
 /** Nom d'enregistrement quand il diffère du nom dans reglages (reglages.js). */
 const NOMS_STOCKES = { topK: 'top-k' };
@@ -63,6 +63,21 @@ function reglagesAppliques(prof, moteursConnus) {
 }
 
 /**
+ * Réglages du prof à reprendre : tous à l'arrivée, ensuite ceux qu'il a changés.
+ *
+ * @param {Object} prof - Réglages reçus du serveur.
+ * @param {Object|null} avant - Réglages reçus la fois précédente.
+ * @returns {Object} Réglages à appliquer, l'élève garde ses choix sur les autres.
+ */
+function reglagesChanges(prof, avant) {
+    if (!avant || avant.session !== prof.session) {
+        return prof;
+    }
+    return Object.fromEntries(Object.entries(prof).filter(([nom, valeur]) =>
+        JSON.stringify(valeur) !== JSON.stringify(avant[nom])));
+}
+
+/**
  * Valeur telle que stockage.js l'enregistre.
  *
  * @param {*} valeur - Booléen, liste ou nombre.
@@ -88,32 +103,39 @@ if (typeof document !== 'undefined' && Kiosque) {
         ecrire('volet', 'replie');
     }
 
-    if (Kiosque.role === 'eleve' && Kiosque.reglages) {
-        /* Une fois par session : l'élève peut ensuite changer ses réglages. */
-        let deja = null;
+    /* Derniers réglages reçus du prof. */
+    let recus = null;
+    try {
+        recus = JSON.parse(sessionStorage.getItem('albert-go.kiosque-reglages'));
+    } catch (err) {
+        /* Stockage bloqué : les réglages du prof sont repris à chaque chargement. */
+    }
+
+    /* Applique ce que le prof a changé ; true si un réglage a changé. */
+    const appliquerReglagesProf = (prof) => {
+        const paires = reglagesAppliques(reglagesChanges(prof, recus), Object.keys(Recherche.MOTEURS));
+        for (const [nom, valeur] of paires) {
+            reglages[nom] = valeur;
+            ecrire(NOMS_STOCKES[nom] || nom, valeurStockee(valeur));
+        }
+        recus = prof;
         try {
-            deja = sessionStorage.getItem('albert-go.kiosque-reglages');
+            sessionStorage.setItem('albert-go.kiosque-reglages', JSON.stringify(prof));
         } catch (err) {
-            /* Stockage bloqué : les réglages du prof sont repris à chaque chargement. */
+            /* Stockage bloqué. */
         }
-        if (deja !== String(Kiosque.reglages.session)) {
-            for (const [nom, valeur] of reglagesAppliques(Kiosque.reglages, Object.keys(Recherche.MOTEURS))) {
-                reglages[nom] = valeur;
-                ecrire(NOMS_STOCKES[nom] || nom, valeurStockee(valeur));
-            }
-            try {
-                sessionStorage.setItem('albert-go.kiosque-reglages', String(Kiosque.reglages.session));
-            } catch (err) {
-                /* Stockage bloqué. */
-            }
-        }
+        return paires.length > 0;
+    };
+
+    if (Kiosque.role === 'eleve' && Kiosque.reglages) {
+        appliquerReglagesProf(Kiosque.reglages);
     }
 
     if (Kiosque.role === 'enseignant') {
         const envoyer = () => fetch('/api/kiosque-reglages', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(reglagesProf(reglages))
+            body: JSON.stringify(reglagesProf({ ...reglages, nom: lire('nom', '') }))
         }).catch(() => {});
         envoyer();
         $('reglages').addEventListener('close', envoyer);
@@ -143,6 +165,14 @@ if (typeof document !== 'undefined' && Kiosque) {
         fetch('/api/kiosque-status').then(r => r.json()).then((statut) => {
             if (!statut.active) {
                 location.href = adresseDeSortie(Kiosque, true);
+            } else if (statut.reglages && appliquerReglagesProf(statut.reglages)) {
+                /* Réglages changés par le prof pendant la session : la page suit. */
+                afficherOutils();
+                afficherMoteurs();
+                afficherRecherche();
+                afficherReglages();
+                afficherNom();
+                $('nom-application').value = lire('nom', '');
             }
         }).catch(() => {
             /* Coupure réseau ponctuelle : on réessaie au tour suivant. */
@@ -152,5 +182,5 @@ if (typeof document !== 'undefined' && Kiosque) {
 
 /* Export pour les tests Node ; ignoré dans le navigateur. */
 if (typeof module !== 'undefined') {
-    module.exports = { reglagesProf, reglagesAppliques, valeurStockee, adresseDeSortie };
+    module.exports = { reglagesProf, reglagesAppliques, reglagesChanges, valeurStockee, adresseDeSortie };
 }
