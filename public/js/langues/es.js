@@ -327,7 +327,7 @@ I18n.TEXTES.es = {
     'empreinte.telephone-part': 'Es decir, {part} de una carga de móvil',
     'empreinte.telephone': 'Es decir, {n} cargas de móvil',
     'empreinte.telephone-un': 'Es decir, {n} carga de móvil',
-    'empreinte.vide': 'Todavía no hay huella.',
+    'empreinte.vide': 'Albert no proporciona la huella por ahora.',
     'empreinte.partielle': 'Medida en {n} de {total} llamadas: las demás no la incluían.',
     'empreinte.source': 'Estimación calculada por el servidor de la IA (método EcoLogits). Se reinicia al recargar la página.',
     'version.format': '{commit} del {date}',
