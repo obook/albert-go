@@ -327,7 +327,7 @@ I18n.TEXTES.en = {
     'empreinte.telephone-part': 'That is {part} of a phone charge',
     'empreinte.telephone': 'That is {n} phone charges',
     'empreinte.telephone-un': 'That is {n} phone charge',
-    'empreinte.vide': 'Footprint not provided by Albert for now.',
+    'empreinte.vide': 'No footprint yet.',
     'empreinte.partielle': 'Measured on {n} of {total} calls: the others did not include one.',
     'empreinte.source': 'Estimate computed by the AI server (EcoLogits method). Reset when the page is reloaded.',
     'version.format': '{commit} of {date}',

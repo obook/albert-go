@@ -763,7 +763,7 @@ test('repondre : cumule l\'empreinte d\'Albert, valeur haute, les jetons, et com
     const avant = globalThis.fetch;
     Albert.empreinte = { kwh: 0, kgco2: 0, appels: 0, renseignes: 0, lus: 0, ecrits: 0, depuis: new Date() };
     const carbon = { kWh: { min: 0.001, max: 0.002 }, kgCO2eq: { min: 0.0001, max: 0.0003 } };
-    const usages = [{ prompt_tokens: 100, completion_tokens: 20, carbon }, { prompt_tokens: 100, completion_tokens: 20, carbon }, { prompt_tokens: 50, completion_tokens: 5 }];
+    const usages = [{ prompt_tokens: 100, completion_tokens: 20, carbon }, { prompt_tokens: 100, completion_tokens: 20, impacts: { kWh: 0.002, kgCO2eq: 0.0003 } }, { prompt_tokens: 50, completion_tokens: 5 }];
     globalThis.fetch = async () => ({ ok: true, status: 200, json: async () => ({ choices: [{ message: { content: 'ok' } }], usage: usages.shift() }) });
     try {
         for (let i = 0; i < 3; i++) {
