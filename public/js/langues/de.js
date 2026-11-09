@@ -327,7 +327,7 @@ I18n.TEXTES.de = {
     'empreinte.telephone-part': 'Das sind {part} einer Handyladung',
     'empreinte.telephone': 'Das sind {n} Handyladungen',
     'empreinte.telephone-un': 'Das ist {n} Handyladung',
-    'empreinte.vide': 'Albert liefert den Fußabdruck derzeit nicht.',
+    'empreinte.vide': 'Noch kein Fußabdruck.',
     'empreinte.partielle': 'Gemessen bei {n} von {total} Aufrufen: Die anderen enthielten keinen.',
     'empreinte.source': 'Schätzung des KI-Servers (Methode EcoLogits). Wird beim Neuladen der Seite zurückgesetzt.',
     'version.format': '{commit} vom {date}',

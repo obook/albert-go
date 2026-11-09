@@ -409,14 +409,16 @@ const Albert = {
     TELEPHONE_WH: 15,
 
     /**
-     * Ajoute l'empreinte d'un appel au cumul, en valeur haute de la fourchette d'Albert.
+     * Ajoute l'empreinte d'un appel au cumul (valeur haute si Albert donne une fourchette).
      *
      * @param {?Object} usage - Champ usage de la réponse.
      */
     noterEmpreinte(usage) {
-        const carbone = usage && usage.carbon;
-        const kwh = carbone && carbone.kWh && carbone.kWh.max;
-        const kgco2 = carbone && carbone.kgCO2eq && carbone.kgCO2eq.max;
+        /* Albert renvoie usage.impacts (nombres seuls) ; l'ancien usage.carbon donnait {min, max}. */
+        const carbone = usage && (usage.impacts || usage.carbon);
+        const haut = (x) => (x && typeof x === 'object' ? x.max : x);
+        const kwh = carbone && haut(carbone.kWh);
+        const kgco2 = carbone && haut(carbone.kgCO2eq);
         this.empreinte.appels++;
         this.empreinte.lus += (usage && usage.prompt_tokens) || 0;
         this.empreinte.ecrits += (usage && usage.completion_tokens) || 0;

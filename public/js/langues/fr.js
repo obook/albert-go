@@ -327,7 +327,7 @@ I18n.TEXTES.fr = {
     'empreinte.telephone-part': 'Soit {part} d\'une recharge de téléphone',
     'empreinte.telephone': 'Soit {n} recharges de téléphone',
     'empreinte.telephone-un': 'Soit {n} recharge de téléphone',
-    'empreinte.vide': 'Empreinte non fournie par Albert pour le moment.',
+    'empreinte.vide': 'Aucune empreinte pour l\'instant.',
     'empreinte.partielle': 'Mesurée sur {n} des {total} appels : les autres n\'en portaient pas.',
     'empreinte.source': 'Estimation calculée par le serveur de l\'IA (méthode EcoLogits). Remise à zéro quand on recharge la page.',
     'version.format': '{commit} du {date}',
