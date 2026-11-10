@@ -234,7 +234,8 @@ const Albert = {
                     id: alias,
                     nom: connu ? connu.nom : this.nomCourt(alias),
                     reel: (m.aliases || []).find(a => a.includes('/')) || m.id,
-                    type: (m.model_type || m.type) === 'image-text-to-text' ? 'texte-images' : 'texte',
+                    /* Albert dit text-generation pour tous (constaté le 10/11/2026) : la liste de secours sait qui lit les images. */
+                    type: (m.model_type || m.type) === 'image-text-to-text' || (connu && connu.type === 'texte-images') ? 'texte-images' : 'texte',
                     contexte: m.max_context_length || (connu && connu.contexte) || null
                 };
             })

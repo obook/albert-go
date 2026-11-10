@@ -90,6 +90,16 @@ test('normaliserModeles : format de llm-proxy, id = alias, modèle réel parmi l
     assert.strictEqual(Albert.logoEditeur(modeles[1].reel), 'images/editeurs/openai.png');
 });
 
+test('normaliserModeles : lecteur d\'images connu même si Albert le dit text-generation', () => {
+    /* Albert du 10/11/2026 : plus de type image-text-to-text, Large répondait sans voir la photo. */
+    const liste = [
+        { id: 'gemma-4-31b-it', type: 'text-generation', aliases: ['google/gemma-4-31B-it'] },
+        { id: 'gpt-oss-120b', type: 'text-generation', aliases: ['openweight-large', 'openai/gpt-oss-120b'] }
+    ];
+    assert.deepStrictEqual(Albert.normaliserModeles(liste).map(m => [m.id, m.type]),
+        [['gemma-4-31b-it', 'texte-images'], ['openweight-large', 'texte']]);
+});
+
 test('MODELES : chaque modèle de secours figure dans /v1/models', () => {
     /* Modèles de conversation relevés sur Albert le 2 octobre 2026. */
     const liste = [
