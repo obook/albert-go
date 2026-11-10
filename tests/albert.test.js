@@ -817,3 +817,28 @@ test('jetons : en k au-dessus de 999', () => {
     assert.strictEqual(jetons(12440, 'fr'), '12,4 k');
     assert.strictEqual(jetons(12440, 'en'), '12.4 k');
 });
+
+test('versionsEchange et choisirVersionEchange : les versions du dernier échange de Discussion', () => {
+    const debut = [{ role: 'user', content: 'Q1' }, { role: 'assistant', content: 'R1' }];
+    /* Pas d'échange complet : rien à refaire. */
+    assert.deepStrictEqual(Albert.versionsEchange([]), []);
+    assert.deepStrictEqual(Albert.versionsEchange(debut.slice(0, 1)), []);
+    /* Un échange jamais refait : une seule version, lui-même. */
+    const unique = [...debut, { role: 'user', content: 'Q2' }, { role: 'assistant', content: 'R2' }];
+    assert.deepStrictEqual(Albert.versionsEchange(unique), [{ question: unique[2], reponse: unique[3] }]);
+    /* Nouvelle réponse : elle s'ajoute aux versions et s'affiche. */
+    const refaite = [...debut, { role: 'user', content: 'Q2 modifiée' }, { role: 'assistant', content: 'R2 bis' }];
+    const versions = [...Albert.versionsEchange(unique), { question: refaite[2], reponse: refaite[3] }];
+    const conv = Albert.choisirVersionEchange(refaite, versions, 1);
+    assert.deepStrictEqual(conv.map(m => m.content), ['Q1', 'R1', 'Q2 modifiée', 'R2 bis']);
+    assert.strictEqual(conv[3].affichee, 1);
+    assert.strictEqual(Albert.versionsEchange(conv).length, 2);
+    /* Retour à la première version : sa question revient avec elle, le début ne bouge pas. */
+    const premiere = Albert.choisirVersionEchange(conv, Albert.versionsEchange(conv), 0);
+    assert.deepStrictEqual(premiere.map(m => m.content), ['Q1', 'R1', 'Q2', 'R2']);
+    assert.strictEqual(premiere[3].versions.length, 2);
+    /* Les versions gardées ne s'emboîtent pas. */
+    assert.ok(premiere[3].versions.every(v => !v.reponse.versions));
+    /* Seuls role et content partent chez Albert. */
+    assert.deepStrictEqual(Albert.messagesAEnvoyer(premiere, Albert.ECHANGES_TOUS).at(-1), { role: 'assistant', content: 'R2' });
+});

@@ -89,3 +89,69 @@ test("iPad (WebKit) : la page se charge sans erreur et un PDF entre dans la bibl
     assert.match(textes.join(''), /physique-chimie/, 'PDF non lu, message affiché : ' + etat);
     assert.deepStrictEqual(erreurs, []);
 });
+
+test("iPad (WebKit) : Discussion régénère une réponse, modifie la question et passe d'une version à l'autre", async (t) => {
+    const serveur = await servir();
+    const origine = 'http://127.0.0.1:' + serveur.address().port;
+    const navigateur = await webkit.launch();
+    t.after(async () => {
+        await navigateur.close();
+        serveur.close();
+    });
+    const contexte = await navigateur.newContext({ ...devices['iPad (gen 7)'], serviceWorkers: 'block' });
+    /* Albert simulé : chaque réponse porte son numéro et la dernière question reçue. */
+    let appels = 0;
+    await contexte.route((url) => url.origin !== origine, (route) => {
+        if (!route.request().url().endsWith('/chat/completions')) {
+            return route.abort();
+        }
+        appels += 1;
+        const question = route.request().postDataJSON().messages.at(-1).content;
+        return route.fulfill({ json: { choices: [{ message: { role: 'assistant', content: 'Réponse ' + appels + ' à ' + question }, finish_reason: 'stop' }] } });
+    });
+    await contexte.addInitScript(SAFARI_ANCIEN);
+    await contexte.addInitScript(() => {
+        localStorage.setItem('albert-go.cle', 'sk-test');
+        sessionStorage.setItem('albert-go.cle', 'sk-test');
+    });
+    const page = await contexte.newPage();
+    const erreurs = [];
+    page.on('pageerror', (err) => erreurs.push(String(err)));
+    const fil = () => page.evaluate(() => ({
+        textes: [...$('fil').children].map(li => li.querySelector('.texte') ? li.querySelector('.texte').textContent.trim() : li.textContent.replace(t('vous'), '')),
+        numero: ($('fil').querySelector('.versions-echange span') || {}).textContent
+    }));
+    const attendre = () => page.waitForFunction(() => !annulation);
+
+    await page.goto(origine + '/');
+    await page.fill('#saisie', 'Bonjour');
+    await page.press('#saisie', 'Enter');
+    await attendre();
+    await page.click('#fil .actions-reponse [aria-label="' + await page.evaluate(() => t('reponse.regenerer')) + '"]');
+    await attendre();
+    assert.deepStrictEqual(await fil(), { textes: ['Bonjour', 'Réponse 2 à Bonjour'], numero: '2/2' });
+
+    await page.click('#fil .version-precedente');
+    assert.deepStrictEqual(await fil(), { textes: ['Bonjour', 'Réponse 1 à Bonjour'], numero: '1/2' });
+    /* Le focus reste sur les flèches : la précédente, grisée, le passe à la suivante. */
+    assert.ok(await page.evaluate(() => document.activeElement.classList.contains('version-suivante')));
+
+    await page.click('#fil li.user .bouton-echange');
+    assert.strictEqual(await page.inputValue('#saisie'), 'Bonjour');
+    await page.fill('#saisie', 'Bonsoir');
+    await page.press('#saisie', 'Enter');
+    await attendre();
+    assert.deepStrictEqual(await fil(), { textes: ['Bonsoir', 'Réponse 3 à Bonsoir'], numero: '3/3' });
+
+    /* Question suivante : l'échange précédent perd ses flèches et ses boutons. */
+    await page.fill('#saisie', 'Merci');
+    await page.press('#saisie', 'Enter');
+    await attendre();
+    const apres = await page.evaluate(() => ({
+        fleches: $('fil').querySelectorAll('.versions-echange').length,
+        modifier: $('fil').querySelectorAll('li.user .bouton-echange').length,
+        envoyes: conversation.length
+    }));
+    assert.deepStrictEqual(apres, { fleches: 0, modifier: 1, envoyes: 4 });
+    assert.deepStrictEqual(erreurs, []);
+});
