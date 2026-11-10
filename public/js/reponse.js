@@ -238,24 +238,51 @@ async function devoiler(element, texte, images) {
 }
 
 /**
- * Boutons qui enregistrent une réponse : .docx, .odt, puis PDF par l'impression du navigateur.
+ * Menu qui enregistre une réponse : .docx, .odt, puis PDF par l'impression du navigateur.
+ *
+ * Un seul bouton à la place de trois : la barre tient sur une ligne de téléphone.
  *
  * @param {function(): (HTMLElement|Promise<HTMLElement>)} lire - Donne le contenu à enregistrer, une fois prêt.
  * @param {function(): string} sujet - Donne le sujet, pour nommer le fichier.
- * @returns {HTMLButtonElement[]} Les trois boutons.
+ * @returns {HTMLDetailsElement[]} Le menu, seul dans un tableau.
  */
 function boutonsExport(lire, sujet) {
-    const fichiers = ['docx', 'odt'].map((format) => {
-        const bouton = boutonAction(ICONES[format], t('reponse.telecharger-' + format));
-        bouton.addEventListener('click', () => Rendu.telechargerAvecAttente(bouton,
-            /* Imprimerie : document sans gras, à l'export comme à l'écran. */
-            async () => Rendu[format](await lire(), !!Albert.OUTILS[outilActuel].documents), Rendu.nomFigure(new Date(), format, sujet())));
+    const menu = document.createElement('details');
+    menu.className = 'menu-export';
+    const ouvrir = document.createElement('summary');
+    ouvrir.className = 'bouton-action';
+    ouvrir.innerHTML = ICONES.telecharger;
+    ouvrir.setAttribute('aria-label', t('reponse.exporter'));
+    ouvrir.title = t('reponse.exporter');
+    const choix = document.createElement('div');
+    choix.className = 'menu-export-choix';
+    const item = (format, libelle, action) => {
+        const bouton = document.createElement('button');
+        bouton.type = 'button';
+        bouton.innerHTML = ICONES[format];
+        bouton.append(t(libelle));
+        bouton.addEventListener('click', () => {
+            menu.open = false;
+            action(bouton);
+        });
         return bouton;
-    });
-    const pdf = boutonAction(ICONES.pdf, t('reponse.imprimer-pdf'));
-    pdf.addEventListener('click', async () => imprimer(await lire(), sujet()));
-    return [...fichiers, pdf];
+    };
+    choix.append(...['docx', 'odt'].map((format) => item(format, 'reponse.telecharger-' + format, (bouton) => Rendu.telechargerAvecAttente(bouton,
+        /* Imprimerie : document sans gras, à l'export comme à l'écran. */
+        async () => Rendu[format](await lire(), !!Albert.OUTILS[outilActuel].documents), Rendu.nomFigure(new Date(), format, sujet())))),
+    item('pdf', 'reponse.imprimer-pdf', async () => imprimer(await lire(), sujet())));
+    menu.append(ouvrir, choix);
+    return [menu];
 }
+
+/* Un clic ailleurs referme le menu d'export ouvert. */
+document.addEventListener('click', (e) => {
+    for (const menu of document.querySelectorAll('.menu-export[open]')) {
+        if (!menu.contains(e.target)) {
+            menu.open = false;
+        }
+    }
+});
 
 /**
  * Imprime une réponse seule, pour l'enregistrer en PDF : sa copie va dans
