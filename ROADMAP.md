@@ -69,6 +69,8 @@ Paramètres de l'API standard d'OpenAI, déclarés par Albert (spécification 0.
 
 ## À surveiller
 
+- Albert n'annonce plus quels modèles lisent les images (type `text-generation` pour tous depuis OpenGateLLM 0.9.0). albert-go lit déjà `input_modalities` si Albert le fournit ; sinon la liste `MODELES` décide. Quand [OpenGateLLM #641](https://github.com/etalab-ia/OpenGateLLM/issues/641) sera livré, vérifier le nom du champ et alléger `MODELES`.
+
 - Une conversation Rédac (devenu Courrier) réaffichée en fil Trad après un rechargement forcé, vue une fois. Si elle revient, lancer dans la console du même onglet, avant de le fermer :
 
   ```js

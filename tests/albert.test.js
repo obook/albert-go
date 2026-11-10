@@ -100,6 +100,15 @@ test('normaliserModeles : lecteur d\'images connu même si Albert le dit text-ge
         [['gemma-4-31b-it', 'texte-images'], ['openweight-large', 'texte']]);
 });
 
+test('normaliserModeles : input_modalities annoncé par Albert (OpenGateLLM #641)', () => {
+    const liste = [
+        { id: 'nouveau-vision', type: 'text-generation', input_modalities: ['text', 'image'] },
+        { id: 'nouveau-texte', type: 'text-generation', input_modalities: ['text'] }
+    ];
+    assert.deepStrictEqual(Albert.normaliserModeles(liste).map(m => [m.id, m.type]),
+        [['nouveau-texte', 'texte'], ['nouveau-vision', 'texte-images']]);
+});
+
 test('MODELES : chaque modèle de secours figure dans /v1/models', () => {
     /* Modèles de conversation relevés sur Albert le 2 octobre 2026. */
     const liste = [
