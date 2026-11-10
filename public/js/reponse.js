@@ -381,6 +381,12 @@ function bulleReponse(texte, titre, langue, animer = false, recherches = null) {
         carte.append(note);
         actions.append(boutonRecherches(note, cherchees));
     }
+    /* Discussion et Imprimerie : la réponse peut rejoindre la bibliothèque, comme une source. */
+    if (Albert.OUTILS[outilActuel].sources) {
+        const garder = boutonAction(ICONES.note, t('reponse.vers-bibliotheque'));
+        garder.addEventListener('click', () => ajouterNote(texte, Rendu.questionAvant(contenu)));
+        actions.append(garder);
+    }
     /* Exports toujours en dernier. Le clic attend la fin du rendu : avant, formules et figures manquent. */
     actions.append(...boutonsExport(() => pret.then(() => contenu), () => Rendu.questionAvant(contenu) || 'reponse'));
     carte.append(actions);

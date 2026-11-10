@@ -36,6 +36,15 @@ let documentsProjet = [];
 /** Nom donné au projet affiché, ou '' : son titre sert alors de nom. */
 let nomProjet = '';
 
+/** Guides en cours de rédaction, par nom de source. */
+const guidesEnCours = new Map();
+
+/** Un guide à la fois : un lot de fichiers déposés ne lance pas autant de demandes d'un coup. */
+let fileGuides = Promise.resolve();
+
+/** Nom de la source dont le guide est affiché. */
+let guideAffiche = '';
+
 /** Très grand écran : la bibliothèque est une colonne à droite ; sinon un tiroir (entete.css). */
 const COLONNE_SOURCES = matchMedia('(min-width: 80rem)');
 
@@ -204,10 +213,9 @@ function afficherDocuments() {
         nom.type = 'button';
         nom.className = 'nom-source';
         nom.textContent = doc.nom;
-        nom.title = t('documents.telecharger', { nom: Albert.nomTexte(doc.nom) });
-        nom.addEventListener('click', () => {
-            Rendu.telecharger(new Blob([doc.texte], { type: 'text/plain;charset=utf-8' }), Albert.nomTexte(doc.nom));
-        });
+        nom.title = t('documents.guide', { nom: doc.nom });
+        nom.classList.toggle('guide-en-cours', guidesEnCours.has(doc.nom));
+        nom.addEventListener('click', () => ouvrirGuide(doc.nom));
         const supprimer = boutonAction(ICONE_RETIRER, t('documents.supprimer', { nom: doc.nom }));
         supprimer.addEventListener('click', () => demanderSuppressionSource(doc.nom));
         ligne.append(coche, nom, supprimer);
@@ -317,16 +325,17 @@ function cocherSource(nom, coche) {
  * Ajoute à la bibliothèque un fichier lu, et le coche pour le document affiché.
  *
  * @param {{nom: string, texte: string}} piece - Fichier lu par joindreFichier.
+ * @param {boolean} [note] - true pour une réponse gardée : ni cochée, elle est déjà dans la conversation, ni fiche avant l'ouverture.
  * @returns {boolean} false si le fichier est vide, trop gros pour le contexte, ou si le stockage est plein.
  */
-function ajouterDocument(piece) {
+function ajouterDocument(piece, note = false) {
     if (!piece.texte.trim()) {
         etat(t('erreur.document-vide'), true);
         return false;
     }
     const nouveau = { nom: piece.nom, texte: piece.texte };
     /* Coché pour ce document : il doit tenir dans le contexte avec les autres sources cochées. */
-    if (!Albert.avecDocument(documentsProjet, nouveau, modeleActuel().contexte)) {
+    if (!note && !Albert.avecDocument(documentsProjet, nouveau, modeleActuel().contexte)) {
         etat(t('erreur.projet-plein'), true);
         return false;
     }
@@ -337,11 +346,200 @@ function ajouterDocument(piece) {
         return false;
     }
     bibliotheque = fichiers;
+    if (note) {
+        afficherDocuments();
+        return true;
+    }
     choisirSources([...sourcesProjet.filter(s => s !== nouveau.nom), nouveau.nom]);
     afficherDocuments();
     sauverConversation();
+    /* Guide rédigé dès le dépôt, sans l'attendre : en cas d'échec, il le sera à l'ouverture. */
+    redigerGuide(nouveau.nom).catch(() => {});
     return true;
 }
+
+/**
+ * Garde une réponse dans la bibliothèque, sous un nom libre.
+ *
+ * @param {string} texte - Réponse en Markdown.
+ * @param {string} question - Sa question, pour le nom.
+ */
+function ajouterNote(texte, question) {
+    const nom = Albert.nomLibre(Albert.nomNote(question), bibliotheque.map(d => d.nom));
+    if (ajouterDocument({ nom: nom, texte: texte }, true)) {
+        toast(t('toast.note-ajoutee', { nom: nom }));
+    }
+}
+
+$('coller-texte').addEventListener('click', () => {
+    $('nom-colle').value = '';
+    $('texte-colle').value = '';
+    $('dialogue-coller').returnValue = '';
+    $('dialogue-coller').showModal();
+});
+
+$('dialogue-coller').addEventListener('close', () => {
+    if ($('dialogue-coller').returnValue !== 'oui') {
+        return;
+    }
+    /* Un nom déjà pris est numéroté : il remplacerait sinon la source de même nom. */
+    const voulu = $('nom-colle').value.trim() || t('documents.texte-colle');
+    ajouterDocument({ nom: Albert.nomLibre(voulu, bibliotheque.map(d => d.nom)), texte: $('texte-colle').value });
+});
+
+/**
+ * Fait rédiger le guide d'une source par Albert, puis le garde avec elle dans la bibliothèque.
+ *
+ * @param {string} nom - Nom de la source.
+ * @returns {Promise<Object>} Le guide : { resume, themes, questions }.
+ * @throws {Error} Si Albert refuse la demande ou rend un guide illisible.
+ */
+function redigerGuide(nom) {
+    if (!guidesEnCours.has(nom)) {
+        const texte = bibliotheque.find(d => d.nom === nom).texte;
+        const promesse = fileGuides
+            .then(() => Albert.repondre(Albert.demandeGuide(modeleActuel().id, texte), new AbortController().signal))
+            .then((reponse) => {
+                const guide = Albert.lireGuide(reponse.texte);
+                if (!guide) {
+                    throw new Error(t('guide.illisible'));
+                }
+                /* Source supprimée ou remplacée pendant la rédaction : ce guide ne la décrit plus. */
+                const doc = bibliotheque.find(d => d.nom === nom);
+                if (doc && doc.texte === texte) {
+                    doc.guide = guide;
+                    ecrireBibliotheque(bibliotheque);
+                }
+                return guide;
+            })
+            .finally(() => {
+                guidesEnCours.delete(nom);
+                marquerGuide(nom, false);
+            });
+        guidesEnCours.set(nom, promesse);
+        marquerGuide(nom, true);
+        fileGuides = promesse.catch(() => {});
+    }
+    return guidesEnCours.get(nom);
+}
+
+/**
+ * Fait pulser le nom d'une source dans la bibliothèque tant qu'Albert rédige son guide.
+ *
+ * La liste n'est pas reconstruite : une case garde le focus.
+ *
+ * @param {string} nom - Nom de la source.
+ * @param {boolean} enCours - true pendant la rédaction.
+ */
+function marquerGuide(nom, enCours) {
+    for (const bouton of $('liste-documents').querySelectorAll('.nom-source')) {
+        if (bouton.textContent === nom) {
+            bouton.classList.toggle('guide-en-cours', enCours);
+        }
+    }
+}
+
+/**
+ * Ouvre le guide d'une source ; s'il n'est pas encore prêt, la boîte l'attend.
+ *
+ * @param {string} nom - Nom de la source.
+ */
+function ouvrirGuide(nom) {
+    const doc = bibliotheque.find(d => d.nom === nom);
+    guideAffiche = nom;
+    $('titre-guide').textContent = nom;
+    $('guide').showModal();
+    if (doc.guide) {
+        afficherGuide(doc.guide, '');
+    } else {
+        attendreGuide(nom);
+    }
+}
+
+/**
+ * Fait rédiger le guide affiché, ou attend celui en cours, puis le montre.
+ *
+ * En cas d'échec, l'ancien guide reste gardé avec la source.
+ *
+ * @param {string} nom - Nom de la source.
+ */
+async function attendreGuide(nom) {
+    /* Points animés à la place des points de suspension, comme à la vérification de la clé. */
+    afficherGuide(null, t('guide.lecture').replace(/\.+$/, ''));
+    $('refaire-guide').hidden = true;
+    const points = document.createElement('span');
+    points.className = 'points';
+    points.append(document.createElement('span'), document.createElement('span'), document.createElement('span'));
+    $('etat-guide').append(points);
+    let guide = null;
+    let message = '';
+    try {
+        guide = await redigerGuide(nom);
+    } catch (err) {
+        message = err.message;
+    }
+    /* Boîte refermée, ou passée à une autre source, pendant la lecture. */
+    if ($('guide').open && guideAffiche === nom) {
+        afficherGuide(guide, message);
+    }
+}
+
+$('refaire-guide').addEventListener('click', () => attendreGuide(guideAffiche));
+
+/**
+ * Remplit la boîte du guide : le guide s'il est là, sinon un message d'attente ou d'erreur.
+ *
+ * @param {?Object} guide - { resume, themes, questions }, ou null.
+ * @param {string} message - Texte affiché à la place du guide, ou ''.
+ */
+function afficherGuide(guide, message) {
+    $('refaire-guide').hidden = false;
+    $('etat-guide').textContent = message;
+    $('etat-guide').hidden = !message;
+    $('contenu-guide').hidden = !guide;
+    if (!guide) {
+        return;
+    }
+    $('resume-guide').textContent = guide.resume;
+    $('themes-guide').replaceChildren(...guide.themes.map((theme) => {
+        const ligne = document.createElement('li');
+        ligne.textContent = theme;
+        return ligne;
+    }));
+    $('questions-guide').replaceChildren(...guide.questions.map((question) => {
+        const bouton = document.createElement('button');
+        bouton.type = 'button';
+        bouton.className = 'suggestion';
+        bouton.textContent = question;
+        bouton.addEventListener('click', () => poserQuestionGuide(question));
+        return bouton;
+    }));
+}
+
+/**
+ * Met une question du guide dans la saisie, sa source cochée, sans l'envoyer.
+ *
+ * @param {string} question - Question choisie.
+ */
+function poserQuestionGuide(question) {
+    $('guide').close();
+    if (!sourcesProjet.includes(guideAffiche)) {
+        /* Même règle que la case : refusée si la source ne tient pas dans le contexte. */
+        cocherSource(guideAffiche, { checked: true });
+        afficherDocuments();
+    }
+    /* Tiroir : il se referme pour montrer la saisie. */
+    if ($('bibliotheque').matches(':modal')) {
+        $('bibliotheque').close();
+    }
+    $('saisie').value = question;
+    $('saisie').focus();
+}
+
+$('telecharger-guide').addEventListener('click', () => {
+    const doc = bibliotheque.find(d => d.nom === guideAffiche);
+    Rendu.telecharger(new Blob([doc.texte], { type: 'text/plain;charset=utf-8' }), Albert.nomTexte(doc.nom));
+});
 
 /**
  * Supprime un fichier de la bibliothèque : il quitte tous les documents.

@@ -775,6 +775,64 @@ const Albert = {
     },
 
     /**
+     * Nom d'une réponse gardée dans la bibliothèque : "Note", puis le début de sa question.
+     *
+     * @param {string} question - Question de la réponse, ou '' (Imprimerie n'en affiche pas).
+     * @returns {string} Nom en .md, le format de la réponse.
+     */
+    nomNote(question) {
+        const debut = question.replace(/\s+/g, ' ').trim();
+        /* Coupé au dernier mot entier qui tient dans 40 caractères. */
+        const court = debut.length > 40 ? debut.slice(0, 41).replace(/\s+\S*$/, '').slice(0, 40) : debut;
+        return t('documents.note') + (court ? ' - ' + court : '') + '.md';
+    },
+
+    /**
+     * Demande le guide d'une source : résumé, thèmes clés et questions, en JSON.
+     *
+     * @param {string} modele - Alias du modèle.
+     * @param {string} texte - Texte de la source.
+     * @returns {Object} Corps pour repondre.
+     */
+    demandeGuide(modele, texte) {
+        return {
+            model: modele,
+            /* Pas 0 : "Refaire le guide" en donnerait presque le même. */
+            temperature: 0.7,
+            response_format: { type: 'json_object' },
+            messages: [
+                { role: 'system', content: t('guide.consigne') },
+                { role: 'user', content: texte }
+            ]
+        };
+    },
+
+    /**
+     * Lit le guide dans la réponse du modèle, sans gras.
+     *
+     * @param {string} reponse - Réponse du modèle, en JSON.
+     * @returns {?{resume: string, themes: string[], questions: string[]}} null si elle est illisible ou sans résumé.
+     */
+    lireGuide(reponse) {
+        let guide;
+        try {
+            /* Certains modèles entourent le JSON d'un bloc ```json. */
+            guide = JSON.parse(reponse.slice(reponse.indexOf('{'), reponse.lastIndexOf('}') + 1));
+        } catch (err) {
+            return null;
+        }
+        if (!guide || typeof guide !== 'object') {
+            return null;
+        }
+        /* Le résumé arrive parfois en liste de phrases. */
+        const liste = valeur => [].concat(valeur)
+            .filter(x => typeof x === 'string' && x.trim())
+            .map(x => this.sansGras(x).trim());
+        const resume = liste(guide.resume).join(' ');
+        return resume ? { resume: resume, themes: liste(guide.themes), questions: liste(guide.questions) } : null;
+    },
+
+    /**
      * Retire un fichier supprimé de la bibliothèque des documents qui le cochaient.
      *
      * @param {Object[]} conversations - Entrées d'historique.
