@@ -230,12 +230,16 @@ const Albert = {
             .map(m => {
                 const alias = (m.aliases || []).find(a => a.startsWith('openweight-')) || m.id;
                 const connu = this.MODELES.find(c => c.id === alias);
+                /* Albert dit text-generation pour tous (constaté le 10/11/2026) : input_modalities
+                   viendra avec OpenGateLLM #641, la liste de secours sait qui lit les images en attendant. */
+                const images = (m.model_type || m.type) === 'image-text-to-text'
+                    || (m.input_modalities || []).includes('image')
+                    || (connu && connu.type === 'texte-images');
                 return {
                     id: alias,
                     nom: connu ? connu.nom : this.nomCourt(alias),
                     reel: (m.aliases || []).find(a => a.includes('/')) || m.id,
-                    /* Albert dit text-generation pour tous (constaté le 10/11/2026) : la liste de secours sait qui lit les images. */
-                    type: (m.model_type || m.type) === 'image-text-to-text' || (connu && connu.type === 'texte-images') ? 'texte-images' : 'texte',
+                    type: images ? 'texte-images' : 'texte',
                     contexte: m.max_context_length || (connu && connu.contexte) || null
                 };
             })
