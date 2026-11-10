@@ -155,3 +155,40 @@ test("iPad (WebKit) : Discussion régénère une réponse, modifie la question e
     assert.deepStrictEqual(apres, { fleches: 0, modifier: 1, envoyes: 4 });
     assert.deepStrictEqual(erreurs, []);
 });
+
+test("iPad (WebKit) : le guide d'une source s'ouvre par son nom et sa question arrive dans la saisie", async (t) => {
+    const serveur = await servir();
+    const origine = 'http://127.0.0.1:' + serveur.address().port;
+    const navigateur = await webkit.launch();
+    t.after(async () => {
+        await navigateur.close();
+        serveur.close();
+    });
+    const contexte = await navigateur.newContext({ ...devices['iPad (gen 7)'], serviceWorkers: 'block' });
+    /* Albert simulé : un guide en JSON, avec du gras, comme le rend Small. */
+    const guide = { resume: 'Le **programme** de physique-chimie.', themes: ['Énergie'], questions: ['Que dit le programme ?'] };
+    await contexte.route((url) => url.origin !== origine, (route) => (route.request().url().endsWith('/chat/completions')
+        ? route.fulfill({ json: { choices: [{ message: { role: 'assistant', content: JSON.stringify(guide) }, finish_reason: 'stop' }] } })
+        : route.abort()));
+    await contexte.addInitScript(SAFARI_ANCIEN);
+    await contexte.addInitScript(() => {
+        localStorage.setItem('albert-go.cle', 'sk-test');
+        sessionStorage.setItem('albert-go.cle', 'sk-test');
+    });
+    const page = await contexte.newPage();
+    const erreurs = [];
+    page.on('pageerror', (err) => erreurs.push(String(err)));
+
+    await page.goto(origine + '/');
+    await page.click('#ouvrir-bibliotheque');
+    await page.setInputFiles('#fichier-sources', path.join(__dirname, 'fixtures', 'programme.pdf'));
+    await page.waitForFunction(() => !depotEnCours && !guidesEnCours.size);
+    /* Décochée : la question du guide la recoche. */
+    await page.click('#liste-documents input[type=checkbox]');
+    await page.click('#liste-documents .nom-source');
+    assert.strictEqual(await page.textContent('#resume-guide'), 'Le programme de physique-chimie.');
+    await page.click('#questions-guide .suggestion');
+    assert.strictEqual(await page.inputValue('#saisie'), 'Que dit le programme ?');
+    assert.ok(await page.evaluate(() => !$('guide').open && sourcesProjet.length === 1));
+    assert.deepStrictEqual(erreurs, []);
+});

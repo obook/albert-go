@@ -660,6 +660,28 @@ test('nomTexte : le texte d\'un fichier se télécharge en .txt, sauf s\'il est 
     assert.strictEqual(Albert.nomTexte('script.js'), 'script.js.txt');
 });
 
+test('lireGuide : résumé, thèmes et questions, sans gras, même entourés d\'un bloc de code', () => {
+    /* Réponse de Small le 10/11/2026 : résumé en liste de phrases, gras partout. */
+    const reponse = '```json\n{"resume": ["La **Révolution** commence en 1789.", "La Bastille tombe."],'
+        + ' "themes": ["**Ancien Régime**", "", 3], "questions": ["Pourquoi **1789** ?"]}\n```';
+    assert.deepStrictEqual(Albert.lireGuide(reponse), {
+        resume: 'La Révolution commence en 1789. La Bastille tombe.',
+        themes: ['Ancien Régime'],
+        questions: ['Pourquoi 1789 ?']
+    });
+    assert.deepStrictEqual(Albert.lireGuide('{"resume": "Court."}'), { resume: 'Court.', themes: [], questions: [] });
+    assert.strictEqual(Albert.lireGuide('Désolé, je ne peux pas.'), null);
+    assert.strictEqual(Albert.lireGuide('{"themes": ["sans résumé"]}'), null);
+    assert.strictEqual(Albert.lireGuide('{"resume": '), null);
+});
+
+test('demandeGuide : la source seule, après la consigne, réponse en JSON', () => {
+    const demande = Albert.demandeGuide('openweight-small', 'Texte de la source');
+    assert.deepStrictEqual(demande.response_format, { type: 'json_object' });
+    assert.strictEqual(demande.messages.at(-1).content, 'Texte de la source');
+    assert.match(demande.messages[0].content, /JSON/);
+});
+
 test('sansGras : dans Imprimerie, un document ne garde aucun gras, sauf dans le code', () => {
     const document = [
         '**ÉVALUATION : Pythagore**',

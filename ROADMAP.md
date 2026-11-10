@@ -30,8 +30,12 @@ Ce qui reste à faire, du plus simple au plus long. Le détail des failles est d
 
 ## Bibliothèque
 
-- [ ] Guide de chaque source : à son dépôt, un court résumé, ses thèmes clés et quelques questions à lui poser, cliquables.
-- [ ] Supports en un clic à partir des sources cochées : fiche de révision, FAQ, chronologie, quiz, cartes mémoire et carte mentale (Mermaid).
+- [x] Guide de chaque source : à son dépôt, un court résumé, ses thèmes clés et quelques questions à lui poser, cliquables. Fait le 10/11/2026, ouvert par le nom de la source.
+- [x] Guide : coût mesuré le 10/11/2026, celui d'une question posée avec la source cochée. 50 pages (35 000 caractères) : 11 000 jetons, 2 s avec Small, 15 s avec Large. 150 000 caractères avec Large : 46 000 jetons, 10 s. S'il gêne, ne le rédiger qu'à la première ouverture, comme le fait déjà le repli.
+- [ ] Guide : l'essayer sur iPad (boîte, tiroir de la bibliothèque, question placée dans la saisie) et dans la version en ligne, par le relais n8n.
+- [x] Guide : un bouton "Refaire le guide", s'il déçoit ou après un changement de langue. Il reste dans la langue de l'interface au moment du dépôt. Température 0,7, sinon le guide refait est presque le même.
+- [x] Guide : un échec au dépôt ne se voit pas (le nom cesse de pulser). Gardé ainsi : le repli à l'ouverture le rattrape, et une erreur sur une action non demandée ferait du bruit.
+- [ ] Supports en un clic à partir des sources cochées : fiche de révision, FAQ, chronologie, quiz, cartes mémoire et carte mentale (Mermaid). Les proposer aussi dans la boîte du guide, pour cette seule source.
 - [ ] Notes : épingler une réponse dans la bibliothèque, puis la cocher comme une source.
 - [ ] Citations : des numéros dans la réponse qui ouvrent le passage exact de la source, surligné.
 - [ ] Autres sources que les fichiers : texte collé, page web par son adresse (le navigateur ne peut pas la lire seul : passer par le relais), transcription d'une vidéo.

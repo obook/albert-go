@@ -64,7 +64,9 @@ Navigateur (Pages) -> webhook n8n -> https://albert.api.etalab.gouv.fr
   règle. Seul le texte lu est gardé, pas le fichier d'origine. Les sources cochées
   pour une conversation ou un document partent à la suite de la consigne système : un
   fichier piégé y aurait l'autorité de la consigne, on n'y dépose que des
-  fichiers de confiance.
+  fichiers de confiance. À son dépôt, le texte d'une source part aussi chez
+  Albert pour rédiger son guide (résumé, thèmes, questions), gardé avec elle
+  et affiché en texte brut.
 - L'effacement est explicite, le navigateur restaurant `sessionStorage` quand on
   rouvre un onglet fermé : `pagehide` pose une marque, le chargement suivant
   efface si ce n'est pas un rechargement. Un onglet gelé en arrière-plan garde

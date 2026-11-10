@@ -54,6 +54,28 @@ label.interrupteur {
 /* Le préfixe .pico est nécessaire pour passer devant le sélecteur de Pico. */
 .pico .boutons-dialogue button { margin-bottom: 0; }
 
+/* Guide d'une source : un nom de fichier sans espace ne déborde pas de la boîte. */
+.titre-guide { overflow-wrap: anywhere; }
+.reglages #etat-guide, .contenu-guide p { margin: 0; }
+#etat-guide .points { margin-left: 0.5rem; }
+/* Nom d'une source dont le guide est en cours : il pulse (pulse dans entete.css). */
+.nom-source.guide-en-cours { animation: pulse 1.2s ease-in-out infinite; }
+.contenu-guide h3 { margin: 1.25rem 0 0.5rem; font-size: 1rem; }
+.contenu-guide ul { margin: 0; }
+.questions-guide { display: grid; gap: 0.5rem; }
+/* Une question tient souvent sur deux lignes : pas de pilule, le texte à gauche.
+   Le préfixe .pico passe devant le bouton plein de Pico. */
+.pico .questions-guide .suggestion {
+    margin: 0;
+    border-color: var(--bord);
+    border-radius: 0.75rem;
+    background: var(--surface);
+    color: var(--texte);
+    text-align: left;
+}
+.pico .questions-guide .suggestion:hover,
+.pico .questions-guide .suggestion:focus-visible { border-color: var(--accent); color: var(--accent); background: var(--accent-clair); }
+
 /* À plat, les réglages faisaient trois écrans sur un téléphone. */
 #reglages, #partage, #info { background: var(--fond-reglages); }
 /* Partager et À propos : le texte dans une carte blanche, comme les cartes des réglages. */
