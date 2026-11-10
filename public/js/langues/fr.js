@@ -102,6 +102,12 @@ I18n.TEXTES.fr = {
     'confirmer-suppression.projet': 'Supprimer ce document ? Ses sources restent dans la bibliothèque.',
     'documents.nom': 'Nom du document',
     'documents.deposer': 'Déposer des sources',
+    'documents.coller': 'Coller du texte',
+    'documents.texte-colle': 'Texte collé',
+    'documents.note': 'Note',
+    'coller.nom': 'Nom (facultatif)',
+    'coller.texte': 'Texte',
+    'coller.ajouter': 'Ajouter',
     'documents.garde': 'Le texte reste dans le navigateur, n\'y déposez pas de données personnelles.',
     'documents.supprimer': 'Supprimer {nom} de la bibliothèque',
     'documents.utiliser': 'Utiliser {nom} ici',
@@ -341,6 +347,7 @@ I18n.TEXTES.fr = {
 
     /* Réponses. */
     'reponse.copier': 'Copier la réponse',
+    'reponse.vers-bibliotheque': 'Ajouter à la bibliothèque',
     'reponse.copier-code': 'Copier le code',
     'reponse.telecharger-figure': 'Télécharger la figure (SVG)',
     'reponse.telecharger-png': 'Télécharger l\'image (PNG)',
@@ -436,6 +443,7 @@ I18n.TEXTES.fr = {
     /* Messages. */
     'toast.adresse-copiee': 'Adresse copiée.',
     'toast.reponse-copiee': 'Réponse copiée.',
+    'toast.note-ajoutee': 'Ajoutée à la bibliothèque : {nom}',
     'toast.code-copie': 'Code copié.',
     'toast.copie-refusee': 'Copie refusée par le navigateur.',
     'toast.impression-impossible': 'Ce navigateur n\'ouvre pas l\'impression. Essayez son menu Partager, puis Imprimer, ou ouvrez la page dans Safari.',

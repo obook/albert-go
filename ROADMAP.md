@@ -36,9 +36,10 @@ Ce qui reste à faire, du plus simple au plus long. Le détail des failles est d
 - [x] Fiche de lecture : un bouton "Refaire la fiche", si elle déçoit ou après un changement de langue. Elle reste dans la langue de l'interface au moment du dépôt. Température 0,7, sinon la fiche refaite est presque la même.
 - [x] Fiche de lecture : un échec au dépôt ne se voit pas (le nom cesse de pulser). Gardé ainsi : le repli à l'ouverture le rattrape, et une erreur sur une action non demandée ferait du bruit.
 - [ ] Supports en un clic à partir des sources cochées : fiche de révision, FAQ, chronologie, quiz, cartes mémoire et carte mentale (Mermaid). Les proposer aussi dans la boîte de la fiche de lecture, pour cette seule source.
-- [ ] Notes : épingler une réponse dans la bibliothèque, puis la cocher comme une source.
+- [x] Notes : épingler une réponse dans la bibliothèque, puis la cocher comme une source. Fait le 10/11/2026 : bouton sous la réponse, note non cochée, fiche de lecture rédigée à l'ouverture.
 - [ ] Citations : des numéros dans la réponse qui ouvrent le passage exact de la source, surligné.
-- [ ] Autres sources que les fichiers : texte collé, page web par son adresse (le navigateur ne peut pas la lire seul : passer par le relais), transcription d'une vidéo.
+- [x] Texte collé comme source, fait le 10/11/2026.
+- [ ] Autres sources que les fichiers : page web par son adresse (le navigateur ne peut pas la lire seul : passer par le relais), transcription d'une vidéo.
 - [ ] Carnets : plusieurs bibliothèques séparées, chacune avec ses sources, au lieu d'une seule filtrée par les cases.
 - [ ] Résumé audio à deux voix, comme une émission de radio : dialogue écrit par le modèle à partir des sources, lu par la synthèse vocale du navigateur.
 - [ ] Recherche dans les sources (collections et `/v1/search` d'Albert) quand elles dépassent le plafond : il faut trois routes de plus dans le relais n8n et les sources seraient alors gardées chez Albert.

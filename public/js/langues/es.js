@@ -102,6 +102,12 @@ I18n.TEXTES.es = {
     'confirmer-suppression.projet': '¿Eliminar este documento? Sus fuentes quedan en la biblioteca.',
     'documents.nom': 'Nombre del documento',
     'documents.deposer': 'Añadir fuentes',
+    'documents.coller': 'Pegar texto',
+    'documents.texte-colle': 'Texto pegado',
+    'documents.note': 'Nota',
+    'coller.nom': 'Nombre (opcional)',
+    'coller.texte': 'Texto',
+    'coller.ajouter': 'Añadir',
     'documents.garde': 'Su texto se guarda en este navegador: no añada datos personales.',
     'documents.supprimer': 'Eliminar {nom} de la biblioteca',
     'documents.utiliser': 'Usar {nom} aquí',
@@ -341,6 +347,7 @@ I18n.TEXTES.es = {
 
     /* Respuestas. */
     'reponse.copier': 'Copiar la respuesta',
+    'reponse.vers-bibliotheque': 'Añadir a la biblioteca',
     'reponse.copier-code': 'Copiar el código',
     'reponse.telecharger-figure': 'Descargar la figura (SVG)',
     'reponse.telecharger-png': 'Descargar la imagen (PNG)',
@@ -436,6 +443,7 @@ I18n.TEXTES.es = {
     /* Mensajes. */
     'toast.adresse-copiee': 'Dirección copiada.',
     'toast.reponse-copiee': 'Respuesta copiada.',
+    'toast.note-ajoutee': 'Añadida a la biblioteca: {nom}',
     'toast.code-copie': 'Código copiado.',
     'toast.copie-refusee': 'El navegador ha rechazado la copia.',
     'toast.impression-impossible': 'Este navegador no abre la impresión. Prueba su menú Compartir y luego Imprimir, o abre la página en Safari.',

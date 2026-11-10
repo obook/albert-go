@@ -102,6 +102,12 @@ I18n.TEXTES.de = {
     'confirmer-suppression.projet': 'Dieses Dokument löschen? Seine Quellen bleiben in der Bibliothek.',
     'documents.nom': 'Name des Dokuments',
     'documents.deposer': 'Quellen hinzufügen',
+    'documents.coller': 'Text einfügen',
+    'documents.texte-colle': 'Eingefügter Text',
+    'documents.note': 'Notiz',
+    'coller.nom': 'Name (optional)',
+    'coller.texte': 'Text',
+    'coller.ajouter': 'Hinzufügen',
     'documents.garde': 'Ihr Text bleibt in diesem Browser gespeichert: keine personenbezogenen Daten hinzufügen.',
     'documents.supprimer': '{nom} aus der Bibliothek löschen',
     'documents.utiliser': '{nom} hier verwenden',
@@ -341,6 +347,7 @@ I18n.TEXTES.de = {
 
     /* Antworten. */
     'reponse.copier': 'Antwort kopieren',
+    'reponse.vers-bibliotheque': 'Zur Bibliothek hinzufügen',
     'reponse.copier-code': 'Code kopieren',
     'reponse.telecharger-figure': 'Abbildung herunterladen (SVG)',
     'reponse.telecharger-png': 'Bild herunterladen (PNG)',
@@ -436,6 +443,7 @@ I18n.TEXTES.de = {
     /* Meldungen. */
     'toast.adresse-copiee': 'Adresse kopiert.',
     'toast.reponse-copiee': 'Antwort kopiert.',
+    'toast.note-ajoutee': 'Zur Bibliothek hinzugefügt: {nom}',
     'toast.code-copie': 'Code kopiert.',
     'toast.copie-refusee': 'Der Browser hat das Kopieren abgelehnt.',
     'toast.impression-impossible': 'Dieser Browser öffnet den Druck nicht. Versuche sein Teilen-Menü und dann Drucken oder öffne die Seite in Safari.',

@@ -25,6 +25,8 @@ const ICONES = {
     odt: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 2h9l5 5v15H5Z"/><path d="M14 2v5h5"/><text x="12" y="19" text-anchor="middle" font-size="10" font-weight="700" fill="currentColor" stroke="none">O</text></svg>',
     pdf: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 2h9l5 5v15H5Z"/><path d="M14 2v5h5"/><text x="12" y="19" text-anchor="middle" font-size="7" font-weight="700" fill="currentColor" stroke="none">PDF</text></svg>',
     /* Même icône que le bouton de la bibliothèque, dans l'en-tête. */
+    /* bookmark-plus de Lucide : l'icône de la bibliothèque marque déjà les sources d'une réponse. */
+    note: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 21l-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16Z"/><path d="M12 7v6M9 10h6"/></svg>',
     bibliotheque: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4v16M10 4v16M15 5l4 15M3 20h18"/></svg>',
     image: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.5"/><path d="M4 18l5-5 4 4 3-3 4 4"/></svg>',
     telecharger: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>',

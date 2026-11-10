@@ -102,6 +102,12 @@ I18n.TEXTES.en = {
     'confirmer-suppression.projet': 'Delete this document? Its sources stay in the library.',
     'documents.nom': 'Document name',
     'documents.deposer': 'Add sources',
+    'documents.coller': 'Paste text',
+    'documents.texte-colle': 'Pasted text',
+    'documents.note': 'Note',
+    'coller.nom': 'Name (optional)',
+    'coller.texte': 'Text',
+    'coller.ajouter': 'Add',
     'documents.garde': 'Their text is kept in this browser: do not add personal data.',
     'documents.supprimer': 'Delete {nom} from the library',
     'documents.utiliser': 'Use {nom} here',
@@ -341,6 +347,7 @@ I18n.TEXTES.en = {
 
     /* Answers. */
     'reponse.copier': 'Copy the answer',
+    'reponse.vers-bibliotheque': 'Add to the library',
     'reponse.copier-code': 'Copy the code',
     'reponse.telecharger-figure': 'Download the figure (SVG)',
     'reponse.telecharger-png': 'Download the image (PNG)',
@@ -436,6 +443,7 @@ I18n.TEXTES.en = {
     /* Messages. */
     'toast.adresse-copiee': 'Address copied.',
     'toast.reponse-copiee': 'Answer copied.',
+    'toast.note-ajoutee': 'Added to the library: {nom}',
     'toast.code-copie': 'Code copied.',
     'toast.copie-refusee': 'The browser refused the copy.',
     'toast.impression-impossible': 'This browser does not open printing. Try its Share menu, then Print, or open the page in Safari.',

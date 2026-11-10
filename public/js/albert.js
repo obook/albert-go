@@ -775,6 +775,19 @@ const Albert = {
     },
 
     /**
+     * Nom d'une réponse gardée dans la bibliothèque : "Note", puis le début de sa question.
+     *
+     * @param {string} question - Question de la réponse, ou '' (Imprimerie n'en affiche pas).
+     * @returns {string} Nom en .md, le format de la réponse.
+     */
+    nomNote(question) {
+        const debut = question.replace(/\s+/g, ' ').trim();
+        /* Coupé au dernier mot entier qui tient dans 40 caractères. */
+        const court = debut.length > 40 ? debut.slice(0, 41).replace(/\s+\S*$/, '').slice(0, 40) : debut;
+        return t('documents.note') + (court ? ' - ' + court : '') + '.md';
+    },
+
+    /**
      * Demande le guide d'une source : résumé, thèmes clés et questions, en JSON.
      *
      * @param {string} modele - Alias du modèle.

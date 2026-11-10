@@ -325,16 +325,17 @@ function cocherSource(nom, coche) {
  * Ajoute à la bibliothèque un fichier lu, et le coche pour le document affiché.
  *
  * @param {{nom: string, texte: string}} piece - Fichier lu par joindreFichier.
+ * @param {boolean} [note] - true pour une réponse gardée : ni cochée, elle est déjà dans la conversation, ni fiche avant l'ouverture.
  * @returns {boolean} false si le fichier est vide, trop gros pour le contexte, ou si le stockage est plein.
  */
-function ajouterDocument(piece) {
+function ajouterDocument(piece, note = false) {
     if (!piece.texte.trim()) {
         etat(t('erreur.document-vide'), true);
         return false;
     }
     const nouveau = { nom: piece.nom, texte: piece.texte };
     /* Coché pour ce document : il doit tenir dans le contexte avec les autres sources cochées. */
-    if (!Albert.avecDocument(documentsProjet, nouveau, modeleActuel().contexte)) {
+    if (!note && !Albert.avecDocument(documentsProjet, nouveau, modeleActuel().contexte)) {
         etat(t('erreur.projet-plein'), true);
         return false;
     }
@@ -345,6 +346,10 @@ function ajouterDocument(piece) {
         return false;
     }
     bibliotheque = fichiers;
+    if (note) {
+        afficherDocuments();
+        return true;
+    }
     choisirSources([...sourcesProjet.filter(s => s !== nouveau.nom), nouveau.nom]);
     afficherDocuments();
     sauverConversation();
@@ -352,6 +357,35 @@ function ajouterDocument(piece) {
     redigerGuide(nouveau.nom).catch(() => {});
     return true;
 }
+
+/**
+ * Garde une réponse dans la bibliothèque, sous un nom libre.
+ *
+ * @param {string} texte - Réponse en Markdown.
+ * @param {string} question - Sa question, pour le nom.
+ */
+function ajouterNote(texte, question) {
+    const nom = Albert.nomLibre(Albert.nomNote(question), bibliotheque.map(d => d.nom));
+    if (ajouterDocument({ nom: nom, texte: texte }, true)) {
+        toast(t('toast.note-ajoutee', { nom: nom }));
+    }
+}
+
+$('coller-texte').addEventListener('click', () => {
+    $('nom-colle').value = '';
+    $('texte-colle').value = '';
+    $('dialogue-coller').returnValue = '';
+    $('dialogue-coller').showModal();
+});
+
+$('dialogue-coller').addEventListener('close', () => {
+    if ($('dialogue-coller').returnValue !== 'oui') {
+        return;
+    }
+    /* Un nom déjà pris est numéroté : il remplacerait sinon la source de même nom. */
+    const voulu = $('nom-colle').value.trim() || t('documents.texte-colle');
+    ajouterDocument({ nom: Albert.nomLibre(voulu, bibliotheque.map(d => d.nom)), texte: $('texte-colle').value });
+});
 
 /**
  * Fait rédiger le guide d'une source par Albert, puis le garde avec elle dans la bibliothèque.

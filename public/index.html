@@ -271,6 +271,7 @@
                     <p class="formats-sources" data-t="documents.garde"></p>
                     <ul id="liste-documents" class="liste-documents"></ul>
                     <button type="button" id="deposer-documents" class="deposer" data-t="documents.deposer"></button>
+                    <button type="button" id="coller-texte" class="deposer" data-t="documents.coller"></button>
                     <input type="file"
                            id="fichier-sources"
                            accept="image/*,audio/*,.m4a,.opus,.pdf,.docx,.odt,.txt,.md,.csv,.tsv,.json,.xml,.html,.css,.js,.py,.tex,.sql"
@@ -301,6 +302,23 @@
             <p id="texte-aide"></p>
             <div class="boutons-dialogue">
                 <button type="submit" class="bouton-principal" autofocus data-t="dialogue.fermer"></button>
+            </div>
+        </form>
+    </dialog>
+
+    <!-- Texte collé dans la bibliothèque, comme une source (projet.js). -->
+    <dialog id="dialogue-coller" class="reglages pico" aria-labelledby="titre-coller">
+        <form method="dialog">
+            <h2 id="titre-coller" data-t="documents.coller"></h2>
+            <div>
+                <label for="nom-colle" data-t="coller.nom"></label>
+                <input type="text" id="nom-colle" maxlength="80" autocomplete="off" data-t-attr="placeholder:documents.texte-colle">
+                <label for="texte-colle" data-t="coller.texte"></label>
+                <textarea id="texte-colle" rows="8" required autofocus></textarea>
+            </div>
+            <div class="boutons-dialogue">
+                <button type="submit" value="non" class="bouton-texte outline" formnovalidate data-t="dialogue.annuler"></button>
+                <button type="submit" value="oui" class="bouton-principal" data-t="coller.ajouter"></button>
             </div>
         </form>
     </dialog>

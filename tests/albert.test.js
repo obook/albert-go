@@ -675,6 +675,14 @@ test('lireGuide : résumé, thèmes et questions, sans gras, même entourés d\'
     assert.strictEqual(Albert.lireGuide('{"resume": '), null);
 });
 
+test('nomNote : "Note", puis le début de la question sur une ligne, coupé à 40 caractères', () => {
+    assert.strictEqual(Albert.nomNote('Pourquoi\n  le ciel est bleu ?'), 'Note - Pourquoi le ciel est bleu ?.md');
+    assert.strictEqual(Albert.nomNote('En une phrase, qu\'est-ce qu\'un volcan effusif ?'), 'Note - En une phrase, qu\'est-ce qu\'un volcan.md');
+    assert.strictEqual(Albert.nomNote('a'.repeat(50)), 'Note - ' + 'a'.repeat(40) + '.md');
+    /* Imprimerie : pas de question affichée. */
+    assert.strictEqual(Albert.nomNote(''), 'Note.md');
+});
+
 test('demandeGuide : la source seule, après la consigne, réponse en JSON', () => {
     const demande = Albert.demandeGuide('openweight-small', 'Texte de la source');
     assert.deepStrictEqual(demande.response_format, { type: 'json_object' });
