@@ -90,6 +90,29 @@ test("iPad (WebKit) : la page se charge sans erreur et un PDF entre dans la bibl
     assert.deepStrictEqual(erreurs, []);
 });
 
+test("iPad (WebKit) : un script raté au lancement recharge la page une fois", async (t) => {
+    const serveur = await servir();
+    const origine = 'http://127.0.0.1:' + serveur.address().port;
+    const navigateur = await webkit.launch();
+    t.after(async () => {
+        await navigateur.close();
+        serveur.close();
+    });
+    const contexte = await navigateur.newContext({ ...devices['iPad (gen 7)'], serviceWorkers: 'block' });
+    await contexte.route((url) => url.origin !== origine, (route) => route.abort());
+    /* Comme sur le Pixel le 11/11/2026 : rendu/images.js perdu au premier chargement seulement. */
+    let rates = 0;
+    await contexte.route('**/js/rendu/images.js*', (route) => (rates++ ? route.continue() : route.abort()));
+    const page = await contexte.newPage();
+    let chargements = 0;
+    page.on('request', (requete) => requete.isNavigationRequest() && chargements++);
+
+    await page.goto(origine + '/');
+    await page.waitForFunction(() => typeof Rendu.imagesCommons === 'function', null, { timeout: 10000 });
+    /* serveur.js manque, comme sur Pages : il ne doit pas compter. */
+    assert.strictEqual(chargements, 2);
+});
+
 test("iPad (WebKit) : Discussion régénère une réponse, modifie la question et passe d'une version à l'autre", async (t) => {
     const serveur = await servir();
     const origine = 'http://127.0.0.1:' + serveur.address().port;
