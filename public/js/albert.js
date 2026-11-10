@@ -1244,6 +1244,33 @@ const Albert = {
     },
 
     /**
+     * Versions du dernier échange de Discussion (question modifiée ou réponse régénérée).
+     *
+     * @param {Object[]} conversation - Messages de la conversation.
+     * @returns {Object[]} Versions { question, reponse }, celle affichée comprise ; [] sans échange complet.
+     */
+    versionsEchange(conversation) {
+        const [question, reponse] = conversation.slice(-2);
+        if (!question || question.role !== 'user' || !reponse || reponse.role !== 'assistant') {
+            return [];
+        }
+        return reponse.versions || [{ question: question, reponse: reponse }];
+    },
+
+    /**
+     * Affiche une version du dernier échange : sa question et sa réponse le remplacent.
+     *
+     * @param {Object[]} conversation - Messages de la conversation.
+     * @param {Object[]} versions - Versions { question, reponse }, sans champ versions.
+     * @param {number} affichee - Rang de la version à afficher.
+     * @returns {Object[]} Nouvelle conversation ; la réponse porte les versions et le rang affiché.
+     */
+    choisirVersionEchange(conversation, versions, affichee) {
+        const { question, reponse } = versions[affichee];
+        return [...conversation.slice(0, -2), question, { ...reponse, versions: versions, affichee: affichee }];
+    },
+
+    /**
      * Message d'erreur lisible à partir d'une réponse refusée.
      *
      * @param {number} status - Code HTTP.

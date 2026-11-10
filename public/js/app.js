@@ -16,6 +16,9 @@
 /** Annulation de la requête en cours, ou null s'il n'y en a pas. */
 let annulation = null;
 
+/* Dernière question en cours de modification : l'envoi la remplace au lieu de la suivre. */
+let modification = false;
+
 /**
  * Message affiché quand le relais refuse l'origine de la page.
  *
@@ -182,8 +185,9 @@ async function demanderReponse(outil, question, image, modele) {
  *
  * @param {Object} reponse - Réponse de Albert.repondre.
  * @param {string} outil - Clé de Albert.OUTILS.
+ * @param {?Object[]} [anciennes] - Versions de l'échange refait, que la réponse rejoint.
  */
-function recevoirReponse(reponse, outil) {
+function recevoirReponse(reponse, outil, anciennes = null) {
     /* Langue gardée pour la lecture à voix haute : la cible de Traduire, sinon celle du texte. */
     const langue = outil === 'traduire' ? langueCible : Albert.langueDuTexte(reponse.texte, I18n.langue);
     /* Imprimerie : le gras est retiré avant l'affichage, l'export et la demande suivante. */
@@ -192,13 +196,20 @@ function recevoirReponse(reponse, outil) {
     const recherches = Albert.OUTILS[outil].sources && documentsProjet.length
         ? [...(reponse.recherches || []), { bibliotheque: documentsProjet.map(d => d.nom).join(', ') }]
         : reponse.recherches;
+    /* Seul le dernier échange garde ses versions : les flèches ne vont pas plus haut. */
+    conversation = conversation.map(({ versions, affichee, ...m }) => m);
     conversation.push({ role: 'assistant', content: texte, langue: langue, recherches: recherches, usage: reponse.usage });
+    if (anciennes) {
+        const nouvelle = { question: conversation.at(-2), reponse: conversation.at(-1) };
+        conversation = Albert.choisirVersionEchange(conversation, [...anciennes, nouvelle], anciennes.length);
+    }
     if (Albert.OUTILS[outil].documents) {
         /* Imprimerie : la version prend son heure et son numéro ; au-delà du plafond, la plus ancienne sort. */
         conversation.at(-1).date = Date.now();
         conversation = Albert.limiterVersions(Albert.numeroterVersions(conversation));
     }
     ajouter('assistant', texte, langue, true, recherches);
+    boutonsEchange();
     sauverConversation();
     afficherReglages();
     /* Réponse arrêtée par la longueur : la fin manque, on le dit. */
@@ -225,6 +236,7 @@ function reposerQuestion(err, question, piece, bulle) {
     } else {
         etat(messageEchec(err).texte, true);
     }
+    boutonsEchange();
 }
 
 /**
@@ -270,11 +282,18 @@ async function envoyer() {
         }
     }
 
+    /* Question modifiée : le dernier échange quitte le fil, ses versions attendent la nouvelle réponse. */
+    const avant = conversation;
+    const anciennes = modification ? Albert.versionsEchange(conversation) : [];
+    modification = false;
+    if (anciennes.length) {
+        conversation = conversation.slice(0, -2);
+        retirerEchange();
+    }
+
     const affiche = Albert.texteAffiche(question, piece);
     const demande = Albert.construireDemande(outil, Albert.joindre(question, piece), langueSource, langueCible);
     conversation.push({ role: 'user', content: demande, affiche: affiche });
-    /* Pour ignorer la réponse si on change de conversation pendant l'attente. */
-    const courante = conversation;
     /* Saisie vidée et état écrit avant les bulles : la zone de saisie change
        de hauteur, et le fil défilé trop tôt cachait l'attente dessous. */
     $('saisie').value = '';
@@ -285,27 +304,171 @@ async function envoyer() {
     if (piece) {
         bulle.append(lignePiece(piece));
     }
+    boutonsEchange();
+
+    /* Imprimerie : la demande n'a pas de bulle, l'attente la rappelle. */
+    await attendreReponse(outil, () => demanderReponse(outil, question, image, modele), (err) => {
+        reposerQuestion(err, question, piece, bulle);
+        if (anciennes.length) {
+            /* L'échange modifié revient tel quel, la modification reste en cours. */
+            conversation = avant;
+            modification = true;
+            afficherFil();
+        }
+    }, anciennes.length ? anciennes : null, Albert.OUTILS[outil].documents ? affiche : '');
+}
+
+/**
+ * Attend la réponse à la question en fin de conversation, puis l'affiche.
+ *
+ * @param {string} outil - Clé de Albert.OUTILS.
+ * @param {Function} demander - Lance la demande, rend la promesse de la réponse.
+ * @param {Function} echec - Reçoit l'erreur si la réponse n'arrive pas.
+ * @param {?Object[]} anciennes - Versions de l'échange refait, ou null.
+ * @param {string} [attente] - Demande rappelée par l'attente.
+ * @returns {Promise<void>}
+ */
+async function attendreReponse(outil, demander, echec, anciennes, attente = '') {
+    /* Pour ignorer la réponse si on change de conversation pendant l'attente. */
+    const courante = conversation;
     annulation = new AbortController();
     boutonEnvoi(true);
-    /* Imprimerie : la demande n'a pas de bulle, l'attente la rappelle. */
-    const retirerAttente = ajouterAttente(Albert.OUTILS[outil].documents ? affiche : '');
-
+    const retirerAttente = ajouterAttente(attente);
     try {
-        const reponse = await demanderReponse(outil, question, image, modele);
+        const reponse = await demander();
         retirerAttente();
         if (conversation === courante) {
-            recevoirReponse(reponse, outil);
+            recevoirReponse(reponse, outil, anciennes);
         }
     } catch (err) {
         retirerAttente();
         if (conversation === courante) {
-            reposerQuestion(err, question, piece, bulle);
+            echec(err);
         }
     } finally {
         annulation = null;
         boutonEnvoi(false);
         focusSaisie();
     }
+}
+
+/**
+ * Nouvelle réponse à la dernière question de Discussion ; l'ancienne reste parmi les versions.
+ */
+function regenerer() {
+    const anciennes = Albert.versionsEchange(conversation);
+    if (annulation || !anciennes.length) {
+        return;
+    }
+    const avant = conversation;
+    conversation = conversation.slice(0, -1);
+    $('fil').lastElementChild.remove();
+    boutonsEchange();
+    etat(t('etat.reflechit'));
+    /* ponytail: une image jointe ne repart pas, le modèle relit sa transcription comme aux tours suivants. */
+    attendreReponse(outilActuel, () => demanderReponse(outilActuel, null, null, modeleActuel()), (err) => {
+        conversation = avant;
+        afficherFil();
+        etat(err.name === 'AbortError' ? t('etat.annulee') : messageEchec(err).texte, err.name !== 'AbortError');
+    }, anciennes);
+}
+
+/**
+ * Remet la dernière question dans la saisie : l'envoi la remplacera, avec une nouvelle réponse.
+ */
+function modifierQuestion() {
+    if (annulation) {
+        return;
+    }
+    const question = conversation.at(-2);
+    $('saisie').value = question.affiche || question.content;
+    modification = true;
+    etat(t('etat.modification'));
+    focusSaisie();
+}
+
+/**
+ * Affiche une autre version du dernier échange.
+ *
+ * @param {number} affichee - Rang de la version.
+ * @param {string} fleche - Classe de la flèche cliquée, qui garde le focus.
+ */
+function choisirVersion(affichee, fleche) {
+    if (annulation) {
+        return;
+    }
+    conversation = Albert.choisirVersionEchange(conversation, Albert.versionsEchange(conversation), affichee);
+    retirerEchange();
+    const [question, reponse] = conversation.slice(-2);
+    ajouter('user', question.affiche || question.content);
+    ajouter('assistant', reponse.content, reponse.langue, false, reponse.recherches);
+    boutonsEchange();
+    sauverConversation();
+    afficherReglages();
+    const bouton = $('fil').querySelector('.' + fleche);
+    (bouton && !bouton.disabled ? bouton : $('fil').querySelector('.versions-echange button:not(:disabled)')).focus();
+}
+
+/**
+ * Retire du fil les bulles du dernier échange, à partir de sa question.
+ */
+function retirerEchange() {
+    const question = [...$('fil').querySelectorAll(':scope > li.user')].at(-1);
+    while (question && question.nextElementSibling) {
+        question.nextElementSibling.remove();
+    }
+    if (question) {
+        question.remove();
+    }
+}
+
+/**
+ * Place les boutons Modifier, Régénérer et les flèches de versions sur le dernier échange de Discussion.
+ */
+function boutonsEchange() {
+    for (const ancien of $('fil').querySelectorAll('.bouton-echange, .versions-echange')) {
+        ancien.remove();
+    }
+    const versions = Albert.versionsEchange(conversation);
+    const bulles = $('fil').querySelectorAll(':scope > li');
+    const [bulleQuestion, derniere] = [...bulles].slice(-2);
+    const outil = Albert.OUTILS[outilActuel];
+    if (!versions.length || !outil.fil || outil.documents || !derniere || !derniere.classList.contains('assistant')) {
+        return;
+    }
+    const question = conversation.at(-2);
+    /* Un fichier joint ne se retape pas : sa question ne se modifie pas. */
+    if (!question.affiche || question.affiche === question.content) {
+        const modifier = boutonAction(ICONES.modifier, t('question.modifier'));
+        modifier.classList.add('bouton-echange');
+        modifier.addEventListener('click', modifierQuestion);
+        bulleQuestion.append(modifier);
+    }
+    const actions = derniere.querySelector('.actions-reponse');
+    const refaire = boutonAction(ICONES.regenerer, t('reponse.regenerer'));
+    refaire.classList.add('bouton-echange');
+    refaire.addEventListener('click', regenerer);
+    actions.prepend(refaire);
+    if (versions.length < 2) {
+        return;
+    }
+    const affichee = conversation.at(-1).affichee;
+    const groupe = document.createElement('span');
+    groupe.className = 'versions-echange';
+    const precedente = boutonAction(ICONES.precedente, t('reponse.version-precedente'));
+    precedente.classList.add('version-precedente');
+    precedente.disabled = affichee === 0;
+    precedente.addEventListener('click', () => choisirVersion(affichee - 1, 'version-precedente'));
+    const numero = document.createElement('span');
+    numero.textContent = (affichee + 1) + '/' + versions.length;
+    numero.setAttribute('aria-label', t('reponse.version', { numero: affichee + 1, total: versions.length }));
+    numero.title = numero.getAttribute('aria-label');
+    const suivante = boutonAction(ICONES.suivante, t('reponse.version-suivante'));
+    suivante.classList.add('version-suivante');
+    suivante.disabled = affichee === versions.length - 1;
+    suivante.addEventListener('click', () => choisirVersion(affichee + 1, 'version-suivante'));
+    groupe.append(precedente, numero, suivante);
+    actions.prepend(groupe);
 }
 
 /**
@@ -320,6 +483,7 @@ function nouvelleConversation() {
     }
     retirerPiece();
     viderRedaction();
+    modification = false;
     conversation = [];
     choisirSources([]);
     nomProjet = '';
@@ -357,6 +521,14 @@ function repartirDeZero() {
 }
 
 $('nouvelle').addEventListener('click', repartirDeZero);
+
+/* Saisie vidée : la modification de la dernière question est abandonnée. */
+$('saisie').addEventListener('input', () => {
+    if (modification && !$('saisie').value.trim()) {
+        modification = false;
+        etat('');
+    }
+});
 
 $('saisie').addEventListener('keydown', (e) => {
     const champ = $('saisie');

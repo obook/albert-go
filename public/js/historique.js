@@ -210,7 +210,7 @@ function afficherFil() {
             langue = langueCible;
         }
         ajouter(message.role, message.affiche || message.content, langue, false, message.recherches);
-    }
+    }    boutonsEchange();
 }
 
 /**

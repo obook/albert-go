@@ -293,6 +293,25 @@ main {
 .actions-reponse .bouton-action { opacity: 0.6; }
 .actions-reponse .bouton-action:hover,
 .actions-reponse .bouton-action:focus-visible { opacity: 1; }
+/* Modifier la dernière question : à la fin de sa bulle, visible sans survol (iPad). */
+.fil .user .bouton-echange {
+    display: inline-grid;
+    width: 1.75rem;
+    height: 1.75rem;
+    margin: -0.25rem -0.5rem -0.25rem 0.25rem;
+    vertical-align: middle;
+    color: inherit;
+    opacity: 0.7;
+}
+/* Flèches des versions du dernier échange : "< 2/3 >". */
+.versions-echange {
+    display: inline-flex;
+    align-items: center;
+    font-size: var(--taille-petite);
+    color: var(--texte-doux);
+    font-variant-numeric: tabular-nums;
+}
+.versions-echange .bouton-action:disabled { opacity: 0.25; cursor: default; background: transparent; }
 /* Fichier en préparation (image de Commons, PNG). */
 .bouton-action.en-cours { animation: clignote 1.2s infinite ease-in-out; cursor: progress; }
 .bouton-action svg,
