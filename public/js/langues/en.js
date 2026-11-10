@@ -90,7 +90,7 @@ I18n.TEXTES.en = {
     'versions.titre': 'Versions',
     'aide.bibliotheque-bouton': 'Help with the library',
     'aide.versions-bouton': 'Help with versions',
-    'aide.bibliotheque': 'The library keeps the text of the files you add, in this browser. It is shared by Chat and Print shop: tick the sources the displayed conversation or document should use. Ticked sources are sent with every request. Click a source name to read its reading notes, written by Albert when you add it.',
+    'aide.bibliotheque': 'The library keeps the text of the files you add, in this browser. It is shared by Chat and Print shop: tick the sources the displayed conversation or document should use. Ticked sources are sent with every request. Click a source name to read its reading notes, written by Albert when you add it. Paste text turns a text into a source too. Under an answer, the Add to the library button keeps it as a note.',
     'aide.versions': 'Each request produces a new version of the document. The last {nombre} are kept: click a version to go back to it. It becomes the displayed document again and the basis for the next request.',
     'confirmer-suppression.bibliotheque': 'Empty the library?',
     'confirmer-suppression.bibliotheque-texte': 'Every file will be deleted and will leave every document.',

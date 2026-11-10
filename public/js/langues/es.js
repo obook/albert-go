@@ -90,7 +90,7 @@ I18n.TEXTES.es = {
     'versions.titre': 'Versiones',
     'aide.bibliotheque-bouton': 'Ayuda sobre la biblioteca',
     'aide.versions-bouton': 'Ayuda sobre las versiones',
-    'aide.bibliotheque': 'La biblioteca guarda el texto de los archivos añadidos, en este navegador. Es común a Chat e Imprenta: marque las fuentes que debe usar la conversación o el documento mostrado. Las fuentes marcadas se envían con cada petición. Haga clic en el nombre de una fuente para leer su ficha de lectura, escrita por Albert al añadirla.',
+    'aide.bibliotheque': 'La biblioteca guarda el texto de los archivos añadidos, en este navegador. Es común a Chat e Imprenta: marque las fuentes que debe usar la conversación o el documento mostrado. Las fuentes marcadas se envían con cada petición. Haga clic en el nombre de una fuente para leer su ficha de lectura, escrita por Albert al añadirla. Pegar texto también lo convierte en una fuente. Bajo una respuesta, el botón Añadir a la biblioteca la guarda como nota.',
     'aide.versions': 'Cada petición produce una nueva versión del documento. Se guardan las {nombre} últimas: haga clic en una versión para recuperarla. Vuelve a ser el documento mostrado y la base de la petición siguiente.',
     'confirmer-suppression.bibliotheque': '¿Vaciar la biblioteca?',
     'confirmer-suppression.bibliotheque-texte': 'Todos los archivos se eliminarán y saldrán de todos los documentos.',

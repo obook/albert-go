@@ -90,7 +90,7 @@ I18n.TEXTES.fr = {
     'versions.titre': 'Versions',
     'aide.bibliotheque-bouton': 'Aide sur la bibliothèque',
     'aide.versions-bouton': 'Aide sur les versions',
-    'aide.bibliotheque': 'La bibliothèque garde le texte des fichiers déposés, dans ce navigateur. Elle est commune à Discussion et à Imprimerie : cochez les sources que la conversation ou le document affiché doit utiliser. Les sources cochées partent avec chaque demande. Cliquez sur le nom d\'une source pour lire sa fiche de lecture, rédigée par Albert au dépôt.',
+    'aide.bibliotheque': 'La bibliothèque garde le texte des fichiers déposés, dans ce navigateur. Elle est commune à Discussion et à Imprimerie : cochez les sources que la conversation ou le document affiché doit utiliser. Les sources cochées partent avec chaque demande. Cliquez sur le nom d\'une source pour lire sa fiche de lecture, rédigée par Albert au dépôt. Coller du texte en fait aussi une source. Sous une réponse, le bouton Ajouter à la bibliothèque la garde comme note.',
     'aide.versions': 'Chaque demande produit une nouvelle version du document. Les {nombre} dernières sont gardées : cliquez sur une version pour la reprendre. Elle redevient le document affiché et sert de base à la demande suivante.',
     'confirmer-suppression.bibliotheque': 'Vider la bibliothèque ?',
     'confirmer-suppression.bibliotheque-texte': 'Tous les fichiers seront supprimés et quitteront tous les documents.',

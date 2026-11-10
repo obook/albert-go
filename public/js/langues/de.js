@@ -90,7 +90,7 @@ I18n.TEXTES.de = {
     'versions.titre': 'Versionen',
     'aide.bibliotheque-bouton': 'Hilfe zur Bibliothek',
     'aide.versions-bouton': 'Hilfe zu den Versionen',
-    'aide.bibliotheque': 'Die Bibliothek speichert den Text der hinzugefügten Dateien in diesem Browser. Sie gilt für Chat und Druckerei: Haken Sie die Quellen an, die der angezeigte Chat oder das angezeigte Dokument verwenden soll. Angehakte Quellen werden mit jeder Anfrage gesendet. Klicken Sie auf den Namen einer Quelle, um ihre Lesenotiz zu lesen, die Albert beim Hinzufügen schreibt.',
+    'aide.bibliotheque': 'Die Bibliothek speichert den Text der hinzugefügten Dateien in diesem Browser. Sie gilt für Chat und Druckerei: Haken Sie die Quellen an, die der angezeigte Chat oder das angezeigte Dokument verwenden soll. Angehakte Quellen werden mit jeder Anfrage gesendet. Klicken Sie auf den Namen einer Quelle, um ihre Lesenotiz zu lesen, die Albert beim Hinzufügen schreibt. Mit Text einfügen wird ein Text ebenfalls zur Quelle. Unter einer Antwort speichert die Schaltfläche Zur Bibliothek hinzufügen sie als Notiz.',
     'aide.versions': 'Jede Anfrage erzeugt eine neue Version des Dokuments. Die letzten {nombre} bleiben erhalten: Klicken Sie auf eine Version, um sie wieder aufzunehmen. Sie wird wieder zum angezeigten Dokument und zur Grundlage der nächsten Anfrage.',
     'confirmer-suppression.bibliotheque': 'Bibliothek leeren?',
     'confirmer-suppression.bibliotheque-texte': 'Alle Dateien werden gelöscht und verschwinden aus allen Dokumenten.',

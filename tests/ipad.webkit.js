@@ -156,7 +156,7 @@ test("iPad (WebKit) : Discussion régénère une réponse, modifie la question e
     assert.deepStrictEqual(erreurs, []);
 });
 
-test("iPad (WebKit) : le guide d'une source s'ouvre par son nom et sa question arrive dans la saisie", async (t) => {
+test("iPad (WebKit) : la fiche de lecture d'une source s'ouvre par son nom et sa question arrive dans la saisie", async (t) => {
     const serveur = await servir();
     const origine = 'http://127.0.0.1:' + serveur.address().port;
     const navigateur = await webkit.launch();
@@ -165,7 +165,7 @@ test("iPad (WebKit) : le guide d'une source s'ouvre par son nom et sa question a
         serveur.close();
     });
     const contexte = await navigateur.newContext({ ...devices['iPad (gen 7)'], serviceWorkers: 'block' });
-    /* Albert simulé : un guide en JSON, avec du gras, comme le rend Small. */
+    /* Albert simulé : une fiche de lecture en JSON, avec du gras, comme la rend Small. */
     const guide = { resume: 'Le **programme** de physique-chimie.', themes: ['Énergie'], questions: ['Que dit le programme ?'] };
     await contexte.route((url) => url.origin !== origine, (route) => (route.request().url().endsWith('/chat/completions')
         ? route.fulfill({ json: { choices: [{ message: { role: 'assistant', content: JSON.stringify(guide) }, finish_reason: 'stop' }] } })
@@ -190,5 +190,54 @@ test("iPad (WebKit) : le guide d'une source s'ouvre par son nom et sa question a
     await page.click('#questions-guide .suggestion');
     assert.strictEqual(await page.inputValue('#saisie'), 'Que dit le programme ?');
     assert.ok(await page.evaluate(() => !$('guide').open && sourcesProjet.length === 1));
+    assert.deepStrictEqual(erreurs, []);
+});
+
+test("iPad (WebKit) : un texte collé devient une source cochée et une réponse devient une note", async (t) => {
+    const serveur = await servir();
+    const origine = 'http://127.0.0.1:' + serveur.address().port;
+    const navigateur = await webkit.launch();
+    t.after(async () => {
+        await navigateur.close();
+        serveur.close();
+    });
+    const contexte = await navigateur.newContext({ ...devices['iPad (gen 7)'], serviceWorkers: 'block' });
+    /* Albert simulé : une fiche de lecture en JSON, sinon une réponse. */
+    await contexte.route((url) => url.origin !== origine, (route) => {
+        if (!route.request().url().endsWith('/chat/completions')) {
+            return route.abort();
+        }
+        const fiche = !!route.request().postDataJSON().response_format;
+        const contenu = fiche ? JSON.stringify({ resume: 'Les volcans.', themes: [], questions: [] }) : 'Un volcan effusif émet de la lave fluide.';
+        return route.fulfill({ json: { choices: [{ message: { role: 'assistant', content: contenu }, finish_reason: 'stop' }] } });
+    });
+    await contexte.addInitScript(SAFARI_ANCIEN);
+    await contexte.addInitScript(() => {
+        localStorage.setItem('albert-go.cle', 'sk-test');
+        sessionStorage.setItem('albert-go.cle', 'sk-test');
+    });
+    const page = await contexte.newPage();
+    const erreurs = [];
+    page.on('pageerror', (err) => erreurs.push(String(err)));
+
+    await page.goto(origine + '/');
+    await page.click('#ouvrir-bibliotheque');
+    await page.click('#coller-texte');
+    await page.fill('#texte-colle', 'Le volcan est une ouverture de la croûte terrestre.');
+    await page.click('#dialogue-coller button[value=oui]');
+    await page.waitForFunction(() => !guidesEnCours.size);
+    /* Noms dans la langue du navigateur, l'anglais pour Playwright. */
+    const [colle, note] = await page.evaluate(() => [t('documents.texte-colle'), t('documents.note')]);
+    assert.deepStrictEqual(await page.evaluate(() => ({ noms: bibliotheque.map(d => d.nom), coches: sourcesProjet, fiche: !!bibliotheque[0].guide })),
+        { noms: [colle], coches: [colle], fiche: true });
+
+    await page.evaluate(() => $('bibliotheque').close());
+    await page.fill('#saisie', 'Volcan effusif ?');
+    await page.press('#saisie', 'Enter');
+    await page.waitForFunction(() => !annulation);
+    await page.click('#fil li.assistant [aria-label="' + await page.evaluate(() => t('reponse.vers-bibliotheque')) + '"]');
+    /* La note n'est pas cochée : la réponse est déjà dans la conversation. */
+    assert.deepStrictEqual(await page.evaluate(() => ({ noms: bibliotheque.map(d => d.nom), coches: sourcesProjet, texte: bibliotheque[1].texte })),
+        { noms: [colle, note + ' - Volcan effusif ?.md'], coches: [colle], texte: 'Un volcan effusif émet de la lave fluide.' });
     assert.deepStrictEqual(erreurs, []);
 });
