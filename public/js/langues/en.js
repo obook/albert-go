@@ -222,6 +222,7 @@ I18n.TEXTES.en = {
     'reglages.carte-reponse': 'AI',
     'reglages.carte-application': 'App',
     'reglages.competences': 'Skills',
+    'reglages.aide-competences': 'Writing rules the AI follows in every answer.',
     'reglages.ecriture-soignee': 'Careful writing',
     'reglages.aide-ecriture-soignee': 'Spelling, punctuation and numbers by the rules of English.',
     'reglages.style-direct': 'Plain style',

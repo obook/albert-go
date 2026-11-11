@@ -222,6 +222,7 @@ I18n.TEXTES.fr = {
     'reglages.carte-reponse': 'IA',
     'reglages.carte-application': 'Application',
     'reglages.competences': 'Compétences',
+    'reglages.aide-competences': 'Des règles d\'écriture que l\'IA suit à chaque réponse.',
     'reglages.ecriture-soignee': 'Écriture soignée',
     'reglages.aide-ecriture-soignee': 'Orthographe, ponctuation et nombres selon les règles du français.',
     'reglages.style-direct': 'Style direct',
