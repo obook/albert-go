@@ -178,7 +178,7 @@ I18n.TEXTES.de = {
     'bienvenue.grammaire': 'Satzglieder bestimmen',
     'bienvenue.dissertation': 'Erörterung gliedern',
     'bienvenue.latin': 'Latein übersetzen',
-    'bienvenue.exemple-histoire': 'Erfinde eine kurze Geschichte für ein Kind: Ein junger Hirte entdeckt eine Höhle mit prähistorischen Malereien. Etwa 300 Wörter, mit einem Dialog, einer Wendung und einem offenen Ende. Gib ihr einen Titel.',
+    'bienvenue.exemple-histoire': 'Erfinde eine kurze Geschichte für ein Kind:\n- Figuren: Leo, ein junger Hirte, und seine Hündin Feder;\n- Ort: eine Höhle mit prähistorischen Malereien in den Bergen;\n- Vorgabe: Eines der Bilder beginnt sich zu bewegen, und du entscheidest, warum.\nEtwa 300 Wörter, mit einem Dialog und einem offenen Ende. Gib ihr einen Titel.',
     'bienvenue.exemple-corriger': 'Korrigiere diesen Text: Vielen dank für ihre schnele Antwort, ich stehe ihnen zur verfügung.',
     'bienvenue.exemple-reformuler': 'Formuliere diesen Text um: Wir teilen Ihnen mit, dass die ursprünglich angesetzte Sitzung aufgrund der Nichtverfügbarkeit eines erheblichen Teils der Teilnehmer auf einen späteren Zeitpunkt verschoben wird, der Ihnen schnellstmöglich mitgeteilt wird.',
     'bienvenue.exemple-traduire': 'Übersetze ins Englische: Hallo, ich möchte nächste Woche einen Termin vereinbaren.',
