@@ -117,7 +117,7 @@ pages:
     - sed -i "s/?v=dev/?v=${CI_COMMIT_SHORT_SHA}/g" public/index.html
     - cp deploiement/pages/sw.js public/
     # serveur.js vide : SERVEUR reste indéfini, sans 404 dans la console.
-    - echo "// Version en ligne : pas de serveur Albert Go." > public/serveur.js
+    - echo "// Version en ligne, pas de serveur Albert Go." > public/serveur.js
   artifacts:
     paths:
       - public
