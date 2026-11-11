@@ -487,7 +487,7 @@
         <!-- autocomplete="off" : sinon Firefox rejoue d'anciennes valeurs au réveil d'un onglet déchargé. -->
         <form method="dialog" autocomplete="off">
             <h2 id="titre-reglages" data-t="reglages.titre"></h2>
-            <!-- Quatre cartes dépliables, la première ouverte. -->
+            <!-- Cinq cartes dépliables, la première ouverte. -->
             <details class="carte" name="reglages">
                 <summary>
                     <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6" rx="1"/><path d="M15 2v2M15 20v2M2 15h2M2 9h2M20 15h2M20 9h2M9 2v2M9 20v2"/></svg>
@@ -608,6 +608,25 @@
                             id="outils-conseilles"
                             data-t="reglages.conseilles"
                             data-t-attr="title:reglages.conseil-outils"></button>
+                </div>
+            </details>
+            <!-- Compétences : consignes ajoutées à celle du module, désactivées par défaut. -->
+            <details class="carte" name="reglages">
+                <summary>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.39 4.39a1 1 0 0 0 1.68-.474 2.5 2.5 0 1 1 3.014 3.015 1 1 0 0 0-.474 1.68l1.683 1.682a2.414 2.414 0 0 1 0 3.414L19.61 15.39a1 1 0 0 1-1.68-.474 2.5 2.5 0 1 0-3.014 3.015 1 1 0 0 1 .474 1.68l-1.683 1.682a2.414 2.414 0 0 1-3.414 0L8.61 19.61a1 1 0 0 0-1.68.474 2.5 2.5 0 1 1-3.014-3.015 1 1 0 0 0 .474-1.68l-1.683-1.682a2.414 2.414 0 0 1 0-3.414L4.39 8.61a1 1 0 0 1 1.68.474 2.5 2.5 0 1 0 3.014-3.015 1 1 0 0 1-.474-1.68l1.683-1.682a2.414 2.414 0 0 1 3.414 0z"/></svg>
+                    <span data-t="reglages.competences"></span>
+                </summary>
+                <div class="corps">
+                    <div class="outils-locaux">
+                        <label class="interrupteur">
+                            <input type="checkbox"
+                                   id="style-direct"
+                                   role="switch"
+                                   aria-describedby="aide-style-direct">
+                            <span data-t="reglages.style-direct"></span>
+                        </label>
+                    </div>
+                    <p id="aide-style-direct" class="note" data-t="reglages.aide-style-direct"></p>
                 </div>
             </details>
             <details class="carte" name="reglages">

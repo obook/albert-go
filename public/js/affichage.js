@@ -165,6 +165,7 @@ function afficherReglages() {
     $('echanges').value = reglages.echanges;
     $('aide-echanges').textContent = t(Albert.cleAideEchanges(reglages.echanges), { n: reglages.echanges });
     $('voix-en-ligne').checked = reglages.voixEnLigne;
+    $('style-direct').checked = reglages.styleDirect;
     $('partage-reglage').checked = !partage;
     $('texte-partage-reglage').textContent = textePartage(!partage);
     $('temperature').value = reglages.temperature;

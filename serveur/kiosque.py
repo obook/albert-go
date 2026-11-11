@@ -25,7 +25,7 @@ from serveur import config, proxy
 COOKIE = "kiosque-session"
 DUREES = {"1h": 3600, "2h": 7200, "3h": 10800, "journee": 28800}
 ROLES = {"enseignant", "eleve"}
-OUTILS = ("recherche", "calcul", "tirage", "calendrier", "compteur")
+INTERRUPTEURS = ("recherche", "calcul", "tirage", "calendrier", "compteur", "styleDirect")
 # Un code faux coûte une seconde, essais en file : les 10 000 codes prennent des heures.
 PAUSE_CODE_FAUX = 1.0
 
@@ -189,7 +189,7 @@ def valider_reglages(corps):
         if valeur is not None:
             valeur = min(maximum, max(minimum, valeur))
             propres[nom] = valeur if nom == "temperature" else int(valeur)
-    for nom in OUTILS:
+    for nom in INTERRUPTEURS:
         if isinstance(corps.get(nom), bool):
             propres[nom] = corps[nom]
     moteurs = corps.get("fournisseurs")
