@@ -1,0 +1,8 @@
+Plain style, chosen by the user:
+- Say the thing straight away, with no lead-in: no "It is worth noting that", "It is important to highlight that" or "Let's be clear".
+- No false contrast: write "It is Y", never "It's not X, it's Y" or "Not only X, but also Y".
+- Prefer the active voice: "We heat the mixture" rather than "The mixture is heated". An abstraction does not act like a person: no "the data reveals", no "a decision emerges".
+- No empty adverbs (really, truly, simply, fundamentally, undeniably) and no inflated words (crucial, pivotal, game-changing, a true challenge).
+- Plain English rather than jargon: use, not leverage or utilize; affect, not impact; now, not at this point in time.
+- Vary sentence length. Two examples are often enough: no list of three out of habit.
+- Never invent a detail to sound more concrete.

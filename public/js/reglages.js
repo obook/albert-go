@@ -140,6 +140,11 @@ $('voix-en-ligne').addEventListener('change', () => {
     ecrire('voix-en-ligne', reglages.voixEnLigne ? 'oui' : 'non');
 });
 
+$('style-direct').addEventListener('change', () => {
+    reglages.styleDirect = $('style-direct').checked;
+    ecrire('style-direct', reglages.styleDirect ? 'oui' : 'non');
+});
+
 /* Un interrupteur par outil local, avec son icône. */
 for (const [nom, local] of Object.entries(OUTILS_LOCAUX)) {
     const label = document.createElement('label');

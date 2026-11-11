@@ -113,6 +113,46 @@ test("iPad (WebKit) : un script raté au lancement recharge la page une fois", a
     assert.strictEqual(chargements, 2);
 });
 
+test("iPad (WebKit) : la compétence Style direct part avec la consigne, et plus après l'avoir désactivée", async (t) => {
+    const serveur = await servir();
+    const origine = 'http://127.0.0.1:' + serveur.address().port;
+    const navigateur = await webkit.launch();
+    t.after(async () => {
+        await navigateur.close();
+        serveur.close();
+    });
+    const contexte = await navigateur.newContext({ ...devices['iPad (gen 7)'], serviceWorkers: 'block' });
+    const consignes = [];
+    await contexte.route((url) => url.origin !== origine, (route) => {
+        if (!route.request().url().endsWith('/chat/completions')) {
+            return route.abort();
+        }
+        consignes.push(route.request().postDataJSON().messages[0].content);
+        return route.fulfill({ json: { choices: [{ message: { role: 'assistant', content: 'Réponse' }, finish_reason: 'stop' }] } });
+    });
+    await contexte.addInitScript(() => {
+        localStorage.setItem('albert-go.cle', 'sk-test');
+        sessionStorage.setItem('albert-go.cle', 'sk-test');
+        localStorage.setItem('albert-go.style-direct', 'oui');
+    });
+    const page = await contexte.newPage();
+    const demander = async (question) => {
+        const attendues = consignes.length + 1;
+        await page.fill('#saisie', question);
+        await page.press('#saisie', 'Enter');
+        await page.waitForFunction((n) => !annulation && $('fil').querySelectorAll('li.assistant').length === n, attendues);
+    };
+
+    await page.goto(origine + '/');
+    assert.ok(await page.isChecked('#style-direct'));
+    await demander('Bonjour');
+    await page.evaluate(() => $('style-direct').click());
+    await demander('Encore');
+    assert.match(consignes[0], /Plain style/);
+    assert.doesNotMatch(consignes[1], /Plain style/);
+    assert.strictEqual(await page.evaluate(() => localStorage.getItem('albert-go.style-direct')), 'non');
+});
+
 test("iPad (WebKit) : Discussion régénère une réponse, modifie la question et passe d'une version à l'autre", async (t) => {
     const serveur = await servir();
     const origine = 'http://127.0.0.1:' + serveur.address().port;

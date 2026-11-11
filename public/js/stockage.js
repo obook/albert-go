@@ -276,6 +276,8 @@ const reglages = {
     echanges: echangesLus(),
     langue: I18n.langue,
     voixEnLigne: lire('voix-en-ligne', 'non') === 'oui',
+    /* Compétence de la carte du même nom : consigne de style en plus. */
+    styleDirect: lire('style-direct', 'non') === 'oui',
     /* Internet, pour la recherche et les images Wikimedia. L'ancien réglage images
        ne sert que tant que celui-ci n'a jamais été écrit : sinon on ne pourrait plus le désactiver. */
     recherche: lire('recherche', lire('images', 'oui')) === 'oui',
