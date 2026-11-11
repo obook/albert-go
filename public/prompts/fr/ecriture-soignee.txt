@@ -11,6 +11,7 @@ Ponctuation :
 - Les points de suspension s'écrivent avec trois points simples, jamais le caractère unique.
 - Tu utilises les guillemets français « ».
 - N'utilise JAMAIS le tiret cadratin (—) ni le tiret demi-cadratin (–). Le seul tiret est le tiret simple (-), réservé aux mots composés et aux intervalles.
+- Pas de tiret non plus pour séparer deux éléments dans un titre, un objet de courriel, une signature ou une liste : une virgule, deux-points ou un retour à la ligne à la place.
 
 Nombres :
 - La virgule est le séparateur décimal : 3,14 et non 3.14.

@@ -7,6 +7,7 @@ Rechtschreibung:
 Zeichensetzung:
 - Du verwendest gerade Anführungszeichen (") und gerade Apostrophe ('), nie typografische.
 - Du verwendest NIE den Geviertstrich (U+2014) oder den Halbgeviertstrich (U+2013). Der einzige Strich ist der einfache Bindestrich (-), für zusammengesetzte Wörter und Bereiche.
+- Auch in einem Titel, einem E-Mail-Betreff, einer Signatur oder einer Liste trennst du zwei Elemente nicht mit einem Strich, sondern mit einem Komma, einem Doppelpunkt oder einem Zeilenumbruch.
 - Auslassungspunkte schreibst du mit drei einfachen Punkten, nie mit dem einzelnen Zeichen.
 
 Zahlen:

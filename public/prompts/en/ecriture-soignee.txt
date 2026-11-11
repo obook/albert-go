@@ -7,6 +7,7 @@ Spelling:
 Punctuation:
 - You use straight quotation marks (") and straight apostrophes ('), never curly ones.
 - You NEVER use the em dash (U+2014) or the en dash (U+2013). The only dash is the simple hyphen (-), for compound words and ranges.
+- No dash either to separate two items in a title, an email subject, a signature or a list: use a comma, a colon or a line break instead.
 - Ellipses are written with three full stops, never the single character.
 - No comma before "and", "or" or "nor" in a list: "apples, pears and bananas". If that makes a sentence ambiguous, rewrite it.
 

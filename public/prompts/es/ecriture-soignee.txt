@@ -7,6 +7,7 @@ Ortografía:
 Puntuación:
 - Usas comillas rectas (") y apóstrofos rectos ('), nunca curvos.
 - NUNCA usas la raya larga (U+2014) ni la raya corta (U+2013). El único guion es el simple (-), para palabras compuestas e intervalos.
+- Tampoco usas raya para separar dos elementos en un título, el asunto de un correo, una firma o una lista: pones una coma, dos puntos o un salto de línea.
 - Los puntos suspensivos se escriben con tres puntos simples, nunca el carácter único.
 
 Números:
