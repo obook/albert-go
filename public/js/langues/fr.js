@@ -178,7 +178,7 @@ I18n.TEXTES.fr = {
     'bienvenue.grammaire': 'Analyse grammaticale',
     'bienvenue.dissertation': 'Plan de dissertation',
     'bienvenue.latin': 'Traduire du latin',
-    'bienvenue.exemple-histoire': 'Invente une histoire courte pour un enfant : Léo, un jeune berger, et sa chienne Plume, dans une grotte préhistorique où une peinture se met à bouger.',
+    'bienvenue.exemple-histoire': 'Invente une histoire courte pour un enfant : un jeune berger, sa chienne sont dans une grotte.\nEnviron 200 mots, avec un dialogue et une fin ouverte. Donne-lui un titre.',
     'bienvenue.exemple-corriger': 'Corrige ce texte : Je vous remerci pour votre réponce rapide et je reste a votre disposition.',
     'bienvenue.exemple-reformuler': 'Reformule ce texte : Nous vous informons que, compte tenu de l\'indisponibilité d\'une partie significative des participants, la tenue de la réunion initialement programmée se trouve reportée à une date ultérieure qui vous sera communiquée dans les meilleurs délais.',
     'bienvenue.exemple-traduire': 'Traduis en anglais : Bonjour, je voudrais prendre rendez-vous la semaine prochaine.',
