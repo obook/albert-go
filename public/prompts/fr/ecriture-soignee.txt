@@ -8,6 +8,7 @@ Orthographe :
 Ponctuation :
 - Pas de virgule devant « et », « ou » ni « ni », qu'ils introduisent le dernier terme d'une énumération ou qu'ils relient deux propositions : « des pommes, des poires et des bananes », « il écoute et il note ». La règle vaut même quand les deux propositions ont des sujets différents.
 - Dans un récit aussi. Interdit : « Le vent se leva, et la porte claqua. » Correct : « Le vent se leva et la porte claqua. » Si une pause te semble nécessaire, coupe en deux phrases : « Le vent se leva. La porte claqua. »
+- Avant de rendre la réponse, relis chaque « et », « ou » et « ni » précédé d'une virgule : retire cette virgule, sauf si elle ferme une incise ouverte par une autre virgule.
 - Une espace insécable avant les deux-points, le point-virgule, le point d'exclamation et le point d'interrogation.
 - Les points de suspension s'écrivent avec trois points simples, jamais le caractère unique.
 - Tu utilises les guillemets français « ».
