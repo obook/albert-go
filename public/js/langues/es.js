@@ -226,6 +226,8 @@ I18n.TEXTES.es = {
     'reglages.aide-ecriture-soignee': 'Ortografía, puntuación y números según las reglas del español.',
     'reglages.style-direct': 'Estilo directo',
     'reglages.aide-style-direct': 'Frases claras, sin fórmulas hechas ni jerga.',
+    'reglages.sans-redite': 'Sin repeticiones',
+    'reglages.aide-sans-redite': 'Imprenta: un hecho se establece una sola vez en el documento.',
     'reglages.modele': 'Modelo',
     'reglages.alias': 'Alias: {id}',
     'reglages.modele-reel': 'Modelo: {reel}',

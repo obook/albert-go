@@ -157,6 +157,11 @@ test("iPad (WebKit) : chaque compétence activée part avec la consigne, et plus
     assert.doesNotMatch(consignes[1], /Plain style/);
     assert.doesNotMatch(consignes[2], /Careful writing|Plain style/);
     assert.strictEqual(await page.evaluate(() => localStorage.getItem('albert-go.ecriture-soignee')), 'non');
+    /* Sans redite, activée par défaut, ne part qu'avec l'Imprimerie. */
+    assert.ok(consignes.every(c => !/No repetition/.test(c)));
+    assert.match(await page.evaluate(() => consigne('projet')), /No repetition/);
+    await page.evaluate(() => $('sans-redite').click());
+    assert.doesNotMatch(await page.evaluate(() => consigne('projet')), /No repetition/);
 });
 
 test("iPad (WebKit) : Discussion régénère une réponse, modifie la question et passe d'une version à l'autre", async (t) => {

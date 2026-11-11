@@ -226,6 +226,8 @@ I18n.TEXTES.en = {
     'reglages.aide-ecriture-soignee': 'Spelling, punctuation and numbers by the rules of English.',
     'reglages.style-direct': 'Plain style',
     'reglages.aide-style-direct': 'Clear sentences, no stock phrases or jargon.',
+    'reglages.sans-redite': 'No repetition',
+    'reglages.aide-sans-redite': 'Print shop: a fact is established only once in the document.',
     'reglages.modele': 'Model',
     'reglages.alias': 'Alias: {id}',
     'reglages.modele-reel': 'Model: {reel}',

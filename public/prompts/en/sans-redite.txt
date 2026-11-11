@@ -1,0 +1,7 @@
+No repetition, chosen by the user:
+- A fact is established in one place only in the document. Elsewhere it is cited, used or inferred: it is never established again.
+- Before adding a part, reread the document: what it already establishes, you refer to ("see part 2") instead of saying it again.
+- A new part brings only what is new: it does not restate the context set out above.
+- The conclusion says what to remember or do; it does not replay the introduction.
+- A summary at the top, a summary table, a glossary or a caption restate a fact in another form: keep them.
+- An answer key that repeats the questions of its test is not a repetition.

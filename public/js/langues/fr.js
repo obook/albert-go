@@ -226,6 +226,8 @@ I18n.TEXTES.fr = {
     'reglages.aide-ecriture-soignee': 'Orthographe, ponctuation et nombres selon les règles du français.',
     'reglages.style-direct': 'Style direct',
     'reglages.aide-style-direct': 'Phrases nettes, sans formules toutes faites ni jargon.',
+    'reglages.sans-redite': 'Sans redite',
+    'reglages.aide-sans-redite': 'Imprimerie : un fait n\'est établi qu\'une fois dans le document.',
     'reglages.modele': 'Modèle',
     'reglages.alias': 'Alias : {id}',
     'reglages.modele-reel': 'Modèle : {reel}',

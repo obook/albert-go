@@ -82,7 +82,7 @@ async function consigne(outil, champ = 'consigne') {
         texte += '\n\n' + await lireConsigne(complement, outil);
     }
     for (const [nom, competence] of Object.entries(COMPETENCES)) {
-        if (champ === 'consigne' && reglages[nom]) {
+        if (champ === 'consigne' && reglages[nom] && (!competence.module || Albert.OUTILS[outil][competence.module])) {
             texte += '\n\n' + await lireConsigne(competence.cle + '.txt', outil);
         }
     }

@@ -18,10 +18,10 @@ const Serveur = typeof SERVEUR !== 'undefined' ? SERVEUR : { adresses: [], kiosq
 const Kiosque = Serveur.kiosque;
 
 /** Réglages que le prof donne à ses élèves comme valeurs de départ. */
-const REGLAGES_PARTAGES = ['modele', 'temperature', 'topK', 'echanges', 'recherche', 'calcul', 'tirage', 'calendrier', 'compteur', 'ecritureSoignee', 'styleDirect', 'fournisseurs', 'nom'];
+const REGLAGES_PARTAGES = ['modele', 'temperature', 'topK', 'echanges', 'recherche', 'calcul', 'tirage', 'calendrier', 'compteur', 'ecritureSoignee', 'styleDirect', 'sansRedite', 'fournisseurs', 'nom'];
 
 /** Nom d'enregistrement quand il diffère du nom dans reglages (reglages.js). */
-const NOMS_STOCKES = { topK: 'top-k', ecritureSoignee: 'ecriture-soignee', styleDirect: 'style-direct' };
+const NOMS_STOCKES = { topK: 'top-k', ecritureSoignee: 'ecriture-soignee', styleDirect: 'style-direct', sansRedite: 'sans-redite' };
 
 /** Sondage de la session, en millisecondes. */
 const SONDAGE_KIOSQUE_MS = 20000;
