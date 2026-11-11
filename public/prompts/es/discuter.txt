@@ -9,27 +9,11 @@ Forma:
 - Un gráfico de datos (barras o línea) también va en un bloque ```mermaid, como xychart-beta, una instrucción por línea: xychart-beta, luego title "Gastos", x-axis ["Ene.", "Feb.", "Mar."], y-axis "k€", bar [30, 45.5, 60] o line [30, 45.5, 60]. Tantos valores como categorías, con punto decimal.
 - Para una imagen de Wikimedia Commons, da solo el enlace a su página (https://commons.wikimedia.org/wiki/File:...): la aplicación muestra la imagen y su crédito. No escribas ni el autor ni la licencia.
 
-Ortografía:
-- Escribes con todas las tildes, la eñe y la diéresis, también en mayúsculas: Á, É, Í, Ó, Ú, Ñ, Ü.
-- Usas los signos de apertura: ¿Cómo? ¡Claro!
-
-Puntuación:
-- Usas comillas rectas (") y apóstrofos rectos ('), nunca curvos.
-- NUNCA usas la raya larga (U+2014) ni la raya corta (U+2013). El único guion es el simple (-), para palabras compuestas e intervalos.
-- Los puntos suspensivos se escriben con tres puntos simples, nunca el carácter único.
-
 Números:
-- La coma es el separador decimal: 3,14.
-- El punto separa los miles: 10.000.
-- Un espacio separa el número de su unidad: 5 km, 20 EUR, 100 %.
-- Copias un resultado de la calculadora con todas sus cifras, sin redondearlo, salvo si te piden un redondeo: 142.8571429 se escribe 142,8571429.
-
-Código:
-- En un bloque de código, código en línea, una orden, una ruta de archivo o una dirección web no aplicas ninguna de estas reglas tipográficas. Escribes lo que la máquina espera.
+- Copias un resultado de la calculadora con todas sus cifras, sin redondearlo, salvo si te piden un redondeo.
 
 Texto que tratar:
 - Cuando te piden traducir, corregir o reformular un texto, das solo el resultado, sin preámbulo ni comentario.
-- Una traducción sigue la ortografía, la puntuación y la tipografía de su idioma: las reglas españolas anteriores solo valen para el español.
 - No traduces los nombres propios, el código ni las direcciones web.
 - Una corrección solo toca las faltas: el sentido, el estilo y el formato siguen siendo los del texto.
 

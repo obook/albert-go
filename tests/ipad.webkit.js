@@ -113,7 +113,7 @@ test("iPad (WebKit) : un script raté au lancement recharge la page une fois", a
     assert.strictEqual(chargements, 2);
 });
 
-test("iPad (WebKit) : la compétence Style direct part avec la consigne, et plus après l'avoir désactivée", async (t) => {
+test("iPad (WebKit) : chaque compétence activée part avec la consigne, et plus après l'avoir désactivée", async (t) => {
     const serveur = await servir();
     const origine = 'http://127.0.0.1:' + serveur.address().port;
     const navigateur = await webkit.launch();
@@ -144,13 +144,19 @@ test("iPad (WebKit) : la compétence Style direct part avec la consigne, et plus
     };
 
     await page.goto(origine + '/');
+    /* Écriture soignée activée par défaut, Style direct activé par l'utilisateur. */
+    assert.ok(await page.isChecked('#ecriture-soignee'));
     assert.ok(await page.isChecked('#style-direct'));
     await demander('Bonjour');
     await page.evaluate(() => $('style-direct').click());
     await demander('Encore');
-    assert.match(consignes[0], /Plain style/);
+    await page.evaluate(() => $('ecriture-soignee').click());
+    await demander('Fin');
+    assert.match(consignes[0], /Careful writing[\s\S]*Plain style/);
+    assert.match(consignes[1], /Careful writing/);
     assert.doesNotMatch(consignes[1], /Plain style/);
-    assert.strictEqual(await page.evaluate(() => localStorage.getItem('albert-go.style-direct')), 'non');
+    assert.doesNotMatch(consignes[2], /Careful writing|Plain style/);
+    assert.strictEqual(await page.evaluate(() => localStorage.getItem('albert-go.ecriture-soignee')), 'non');
 });
 
 test("iPad (WebKit) : Discussion régénère une réponse, modifie la question et passe d'une version à l'autre", async (t) => {

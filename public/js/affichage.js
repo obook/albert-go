@@ -165,7 +165,9 @@ function afficherReglages() {
     $('echanges').value = reglages.echanges;
     $('aide-echanges').textContent = t(Albert.cleAideEchanges(reglages.echanges), { n: reglages.echanges });
     $('voix-en-ligne').checked = reglages.voixEnLigne;
-    $('style-direct').checked = reglages.styleDirect;
+    for (const [nom, competence] of Object.entries(COMPETENCES)) {
+        $(competence.cle).checked = reglages[nom];
+    }
     $('partage-reglage').checked = !partage;
     $('texte-partage-reglage').textContent = textePartage(!partage);
     $('temperature').value = reglages.temperature;

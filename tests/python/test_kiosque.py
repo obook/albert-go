@@ -81,12 +81,12 @@ def test_reglages_avec_identifiant_de_session():
 def test_reglages_bornes():
     propres = kiosque.valider_reglages({
         "modele": "openweight-large", "temperature": 1e309, "topK": 999, "echanges": -3,
-        "recherche": True, "calcul": False, "tirage": "oui", "styleDirect": True,
+        "recherche": True, "calcul": False, "tirage": "oui", "ecritureSoignee": False, "styleDirect": True,
         "fournisseurs": ["wikipedia", "HAL!", "vikidia", "hal", "mojeek"],
         "inconnu": 1,
     })
     assert propres == {"modele": "openweight-large", "topK": 50, "echanges": 0,
-                       "recherche": True, "calcul": False, "styleDirect": True, "fournisseurs": ["wikipedia", "vikidia", "hal"]}
+                       "recherche": True, "calcul": False, "ecritureSoignee": False, "styleDirect": True, "fournisseurs": ["wikipedia", "vikidia", "hal"]}
     assert kiosque.valider_reglages({"modele": "x" * 10000, "temperature": True}) == {}
     assert kiosque.valider_reglages({"temperature": 7}) == {"temperature": 2}
     assert kiosque.valider_reglages({"nom": " Mythos 5.2 "}) == {"nom": "Mythos 5.2"}

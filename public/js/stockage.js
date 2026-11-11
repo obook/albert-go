@@ -267,6 +267,12 @@ function echangesLus() {
     return Math.min(Albert.ECHANGES_TOUS, Math.max(0, valeur));
 }
 
+/** Compétences de la carte du même nom, dans l'ordre où leur consigne s'ajoute : nom d'enregistrement et valeur par défaut. */
+const COMPETENCES = {
+    ecritureSoignee: { cle: 'ecriture-soignee', defaut: 'oui' },
+    styleDirect: { cle: 'style-direct', defaut: 'non' }
+};
+
 /** Réglages de l'utilisateur, lus au démarrage. */
 const reglages = {
     modele: lire('modele', Albert.CONSEILLES.modele),
@@ -276,8 +282,7 @@ const reglages = {
     echanges: echangesLus(),
     langue: I18n.langue,
     voixEnLigne: lire('voix-en-ligne', 'non') === 'oui',
-    /* Compétence de la carte du même nom : consigne de style en plus. */
-    styleDirect: lire('style-direct', 'non') === 'oui',
+    ...Object.fromEntries(Object.entries(COMPETENCES).map(([nom, c]) => [nom, lire(c.cle, c.defaut) === 'oui'])),
     /* Internet, pour la recherche et les images Wikimedia. L'ancien réglage images
        ne sert que tant que celui-ci n'a jamais été écrit : sinon on ne pourrait plus le désactiver. */
     recherche: lire('recherche', lire('images', 'oui')) === 'oui',

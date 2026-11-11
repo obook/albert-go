@@ -222,6 +222,8 @@ I18n.TEXTES.de = {
     'reglages.carte-reponse': 'KI',
     'reglages.carte-application': 'App',
     'reglages.competences': 'Kompetenzen',
+    'reglages.ecriture-soignee': 'Sorgfältiges Schreiben',
+    'reglages.aide-ecriture-soignee': 'Rechtschreibung, Zeichensetzung und Zahlen nach deutschen Regeln.',
     'reglages.style-direct': 'Klarer Stil',
     'reglages.aide-style-direct': 'Klare Sätze, ohne Floskeln und Fachjargon.',
     'reglages.modele': 'Modell',

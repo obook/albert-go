@@ -222,6 +222,8 @@ I18n.TEXTES.fr = {
     'reglages.carte-reponse': 'IA',
     'reglages.carte-application': 'Application',
     'reglages.competences': 'Compétences',
+    'reglages.ecriture-soignee': 'Écriture soignée',
+    'reglages.aide-ecriture-soignee': 'Orthographe, ponctuation et nombres selon les règles du français.',
     'reglages.style-direct': 'Style direct',
     'reglages.aide-style-direct': 'Phrases nettes, sans formules toutes faites ni jargon.',
     'reglages.modele': 'Modèle',
