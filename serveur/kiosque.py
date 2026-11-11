@@ -25,7 +25,7 @@ from serveur import config, proxy
 COOKIE = "kiosque-session"
 DUREES = {"1h": 3600, "2h": 7200, "3h": 10800, "journee": 28800}
 ROLES = {"enseignant", "eleve"}
-INTERRUPTEURS = ("recherche", "calcul", "tirage", "calendrier", "compteur", "styleDirect")
+INTERRUPTEURS = ("recherche", "calcul", "tirage", "calendrier", "compteur", "ecritureSoignee", "styleDirect")
 # Un code faux coûte une seconde, essais en file : les 10 000 codes prennent des heures.
 PAUSE_CODE_FAUX = 1.0
 

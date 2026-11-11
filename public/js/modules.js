@@ -81,8 +81,10 @@ async function consigne(outil, champ = 'consigne') {
     if (complement) {
         texte += '\n\n' + await lireConsigne(complement, outil);
     }
-    if (champ === 'consigne' && reglages.styleDirect) {
-        texte += '\n\n' + await lireConsigne('style-direct.txt', outil);
+    for (const [nom, competence] of Object.entries(COMPETENCES)) {
+        if (champ === 'consigne' && reglages[nom]) {
+            texte += '\n\n' + await lireConsigne(competence.cle + '.txt', outil);
+        }
     }
     /* Le modèle ne connaît ni la date, ni l'heure, ni son propre nom. Dans
        un module à fil, le Calendrier donne la date et l'heure : leur icône
