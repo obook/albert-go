@@ -18,6 +18,7 @@ Ce qui reste à faire, du plus simple au plus long. Le détail des failles est d
 - [ ] API ouvertes à étudier : Tabular API de data.gouv.fr (lire les lignes d'un fichier publié), géocodage inverse et itinéraire de l'IGN, Géorisques.
 - [ ] Légifrance et Judilibre : il faut des identifiants PISTE et une route n8n, car la clé ne peut pas rester dans le navigateur.
 - [ ] Wiktionnaire et autres services externes : en réflexion, car les mots cherchés partent chez un tiers.
+- [ ] Images : Albert écrit parfois "Les sources fournies ne donnent aucune information" en parlant des résultats d'`image_commons`. La règle "Sources" de `discuter.txt`, faite pour la Bibliothèque, s'applique à tort aux résultats des outils (vu le 11/11/2026).
 
 ## Documents et exports
 
@@ -63,8 +64,16 @@ Paramètres de l'API standard d'OpenAI, déclarés par Albert (spécification 0.
 - [ ] `top_p` : un second filtre à côté du curseur `top_k`, qui garde les mots les plus probables jusqu'à p % de probabilité cumulée.
 - [x] Vérifier que le relais n8n transmet ces paramètres à Albert.
 
+## Compétences
+
+Mesure du 11/11/2026 avec Large, 6 questions x 3, sans outils : les réponses sont relues pour chaque défaut.
+
+- [ ] Style direct : les tirets longs remontent (6 contre 3 avec Écriture soignée seule) et la virgule décimale tombe (3 contre 14). Lire les réponses pour savoir pourquoi, puis corriger `style-direct.txt`.
+- [ ] Sans redite : mesurer son effet sur un document de l'Imprimerie construit par ajouts, avec et sans la compétence.
+
 ## Interface
 
+- [ ] Script perdu au lancement : sur le Pixel 8, `rendu/images.js` et `rendu/export.js` n'étaient pas arrivés (10/11/2026), plus d'images ni d'exports. La page se recharge maintenant d'elle-même, mais la cause reste inconnue. Si ça revient, lire l'état par adb et CDP avant de recharger (note Obsidian "debogage-pixel8").
 - [x] Grand écran : le titre de la conversation dans le bouton du volet, comme sur L'Assistant de la DINUM. Fait le 14/10/2026, dans l'en-tête à côté du bouton.
 
 ## À surveiller
