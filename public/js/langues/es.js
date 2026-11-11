@@ -571,7 +571,7 @@ I18n.TEXTES.es = {
     'reponse.note-images': 'Imágenes buscadas: {lignes}',
     'reponse.bibliotheque': 'Ver las fuentes de la biblioteca',
     'reponse.note-bibliotheque': 'Fuentes de la biblioteca enviadas con la pregunta: {lignes}',
-    'images.rappel': 'Para una foto o una imagen, usa la herramienta image_commons, no recherche_web, y da el enlace de un archivo encontrado. Nunca describas un archivo sin su enlace; si ninguno corresponde, dilo.',
+    'images.rappel': 'Para una foto, una imagen o el esquema de una cosa real (esqueleto, órgano, volcán, animal, máquina), usa la herramienta image_commons, no recherche_web, y da el enlace de un archivo encontrado. Nunca describas un archivo sin su enlace; si ninguno corresponde, dilo.',
     'images.absent': 'No puedes buscar ni mostrar imágenes: si te piden una, di que hay que activar el globo de la barra de entrada, tras autorizar Internet en Ajustes > Herramientas si no aparece.',
     'services.rappel': 'Para un servicio público, una empresa, un centro escolar, las vacaciones escolares, una dirección, un municipio (códigos postales, población), un contrato público, un conjunto de datos públicos, una formación de Parcoursup o la calidad del agua del grifo, usa la herramienta dedicada en lugar de recherche_web.',
     'annuaire_administration.description': 'Busca un servicio público francés en el Annuaire de l\'administration (service-public.fr): ayuntamiento, prefectura, caja, tribunal, rectorado, ministerio... Devuelve dirección, teléfono, correo, sitio web y horarios.',
