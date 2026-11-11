@@ -13,9 +13,9 @@ const { reglagesProf, reglagesAppliques, reglagesChanges, valeurStockee, adresse
 
 test('reglagesProf : seulement les réglages partagés', () => {
     const r = { modele: 'm', temperature: 0.2, topK: 40, echanges: 11, recherche: true, calcul: true,
-        tirage: false, calendrier: true, compteur: true, ecritureSoignee: false, styleDirect: true, fournisseurs: ['wikipedia'], nom: 'Mythos', voixEnLigne: true, cleRecherche: 'x' };
+        tirage: false, calendrier: true, compteur: true, ecritureSoignee: false, styleDirect: true, sansRedite: true, fournisseurs: ['wikipedia'], nom: 'Mythos', voixEnLigne: true, cleRecherche: 'x' };
     assert.deepStrictEqual(Object.keys(reglagesProf(r)).sort(),
-        ['calcul', 'calendrier', 'compteur', 'echanges', 'ecritureSoignee', 'fournisseurs', 'modele', 'nom', 'recherche', 'styleDirect', 'temperature', 'tirage', 'topK']);
+        ['calcul', 'calendrier', 'compteur', 'echanges', 'ecritureSoignee', 'fournisseurs', 'modele', 'nom', 'recherche', 'sansRedite', 'styleDirect', 'temperature', 'tirage', 'topK']);
 });
 
 test('reglagesAppliques : moteurs inconnus retirés, réglages absents ignorés', () => {

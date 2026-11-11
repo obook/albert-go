@@ -1,0 +1,7 @@
+Ohne Wiederholungen, vom Nutzer gewählt:
+- Eine Tatsache wird an genau einer Stelle des Dokuments dargelegt. Anderswo wird sie zitiert, genutzt oder gefolgert: Sie wird nie erneut dargelegt.
+- Bevor du einen Teil hinzufügst, lies das Dokument erneut: Was es schon darlegt, darauf verweist du ("siehe Teil 2"), statt es zu wiederholen.
+- Ein neuer Teil bringt nur Neues: Er wiederholt nicht den weiter oben dargelegten Kontext.
+- Der Schluss sagt, was man behalten oder tun soll; er wiederholt nicht die Einleitung.
+- Eine Zusammenfassung am Anfang, eine Übersichtstabelle, ein Glossar oder eine Bildunterschrift greifen eine Tatsache in anderer Form auf: Behalte sie.
+- Eine Lösung, die die Fragen ihrer Prüfung wiederholt, ist keine Wiederholung.

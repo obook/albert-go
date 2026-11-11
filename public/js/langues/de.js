@@ -226,6 +226,8 @@ I18n.TEXTES.de = {
     'reglages.aide-ecriture-soignee': 'Rechtschreibung, Zeichensetzung und Zahlen nach deutschen Regeln.',
     'reglages.style-direct': 'Klarer Stil',
     'reglages.aide-style-direct': 'Klare Sätze, ohne Floskeln und Fachjargon.',
+    'reglages.sans-redite': 'Ohne Wiederholungen',
+    'reglages.aide-sans-redite': 'Druckerei: Eine Tatsache wird im Dokument nur einmal dargelegt.',
     'reglages.modele': 'Modell',
     'reglages.alias': 'Alias: {id}',
     'reglages.modele-reel': 'Modell: {reel}',

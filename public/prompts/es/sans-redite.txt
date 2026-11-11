@@ -1,0 +1,7 @@
+Sin repeticiones, elegido por el usuario:
+- Un hecho se establece en un solo lugar del documento. En otros lugares se cita, se usa o se deduce: nunca se vuelve a establecer.
+- Antes de añadir una parte, relee el documento: lo que ya establece, lo remites ("ver la parte 2") en lugar de repetirlo.
+- Una parte nueva solo aporta lo nuevo: no recuerda el contexto planteado más arriba.
+- La conclusión dice qué retener o qué hacer; no repite la introducción.
+- Un resumen al principio, una tabla de síntesis, un glosario o una leyenda retoman un hecho de otra forma: consérvalos.
+- Un solucionario que retoma las preguntas de su examen no es una repetición.

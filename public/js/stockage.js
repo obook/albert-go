@@ -267,10 +267,11 @@ function echangesLus() {
     return Math.min(Albert.ECHANGES_TOUS, Math.max(0, valeur));
 }
 
-/** Compétences de la carte du même nom, dans l'ordre où leur consigne s'ajoute : nom d'enregistrement et valeur par défaut. */
+/** Compétences de la carte du même nom, dans l'ordre où leur consigne s'ajoute : nom d'enregistrement, valeur par défaut et, s'il le faut, la propriété de Albert.OUTILS qui la réserve à certains modules. */
 const COMPETENCES = {
     ecritureSoignee: { cle: 'ecriture-soignee', defaut: 'oui' },
-    styleDirect: { cle: 'style-direct', defaut: 'non' }
+    styleDirect: { cle: 'style-direct', defaut: 'non' },
+    sansRedite: { cle: 'sans-redite', defaut: 'oui', module: 'documents' }
 };
 
 /** Réglages de l'utilisateur, lus au démarrage. */

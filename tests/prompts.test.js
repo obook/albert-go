@@ -23,7 +23,7 @@ test('consignes : un fichier par langue pour chaque consigne, revue et compléme
     for (const langue of ['fr', 'en', 'es', 'de']) {
         for (const outil of Object.values(Albert.OUTILS)) {
             /* Compétences de la carte du même nom, ajoutées à toute consigne. */
-            for (const fichier of [outil.consigne, outil.revue, outil.complement, 'ecriture-soignee.txt', 'style-direct.txt'].filter(Boolean)) {
+            for (const fichier of [outil.consigne, outil.revue, outil.complement, 'ecriture-soignee.txt', 'style-direct.txt', 'sans-redite.txt'].filter(Boolean)) {
                 const chemin = path.join(__dirname, '..', 'public', 'prompts', langue, fichier);
                 if (!fs.existsSync(chemin) || !fs.readFileSync(chemin, 'utf8').trim()) {
                     manquants.push(langue + '/' + fichier);
