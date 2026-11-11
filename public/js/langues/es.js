@@ -178,7 +178,7 @@ I18n.TEXTES.es = {
     'bienvenue.grammaire': 'Análisis sintáctico',
     'bienvenue.dissertation': 'Plan de disertación',
     'bienvenue.latin': 'Traducir del latín',
-    'bienvenue.exemple-histoire': 'Inventa una historia corta para un niño: un joven pastor y su perra están en una cueva.\nUnas 200 palabras, con un diálogo y un final abierto. Ponle un título.',
+    'bienvenue.exemple-histoire': 'Inventa una historia corta para un niño: una joven pastora y su cabra están en un olivar.\nUnas 200 palabras, con un diálogo y un final abierto. Ponle un título.',
     'bienvenue.exemple-corriger': 'Corrige este texto: Le agradesco su rapida respuesta y quedo a su dispocición.',
     'bienvenue.exemple-reformuler': 'Reformula este texto: Le informamos de que, habida cuenta de la indisponibilidad de una parte significativa de los participantes, la celebración de la reunión inicialmente programada queda aplazada a una fecha posterior que se le comunicará a la mayor brevedad.',
     'bienvenue.exemple-traduire': 'Traduce al inglés: Hola, quisiera pedir cita para la semana que viene.',

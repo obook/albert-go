@@ -178,7 +178,7 @@ I18n.TEXTES.en = {
     'bienvenue.grammaire': 'Parse a sentence',
     'bienvenue.dissertation': 'Essay outline',
     'bienvenue.latin': 'Translate Latin',
-    'bienvenue.exemple-histoire': 'Make up a short story for a child: a young shepherd and his dog are in a cave.\nAbout 200 words, with a dialogue and an open ending. Give it a title.',
+    'bienvenue.exemple-histoire': 'Make up a short story for a child: a young fisherman and his cat are in a lighthouse.\nAbout 200 words, with a dialogue and an open ending. Give it a title.',
     'bienvenue.exemple-corriger': 'Proofread this text: Thank you for you quick anwser, i remain at your disposal.',
     'bienvenue.exemple-reformuler': 'Rephrase this text: Please be advised that, owing to the unavailability of a significant proportion of the participants, the meeting originally scheduled has been postponed to a later date, which will be communicated to you in due course.',
     'bienvenue.exemple-traduire': 'Translate into French: Hello, I would like to make an appointment next week.',
