@@ -283,6 +283,8 @@ const reglages = {
     echanges: echangesLus(),
     langue: I18n.langue,
     voixEnLigne: lire('voix-en-ligne', 'non') === 'oui',
+    /* Idées de l'accueil de Discussion. */
+    idees: lire('idees', 'oui') === 'oui',
     ...Object.fromEntries(Object.entries(COMPETENCES).map(([nom, c]) => [nom, lire(c.cle, c.defaut) === 'oui'])),
     /* Internet, pour la recherche et les images Wikimedia. L'ancien réglage images
        ne sert que tant que celui-ci n'a jamais été écrit : sinon on ne pourrait plus le désactiver. */

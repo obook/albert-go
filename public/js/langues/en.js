@@ -251,6 +251,8 @@ I18n.TEXTES.en = {
     'reglages.aide-top-k-tous': 'One word is drawn at random from all possible words to generate the text.',
     'reglages.contexte': 'Context',
     'reglages.donnees': 'Data',
+    'reglages.accueil': 'Home',
+    'reglages.idees': 'Show ideas',
     'reglages.lecture': 'Read aloud',
     'reglages.voix-en-ligne': 'Allow online voices',
     'reglages.aide-voix': 'An online voice engine may collect and use the data of the conversation.',

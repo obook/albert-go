@@ -251,6 +251,8 @@ I18n.TEXTES.es = {
     'reglages.aide-top-k-tous': 'Se sortea una palabra entre todas las palabras posibles para generar el texto.',
     'reglages.contexte': 'Contexto',
     'reglages.donnees': 'Datos',
+    'reglages.accueil': 'Inicio',
+    'reglages.idees': 'Mostrar las ideas',
     'reglages.lecture': 'Lectura en voz alta',
     'reglages.voix-en-ligne': 'Permitir las voces en línea',
     'reglages.aide-voix': 'Un motor de voz en línea puede recopilar y explotar los datos de la conversación.',

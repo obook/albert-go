@@ -165,6 +165,8 @@ function afficherReglages() {
     $('echanges').value = reglages.echanges;
     $('aide-echanges').textContent = t(Albert.cleAideEchanges(reglages.echanges), { n: reglages.echanges });
     $('voix-en-ligne').checked = reglages.voixEnLigne;
+    $('idees').checked = reglages.idees;
+    document.querySelector('.bienvenue').hidden = !reglages.idees;
     for (const [nom, competence] of Object.entries(COMPETENCES)) {
         $(competence.cle).checked = reglages[nom];
     }

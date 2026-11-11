@@ -251,6 +251,8 @@ I18n.TEXTES.fr = {
     'reglages.aide-top-k-tous': 'Tirage d\'un mot au hasard parmi tous les mots possibles pour générer le texte.',
     'reglages.contexte': 'Contexte',
     'reglages.donnees': 'Données',
+    'reglages.accueil': 'Accueil',
+    'reglages.idees': 'Afficher les idées',
     'reglages.lecture': 'Lecture à voix haute',
     'reglages.voix-en-ligne': 'Autoriser les voix en ligne',
     'reglages.aide-voix': 'Un moteur de voix en ligne peut collecter et exploiter les données de la conversation.',

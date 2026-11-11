@@ -140,6 +140,12 @@ $('voix-en-ligne').addEventListener('change', () => {
     ecrire('voix-en-ligne', reglages.voixEnLigne ? 'oui' : 'non');
 });
 
+$('idees').addEventListener('change', () => {
+    reglages.idees = $('idees').checked;
+    ecrire('idees', reglages.idees ? 'oui' : 'non');
+    afficherReglages();
+});
+
 for (const [nom, competence] of Object.entries(COMPETENCES)) {
     $(competence.cle).addEventListener('change', () => {
         reglages[nom] = $(competence.cle).checked;

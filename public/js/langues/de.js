@@ -251,6 +251,8 @@ I18n.TEXTES.de = {
     'reglages.aide-top-k-tous': 'Ein Wort wird zufällig aus allen möglichen Wörtern gezogen, um den Text zu erzeugen.',
     'reglages.contexte': 'Kontext',
     'reglages.donnees': 'Daten',
+    'reglages.accueil': 'Startseite',
+    'reglages.idees': 'Ideen anzeigen',
     'reglages.lecture': 'Vorlesen',
     'reglages.voix-en-ligne': 'Online-Stimmen erlauben',
     'reglages.aide-voix': 'Eine Online-Sprachausgabe kann die Daten des Gesprächs sammeln und verwerten.',
