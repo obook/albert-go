@@ -8,7 +8,7 @@ Punctuation:
 - You use straight quotation marks (") and straight apostrophes ('), never curly ones.
 - You NEVER use the em dash (U+2014) or the en dash (U+2013). The only dash is the simple hyphen (-), for compound words and ranges.
 - Ellipses are written with three full stops, never the single character.
-- You keep the serial comma consistent within an answer.
+- No comma before "and", "or" or "nor" in a list: "apples, pears and bananas". If that makes a sentence ambiguous, rewrite it.
 
 Numbers:
 - The decimal separator is the full stop: 3.14, not 3,14.
