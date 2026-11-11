@@ -18,7 +18,7 @@ Ce qui reste à faire, du plus simple au plus long. Le détail des failles est d
 - [ ] API ouvertes à étudier : Tabular API de data.gouv.fr (lire les lignes d'un fichier publié), géocodage inverse et itinéraire de l'IGN, Géorisques.
 - [ ] Légifrance et Judilibre : il faut des identifiants PISTE et une route n8n, car la clé ne peut pas rester dans le navigateur.
 - [ ] Wiktionnaire et autres services externes : en réflexion, car les mots cherchés partent chez un tiers.
-- [ ] Images : Albert écrit parfois "Les sources fournies ne donnent aucune information" en parlant des résultats d'`image_commons`. La règle "Sources" de `discuter.txt`, faite pour la Bibliothèque, s'applique à tort aux résultats des outils (vu le 11/11/2026).
+- [ ] Images : Albert écrit parfois "Les sources fournies ne donnent aucune information" en parlant des résultats d'`image_commons`. La règle "Sources" de `discuter.txt`, faite pour la Bibliothèque, s'applique à tort aux résultats des outils (vu le 11/11/2026). Non reproduit le même jour sur 42 réponses de Large (images simulées, pertinentes ou non) : à son retour, noter la question et les sources cochées.
 
 ## Documents et exports
 
