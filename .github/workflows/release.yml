@@ -97,6 +97,7 @@ jobs:
 
           La configuration est le fichier .env à côté de l'application, créé au premier lancement s'il manque : y coller la clé API ou y activer le kiosque (ALBERT_KIOSQUE=oui). Chaque archive contient aussi la notice (documentation.pdf) et le modèle .env-exemple.
           NOTES
+          (cd paquets && sha256sum * > SHA256SUMS)
           gh release create "${TAG}" paquets/* \
             --repo "${GITHUB_REPOSITORY}" \
             --title "Albert Go ${TAG}" \
