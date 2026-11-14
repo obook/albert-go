@@ -338,7 +338,7 @@ I18n.TEXTES.de = {
     'info.reponses': 'Die Antworten',
     'info.reponses.texte': 'Die KI kann sich irren oder erfinden. Prüfen Sie ihre Antworten, bevor Sie sie nutzen, und geben Sie ihr keine personenbezogenen Daten.',
     'info.projet': 'Das Projekt',
-    'info.projet.texte': 'Autor: <a href="mailto:olivier.booklage@ac-bordeaux.fr">Olivier Booklage</a> (Académie de Bordeaux)<br>Quelle: <a href="https://github.com/obook/albert-go" target="_blank" rel="noopener noreferrer">Forge des communs numériques</a>',
+    'info.projet.texte': 'Autor: <a href="mailto:olivier.booklage@ac-bordeaux.fr">Olivier Booklage</a> (Académie de Bordeaux)<br>Quelle: <a href="https://github.com/obook/albert-go" target="_blank" rel="noopener noreferrer">GitHub</a>',
     'info.credits': 'Server und Kiosk stammen aus L\'Atelier d\'Albert, geschrieben von Romain P., Luce P.B. und Théossian S.D. (Trophées NSI 2026). Freie Software unter der GPL v3 oder höher.',
     'info.version': 'Version: ',
     'info.appels': 'n8n-Last: {n} {motN} in 90 Tagen mit {h} {motH}/h',

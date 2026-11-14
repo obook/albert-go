@@ -338,7 +338,7 @@ I18n.TEXTES.es = {
     'info.reponses': 'Las respuestas',
     'info.reponses.texte': 'La IA puede equivocarse o inventar. Compruebe sus respuestas antes de usarlas y no le confíe datos personales.',
     'info.projet': 'El proyecto',
-    'info.projet.texte': 'Autor: <a href="mailto:olivier.booklage@ac-bordeaux.fr">Olivier Booklage</a> (Académie de Bordeaux)<br>Fuente: <a href="https://github.com/obook/albert-go" target="_blank" rel="noopener noreferrer">Forge des communs numériques</a>',
+    'info.projet.texte': 'Autor: <a href="mailto:olivier.booklage@ac-bordeaux.fr">Olivier Booklage</a> (Académie de Bordeaux)<br>Fuente: <a href="https://github.com/obook/albert-go" target="_blank" rel="noopener noreferrer">GitHub</a>',
     'info.credits': 'El servidor y el quiosco vienen de L\'Atelier d\'Albert, escrito por Romain P., Luce P.B. y Théossian S.D. (Trophées NSI 2026). Software libre bajo licencia GPL v3 o posterior.',
     'info.version': 'Versión: ',
     'info.appels': 'Carga n8n: {n} {motN} en 90 días a {h} {motH}/h',
