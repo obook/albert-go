@@ -5,8 +5,8 @@
 **Référentiel :** guide d'hygiène informatique de l'ANSSI, recommandations TLS,
 guide ANSSI-PA-102 sur les systèmes d'IA générative. Auto-évaluation, sans revue externe.
 
-Albert Go est une page statique publiée sur Pages (Forge des communs numériques
-éducatifs). Chacun y saisit sa propre clé API Albert. Albert n'envoyant pas
+Albert Go est une page statique publiée sur GitHub Pages.
+Chacun y saisit sa propre clé API Albert. Albert n'envoyant pas
 d'en-têtes CORS, la page passe par un webhook n8n,
 le relais de l'incubateur de l'Éducation nationale.
 
@@ -46,7 +46,7 @@ Navigateur (Pages) -> webhook n8n -> https://albert.api.etalab.gouv.fr
   noms des dirigeants d'entreprise ne sont pas transmis au modèle.
 - **Aucun CDN, aucune télémétrie.** Les neuf bibliothèques sont servies depuis
   Pages, le QR code est calculé dans le navigateur et la version affichée dans
-  "À propos" est écrite au déploiement : aucune requête vers la forge.
+  "À propos" est écrite au déploiement : aucune requête vers GitHub.
 
 ### Stockage dans le navigateur (préfixe `albert-go.`)
 
@@ -156,8 +156,8 @@ Boîte noire depuis un poste extérieur, le 2026-09-21, avec `curl` et `openssl`
 | N° | Gravité | Constat | Recommandation |
 |---|---|---|---|
 | E1 | Moyenne | Reconduit du 2026-09-18. Pas de limite de débit. Le webhook reste appelable hors navigateur, où CORS ne s'applique pas. Revérifié : cinq requêtes sans clé toutes servies, corps de 2 Mo lu en entier avant le 401. Depuis I8, Albert n'est plus sollicité sans clé : l'abus se limite aux ressources de n8n. | Demander une limite de débit par adresse IP aux administrateurs. |
-| E3 | Faible | Reconduit du 2026-09-18. Pages n'envoie pas `X-Content-Type-Options: nosniff`. Sans effet ici : tous les fichiers sont servis avec leur type exact. | À signaler à l'équipe de la Forge. |
-| E5 | Info | Le HSTS de Pages n'a ni `includeSubDomains` ni `preload`. Pages n'accepte pas d'en-tête sur mesure. | À signaler avec E3. |
+| E3 | Faible | Reconduit du 2026-09-18. Pages n'envoie pas `X-Content-Type-Options: nosniff`. Sans effet ici : tous les fichiers sont servis avec leur type exact. | Constat fait sur Pages de la Forge : à revérifier sur GitHub Pages. |
+| E5 | Info | Le HSTS de Pages n'a ni `includeSubDomains` ni `preload`. Pages n'accepte pas d'en-tête sur mesure. | À revérifier avec E3. |
 | E6 | Info | Recherche activée, le navigateur appelle le moteur en direct : celui-ci voit l'adresse IP de l'utilisateur et les mots de la requête. Ce périmètre est nouveau depuis le dernier audit. | Le dire dans l'aide des réglages (I9) et dans la section RGPD. |
 
 ## Suivi des corrections
@@ -177,7 +177,7 @@ Boîte noire depuis un poste extérieur, le 2026-09-21, avec `curl` et `openssl`
 | I13 | En partie corrigé le 2026-10-26 : KaTeX 0.18.11. Reste la copie de KaTeX dans Mermaid 11.17.2 : Mermaid 12 exige Safari 17.4, version des iPad à vérifier d'abord. |
 | E1 | Ouvert : limite de débit à demander aux administrateurs. |
 | E2 | Corrigé le 2026-09-18 : affichage bloqué dans un cadre. |
-| E3, E5 | Ouverts : à signaler à l'équipe de la Forge. |
+| E3, E5 | Ouverts : à revérifier sur GitHub Pages. |
 | E4 | Corrigé le 2026-09-18. Revérifié : le workflow publié est celui du dépôt. |
 | E6 | Corrigé le 2026-09-21 : l'aide de la carte Recherche dit ce que voit le moteur, dans les quatre langues. |
 
@@ -248,5 +248,5 @@ Les recommandations R1, R2, R4, R6, R11, R12, R14 à R19, R21, R28 et R35 porten
 sur l'entraînement, l'hébergement et l'exploitation d'un système d'IA. Albert Go
 n'en assure aucun : elles relèvent d'Albert et des plateformes d'accueil.
 
-Pour signaler une vulnérabilité, ouvrez un ticket confidentiel sur la Forge :
-<https://github.com/obook/albert-go/-/issues>
+Pour signaler une vulnérabilité, faites un signalement privé sur GitHub :
+<https://github.com/obook/albert-go/security/advisories/new>

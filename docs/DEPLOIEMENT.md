@@ -79,7 +79,7 @@ sudo nmcli connection modify "Nom_du_WiFi" wifi-sec.psk-flags 0 wifi-sec.psk "MO
 
 ## Clé USB
 
-Les [releases](https://github.com/obook/albert-go/-/releases) fournissent Albert Go avec son serveur et Python, sans installation :
+Les [releases](https://github.com/obook/albert-go/releases) fournissent Albert Go avec son serveur et Python, sans installation :
 
 - Linux : décompresser l'archive, puis lancer l'AppImage (`--kiosque` pour le kiosque).
 - Windows : décompresser l'archive, puis lancer `Albert-Go.exe`.

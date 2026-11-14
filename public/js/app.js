@@ -584,7 +584,7 @@ $('form-question').addEventListener('submit', (e) => {
 /**
  * Recharge la page si une version plus récente est en ligne.
  *
- * La forge garde index.html 10 minutes en cache, et l'application installée
+ * Pages garde index.html 10 minutes en cache, et l'application installée
  * reprend l'onglet sans le recharger. Rien ne se passe pendant une réponse
  * ou si la saisie contient du texte.
  */

@@ -85,7 +85,7 @@ Albert Go est un chatbot, c'est-à-dire un agent conversationnel : vous écrivez
 
 Albert API n'autorise pas une page web à l'interroger directement : un relais lui transmet les questions. Ce relais dépend du mode de fonctionnement :
 \begin{itemize}
-  \item \emph{Version en ligne}, sur le site Pages de la forge : chacun saisit sa clé API dans la page, qui la garde dans le navigateur. Un relais n8n de l'incubateur de l'Éducation nationale transmet les questions à Albert (\autoref{sec:en-ligne}).
+  \item \emph{Version en ligne}, sur GitHub Pages : chacun saisit sa clé API dans la page, qui la garde dans le navigateur. Un relais n8n de l'incubateur de l'Éducation nationale transmet les questions à Albert (\autoref{sec:en-ligne}).
   \item \emph{Serveur centralisé} : le serveur Python d'Albert Go tourne sur un poste du réseau et transmet directement les questions à Albert, avec la clé API de son fichier \code{.env}. Les appareils du réseau l'ouvrent dans leur navigateur, à l'adresse que donne son administrateur. Pour l'installer, suivez \texttt{docs/DEPLOIEMENT.md} (\autoref{sec:plus-loin}).
   \item \emph{Version autonome} : le même serveur, embarqué avec Python dans une application pour Linux ou Windows. Elle s'ouvre dans sa propre fenêtre, sans installation, depuis l'ordinateur ou une clé USB (\autoref{sec:installation}).
 \end{itemize}
@@ -116,7 +116,7 @@ Au départ, Albert Go efface la clé quand vous fermez l'onglet. Activez \emph{L
 
 Chaque version d'Albert Go a un fichier par système, sur la page des versions :
 
-\url{https://github.com/obook/albert-go/-/releases}
+\url{https://github.com/obook/albert-go/releases}
 
 \subsection{Sous Linux}
 
