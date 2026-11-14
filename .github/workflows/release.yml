@@ -55,6 +55,13 @@ jobs:
             echo "docs/documentation.pdf n'annonce pas ${TAG} : changer \\version, recompiler, commiter."
             exit 1
           fi
+      - name: Vérifier le badge de version
+        run: |
+          # Le numéro figure deux fois dans le badge : texte et ombre.
+          if [ "$(grep -c ">${TAG}<" badges/version.svg)" != 2 ]; then
+            echo "badges/version.svg n'annonce pas ${TAG} : changer le texte et l'ombre, commiter."
+            exit 1
+          fi
       - name: Construire
         working-directory: standalone
         run: |
