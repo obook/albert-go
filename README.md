@@ -1,5 +1,12 @@
 # Albert Go
 
+![Licence](badges/licence.svg)
+[![Version](badges/version.svg)](https://github.com/obook/albert-go/releases)
+![IA](badges/ia.svg)
+[![Web](badges/web.svg)](https://obook.github.io/albert-go/)
+![Linux](badges/linux.svg)
+![Windows](badges/windows.svg)
+
 Chatbot minimal pour [Albert](https://ia.numerique.gouv.fr/outils-ia/albert-api/), l'IA de l'État portée par la DINUM.
 
 <p align="center"><img src="media/albert-go.png" width="640" alt="Albert Go : une réponse d'Albert avec le schéma du parcours d'une loi et une photo du palais de l'Élysée"></p>
