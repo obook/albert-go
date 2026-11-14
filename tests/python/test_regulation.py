@@ -1,4 +1,4 @@
-# Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
+# Projet : Albert Go, https://github.com/obook/albert-go
 # Repris de L'Atelier d'Albert (Romain P., Luce P.B., Théossian S.D., O. Booklage)
 # Licence : GPL-3.0-or-later
 """Tests du module api.throttling — Throttler client synchrone."""

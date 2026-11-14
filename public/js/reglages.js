@@ -7,7 +7,7 @@
  * Chaque changement est enregistré tout de suite (ecrire, stockage.js)
  * et répercuté par afficherReglages (affichage.js).
  *
- * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
+ * Projet : Albert Go, https://github.com/obook/albert-go
  * Auteur : O. Booklage
  * Date : Septembre 2026
  * Licence : GPL-3.0-or-later

@@ -5,7 +5,7 @@ Les élèves rejoignent la session par un lien (QR code) et un code à
 (enseignant ou élève) est signé dans le cookie : un élève ne peut pas
 se déclarer enseignant.
 
-Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
+Projet : Albert Go, https://github.com/obook/albert-go
 Repris de L'Atelier d'Albert (Romain P., Luce P.B., Théossian S.D., O. Booklage)
 Licence : GPL-3.0-or-later
 """

@@ -3,7 +3,7 @@
  * Giac, le moteur de calcul formel de Xcas, hors du fil de la page : une
  * commande reçue, un résultat rendu. Lancé par Formel (calcul.js).
  *
- * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
+ * Projet : Albert Go, https://github.com/obook/albert-go
  * Auteur : O. Booklage
  * Date : Octobre 2026
  * Licence : GPL-3.0-or-later

@@ -6,7 +6,7 @@
  * par rendu.js ; la lecture à voix haute par lecture.js.
  * Utilise l'état défini dans stockage.js.
  *
- * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
+ * Projet : Albert Go, https://github.com/obook/albert-go
  * Auteur : O. Booklage
  * Date : Septembre 2026
  * Licence : GPL-3.0-or-later

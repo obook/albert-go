@@ -7,7 +7,7 @@
  * rouvre et permet de la poursuivre. Les flèches de la saisie rappellent,
  * elles, les questions seules (variable historique, stockage.js).
  *
- * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
+ * Projet : Albert Go, https://github.com/obook/albert-go
  * Auteur : O. Booklage
  * Date : Septembre 2026
  * Licence : GPL-3.0-or-later

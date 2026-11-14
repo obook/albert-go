@@ -6,7 +6,7 @@
  * publié et sa date. Sert à vérifier qu'un appareil n'a pas gardé une
  * ancienne version en cache.
  *
- * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
+ * Projet : Albert Go, https://github.com/obook/albert-go
  * Auteur : O. Booklage
  * Date : Septembre 2026
  * Licence : GPL-3.0-or-later

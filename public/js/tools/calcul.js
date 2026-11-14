@@ -4,7 +4,7 @@
  * pondérée et dérivée ; calcul formel par Giac), calendrier (jours ouvrés, fériés et échéances), compteur (mots, lettres, lisibilité), tirage.
  * Là où les modèles se trompent ; tout reste dans le navigateur.
  *
- * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
+ * Projet : Albert Go, https://github.com/obook/albert-go
  * Auteur : O. Booklage
  * Date : Septembre 2026
  * Licence : GPL-3.0-or-later

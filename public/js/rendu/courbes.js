@@ -9,7 +9,7 @@
  * Complète l'objet Rendu de rendu.js ; utilise Calcul (tools/calcul.js)
  * pour math.js.
  *
- * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
+ * Projet : Albert Go, https://github.com/obook/albert-go
  * Auteur : O. Booklage
  * Date : Septembre 2026
  * Licence : GPL-3.0-or-later

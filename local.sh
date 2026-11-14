@@ -2,7 +2,7 @@
 #
 # Nom : local.sh
 # Description : Lance le serveur d'Albert Go (crée .venv au premier lancement).
-# Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
+# Projet : Albert Go, https://github.com/obook/albert-go
 # Auteur : O. Booklage
 # Licence : GPL-3.0-or-later
 #

@@ -5,7 +5,7 @@ ALBERT_PORT, ALBERT_HTTPS ; ALBERT_MISE_A_JOUR est lu par deploiement/demarrage.
 # pour commenter ; modèle : .env-exemple. Dossier ALBERT_PORTABLE_DIR (clé USB),
 sinon la racine du dépôt.
 
-Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
+Projet : Albert Go, https://github.com/obook/albert-go
 Auteurs : O. Booklage ; Romain P., Luce P.B., Théossian S.D. (L'Atelier d'Albert)
 Licence : GPL-3.0-or-later
 """

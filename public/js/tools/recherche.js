@@ -13,7 +13,7 @@
  * mots-clés. Google et Mojeek demandent une clé, qui voyage dans l'adresse
  * comme leurs API la lisent, et ne rendent que de courts extraits.
  *
- * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
+ * Projet : Albert Go, https://github.com/obook/albert-go
  * Auteur : O. Booklage
  * Date : Septembre 2026
  * Licence : GPL-3.0-or-later

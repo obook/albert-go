@@ -1,6 +1,6 @@
 // Version autonome d'Albert Go : lance le serveur Python embarqué et l'ouvre dans une fenêtre.
 //
-// Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
+// Projet : Albert Go, https://github.com/obook/albert-go
 // Auteurs : O. Booklage ; Romain P., Luce P.B., Théossian S.D. (L'Atelier d'Albert)
 // Licence : GPL-3.0-or-later
 'use strict';

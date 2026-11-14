@@ -1,0 +1,103 @@
+name: release
+
+# Sur un tag vX.Y.Z : Albert Go pour clé USB (Electron, Python embarqué), puis la release.
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  paquet-linux:
+    runs-on: ubuntu-latest
+    env:
+      TAG: ${{ github.ref_name }}
+      # appimagetool s'extrait sans FUSE.
+      APPIMAGE_EXTRACT_AND_RUN: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Construire
+        working-directory: standalone
+        run: |
+          curl -fsSL "https://github.com/astral-sh/python-build-standalone/releases/download/20241016/cpython-3.12.7+20241016-x86_64-unknown-linux-gnu-install_only.tar.gz" | tar -xz
+          mv python python-linux
+          python-linux/bin/python3 -m pip install -q -r ../serveur/requirements.txt
+          npm ci
+          npm pkg set version="${TAG#v}"
+          npm run build -- --linux AppImage
+          # Comme l'archive Windows : l'AppImage, la notice et le modèle de .env.
+          mkdir archive && cp dist/*.AppImage ../docs/documentation.pdf ../.env-exemple archive/
+          (cd archive && zip -qr "../Albert-Go-${TAG}-linux.zip" .)
+      - uses: actions/upload-artifact@v4
+        with:
+          name: linux
+          path: standalone/Albert-Go-*-linux.zip
+
+  paquet-windows:
+    runs-on: ubuntu-latest
+    env:
+      TAG: ${{ github.ref_name }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Vérifier la notice
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq poppler-utils
+          # La notice, livrée dans l'archive, doit annoncer la version du tag.
+          if ! pdftotext -l 1 docs/documentation.pdf - | grep -qx "Version ${TAG}"; then
+            echo "docs/documentation.pdf n'annonce pas ${TAG} : changer \\version, recompiler, commiter."
+            exit 1
+          fi
+      - name: Construire
+        working-directory: standalone
+        run: |
+          curl -fsSLo python-win.zip https://www.python.org/ftp/python/3.12.7/python-3.12.7-embed-amd64.zip
+          unzip -q python-win.zip -d python-win && rm python-win.zip
+          # Chemins de Python : ses paquets et le serveur dans resources\albert-go.
+          printf 'python312.zip\n.\nLib\\site-packages\n..\\albert-go\nimport site\n' > python-win/python312._pth
+          python3 -m pip install -q --platform win_amd64 --python-version 3.12 --only-binary=:all: --target python-win/Lib/site-packages -r ../serveur/requirements.txt
+          npm ci
+          npm pkg set version="${TAG#v}"
+          # dir et non portable : pas besoin de Wine.
+          npm run build -- --win dir
+          (cd dist/win-unpacked && zip -qr "../../Albert-Go-${TAG}-win64.zip" .)
+          cp ../docs/documentation.pdf "Albert-Go-${TAG}-documentation.pdf"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows
+          path: |
+            standalone/Albert-Go-*-win64.zip
+            standalone/Albert-Go-*-documentation.pdf
+
+  release:
+    needs: [paquet-linux, paquet-windows]
+    runs-on: ubuntu-latest
+    env:
+      TAG: ${{ github.ref_name }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: paquets
+          merge-multiple: true
+      - name: Publier
+        run: |
+          cat > notes.md << 'NOTES'
+          Version autonome d'Albert Go : le serveur et Python sont embarqués, rien à installer.
+
+          - Linux : décompresser l'archive, puis lancer l'AppImage.
+          - Windows : décompresser l'archive, puis lancer Albert-Go.exe.
+
+          La configuration est le fichier .env à côté de l'application, créé au premier lancement s'il manque : y coller la clé API ou y activer le kiosque (ALBERT_KIOSQUE=oui). Chaque archive contient aussi la notice (documentation.pdf) et le modèle .env-exemple.
+          NOTES
+          gh release create "${TAG}" paquets/* \
+            --repo "${GITHUB_REPOSITORY}" \
+            --title "Albert Go ${TAG}" \
+            --notes-file notes.md

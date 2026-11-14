@@ -1,0 +1,27 @@
+name: tests
+
+# Équivalent des jobs "tests" et "tests-serveur" de .gitlab-ci.yml.
+
+on:
+  pull_request:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    container: mcr.microsoft.com/playwright:v1.63.0-noble
+    steps:
+      - uses: actions/checkout@v4
+      - run: node --test tests/*.test.js
+      - run: npm i --no-save --no-audit --no-fund playwright@1.63.0
+      # Albert Go dans WebKit, le moteur de l'iPad.
+      - run: node --test tests/ipad.webkit.js
+
+  tests-serveur:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -q -r serveur/requirements.txt pytest
+      - run: python -m pytest -q

@@ -4,7 +4,7 @@ La réponse d'Albert est recopiée au fil de l'eau (flux SSE compris), avec
 son code, son type et son Retry-After. Avant un appel de conversation, la
 régulation par modèle peut répondre 429 à la place d'Albert.
 
-Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
+Projet : Albert Go, https://github.com/obook/albert-go
 Licence : GPL-3.0-or-later
 """
 

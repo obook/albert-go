@@ -2,7 +2,7 @@
 #
 # Nom : construire-linux.sh
 # Description : Construit l'AppImage de la version autonome dans standalone/dist/.
-# Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
+# Projet : Albert Go, https://github.com/obook/albert-go
 # Auteur : O. Booklage
 # Licence : GPL-3.0-or-later
 #

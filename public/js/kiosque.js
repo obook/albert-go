@@ -7,7 +7,7 @@
  * SERVEUR vient de /serveur.js (serveur/serveur.py) : adresses réseau et
  * session de cette page. Absent hors serveur (tests).
  *
- * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
+ * Projet : Albert Go, https://github.com/obook/albert-go
  * Repris de L'Atelier d'Albert (kiosque-garde.js, kiosque-niveau.js)
  * Licence : GPL-3.0-or-later
  */

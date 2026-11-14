@@ -4,7 +4,7 @@
  *
  * Chargé après i18n.js.
  *
- * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
+ * Projet : Albert Go, https://github.com/obook/albert-go
  * Auteur : O. Booklage
  * Date : Septembre 2026
  * Licence : GPL-3.0-or-later
@@ -338,7 +338,7 @@ I18n.TEXTES.fr = {
     'info.reponses': 'Les réponses',
     'info.reponses.texte': 'L\'IA peut se tromper ou inventer. Vérifiez ses réponses avant de les utiliser et ne lui confiez pas de données personnelles.',
     'info.projet': 'Le projet',
-    'info.projet.texte': 'Réalisation : <a href="mailto:olivier.booklage@ac-bordeaux.fr">Olivier Booklage</a> (académie de Bordeaux)<br>Source : <a href="https://forge.apps.education.fr/booklageolivier/albert-go" target="_blank" rel="noopener noreferrer">la forge des communs numériques</a>',
+    'info.projet.texte': 'Réalisation : <a href="mailto:olivier.booklage@ac-bordeaux.fr">Olivier Booklage</a> (académie de Bordeaux)<br>Source : <a href="https://github.com/obook/albert-go" target="_blank" rel="noopener noreferrer">la forge des communs numériques</a>',
     'info.credits': 'Le serveur et le kiosque viennent de L\'Atelier d\'Albert, écrit par Romain P., Luce P.B. et Théossian S.D. (Trophées NSI 2026). Logiciel libre sous licence GPL v3 ou ultérieure.',
     'info.version': 'Version : ',
     'info.appels': 'Charge n8n : {n} {motN} sur 90 jours à {h} {motH}/h',

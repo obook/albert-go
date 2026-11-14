@@ -9,7 +9,7 @@
  * Le HTML est assaini avant affichage : la réponse vient d'un modèle.
  * Logique reprise d'albert-board (render.js). Appelé par affichage.js.
  *
- * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
+ * Projet : Albert Go, https://github.com/obook/albert-go
  * Auteur : O. Booklage
  * Date : Septembre 2026
  * Licence : GPL-3.0-or-later

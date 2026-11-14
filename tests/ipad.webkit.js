@@ -10,7 +10,7 @@
  *   npm i --no-save playwright@1.63.0 && npx playwright install --with-deps webkit
  *   node --test tests/ipad.webkit.js
  *
- * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
+ * Projet : Albert Go, https://github.com/obook/albert-go
  * Auteur : O. Booklage
  * Date : Octobre 2026
  * Licence : GPL-3.0-or-later

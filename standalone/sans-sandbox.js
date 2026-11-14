@@ -2,7 +2,7 @@
 // refuse de démarrer depuis une AppImage (bac à sable SUID impossible, espaces de noms
 // bloqués par AppArmor sur Ubuntu). Appelé par electron-builder (afterPack).
 //
-// Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
+// Projet : Albert Go, https://github.com/obook/albert-go
 // Licence : GPL-3.0-or-later
 'use strict';
 

@@ -249,4 +249,4 @@ sur l'entraînement, l'hébergement et l'exploitation d'un système d'IA. Albert
 n'en assure aucun : elles relèvent d'Albert et des plateformes d'accueil.
 
 Pour signaler une vulnérabilité, ouvrez un ticket confidentiel sur la Forge :
-<https://forge.apps.education.fr/booklageolivier/albert-go/-/issues>
+<https://github.com/obook/albert-go/-/issues>

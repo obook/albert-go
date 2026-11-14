@@ -6,7 +6,7 @@
  * (albert.js) et affiche les réponses (affichage.js). Les dernières
  * lignes lancent l'application.
  *
- * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
+ * Projet : Albert Go, https://github.com/obook/albert-go
  * Auteur : O. Booklage
  * Date : Septembre 2026
  * Licence : GPL-3.0-or-later

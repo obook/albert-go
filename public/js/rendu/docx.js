@@ -5,7 +5,7 @@
  * Le parcours de la réponse et le zip sont dans export.js, chargé avant.
  * Complète l'objet Rendu de rendu.js.
  *
- * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
+ * Projet : Albert Go, https://github.com/obook/albert-go
  * Auteur : O. Booklage
  * Date : Octobre 2026
  * Licence : GPL-3.0-or-later

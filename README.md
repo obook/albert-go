@@ -6,9 +6,9 @@ Chatbot minimal pour [Albert](https://ia.numerique.gouv.fr/outils-ia/albert-api/
 
 Albert Go s'utilise :
 
-- en ligne, sur [Pages](https://booklageolivier.forge.apps.education.fr/albert-go/) : chacun saisit sa clé API, gardée dans le navigateur ; le relais n8n de l'incubateur de l'Éducation nationale transmet les questions à Albert ;
+- en ligne, sur [Pages](https://obook.github.io/albert-go/) : chacun saisit sa clé API, gardée dans le navigateur ; le relais n8n de l'incubateur de l'Éducation nationale transmet les questions à Albert ;
 - en serveur centralisé, sur un poste du réseau : le serveur Python garde la clé API et relaie les questions vers Albert ;
-- sur une clé USB : la version autonome des [releases](https://forge.apps.education.fr/booklageolivier/albert-go/-/releases) embarque ce serveur et Python.
+- sur une clé USB : la version autonome des [releases](https://github.com/obook/albert-go/releases) embarque ce serveur et Python.
 
 Le mode d'emploi est dans la notice : [docs/documentation.pdf](docs/documentation.pdf) (installation, discussion, Imprimerie, outils, kiosque, dépannage).
 
@@ -55,7 +55,7 @@ node --test tests/ipad.webkit.js    # la page dans WebKit, le moteur de l'iPad (
 outils/images-lancement.sh    # refait les images de lancement iOS (nouvel écran : une ligne dans ECRANS)
 ```
 
-La forge lance ces tests à chaque MR (`.gitlab-ci.yml`). Un manque relevé sur un vrai iPad s'ajoute à `SAFARI_ANCIEN` dans `tests/ipad.webkit.js` : le WebKit de Playwright est plus récent que Safari sur un iPad pas à jour.
+GitHub lance ces tests à chaque pull request (`.github/workflows/tests.yml`). Un manque relevé sur un vrai iPad s'ajoute à `SAFARI_ANCIEN` dans `tests/ipad.webkit.js` : le WebKit de Playwright est plus récent que Safari sur un iPad pas à jour.
 
 ### Traductions
 

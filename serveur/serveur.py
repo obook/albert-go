@@ -1,6 +1,6 @@
 """Serveur HTTP d'Albert Go : fichiers de public/ et relais /v1 vers Albert.
 
-Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
+Projet : Albert Go, https://github.com/obook/albert-go
 Auteurs : O. Booklage ; Romain P., Luce P.B., Théossian S.D. (L'Atelier d'Albert)
 Licence : GPL-3.0-or-later
 """

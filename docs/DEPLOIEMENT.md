@@ -8,13 +8,13 @@ Albert Go en serveur centralisé sur un poste du réseau (Raspberry Pi, Ubuntu) 
 sudo apt install git python3-venv
 ```
 
-Le poste doit joindre `albert.api.etalab.gouv.fr` et `forge.apps.education.fr`.
+Le poste doit joindre `albert.api.etalab.gouv.fr` et `github.com`.
 
 ## Installation
 
 ```bash
 cd ~
-git clone https://forge.apps.education.fr/booklageolivier/albert-go.git
+git clone https://github.com/obook/albert-go.git
 cd albert-go
 cp .env-exemple .env
 nano .env
@@ -79,7 +79,7 @@ sudo nmcli connection modify "Nom_du_WiFi" wifi-sec.psk-flags 0 wifi-sec.psk "MO
 
 ## Clé USB
 
-Les [releases](https://forge.apps.education.fr/booklageolivier/albert-go/-/releases) fournissent Albert Go avec son serveur et Python, sans installation :
+Les [releases](https://github.com/obook/albert-go/-/releases) fournissent Albert Go avec son serveur et Python, sans installation :
 
 - Linux : décompresser l'archive, puis lancer l'AppImage (`--kiosque` pour le kiosque).
 - Windows : décompresser l'archive, puis lancer `Albert-Go.exe`.

@@ -2,7 +2,7 @@
  * kiosque.test.js
  * Réglages du prof recopiés chez les élèves (public/js/kiosque.js).
  *
- * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
+ * Projet : Albert Go, https://github.com/obook/albert-go
  * Licence : GPL-3.0-or-later
  */
 'use strict';

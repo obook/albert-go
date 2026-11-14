@@ -4,7 +4,7 @@
 # Description : Met à jour et relance le serveur d'Albert Go sans redémarrer
 #               la machine : arrêt du serveur de ce dossier, puis demarrage.sh
 #               en arrière-plan (git pull, dépendances, serveur).
-# Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
+# Projet : Albert Go, https://github.com/obook/albert-go
 # Auteur : O. Booklage, d'après L'Atelier d'Albert (Romain P., Luce P.B., Théossian S.D.)
 # Licence : GPL-3.0-or-later
 #

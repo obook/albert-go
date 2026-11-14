@@ -8,7 +8,7 @@
  * Dans index.html, les textes portent data-t, data-t-html ou data-t-attr,
  * relus par I18n.appliquer à chaque changement de langue.
  *
- * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
+ * Projet : Albert Go, https://github.com/obook/albert-go
  * Auteur : O. Booklage
  * Date : Septembre 2026
  * Licence : GPL-3.0-or-later

@@ -9,7 +9,7 @@
  * Les textes visibles et ceux envoyés au modèle viennent de langues/*.js (t).
  * Utilisé par stockage.js, reglages.js, piece-jointe.js et app.js.
  *
- * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
+ * Projet : Albert Go, https://github.com/obook/albert-go
  * Auteur : O. Booklage
  * Date : Septembre 2026
  * Licence : GPL-3.0-or-later
@@ -27,10 +27,10 @@ const Albert = {
     RELAIS: 'https://n8n.incubateur.education.gouv.fr/webhook/albert-go/v1',
 
     /** Adresse publique de la version en ligne, affichée dans la boîte "Partager". */
-    URL_PUBLIQUE: 'https://booklageolivier.forge.apps.education.fr/albert-go/',
+    URL_PUBLIQUE: 'https://obook.github.io/albert-go/',
 
     /* Même liste que allowedOrigins dans le workflow n8n. */
-    ORIGINES: ['https://booklageolivier.forge.apps.education.fr', 'http://localhost:8642'],
+    ORIGINES: ['https://booklageolivier.forge.apps.education.fr', 'https://obook.github.io', 'http://localhost:8642'],
 
     /** Attente avant de vérifier que le relais répond encore (via /stats). */
     SONDE_MS: 10000,

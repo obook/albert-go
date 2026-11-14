@@ -6,7 +6,7 @@
  * Une clé refusée n'est jamais enregistrée. La clé déjà enregistrée est
  * revérifiée au démarrage par chargerModeles (reglages.js).
  *
- * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
+ * Projet : Albert Go, https://github.com/obook/albert-go
  * Auteur : O. Booklage
  * Date : Septembre 2026
  * Licence : GPL-3.0-or-later

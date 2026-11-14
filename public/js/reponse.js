@@ -5,7 +5,7 @@
  * Avec Reformuler, chaque variante ("### Plus courte"...) a sa propre bulle
  * et son propre bouton Copier. Appelé par ajouter (affichage.js).
  *
- * Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
+ * Projet : Albert Go, https://github.com/obook/albert-go
  * Auteur : O. Booklage
  * Date : Septembre 2026
  * Licence : GPL-3.0-or-later

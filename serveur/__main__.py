@@ -2,7 +2,7 @@
 
 Sans option, port, HTTPS et kiosque viennent du .env (serveur/config.py).
 
-Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
+Projet : Albert Go, https://github.com/obook/albert-go
 Licence : GPL-3.0-or-later
 """
 

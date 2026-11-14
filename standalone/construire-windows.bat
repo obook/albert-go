@@ -2,7 +2,7 @@
 REM Nom : construire-windows.bat
 REM Description : Construit la version autonome pour Windows : dossier dist\win-unpacked
 REM   et archive dist\Albert-Go-<version>-win64.zip, dans standalone\.
-REM Projet : Albert Go, https://forge.apps.education.fr/booklageolivier/albert-go
+REM Projet : Albert Go, https://github.com/obook/albert-go
 REM Auteur : O. Booklage
 REM Licence : GPL-3.0-or-later
 REM
