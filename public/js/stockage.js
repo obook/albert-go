@@ -135,8 +135,8 @@ function ecrire(nom, valeur) {
     }
 }
 
-/* Mode partagé activé par défaut ; à désactiver sur un poste personnel. */
-partage = lire('partage', 'oui') === 'oui';
+/* Clé conservée par défaut ; le mode partagé se coche à la connexion ou dans les réglages. Le kiosque l'impose. */
+partage = lire('partage', 'non') === 'oui';
 
 /* Une ancienne version rangeait la clé dans localStorage : on l'efface. */
 if (partage) {

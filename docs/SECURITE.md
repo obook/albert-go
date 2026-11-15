@@ -57,8 +57,8 @@ Navigateur (Pages) -> webhook n8n -> https://albert.api.etalab.gouv.fr
 - **Sensible** (liste `SENSIBLES` de `stockage.js`) : clé Albert, clé de
   recherche, 30 dernières questions, 10 dernières conversations, 10 derniers
   documents et la bibliothèque de sources. En mode
-  partagé, activé par défaut, tout cela va dans `sessionStorage` et disparaît à
-  la fermeture de l'onglet. Sinon dans `localStorage`, sans limite de durée.
+  partagé, à cocher à la connexion ou dans les réglages, tout cela va dans `sessionStorage` et disparaît à
+  la fermeture de l'onglet. Par défaut, dans `localStorage`, sans limite de durée.
   Les sources déposées dans Discussion ou Imprimerie vont dans une bibliothèque commune
   à toutes les conversations et à tous les documents (clé `bibliotheque`, dans `SENSIBLES`), gardée selon la même
   règle. Seul le texte lu est gardé, pas le fichier d'origine. Les sources cochées
@@ -105,7 +105,7 @@ Navigateur (Pages) -> webhook n8n -> https://albert.api.etalab.gouv.fr
 | Adresse piégée dans les sources listées sous une réponse | Ces adresses viennent du moteur, pas du modèle. Elles passent par le même contrôle que les liens d'une réponse (`Rendu.urlDangereuse`) avant de devenir cliquables et leur titre est inséré par `textContent`. |
 | Consigne cachée dans une page trouvée par la recherche | Aucun moteur coché par défaut, globe à activer à chaque session, extraits tronqués, aucune capacité hors chercher. Détail en I9. |
 | Commande piégée passée au calcul formel | Giac tourne dans un worker privé de réseau : `XMLHttpRequest`, `fetch` et `WebSocket` sont retirés avant son chargement, sa commande `read` ne peut appeler aucune adresse. Calcul arrêté après 10 secondes, variables effacées entre deux commandes. |
-| Clé ou questions lues sur un poste partagé | Mode partagé par défaut : tout le sensible en `sessionStorage`, effacé à la fermeture. |
+| Clé ou questions lues sur un poste partagé | Mode partagé, à cocher à la connexion (imposé en kiosque) : tout le sensible en `sessionStorage`, effacé à la fermeture. Non coché par défaut depuis le 2026-11-15. |
 | Page intégrée dans le cadre d'un autre site | La page détecte le cadre et n'affiche qu'un lien vers elle-même. |
 | Texte envoyé à une synthèse vocale en ligne | Voix de l'appareil en priorité. Voix en ligne seulement si l'utilisateur les autorise (désactivé par défaut) et faute de voix locale. Dans Firefox, qui n'a pas de voix en ligne à lui, toutes les voix sont acceptées : sous Linux, il déclare en ligne celles de speech-dispatcher. Limite : un moteur distant branché sur speech-dispatcher passerait. |
 | Fichier joint piégé | Texte lu comme du texte (200 Ko au plus), images redessinées dans un canevas puis converties en JPEG, audio décodé par le navigateur puis réécrit en WAV (le MP3 part tel quel, vers Albert seulement). Le résultat n'apparaît qu'à travers la réponse, donc assaini. Dans Imprimerie, le texte gardé se télécharge aussi, toujours comme fichier texte (`Albert.nomTexte`) : une page ou un script déposé revient en `.txt`. |
@@ -165,7 +165,7 @@ Boîte noire depuis un poste extérieur, le 2026-09-21, avec `curl` et `openssl`
 | N° | État au 2026-09-21 |
 |---|---|
 | I1, I4 | Corrigé le 2026-09-18 : Mermaid 11.17.2. Confirmé identique au paquet npm. |
-| I2, I3 | Corrigé le 2026-09-18 : mode partagé par défaut, étendu depuis à la clé de recherche et aux conversations. |
+| I2, I3 | Corrigé le 2026-09-18 : mode partagé par défaut, étendu depuis à la clé de recherche et aux conversations. Rouvert en partie le 2026-11-15 : la clé est conservée par défaut, le mode partagé reste proposé à la connexion. |
 | I5 | Accepté : `style-src 'unsafe-inline'` exigé par KaTeX et Mermaid, sans chargement externe possible. |
 | I6 | Corrigé le 2026-09-18 : KaTeX 0.16.47. Confirmé identique, polices comprises. |
 | I7 | Sans objet : `/v1/models` sert à lister les modèles disponibles, avec la même vérification de clé. |
@@ -210,7 +210,7 @@ Boîte noire depuis un poste extérieur, le 2026-09-21, avec `curl` et `openssl`
 - Hébergement de l'instance n8n et conservation des requêtes par Albert : non vérifiés.
 - Dans le navigateur : réglages sans limite de durée ; clés, questions,
   conversations, documents et bibliothèque de sources jusqu'à la fermeture de
-  l'onglet, sauf si le mode partagé est désactivé. La bibliothèque n'a alors ni
+  l'onglet si le mode partagé est coché, sans limite de durée sinon. La bibliothèque n'a alors ni
   plafond ni date : supprimer un document ou le voir sortir des dix gardés y
   laisse ses sources ; elle se vide fichier par fichier ou d'un coup avec "Vider la
   bibliothèque".
@@ -227,7 +227,7 @@ lesquelles il a prise ou qu'il déplace vers quelqu'un d'autre.
 |------|--------|-----------------|
 | R3 Confiance dans les bibliothèques externes | Partielle | Neuf bibliothèques embarquées, aucune dépendance de construction, aucun CDN. Huit vérifiées octet pour octet, Giac sans paquet npm à comparer. Mermaid à mettre à jour (I13). Vérification manuelle, à refaire à chaque mise à jour. |
 | R5 Principes DevSecOps | Partielle | 288 tests à chaque étape, audit rejoué à chaque changement de périmètre. Pas d'analyse automatique avant fusion. |
-| R7 Confidentialité dès la conception | Couverte | Rien ne quitte le navigateur en dehors d'Albert et, sur activation, du moteur. Mode partagé par défaut : tout le sensible s'efface à la fermeture de l'onglet. |
+| R7 Confidentialité dès la conception | Couverte | Rien ne quitte le navigateur en dehors d'Albert et, sur activation, du moteur. Mode partagé proposé à la connexion : coché, tout le sensible s'efface à la fermeture de l'onglet. |
 | R8 Besoin d'en connaître | Couverte | La clé appartient à l'utilisateur, le relais n'en garde rien. Aucun compte, aucun identifiant. |
 | R9 Pas d'usage automatisé pour des actions critiques | Sans objet | La réponse est du texte affiché. Aucune action n'en découle. |
 | R10 Accès à privilèges maîtrisés | Couverte, côté utilisateur | Une clé par personne, vérifiée auprès d'Albert avant d'être enregistrée, jamais enregistrée si elle est refusée. Le projet n'administre aucun accès. |
