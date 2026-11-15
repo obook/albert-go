@@ -244,7 +244,7 @@ I18n.TEXTES.de = {
     'reglages.precis': 'Genau',
     'reglages.creatif': 'Kreativ',
     'reglages.aide-temperature': 'Niedrig: stabile Antworten. Hoch: abwechslungsreichere Antworten.',
-    'reglages.aide-temperature-haute': 'Über 1: Der Text kann unverständlich oder leer werden, die Antwort wird gekürzt.',
+    'reglages.aide-temperature-haute': 'Über 1: Der Text kann unverständlich oder leer werden.',
     'reglages.top-k': 'Top-k',
     'reglages.aide-top-k': 'Ein Wort wird zufällig aus den {k} wahrscheinlichsten Wörtern gezogen, um den Text zu erzeugen.',
     'reglages.aide-top-k-un': 'Immer das wahrscheinlichste Wort: fast kein Zufall mehr.',

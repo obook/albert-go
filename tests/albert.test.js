@@ -586,14 +586,15 @@ test('température : le curseur s\'arrête à la borne d\'Albert pour la convers
     assert.strictEqual(Albert.TEMPERATURE_MAX, 2);
 });
 
-test('plafonnee : réponse écourtée seulement au-delà de 1', () => {
-    assert.strictEqual(Albert.plafonnee({ temperature: 1 }).max_tokens, undefined);
-    assert.strictEqual(Albert.plafonnee({ temperature: 1.1 }).max_tokens, Albert.JETONS_EXPERIENCE);
-    assert.strictEqual(Albert.plafonnee({ temperature: 2, max_tokens: 50 }).max_tokens, 50);
-    assert.strictEqual(Albert.plafonnee({}).max_tokens, undefined);
-});
+/* Plafond retiré le 15 novembre 2026, voir JETONS_EXPERIENCE dans albert.js. */
+// test('plafonnee : réponse écourtée seulement au-delà de 1', () => {
+//     assert.strictEqual(Albert.plafonnee({ temperature: 1 }).max_tokens, undefined);
+//     assert.strictEqual(Albert.plafonnee({ temperature: 1.1 }).max_tokens, Albert.JETONS_EXPERIENCE);
+//     assert.strictEqual(Albert.plafonnee({ temperature: 2, max_tokens: 50 }).max_tokens, 50);
+//     assert.strictEqual(Albert.plafonnee({}).max_tokens, undefined);
+// });
 
-test('repondre : le plafond part bien dans la requête', async () => {
+test('repondre : la requête part telle quelle, sans plafond de jetons', async () => {
     const avant = globalThis.fetch;
     let envoye = null;
     globalThis.fetch = async (url, options) => {
@@ -604,7 +605,8 @@ test('repondre : le plafond part bien dans la requête', async () => {
     };
     try {
         await Albert.repondre({ model: 'm', temperature: 1.5, messages: [] }, new AbortController().signal);
-        assert.strictEqual(envoye.max_tokens, Albert.JETONS_EXPERIENCE);
+        // assert.strictEqual(envoye.max_tokens, Albert.JETONS_EXPERIENCE);
+        assert.strictEqual(envoye.max_tokens, undefined);
     } finally {
         globalThis.fetch = avant;
     }

@@ -244,7 +244,7 @@ I18n.TEXTES.en = {
     'reglages.precis': 'Precise',
     'reglages.creatif': 'Creative',
     'reglages.aide-temperature': 'Low: steady answers. High: more varied answers.',
-    'reglages.aide-temperature-haute': 'Above 1: the text may stop making sense or be empty; the answer is cut short.',
+    'reglages.aide-temperature-haute': 'Above 1: the text may stop making sense or be empty.',
     'reglages.top-k': 'Top-k',
     'reglages.aide-top-k': 'One word is drawn at random from the {k} most likely words to generate the text.',
     'reglages.aide-top-k-un': 'Always the most likely word: almost no randomness left.',

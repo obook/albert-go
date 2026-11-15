@@ -244,7 +244,7 @@ I18n.TEXTES.es = {
     'reglages.precis': 'Preciso',
     'reglages.creatif': 'Creativo',
     'reglages.aide-temperature': 'Baja: respuestas estables. Alta: respuestas más variadas.',
-    'reglages.aide-temperature-haute': 'Por encima de 1: el texto puede ser incoherente o vacío, la respuesta se acorta.',
+    'reglages.aide-temperature-haute': 'Por encima de 1: el texto puede ser incoherente o vacío.',
     'reglages.top-k': 'Top-k',
     'reglages.aide-top-k': 'Se sortea una palabra entre las {k} palabras más probables para generar el texto.',
     'reglages.aide-top-k-un': 'Siempre la palabra más probable: casi sin azar.',

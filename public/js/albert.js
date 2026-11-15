@@ -160,8 +160,9 @@ const Albert = {
     /** Position du curseur top-k qui veut dire "sans limite" : rien n'est envoyé. */
     TOP_K_SANS_LIMITE: 50,
 
-    /** Longueur de réponse au-delà de 1 : sans plafond, un modèle qui déraille ne s'arrête plus. */
-    JETONS_EXPERIENCE: 600,
+    /* Plafond retiré le 15 novembre 2026 : à 1,6, toute réponse développée était coupée (finish_reason "length").
+       Gardé en réserve si un modèle qui déraille ne s'arrête plus. */
+    // JETONS_EXPERIENCE: 600,
 
     /* Modèle qui lit les images (annuaire BidouIAge, 1er août 2026). */
     MODELE_VISION: 'openweight-medium',
@@ -305,15 +306,10 @@ const Albert = {
         return k === 1 ? 'reglages.aide-top-k-un' : 'reglages.aide-top-k';
     },
 
-    /**
-     * Plafonne la réponse d'une requête dont la température dépasse 1.
-     *
-     * @param {Object} requete - Corps au format chat/completions.
-     * @returns {Object} La requête, avec max_tokens si elle n'en fixait pas.
-     */
-    plafonnee(requete) {
-        return requete.temperature > 1 ? { max_tokens: this.JETONS_EXPERIENCE, ...requete } : requete;
-    },
+    /* Plafonnait la réponse d'une requête dont la température dépasse 1. Retiré, voir JETONS_EXPERIENCE. */
+    // plafonnee(requete) {
+    //     return requete.temperature > 1 ? { max_tokens: this.JETONS_EXPERIENCE, ...requete } : requete;
+    // },
 
     /**
      * Envoie une requête de conversation à Albert.
@@ -335,7 +331,8 @@ const Albert = {
             res = await fetch(this.BASE + '/chat/completions', {
                 method: 'POST',
                 headers: this.entetes({ 'Content-Type': 'application/json' }),
-                body: JSON.stringify(this.plafonnee(requete)),
+                // body: JSON.stringify(this.plafonnee(requete)),
+                body: JSON.stringify(requete),
                 signal: AbortSignal.any([annulation, sonde.signal, AbortSignal.timeout(this.DELAI_MS)])
             });
             corps = await res.json().catch(() => null);

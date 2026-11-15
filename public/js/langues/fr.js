@@ -244,7 +244,7 @@ I18n.TEXTES.fr = {
     'reglages.precis': 'Précis',
     'reglages.creatif': 'Créatif',
     'reglages.aide-temperature': 'Basse : réponses stables. Haute : réponses plus variées.',
-    'reglages.aide-temperature-haute': 'Au-delà de 1 : le texte peut devenir incohérent ou vide, la réponse est écourtée.',
+    'reglages.aide-temperature-haute': 'Au-delà de 1 : le texte peut devenir incohérent ou vide.',
     'reglages.top-k': 'Top-k',
     'reglages.aide-top-k': 'Tirage d\'un mot au hasard parmi les {k} mots les plus probables pour générer le texte.',
     'reglages.aide-top-k-un': 'Toujours le mot le plus probable : presque plus de hasard.',
