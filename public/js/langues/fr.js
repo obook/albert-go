@@ -229,6 +229,7 @@ I18n.TEXTES.fr = {
     'reglages.conseil': 'Conseillé : modèle Large, toute la conversation envoyée, température 0,2, top-k 40.',
     'reglages.conseil-outils': 'Conseillé : tous les outils activés, Internet désactivé, moteur Wikipédia.',
     'reglages.conseil-competences': 'Conseillé : toutes les compétences activées.',
+    'reglages.conseil-application': 'Conseillé : nom Albert Go, idées masquées, clé conservée, voix de l\'appareil seules.',
     'reglages.carte-reponse': 'IA',
     'reglages.carte-application': 'Application',
     'reglages.competences': 'Compétences',

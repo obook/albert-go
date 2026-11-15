@@ -370,6 +370,23 @@ $('nom-application').addEventListener('input', () => {
     afficherNom();
 });
 
+/* Application conseillée : nom par défaut, idées masquées, clé conservée, voix de l'appareil seules. */
+$('application-conseillee').addEventListener('click', () => {
+    $('nom-application').value = '';
+    ecrire('nom', null);
+    afficherNom();
+    reglages.idees = false;
+    ecrire('idees', 'non');
+    reglages.voixEnLigne = false;
+    Lecture.enLigne = false;
+    ecrire('voix-en-ligne', 'non');
+    /* Poste invité du kiosque : le mode partagé est imposé, son interrupteur est masqué. */
+    if (!(Kiosque && Kiosque.role === 'eleve') && !changerPartage(false)) {
+        toast(t('toast.partage-impossible'));
+    }
+    afficherReglages();
+});
+
 $('reglages-conseilles').addEventListener('click', () => {
     reglages.modele = Albert.CONSEILLES.modele;
     reglages.temperature = Albert.CONSEILLES.temperature;

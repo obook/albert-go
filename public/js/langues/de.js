@@ -229,6 +229,7 @@ I18n.TEXTES.de = {
     'reglages.conseil': 'Empfohlen: Modell Large, ganzes Gespräch gesendet, Temperatur 0,2, Top-k 40.',
     'reglages.conseil-outils': 'Empfohlen: alle Werkzeuge an, Internet aus, Suchmaschine Wikipedia.',
     'reglages.conseil-competences': 'Empfohlen: alle Kompetenzen an.',
+    'reglages.conseil-application': 'Empfohlen: Name Albert Go, Ideen ausgeblendet, Schlüssel behalten, nur Gerätestimmen.',
     'reglages.carte-reponse': 'KI',
     'reglages.carte-application': 'App',
     'reglages.competences': 'Kompetenzen',

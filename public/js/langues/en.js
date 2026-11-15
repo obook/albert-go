@@ -229,6 +229,7 @@ I18n.TEXTES.en = {
     'reglages.conseil': 'Recommended: Large model, whole conversation sent, temperature 0.2, top-k 40.',
     'reglages.conseil-outils': 'Recommended: all tools on, Internet off, Wikipedia as search engine.',
     'reglages.conseil-competences': 'Recommended: all skills on.',
+    'reglages.conseil-application': 'Recommended: name Albert Go, ideas hidden, key kept, device voices only.',
     'reglages.carte-reponse': 'AI',
     'reglages.carte-application': 'App',
     'reglages.competences': 'Skills',
