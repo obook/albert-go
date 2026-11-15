@@ -81,7 +81,10 @@
     background: var(--accent);
     color: var(--sur-accent);
 }
-.envoyer:hover { background: var(--accent-survol); }
+/* Souris seulement : sur un écran tactile, le survol resterait collé après l'appui et le bouton Arrêter changerait de couleur. */
+@media (hover: hover) {
+    .envoyer:hover { background: var(--accent-survol); }
+}
 .envoyer svg {
     width: 1rem;
     height: 1rem;
