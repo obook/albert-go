@@ -214,6 +214,7 @@ I18n.TEXTES.es = {
     'saisie.envoyer': 'Enviar',
     'saisie.arreter': 'Detener',
     'saisie.avertissement': 'Una IA puede equivocarse: compruebe sus respuestas.',
+    'saisie.temperature-haute': 'Temperatura {temperature}, respuestas menos fiables: abrir los ajustes',
     'piece.retirer': 'Quitar el archivo',
     'piece.lecture': '{nom}: leyendo...',
     'piece.image-collee': 'imagen pegada',

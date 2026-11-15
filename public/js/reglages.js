@@ -445,6 +445,7 @@ function ouvrirReglages() {
 
 $('ouvrir-reglages').addEventListener('click', ouvrirReglages);
 $('resume-reglages').addEventListener('click', ouvrirReglages);
+$('alerte-reglages').addEventListener('click', ouvrirReglages);
 
 for (const carte of cartesReglages) {
     carte.addEventListener('toggle', () => {

@@ -214,6 +214,7 @@ I18n.TEXTES.fr = {
     'saisie.envoyer': 'Envoyer',
     'saisie.arreter': 'Arrêter',
     'saisie.avertissement': 'Une IA peut se tromper : vérifiez ses réponses.',
+    'saisie.temperature-haute': 'Température {temperature}, réponses moins fiables : ouvrir les réglages',
     'piece.retirer': 'Retirer le fichier',
     'piece.lecture': '{nom} : lecture en cours...',
     'piece.image-collee': 'image collée',

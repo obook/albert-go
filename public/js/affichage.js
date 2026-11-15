@@ -171,10 +171,14 @@ function afficherReglages() {
         $(competence.cle).checked = reglages[nom];
     }
     $('partage-reglage').checked = !partage;
+    $('partage-accueil').checked = !partage;
     $('texte-partage-reglage').textContent = textePartage(!partage);
     $('temperature').value = reglages.temperature;
     $('valeur-temperature').textContent = temperature;
     $('aide-temperature').textContent = t(reglages.temperature > 1 ? 'reglages.aide-temperature-haute' : 'reglages.aide-temperature');
+    /* Au-delà de 1, l'alerte sous la saisie reste visible menu fermé, ce que le résumé n'est pas sur mobile. */
+    $('alerte-reglages').hidden = reglages.temperature <= 1;
+    $('alerte-reglages').textContent = t('saisie.temperature-haute', { temperature: temperature });
     $('top-k').value = reglages.topK;
     $('aide-top-k').textContent = t(Albert.cleAideTopK(reglages.topK), { k: reglages.topK });
     $('modele-choisi').replaceChildren(logo(Albert.logoEditeur(modele.reel)), modele.nom + ' (' + modele.id + ')');

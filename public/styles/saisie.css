@@ -174,7 +174,10 @@
 .etat:empty { margin-top: 0; }
 .etat.erreur { color: var(--erreur); font-weight: 700; }
 .etat.succes { color: var(--succes); font-weight: 700; }
-.etat:not(:empty) + .avertissement { display: none; }
+.etat:not(:empty) ~ .avertissement { display: none; }
+/* Alerte de réglage : un bouton sur toute la ligne, le rappel sur l'IA s'efface derrière. */
+.avertissement.erreur { display: block; width: 100%; padding: 0; border: 0; background: none; color: var(--erreur); font-weight: 700; }
+.avertissement.erreur[hidden], .avertissement.erreur:not([hidden]) + .avertissement { display: none; }
 
 /* Toast : court message sous l'en-tête. */
 .toast {

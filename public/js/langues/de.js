@@ -214,6 +214,7 @@ I18n.TEXTES.de = {
     'saisie.envoyer': 'Senden',
     'saisie.arreter': 'Anhalten',
     'saisie.avertissement': 'Eine KI kann sich irren: Prüfen Sie ihre Antworten.',
+    'saisie.temperature-haute': 'Temperatur {temperature}, weniger zuverlässige Antworten: Einstellungen öffnen',
     'piece.retirer': 'Datei entfernen',
     'piece.lecture': '{nom}: wird gelesen...',
     'piece.image-collee': 'eingefügtes Bild',
