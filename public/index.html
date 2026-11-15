@@ -58,7 +58,9 @@
     <link rel="apple-touch-startup-image" media="(device-width: 1032px) and (device-height: 1376px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="images/lancement/2752x2064.png">
     <!-- Ajoutée à l'écran d'accueil, la page s'ouvre sans barre du navigateur. -->
     <link rel="manifest" href="manifest.webmanifest">
-    <meta name="theme-color" content="#000091">
+    <!-- Barres du système de l'application installée : la couleur de fond de la page (menu.js suit le thème choisi). -->
+    <meta name="theme-color" content="#f5f6f9" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#222631" media="(prefers-color-scheme: dark)">
     <!-- ?v=dev : remplacé par le commit à la publication (.gitlab-ci.yml), pour ne jamais mélanger deux versions en cache. -->
     <link rel="stylesheet" href="vendor/katex/katex.min.css?v=dev">
     <!-- Pico : champs de formulaire, seulement dans les éléments .pico. -->

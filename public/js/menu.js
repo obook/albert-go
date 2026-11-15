@@ -39,7 +39,13 @@ function afficherTheme() {
     $('theme').innerHTML = ICONES[actuel.icone];
     $('theme').append(libelle);
     $('theme').setAttribute('aria-label', t('theme.' + actuel.cle + '.aria'));
+    /* Barres du système (application installée) : la couleur de fond du thème affiché. */
+    const fond = getComputedStyle(document.documentElement).getPropertyValue('--fond').trim();
+    for (const meta of document.querySelectorAll('meta[name="theme-color"]')) {
+        meta.content = fond;
+    }
 }
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', afficherTheme);
 
 $('ouvrir-menu').addEventListener('click', () => {
     /* Grand écran : le bouton replie ou déplie la colonne, et s'en souvient. */
