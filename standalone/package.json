@@ -1,6 +1,6 @@
 {
   "name": "albert-go",
-  "version": "4.5.2",
+  "version": "4.5.3",
   "description": "Version autonome d'Albert Go : serveur Python embarqué dans Electron",
   "author": "O. Booklage",
   "license": "GPL-3.0-or-later",
