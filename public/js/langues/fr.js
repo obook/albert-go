@@ -228,6 +228,7 @@ I18n.TEXTES.fr = {
     'reglages.titre': 'Réglages',
     'reglages.conseil': 'Conseillé : modèle Large, toute la conversation envoyée, température 0,2, top-k 40.',
     'reglages.conseil-outils': 'Conseillé : tous les outils activés, Internet désactivé, moteur Wikipédia.',
+    'reglages.conseil-competences': 'Conseillé : toutes les compétences activées.',
     'reglages.carte-reponse': 'IA',
     'reglages.carte-application': 'Application',
     'reglages.competences': 'Compétences',

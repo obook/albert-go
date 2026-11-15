@@ -228,6 +228,7 @@ I18n.TEXTES.en = {
     'reglages.titre': 'Settings',
     'reglages.conseil': 'Recommended: Large model, whole conversation sent, temperature 0.2, top-k 40.',
     'reglages.conseil-outils': 'Recommended: all tools on, Internet off, Wikipedia as search engine.',
+    'reglages.conseil-competences': 'Recommended: all skills on.',
     'reglages.carte-reponse': 'AI',
     'reglages.carte-application': 'App',
     'reglages.competences': 'Skills',

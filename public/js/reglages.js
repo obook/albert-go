@@ -153,6 +153,15 @@ for (const [nom, competence] of Object.entries(COMPETENCES)) {
     });
 }
 
+/* Compétences conseillées : toutes activées. */
+$('competences-conseillees').addEventListener('click', () => {
+    for (const [nom, competence] of Object.entries(COMPETENCES)) {
+        reglages[nom] = true;
+        ecrire(competence.cle, 'oui');
+    }
+    afficherReglages();
+});
+
 /* Un interrupteur par outil local, avec son icône. */
 for (const [nom, local] of Object.entries(OUTILS_LOCAUX)) {
     const label = document.createElement('label');
