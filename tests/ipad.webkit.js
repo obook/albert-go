@@ -133,7 +133,6 @@ test("iPad (WebKit) : chaque compétence activée part avec la consigne, et plus
     await contexte.addInitScript(() => {
         localStorage.setItem('albert-go.cle', 'sk-test');
         sessionStorage.setItem('albert-go.cle', 'sk-test');
-        localStorage.setItem('albert-go.style-direct', 'oui');
     });
     const page = await contexte.newPage();
     const demander = async (question) => {
@@ -144,7 +143,7 @@ test("iPad (WebKit) : chaque compétence activée part avec la consigne, et plus
     };
 
     await page.goto(origine + '/');
-    /* Écriture soignée activée par défaut, Style direct activé par l'utilisateur. */
+    /* Les deux compétences sont activées par défaut. */
     assert.ok(await page.isChecked('#ecriture-soignee'));
     assert.ok(await page.isChecked('#style-direct'));
     await demander('Bonjour');
