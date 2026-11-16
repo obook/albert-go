@@ -41,7 +41,11 @@ Object.assign(Rendu, {
         } catch (err) {
             return;
         }
-        const dessiner = (code) => mermaid.render('mermaid-' + Math.random().toString(36).slice(2), code);
+        /* Hors de la grille du body, où un enfant ajouté n'a aucune largeur : xychart mesure
+           ses étiquettes en pixels d'écran et, à largeur nulle, les dessine hors du cadre. */
+        const atelier = document.body.appendChild(document.createElement('div'));
+        atelier.style.cssText = 'position: absolute; width: 700px; visibility: hidden';
+        const dessiner = (code) => mermaid.render('mermaid-' + Math.random().toString(36).slice(2), code, atelier);
         for (const bloc of mermaids) {
             const code = this.formulesMermaid(this.chimieMermaid(bloc.textContent));
             let erreur;
@@ -68,6 +72,7 @@ Object.assign(Rendu, {
                 }
             }
         }
+        atelier.remove();
     },
 
     /* ponytail: corrections gardées pour la session seulement ; les enregistrer avec la conversation si les rechargements coûtent trop d'appels. */
