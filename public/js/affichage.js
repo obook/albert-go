@@ -87,9 +87,6 @@ function afficher() {
             $('dialogue-cle').close();
         }
         focusSaisie();
-    } else {
-        /* Écran de la clé : effacement à la fermeture toujours proposé par défaut. */
-        $('partage-accueil').checked = false;
     }
     /* Sans clé, ni volet ni bouton de bibliothèque. */
     placerBibliotheque();

@@ -200,7 +200,7 @@ I18n.TEXTES.en = {
     'cle.titre': 'Welcome to Albert Go',
     'cle.bienvenue': 'Your key is accepted. Ask your first question or choose a module in the menu.',
     'cle.label': 'Key',
-    'cle.stockee': '<ul><li>By default, it is erased when you close the tab.</li><li>If you turn on "Keep it", it stays in the browser\'s <code>localStorage</code> storage until you choose "Erase the key and quit" in the menu.</li><li>It only leaves this browser to reach Albert, through the <a href="https://n8n.incubateur.education.gouv.fr" target="_blank" rel="noopener noreferrer">relay of the Éducation nationale incubator</a>, which does not record it.</li></ul>',
+    'cle.stockee': '<ul><li>By default, "Keep it" is on: it stays in the browser\'s <code>localStorage</code> storage until you choose "Erase the key and quit" in the menu.</li><li>It only leaves this browser to reach Albert, through the <a href="https://n8n.incubateur.education.gouv.fr" target="_blank" rel="noopener noreferrer">relay of the Éducation nationale incubator</a>, which does not record it.</li></ul>',
     'cle.demander': 'Request',
     'cle.verification': 'Checking the key...',
 

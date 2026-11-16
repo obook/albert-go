@@ -200,7 +200,7 @@ I18n.TEXTES.fr = {
     'cle.titre': 'Bienvenue sur Albert Go',
     'cle.bienvenue': 'Votre clé est acceptée. Posez votre première question ou choisissez un module dans le menu.',
     'cle.label': 'Clé',
-    'cle.stockee': '<ul><li>Par défaut, elle est effacée quand vous fermez l\'onglet.</li><li>Si vous activez "La conserver", elle reste dans le stockage <code>localStorage</code> du navigateur jusqu\'à ce que vous choisissiez "Effacer la clé et quitter" dans le menu.</li><li>Elle ne quitte ce navigateur que pour joindre Albert, en passant par le <a href="https://n8n.incubateur.education.gouv.fr" target="_blank" rel="noopener noreferrer">relais de l\'incubateur de l\'Éducation nationale</a>, qui ne l\'enregistre pas.</li></ul>',
+    'cle.stockee': '<ul><li>Par défaut, "La conserver" est activé : elle reste dans le stockage <code>localStorage</code> du navigateur jusqu\'à ce que vous choisissiez "Effacer la clé et quitter" dans le menu.</li><li>Elle ne quitte ce navigateur que pour joindre Albert, en passant par le <a href="https://n8n.incubateur.education.gouv.fr" target="_blank" rel="noopener noreferrer">relais de l\'incubateur de l\'Éducation nationale</a>, qui ne l\'enregistre pas.</li></ul>',
     'cle.demander': 'Demander',
     'cle.verification': 'Vérification de la clé...',
 
