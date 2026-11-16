@@ -59,7 +59,7 @@ function montrerBibliotheque() {
 /**
  * Place le volet de la bibliothèque selon le module et l'écran.
  *
- * Dans Discussion et Imprimerie, sur très grand écran : colonne ouverte, sauf si elle a été repliée.
+ * Dans Discussion et Imprimerie, sur très grand écran : colonne fermée, sauf si elle a été dépliée.
  * Ailleurs, ou sur un écran plus étroit : volet fermé, le bouton de l'en-tête l'ouvre en tiroir.
  */
 function placerBibliotheque() {
@@ -67,7 +67,7 @@ function placerBibliotheque() {
     const projet = Albert.pret() && typeof outilActuel !== 'undefined' && !!Albert.OUTILS[outilActuel].sources;
     $('ouvrir-bibliotheque').hidden = !projet;
     const volet = $('bibliotheque');
-    const colonne = projet && COLONNE_SOURCES.matches && lire('bibliotheque-volet', null) !== 'replie';
+    const colonne = projet && COLONNE_SOURCES.matches && lire('bibliotheque-volet', null) === 'ouvert';
     const enColonne = volet.open && !volet.matches(':modal');
     /* Déjà en place : colonne voulue et affichée, ou tiroir laissé ouvert dans un module à sources. */
     if (colonne === enColonne && (projet || !volet.open)) {
@@ -92,10 +92,10 @@ $('ouvrir-bibliotheque').addEventListener('click', () => {
     /* Colonne : le bouton la replie ou la déplie, et s'en souvient. */
     if ($('bibliotheque').open) {
         $('bibliotheque').close();
-        ecrire('bibliotheque-volet', 'replie');
+        ecrire('bibliotheque-volet', null);
     } else {
         montrerBibliotheque();
-        ecrire('bibliotheque-volet', null);
+        ecrire('bibliotheque-volet', 'ouvert');
     }
 });
 
