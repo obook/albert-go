@@ -101,6 +101,11 @@ test('reparerMermaid : plage d\'axe xychart seule sur sa ligne', () => {
         'xychart-beta\n y-axis "k€" 0 --> 100\n bar [30, 45.5]');
 });
 
+test('reparerMermaid : ligne point retirée d\'un xychart', () => {
+    assert.strictEqual(Rendu.reparerMermaid('xychart-beta\nline [317,339]\npoint [317,339]\n'),
+        'xychart-beta\nline [317,339]\n');
+});
+
 test('reparerMermaid : ligne title avant le type de diagramme', () => {
     assert.strictEqual(Rendu.reparerMermaid('title "Relatifs"\ngraph TD\n A --> B'),
         '---\ntitle: Relatifs\n---\ngraph TD\n A --> B');

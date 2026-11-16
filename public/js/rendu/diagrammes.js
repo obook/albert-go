@@ -163,6 +163,8 @@ Object.assign(Rendu, {
         const corrige = code
             .replace(/^\s*title\s+"?([^"\n]*?)"?\s*\n/, '---\ntitle: $1\n---\n')
             .replace(/^(\s*[xy]-axis\b.*)\n\s*(-?[\d.]+\s*-->\s*-?[\d.]+\s*)$/gm, '$1 $2')
+            /* xychart : seuls line et bar existent, point [...] est retiré. */
+            .replace(/^\s*point\s*\[[^\]\n]*\]\s*\n?/gm, '')
             .replace(/\\"/g, '"')
             .replace(/"[^"\n]*"|[→⟶⇒⟹]/g, (m) => m.length > 1 ? m : '-->')
             .replace(/\["([^"\n]*)"\}/g, '["$1"]')
