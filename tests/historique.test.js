@@ -1,6 +1,6 @@
 /*
  * historique.test.js
- * Tests de public/js/historique.js : écriture, quota plein et recherche.
+ * Tests de public/js/conversation/historique.js : écriture, quota plein et recherche.
  *
  * Lancement : node --test
  *
@@ -31,7 +31,7 @@ global.stockage = () => ({
     removeItem: (nom) => { delete faux.valeurs[nom]; }
 });
 
-const { ecrireConversations, filtrerConversations } = require('../public/js/historique.js');
+const { ecrireConversations, filtrerConversations } = require('../public/js/conversation/historique.js');
 
 /** Remet le faux stockage à neuf entre deux tests. */
 function neuf(refuser, erreur) {

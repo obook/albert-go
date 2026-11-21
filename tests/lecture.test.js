@@ -1,6 +1,6 @@
 /*
  * lecture.test.js
- * Tests de public/js/lecture.js : formules parlées, ordinaux, voix, découpage.
+ * Tests de public/js/conversation/lecture.js : formules parlées, ordinaux, voix, découpage.
  *
  * Lancement : node --test
  *
@@ -13,7 +13,7 @@
 
 const { test } = require('node:test');
 const assert = require('node:assert');
-const Lecture = require('../public/js/lecture.js');
+const Lecture = require('../public/js/conversation/lecture.js');
 
 test('formuleParlee : fractions, puissances, racines, chimie', () => {
     assert.strictEqual(Lecture.formuleParlee('\\frac{2}{3} \\times \\frac{4}{5}'), '2 sur 3 fois 4 sur 5');
