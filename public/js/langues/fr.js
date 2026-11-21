@@ -537,6 +537,7 @@ I18n.TEXTES.fr = {
     'erreur.relais-en-ligne': 'Relais de l\'incubateur de l\'Éducation nationale injoignable. Vérifiez la connexion.',
     'erreur.relais-hs': 'Albert ne répond pas. Réessayez plus tard.',
     'erreur.relais-hs-en-ligne': 'Relais de l\'incubateur de l\'Éducation nationale indisponible. Réessayez plus tard.',
+    'erreur.relais-coupure': 'Le relais a coupé la réponse au bout de {secondes} s : Albert mettait trop de temps à la rédiger. Demandez une réponse plus courte ou découpez la demande (en Imprimerie, une partie à la fois), ou réessayez un peu plus tard.',
     'erreur.hors-ligne': 'Vous êtes hors ligne. Vérifiez la connexion.',
     'erreur.timeout': 'Albert ne répond pas. Réessayez.',
     'erreur.origine': 'Le relais n8n n\'acceptera pas l\'adresse {origine}. Ouvrez ',

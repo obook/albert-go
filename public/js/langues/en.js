@@ -537,6 +537,7 @@ I18n.TEXTES.en = {
     'erreur.relais-en-ligne': 'The Éducation nationale incubator relay cannot be reached. Check your connection.',
     'erreur.relais-hs': 'Albert is not responding. Try again later.',
     'erreur.relais-hs-en-ligne': 'The Éducation nationale incubator relay is unavailable. Try again later.',
+    'erreur.relais-coupure': 'The relay cut the answer off after {secondes} s: Albert was taking too long to write it. Ask for a shorter answer or split the request (in Print shop, one part at a time), or try again a little later.',
     'erreur.hors-ligne': 'You are offline. Check your connection.',
     'erreur.timeout': 'Albert is not answering. Try again.',
     'erreur.origine': 'The n8n relay will not accept the address {origine}. Open ',

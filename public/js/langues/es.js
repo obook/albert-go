@@ -537,6 +537,7 @@ I18n.TEXTES.es = {
     'erreur.relais-en-ligne': 'No se puede contactar con el relé de la incubadora de la Éducation nationale. Compruebe la conexión.',
     'erreur.relais-hs': 'Albert no responde. Vuelva a intentarlo más tarde.',
     'erreur.relais-hs-en-ligne': 'El relé de la incubadora de la Éducation nationale no está disponible. Inténtelo más tarde.',
+    'erreur.relais-coupure': 'El relé cortó la respuesta a los {secondes} s: Albert tardaba demasiado en redactarla. Pida una respuesta más corta o divida la petición (en Imprenta, una parte cada vez), o inténtelo un poco más tarde.',
     'erreur.hors-ligne': 'Está sin conexión. Compruebe la conexión.',
     'erreur.timeout': 'Albert no responde. Inténtelo de nuevo.',
     'erreur.origine': 'El relé n8n no aceptará la dirección {origine}. Abra ',

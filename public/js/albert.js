@@ -79,6 +79,9 @@ const Albert = {
     /** Délai maximal d'une réponse, en millisecondes. */
     DELAI_MS: 120000,
 
+    /** En ligne, Scalingo coupe le relais à 60 s (504 sans CORS) : un échec réseau après ce temps est cette coupure. */
+    COUPURE_RELAIS_MS: 55000,
+
     /** Nombre de questions gardées pour les flèches de la saisie. */
     HISTORIQUE_MAX: 30,
 
@@ -186,6 +189,7 @@ const Albert = {
             this.appels().catch(() => sonde.abort(new Error(this.texte('erreur.relais-hs'))));
         }, this.SONDE_MS) : null;
         let res, corps;
+        const debut = Date.now();
         try {
             res = await fetch(this.BASE + '/chat/completions', {
                 method: 'POST',
@@ -195,6 +199,8 @@ const Albert = {
                 signal: AbortSignal.any([annulation, sonde.signal, AbortSignal.timeout(this.DELAI_MS)])
             });
             corps = await res.json().catch(() => null);
+        } catch (err) {
+            throw this.erreurAppel(err, Date.now() - debut);
         } finally {
             clearTimeout(minuterie);
         }
@@ -216,6 +222,24 @@ const Albert = {
         /* message complet : il porte les tool_calls. content est null quand le
            modèle n'appelle qu'un outil, d'où le '' pour l'affichage. */
         return { texte: choix.message.content || '', message: choix.message, usage: corps.usage || null, coupee: choix.finish_reason === 'length' };
+    },
+
+    /**
+     * Erreur à rendre après un échec de fetch. En ligne, un échec réseau après COUPURE_RELAIS_MS
+     * n'est pas une panne : le relais a coupé une réponse trop longue à venir. Le message le dit,
+     * et n'est pas pris pour une panne du relais (messageEchec, app.js).
+     *
+     * @param {Error} err - Erreur de fetch.
+     * @param {number} duree - Temps écoulé depuis l'envoi, en millisecondes.
+     * @returns {Error} L'erreur d'origine, ou une erreur "coupure" avec son message.
+     */
+    erreurAppel(err, duree) {
+        if (!this.EN_LIGNE || !(err instanceof TypeError) || duree < this.COUPURE_RELAIS_MS) {
+            return err;
+        }
+        const coupure = new Error(t('erreur.relais-coupure', { secondes: Math.round(duree / 1000) }));
+        coupure.name = 'CoupureRelais';
+        return coupure;
     },
 
     /**

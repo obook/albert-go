@@ -219,6 +219,44 @@ test('version en ligne : relais n8n et clé de l\'utilisateur', async () => {
     }
 });
 
+/* Imprimerie, Large, BO de maths (21/11/2026) : "Relais injoignable" alors que le relais marchait. */
+test('repondre en ligne : un échec réseau après 55 s est la coupure du relais, pas une panne', async () => {
+    const avant = { fetch: globalThis.fetch, now: Date.now };
+    let maintenant = 0;
+    Date.now = () => maintenant;
+    globalThis.fetch = async () => {
+        maintenant += 61000;
+        throw new TypeError('Load failed');
+    };
+    Albert.EN_LIGNE = true;
+    Albert.cle = 'sk-test';
+    try {
+        await assert.rejects(Albert.repondre({ model: 'm', messages: [] }, new AbortController().signal), (err) => {
+            assert.strictEqual(err.name, 'CoupureRelais');
+            assert.match(err.message, /^Le relais a coupé la réponse au bout de 61 s/);
+            return true;
+        });
+        /* Échec rapide : le réseau, l'erreur reste une TypeError. */
+        globalThis.fetch = async () => {
+            maintenant += 2000;
+            throw new TypeError('Load failed');
+        };
+        await assert.rejects(Albert.repondre({ model: 'm', messages: [] }, new AbortController().signal), TypeError);
+        /* Serveur local : pas de coupure à 60 s, l'erreur reste aussi telle quelle. */
+        Albert.EN_LIGNE = false;
+        globalThis.fetch = async () => {
+            maintenant += 61000;
+            throw new TypeError('Load failed');
+        };
+        await assert.rejects(Albert.repondre({ model: 'm', messages: [] }, new AbortController().signal), TypeError);
+    } finally {
+        globalThis.fetch = avant.fetch;
+        Date.now = avant.now;
+        Albert.EN_LIGNE = false;
+        Albert.cle = null;
+    }
+});
+
 test('messageErreur : session terminée, retour à la connexion', () => {
     globalThis.location = { href: '/' };
     try {

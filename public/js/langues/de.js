@@ -537,6 +537,7 @@ I18n.TEXTES.de = {
     'erreur.relais-en-ligne': 'Das Relais des Inkubators der Éducation nationale ist nicht erreichbar. Prüfen Sie die Verbindung.',
     'erreur.relais-hs': 'Albert antwortet nicht. Versuchen Sie es später erneut.',
     'erreur.relais-hs-en-ligne': 'Das Relais des Inkubators der Éducation nationale ist nicht verfügbar. Versuchen Sie es später erneut.',
+    'erreur.relais-coupure': 'Das Relais hat die Antwort nach {secondes} s abgebrochen: Albert brauchte zu lange, um sie zu schreiben. Bitten Sie um eine kürzere Antwort oder teilen Sie die Anfrage auf (in der Druckerei ein Teil nach dem anderen), oder versuchen Sie es etwas später erneut.',
     'erreur.hors-ligne': 'Sie sind offline. Prüfen Sie die Verbindung.',
     'erreur.timeout': 'Albert antwortet nicht. Versuchen Sie es erneut.',
     'erreur.origine': 'Das n8n-Relais akzeptiert die Adresse {origine} nicht. Öffnen Sie ',
