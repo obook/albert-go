@@ -535,9 +535,19 @@ test("Grand écran (WebKit) : le menu s'ouvre au lancement et reste ouvert aprè
         assert.ok(await page.evaluate(() => $('menu').open), 'menu replié par ' + choix);
         await page.evaluate(() => $('reglages').open && $('reglages').close());
     }
+    /* Ouvert, son bouton montre une flèche vers la gauche. */
+    assert.ok(await page.isVisible('#ouvrir-menu .icone-replier'), 'pas de flèche sur le menu ouvert');
     await page.click('#ouvrir-menu');
     assert.ok(!await page.evaluate(() => $('menu').open), 'menu non replié par son bouton');
+    assert.ok(!await page.isVisible('#ouvrir-menu .icone-replier'), 'flèche sur le menu replié');
     await page.click('#ouvrir-menu');
+
+    /* Bibliothèque en colonne (80rem) : sa flèche vers la droite la replie et s'en souvient. */
+    await page.click('#ouvrir-bibliotheque');
+    assert.ok(await page.evaluate(() => $('bibliotheque').open && !$('bibliotheque').matches(':modal')), 'bibliothèque pas en colonne');
+    await page.click('.fermer-bibliotheque');
+    assert.ok(!await page.evaluate(() => $('bibliotheque').open), 'bibliothèque non repliée par sa flèche');
+    assert.strictEqual(await page.evaluate(() => lire('bibliotheque-volet', null)), null);
     await page.reload();
     assert.ok(await page.evaluate(() => $('menu').open), 'menu fermé au rechargement');
     assert.deepStrictEqual(erreurs, []);

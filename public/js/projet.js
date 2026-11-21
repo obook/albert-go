@@ -103,8 +103,12 @@ $('bibliotheque').addEventListener('close', () => {
     $('ouvrir-bibliotheque').setAttribute('aria-expanded', 'false');
 });
 
-/* Tiroir : sa flèche et un clic sur le fond le referment. */
+/* Tiroir : sa flèche et un clic sur le fond le referment. Colonne : sa flèche la replie comme le bouton de l'en-tête. */
 $('bibliotheque').addEventListener('click', (e) => {
+    if (e.target.closest('.fermer-bibliotheque') && !$('bibliotheque').matches(':modal')) {
+        $('ouvrir-bibliotheque').click();
+        return;
+    }
     if (e.target === $('bibliotheque') || e.target.closest('.fermer-bibliotheque')) {
         $('bibliotheque').close();
     }

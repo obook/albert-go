@@ -88,7 +88,7 @@
 .titre .marque { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 0.5em; }
 
 .burger { flex: none; }
-.burger .icone-volet { display: none; }
+.burger .icone-volet, .burger .icone-replier { display: none; }
 
 /* Choix de la langue, à droite du titre du volet, avant le bouton de fermeture. */
 .choix-langue {
@@ -485,6 +485,9 @@ input.recherche-historique {
     .volet-titre, .resume { grid-column: 2; }
     .fermer-menu, .burger .icone-burger { display: none; }
     .burger .icone-volet { display: block; }
+    /* Colonne ouverte : le bouton, rangé dans la colonne, la replie vers la gauche. */
+    .volet-contenu > .burger .icone-volet { display: none; }
+    .volet-contenu > .burger .icone-replier { display: block; }
     /* Masqué sans clé (afficher) : l'accueil n'a pas de conversation. */
     .titre-entete:not([hidden]) { display: block; }
     /* La marque est dans le volet, le h1 reste pour les lecteurs d'écran. */
@@ -513,7 +516,8 @@ input.recherche-historique {
         background: var(--fond-volet);
     }
     .volet-droit:not([open]) { transform: none; }
-    /* En colonne, le bouton de l'en-tête la replie. */
+    /* Retiré le 21/11/2026 : en colonne, seul le bouton de l'en-tête la repliait ; sa flèche vers la droite le fait aussi.
     .fermer-bibliotheque { display: none; }
     .section-volet > .aide { right: 0; }
+    */
 }
