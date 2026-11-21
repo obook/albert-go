@@ -122,6 +122,8 @@ I18n.TEXTES.en = {
     'confirmer-suppression.source': 'Delete this file from the library? It will leave every document.',
     'erreur.bibliotheque-pleine': 'Library full: delete files to add more.',
     'erreur.projet-plein': 'Sources too large: remove one or choose a model with a larger context.',
+    'erreur.recherche-sources': 'The sources are too long for the model, and the search in the sources failed ({message}). Uncheck some sources.',
+    'etat.recherche-sources': 'Finding the useful passages in the sources...',
     'projet.bienvenue': 'Add to your library, then build your document.',
     'projet.evaluation': 'Test',
     'projet.synthese': 'Summary',

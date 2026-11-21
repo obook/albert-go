@@ -421,6 +421,19 @@ test('motsRares : passages qui contiennent un mot rare de la question, accents i
     assert.strictEqual(Albert.motsRares('Thales ?', passages), '');
 });
 
+test('choisirPassages : mots rares d\'abord, puis les plus proches, sous le plafond, dans l\'ordre des numéros', () => {
+    const passages = [1, 2, 3, 4].map(n => ({ n, chemin: '', texte: 'x'.repeat(10) }));
+    assert.deepStrictEqual(Albert.choisirPassages(passages, [0.9, 0.1, 0.8, 0.5], new Set([2]), 30).map(p => p.n), [1, 2, 3]);
+    assert.deepStrictEqual(Albert.choisirPassages(passages, [0.9, 0.1, 0.8, 0.5], new Set(), 20).map(p => p.n), [1, 3]);
+});
+
+test('cosinus et empreinte', () => {
+    assert.strictEqual(Albert.cosinus(Float32Array.of(1, 0), Float32Array.of(2, 0)), 1);
+    assert.strictEqual(Albert.cosinus(Float32Array.of(1, 0), Float32Array.of(0, 3)), 0);
+    assert.strictEqual(Albert.empreinte('abc'), Albert.empreinte('abc'));
+    assert.notStrictEqual(Albert.empreinte('abc'), Albert.empreinte('abd'));
+});
+
 test('CITATION : numéros cités, avec ou sans page, crochets pleine chasse et espaces invisibles', () => {
     const cites = (texte) => [...texte.matchAll(Albert.CITATION)].flatMap(m => Albert.numerosCites(m[1]));
     assert.deepStrictEqual(cites('Vrai [P107]. Aussi [P39, P40] et 【P38】, [​P113​], [P12, p. 4].'), [107, 39, 40, 38, 113, 12]);

@@ -122,6 +122,8 @@ I18n.TEXTES.de = {
     'confirmer-suppression.source': 'Diese Datei aus der Bibliothek löschen? Sie verschwindet aus allen Dokumenten.',
     'erreur.bibliotheque-pleine': 'Bibliothek voll: Löschen Sie Dateien, um weitere hinzuzufügen.',
     'erreur.projet-plein': 'Quellen zu umfangreich: Entfernen Sie eine oder wählen Sie ein Modell mit größerem Kontext.',
+    'erreur.recherche-sources': 'Die Quellen sind zu lang für das Modell, und die Suche in den Quellen ist fehlgeschlagen ({message}). Wählen Sie Quellen ab.',
+    'etat.recherche-sources': 'Suche nach den passenden Abschnitten in den Quellen...',
     'projet.bienvenue': 'Erweitern Sie Ihre Bibliothek und bauen Sie Ihr Dokument auf.',
     'projet.evaluation': 'Klassenarbeit',
     'projet.synthese': 'Zusammenfassung',

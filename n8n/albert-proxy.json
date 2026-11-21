@@ -455,6 +455,112 @@
           }
         }
       }
+    },
+    {
+      "id": "0d4c1f52-1a4e-4c3a-9f7e-2b1d6a8e0021",
+      "name": "Webhook vecteurs",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [0, 1300],
+      "webhookId": "5b0f3c1e-7d2a-4e8b-a1c9-3f6e2d4b0005",
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "albert-go/v1/embeddings",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "https://booklageolivier.forge.apps.education.fr,https://obook.github.io,http://localhost:8642"
+        }
+      }
+    },
+    {
+      "id": "0d4c1f52-1a4e-4c3a-9f7e-2b1d6a8e0022",
+      "name": "Clé présente ? (vecteurs)",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [220, 1300],
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "loose", "version": 2 },
+          "conditions": [
+            {
+              "id": "7c1e2a90-3b4d-4f5e-8a6b-9c0d1e2f3a04",
+              "leftValue": "={{ $json.headers.authorization || '' }}",
+              "rightValue": "Bearer ",
+              "operator": { "type": "string", "operation": "startsWith" }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "0d4c1f52-1a4e-4c3a-9f7e-2b1d6a8e0023",
+      "name": "Albert vecteurs",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [440, 1200],
+      "parameters": {
+        "method": "POST",
+        "url": "https://albert.api.etalab.gouv.fr/v1/embeddings",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "={{ $json.headers.authorization }}" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.body) }}",
+        "options": {
+          "timeout": 120000,
+          "response": {
+            "response": { "fullResponse": true, "neverError": true, "responseFormat": "autodetect" }
+          }
+        }
+      }
+    },
+    {
+      "id": "0d4c1f52-1a4e-4c3a-9f7e-2b1d6a8e0024",
+      "name": "Réponse vecteurs",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [660, 1200],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ typeof $json.body === 'string' ? $json.body : JSON.stringify($json.body) }}",
+        "options": {
+          "responseCode": "={{ $json.statusCode }}",
+          "responseHeaders": {
+            "entries": [
+              { "name": "Content-Type", "value": "application/json" },
+              { "name": "Access-Control-Allow-Origin", "value": "={{ ['https://booklageolivier.forge.apps.education.fr', 'https://obook.github.io', 'http://localhost:8642'].includes($('Webhook vecteurs').item.json.headers.origin) ? $('Webhook vecteurs').item.json.headers.origin : 'null' }}" },
+              { "name": "Vary", "value": "Origin" }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "0d4c1f52-1a4e-4c3a-9f7e-2b1d6a8e0025",
+      "name": "Refus sans clé (vecteurs)",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [440, 1400],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "{\"detail\":\"Not authenticated\"}",
+        "options": {
+          "responseCode": 401,
+          "responseHeaders": {
+            "entries": [
+              { "name": "Content-Type", "value": "application/json" },
+              { "name": "Access-Control-Allow-Origin", "value": "={{ ['https://booklageolivier.forge.apps.education.fr', 'https://obook.github.io', 'http://localhost:8642'].includes($('Webhook vecteurs').item.json.headers.origin) ? $('Webhook vecteurs').item.json.headers.origin : 'null' }}" },
+              { "name": "Vary", "value": "Origin" }
+            ]
+          }
+        }
+      }
     }
   ],
   "connections": {
@@ -492,7 +598,15 @@
         [{ "node": "Refus sans clé (audio)", "type": "main", "index": 0 }]
       ]
     },
-    "Albert audio": { "main": [[{ "node": "Réponse audio", "type": "main", "index": 0 }]] }
+    "Albert audio": { "main": [[{ "node": "Réponse audio", "type": "main", "index": 0 }]] },
+    "Webhook vecteurs": { "main": [[{ "node": "Clé présente ? (vecteurs)", "type": "main", "index": 0 }]] },
+    "Clé présente ? (vecteurs)": {
+      "main": [
+        [{ "node": "Albert vecteurs", "type": "main", "index": 0 }],
+        [{ "node": "Refus sans clé (vecteurs)", "type": "main", "index": 0 }]
+      ]
+    },
+    "Albert vecteurs": { "main": [[{ "node": "Réponse vecteurs", "type": "main", "index": 0 }]] }
   },
   "settings": {
     "executionOrder": "v1",

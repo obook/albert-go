@@ -24,6 +24,8 @@ ROUTES = {
     ("GET", "/v1/models"): 0,
     ("POST", "/v1/chat/completions"): 10 * 1024 * 1024,
     ("POST", "/v1/audio/transcriptions"): 16 * 1024 * 1024,
+    # Vecteurs des passages des sources : 64 passages d'environ 1 000 caractères par appel.
+    ("POST", "/v1/embeddings"): 1024 * 1024,
 }
 TYPES = {
     ".html": "text/html; charset=utf-8",

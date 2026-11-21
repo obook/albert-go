@@ -189,6 +189,12 @@ const Albert = {
     /** Modèle de transcription audio (whisper). */
     MODELE_AUDIO: 'openweight-audio',
 
+    /** Modèle des vecteurs (/v1/embeddings), 1 024 dimensions le 21/11/2026. */
+    MODELE_VECTEURS: 'openweight-embeddings',
+
+    /** Passages par appel à /v1/embeddings : 64 passent en moins d'une demi-seconde. */
+    LOT_VECTEURS: 64,
+
     /**
      * Demande la liste des modèles à Albert.
      *
@@ -769,21 +775,121 @@ const Albert = {
      * @returns {string} Une ligne par mot rare, ou ''.
      */
     motsRares(question, passages) {
+        return this.passagesMotsRares(question, passages).map(({ mot, trouves }) => {
+            /* Chemin à côté du numéro : sans lui, le modèle prêtait à une classe ce qui est dans une autre. */
+            const numeros = trouves.map(p => 'P' + p.n + (p.chemin ? ' (' + p.chemin + ')' : '')).join(', ');
+            return t('demande.mot-rare', { mot: mot, passages: numeros });
+        }).join('\n');
+    },
+
+    /**
+     * Mots rares de la question et passages qui les contiennent (MOT_PASSAGES_MAX au plus par mot).
+     *
+     * @param {string} question - Texte saisi.
+     * @param {Object[]} passages - Passages de passagesSources.
+     * @returns {{mot: string, trouves: Object[]}[]} Un élément par mot rare.
+     */
+    passagesMotsRares(question, passages) {
         const normaliser = (s) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
         const textes = passages.map(p => normaliser(p.chemin + '\n' + p.texte));
         const seuil = Math.max(this.MOT_RARE_MIN, Math.floor(passages.length * this.MOT_RARE));
         const mots = new Map((question.match(/[\p{L}\p{N}]{4,}/gu) || []).map(m => [normaliser(m), m]));
-        const lignes = [];
+        const rares = [];
         for (const [cle, mot] of mots) {
             const debut = new RegExp('(^|[^\\p{L}\\p{N}])' + cle, 'u');
             const trouves = passages.filter((p, i) => debut.test(textes[i]));
             if (trouves.length && trouves.length <= seuil) {
-                /* Chemin à côté du numéro : sans lui, le modèle prêtait à une classe ce qui est dans une autre. */
-                const numeros = trouves.slice(0, this.MOT_PASSAGES_MAX).map(p => 'P' + p.n + (p.chemin ? ' (' + p.chemin + ')' : '')).join(', ');
-                lignes.push(t('demande.mot-rare', { mot: mot, passages: numeros }));
+                rares.push({ mot: mot, trouves: trouves.slice(0, this.MOT_PASSAGES_MAX) });
             }
         }
-        return lignes.join('\n');
+        return rares;
+    },
+
+    /**
+     * Passages envoyés quand les sources dépassent le plafond : ceux des mots rares d'abord,
+     * puis les plus proches de la question, tant que le plafond le permet. Les numéros ne changent pas.
+     *
+     * @param {Object[]} passages - Passages de passagesSources.
+     * @param {number[]} proximites - Proximité de chaque passage avec la question (cosinus).
+     * @param {Set<number>} prioritaires - Numéros des passages des mots rares.
+     * @param {number} plafond - Caractères au plus.
+     * @returns {Object[]} Passages choisis, dans l'ordre des numéros.
+     */
+    choisirPassages(passages, proximites, prioritaires, plafond) {
+        const ordre = passages.map((p, i) => i)
+            .sort((a, b) => prioritaires.has(passages[b].n) - prioritaires.has(passages[a].n) || proximites[b] - proximites[a]);
+        const choisis = [];
+        let taille = 0;
+        for (const i of ordre) {
+            const longueur = passages[i].chemin.length + passages[i].texte.length;
+            if (taille + longueur <= plafond) {
+                choisis.push(passages[i]);
+                taille += longueur;
+            }
+        }
+        return choisis.sort((a, b) => a.n - b.n);
+    },
+
+    /**
+     * Cosinus de deux vecteurs : 1 pour deux textes de même sens.
+     *
+     * @param {Float32Array} a - Premier vecteur.
+     * @param {Float32Array} b - Second vecteur, de même dimension.
+     * @returns {number} Entre -1 et 1.
+     */
+    cosinus(a, b) {
+        let produit = 0;
+        let normeA = 0;
+        let normeB = 0;
+        for (let i = 0; i < a.length; i++) {
+            produit += a[i] * b[i];
+            normeA += a[i] * a[i];
+            normeB += b[i] * b[i];
+        }
+        return produit / Math.sqrt(normeA * normeB);
+    },
+
+    /**
+     * Empreinte d'un texte (FNV-1a) : une source redéposée avec un autre texte change de vecteurs.
+     *
+     * @param {string} texte - Texte d'une source.
+     * @returns {string} Longueur et empreinte.
+     */
+    empreinte(texte) {
+        let h = 0x811c9dc5;
+        for (let i = 0; i < texte.length; i++) {
+            h = Math.imul(h ^ texte.charCodeAt(i), 0x01000193);
+        }
+        return texte.length + '-' + (h >>> 0).toString(16);
+    },
+
+    /**
+     * Vecteurs de textes, par lots de LOT_VECTEURS (/v1/embeddings).
+     *
+     * @param {string[]} textes - Textes à comparer.
+     * @param {AbortSignal} annulation - Pour annuler avec la question.
+     * @returns {Promise<Float32Array[]>} Un vecteur par texte, dans l'ordre.
+     * @throws {Error} Si Albert refuse ou ne répond pas.
+     */
+    async vecteurs(textes, annulation) {
+        const resultat = [];
+        for (let i = 0; i < textes.length; i += this.LOT_VECTEURS) {
+            const res = await fetch(this.BASE + '/embeddings', {
+                method: 'POST',
+                headers: this.entetes({ 'Content-Type': 'application/json' }),
+                body: JSON.stringify({ model: this.MODELE_VECTEURS, input: textes.slice(i, i + this.LOT_VECTEURS) }),
+                signal: AbortSignal.any([annulation, AbortSignal.timeout(this.DELAI_MS)])
+            });
+            const corps = await res.json().catch(() => null);
+            if (!res.ok) {
+                throw new Error(this.messageErreur(res.status, corps));
+            }
+            if (!corps || !Array.isArray(corps.data)) {
+                throw new Error(t('erreur.reponse-illisible'));
+            }
+            resultat.push(...corps.data.sort((a, b) => a.index - b.index).map(e => Float32Array.from(e.embedding)));
+        }
+        return resultat;
     },
 
     /**

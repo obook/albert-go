@@ -368,3 +368,60 @@ test("iPad (WebKit) : un numéro de passage cité ouvre le passage sous la répo
     assert.ok(!await page.isVisible('#fil .passage'));
     assert.deepStrictEqual(erreurs, []);
 });
+
+test("iPad (WebKit) : au-delà du contexte, seuls les passages proches de la question partent", async (t) => {
+    const serveur = await servir();
+    const origine = 'http://127.0.0.1:' + serveur.address().port;
+    const navigateur = await webkit.launch();
+    t.after(async () => {
+        await navigateur.close();
+        serveur.close();
+    });
+    const contexte = await navigateur.newContext({ ...devices['iPad (gen 7)'], serviceWorkers: 'block' });
+    /* Albert simulé : un vecteur [1, 0] pour ce qui parle de volcan, [0, 1] sinon. */
+    const consignes = [];
+    await contexte.route((url) => url.origin !== origine, (route) => {
+        const url = route.request().url();
+        const corps = route.request().postDataJSON();
+        if (url.endsWith('/embeddings')) {
+            const data = corps.input.map((texte, index) => ({ index, embedding: /volcan/i.test(texte) ? [1, 0] : [0, 1] }));
+            return route.fulfill({ json: { data } });
+        }
+        if (!url.endsWith('/chat/completions')) {
+            return route.abort();
+        }
+        if (!corps.response_format) {
+            consignes.push(corps.messages[0].content);
+        }
+        const contenu = corps.response_format ? JSON.stringify({ resume: 'Géologie.', themes: [], questions: [] }) : 'Réponse [P2].';
+        return route.fulfill({ json: { choices: [{ message: { role: 'assistant', content: contenu }, finish_reason: 'stop' }] } });
+    });
+    await contexte.addInitScript(SAFARI_ANCIEN);
+    await contexte.addInitScript(() => {
+        localStorage.setItem('albert-go.cle', 'sk-test');
+        sessionStorage.setItem('albert-go.cle', 'sk-test');
+    });
+    const page = await contexte.newPage();
+    const erreurs = [];
+    page.on('pageerror', (err) => erreurs.push(String(err)));
+
+    await page.goto(origine + '/');
+    /* Plafond réduit à un passage : la source ne tient plus dans le contexte. */
+    await page.evaluate(() => { Albert.plafondDocuments = () => 120; });
+    await page.click('#ouvrir-bibliotheque');
+    await page.click('#coller-texte');
+    const paragraphe = (sujet) => 'Ce paragraphe parle ' + sujet + ' avec assez de mots pour faire un passage à lui seul.';
+    await page.fill('#texte-colle', [paragraphe('des glaciers'), paragraphe('du volcan'), paragraphe('des rivières')].join('\n\n'));
+    await page.click('#dialogue-coller button[value=oui]');
+    await page.waitForFunction(() => !guidesEnCours.size);
+    await page.evaluate(() => $('bibliotheque').close());
+    await page.fill('#saisie', 'Et le volcan ?');
+    await page.press('#saisie', 'Enter');
+    await page.waitForFunction(() => !annulation && $('fil').querySelector('.citation'));
+
+    assert.match(consignes[0], /\[P2\]\nCe paragraphe parle du volcan/);
+    assert.doesNotMatch(consignes[0], /\[P1\]|\[P3\]/);
+    await page.click('#fil .citation');
+    assert.match(await page.textContent('#fil .passage'), /parle du volcan/);
+    assert.deepStrictEqual(erreurs, []);
+});

@@ -162,7 +162,10 @@ async function demanderReponse(outil, question, image, modele) {
         texteConsigne += '\n\n' + Albert.joindreDocuments(documentsProjet);
     } else if (Albert.OUTILS[outil].sources && documentsProjet.length) {
         const passages = Albert.passagesSources(documentsProjet);
-        texteConsigne += '\n\n' + Albert.joindrePassages(passages);
+        /* Au-delà du contexte, seuls les passages utiles à la question partent, avec leur numéro. */
+        const tiennent = documentsProjet.reduce((s, d) => s + d.texte.length, 0) <= Albert.plafondDocuments(modeleActuel().contexte);
+        const envoyes = tiennent ? passages : await passagesPertinents(question, passages, annulation.signal);
+        texteConsigne += '\n\n' + Albert.joindrePassages(envoyes);
         const mots = Albert.motsRares(question, passages);
         if (mots) {
             texteConsigne += '\n\n' + mots;

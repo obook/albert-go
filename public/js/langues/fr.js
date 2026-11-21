@@ -122,6 +122,8 @@ I18n.TEXTES.fr = {
     'confirmer-suppression.source': 'Supprimer ce fichier de la bibliothèque ? Il quittera tous les documents.',
     'erreur.bibliotheque-pleine': 'Bibliothèque pleine : supprimez des fichiers pour en déposer d\'autres.',
     'erreur.projet-plein': 'Sources trop volumineuses : retirez-en une ou choisissez un modèle au contexte plus grand.',
+    'erreur.recherche-sources': 'Sources trop longues pour le modèle, et la recherche dans les sources a échoué ({message}). Décochez des sources.',
+    'etat.recherche-sources': 'Recherche des passages utiles dans les sources...',
     'projet.bienvenue': 'Enrichissez votre bibliothèque puis construisez votre document.',
     'projet.evaluation': 'Évaluation',
     'projet.synthese': 'Synthèse',

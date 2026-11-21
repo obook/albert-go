@@ -299,6 +299,17 @@ function enregistrerProjet() {
 }
 
 /**
+ * Dit si un fichier de plus dépasse le contexte. Discussion cherche alors dans les sources
+ * (passagesPertinents) ; Imprimerie les envoie entières, elle refuse.
+ *
+ * @param {{nom: string, texte: string}} fichier - Fichier à cocher.
+ * @returns {boolean} true si le fichier ne peut pas être coché.
+ */
+function tropDeSources(fichier) {
+    return !!Albert.OUTILS[outilActuel].documents && !Albert.avecDocument(documentsProjet, fichier, modeleActuel().contexte);
+}
+
+/**
  * Coche ou décoche un fichier pour le document affiché.
  *
  * @param {string} nom - Nom du fichier.
@@ -307,7 +318,7 @@ function enregistrerProjet() {
 function cocherSource(nom, coche) {
     if (coche.checked) {
         const fichier = bibliotheque.find(d => d.nom === nom);
-        if (!Albert.avecDocument(documentsProjet, fichier, modeleActuel().contexte)) {
+        if (tropDeSources(fichier)) {
             coche.checked = false;
             etat(t('erreur.projet-plein'), true);
             return;
@@ -319,6 +330,100 @@ function cocherSource(nom, coche) {
     /* La liste n'est pas reconstruite : la case garde le focus. */
     afficherResumeSources();
     enregistrerProjet();
+}
+
+/** Base IndexedDB des vecteurs, ouverte au premier besoin ; null si le navigateur la refuse. */
+let baseVecteurs = null;
+
+/**
+ * Ouvre la base des vecteurs. Sans elle (navigation privée), ils sont recalculés à chaque session.
+ *
+ * @returns {Promise<?IDBDatabase>} La base, ou null.
+ */
+function ouvrirVecteurs() {
+    baseVecteurs = baseVecteurs || new Promise((pret) => {
+        try {
+            const demande = indexedDB.open('albert-go', 1);
+            demande.onupgradeneeded = () => demande.result.createObjectStore('vecteurs');
+            demande.onsuccess = () => pret(demande.result);
+            demande.onerror = () => pret(null);
+        } catch {
+            pret(null);
+        }
+    });
+    return baseVecteurs;
+}
+
+/**
+ * Lit ou écrit une entrée de la base des vecteurs ; sans base, rien.
+ *
+ * @param {string} cle - Nom de la source et empreinte de son texte.
+ * @param {Float32Array} [valeur] - Vecteurs à écrire, mis bout à bout ; absent pour lire.
+ * @returns {Promise<?Float32Array>} Vecteurs lus, ou null.
+ */
+async function baseVecteur(cle, valeur) {
+    const base = await ouvrirVecteurs();
+    if (!base) {
+        return null;
+    }
+    return new Promise((pret) => {
+        const magasin = base.transaction('vecteurs', valeur ? 'readwrite' : 'readonly').objectStore('vecteurs');
+        const demande = valeur ? magasin.put(valeur, cle) : magasin.get(cle);
+        demande.onsuccess = () => pret(valeur ? null : demande.result || null);
+        demande.onerror = () => pret(null);
+    });
+}
+
+/**
+ * Vecteurs des passages d'une source, calculés une fois puis gardés dans IndexedDB.
+ * ponytail: anciennes entrées jamais purgées ; une source redéposée en laisse une. À purger si la base grossit.
+ *
+ * @param {{nom: string, texte: string}} doc - Source cochée.
+ * @param {AbortSignal} signal - Pour annuler avec la question.
+ * @returns {Promise<Float32Array[]>} Un vecteur par passage de Albert.decouper.
+ */
+async function vecteursSource(doc, signal) {
+    const cle = doc.nom + '\n' + Albert.empreinte(doc.texte) + '\n' + Albert.MODELE_VECTEURS;
+    const passages = Albert.decouper(doc.texte);
+    const garde = await baseVecteur(cle);
+    if (garde && garde.length % passages.length === 0) {
+        const dimension = garde.length / passages.length;
+        return passages.map((p, i) => garde.subarray(i * dimension, (i + 1) * dimension));
+    }
+    const vecteurs = await Albert.vecteurs(passages.map(p => (p.chemin ? p.chemin + '\n' : '') + p.texte), signal);
+    const bout = new Float32Array(vecteurs.reduce((s, v) => s + v.length, 0));
+    vecteurs.forEach((v, i) => bout.set(v, i * v.length));
+    await baseVecteur(cle, bout);
+    return vecteurs;
+}
+
+/**
+ * Passages à envoyer quand les sources cochées dépassent le contexte : ceux des mots rares,
+ * puis les plus proches de la question, jusqu'au plafond.
+ *
+ * @param {string} question - Texte saisi.
+ * @param {Object[]} passages - Passages de Albert.passagesSources(documentsProjet).
+ * @param {AbortSignal} signal - Pour annuler avec la question.
+ * @returns {Promise<Object[]>} Passages choisis, numéros inchangés.
+ * @throws {Error} Si la recherche échoue (relais sans /v1/embeddings).
+ */
+async function passagesPertinents(question, passages, signal) {
+    etat(t('etat.recherche-sources'));
+    try {
+        const vecteurs = [];
+        for (const doc of documentsProjet) {
+            vecteurs.push(...await vecteursSource(doc, signal));
+        }
+        const [demande] = await Albert.vecteurs([question], signal);
+        const proximites = vecteurs.map(v => Albert.cosinus(demande, v));
+        const prioritaires = new Set(Albert.passagesMotsRares(question, passages).flatMap(m => m.trouves.map(p => p.n)));
+        return Albert.choisirPassages(passages, proximites, prioritaires, Albert.plafondDocuments(modeleActuel().contexte));
+    } catch (err) {
+        if (err.name === 'AbortError') {
+            throw err;
+        }
+        throw new Error(t('erreur.recherche-sources', { message: err.message }));
+    }
 }
 
 /**
@@ -334,8 +439,8 @@ function ajouterDocument(piece, note = false) {
         return false;
     }
     const nouveau = { nom: piece.nom, texte: piece.texte };
-    /* Coché pour ce document : il doit tenir dans le contexte avec les autres sources cochées. */
-    if (!note && !Albert.avecDocument(documentsProjet, nouveau, modeleActuel().contexte)) {
+    /* Coché pour ce document : en Imprimerie, il doit tenir dans le contexte avec les autres sources cochées. */
+    if (!note && tropDeSources(nouveau)) {
         etat(t('erreur.projet-plein'), true);
         return false;
     }

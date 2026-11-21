@@ -122,6 +122,8 @@ I18n.TEXTES.es = {
     'confirmer-suppression.source': '¿Eliminar este archivo de la biblioteca? Saldrá de todos los documentos.',
     'erreur.bibliotheque-pleine': 'Biblioteca llena: elimine archivos para añadir otros.',
     'erreur.projet-plein': 'Fuentes demasiado voluminosas: quite una o elija un modelo con un contexto mayor.',
+    'erreur.recherche-sources': 'Las fuentes son demasiado largas para el modelo y la búsqueda en las fuentes ha fallado ({message}). Desmarque algunas fuentes.',
+    'etat.recherche-sources': 'Buscando los pasajes útiles en las fuentes...',
     'projet.bienvenue': 'Enriquezca su biblioteca y construya su documento.',
     'projet.evaluation': 'Evaluación',
     'projet.synthese': 'Síntesis',
