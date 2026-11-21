@@ -29,6 +29,22 @@ def test_chemin_hors_public_refuse(client):
         assert client.get(chemin).status_code in (403, 404)
 
 
+def test_autre_lecteur_refuse(client, monkeypatch):
+    """Windows : commonpath lève ValueError pour deux lecteurs ; la réponse reste un 403."""
+
+    def lecteurs_differents(chemins):
+        raise ValueError("Paths don't have the same drive")
+
+    monkeypatch.setattr("serveur.serveur.os.path.commonpath", lecteurs_differents)
+    assert client.get("/D:/secret.txt").status_code == 403
+
+
+def test_morceau_de_page_servi(client):
+    reponse = client.get("/pages/reglages/ia.html")
+    assert reponse.status_code == 200
+    assert reponse.headers["Content-Type"].startswith("text/html")
+
+
 def test_routes_relayees(client, albert):
     assert client.get("/v1/models").status_code == 200
     assert client.post("/v1/chat/completions", json={"model": "m"}).status_code == 200

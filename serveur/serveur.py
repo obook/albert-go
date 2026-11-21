@@ -15,7 +15,8 @@ import socket
 import ssl
 import sys
 import urllib.parse
-from urllib.parse import parse_qs, urlencode
+# Retiré le 21/11/2026 : un seul style d'import, urllib.parse.parse_qs et urllib.parse.urlencode.
+# from urllib.parse import parse_qs, urlencode
 
 from serveur import certificat, config, kiosque, relais
 
@@ -100,10 +101,7 @@ class Gestionnaire(http.server.BaseHTTPRequestHandler):
             relais.repondre_json(self, 403, {"detail": "Clé réservée à ce poste.", "reseau": "refuse"})
             self.close_connection = True
             return
-        try:
-            taille = int(self.headers.get("Content-Length") or 0)
-        except ValueError:
-            taille = -1
+        taille = self._longueur_corps()
         # Négative, read() lirait sans limite jusqu'à la fin du flux.
         if taille < 0:
             relais.repondre_json(self, 400, {"detail": "Content-Length invalide."})
@@ -151,18 +149,22 @@ class Gestionnaire(http.server.BaseHTTPRequestHandler):
             self._rediriger("/kiosque")
         return False
 
+    def _longueur_corps(self):
+        """Content-Length de la requête, 0 s'il manque, -1 s'il n'est pas un nombre."""
+        try:
+            return int(self.headers.get("Content-Length") or 0)
+        except ValueError:
+            return -1
+
     def _formulaire(self):
         """Champs d'un formulaire POST (4 Ko au plus), ou None après avoir répondu 400."""
-        try:
-            taille = int(self.headers.get("Content-Length") or 0)
-        except ValueError:
-            taille = -1
+        taille = self._longueur_corps()
         if not 0 <= taille <= FORMULAIRE_MAX:
             relais.repondre_json(self, 400, {"detail": "Formulaire invalide."})
             self.close_connection = True
             return None
         texte = self.rfile.read(taille).decode("utf-8", "replace")
-        return {nom: valeurs[0] for nom, valeurs in parse_qs(texte).items()}
+        return {nom: valeurs[0] for nom, valeurs in urllib.parse.parse_qs(texte).items()}
 
     def _kiosque_post(self):
         champs = self._formulaire()
@@ -184,7 +186,7 @@ class Gestionnaire(http.server.BaseHTTPRequestHandler):
             if not kiosque.session_active():
                 self._rediriger("/kiosque?erreur=aucune-session")
             elif not kiosque.verifier_code(token, code):
-                self._rediriger("/kiosque?" + urlencode({"erreur": "code", "token": token}))
+                self._rediriger("/kiosque?" + urllib.parse.urlencode({"erreur": "code", "token": token}))
             elif role == "enseignant":
                 # Le prof qui essaie le lien élève dans son navigateur reste prof.
                 self._rediriger("/")
@@ -205,10 +207,11 @@ class Gestionnaire(http.server.BaseHTTPRequestHandler):
         if kiosque.role_de_la_requete(self) != "enseignant":
             relais.repondre_json(self, 403, {"detail": "Réservé à l'enseignant."})
             return
+        taille = self._longueur_corps()
         try:
-            taille = int(self.headers.get("Content-Length") or 0)
             corps = json.loads(self.rfile.read(taille)) if 0 < taille <= FORMULAIRE_MAX else None
         except ValueError:
+            # JSON mal écrit.
             corps = None
         if not isinstance(corps, dict):
             relais.repondre_json(self, 400, {"detail": "Réglages invalides."})
@@ -245,7 +248,12 @@ class Gestionnaire(http.server.BaseHTTPRequestHandler):
     def _fichier(self, chemin):
         relatif = urllib.parse.unquote(chemin).lstrip("/") or "index.html"
         fichier = os.path.realpath(os.path.join(RACINE, relatif))
-        if os.path.commonpath([RACINE, fichier]) != RACINE:
+        try:
+            dans_public = os.path.commonpath([RACINE, fichier]) == RACINE
+        except ValueError:
+            # Windows : "/D:/x" vise un autre lecteur, commonpath ne sait pas comparer.
+            dans_public = False
+        if not dans_public:
             self.send_error(403)
             return
         if os.path.isdir(fichier):
