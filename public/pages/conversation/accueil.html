@@ -1,0 +1,20 @@
+        <section id="accueil" class="accueil pico" hidden>
+            <h2 data-t="cle.titre"></h2>
+            <p data-t="cle.intro"></p>
+            <!-- Deux étapes : obtenir une clé, la saisir dans une boîte ; acceptée, le chat s'ouvre. -->
+            <ol class="etapes">
+                <li>
+                    <span data-t="cle.etape-acces"></span>
+                    <a class="bouton-principal"
+                       href="https://ia.numerique.gouv.fr/outils-ia/albert-api/"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       data-t="cle.demander"></a>
+                </li>
+                <li>
+                    <span data-t="cle.etape-saisie"></span>
+                    <button type="button" id="ouvrir-cle" class="bouton-principal" data-t="cle.saisir"></button>
+                    <p id="echec-cle" class="message-cle erreur" role="alert"></p>
+                </li>
+            </ol>
+        </section>

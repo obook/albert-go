@@ -16,16 +16,19 @@
 
 const { test } = require('node:test');
 const assert = require('node:assert');
+/* Retiré le 21/11/2026 : la page se lit par page-complete.js.
 const fs = require('node:fs');
 const path = require('node:path');
+*/
 require('../public/js/socle/i18n.js');
 const Albert = require('../public/js/albert.js');
+const { lirePageComplete } = require('./page-complete.js');
 
 /* Sous Node, pas de serveur.js : les tests supposent un serveur, sauf ceux de la version en ligne. */
 Albert.EN_LIGNE = false;
 
 test('contexte : le curseur, la valeur conseillée et les phrases', () => {
-    const page = fs.readFileSync(path.join(__dirname, '..', 'public', 'index.html'), 'utf8');
+    const page = lirePageComplete();
     const [, min, max] = page.match(/id="echanges"\s+min="(\d+)"\s+max="(\d+)"/);
     assert.deepStrictEqual([Number(min), Number(max)], [0, Albert.ECHANGES_TOUS]);
     assert.strictEqual(Albert.CONSEILLES.echanges, Albert.ECHANGES_TOUS);
@@ -127,7 +130,7 @@ test('nomLibre : un nom déjà pris est numéroté', () => {
 });
 
 test('température : le curseur s\'arrête à la borne d\'Albert pour la conversation', () => {
-    const page = fs.readFileSync(path.join(__dirname, '..', 'public', 'index.html'), 'utf8');
+    const page = lirePageComplete();
     const [, min, max] = page.match(/id="temperature"\s+min="([\d.]+)"\s+max="([\d.]+)"/);
     assert.deepStrictEqual([Number(min), Number(max)], [0, Albert.TEMPERATURE_MAX]);
     assert.strictEqual(Albert.TEMPERATURE_MAX, 2);

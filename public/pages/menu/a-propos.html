@@ -1,0 +1,39 @@
+    <dialog id="info" class="reglages info" aria-labelledby="titre-info">
+        <form method="dialog">
+            <h2 id="titre-info" data-t="info.titre"></h2>
+            <div class="carte-texte">
+                <p data-t-html="info.intro"></p>
+
+                <section>
+                    <h3 data-t="info.donnees"></h3>
+                    <ul>
+                        <li data-t="info.donnees.relais"></li>
+                        <li data-t="info.donnees.traceurs"></li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3 data-t="info.clavier"></h3>
+                    <p data-t="info.clavier.texte"></p>
+                </section>
+
+                <section>
+                    <h3 data-t="info.reponses"></h3>
+                    <p data-t="info.reponses.texte"></p>
+                </section>
+
+                <section>
+                    <h3 data-t="info.projet"></h3>
+                    <p data-t-html="info.projet.texte"></p>
+                    <p data-t="info.credits"></p>
+                    <p id="appels" hidden></p>
+                    <p><span data-t="info.version"></span><span id="version"></span></p>
+                </section>
+            </div>
+
+            <!-- pico sur le seul bouton : le même "Fermer" que les autres boîtes, sans toucher au texte. -->
+            <div class="boutons-dialogue pico">
+                <button type="submit" class="bouton-principal" data-t="dialogue.fermer"></button>
+            </div>
+        </form>
+    </dialog>

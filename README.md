@@ -45,6 +45,7 @@ En ligne : Navigateur -> relais n8n -> API Albert
 
 - `serveur/` : le serveur Python (relais, configuration, régulation du débit par modèle), repris de L'Atelier d'Albert.
 - `public/` : la page (HTML, CSS, JavaScript), servie par le serveur ou publiée sur Pages, avec les bibliothèques embarquées dans `public/vendor/`.
+- `public/pages/` : menus et boîtes de dialogue, un fichier par élément. `public/js/socle/chargement.js` les place dans `index.html`, puis charge les scripts dans l'ordre.
 - `public/js/albert.js` et `public/js/albert/` : le client de l'API Albert.
 - `public/js/socle/` : stockage, thème, langue et version, utilisés par tous les autres scripts.
 - `public/js/interface/` : écrans, menu, réglages et saisie de la clé.

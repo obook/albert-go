@@ -1,0 +1,16 @@
+    <dialog id="reglages" class="reglages pico" aria-labelledby="titre-reglages">
+        <!-- autocomplete="off" : sinon Firefox rejoue d'anciennes valeurs au réveil d'un onglet déchargé. -->
+        <form method="dialog" autocomplete="off">
+            <h2 id="titre-reglages" data-t="reglages.titre"></h2>
+            <!-- Cinq cartes dépliables, la première ouverte. -->
+            <div data-page="reglages/ia"></div>
+
+            <div data-page="reglages/competences"></div>
+            <div data-page="reglages/outils"></div>
+            <div data-page="reglages/application"></div>
+
+            <div class="boutons-dialogue">
+                <button type="submit" class="bouton-principal" data-t="dialogue.fermer"></button>
+            </div>
+        </form>
+    </dialog>

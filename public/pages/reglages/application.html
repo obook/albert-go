@@ -1,0 +1,73 @@
+            <details class="carte" name="reglages">
+                <summary>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg>
+                    <span data-t="reglages.carte-application"></span>
+                </summary>
+                <div class="corps">
+                    <fieldset>
+                        <legend data-t="reglages.nom"></legend>
+                        <input type="text"
+                               id="nom-application"
+                               maxlength="12"
+                               placeholder="Albert Go"
+                               autocomplete="off"
+                               spellcheck="false"
+                               aria-describedby="aide-nom"
+                               data-t-attr="aria-label:reglages.nom">
+                        <p id="aide-nom" class="note" data-t="reglages.aide-nom"></p>
+                    </fieldset>
+
+                    <fieldset>
+                        <legend data-t="reglages.accueil"></legend>
+                        <label class="interrupteur">
+                            <input type="checkbox" id="idees" role="switch">
+                            <span data-t="reglages.idees"></span>
+                        </label>
+                    </fieldset>
+
+                    <fieldset>
+                        <legend data-t="reglages.donnees"></legend>
+                        <p class="note" id="note-cle" data-t="reglages.cle-note" hidden></p>
+                        <label class="interrupteur">
+                            <input type="checkbox" id="partage-reglage" role="switch">
+                            <span id="texte-partage-reglage"></span>
+                        </label>
+                        <!-- Retiré le 21/11/2026 : le bouton passe en bas de la carte.
+                        <button type="button"
+                                class="bouton-texte outline"
+                                id="changer-cle"
+                                hidden
+                                data-t="menu.changer-cle"></button>
+                        -->
+                    </fieldset>
+
+                    <!-- Retiré le 21/11/2026 : les voix en ligne passent dans Outils, Internet.
+                    <fieldset>
+                        <legend data-t="reglages.lecture"></legend>
+                        <label class="interrupteur">
+                            <input type="checkbox"
+                                   id="voix-en-ligne"
+                                   role="switch"
+                                   aria-describedby="aide-voix">
+                            <span data-t="reglages.voix-en-ligne"></span>
+                        </label>
+                        <p id="aide-voix" class="note mise-en-garde" data-t="reglages.aide-voix"></p>
+                    </fieldset>
+                    -->
+
+                    <div class="boutons-carte">
+                        <!-- Nom par défaut, idées masquées, clé conservée. -->
+                        <button type="button"
+                                class="bouton-texte outline"
+                                id="application-conseillee"
+                                data-t="reglages.conseilles"
+                                data-t-attr="title:reglages.conseil-application"></button>
+                        <!-- Clé de l'utilisateur, en ligne seulement : masqué sans clé (afficher). -->
+                        <button type="button"
+                                class="bouton-texte outline"
+                                id="changer-cle"
+                                hidden
+                                data-t="menu.changer-cle"></button>
+                    </div>
+                </div>
+            </details>

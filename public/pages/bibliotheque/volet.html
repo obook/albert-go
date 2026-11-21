@@ -1,0 +1,70 @@
+    <!-- Bibliothèque de Discussion et d'Imprimerie, commune à toutes les conversations : volet de droite, symétrique du menu.
+         Les fichiers cochés partent avec chaque question (projet.js, entete.css). -->
+    <dialog id="bibliotheque" class="volet volet-droit" aria-labelledby="titre-bibliotheque">
+        <div class="volet-contenu">
+            <button type="button" class="bouton-icone fermer-bibliotheque" autofocus data-t-attr="aria-label:bibliotheque.fermer;title:bibliotheque.fermer">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </button>
+            <!-- Deux sections repliables : la bibliothèque, dépliée, puis les versions du document.
+                 L'aide est hors du summary : elle reste visible section repliée, et ne la replie pas. -->
+            <div class="section-volet">
+                <button type="button" class="bouton-icone aide" data-aide="bibliotheque" data-t-attr="aria-label:aide.bibliotheque-bouton;title:aide.bibliotheque-bouton">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.6 2.2c-.7.4-1.1.9-1.1 1.8M12 17h.01"/></svg>
+                </button>
+                <details open>
+                    <summary><h2 id="titre-bibliotheque" class="marque" data-t="bibliotheque.titre"></h2></summary>
+                    <!-- Retiré le 21/11/2026 : résumé passé sous la liste, phrase sur les données personnelles passée dans l'aide.
+                    <p id="resume-documents" class="resume-bibliotheque"></p>
+                    <hr>
+                    <p class="formats-sources" data-t="documents.garde"></p>
+                    -->
+                    <!-- Trois groupes pour un débutant : ajouter, choisir les sources, régler les réponses. -->
+                    <h3 class="groupe-bibliotheque" data-t="bibliotheque.ajouter"></h3>
+                    <div class="ajout-sources">
+                        <button type="button" id="deposer-documents" class="deposer" data-t="documents.deposer"></button>
+                        <button type="button" id="coller-texte" class="deposer" data-t="documents.coller"></button>
+                    </div>
+                    <input type="file"
+                           id="fichier-sources"
+                           accept="image/*,audio/*,.m4a,.opus,.pdf,.docx,.odt,.txt,.md,.csv,.tsv,.json,.xml,.html,.css,.js,.py,.tex,.sql"
+                           multiple
+                           hidden>
+                    <!-- Bibliothèque vide : la phrase remplace la liste (projet.js). -->
+                    <p id="bibliotheque-vide" class="formats-sources" data-t="bibliotheque.vide"></p>
+                    <div id="groupe-sources">
+                        <h3 class="groupe-bibliotheque" data-t="bibliotheque.utilisees"></h3>
+                        <ul id="liste-documents" class="liste-documents"></ul>
+                        <!-- Retiré le 21/11/2026 : "1 source cochée sur 2", les cases le montrent déjà.
+                        <p id="resume-documents" class="resume-bibliotheque"></p>
+                        -->
+                        <p id="place-documents" class="resume-bibliotheque place-documents">
+                            <span data-t="documents.place-libre"></span>
+                            <meter id="jauge-documents" min="0" max="100" low="20" optimum="100" aria-hidden="true"></meter>
+                            <span id="part-documents"></span>
+                        </p>
+                    </div>
+                    <h3 class="groupe-bibliotheque" data-t="bibliotheque.dans-reponses"></h3>
+                    <!-- Pages citées dans les réponses, masquées par défaut (projet.js, theme.js). -->
+                    <div class="outils-locaux">
+                        <label class="interrupteur">
+                            <input type="checkbox" id="afficher-citations" role="switch">
+                            <span data-t="bibliotheque.citations"></span>
+                        </label>
+                    </div>
+                    <!-- Masqué tant que la bibliothèque est vide (projet.js). En bas et discret : il efface tout. -->
+                    <button type="button" id="vider-bibliotheque" class="vider-lien" data-t="bibliotheque.vider" hidden></button>
+                </details>
+            </div>
+            <!-- Versions du document affiché : masquées tant qu'il n'en a qu'une (projet.js). -->
+            <hr id="trait-versions" hidden>
+            <div id="versions" class="section-volet" hidden>
+                <button type="button" class="bouton-icone aide" data-aide="versions" data-t-attr="aria-label:aide.versions-bouton;title:aide.versions-bouton">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.6 2.2c-.7.4-1.1.9-1.1 1.8M12 17h.01"/></svg>
+                </button>
+                <details>
+                    <summary><h2 class="marque" data-t="versions.titre"></h2></summary>
+                    <ul id="liste-versions" class="liste-documents liste-versions"></ul>
+                </details>
+            </div>
+        </div>
+    </dialog>

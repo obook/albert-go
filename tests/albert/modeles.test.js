@@ -14,10 +14,13 @@
 
 const { test } = require('node:test');
 const assert = require('node:assert');
+/* Retiré le 21/11/2026 : la page se lit par page-complete.js.
 const fs = require('node:fs');
 const path = require('node:path');
+*/
 require('../../public/js/socle/i18n.js');
 const Albert = require('../../public/js/albert.js');
+const { lirePageComplete } = require('../page-complete.js');
 
 /* Sous Node, pas de serveur.js : les tests supposent un serveur, sauf ceux de la version en ligne. */
 Albert.EN_LIGNE = false;
@@ -121,7 +124,7 @@ test('topK : envoyé seulement sous la position "sans limite" du curseur', () =>
     assert.strictEqual(Albert.cleAideTopK(1), 'reglages.aide-top-k-un');
     assert.strictEqual(Albert.cleAideTopK(40), 'reglages.aide-top-k');
     assert.strictEqual(Albert.cleAideTopK(Albert.TOP_K_SANS_LIMITE), 'reglages.aide-top-k-tous');
-    const page = fs.readFileSync(path.join(__dirname, '..', '..', 'public', 'index.html'), 'utf8');
+    const page = lirePageComplete();
     const [, min, max] = page.match(/id="top-k"\s+min="(\d+)"\s+max="(\d+)"/);
     assert.deepStrictEqual([Number(min), Number(max)], [1, Albert.TOP_K_SANS_LIMITE]);
 });

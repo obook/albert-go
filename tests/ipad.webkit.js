@@ -55,6 +55,28 @@ function servir() {
     return new Promise((pret) => serveur.listen(0, '127.0.0.1', () => pret(serveur)));
 }
 
+/**
+ * Ouvre la page et attend chargement.js : HTML de pages/ placé, scripts exécutés (html[data-pret]).
+ * L'événement load de la page n'attend pas ces fichiers, lus après lui.
+ *
+ * @param {import('playwright').Page} page - Onglet du navigateur.
+ * @param {string} adresse - Adresse de la page.
+ */
+async function ouvrir(page, adresse) {
+    await page.goto(adresse);
+    await page.waitForFunction(() => 'pret' in document.documentElement.dataset);
+}
+
+/**
+ * Recharge la page et attend chargement.js, comme ouvrir.
+ *
+ * @param {import('playwright').Page} page - Onglet du navigateur.
+ */
+async function recharger(page) {
+    await page.reload();
+    await page.waitForFunction(() => 'pret' in document.documentElement.dataset);
+}
+
 test("iPad (WebKit) : la page se charge sans erreur et un PDF entre dans la bibliothèque", async (t) => {
     const serveur = await servir();
     const origine = 'http://127.0.0.1:' + serveur.address().port;
@@ -76,7 +98,7 @@ test("iPad (WebKit) : la page se charge sans erreur et un PDF entre dans la bibl
     const erreurs = [];
     page.on('pageerror', (err) => erreurs.push(String(err)));
 
-    await page.goto(origine + '/');
+    await ouvrir(page, origine + '/');
     await page.click('#ouvrir-bibliotheque');
     await page.setInputFiles('#fichier-sources', path.join(__dirname, 'fixtures', 'programme.pdf'));
     await page.waitForFunction(() => !depotEnCours);
@@ -107,8 +129,9 @@ test("iPad (WebKit) : un script raté au lancement recharge la page une fois", a
     let chargements = 0;
     page.on('request', (requete) => requete.isNavigationRequest() && chargements++);
 
-    await page.goto(origine + '/');
-    await page.waitForFunction(() => typeof Rendu.imagesCommons === 'function', null, { timeout: 10000 });
+    await ouvrir(page, origine + '/');
+    /* typeof Rendu : pendant le rechargement, la variable n'existe pas encore. */
+    await page.waitForFunction(() => typeof Rendu === 'object' && typeof Rendu.imagesCommons === 'function', null, { timeout: 10000 });
     /* serveur.js manque, comme sur Pages : il ne doit pas compter. */
     assert.strictEqual(chargements, 2);
 });
@@ -142,7 +165,7 @@ test("iPad (WebKit) : chaque compétence activée part avec la consigne, et plus
         await page.waitForFunction((n) => !annulation && $('fil').querySelectorAll('li.assistant').length === n, attendues);
     };
 
-    await page.goto(origine + '/');
+    await ouvrir(page, origine + '/');
     /* Les deux compétences sont activées par défaut. */
     assert.ok(await page.isChecked('#ecriture-soignee'));
     assert.ok(await page.isChecked('#style-direct'));
@@ -196,7 +219,7 @@ test("iPad (WebKit) : Discussion régénère une réponse, modifie la question e
     }));
     const attendre = () => page.waitForFunction(() => !annulation);
 
-    await page.goto(origine + '/');
+    await ouvrir(page, origine + '/');
     await page.fill('#saisie', 'Bonjour');
     await page.press('#saisie', 'Enter');
     await attendre();
@@ -252,7 +275,7 @@ test("iPad (WebKit) : la fiche de lecture d'une source s'ouvre par son nom et sa
     const erreurs = [];
     page.on('pageerror', (err) => erreurs.push(String(err)));
 
-    await page.goto(origine + '/');
+    await ouvrir(page, origine + '/');
     await page.click('#ouvrir-bibliotheque');
     await page.setInputFiles('#fichier-sources', path.join(__dirname, 'fixtures', 'programme.pdf'));
     await page.waitForFunction(() => !depotEnCours && !guidesEnCours.size);
@@ -293,7 +316,7 @@ test("iPad (WebKit) : un texte collé devient une source cochée et une réponse
     const erreurs = [];
     page.on('pageerror', (err) => erreurs.push(String(err)));
 
-    await page.goto(origine + '/');
+    await ouvrir(page, origine + '/');
     await page.click('#ouvrir-bibliotheque');
     await page.click('#coller-texte');
     await page.fill('#texte-colle', 'Le volcan est une ouverture de la croûte terrestre.');
@@ -346,7 +369,7 @@ test("iPad (WebKit) : un numéro de passage cité ouvre le passage sous la répo
     const erreurs = [];
     page.on('pageerror', (err) => erreurs.push(String(err)));
 
-    await page.goto(origine + '/');
+    await ouvrir(page, origine + '/');
     await page.click('#ouvrir-bibliotheque');
     await page.click('#coller-texte');
     await page.fill('#texte-colle', 'Le volcan est une ouverture de la croûte terrestre.');
@@ -385,7 +408,7 @@ test("iPad (WebKit) : les citations donnent la page, une plage ouvre tous ses pa
     const page = await (await navigateur.newContext({ ...devices['iPad (gen 7)'], locale: 'fr-FR', serviceWorkers: 'block' })).newPage();
     const erreurs = [];
     page.on('pageerror', (err) => erreurs.push(String(err)));
-    await page.goto('http://127.0.0.1:' + serveur.address().port + '/');
+    await ouvrir(page, 'http://127.0.0.1:' + serveur.address().port + '/');
 
     /* Passages 1 à 4 d'un PDF (pages 4, 4, 5, 6) ; avec une note, passage 5 d'un texte sans pages. */
     const rendu = (texte, note = false) => page.evaluate(([texte, note]) => {
@@ -470,7 +493,7 @@ test("iPad (WebKit) : au-delà du contexte, seuls les passages proches de la que
     const erreurs = [];
     page.on('pageerror', (err) => erreurs.push(String(err)));
 
-    await page.goto(origine + '/');
+    await ouvrir(page, origine + '/');
     /* Plafond réduit à un passage : la source ne tient plus dans le contexte. */
     await page.evaluate(() => { Albert.plafondDocuments = () => 120; });
     await page.click('#ouvrir-bibliotheque');
@@ -518,7 +541,7 @@ test("Grand écran (WebKit) : le menu s'ouvre au lancement et reste ouvert aprè
     const erreurs = [];
     page.on('pageerror', (err) => erreurs.push(String(err)));
 
-    await page.goto(origine + '/');
+    await ouvrir(page, origine + '/');
     assert.ok(await page.evaluate(() => $('menu').open), 'menu fermé au lancement');
     await page.click('#principal', { position: { x: 400, y: 300 } });
     assert.ok(await page.evaluate(() => $('menu').open), 'menu replié par un clic au centre');
@@ -548,7 +571,7 @@ test("Grand écran (WebKit) : le menu s'ouvre au lancement et reste ouvert aprè
     await page.click('.fermer-bibliotheque');
     assert.ok(!await page.evaluate(() => $('bibliotheque').open), 'bibliothèque non repliée par sa flèche');
     assert.strictEqual(await page.evaluate(() => lire('bibliotheque-volet', null)), null);
-    await page.reload();
+    await recharger(page);
     assert.ok(await page.evaluate(() => $('menu').open), 'menu fermé au rechargement');
     assert.deepStrictEqual(erreurs, []);
 });
@@ -574,7 +597,7 @@ test("iPad (WebKit) : 'Effacer la clé et quitter' est dans Réglages, Applicati
     const erreurs = [];
     page.on('pageerror', (err) => erreurs.push(String(err)));
 
-    await page.goto(origine + '/');
+    await ouvrir(page, origine + '/');
     assert.strictEqual(await page.locator('#menu #changer-cle').count(), 0, 'bouton encore dans le menu');
     await page.evaluate(() => $('ouvrir-reglages').click());
     await page.click('#reglages details:has(#changer-cle) > summary');
@@ -600,7 +623,7 @@ test("iPad (WebKit) : 'Autoriser la synthèse vocale en ligne' est dans Outils, 
     const erreurs = [];
     page.on('pageerror', (err) => erreurs.push(String(err)));
 
-    await page.goto(origine + '/');
+    await ouvrir(page, origine + '/');
     assert.ok(await page.evaluate(() => $('choix-moteur').compareDocumentPosition($('voix-en-ligne')) & Node.DOCUMENT_POSITION_FOLLOWING),
         'voix pas sous les moteurs');
     await page.evaluate(() => $('ouvrir-reglages').click());

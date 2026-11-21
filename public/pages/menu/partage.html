@@ -1,0 +1,29 @@
+    <dialog id="partage"
+            class="reglages partage pico"
+            aria-labelledby="titre-partage"
+            aria-describedby="texte-partage">
+        <form method="dialog">
+            <h2 id="titre-partage" data-t="partage.titre"></h2>
+            <div class="carte-texte">
+                <p id="texte-partage" data-t="partage.texte"></p>
+                <img id="qr-partage"
+                     class="qr"
+                     width="240"
+                     height="240"
+                     data-t-attr="alt:partage.qr">
+                <div class="adresse-partage">
+                    <label for="adresse-partage" class="visuellement-cache" data-t="partage.adresse"></label>
+                    <input type="text" id="adresse-partage" readonly>
+                    <!-- autofocus : à l'ouverture, le focus va au bouton, pas à l'adresse. -->
+                    <button type="button"
+                            class="bouton-texte outline"
+                            id="copier-adresse"
+                            autofocus
+                            data-t="partage.copier"></button>
+                </div>
+            </div>
+            <div class="boutons-dialogue">
+                <button type="submit" class="bouton-principal" data-t="dialogue.fermer"></button>
+            </div>
+        </form>
+    </dialog>

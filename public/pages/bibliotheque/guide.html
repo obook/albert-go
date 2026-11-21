@@ -1,0 +1,19 @@
+    <!-- Guide d'une source : rédigé par Albert à son dépôt, ouvert par son nom (projet.js). -->
+    <dialog id="guide" class="reglages pico" aria-labelledby="titre-guide">
+        <form method="dialog">
+            <h2 id="titre-guide" class="titre-guide"></h2>
+            <p id="etat-guide" role="status"></p>
+            <div id="contenu-guide" class="contenu-guide">
+                <p id="resume-guide"></p>
+                <h3 data-t="guide.themes"></h3>
+                <ul id="themes-guide"></ul>
+                <h3 data-t="guide.questions"></h3>
+                <div id="questions-guide" class="questions-guide"></div>
+            </div>
+            <div class="boutons-dialogue">
+                <button type="button" id="refaire-guide" class="bouton-texte outline" data-t="guide.refaire"></button>
+                <button type="button" id="telecharger-guide" class="bouton-texte outline" data-t="guide.telecharger"></button>
+                <button type="submit" class="bouton-principal" autofocus data-t="dialogue.fermer"></button>
+            </div>
+        </form>
+    </dialog>

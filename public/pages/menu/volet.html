@@ -1,0 +1,129 @@
+    <!-- Menu latéral, comme albert-droid. -->
+    <dialog id="menu" class="volet" aria-labelledby="titre-menu">
+        <div class="volet-contenu">
+            <div class="volet-titre">
+                <h2 id="titre-menu" class="marque">Albert&nbsp;Go</h2>
+                <!-- Même motif que le choix du modèle : un <details> qui se déplie, à droite du titre. -->
+                <details id="choix-langue" class="choix-langue">
+                    <summary id="langue-choisie" data-t-attr="aria-label:langue.choisir;title:langue.choisir"></summary>
+                    <div class="langues-choix">
+                        <button type="button" data-langue="fr"><svg class="drapeau" viewBox="0 0 24 16" aria-hidden="true"><rect width="8" height="16" fill="#002395"/><rect x="8" width="8" height="16" fill="#ffffff"/><rect x="16" width="8" height="16" fill="#ed2939"/></svg><span>Français</span></button>
+                        <button type="button" data-langue="en"><svg class="drapeau" viewBox="0 0 24 16" aria-hidden="true"><rect width="24" height="16" fill="#012169"/><path d="M0 0l24 16M24 0L0 16" stroke="#ffffff" stroke-width="3.2"/><path d="M0 0l24 16M24 0L0 16" stroke="#c8102e" stroke-width="1.8"/><path d="M12 0v16M0 8h24" stroke="#ffffff" stroke-width="5.4"/><path d="M12 0v16M0 8h24" stroke="#c8102e" stroke-width="3.2"/></svg><span>English</span></button>
+                        <button type="button" data-langue="es"><svg class="drapeau" viewBox="0 0 24 16" aria-hidden="true"><rect width="24" height="16" fill="#aa151b"/><rect y="4" width="24" height="8" fill="#f1bf00"/></svg><span>Español</span></button>
+                        <button type="button" data-langue="de"><svg class="drapeau" viewBox="0 0 24 16" aria-hidden="true"><rect width="24" height="16" fill="#000000"/><rect y="5.33" width="24" height="5.34" fill="#dd0000"/><rect y="10.67" width="24" height="5.33" fill="#ffce00"/></svg><span>Deutsch</span></button>
+                    </div>
+                </details>
+                <!-- Tout bouton du menu le ferme (menu.js) : pas de code en plus.
+                     autofocus : à l'ouverture, le focus va ici, pas au drapeau. -->
+                <button type="button" class="bouton-icone fermer-menu" autofocus data-t-attr="aria-label:menu.fermer;title:menu.fermer">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+                </button>
+            </div>
+            <button type="button"
+                    class="resume"
+                    id="resume-reglages"
+                    aria-haspopup="dialog"
+                    data-t-attr="title:menu.resume"
+                    hidden></button>
+            <!-- Masqué sans clé : tout ce qu'il sépare l'est aussi (afficher). -->
+            <hr id="trait-outils" hidden>
+            <button type="button"
+                    class="entree"
+                    id="nouvelle"
+                    hidden>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+                <span data-t="menu.nouvelle"></span>
+            </button>
+            <!-- Libellés posés par afficherOutil : des noms de modules, non traduits. -->
+            <div id="menu-outils"
+                 class="outils"
+                 role="group"
+                 data-t-attr="aria-label:menu.outils"
+                 hidden>
+                <button type="button" class="entree" data-outil="discuter">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12Z"/></svg>
+                    <span></span>
+                </button>
+                <!-- Correction masqué : Discussion corrige elle-même ("Corrige ce texte : ..."). Le module reste pour l'historique.
+                <button type="button" class="entree" data-outil="corriger">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h12M4 12h8M4 17h5"/><path d="M14 19l3 3 5-7"/></svg>
+                    <span></span>
+                </button>
+                -->
+                <!-- Style masqué pour plus tard : Discussion reformule elle-même ("Reformule ce texte : ..."). Le module reste pour l'historique.
+                <button type="button" class="entree" data-outil="reformuler">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4Z"/><path d="M14 6l4 4"/></svg>
+                    <span></span>
+                </button>
+                -->
+                <!-- Courrier masqué pour plus tard. Le module reste pour l'historique.
+                <button type="button" class="entree" data-outil="rediger">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+                    <span></span>
+                </button>
+                -->
+                <!-- Trad masqué : Chat traduit lui-même ("Traduis en anglais : ..."). Le module reste pour l'historique.
+                <button type="button" class="entree" data-outil="traduire">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h8M8 3v2M6 5c0 4 3 7 6 8M10 5c0 3-3 7-6 8"/><path d="M13 21l4-9 4 9M14.5 18h5"/></svg>
+                    <span></span>
+                </button>
+                -->
+            </div>
+            <!-- Projets : en créer un, en rouvrir un, le supprimer, comme l'historique (projet.js, historique.js). -->
+            <details id="menu-projets" class="historique" hidden>
+                <summary class="entree">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></svg>
+                    <span data-t="menu.projets"></span>
+                </summary>
+                <button type="button" id="nouveau-projet" class="titre-conversation nouveau-projet" data-t="projets.nouveau"></button>
+                <ol id="liste-projets" class="liste-historique"></ol>
+            </details>
+            <!-- L'historique à part, entre deux traits ; masqué sans clé comme lui (afficher). -->
+            <hr id="trait-historique" hidden>
+            <details id="menu-historique" class="historique" hidden>
+                <summary class="entree">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5M12 7v5l3 3"/></svg>
+                    <span data-t="menu.historique"></span>
+                </summary>
+                <input type="search" id="recherche-historique" class="recherche-historique" data-t-attr="placeholder:historique.rechercher;aria-label:historique.rechercher">
+                <ol id="liste-historique" class="liste-historique"></ol>
+                <p id="historique-vide" class="note"></p>
+            </details>
+            <hr>
+            <button type="button"
+                    class="entree"
+                    id="ouvrir-reglages"
+                    hidden>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg>
+                <span data-t="menu.reglages"></span>
+            </button>
+            <button type="button" class="entree" id="theme"></button>
+            <button type="button" class="entree" id="ouvrir-empreinte">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 20h10"/><path d="M10 20c5.5-2.5.8-6.4 3-10"/><path d="M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8z"/><path d="M14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4 1-4.9 2z"/></svg>
+                <span data-t="menu.empreinte"></span>
+            </button>
+            <button type="button" class="entree" id="ouvrir-partage">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>
+                <span data-t="menu.partager"></span>
+            </button>
+            <button type="button" class="entree" id="ouvrir-info">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-5M12 8h.01"/></svg>
+                <span data-t="menu.apropos"></span>
+            </button>
+            <!-- Kiosque : le prof ferme la session, l'élève la quitte (kiosque.js). -->
+            <button type="button" class="entree danger" id="deconnexion-kiosque" hidden>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5M21 12H9"/></svg>
+                <span data-t="kiosque.deconnexion"></span>
+            </button>
+            <!-- Retiré le 21/11/2026 : le bouton est passé dans Réglages, carte Application, rubrique Données.
+            <hr id="trait-cle" hidden>
+            <button type="button"
+                    class="entree danger"
+                    id="changer-cle"
+                    hidden>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5M21 12H9"/></svg>
+                <span data-t="menu.changer-cle"></span>
+            </button>
+            -->
+        </div>
+    </dialog>

@@ -75,7 +75,7 @@ test('heure : l\'heure seule, au format court de la langue', () => {
 test('accueil : chaque fichier d\'exemples a autant d\'exemples dans chaque langue', () => {
     const fs = require('node:fs');
     const path = require('node:path');
-    const page = fs.readFileSync(path.join(__dirname, '../public/index.html'), 'utf8');
+    const page = require('./page-complete.js').lirePageComplete();
     assert.match(page, /data-exemple="bienvenue\.exemple-formel" data-t="bienvenue\.formel"/);
     const dossier = path.join(__dirname, '../public/exemples');
     const compter = (langue, fichier) => fs.readFileSync(path.join(dossier, langue, fichier), 'utf8')

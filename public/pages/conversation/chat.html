@@ -1,0 +1,47 @@
+        <section id="chat"
+                 class="chat"
+                 hidden
+                 data-t-attr="aria-label:chat.aria">
+            <!-- Projet : le nom du document sert de titre, au-dessus du fil. -->
+            <label for="nom-projet" class="visuellement-cache" data-t="documents.nom"></label>
+            <input type="text" id="nom-projet" class="nom-projet" maxlength="40" data-t-attr="placeholder:documents.nom">
+            <ol id="fil"
+                class="fil"
+                role="log"
+                aria-live="polite"></ol>
+            <!-- Projet vide : une phrase et trois demandes types, masquées dès la première question.
+                 Après le fil, vide et sans hauteur : #fil:empty ~ suffit, sans :has(), que Safari sur iPad recalculait en retard. -->
+            <div class="accueil-projet">
+                <p data-t="projet.bienvenue"></p>
+                <div class="suggestions">
+                    <button type="button" class="suggestion" data-exemple="projet.exemple-courrier" data-t="projet.courrier"></button>
+                    <button type="button" class="suggestion" data-exemple="projet.exemple-synthese" data-t="projet.synthese"></button>
+                    <button type="button" class="suggestion" data-exemple="projet.exemple-evaluation" data-t="projet.evaluation"></button>
+                </div>
+            </div>
+            <!-- Chat vide : bienvenue et suggestions, masquées dès la première question (CSS). -->
+            <div class="bienvenue">
+                <p data-t="bienvenue.texte"></p>
+                <div class="suggestions">
+                    <button type="button" class="suggestion" data-exemple="bienvenue.exemple-histoire" data-t="bienvenue.histoire"></button>
+                    <button type="button" class="suggestion" data-exemple="bienvenue.exemple-corriger" data-t="bienvenue.corriger"></button>
+                    <button type="button" class="suggestion" data-exemple="bienvenue.exemple-reformuler" data-t="bienvenue.reformuler"></button>
+                    <!-- Courrier masqué pour plus tard. <button type="button" class="suggestion" data-module="rediger" data-exemple="bienvenue.exemple-rediger" data-t="bienvenue.rediger"></button> -->
+                    <button type="button" class="suggestion" data-exemple="bienvenue.exemple-traduire" data-t="bienvenue.traduire"></button>
+                    <button type="button" class="suggestion" data-exemple="bienvenue.exemple-analyse" data-t="bienvenue.analyse"></button>
+                    <button type="button" class="suggestion" data-exemple="bienvenue.exemple-grammaire" data-t="bienvenue.grammaire"></button>
+                    <button type="button" class="suggestion" data-exemple="bienvenue.exemple-dissertation" data-t="bienvenue.dissertation"></button>
+                    <button type="button" class="suggestion" data-exemple="bienvenue.exemple-latin" data-t="bienvenue.latin"></button>
+                    <button type="button" class="suggestion" data-exemple="bienvenue.exemple-calcul" data-t="bienvenue.calcul"></button>
+                    <button type="button" class="suggestion" data-exemple="bienvenue.exemple-formel" data-t="bienvenue.formel"></button>
+                    <button type="button" class="suggestion" data-exemple="bienvenue.exemple-formule" data-t="bienvenue.formule"></button>
+                    <button type="button" class="suggestion" data-exemple="bienvenue.exemple-tirage" data-t="bienvenue.tirage"></button>
+                    <button type="button" class="suggestion" data-exemple="bienvenue.exemple-graphique" data-t="bienvenue.graphique"></button>
+                    <button type="button" class="suggestion" data-exemple="bienvenue.exemple-figure" data-t="bienvenue.figure"></button>
+                    <button type="button" class="suggestion" data-exemple="bienvenue.exemple-schema" data-t="bienvenue.schema"></button>
+                    <button type="button" class="suggestion" data-exemple="bienvenue.exemple-code" data-t="bienvenue.code"></button>
+                    <button type="button" class="suggestion" data-exemple="bienvenue.exemple-recherche" data-t="bienvenue.recherche" data-recherche></button>
+                    <button type="button" class="suggestion" data-exemple="bienvenue.exemple-services" data-t="bienvenue.services" data-recherche></button>
+                </div>
+            </div>
+        </section>

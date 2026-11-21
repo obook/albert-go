@@ -1,0 +1,16 @@
+    <!-- Texte collé dans la bibliothèque, comme une source (projet.js). -->
+    <dialog id="dialogue-coller" class="reglages pico" aria-labelledby="titre-coller">
+        <form method="dialog">
+            <h2 id="titre-coller" data-t="documents.coller"></h2>
+            <div>
+                <label for="nom-colle" data-t="coller.nom"></label>
+                <input type="text" id="nom-colle" maxlength="80" autocomplete="off" data-t-attr="placeholder:documents.texte-colle">
+                <label for="texte-colle" data-t="coller.texte"></label>
+                <textarea id="texte-colle" rows="8" required autofocus></textarea>
+            </div>
+            <div class="boutons-dialogue">
+                <button type="submit" value="non" class="bouton-texte outline" formnovalidate data-t="dialogue.annuler"></button>
+                <button type="submit" value="oui" class="bouton-principal" data-t="coller.ajouter"></button>
+            </div>
+        </form>
+    </dialog>

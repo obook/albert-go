@@ -1,0 +1,56 @@
+    <footer id="saisie-zone" class="saisie-zone" hidden>
+        <form id="form-question" class="saisie">
+            <label for="saisie" class="visuellement-cache" data-t="saisie.label"></label>
+            <div id="piece-jointe" class="piece-jointe" hidden>
+                <span id="piece-nom"></span>
+                <button type="button" id="piece-retirer" data-t-attr="aria-label:piece.retirer">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+                </button>
+            </div>
+            <textarea id="saisie" rows="1" aria-describedby="aide-saisie"></textarea>
+            <div class="barre">
+                <input type="file"
+                       id="fichier"
+                       accept="image/*,audio/*,.m4a,.opus,.pdf,.docx,.odt,.txt,.md,.csv,.tsv,.json,.xml,.html,.css,.js,.py,.tex,.sql"
+                       hidden>
+                <button type="button"
+                        class="bouton-icone joindre"
+                        id="joindre"
+                        data-t-attr="aria-label:saisie.joindre;title:saisie.joindre">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5l-8.6 8.6a5 5 0 0 1-7.1-7.1l8.6-8.6a3.3 3.3 0 0 1 4.7 4.7l-8.6 8.6a1.7 1.7 0 0 1-2.4-2.4l7.9-7.9"/></svg>
+                </button>
+                <!-- Globe : même réglage que l'interrupteur de la recherche (reglages.js). -->
+                <button type="button"
+                        class="bouton-icone recherche-web"
+                        id="recherche-web"
+                        aria-pressed="false"
+                        data-t-attr="aria-label:saisie.recherche;title:saisie.recherche"></button>
+                <button type="button"
+                        class="bouton-icone fleche"
+                        id="question-precedente"
+                        data-t-attr="aria-label:saisie.precedente">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg>
+                </button>
+                <button type="button"
+                        class="bouton-icone fleche"
+                        id="question-suivante"
+                        data-t-attr="aria-label:saisie.suivante">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+                </button>
+                <button type="submit"
+                        id="envoyer"
+                        class="envoyer"
+                        data-t-attr="aria-label:saisie.envoyer">
+                    <svg class="icone-envoyer" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+                    <svg class="icone-arreter" viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="7" width="10" height="10" rx="1.5"/></svg>
+                </button>
+            </div>
+            <!-- Jauge de contexte mise de côté, à revoir (avec affichage.js).
+            <div class="jauge" aria-hidden="true"><span id="jauge-niveau"></span></div>
+            -->
+        </form>
+        <p id="etat" class="etat" role="status"></p>
+        <!-- Température au-delà de 1 : remplace le rappel sur l'IA, un appui ouvre les réglages (affichage.js). -->
+        <button type="button" id="alerte-reglages" class="avertissement erreur" hidden></button>
+        <p id="aide-saisie" class="avertissement" data-t="saisie.avertissement"></p>
+    </footer>

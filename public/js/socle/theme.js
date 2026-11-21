@@ -27,6 +27,7 @@ try {
 /* Un script perdu au lancement coupe une fonction sans rien dire (images.js sur le Pixel, 11/11/2026) :
    on recharge, au plus une fois par minute. Hors ligne, recharger n'afficherait plus rien. */
 const CLE_RECHARGE = 'albert-go.recharge';
+/* Retiré le 21/11/2026 : les scripts de l'interface arrivent après la lecture de la page (chargement.js).
 addEventListener('error', (e) => {
     const src = e.target instanceof HTMLScriptElement && e.target.getAttribute('src');
     if (!src || !/^(js|vendor)\//.test(src) || document.readyState !== 'loading' || !navigator.onLine) {
@@ -42,3 +43,31 @@ addEventListener('error', (e) => {
     }
     location.reload();
 }, true);
+*/
+addEventListener('error', (e) => {
+    const src = e.target instanceof HTMLScriptElement && e.target.getAttribute('src');
+    if (!src || !/^(js|vendor)\//.test(src)) {
+        return;
+    }
+    /* Scripts chargés plus tard, à la demande (Mermaid, pdf.js) : pas de rechargement. */
+    const auLancement = document.readyState === 'loading' || 'lancement' in e.target.dataset;
+    if (auLancement) {
+        rechargerUneFois();
+    }
+}, true);
+
+/** Recharge la page, au plus une fois par minute et seulement en ligne. Appelée aussi par chargement.js. */
+function rechargerUneFois() {
+    if (!navigator.onLine) {
+        return;
+    }
+    try {
+        if (Date.now() - Number(sessionStorage.getItem(CLE_RECHARGE)) < 60000) {
+            return;
+        }
+        sessionStorage.setItem(CLE_RECHARGE, String(Date.now()));
+    } catch (err) {
+        return;
+    }
+    location.reload();
+}
