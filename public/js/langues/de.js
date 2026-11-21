@@ -322,7 +322,7 @@ I18n.TEXTES.de = {
     'confirmer-suppression.titre': 'Dieses Gespräch löschen?',
     'partage.titre': 'Teilen',
     'partage.texte': 'Scannen Sie den QR-Code oder kopieren Sie die Adresse.',
-    'partage.texte-en-ligne': 'Scannen Sie den QR-Code oder kopieren Sie die Adresse. Ihr Schlüssel wird nicht geteilt: jeder nutzt seinen eigenen.',
+    'partage.texte-en-ligne': 'Scannen Sie den QR-Code oder kopieren Sie die Adresse. Ihr Schlüssel wird nicht geteilt.',
     'partage.en-ligne': 'Link zu Albert Go online: Dort gibt jeder seinen eigenen Schlüssel ein.',
     'partage.qr': 'QR-Code der Adresse von Albert Go',
     'partage.adresse': 'Adresse von Albert Go',
