@@ -66,3 +66,38 @@ test('chargement : chaque script de SCRIPTS existe', () => {
     const absents = liste('SCRIPTS').filter((chemin) => !fs.existsSync(path.join(PUBLIC, chemin)));
     assert.deepStrictEqual(absents, []);
 });
+
+/**
+ * Fichiers .js d'un dossier et de ses sous-dossiers, en chemins depuis public/.
+ *
+ * @param {string} dossier - Dossier à parcourir.
+ * @returns {string[]} Chemins comme "js/tools/calcul/calcul.js".
+ */
+function scriptsPresents(dossier) {
+    const chemins = [];
+    for (const entree of fs.readdirSync(dossier, { withFileTypes: true })) {
+        const chemin = path.join(dossier, entree.name);
+        if (entree.isDirectory()) {
+            chemins.push(...scriptsPresents(chemin));
+        } else if (entree.name.endsWith('.js')) {
+            chemins.push(path.relative(PUBLIC, chemin).split(path.sep).join('/'));
+        }
+    }
+    return chemins;
+}
+
+test('chargement : chaque fichier de public/js est chargé quelque part', () => {
+    /* Balises <script> des deux pages, sans le ?v= de version. */
+    const balises = ['index.html', 'kiosque.html'].flatMap((page) => {
+        const texte = fs.readFileSync(path.join(PUBLIC, page), 'utf8');
+        return [...texte.matchAll(/<script src="([^"?]+)/g)].map((trouve) => trouve[1]);
+    });
+    /* Workers : leur adresse est écrite dans le script qui les lance (WORKER: '...'). */
+    const workers = scriptsPresents(path.join(PUBLIC, 'js')).flatMap((chemin) => {
+        const texte = fs.readFileSync(path.join(PUBLIC, chemin), 'utf8');
+        return [...texte.matchAll(/WORKER: '([^']+)'/g)].map((trouve) => trouve[1]);
+    });
+    const charges = new Set([...liste('SCRIPTS'), ...balises, ...workers]);
+    const oublies = scriptsPresents(path.join(PUBLIC, 'js')).filter((chemin) => !charges.has(chemin));
+    assert.deepStrictEqual(oublies, []);
+});
