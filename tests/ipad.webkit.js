@@ -360,6 +360,55 @@ test("iPad (WebKit) : un texte collé devient une source cochée et une réponse
     assert.deepStrictEqual(erreurs, []);
 });
 
+test("iPad (WebKit) : jetons lus pendant l'attente, chronomètre sous la réponse, gardé au rechargement", async (t) => {
+    const serveur = await servir();
+    const origine = 'http://127.0.0.1:' + serveur.address().port;
+    const navigateur = await webkit.launch();
+    t.after(async () => {
+        await navigateur.close();
+        serveur.close();
+    });
+    const contexte = await navigateur.newContext({ ...devices['iPad (gen 7)'], locale: 'fr-FR', serviceWorkers: 'block' });
+    let page = null;
+    let lecture = null;
+    /* Albert simulé, avec usage ; avant de répondre, on lit la ligne d'attente. */
+    await contexte.route((url) => url.origin !== origine, async (route) => {
+        if (!route.request().url().endsWith('/chat/completions')) {
+            return route.abort();
+        }
+        lecture = await page.textContent('#fil .attente .lecture');
+        return route.fulfill({ json: {
+            choices: [{ message: { role: 'assistant', content: 'Une réponse.' }, finish_reason: 'stop' }],
+            usage: { prompt_tokens: 1200, completion_tokens: 80, total_tokens: 1280 }
+        } });
+    });
+    await contexte.addInitScript(() => localStorage.setItem('albert-go.cle', 'sk-test'));
+    page = await contexte.newPage();
+    const erreurs = [];
+    page.on('pageerror', (err) => erreurs.push(String(err)));
+
+    await ouvrir(page, origine + '/');
+    await page.fill('#saisie', 'Combien de temps ?');
+    await page.press('#saisie', 'Enter');
+    await page.waitForFunction(() => !annulation);
+    assert.match(lecture, /^Albert lit environ [\d\s ]+ jetons$/);
+
+    const bouton = '#fil li.assistant [aria-label="Jetons et durée de la réponse"]';
+    assert.strictEqual(await page.getAttribute(bouton, 'aria-expanded'), 'false');
+    await page.click(bouton);
+    assert.strictEqual(await page.getAttribute(bouton, 'aria-expanded'), 'true');
+    const detail = await page.textContent('#fil li.assistant .mesure');
+    assert.match(detail, /Envoyé : 1[\s ]200 jetons/);
+    assert.match(detail, /Reçu : 80 jetons/);
+    assert.match(detail, /Réponse d'Albert : [\d,]+ s/);
+    assert.ok(await page.locator('#fil li.assistant .mesure meter').count() >= 2, 'barres absentes');
+
+    /* La mesure est gardée avec l'échange : l'icône revient avec la conversation. */
+    await recharger(page);
+    assert.strictEqual(await page.locator(bouton).count(), 1);
+    assert.deepStrictEqual(erreurs, []);
+});
+
 test("iPad (WebKit) : un numéro de passage cité ouvre le passage sous la réponse", async (t) => {
     const serveur = await servir();
     const origine = 'http://127.0.0.1:' + serveur.address().port;

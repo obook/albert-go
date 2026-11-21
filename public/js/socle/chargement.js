@@ -51,6 +51,7 @@ const SCRIPTS = [
     'js/albert/modeles.js',
     'js/albert/passages.js',
     'js/albert/reponses.js',
+    'js/albert/mesure.js',
     /* Avant stockage.js : le réglage cx part de Recherche.CX. */
     'js/tools/calcul/calcul.js',
     'js/tools/calcul/formel.js',
@@ -70,6 +71,7 @@ const SCRIPTS = [
     'js/interface/affichage.js',
     /* Avant reglages.js : les réglages du prof sont recopiés avant que la boîte Réglages soit remplie. */
     'js/kiosque/kiosque.js',
+    'js/conversation/chronometre.js',
     'js/conversation/reponse.js',
     'js/interface/reglages.js',
     'js/conversation/historique.js',

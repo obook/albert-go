@@ -150,12 +150,16 @@ function memoriser(question) {
  * @param {string} question - Texte saisi, sans le fichier joint.
  * @param {?string} image - Image à montrer au modèle, ou null.
  * @param {Object} modele - Modèle qui répond : celui des réglages, ou un lecteur d'images.
- * @returns {Promise<Object>} Réponse de Albert.repondre.
+ * @returns {Promise<Object>} Réponse de Albert.repondre, avec sa mesure (Albert.mesurer).
  */
 async function demanderReponse(outil, question, image, modele) {
+    const debut = Date.now();
     /* Chaque outil a sa consigne système ; seuls les modules à fil envoient aussi la conversation. */
     const fil = Albert.OUTILS[outil].fil;
-    let texteConsigne = await consigne(outil);
+    const tailles = { competences: 0 };
+    let texteConsigne = await consigne(outil, 'consigne', tailles);
+    const longueurConsigne = (texteConsigne || '').length;
+    let rechercheMs = 0;
     /* Discussion et Imprimerie : les sources cochées partent à chaque question, à la suite de la consigne.
        Discussion les numérote par passage pour les citer ; Imprimerie les garde entières, un numéro finirait imprimé. */
     const avecSources = Albert.OUTILS[outil].sources && documentsProjet.length > 0;
@@ -165,7 +169,9 @@ async function demanderReponse(outil, question, image, modele) {
         const passages = Albert.passagesSources(documentsProjet);
         /* Au-delà du contexte, seuls les passages utiles à la question partent, avec leur numéro. */
         const tiennent = documentsProjet.reduce((s, d) => s + d.texte.length, 0) <= Albert.plafondDocuments(modeleActuel().contexte);
+        const avantRecherche = Date.now();
         const envoyes = tiennent ? passages : await passagesPertinents(question, passages, annulation.signal);
+        rechercheMs = Date.now() - avantRecherche;
         texteConsigne += '\n\n' + Albert.joindrePassages(envoyes);
         const mots = Albert.motsRares(question, passages);
         if (mots) {
@@ -179,17 +185,46 @@ async function demanderReponse(outil, question, image, modele) {
     if (image) {
         messages = Albert.avecImage(messages, question, image);
     }
+    /* Ce qui part, par origine : l'attente l'annonce, la mesure de la réponse le garde. */
+    const caracteres = {
+        sources: (texteConsigne || '').length - longueurConsigne,
+        competences: tailles.competences,
+        consigne: longueurConsigne - tailles.competences,
+        discussion: messages.reduce((somme, m) => somme + longueurTexte(m.content), 0)
+    };
+    annoncerLecture(caracteres);
     if (texteConsigne) {
         messages = [{ role: 'system', content: texteConsigne }, ...messages];
     }
     /* Seuls les modules à fil proposent les outils calcul et recherche : les autres rendent un texte. */
     const envoi = fil ? repondreAvecOutils : Albert.repondre.bind(Albert);
-    return envoi({
+    const reponse = await envoi({
         model: modele.id,
         temperature: reglages.temperature,
         ...Albert.topK(reglages.topK),
         messages: messages
     }, annulation.signal);
+    reponse.mesure = Albert.mesurer({
+        caracteres: caracteres,
+        appels: reponse.appels || [{ usage: reponse.usage, duree: reponse.duree }],
+        rechercheMs: rechercheMs,
+        totalMs: Date.now() - debut,
+        contexte: modele.contexte || modeleActuel().contexte
+    });
+    return reponse;
+}
+
+/**
+ * Longueur du texte d'un message : une chaîne, ou les parties texte d'un message avec image.
+ *
+ * @param {string|Object[]} contenu - Champ content d'un message.
+ * @returns {number} Nombre de caractères de texte.
+ */
+function longueurTexte(contenu) {
+    if (typeof contenu === 'string') {
+        return contenu.length;
+    }
+    return (contenu || []).reduce((somme, partie) => somme + (partie.text || '').length, 0);
 }
 
 /**
@@ -208,9 +243,13 @@ function recevoirReponse(reponse, outil, anciennes = null) {
        Discussion garde aussi leur liste : elle retrouve les passages cités. */
     const noms = documentsProjet.map(d => d.nom);
     const sources = Albert.OUTILS[outil].documents ? { bibliotheque: noms.join(', ') } : { bibliotheque: noms.join(', '), passages: noms };
-    const recherches = Albert.OUTILS[outil].sources && documentsProjet.length
+    let recherches = Albert.OUTILS[outil].sources && documentsProjet.length
         ? [...(reponse.recherches || []), sources]
         : reponse.recherches;
+    /* Jetons et durées de la réponse : gardés avec elle, comme ses traces, et relus avec l'historique. */
+    if (reponse.mesure) {
+        recherches = [...(recherches || []), { mesure: reponse.mesure }];
+    }
     /* Seul le dernier échange garde ses versions : les flèches ne vont pas plus haut. */
     conversation = conversation.map(({ versions, affichee, ...m }) => m);
     conversation.push({ role: 'assistant', content: texte, langue: langue, recherches: recherches, usage: reponse.usage });

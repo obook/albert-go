@@ -191,7 +191,8 @@ function avecDate(messages) {
  *
  * @param {Object} requete - Corps de la demande (model, messages...).
  * @param {AbortSignal} signal - Pour annuler avec la question.
- * @returns {Promise<Object>} Réponse d'Albert.repondre.
+ * @returns {Promise<Object>} Réponse d'Albert.repondre ; avec des outils, plus recherches
+ *     et appels ({usage, duree} de chaque appel à Albert).
  */
 async function repondreAvecOutils(requete, signal) {
     /* Internet autorisé dans Réglages et globe activé : recherche (si un
@@ -213,7 +214,19 @@ async function repondreAvecOutils(requete, signal) {
     const faites = [];
     /* Extraits trouvés, pour le dernier tour. */
     const extraits = [];
-    const rendre = (reponse) => ({ ...reponse, texte: avecTableaux(Recherche.citations(reponse.texte), faites), recherches: faites });
+    /* Chaque appel à Albert, son usage et sa durée : la mesure de la réponse les additionne. */
+    const appelsAlbert = [];
+    const demander = async (corps) => {
+        const reponse = await Albert.repondre(corps, signal);
+        appelsAlbert.push({ usage: reponse.usage, duree: reponse.duree });
+        return reponse;
+    };
+    const rendre = (reponse) => ({
+        ...reponse,
+        texte: avecTableaux(Recherche.citations(reponse.texte), faites),
+        recherches: faites,
+        appels: appelsAlbert
+    });
     /* Demande sans outil ni message "tool" : gpt-oss rappellerait l'outil et ne rédigerait rien,
        et une API refuse des messages "tool" sans le champ tools. Les extraits repartent en texte ;
        sans recherche, pas de sources à citer, d'où un texte neutre. */
@@ -227,12 +240,12 @@ async function repondreAvecOutils(requete, signal) {
     for (let tour = 0; tour < TOURS_MAX; tour++) {
         let reponse;
         try {
-            reponse = await Albert.repondre({
+            reponse = await demander({
                 ...requete,
                 messages: avecRappel(messages, cherche),
                 tools: outils,
                 tool_choice: cherche && tour === 0 ? 'required' : 'auto'
-            }, signal);
+            });
         } catch (err) {
             /* Repli sans outils pour un modèle qui les refuse. Réseau, relais, délai, arrêt, clé
                ou quota échoueraient pareil : l'erreur remonte telle quelle. */
@@ -244,7 +257,7 @@ async function repondreAvecOutils(requete, signal) {
             }
             /* Au premier tour, messages ne contient encore aucun appel d'outil. */
             const repli = tour === 0 ? avecDate(messages) : messagesSansOutils();
-            return rendre(await Albert.repondre({ ...requete, messages: repli }, signal));
+            return rendre(await demander({ ...requete, messages: repli }));
         }
         const appels = (reponse.message && reponse.message.tool_calls) || [];
         if (!appels.length) {
@@ -259,7 +272,7 @@ async function repondreAvecOutils(requete, signal) {
         etat(t('etat.reflechit'));
     }
     /* Dernier tour : réponse rédigée sans outil. */
-    return rendre(await Albert.repondre({ ...requete, messages: messagesSansOutils() }, signal));
+    return rendre(await demander({ ...requete, messages: messagesSansOutils() }));
 }
 
 /* Export pour les tests Node ; ignoré dans le navigateur. */

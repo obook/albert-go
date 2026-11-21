@@ -130,6 +130,30 @@ main {
 .recherches, .calculs { margin: 0.75rem 0 0; }
 /* Lecture d'un tableau de variations : une ligne pour x, f' et f (Albert.traceCalcul). */
 .calculs { white-space: pre-line; }
+/* Jetons et durées d'une réponse (chronometre.js) : une ligne par origine, chiffres alignés. */
+.mesure { margin: 0.75rem 0 0; display: grid; gap: 0.25rem; }
+.mesure p { margin: 0; }
+.mesure .parts {
+    display: grid;
+    grid-template-columns: auto auto minmax(3rem, 1fr) auto;
+    gap: 0.125rem 0.75rem;
+    align-items: center;
+}
+.mesure .part { display: contents; }
+.mesure .pourcent, .mesure .jetons { text-align: right; font-variant-numeric: tabular-nums; }
+/* Barres à la couleur de l'application : sans ces règles, le navigateur les peint en vert. */
+.mesure meter {
+    width: 100%;
+    height: 0.5rem;
+    border: 0;
+    border-radius: 999px;
+    background: var(--bord);
+}
+.mesure meter::-webkit-meter-bar { border: 0; border-radius: 999px; background: var(--bord); }
+.mesure meter::-webkit-meter-optimum-value { border-radius: 999px; background: var(--accent); }
+.mesure meter::-moz-meter-bar { border-radius: 999px; background: var(--accent); }
+/* Attente : les jetons qu'Albert lit, avant le compteur de secondes. */
+.attente .lecture { font-size: 0.875rem; color: var(--texte-doux); }
 
 /* Page citée dans une réponse (lierCitations) : un lien discret qui ouvre le passage en dessous. */
 .citation {

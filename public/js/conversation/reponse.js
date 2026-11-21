@@ -660,12 +660,20 @@ function bulleReponse(texte, titre, langue, animer = false, recherches = null) {
         carte.append(note);
         actions.append(boutonTrace(note, ICONES.bibliotheque, t('reponse.bibliotheque')));
     }
-    const cherchees = (recherches || []).filter(r => r && !r.image_commons && !r.bibliotheque && !Object.keys(OUTILS_LOCAUX).some(nom => r[nom]));
+    const cherchees = (recherches || []).filter(r => r && !r.image_commons && !r.bibliotheque && !r.mesure
+        && !Object.keys(OUTILS_LOCAUX).some(nom => r[nom]));
     if (cherchees.length) {
         const note = elementRecherches(cherchees);
         note.hidden = true;
         carte.append(note);
         actions.append(boutonRecherches(note, cherchees));
+    }
+    /* Jetons et durées de la réponse (chronometre.js), dépliés au clic. */
+    const mesuree = (recherches || []).find(r => r && r.mesure);
+    if (mesuree) {
+        const { note, bouton } = traceMesure(mesuree.mesure);
+        carte.append(note);
+        actions.append(bouton);
     }
     /* Discussion et Imprimerie : la réponse peut rejoindre la bibliothèque, comme une source. */
     if (Albert.OUTILS[outilActuel].sources) {

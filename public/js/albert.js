@@ -178,7 +178,8 @@ const Albert = {
      *
      * @param {Object} requete - Corps au format chat/completions (model, messages...).
      * @param {AbortSignal} annulation - Signal du bouton Arrêter.
-     * @returns {Promise<{texte: string, usage: ?Object, coupee: boolean}>} Réponse, consommation, et coupee si la longueur l'a arrêtée.
+     * @returns {Promise<{texte: string, usage: ?Object, coupee: boolean, duree: number}>} Réponse, consommation,
+     *     coupee si la longueur l'a arrêtée, et durée de l'appel en millisecondes.
      * @throws {Error} Si Albert refuse la requête, ou si elle est annulée.
      */
     async repondre(requete, annulation) {
@@ -225,7 +226,14 @@ const Albert = {
         this.noterEmpreinte(corps.usage);
         /* message complet : il porte les tool_calls. content est null quand le
            modèle n'appelle qu'un outil, d'où le '' pour l'affichage. */
-        return { texte: choix.message.content || '', message: choix.message, usage: corps.usage || null, coupee: choix.finish_reason === 'length' };
+        /* duree : temps de cet appel, pour la mesure de la réponse (albert/mesure.js). */
+        return {
+            texte: choix.message.content || '',
+            message: choix.message,
+            usage: corps.usage || null,
+            coupee: choix.finish_reason === 'length',
+            duree: Date.now() - debut
+        };
     },
 
     /**
@@ -429,4 +437,5 @@ if (typeof module !== 'undefined') {
     require('./albert/modeles.js');
     require('./albert/passages.js');
     require('./albert/reponses.js');
+    require('./albert/mesure.js');
 }

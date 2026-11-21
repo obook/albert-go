@@ -43,6 +43,8 @@ const ICONES = {
     calendrier: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"/>'
         + '<path d="M4 10h16M8 3v4M16 3v4"/></svg>',
     compteur: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 4 8 20M16 4l-2 16M4.5 9h15M4 15h15"/></svg>',
+    /* timer de Lucide : jetons et durées d'une réponse (chronometre.js). */
+    chronometre: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 2h4M12 14l3-3"/><circle cx="12" cy="14" r="8"/></svg>',
     /* Bouclier coché : clé de contrôle d'un SIRET ou d'un IBAN. */
     controle: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3Z"/>'
         + '<path d="M9 12l2 2 4-4"/></svg>',

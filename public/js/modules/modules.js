@@ -67,10 +67,12 @@ async function lireConsigne(fichier, outil) {
  *
  * @param {string} outil - Clé de Albert.OUTILS.
  * @param {string} [champ] - "consigne", ou "revue" pour la relecture de Rédiger.
+ * @param {?{competences: number}} [tailles] - Reçoit la longueur des compétences ajoutées,
+ *     pour la mesure de la réponse (albert/mesure.js).
  * @returns {Promise<?string>} Texte de la consigne, ou null si l'outil n'en a pas.
  * @throws {Error} Si le fichier ne peut pas être lu.
  */
-async function consigne(outil, champ = 'consigne') {
+async function consigne(outil, champ = 'consigne', tailles = null) {
     const fichier = Albert.OUTILS[outil][champ];
     if (!fichier) {
         return null;
@@ -83,7 +85,11 @@ async function consigne(outil, champ = 'consigne') {
     }
     for (const [nom, competence] of Object.entries(COMPETENCES)) {
         if (champ === 'consigne' && reglages[nom] && (!competence.module || Albert.OUTILS[outil][competence.module])) {
-            texte += '\n\n' + await lireConsigne(competence.cle + '.txt', outil);
+            const ajout = '\n\n' + await lireConsigne(competence.cle + '.txt', outil);
+            texte += ajout;
+            if (tailles) {
+                tailles.competences += ajout.length;
+            }
         }
     }
     /* Le modèle ne connaît ni la date, ni l'heure, ni son propre nom. Dans
