@@ -434,10 +434,10 @@ test("iPad (WebKit) : les citations donnent la page, une plage ouvre tous ses pa
 
     /* Passages 1 à 4 d'un PDF (pages 4, 4, 5, 6) ; avec une note, passage 5 d'un texte sans pages. */
     const rendu = (texte, note = false) => page.evaluate(([texte, note]) => {
-        const pdf = (n, page) => ({ n, nom: 'Programme.pdf', pages: true, page, chemin: '', texte: 'Texte ' + n });
+        const pdf = (n, page) => ({ n, nom: 'Programme.pdf', avecPages: true, page, chemin: '', texte: 'Texte ' + n });
         const passages = [pdf(1, 4), pdf(2, 4), pdf(3, 5), pdf(4, 6)];
         if (note) {
-            passages.push({ n: 5, nom: 'Note', pages: false, page: 1, chemin: '', texte: 'Texte 5' });
+            passages.push({ n: 5, nom: 'Note', avecPages: false, page: 1, chemin: '', texte: 'Texte 5' });
         }
         const carte = document.createElement('div');
         carte.className = 'carte';
@@ -470,7 +470,7 @@ test("iPad (WebKit) : les citations donnent la page, une plage ouvre tous ses pa
     /* Copie : citations comme à l'écran si la case les montre, retirées sinon. */
     const copie = (visibles) => page.evaluate((visibles) => {
         document.documentElement.classList.toggle('citations-visibles', visibles);
-        const passages = [1, 2].map(n => ({ n, nom: 'Programme', pages: true, page: 4 + n, chemin: '', texte: '' }));
+        const passages = [1, 2].map(n => ({ n, nom: 'Programme', avecPages: true, page: 4 + n, chemin: '', texte: '' }));
         return texteCitations('Vu [P1] et [P1-P2], fin [P9].', passages);
     }, visibles);
     assert.strictEqual(await copie(true), 'Vu (p. 5) et (p. 5 à 6), fin.');

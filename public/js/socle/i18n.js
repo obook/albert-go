@@ -147,6 +147,11 @@ function t(cle, valeurs) {
 
 /**
  * Traduit et accorde un texte selon un nombre (voir I18n.accorde).
+ *
+ * @param {string} cle - Clé du pluriel.
+ * @param {number} nombre - Nombre qui décide de l'accord.
+ * @param {Object} [valeurs] - Valeurs des {marqueurs} du texte.
+ * @returns {string} Texte traduit et accordé.
  */
 function tn(cle, nombre, valeurs) {
     return I18n.accorde(cle, nombre, valeurs);

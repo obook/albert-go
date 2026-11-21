@@ -42,7 +42,7 @@ test('decouper : sans titre, coupe aux lignes vides ; un fragment court rejoint 
 
 test('joindrePassages : consigne de citation, passages numérotés à la suite d\'une source à l\'autre', () => {
     const passages = Albert.passagesSources([{ nom: 'a.pdf', texte: '# Titre\nPremier.\n\f\nSecond.' }, { nom: 'b.txt', texte: 'Troisième.' }]);
-    assert.deepStrictEqual(passages.map(p => [p.n, p.nom, p.page, p.pages]), [[1, 'a.pdf', 1, true], [2, 'b.txt', 1, false]]);
+    assert.deepStrictEqual(passages.map(p => [p.n, p.nom, p.page, p.avecPages]), [[1, 'a.pdf', 1, true], [2, 'b.txt', 1, false]]);
     assert.strictEqual(Albert.joindrePassages(passages), t('demande.citer')
         + '\n\nContenu du fichier "a.pdf" :\n\n[P1, p. 1] Titre\nPremier.\nSecond.'
         + '\n\nContenu du fichier "b.txt" :\n\n[P2]\nTroisième.');

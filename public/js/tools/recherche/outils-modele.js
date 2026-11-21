@@ -139,6 +139,7 @@ function avecTableaux(texte, faites) {
  * chercher, sans regarder les outils qu'on lui a passés.
  *
  * @param {Array<Object>} messages - Messages de la demande.
+ * @param {boolean} cherche - true si l'outil de recherche fait partie des outils passés.
  * @returns {Array<Object>} Copie avec le rappel, sans toucher l'original.
  */
 function avecRappel(messages, cherche) {

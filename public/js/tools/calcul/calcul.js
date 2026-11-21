@@ -303,6 +303,13 @@ const Formel = {
             + rangees[2] + ' \\\\ ' + rangees[3] + ' \\\\ ' + rangees[4] + ' \\end{array}').replace(/ +/g, ' ');
     },
 
+    /**
+     * Envoie une commande au worker et attend son résultat. Trop long : le worker est
+     * arrêté (Giac ne s'interrompt pas), le calcul suivant en relance un.
+     *
+     * @param {string} commande - Commande Xcas.
+     * @returns {Promise<string>} Résultat au format Xcas, ou une erreur traduite.
+     */
     async _lancer(commande) {
         const worker = await this.demarrer();
         return new Promise((resoudre, rejeter) => {
@@ -425,6 +432,14 @@ const Calendrier = {
         };
     },
 
+    /**
+     * Réponse de l'outil calendrier : jours fériés d'une année, écart entre deux dates,
+     * ou date décalée d'un nombre de jours (ouvrés ou non).
+     *
+     * @param {Object} demande - Arguments de l'appel : date, fin, feries, alsace_moselle...
+     * @param {string} langue - Langue des dates écrites.
+     * @returns {string} Ligne de résultat pour le modèle.
+     */
     repondre(demande, langue) {
         const format = new Intl.DateTimeFormat(langue, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
         /* Sans date : aujourd'hui, à minuit comme une date lue. Le modèle ne

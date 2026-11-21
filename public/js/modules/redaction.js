@@ -61,6 +61,8 @@ function afficherStatut(texte, effet) {
     statut.replaceChildren(lu, vu);
     const base = texte.replace(/\.+$/, '');
     let pas = 0;
+    /* Une image de l'animation : en attente, des symboles après le texte ; sinon le texte
+       apparaît de gauche à droite en douze pas, puis l'animation s'arrête. */
     const dessiner = () => {
         pas++;
         if (effet === 'attente') {

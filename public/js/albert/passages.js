@@ -100,10 +100,11 @@ Object.assign(Albert, {
      * ponytail: numéros recalculés à chaque question ; une source redéposée change ceux des anciennes réponses.
      *
      * @param {{nom: string, texte: string}[]} documents - Sources, dans l'ordre d'envoi.
-     * @returns {{n: number, nom: string, pages: boolean, page: number, chemin: string, texte: string}[]} Passages.
+     * @returns {{n: number, nom: string, avecPages: boolean, page: number, chemin: string, texte: string}[]} Passages ;
+     *     avecPages : la source a des sauts de page (PDF), page a donc un sens.
      */
     passagesSources(documents) {
-        const passages = documents.flatMap(d => this.decouper(d.texte).map(p => ({ ...p, nom: d.nom, pages: d.texte.includes('\f') })));
+        const passages = documents.flatMap(d => this.decouper(d.texte).map(p => ({ ...p, nom: d.nom, avecPages: d.texte.includes('\f') })));
         return passages.map((p, i) => ({ n: i + 1, ...p }));
     },
 
@@ -116,7 +117,7 @@ Object.assign(Albert, {
     joindrePassages(passages) {
         const blocs = [];
         for (const p of passages) {
-            const entete = '[P' + p.n + (p.pages ? ', p. ' + p.page : '') + ']' + (p.chemin ? ' ' + p.chemin : '');
+            const entete = '[P' + p.n + (p.avecPages ? ', p. ' + p.page : '') + ']' + (p.chemin ? ' ' + p.chemin : '');
             if (blocs.at(-1)?.nom !== p.nom) {
                 blocs.push({ nom: p.nom, passages: [] });
             }

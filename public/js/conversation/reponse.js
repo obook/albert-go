@@ -230,7 +230,7 @@ function mentionsCitees(plages) {
         const premier = plage[0];
         const dernier = plage[plage.length - 1];
         let libelle;
-        if (premier.pages && dernier.pages && premier.nom === dernier.nom) {
+        if (premier.avecPages && dernier.avecPages && premier.nom === dernier.nom) {
             libelle = premier.page === dernier.page ? t('reponse.page', { page: premier.page })
                 : t('reponse.pages', { debut: premier.page, fin: dernier.page });
         } else {
@@ -268,7 +268,7 @@ function boutonCitation(mention, note) {
         note.hidden = ouvert;
         note.dataset.passage = numeros.join(',');
         note.textContent = mention.passages.map((passage) => {
-            const titre = passage.pages ? t('reponse.passage-page', { n: passage.n, nom: passage.nom, page: passage.page })
+            const titre = passage.avecPages ? t('reponse.passage-page', { n: passage.n, nom: passage.nom, page: passage.page })
                 : t('reponse.passage', { n: passage.n, nom: passage.nom });
             return [titre, passage.chemin, passage.texte].filter(Boolean).join('\n');
         }).join('\n\n');
@@ -451,6 +451,14 @@ function boutonsExport(lire, sujet) {
     ouvrir.title = t('reponse.exporter');
     const choix = document.createElement('div');
     choix.className = 'menu-export-choix';
+    /**
+     * Bouton du menu d'export : icône du format, libellé, et action qui referme le menu.
+     *
+     * @param {string} format - Clé de ICONES : docx, odt ou pdf.
+     * @param {string} libelle - Clé de traduction du libellé.
+     * @param {function(HTMLButtonElement): void} action - Appelée au clic, avec le bouton.
+     * @returns {HTMLButtonElement} Le bouton.
+     */
     const item = (format, libelle, action) => {
         const bouton = document.createElement('button');
         bouton.type = 'button';
