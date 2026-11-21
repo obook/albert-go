@@ -17,8 +17,8 @@ jobs:
       # appimagetool s'extrait sans FUSE.
       APPIMAGE_EXTRACT_AND_RUN: "1"
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
       - name: Construire
@@ -33,7 +33,7 @@ jobs:
           # Comme l'archive Windows : l'AppImage, la notice et le modèle de .env.
           mkdir archive && cp dist/*.AppImage ../docs/documentation.pdf ../.env-exemple archive/
           (cd archive && zip -qr "../Albert-Go-${TAG}-linux.zip" .)
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: linux
           path: standalone/Albert-Go-*-linux.zip
@@ -43,8 +43,8 @@ jobs:
     env:
       TAG: ${{ github.ref_name }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
       - name: Vérifier la notice
@@ -76,7 +76,7 @@ jobs:
           npm run build -- --win dir
           (cd dist/win-unpacked && zip -qr "../../Albert-Go-${TAG}-win64.zip" .)
           cp ../docs/documentation.pdf "Albert-Go-${TAG}-documentation.pdf"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: windows
           path: |
@@ -90,7 +90,7 @@ jobs:
       TAG: ${{ github.ref_name }}
       GH_TOKEN: ${{ github.token }}
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           path: paquets
           merge-multiple: true

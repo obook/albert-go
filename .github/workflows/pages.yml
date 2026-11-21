@@ -24,7 +24,7 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Préparer public/
         run: |
           SHORT="${GITHUB_SHA::7}"
@@ -36,8 +36,8 @@ jobs:
           cp deploiement/pages/sw.js public/
           # serveur.js vide : SERVEUR reste indéfini, sans 404 dans la console.
           echo "// Version en ligne, pas de serveur Albert Go." > public/serveur.js
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: public
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5

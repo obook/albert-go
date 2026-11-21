@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     container: mcr.microsoft.com/playwright:v1.63.0-noble
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - run: node --test tests/*.test.js tests/albert/*.test.js
       - run: npm i --no-save --no-audit --no-fund playwright@1.63.0
       # Albert Go dans WebKit, le moteur de l'iPad.
@@ -19,8 +19,8 @@ jobs:
   tests-serveur:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
       - run: pip install -q -r serveur/requirements.txt pytest
