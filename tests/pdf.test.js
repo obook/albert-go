@@ -20,7 +20,7 @@ const { pathToFileURL } = require('node:url');
 const vm = require('node:vm');
 
 const PUBLIC = path.join(__dirname, '..', 'public');
-const SOURCE = fs.readFileSync(path.join(PUBLIC, 'js', 'piece-jointe.js'), 'utf8');
+const SOURCE = fs.readFileSync(path.join(PUBLIC, 'js', 'bibliotheque', 'piece-jointe.js'), 'utf8');
 
 /* Une page qui écrit "Bonjour", sans table xref : pdf.js la reconstruit. */
 const PDF = '%PDF-1.4\n'
