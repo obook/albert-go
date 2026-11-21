@@ -58,8 +58,8 @@ label.interrupteur {
 .titre-guide { overflow-wrap: anywhere; }
 .reglages #etat-guide, .contenu-guide p { margin: 0; }
 #etat-guide .points { margin-left: 0.5rem; }
-/* Nom d'une source dont le guide est en cours : il pulse (pulse dans entete.css). */
-.nom-source.guide-en-cours { animation: pulse 1.2s ease-in-out infinite; }
+/* Retiré le 21/11/2026 : le nom pulsait pendant la fiche de lecture ; un anneau remplace la case (.anneau, entete.css).
+.nom-source.guide-en-cours { animation: pulse 1.2s ease-in-out infinite; } */
 .contenu-guide h3 { margin: 1.25rem 0 0.5rem; font-size: 1rem; }
 .contenu-guide ul { margin: 0; }
 .questions-guide { display: grid; gap: 0.5rem; }

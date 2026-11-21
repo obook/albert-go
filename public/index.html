@@ -268,19 +268,34 @@
                 </button>
                 <details open>
                     <summary><h2 id="titre-bibliotheque" class="marque" data-t="bibliotheque.titre"></h2></summary>
+                    <!-- Retiré le 21/11/2026 : résumé passé sous la liste, phrase sur les données personnelles passée dans l'aide.
                     <p id="resume-documents" class="resume-bibliotheque"></p>
                     <hr>
                     <p class="formats-sources" data-t="documents.garde"></p>
-                    <ul id="liste-documents" class="liste-documents"></ul>
-                    <button type="button" id="deposer-documents" class="deposer" data-t="documents.deposer"></button>
-                    <button type="button" id="coller-texte" class="deposer" data-t="documents.coller"></button>
+                    -->
+                    <!-- Trois groupes pour un débutant : ajouter, choisir les sources, régler les réponses. -->
+                    <h3 class="groupe-bibliotheque" data-t="bibliotheque.ajouter"></h3>
+                    <div class="ajout-sources">
+                        <button type="button" id="deposer-documents" class="deposer" data-t="documents.deposer"></button>
+                        <button type="button" id="coller-texte" class="deposer" data-t="documents.coller"></button>
+                    </div>
                     <input type="file"
                            id="fichier-sources"
                            accept="image/*,audio/*,.m4a,.opus,.pdf,.docx,.odt,.txt,.md,.csv,.tsv,.json,.xml,.html,.css,.js,.py,.tex,.sql"
                            multiple
                            hidden>
-                    <!-- Masqué tant que la bibliothèque est vide (projet.js). -->
-                    <button type="button" id="vider-bibliotheque" class="deposer" data-t="bibliotheque.vider" hidden></button>
+                    <!-- Bibliothèque vide : la phrase remplace la liste (projet.js). -->
+                    <p id="bibliotheque-vide" class="formats-sources" data-t="bibliotheque.vide"></p>
+                    <div id="groupe-sources">
+                        <h3 class="groupe-bibliotheque" data-t="bibliotheque.utilisees"></h3>
+                        <ul id="liste-documents" class="liste-documents"></ul>
+                        <p id="resume-documents" class="resume-bibliotheque"></p>
+                        <p id="place-documents" class="resume-bibliotheque place-documents">
+                            <meter id="jauge-documents" min="0" max="100" high="80" optimum="0" aria-hidden="true"></meter>
+                            <span id="part-documents"></span>
+                        </p>
+                    </div>
+                    <h3 class="groupe-bibliotheque" data-t="bibliotheque.dans-reponses"></h3>
                     <!-- Pages citées dans les réponses, masquées par défaut (projet.js, theme.js). -->
                     <div class="outils-locaux">
                         <label class="interrupteur">
@@ -288,6 +303,8 @@
                             <span data-t="bibliotheque.citations"></span>
                         </label>
                     </div>
+                    <!-- Masqué tant que la bibliothèque est vide (projet.js). En bas et discret : il efface tout. -->
+                    <button type="button" id="vider-bibliotheque" class="vider-lien" data-t="bibliotheque.vider" hidden></button>
                 </details>
             </div>
             <!-- Versions du document affiché : masquées tant qu'il n'en a qu'une (projet.js). -->

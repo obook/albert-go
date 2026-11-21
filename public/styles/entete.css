@@ -251,10 +251,49 @@ hidden et le focus (autofocus, bouton du volet) ne pourrait pas y entrer. */
 #ouvrir-bibliotheque.sources-cochees { color: var(--accent); }
 /* Nom de fichier long pendant la lecture (piece-jointe.js) : coupé n'importe où plutôt que de sortir du volet. */
 .volet-droit .deposer { display: block; margin-top: 0.5rem; max-width: 100%; overflow-wrap: anywhere; }
-/* Plus loin des deux autres : il efface tout. */
+/* Retiré le 21/11/2026 : bouton rouge sous les deux boutons d'ajout.
 #vider-bibliotheque { margin-top: 1rem; color: var(--rouge); }
-/* Le survol garde le rouge : l'orange de l'accent inviterait à cliquer. */
 #vider-bibliotheque:hover, #vider-bibliotheque:focus-visible { border-color: var(--rouge); color: var(--rouge); background: var(--surface); }
+*/
+/* Aide d'une section : ses paragraphes sont séparés par une ligne vide dans le texte traduit. */
+#texte-aide { white-space: pre-line; }
+/* Bibliothèque en trois groupes : Ajouter, Sources utilisées pour répondre, Dans les réponses. */
+.groupe-bibliotheque { margin: 1.25rem 0 0.5rem; font-size: 1rem; }
+.ajout-sources { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.volet-droit .ajout-sources .deposer { margin-top: 0; }
+.place-documents { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.25rem; }
+.place-documents meter { flex: 1 1 auto; min-width: 4rem; max-width: 10rem; }
+/* Tout en bas, à droite, en lien : il efface tout. */
+.vider-lien {
+    display: block;
+    margin: 2rem 0 0.5rem auto;
+    padding: 0.25rem 0;
+    border: 0;
+    background: none;
+    color: var(--rouge);
+    font: inherit;
+    font-size: var(--taille-petite);
+    text-decoration: underline;
+    cursor: pointer;
+}
+/* Fichier en lecture puis fiche de lecture en cours : l'anneau tient la place exacte de la case. */
+.anneau {
+    display: none;
+    flex: none;
+    box-sizing: border-box;
+    width: 1.125rem;
+    height: 1.125rem;
+    border: 2px solid var(--bord);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: tourne 0.9s linear infinite;
+}
+.liste-documents li.en-cours .anneau { display: inline-block; }
+.liste-documents li.en-cours input { display: none; }
+@keyframes tourne { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) {
+    .anneau { animation: none; }
+}
 /* minmax(0, 1fr) : sans lui, un titre de conversation long élargit la
 colonne au-delà du volet et décale tout le menu vers la droite. */
 .volet-contenu {

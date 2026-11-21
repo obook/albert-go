@@ -188,8 +188,47 @@ function afficherResumeSources() {
     bouton.setAttribute('aria-label', libelle);
     bouton.title = libelle;
     const part = Albert.partDocuments(documentsProjet, modeleActuel().contexte);
+    /* Retiré le 21/11/2026 : une seule ligne, "Utilisés : 1 sur 2 - 19 % du contexte".
     $('resume-documents').textContent = t(part === null ? 'documents.resume' : 'documents.resume-part',
         { coches: documentsProjet.length, nombre: bibliotheque.length, pourcent: part });
+    */
+    $('resume-documents').textContent = t(nombre > 1 ? 'documents.resume' : 'documents.resume-une', { coches: nombre, nombre: bibliotheque.length });
+    $('place-documents').hidden = part === null;
+    $('jauge-documents').value = part || 0;
+    $('part-documents').textContent = t('documents.place', { pourcent: part });
+}
+
+/**
+ * Anneau qui tourne à la place de la case, le temps de lire le fichier puis de rédiger sa fiche de lecture.
+ *
+ * @returns {HTMLSpanElement} L'anneau, masqué aux lecteurs d'écran : la ligne porte aria-busy.
+ */
+function anneauSource() {
+    const anneau = document.createElement('span');
+    anneau.className = 'anneau';
+    anneau.setAttribute('aria-hidden', 'true');
+    return anneau;
+}
+
+/**
+ * Ligne provisoire d'un fichier en cours de lecture, en bas de la liste, retirée par afficherDocuments.
+ *
+ * @param {string} nom - Nom du fichier.
+ * @returns {HTMLLIElement} La ligne, à retirer si la lecture échoue.
+ */
+function ligneEnLecture(nom) {
+    const ligne = document.createElement('li');
+    ligne.className = 'en-cours';
+    ligne.setAttribute('aria-busy', 'true');
+    const texte = document.createElement('span');
+    texte.className = 'nom-source';
+    texte.setAttribute('role', 'status');
+    texte.textContent = t('piece.lecture', { nom });
+    ligne.append(anneauSource(), texte);
+    $('liste-documents').append(ligne);
+    $('groupe-sources').hidden = false;
+    $('bibliotheque-vide').hidden = true;
+    return ligne;
 }
 
 /**
@@ -201,6 +240,8 @@ function afficherDocuments() {
     $('nom-projet').value = nomProjet;
     afficherResumeSources();
     $('vider-bibliotheque').hidden = !bibliotheque.length;
+    $('groupe-sources').hidden = !bibliotheque.length;
+    $('bibliotheque-vide').hidden = !!bibliotheque.length;
     afficherVersions();
     $('liste-documents').replaceChildren(...bibliotheque.map((doc) => {
         const ligne = document.createElement('li');
@@ -214,11 +255,15 @@ function afficherDocuments() {
         nom.className = 'nom-source';
         nom.textContent = doc.nom;
         nom.title = t('documents.guide', { nom: doc.nom });
+        /* Retiré le 21/11/2026 : le nom pulsait pendant la fiche de lecture ; l'anneau remplace la case.
         nom.classList.toggle('guide-en-cours', guidesEnCours.has(doc.nom));
+        */
+        ligne.classList.toggle('en-cours', guidesEnCours.has(doc.nom));
+        ligne.setAttribute('aria-busy', String(guidesEnCours.has(doc.nom)));
         nom.addEventListener('click', () => ouvrirGuide(doc.nom));
         const supprimer = boutonAction(ICONE_RETIRER, t('documents.supprimer', { nom: doc.nom }));
         supprimer.addEventListener('click', () => demanderSuppressionSource(doc.nom));
-        ligne.append(coche, nom, supprimer);
+        ligne.append(anneauSource(), coche, nom, supprimer);
         return ligne;
     }));
 }
@@ -529,7 +574,7 @@ function redigerGuide(nom) {
 }
 
 /**
- * Fait pulser le nom d'une source dans la bibliothèque tant qu'Albert rédige son guide.
+ * Met l'anneau à la place de la case d'une source tant qu'Albert rédige son guide.
  *
  * La liste n'est pas reconstruite : une case garde le focus.
  *
@@ -539,7 +584,9 @@ function redigerGuide(nom) {
 function marquerGuide(nom, enCours) {
     for (const bouton of $('liste-documents').querySelectorAll('.nom-source')) {
         if (bouton.textContent === nom) {
-            bouton.classList.toggle('guide-en-cours', enCours);
+            /* Retiré le 21/11/2026 : bouton.classList.toggle('guide-en-cours', enCours); */
+            bouton.parentElement.classList.toggle('en-cours', enCours);
+            bouton.parentElement.setAttribute('aria-busy', String(enCours));
         }
     }
 }

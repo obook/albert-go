@@ -623,11 +623,13 @@ async function joindreFichiers(fichiers, versBibliotheque = !!Albert.OUTILS[outi
         return;
     }
     depotEnCours = versBibliotheque;
+    let lecture = null;
     try {
         for (const fichier of versBibliotheque ? fichiers : fichiers.slice(0, 1)) {
-            /* Le volet couvre la saisie et son message d'attente (iPad, téléphone) : le bouton du volet le reprend. */
+            /* Le volet couvre la saisie et son message d'attente (iPad, téléphone) : une ligne du volet le reprend.
+               Retiré le 21/11/2026 : $('deposer-documents').textContent = t('piece.lecture', { nom: fichier.name }); */
             if (versBibliotheque) {
-                $('deposer-documents').textContent = t('piece.lecture', { nom: fichier.name });
+                lecture = ligneEnLecture(fichier.name);
             }
             if (!await joindreFichier(fichier, versBibliotheque)) {
                 return;
@@ -635,7 +637,13 @@ async function joindreFichiers(fichiers, versBibliotheque = !!Albert.OUTILS[outi
         }
     } finally {
         depotEnCours = false;
-        $('deposer-documents').textContent = t('documents.deposer');
+        /* Retiré le 21/11/2026 : $('deposer-documents').textContent = t('documents.deposer'); */
+        if (lecture) {
+            lecture.remove();
+        }
+        if (versBibliotheque) {
+            afficherDocuments();
+        }
     }
 }
 
