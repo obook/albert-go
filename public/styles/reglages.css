@@ -203,7 +203,7 @@ fieldset .bouton-texte { justify-self: start; }
 */
 #changer-cle { color: var(--rouge); border-color: var(--rouge); }
 /* Boutons du bas d'une carte, sur une ligne, à la ligne si l'écran est étroit. */
-.boutons-carte { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.boutons-carte { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; }
 .boutons-carte .bouton-texte { margin-bottom: 0; }
 
 /* Mise en garde d'un réglage qui fait sortir des données, en fin de bloc.
