@@ -198,8 +198,10 @@ function afficherResumeSources() {
     */
     $('resume-documents').textContent = t(nombre > 1 ? 'documents.resume' : 'documents.resume-une', { coches: nombre, nombre: bibliotheque.length });
     $('place-documents').hidden = part === null;
-    $('jauge-documents').value = part || 0;
-    $('part-documents').textContent = t('documents.place', { pourcent: part });
+    /* Place libre : ce que les sources cochées laissent du contexte, 0 au-delà. */
+    const libre = Math.max(0, 100 - (part || 0));
+    $('jauge-documents').value = libre;
+    $('part-documents').textContent = t('documents.place', { libre });
 }
 
 /**
