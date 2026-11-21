@@ -211,10 +211,15 @@ function afficherResumeSources() {
     $('resume-documents').textContent = t(nombre > 1 ? 'documents.resume' : 'documents.resume-une', { coches: nombre, nombre: bibliotheque.length });
     */
     $('place-documents').hidden = part === null;
-    /* Place libre : ce que les sources cochées laissent du contexte, 0 au-delà. */
+    /* Retiré le 21/11/2026 : la jauge montre la place utilisée.
     const libre = Math.max(0, 100 - (part || 0));
     $('jauge-documents').value = libre;
     $('part-documents').textContent = t('documents.place', { libre });
+    */
+    /* Place utilisée : la part du contexte que prennent les sources envoyées, 100 au-delà. */
+    const utilisee = Math.min(100, part || 0);
+    $('jauge-documents').value = utilisee;
+    $('part-documents').textContent = t('documents.place-pourcent', { pourcent: utilisee });
 }
 
 /**
@@ -272,7 +277,9 @@ function afficherDocuments() {
         const nom = document.createElement('button');
         nom.type = 'button';
         nom.className = 'nom-source';
-        nom.textContent = doc.nom;
+        /* Sans extension ni numéro de téléchargement ; le nom entier dans l'infobulle. */
+        nom.textContent = nomLisible(doc.nom);
+        nom.dataset.nom = doc.nom;
         nom.title = t('documents.guide', { nom: doc.nom });
         /* Retiré le 21/11/2026 : le nom pulsait pendant la fiche de lecture ; l'anneau remplace la case.
         nom.classList.toggle('guide-en-cours', guidesEnCours.has(doc.nom));
@@ -608,7 +615,10 @@ function redigerGuide(nom) {
  */
 function marquerGuide(nom, enCours) {
     for (const bouton of $('liste-documents').querySelectorAll('.nom-source')) {
+        /* Retiré le 21/11/2026 : le texte affiché n'a plus l'extension.
         if (bouton.textContent === nom) {
+        */
+        if (bouton.dataset.nom === nom) {
             /* Retiré le 21/11/2026 : bouton.classList.toggle('guide-en-cours', enCours); */
             bouton.parentElement.classList.toggle('en-cours', enCours);
             bouton.parentElement.setAttribute('aria-busy', String(enCours));

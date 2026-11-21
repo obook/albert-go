@@ -233,76 +233,12 @@ hidden et le focus (autofocus, bouton du volet) ne pourrait pas y entrer. */
 .volet:not([open])::backdrop { opacity: 0; }
 @starting-style { .volet[open]::backdrop { opacity: 0; } }
 .sans-glisse, .sans-glisse > .volet { transition: none; }
-/* Volet droit : la bibliothèque du module Imprimerie, symétrique du menu. */
-.volet-droit { inset: 0 0 0 auto; border-right: 0; border-left: 1px solid var(--bord); }
-.volet-droit:not([open]) { transform: translateX(100%); }
-.volet-droit .volet-contenu > :not(.volet-titre, hr) { margin-left: 0.75rem; margin-right: 0.75rem; }
-.resume-bibliotheque { color: var(--texte-doux); font-size: var(--taille-petite); }
-/* Tiroir : la flèche de fermeture, en haut à droite, sur la ligne du titre.
-   z-index : sinon .section-volet, positionnée et placée après, la recouvre et le toucher replie la section. */
-.fermer-bibliotheque { position: absolute; top: 1rem; right: 0.5rem; z-index: 1; width: 2.25rem; height: 2.25rem; }
-/* Bibliothèque et historique : deux sections repliables, leur titre dans le summary. */
-.volet-droit summary { cursor: pointer; }
-/* Aide d'une section, sur la ligne de son titre ; dans le tiroir, elle laisse le coin à la flèche de fermeture. */
-.section-volet { position: relative; }
-.section-volet > .aide { position: absolute; top: -0.25rem; right: 2.75rem; width: 2.25rem; height: 2.25rem; }
-.volet-droit summary h2 { display: inline; padding: 0; }
-.volet-droit details hr { width: auto; margin: 0.5rem 0; }
 /* À droite de l'en-tête, même quand le titre est sorti de l'écran (grand écran). */
 #ouvrir-bibliotheque { flex: none; margin-left: auto; }
 /* Au moins une source cochée : le dessin seul en orange, comme le globe actif (saisie.css). */
 /* Retiré le 21/11/2026 : le bouton de la barre de saisie montre seul les sources utilisées.
 #ouvrir-bibliotheque.sources-cochees { color: var(--accent); }
 */
-/* Bibliothèque en pause (pause.js) : liste et jauge grisées, les cases restent utilisables. */
-/* Retiré le 21/11/2026 : la liste grisée semblait bloquée, on y prépare son travail.
-#groupe-sources.en-pause :is(.liste-documents, .place-documents) { opacity: 0.5; }
-*/
-/* Nom de fichier long pendant la lecture (piece-jointe.js) : coupé n'importe où plutôt que de sortir du volet. */
-.volet-droit .deposer { display: block; margin-top: 0.5rem; max-width: 100%; overflow-wrap: anywhere; }
-/* Retiré le 21/11/2026 : bouton rouge sous les deux boutons d'ajout.
-#vider-bibliotheque { margin-top: 1rem; color: var(--rouge); }
-#vider-bibliotheque:hover, #vider-bibliotheque:focus-visible { border-color: var(--rouge); color: var(--rouge); background: var(--surface); }
-*/
-/* Aide d'une section : ses paragraphes sont séparés par une ligne vide dans le texte traduit. */
-#texte-aide { white-space: pre-line; }
-/* Bibliothèque en trois groupes : Ajouter, Sources utilisées pour répondre, Dans les réponses. */
-.groupe-bibliotheque { margin: 1.25rem 0 0.5rem; font-size: 1rem; }
-.ajout-sources { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-.volet-droit .ajout-sources .deposer { margin-top: 0; }
-.place-documents { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.25rem; }
-.place-documents meter { flex: 1 1 auto; min-width: 4rem; max-width: 10rem; }
-/* Tout en bas, à droite, en lien : il efface tout. */
-.vider-lien {
-    display: block;
-    margin: 2rem 0 0.5rem auto;
-    padding: 0.25rem 0;
-    border: 0;
-    background: none;
-    color: var(--rouge);
-    font: inherit;
-    font-size: var(--taille-petite);
-    text-decoration: underline;
-    cursor: pointer;
-}
-/* Fichier en lecture puis fiche de lecture en cours : l'anneau tient la place exacte de la case. */
-.anneau {
-    display: none;
-    flex: none;
-    box-sizing: border-box;
-    width: 1.125rem;
-    height: 1.125rem;
-    border: 2px solid var(--bord);
-    border-top-color: var(--accent);
-    border-radius: 50%;
-    animation: tourne 0.9s linear infinite;
-}
-.liste-documents li.en-cours .anneau { display: inline-block; }
-.liste-documents li.en-cours input { display: none; }
-@keyframes tourne { to { transform: rotate(360deg); } }
-@media (prefers-reduced-motion: reduce) {
-    .anneau { animation: none; }
-}
 /* minmax(0, 1fr) : sans lui, un titre de conversation long élargit la
 colonne au-delà du volet et décale tout le menu vers la droite. */
 .volet-contenu {
@@ -512,25 +448,4 @@ input.recherche-historique {
         clip-path: inset(50%);
         white-space: nowrap;
     }
-}
-
-/* Très grand écran : la bibliothèque devient à son tour une colonne, à droite (projet.js, placerBibliotheque).
-   Plus étroit, deux colonnes ne laisseraient pas de place au document : elle reste un tiroir. */
-@media (min-width: 80rem) {
-    body:has(> .volet-droit[open]) { --colonne-bibliotheque: 20rem; }
-    /* Repliée, la colonne tombe à zéro et le volet sort par la droite : il ne doit pas élargir la page. */
-    html, body { overflow-x: clip; }
-    .volet-droit {
-        position: static;
-        grid-column: 3;
-        grid-row: 2 / -1;
-        width: 20rem;
-        max-width: none;
-        background: var(--fond-volet);
-    }
-    .volet-droit:not([open]) { transform: none; }
-    /* Retiré le 21/11/2026 : en colonne, seul le bouton de l'en-tête la repliait ; sa flèche vers la droite le fait aussi.
-    .fermer-bibliotheque { display: none; }
-    .section-volet > .aide { right: 0; }
-    */
 }

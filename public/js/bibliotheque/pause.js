@@ -26,8 +26,19 @@ let bibliothequeEnPause = lire('bibliotheque-pause', 'non') === 'oui';
  * @returns {string} Nom court.
  */
 function nomCourt(nom) {
-    const court = nom.replace(/\.\w{2,4}$/, '').replace(/[-_]\d{5,}$/, '');
+    const court = nomLisible(nom);
     return court.length > 30 ? court.slice(0, 30).trimEnd() + '...' : court;
+}
+
+/**
+ * Nom d'une source sans extension ni numéro de téléchargement, pour la liste du volet.
+ * Le nom entier reste dans l'infobulle et l'intitulé de la case.
+ *
+ * @param {string} nom - Nom de la source.
+ * @returns {string} Nom lisible.
+ */
+function nomLisible(nom) {
+    return nom.replace(/\.\w{2,4}$/, '').replace(/[-_]\d{5,}$/, '');
 }
 
 /**
