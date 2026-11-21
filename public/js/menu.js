@@ -166,14 +166,16 @@ $('menu').addEventListener('click', (e) => {
     }
 }, true);
 
-/* Grand écran : un clic au centre replie les deux colonnes, comme leurs boutons. Une sélection de texte ne compte pas. */
+/* Grand écran : un clic au centre replie la bibliothèque, comme son bouton. Une sélection de texte ne compte pas. */
 $('principal').addEventListener('click', () => {
     if (!GRAND_ECRAN.matches || getSelection().toString()) {
         return;
     }
+    /* Retiré le 21/11/2026 : le menu reste ouvert, il ne se replie que par son bouton.
     if ($('menu').open) {
         $('ouvrir-menu').click();
     }
+    */
     if ($('bibliotheque').open) {
         $('ouvrir-bibliotheque').click();
     }

@@ -499,3 +499,30 @@ test("iPad (WebKit) : au-delà du contexte, seuls les passages proches de la que
     assert.match(await page.textContent('#fil .passage'), /parle du volcan/);
     assert.deepStrictEqual(erreurs, []);
 });
+
+test("Grand écran (WebKit) : le menu s'ouvre au lancement et reste ouvert après un clic au centre", async (t) => {
+    const serveur = await servir();
+    const origine = 'http://127.0.0.1:' + serveur.address().port;
+    const navigateur = await webkit.launch();
+    t.after(async () => {
+        await navigateur.close();
+        serveur.close();
+    });
+    const contexte = await navigateur.newContext({ viewport: { width: 1280, height: 800 }, serviceWorkers: 'block' });
+    await contexte.route((url) => url.origin !== origine, (route) => route.abort());
+    await contexte.addInitScript(() => {
+        localStorage.setItem('albert-go.cle', 'sk-test');
+        sessionStorage.setItem('albert-go.cle', 'sk-test');
+    });
+    const page = await contexte.newPage();
+    const erreurs = [];
+    page.on('pageerror', (err) => erreurs.push(String(err)));
+
+    await page.goto(origine + '/');
+    assert.ok(await page.evaluate(() => $('menu').open), 'menu fermé au lancement');
+    await page.click('#principal', { position: { x: 400, y: 300 } });
+    assert.ok(await page.evaluate(() => $('menu').open), 'menu replié par un clic au centre');
+    await page.reload();
+    assert.ok(await page.evaluate(() => $('menu').open), 'menu fermé au rechargement');
+    assert.deepStrictEqual(erreurs, []);
+});
