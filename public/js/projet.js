@@ -434,7 +434,7 @@ async function baseVecteur(cle, valeur) {
  * @returns {Promise<Float32Array[]>} Un vecteur par passage de Albert.decouper.
  */
 async function vecteursSource(doc, signal) {
-    const cle = doc.nom + '\n' + Albert.empreinte(doc.texte) + '\n' + Albert.MODELE_VECTEURS;
+    const cle = doc.nom + '\n' + Albert.empreinteTexte(doc.texte) + '\n' + Albert.MODELE_VECTEURS;
     const passages = Albert.decouper(doc.texte);
     const garde = await baseVecteur(cle);
     if (garde && garde.length % passages.length === 0) {

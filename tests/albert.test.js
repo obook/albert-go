@@ -430,8 +430,10 @@ test('choisirPassages : mots rares d\'abord, puis les plus proches, sous le plaf
 test('cosinus et empreinte', () => {
     assert.strictEqual(Albert.cosinus(Float32Array.of(1, 0), Float32Array.of(2, 0)), 1);
     assert.strictEqual(Albert.cosinus(Float32Array.of(1, 0), Float32Array.of(0, 3)), 0);
-    assert.strictEqual(Albert.empreinte('abc'), Albert.empreinte('abc'));
-    assert.notStrictEqual(Albert.empreinte('abc'), Albert.empreinte('abd'));
+    assert.strictEqual(Albert.empreinteTexte('abc'), Albert.empreinteTexte('abc'));
+    assert.notStrictEqual(Albert.empreinteTexte('abc'), Albert.empreinteTexte('abd'));
+    /* Le cumul énergie et carbone garde son nom : la boîte Empreinte le lit (menu.js). */
+    assert.strictEqual(typeof Albert.empreinte, 'object');
 });
 
 test('CITATION : numéros cités, avec ou sans page, crochets pleine chasse et espaces invisibles', () => {

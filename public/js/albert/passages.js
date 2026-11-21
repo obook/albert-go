@@ -212,11 +212,12 @@ Object.assign(Albert, {
 
     /**
      * Empreinte d'un texte (FNV-1a) : une source redéposée avec un autre texte change de vecteurs.
+     * Pas "empreinte" : ce nom est le cumul énergie et carbone d'albert.js (boîte Empreinte).
      *
      * @param {string} texte - Texte d'une source.
      * @returns {string} Longueur et empreinte.
      */
-    empreinte(texte) {
+    empreinteTexte(texte) {
         let h = 0x811c9dc5;
         for (let i = 0; i < texte.length; i++) {
             h = Math.imul(h ^ texte.charCodeAt(i), 0x01000193);
