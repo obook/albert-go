@@ -125,7 +125,7 @@ I18n.TEXTES.de = {
     'documents.guide': 'Lesenotiz zu {nom}',
     'guide.themes': 'Kernthemen',
     'guide.questions': 'Fragen an die Quelle',
-    'guide.lecture': 'Albert liest die Quelle...',
+    'guide.lecture': 'Albert liest das Dokument...',
     'guide.telecharger': 'Text herunterladen',
     'guide.refaire': 'Lesenotiz neu erstellen',
     'guide.illisible': 'Albert hat keine lesbare Lesenotiz geliefert: Klicken Sie auf Lesenotiz neu erstellen, um es noch einmal zu versuchen.',

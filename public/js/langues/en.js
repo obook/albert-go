@@ -125,7 +125,7 @@ I18n.TEXTES.en = {
     'documents.guide': 'Reading notes on {nom}',
     'guide.themes': 'Key themes',
     'guide.questions': 'Questions to ask it',
-    'guide.lecture': 'Albert is reading the source...',
+    'guide.lecture': 'Albert is reading the document...',
     'guide.telecharger': 'Download the text',
     'guide.refaire': 'Rewrite the notes',
     'guide.illisible': 'Albert did not return readable notes: click Rewrite the notes to try again.',

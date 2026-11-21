@@ -125,7 +125,7 @@ I18n.TEXTES.es = {
     'documents.guide': 'Ficha de lectura de {nom}',
     'guide.themes': 'Temas clave',
     'guide.questions': 'Preguntas que hacerle',
-    'guide.lecture': 'Albert está leyendo la fuente...',
+    'guide.lecture': 'Albert está leyendo el documento...',
     'guide.telecharger': 'Descargar el texto',
     'guide.refaire': 'Rehacer la ficha',
     'guide.illisible': 'Albert no devolvió una ficha legible: haga clic en Rehacer la ficha para intentarlo de nuevo.',

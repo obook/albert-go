@@ -125,7 +125,7 @@ I18n.TEXTES.fr = {
     'documents.guide': 'Fiche de lecture de {nom}',
     'guide.themes': 'Thèmes clés',
     'guide.questions': 'Questions à lui poser',
-    'guide.lecture': 'Albert lit la source...',
+    'guide.lecture': 'Albert lit le document...',
     'guide.telecharger': 'Télécharger le texte',
     'guide.refaire': 'Refaire la fiche',
     'guide.illisible': 'Albert n\'a pas rendu de fiche lisible : cliquez sur Refaire la fiche pour réessayer.',
