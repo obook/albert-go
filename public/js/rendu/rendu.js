@@ -99,17 +99,7 @@ const Rendu = {
         if (typeof document === 'undefined') {
             return html;
         }
-        /* <template> est inerte : rien ne se charge ni ne s'exécute pendant l'analyse. */
-        const modele = document.createElement('template');
-        modele.innerHTML = html;
-        modele.content.querySelectorAll(this.BALISES_INTERDITES).forEach((el) => el.remove());
-        modele.content.querySelectorAll('*').forEach((el) => {
-            for (const attr of [...el.attributes]) {
-                if (this.attributInterdit(attr.name.toLowerCase(), attr.value)) {
-                    el.removeAttribute(attr.name);
-                }
-            }
-        });
+        const modele = this.nettoyer(html, this.BALISES_INTERDITES, (nom, valeur) => this.attributInterdit(nom, valeur));
         /* Image externe du modèle : un simple lien, rien ne se charge sans nous. */
         modele.content.querySelectorAll('img[src^="http"]').forEach((img) => {
             const lien = document.createElement('a');
@@ -128,6 +118,30 @@ const Rendu = {
             }
         });
         return modele.innerHTML;
+    },
+
+    /**
+     * Cœur commun d'assainir et d'assainirSvg : analyse dans un <template>, puis
+     * retrait des balises interdites et des attributs refusés.
+     *
+     * @param {string} html - HTML ou SVG à nettoyer.
+     * @param {string} interdites - Sélecteur des balises à retirer.
+     * @param {function(string, string): boolean} refuse - true si l'attribut (nom en minuscules, valeur) doit partir.
+     * @returns {HTMLTemplateElement} Modèle nettoyé ; son innerHTML donne le texte.
+     */
+    nettoyer(html, interdites, refuse) {
+        /* <template> est inerte : rien ne se charge ni ne s'exécute pendant l'analyse. */
+        const modele = document.createElement('template');
+        modele.innerHTML = html;
+        modele.content.querySelectorAll(interdites).forEach((el) => el.remove());
+        modele.content.querySelectorAll('*').forEach((el) => {
+            for (const attr of [...el.attributes]) {
+                if (refuse(attr.name.toLowerCase(), attr.value)) {
+                    el.removeAttribute(attr.name);
+                }
+            }
+        });
+        return modele;
     },
 
     /** Adresse décodée, ou telle quelle si un % est mal formé. */
@@ -176,20 +190,10 @@ const Rendu = {
         if (typeof document === 'undefined') {
             return svg;
         }
-        const modele = document.createElement('template');
-        modele.innerHTML = svg;
-        /* foreignObject rouvre la porte au HTML au milieu du SVG. */
-        modele.content.querySelectorAll(interdites).forEach((el) => el.remove());
-        modele.content.querySelectorAll('*').forEach((el) => {
-            const nom = (attr) => attr.name.toLowerCase();
-            for (const attr of [...el.attributes]) {
-                /* style reste : Mermaid s'en sert pour tout son rendu. */
-                if (nom(attr).startsWith('on') || this.urlDangereuse(nom(attr), attr.value)) {
-                    el.removeAttribute(attr.name);
-                }
-            }
-        });
-        return modele.innerHTML;
+        /* foreignObject (dans interdites) rouvre la porte au HTML au milieu du SVG.
+           style reste : Mermaid s'en sert pour tout son rendu. */
+        const refuse = (nom, valeur) => nom.startsWith('on') || this.urlDangereuse(nom, valeur);
+        return this.nettoyer(svg, interdites, refuse).innerHTML;
     },
 
     /**

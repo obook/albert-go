@@ -158,9 +158,10 @@ async function demanderReponse(outil, question, image, modele) {
     let texteConsigne = await consigne(outil);
     /* Discussion et Imprimerie : les sources cochées partent à chaque question, à la suite de la consigne.
        Discussion les numérote par passage pour les citer ; Imprimerie les garde entières, un numéro finirait imprimé. */
-    if (Albert.OUTILS[outil].sources && documentsProjet.length && Albert.OUTILS[outil].documents) {
+    const avecSources = Albert.OUTILS[outil].sources && documentsProjet.length > 0;
+    if (avecSources && Albert.OUTILS[outil].documents) {
         texteConsigne += '\n\n' + Albert.joindreDocuments(documentsProjet);
-    } else if (Albert.OUTILS[outil].sources && documentsProjet.length) {
+    } else if (avecSources) {
         const passages = Albert.passagesSources(documentsProjet);
         /* Au-delà du contexte, seuls les passages utiles à la question partent, avec leur numéro. */
         const tiennent = documentsProjet.reduce((s, d) => s + d.texte.length, 0) <= Albert.plafondDocuments(modeleActuel().contexte);

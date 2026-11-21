@@ -659,6 +659,47 @@ test("iPad (WebKit) : 'Autoriser la synthèse vocale en ligne' est dans Outils, 
     assert.deepStrictEqual(erreurs, []);
 });
 
+test("iPad (WebKit) : assainir résiste aux motifs de mutation XSS connus", async (t) => {
+    const serveur = await servir();
+    const origine = 'http://127.0.0.1:' + serveur.address().port;
+    const navigateur = await webkit.launch();
+    t.after(async () => {
+        await navigateur.close();
+        serveur.close();
+    });
+    const contexte = await navigateur.newContext({ ...devices['iPad (gen 7)'], serviceWorkers: 'block' });
+    await contexte.route((url) => url.origin !== origine, (route) => route.abort());
+    const page = await contexte.newPage();
+    await ouvrir(page, origine + '/');
+
+    /* Le HTML nettoyé change de sens quand le navigateur le relit (DOMPurify, 2019-2020). */
+    const motifs = [
+        '<math><mtext><table><mglyph><style><!--</style><img title="--&gt;&lt;img src=1 onerror=window.__xss=1&gt;">',
+        '<svg></p><style><a id="</style><img src=1 onerror=window.__xss=1>">',
+        '<form><math><mtext></form><form><mglyph><style></math><img src onerror=window.__xss=1>',
+        '<noscript><p title="</noscript><img src=x onerror=window.__xss=1>">',
+    ];
+    const restes = await page.evaluate(async (liste) => {
+        const trouves = [];
+        for (const motif of liste) {
+            const bloc = document.createElement('div');
+            /* Comme le rendu : texte assaini, puis relu par innerHTML, deux fois pour la copie à imprimer. */
+            bloc.innerHTML = Rendu.assainir(motif);
+            bloc.innerHTML = bloc.innerHTML;
+            document.body.append(bloc);
+            for (const element of bloc.querySelectorAll('*')) {
+                const gestionnaires = [...element.attributes].filter((a) => a.name.startsWith('on'));
+                if (gestionnaires.length) {
+                    trouves.push(motif + ' -> ' + element.outerHTML);
+                }
+            }
+        }
+        await new Promise((fin) => setTimeout(fin, 300));
+        return { trouves, execute: window.__xss === 1 };
+    }, motifs);
+    assert.deepStrictEqual(restes, { trouves: [], execute: false });
+});
+
 test("iPad (WebKit) : copie à imprimer, identifiants préfixés sans toucher au texte", async (t) => {
     const serveur = await servir();
     const origine = 'http://127.0.0.1:' + serveur.address().port;
