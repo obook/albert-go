@@ -331,6 +331,8 @@ I18n.TEXTES.de = {
     'dialogue.annuler': 'Abbrechen',
     'dialogue.ok': 'OK',
     'dialogue.fermer': 'Schließen',
+    'chargement.echec': 'Die Seite konnte nicht vollständig geladen werden. Prüfen Sie die Verbindung und laden Sie neu.',
+    'chargement.recharger': 'Neu laden',
     'dialogue.oui': 'Ja',
     'dialogue.non': 'Nein',
     'cle-absente.titre': 'Kein API-Schlüssel',

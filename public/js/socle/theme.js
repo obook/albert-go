@@ -56,18 +56,26 @@ addEventListener('error', (e) => {
     }
 }, true);
 
-/** Recharge la page, au plus une fois par minute et seulement en ligne. Appelée aussi par chargement.js. */
+/* Écart minimal entre deux rechargements automatiques : une page toujours cassée ne boucle pas. */
+const RECHARGE_MIN_MS = 60000;
+
+/**
+ * Recharge la page, au plus une fois par minute et seulement en ligne. Appelée aussi par chargement.js.
+ *
+ * @returns {boolean} true si la page recharge, false sinon (hors ligne, ou déjà fait depuis moins d'une minute).
+ */
 function rechargerUneFois() {
     if (!navigator.onLine) {
-        return;
+        return false;
     }
     try {
-        if (Date.now() - Number(sessionStorage.getItem(CLE_RECHARGE)) < 60000) {
-            return;
+        if (Date.now() - Number(sessionStorage.getItem(CLE_RECHARGE)) < RECHARGE_MIN_MS) {
+            return false;
         }
         sessionStorage.setItem(CLE_RECHARGE, String(Date.now()));
     } catch (err) {
-        return;
+        return false;
     }
     location.reload();
+    return true;
 }

@@ -23,6 +23,9 @@
 /* Version des fichiers, lue dans l'adresse de ce script : ?v=<commit> à la publication. */
 const VERSION_FICHIERS = new URL(document.currentScript.src).searchParams.get('v') || 'dev';
 
+/* Délai d'attente d'un morceau : une requête bloquée ne laisse pas la page vide sans fin. */
+const MORCEAU_DELAI_MS = 15000;
+
 /* Scripts de l'interface, dans l'ordre d'exécution. L'ordre compte. */
 const SCRIPTS = [
     'vendor/marked/marked.umd.js',
@@ -120,7 +123,9 @@ function adresseFichier(chemin) {
 function demanderMorceau(nom) {
     if (!demandes.has(nom)) {
         const chemin = 'pages/' + nom + '.html';
-        const texte = fetch(adresseFichier(chemin)).then((reponse) => {
+        /* AbortSignal.timeout : absent des Safari d'avant la version 16, la requête attend alors sans limite. */
+        const options = AbortSignal.timeout ? { signal: AbortSignal.timeout(MORCEAU_DELAI_MS) } : {};
+        const texte = fetch(adresseFichier(chemin), options).then((reponse) => {
             if (!reponse.ok) {
                 throw new Error(chemin + ' : ' + reponse.status);
             }
@@ -169,10 +174,36 @@ function chargerScripts() {
     });
 }
 
+/**
+ * Message à la place de la page quand un morceau manque et qu'on ne recharge pas tout seul.
+ * Les scripts de l'interface ne sont pas chargés : le message est fait ici, en texte simple.
+ */
+function afficherEchec() {
+    /* stockage.js n'est pas chargé : la langue choisie se lit directement. */
+    try {
+        I18n.definir(localStorage.getItem('albert-go.langue') || I18n.defaut());
+    } catch (err) {
+        I18n.definir(I18n.defaut());
+    }
+    const boite = document.createElement('div');
+    boite.className = 'echec-chargement pico';
+    boite.setAttribute('role', 'alert');
+    const texte = document.createElement('p');
+    texte.textContent = t('chargement.echec');
+    const bouton = document.createElement('button');
+    bouton.type = 'button';
+    bouton.textContent = t('chargement.recharger');
+    bouton.addEventListener('click', () => location.reload());
+    boite.append(texte, bouton);
+    document.querySelector('header').after(boite);
+}
+
 for (const nom of MORCEAUX) {
     demanderMorceau(nom);
 }
 placerMorceaux(document.body).then(chargerScripts, (err) => {
     console.error(err);
-    rechargerUneFois();
+    if (!rechargerUneFois()) {
+        afficherEchec();
+    }
 });

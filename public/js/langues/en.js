@@ -331,6 +331,8 @@ I18n.TEXTES.en = {
     'dialogue.annuler': 'Cancel',
     'dialogue.ok': 'OK',
     'dialogue.fermer': 'Close',
+    'chargement.echec': 'The page could not load completely. Check the connection, then reload.',
+    'chargement.recharger': 'Reload',
     'dialogue.oui': 'Yes',
     'dialogue.non': 'No',
     'cle-absente.titre': 'No API key',

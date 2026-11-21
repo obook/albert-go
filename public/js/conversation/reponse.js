@@ -449,6 +449,43 @@ document.addEventListener('click', (e) => {
     }
 });
 
+/* Attributs qui listent des identifiants séparés par des espaces, sans "#". */
+const LISTES_IDENTIFIANTS = ['aria-labelledby', 'aria-describedby', 'aria-controls', 'aria-owns'];
+
+/**
+ * Préfixe chaque identifiant d'un bloc et les renvois qui le visent : "#nom" dans les
+ * attributs (href, url(#nom) des flèches) et dans les <style> des schémas, listes aria-*.
+ * Le texte du bloc ne change pas, même s'il contient le nom d'un identifiant.
+ *
+ * @param {HTMLElement} racine - Bloc à modifier, lui compris.
+ * @param {string} prefixe - Préfixe ajouté, par exemple "impression-".
+ */
+function renommerIdentifiants(racine, prefixe) {
+    const elements = [racine, ...racine.querySelectorAll('*')];
+    const noms = new Set(elements.filter((element) => element.id).map((element) => element.id));
+    if (noms.size === 0) {
+        return;
+    }
+    const echappes = [...noms].map((nom) => nom.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+    /* "#nom" seul : pas suivi d'un caractère qui prolongerait un autre identifiant. */
+    const renvoi = new RegExp('#(' + echappes.join('|') + ')(?![\\w-])', 'g');
+    for (const element of elements) {
+        for (const attribut of [...element.attributes]) {
+            if (attribut.name === 'id') {
+                attribut.value = prefixe + attribut.value;
+            } else if (LISTES_IDENTIFIANTS.includes(attribut.name)) {
+                const liste = attribut.value.split(/\s+/);
+                attribut.value = liste.map((nom) => (noms.has(nom) ? prefixe + nom : nom)).join(' ');
+            } else if (attribut.value.includes('#')) {
+                attribut.value = attribut.value.replace(renvoi, '#' + prefixe + '$1');
+            }
+        }
+        if (element.localName === 'style') {
+            element.textContent = element.textContent.replace(renvoi, '#' + prefixe + '$1');
+        }
+    }
+}
+
 /**
  * Imprime une réponse seule, pour l'enregistrer en PDF : sa copie va dans
  * #impression, seule partie de la page que garde la feuille d'impression (base.css).
@@ -461,11 +498,14 @@ function imprimer(contenu, sujet) {
     const copie = contenu.cloneNode(true);
     /* Identifiants propres à la copie : les flèches d'un schéma visent un identifiant, et
        la copie, qui reste dans la page, ne doit pas prendre celles de l'original. */
+    /* Retiré le 21/11/2026 : le remplacement touchait aussi le texte ("intro" devenait "impression-intro").
     let html = copie.innerHTML;
     for (const { id } of copie.querySelectorAll('[id]')) {
         html = html.split(id).join('impression-' + id);
     }
     copie.innerHTML = html;
+    */
+    renommerIdentifiants(copie, 'impression-');
     /* Gardée jusqu'à la prochaine impression : sur iPad, afterprint arrive avant que le PDF
        soit dessiné, et vider la copie donnait une page blanche. */
     $('impression').replaceChildren(copie);

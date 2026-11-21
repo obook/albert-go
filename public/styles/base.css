@@ -238,6 +238,18 @@ a:hover { color: var(--accent-survol); }
 
 [hidden] { display: none !important; }
 
+/* Page incomplète (chargement.js) : le message et son bouton, centrés sous l'en-tête. */
+.echec-chargement {
+    display: grid;
+    justify-items: center;
+    gap: 1rem;
+    max-width: 32rem;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    text-align: center;
+}
+.echec-chargement button { width: auto; }
+
 /* Champs de saisie, hors de ceux que Pico habille. */
 input[type="password"], input[type="search"], textarea {
     width: 100%;

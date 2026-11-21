@@ -136,6 +136,28 @@ test("iPad (WebKit) : un script raté au lancement recharge la page une fois", a
     assert.strictEqual(chargements, 2);
 });
 
+test("iPad (WebKit) : un morceau de pages/ toujours perdu, un rechargement puis un message avec Recharger", async (t) => {
+    const serveur = await servir();
+    const origine = 'http://127.0.0.1:' + serveur.address().port;
+    const navigateur = await webkit.launch();
+    t.after(async () => {
+        await navigateur.close();
+        serveur.close();
+    });
+    const contexte = await navigateur.newContext({ ...devices['iPad (gen 7)'], locale: 'fr-FR', serviceWorkers: 'block' });
+    await contexte.route((url) => url.origin !== origine, (route) => route.abort());
+    await contexte.route('**/pages/menu/partage.html*', (route) => route.abort());
+    const page = await contexte.newPage();
+    let chargements = 0;
+    page.on('request', (requete) => requete.isNavigationRequest() && chargements++);
+
+    await page.goto(origine + '/');
+    await page.waitForSelector('.echec-chargement button', { timeout: 10000 });
+    assert.strictEqual(chargements, 2, 'un seul rechargement automatique');
+    assert.strictEqual(await page.textContent('.echec-chargement button'), 'Recharger');
+    assert.ok(!('pret' in await page.evaluate(() => ({ ...document.documentElement.dataset }))), 'page dite prête');
+});
+
 test("iPad (WebKit) : chaque compétence activée part avec la consigne, et plus après l'avoir désactivée", async (t) => {
     const serveur = await servir();
     const origine = 'http://127.0.0.1:' + serveur.address().port;
@@ -635,4 +657,43 @@ test("iPad (WebKit) : 'Autoriser la synthèse vocale en ligne' est dans Outils, 
     assert.ok(!await page.evaluate(() => $('voix-en-ligne').checked), 'interrupteur resté coché');
     assert.strictEqual(await page.evaluate(() => lire('voix-en-ligne', 'non')), 'non');
     assert.deepStrictEqual(erreurs, []);
+});
+
+test("iPad (WebKit) : copie à imprimer, identifiants préfixés sans toucher au texte", async (t) => {
+    const serveur = await servir();
+    const origine = 'http://127.0.0.1:' + serveur.address().port;
+    const navigateur = await webkit.launch();
+    t.after(async () => {
+        await navigateur.close();
+        serveur.close();
+    });
+    const contexte = await navigateur.newContext({ ...devices['iPad (gen 7)'], serviceWorkers: 'block' });
+    await contexte.route((url) => url.origin !== origine, (route) => route.abort());
+    const page = await contexte.newPage();
+    await ouvrir(page, origine + '/');
+
+    const resultat = await page.evaluate(() => {
+        const bloc = document.createElement('div');
+        bloc.innerHTML = '<h2 id="intro">Introduction</h2><p>Voir intro et #intro2.</p>'
+            + '<svg id="m-1" aria-labelledby="titre-1 autre"><title id="titre-1">T</title>'
+            + '<style>#m-1 .noeud { fill: red; }</style><path marker-end="url(#fleche)"/>'
+            + '<marker id="fleche"/></svg><a href="#intro">lien</a>';
+        renommerIdentifiants(bloc, 'impression-');
+        return {
+            ids: [...bloc.querySelectorAll('[id]')].map((e) => e.id),
+            texte: bloc.querySelector('p').textContent,
+            style: bloc.querySelector('style').textContent,
+            fleche: bloc.querySelector('path').getAttribute('marker-end'),
+            aria: bloc.querySelector('svg').getAttribute('aria-labelledby'),
+            lien: bloc.querySelector('a').getAttribute('href'),
+        };
+    });
+    assert.deepStrictEqual(resultat, {
+        ids: ['impression-intro', 'impression-m-1', 'impression-titre-1', 'impression-fleche'],
+        texte: 'Voir intro et #intro2.',
+        style: '#impression-m-1 .noeud { fill: red; }',
+        fleche: 'url(#impression-fleche)',
+        aria: 'impression-titre-1 autre',
+        lien: '#impression-intro',
+    });
 });

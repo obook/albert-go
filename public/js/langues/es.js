@@ -331,6 +331,8 @@ I18n.TEXTES.es = {
     'dialogue.annuler': 'Cancelar',
     'dialogue.ok': 'OK',
     'dialogue.fermer': 'Cerrar',
+    'chargement.echec': 'La página no se ha podido cargar por completo. Compruebe la conexión y vuelva a cargarla.',
+    'chargement.recharger': 'Volver a cargar',
     'dialogue.oui': 'Sí',
     'dialogue.non': 'No',
     'cle-absente.titre': 'Ninguna clave API',
