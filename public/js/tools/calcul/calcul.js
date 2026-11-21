@@ -220,18 +220,20 @@ const Formel = {
     /** Début d'une demande de tableau de variations. */
     TABLEAU: /^\s*tabvar\s*\(/,
 
-    /**
-     * Tableau de variations en LaTeX. derive=1 : dérivée première seule, sur
-     * tout le domaine ; sans lui, Giac réduit une fonction impaire à x >= 0.
-     *
-     * @param {string} commande - Par exemple "tabvar(x^3 - 3x)".
-     * @returns {Promise<string>} Tableau au format array de LaTeX.
-     */
+    /* Retiré le 21/11/2026 : appelée par les seuls tests, qui enchaînent eux-mêmes les deux appels.
     async varier(commande) {
         return this.tableau(await this.sortieTableau(commande));
     },
+    */
 
-    /** Sortie LaTeX de Giac pour un tableau de variations, lue par tableau() et lecture(). */
+    /**
+     * Sortie LaTeX de Giac pour un tableau de variations, lue par tableau() et lecture().
+     * derive=1 : dérivée première seule, sur tout le domaine ; sans lui, Giac réduit
+     * une fonction impaire à x >= 0.
+     *
+     * @param {string} commande - Par exemple "tabvar(x^3 - 3x)".
+     * @returns {Promise<string>} Sortie LaTeX de Giac.
+     */
     sortieTableau(commande) {
         const entiere = /derive\s*=/.test(commande) ? commande : commande.replace(/\)\s*$/, ', derive=1)');
         return this.calculer('latex(' + entiere + ')');
