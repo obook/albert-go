@@ -45,6 +45,13 @@ En ligne : Navigateur -> relais n8n -> API Albert
 
 - `serveur/` : le serveur Python (relais, configuration, régulation du débit par modèle), repris de L'Atelier d'Albert.
 - `public/` : la page (HTML, CSS, JavaScript), servie par le serveur ou publiée sur Pages, avec les bibliothèques embarquées dans `public/vendor/`.
+- `public/js/albert.js` et `public/js/albert/` : le client de l'API Albert.
+- `public/js/socle/` : stockage, thème, langue et version, utilisés par tous les autres scripts.
+- `public/js/interface/` : écrans, menu, réglages et saisie de la clé.
+- `public/js/conversation/` : envoi des questions, réponses, historique et lecture à voix haute. `app.js`, chargé en dernier, lance l'application.
+- `public/js/bibliotheque/` : documents déposés et fichiers joints.
+- `public/js/modules/` : modules du menu (Discuter, Reformuler, Rédiger...).
+- `public/js/kiosque/` : page de connexion du kiosque et mode partagé.
 - `public/js/rendu/` : le rendu des réponses (schémas, courbes, images) et leur export : `export.js` parcourt la réponse affichée, `docx.js` et `odt.js` écrivent le fichier.
 - `public/js/tools/` : les outils proposés au modèle (calculs, jours ouvrés, recherche web, images de Commons, services de l'État).
 - `n8n/albert-proxy.json` : le relais n8n de la version en ligne, installation dans `n8n/README.md`.
