@@ -38,7 +38,9 @@ Ce qui reste à faire, du plus simple au plus long. Le détail des failles est d
 - [x] Fiche de lecture : un échec au dépôt ne se voit pas (le nom cesse de pulser). Gardé ainsi : le repli à l'ouverture le rattrape, et une erreur sur une action non demandée ferait du bruit.
 - [ ] Supports en un clic à partir des sources cochées : fiche de révision, FAQ, chronologie, quiz, cartes mémoire et carte mentale (Mermaid). Les proposer aussi dans la boîte de la fiche de lecture, pour cette seule source.
 - [x] Notes : épingler une réponse dans la bibliothèque, puis la cocher comme une source. Fait le 10/11/2026 : bouton sous la réponse, note non cochée, fiche de lecture rédigée à l'ouverture.
-- [ ] Citations : des numéros dans la réponse qui ouvrent le passage exact de la source, surligné.
+- [x] Citations, fait le 21/11/2026 : en Discussion, les sources partent découpées en passages numérotés ([P12, p. 8] avec leur chemin de titres), et le numéro cité ouvre le passage sous la réponse. Les titres et les pages d'un PDF sont écrits dans son texte au dépôt (#, \f) : il faut redéposer les PDF plus anciens. Les passages qui contiennent les mots rares de la question sont listés au modèle, qui ne les trouve pas tous seul. Essai sur le programme de cycle 4 avec Large : 9 réponses justes sur 10, citées.
+- [ ] Citations : ouvrir le passage dans la source entière, surligné.
+- [ ] Citations : le repérage des titres (niveau d'après la rareté de la hauteur, rubriques répétées au niveau le plus profond) n'est vérifié que sur le programme de cycle 4. À essayer sur les autres BO.
 - [x] Texte collé comme source, fait le 10/11/2026.
 - [ ] Autres sources que les fichiers : page web par son adresse (le navigateur ne peut pas la lire seul : passer par le relais), transcription d'une vidéo.
 - [ ] Carnets : plusieurs bibliothèques séparées, chacune avec ses sources, au lieu d'une seule filtrée par les cases.

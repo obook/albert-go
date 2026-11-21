@@ -156,9 +156,17 @@ async function demanderReponse(outil, question, image, modele) {
     /* Chaque outil a sa consigne système ; seuls les modules à fil envoient aussi la conversation. */
     const fil = Albert.OUTILS[outil].fil;
     let texteConsigne = await consigne(outil);
-    /* Discussion et Imprimerie : les sources cochées partent à chaque question, à la suite de la consigne. */
-    if (Albert.OUTILS[outil].sources && documentsProjet.length) {
+    /* Discussion et Imprimerie : les sources cochées partent à chaque question, à la suite de la consigne.
+       Discussion les numérote par passage pour les citer ; Imprimerie les garde entières, un numéro finirait imprimé. */
+    if (Albert.OUTILS[outil].sources && documentsProjet.length && Albert.OUTILS[outil].documents) {
         texteConsigne += '\n\n' + Albert.joindreDocuments(documentsProjet);
+    } else if (Albert.OUTILS[outil].sources && documentsProjet.length) {
+        const passages = Albert.passagesSources(documentsProjet);
+        texteConsigne += '\n\n' + Albert.joindrePassages(passages);
+        const mots = Albert.motsRares(question, passages);
+        if (mots) {
+            texteConsigne += '\n\n' + mots;
+        }
     }
     /* Projet : un seul document, seule sa version en cours accompagne la demande. */
     let messages = Albert.OUTILS[outil].documents ? Albert.messagesProjet(conversation)
@@ -192,9 +200,12 @@ function recevoirReponse(reponse, outil, anciennes = null) {
     const langue = outil === 'traduire' ? langueCible : Albert.langueDuTexte(reponse.texte, I18n.langue);
     /* Imprimerie : le gras est retiré avant l'affichage, l'export et la demande suivante. */
     const texte = Albert.OUTILS[outil].documents ? Albert.sansGras(reponse.texte) : reponse.texte;
-    /* Sources cochées : notées avec la réponse, pour son icône de bibliothèque. */
+    /* Sources cochées : notées avec la réponse, pour son icône de bibliothèque.
+       Discussion garde aussi leur liste : elle retrouve les passages cités. */
+    const noms = documentsProjet.map(d => d.nom);
+    const sources = Albert.OUTILS[outil].documents ? { bibliotheque: noms.join(', ') } : { bibliotheque: noms.join(', '), passages: noms };
     const recherches = Albert.OUTILS[outil].sources && documentsProjet.length
-        ? [...(reponse.recherches || []), { bibliotheque: documentsProjet.map(d => d.nom).join(', ') }]
+        ? [...(reponse.recherches || []), sources]
         : reponse.recherches;
     /* Seul le dernier échange garde ses versions : les flèches ne vont pas plus haut. */
     conversation = conversation.map(({ versions, affichee, ...m }) => m);

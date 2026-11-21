@@ -314,3 +314,57 @@ test("iPad (WebKit) : un texte collé devient une source cochée et une réponse
         { noms: [colle, note + ' - Volcan effusif ?.md'], coches: [colle], texte: 'Un volcan effusif émet de la lave fluide.' });
     assert.deepStrictEqual(erreurs, []);
 });
+
+test("iPad (WebKit) : un numéro de passage cité ouvre le passage sous la réponse", async (t) => {
+    const serveur = await servir();
+    const origine = 'http://127.0.0.1:' + serveur.address().port;
+    const navigateur = await webkit.launch();
+    t.after(async () => {
+        await navigateur.close();
+        serveur.close();
+    });
+    const contexte = await navigateur.newContext({ ...devices['iPad (gen 7)'], serviceWorkers: 'block' });
+    /* Albert simulé : il cite le passage 1 et un passage 9 qui n'existe pas. */
+    const consignes = [];
+    await contexte.route((url) => url.origin !== origine, (route) => {
+        if (!route.request().url().endsWith('/chat/completions')) {
+            return route.abort();
+        }
+        const fiche = !!route.request().postDataJSON().response_format;
+        if (!fiche) {
+            consignes.push(route.request().postDataJSON().messages[0].content);
+        }
+        const contenu = fiche ? JSON.stringify({ resume: 'Les volcans.', themes: [], questions: [] }) : 'Une ouverture de la croûte [P1]【P9】.';
+        return route.fulfill({ json: { choices: [{ message: { role: 'assistant', content: contenu }, finish_reason: 'stop' }] } });
+    });
+    await contexte.addInitScript(SAFARI_ANCIEN);
+    await contexte.addInitScript(() => {
+        localStorage.setItem('albert-go.cle', 'sk-test');
+        sessionStorage.setItem('albert-go.cle', 'sk-test');
+    });
+    const page = await contexte.newPage();
+    const erreurs = [];
+    page.on('pageerror', (err) => erreurs.push(String(err)));
+
+    await page.goto(origine + '/');
+    await page.click('#ouvrir-bibliotheque');
+    await page.click('#coller-texte');
+    await page.fill('#texte-colle', 'Le volcan est une ouverture de la croûte terrestre.');
+    await page.click('#dialogue-coller button[value=oui]');
+    await page.waitForFunction(() => !guidesEnCours.size);
+    await page.evaluate(() => $('bibliotheque').close());
+    await page.fill('#saisie', 'Qu\'est-ce qu\'un volcan ?');
+    await page.press('#saisie', 'Enter');
+    await page.waitForFunction(() => !annulation && $('fil').querySelector('.citation'));
+
+    assert.match(consignes[0], /\[P1\]\nLe volcan est une ouverture/);
+    assert.match(consignes[0], /"volcan"[^\n]*P1\./);
+    assert.deepStrictEqual(await page.evaluate(() => [...$('fil').querySelectorAll('.citation')].map(b => b.textContent)), ['P1']);
+    assert.strictEqual((await page.textContent('#fil li.assistant .texte')).trim(), 'Une ouverture de la croûte P1.');
+    await page.click('#fil .citation');
+    assert.match(await page.textContent('#fil .passage'), /Le volcan est une ouverture de la croûte terrestre\./);
+    assert.ok(await page.isVisible('#fil .passage'));
+    await page.click('#fil .citation');
+    assert.ok(!await page.isVisible('#fil .passage'));
+    assert.deepStrictEqual(erreurs, []);
+});

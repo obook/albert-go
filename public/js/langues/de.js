@@ -537,6 +537,8 @@ I18n.TEXTES.de = {
     'demande.traduire': 'Übersetze diesen Text ins {cible}:\n\n{texte}',
     'demande.traduire-source': 'Übersetze diesen Text ins {cible} (Ausgangssprache: {source}):\n\n{texte}',
     'demande.fichier': 'Inhalt der Datei "{nom}":\n\n{texte}',
+    'demande.citer': 'Die Abschnitte der Quellen sind nummeriert, zum Beispiel [P12]. Gib nach jeder Aussage aus einer Quelle die Nummer des Abschnitts in eckigen Klammern an. Erfinde keine Nummer.',
+    'demande.mot-rare': 'Abschnitte mit "{mot}": {passages}.',
     'demande.document-entier': 'Gib das ganze Dokument aktualisiert zurück, ohne etwas davor oder danach zu schreiben. Was die Anfrage nicht betrifft, bleibt unverändert.',
     'demande.image': 'Übertrage getreu den gesamten sichtbaren Text dieses Bildes, in Markdown. '
         + 'Schreibe Formeln in LaTeX zwischen $. Ein Schema, einen Baum oder ein Organigramm '
@@ -587,6 +589,9 @@ I18n.TEXTES.de = {
     'reponse.note-images': 'Gesuchte Bilder: {lignes}',
     'reponse.bibliotheque': 'Quellen aus der Bibliothek anzeigen',
     'reponse.note-bibliotheque': 'Mit der Frage gesendete Quellen aus der Bibliothek: {lignes}',
+    'reponse.citation': 'Abschnitt P{n} anzeigen',
+    'reponse.passage': 'Abschnitt {n}, "{nom}"',
+    'reponse.passage-page': 'Abschnitt {n}, "{nom}", Seite {page}',
     'images.rappel': 'Für ein Foto, ein Bild oder ein Schema einer realen Sache (Skelett, Organ, Vulkan, Tier, Maschine) nutze das Werkzeug image_commons, nicht recherche_web, und gib den Link einer gefundenen Datei an. Beschreibe nie eine Datei ohne ihren Link; passt keine, sag es.',
     'images.absent': 'Du kannst keine Bilder suchen oder zeigen: Wird eines gewünscht, sag, dass man den Globus in der Eingabeleiste einschalten muss, nachdem man Internet unter Einstellungen > Werkzeuge erlaubt hat, falls er fehlt.',
     'services.rappel': 'Für eine Behörde, ein Unternehmen, eine Schule, Schulferien, eine Adresse, eine Gemeinde (Postleitzahlen, Einwohnerzahl), eine öffentliche Ausschreibung, einen öffentlichen Datensatz, einen Parcoursup-Studiengang oder die Qualität des Leitungswassers verwende das passende Werkzeug statt recherche_web.',

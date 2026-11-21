@@ -537,6 +537,8 @@ I18n.TEXTES.fr = {
     'demande.traduire': 'Traduis ce texte en {cible} :\n\n{texte}',
     'demande.traduire-source': 'Traduis ce texte en {cible} (langue source : {source}) :\n\n{texte}',
     'demande.fichier': 'Contenu du fichier "{nom}" :\n\n{texte}',
+    'demande.citer': 'Les passages des sources sont numérotés, par exemple [P12]. Après chaque affirmation tirée d\'une source, indique le numéro du passage entre crochets. N\'invente aucun numéro.',
+    'demande.mot-rare': 'Passages contenant "{mot}" : {passages}.',
     'demande.document-entier': 'Rends le document entier, mis à jour, sans rien écrire avant ni après. Ce que la demande ne touche pas reste tel quel.',
     'demande.image': 'Transcris fidèlement tout le texte visible dans cette image, en Markdown. '
         + 'Écris les formules en LaTeX entre $. Un schéma, un arbre ou un organigramme se recopie '
@@ -587,6 +589,9 @@ I18n.TEXTES.fr = {
     'reponse.note-images': 'Images cherchées : {lignes}',
     'reponse.bibliotheque': 'Voir les sources de la bibliothèque',
     'reponse.note-bibliotheque': 'Sources de la bibliothèque jointes à la question : {lignes}',
+    'reponse.citation': 'Voir le passage P{n}',
+    'reponse.passage': 'Passage {n}, "{nom}"',
+    'reponse.passage-page': 'Passage {n}, "{nom}", page {page}',
     'images.rappel': 'Pour une photo, une image ou le schéma d\'une chose réelle (squelette, organe, volcan, animal, machine), utilise l\'outil image_commons, pas recherche_web, puis donne le lien d\'un fichier trouvé. Ne décris jamais un fichier sans son lien ; si aucun ne correspond, dis-le.',
     'images.absent': 'Tu ne peux ni chercher ni montrer d\'image : si on t\'en demande une, dis qu\'il faut activer le globe de la barre de saisie, après avoir autorisé Internet dans Réglages > Outils s\'il n\'apparaît pas.',
     'services.rappel': 'Pour un service public, une entreprise, un établissement scolaire, des vacances scolaires, une adresse, une commune (codes postaux, population), un marché public, un jeu de données publiques, une formation Parcoursup ou la qualité de l\'eau du robinet, utilise l\'outil dédié plutôt que recherche_web.',

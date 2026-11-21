@@ -537,6 +537,8 @@ I18n.TEXTES.en = {
     'demande.traduire': 'Translate this text into {cible}:\n\n{texte}',
     'demande.traduire-source': 'Translate this text into {cible} (source language: {source}):\n\n{texte}',
     'demande.fichier': 'Contents of the file "{nom}":\n\n{texte}',
+    'demande.citer': 'The passages of the sources are numbered, for example [P12]. After each statement taken from a source, give the passage number in brackets. Never invent a number.',
+    'demande.mot-rare': 'Passages containing "{mot}": {passages}.',
     'demande.document-entier': 'Return the whole document, updated, with nothing written before or after it. Whatever the request does not touch stays as it is.',
     'demande.image': 'Transcribe faithfully all the text visible in this image, in Markdown. '
         + 'Write formulas in LaTeX between $. Copy a diagram, a tree or a chart into a '
@@ -587,6 +589,9 @@ I18n.TEXTES.en = {
     'reponse.note-images': 'Images searched: {lignes}',
     'reponse.bibliotheque': 'Show the library sources',
     'reponse.note-bibliotheque': 'Library sources sent with the question: {lignes}',
+    'reponse.citation': 'Show passage P{n}',
+    'reponse.passage': 'Passage {n}, "{nom}"',
+    'reponse.passage-page': 'Passage {n}, "{nom}", page {page}',
     'images.rappel': 'For a photo, an image or a diagram of a real thing (skeleton, organ, volcano, animal, machine), use the image_commons tool, not recherche_web, then give the link of a file found. Never describe a file without its link; if none matches, say so.',
     'images.absent': 'You can neither search nor show images: if asked for one, say that the globe in the input bar must be turned on, after allowing Internet in Settings > Tools if it is not shown.',
     'services.rappel': 'For a public service, a company, a school, school holidays, an address, a municipality (postcodes, population), a public contract, a public dataset, a Parcoursup course or tap water quality, use the dedicated tool rather than recherche_web.',

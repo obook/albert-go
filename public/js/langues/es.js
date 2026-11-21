@@ -537,6 +537,8 @@ I18n.TEXTES.es = {
     'demande.traduire': 'Traduce este texto al {cible}:\n\n{texte}',
     'demande.traduire-source': 'Traduce este texto al {cible} (idioma de origen: {source}):\n\n{texte}',
     'demande.fichier': 'Contenido del archivo "{nom}":\n\n{texte}',
+    'demande.citer': 'Los pasajes de las fuentes están numerados, por ejemplo [P12]. Después de cada afirmación sacada de una fuente, indica el número del pasaje entre corchetes. No inventes ningún número.',
+    'demande.mot-rare': 'Pasajes que contienen "{mot}": {passages}.',
     'demande.document-entier': 'Devuelve el documento entero, actualizado, sin escribir nada antes ni después. Lo que la petición no toca queda tal cual.',
     'demande.image': 'Transcribe fielmente todo el texto visible en esta imagen, en Markdown. '
         + 'Escribe las fórmulas en LaTeX entre $. Un esquema, un árbol o un organigrama se copia '
@@ -587,6 +589,9 @@ I18n.TEXTES.es = {
     'reponse.note-images': 'Imágenes buscadas: {lignes}',
     'reponse.bibliotheque': 'Ver las fuentes de la biblioteca',
     'reponse.note-bibliotheque': 'Fuentes de la biblioteca enviadas con la pregunta: {lignes}',
+    'reponse.citation': 'Ver el pasaje P{n}',
+    'reponse.passage': 'Pasaje {n}, "{nom}"',
+    'reponse.passage-page': 'Pasaje {n}, "{nom}", página {page}',
     'images.rappel': 'Para una foto, una imagen o el esquema de una cosa real (esqueleto, órgano, volcán, animal, máquina), usa la herramienta image_commons, no recherche_web, y da el enlace de un archivo encontrado. Nunca describas un archivo sin su enlace; si ninguno corresponde, dilo.',
     'images.absent': 'No puedes buscar ni mostrar imágenes: si te piden una, di que hay que activar el globo de la barra de entrada, tras autorizar Internet en Ajustes > Herramientas si no aparece.',
     'services.rappel': 'Para un servicio público, una empresa, un centro escolar, las vacaciones escolares, una dirección, un municipio (códigos postales, población), un contrato público, un conjunto de datos públicos, una formación de Parcoursup o la calidad del agua del grifo, usa la herramienta dedicada en lugar de recherche_web.',

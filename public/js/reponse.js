@@ -83,6 +83,71 @@ function boutonRecherches(note, recherches) {
 }
 
 /**
+ * Remplace les numéros de passages cités ([P12], P12) par des boutons qui montrent le passage.
+ * Entre crochets, un numéro qui ne désigne aucun passage est retiré ; seul, il reste du texte (un point P2).
+ * Sans les passages (source supprimée), rien ne change.
+ *
+ * @param {HTMLElement} contenu - Réponse rendue.
+ * @param {Object[]} passages - Passages de Albert.passagesSources, ou [] si une source manque.
+ * @param {HTMLElement} note - Ligne grise sous la réponse, qui reçoit le passage.
+ */
+function lierCitations(contenu, passages, note) {
+    if (!passages.length) {
+        return;
+    }
+    const marcheur = document.createTreeWalker(contenu, NodeFilter.SHOW_TEXT, {
+        acceptNode: (n) => (n.parentElement.closest('pre, code, .katex') ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT)
+    });
+    const noeuds = [];
+    for (let n = marcheur.nextNode(); n; n = marcheur.nextNode()) {
+        if (/P\d/.test(n.data)) {
+            noeuds.push(n);
+        }
+    }
+    const connu = (n) => n >= 1 && n <= passages.length;
+    for (const noeud of noeuds) {
+        noeud.replaceWith(...Albert.morceauxCitations(noeud.data).flatMap((m) => {
+            if (typeof m === 'string') {
+                return [m];
+            }
+            if (!m.crochets && !connu(m.numeros[0])) {
+                return ['P' + m.numeros[0]];
+            }
+            return m.numeros.filter(connu).map(n => boutonCitation(passages[n - 1], note));
+        }));
+    }
+}
+
+/**
+ * Bouton d'un numéro de passage : il montre le passage sous la réponse, puis le cache.
+ *
+ * @param {Object} passage - Passage de Albert.passagesSources.
+ * @param {HTMLElement} note - Ligne grise sous la réponse.
+ * @returns {HTMLButtonElement} Le bouton.
+ */
+function boutonCitation(passage, note) {
+    const bouton = document.createElement('button');
+    bouton.type = 'button';
+    bouton.className = 'citation';
+    bouton.textContent = 'P' + passage.n;
+    bouton.setAttribute('aria-label', t('reponse.citation', { n: passage.n }));
+    bouton.setAttribute('aria-expanded', 'false');
+    bouton.addEventListener('click', () => {
+        const ouvert = !note.hidden && note.dataset.passage === String(passage.n);
+        for (const autre of note.closest('.carte').querySelectorAll('.citation')) {
+            autre.setAttribute('aria-expanded', 'false');
+        }
+        note.hidden = ouvert;
+        note.dataset.passage = passage.n;
+        const titre = passage.pages ? t('reponse.passage-page', { n: passage.n, nom: passage.nom, page: passage.page })
+            : t('reponse.passage', { n: passage.n, nom: passage.nom });
+        note.textContent = [titre, passage.chemin, passage.texte].filter(Boolean).join('\n');
+        bouton.setAttribute('aria-expanded', String(!ouvert));
+    });
+    return bouton;
+}
+
+/**
  * Crée le bouton qui déplie la trace d'un outil.
  *
  * @param {HTMLElement} note - Ligne grise de la trace, repliée au départ.
@@ -371,6 +436,17 @@ function bulleReponse(texte, titre, langue, animer = false, recherches = null) {
         actions.append(boutonLire(contenu, langue));
     }
     carte.append(contenu);
+    /* Discussion : les numéros de passages cités s'ouvrent sous la réponse. Une source supprimée laisse les numéros en texte. */
+    const cites = (recherches || []).find(r => r && r.passages);
+    if (cites) {
+        const note = document.createElement('p');
+        note.className = 'note calculs passage';
+        note.hidden = true;
+        carte.append(note);
+        const documents = cites.passages.map(nom => bibliotheque.find(d => d.nom === nom));
+        const passages = documents.every(Boolean) ? Albert.passagesSources(documents) : [];
+        pret.then(() => lierCitations(contenu, passages, note));
+    }
     /* Une icône par outil local qui a servi. */
     for (const [nom, local] of Object.entries(OUTILS_LOCAUX)) {
         const lignes = (recherches || []).filter(r => r && r[nom]).map(r => (nom === 'calcul' ? Albert.traceCalcul(r[nom]) : r[nom]));

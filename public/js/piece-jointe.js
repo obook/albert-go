@@ -193,15 +193,26 @@ function estExposant(avant, bout) {
         && /(\d|\)|(^|[^\p{L}])\p{L})$/u.test(avant.str);
 }
 
+/** Longueur au-delà de laquelle une ligne n'est pas un titre. */
+const TITRE_MAX = 90;
+
+/** Répétitions au-delà desquelles un intitulé ("Automatismes") est une rubrique, pas un titre. */
+const RUBRIQUE_MIN = 10;
+
 /**
- * Texte d'une page PDF. pdf.js rend une fraction sur deux lignes et un exposant
- * comme un chiffre de plus : 2³ devenait "23". Ils sont remis en "a/b" et "a^n".
+ * Lignes d'une page PDF, avec leur style. pdf.js rend une fraction sur deux lignes
+ * et un exposant comme un chiffre de plus : 2³ devenait "23". Ils sont remis en "a/b" et "a^n".
  *
  * @param {Object[]} elements - Éléments de getTextContent, dans l'ordre.
- * @returns {string} Texte de la page.
+ * @returns {{texte: string, style: ?string}[]} Lignes ; style "hauteur|police" si la ligne n'en a qu'un, sinon null.
  */
-function texteDePage(elements) {
-    let texte = '';
+function lignesDePage(elements) {
+    const lignes = [];
+    let ligne = { texte: '', styles: new Set() };
+    const finir = () => {
+        lignes.push({ texte: ligne.texte, style: ligne.styles.size === 1 ? [...ligne.styles][0] : null });
+        ligne = { texte: '', styles: new Set() };
+    };
     let avant = null;
     for (let i = 0; i < elements.length; i++) {
         const bout = elements[i];
@@ -210,21 +221,98 @@ function texteDePage(elements) {
         const candidats = bas && NOMBRE_PDF.test(bout.str) && NOMBRE_PDF.test(bas.str);
         if (candidats && (estFraction(bout, bas, avant)
             || estFraction(bout, bas, elements.slice(i + 2).find((e) => e.str.trim())))) {
-            texte += bout.str.trim() + '/' + bas.str.trim() + (bas.hasEOL ? '\n' : '');
+            ligne.texte += bout.str.trim() + '/' + bas.str.trim();
+            ligne.styles.add('fraction');
             avant = bas;
             i++;
+            if (bas.hasEOL) {
+                finir();
+            }
             continue;
         }
         if (avant && estExposant(avant, bout)) {
-            texte = texte.replace(/ +$/, '') + '^' + bout.str + (bout.hasEOL ? '\n' : '');
+            ligne.texte = ligne.texte.replace(/ +$/, '') + '^' + bout.str;
         } else {
-            texte += bout.str + (bout.hasEOL ? '\n' : '');
+            ligne.texte += bout.str;
         }
         if (bout.str.trim()) {
+            ligne.styles.add(Math.round(bout.height * 10) / 10 + '|' + bout.fontName);
             avant = bout;
         }
+        if (bout.hasEOL) {
+            finir();
+        }
     }
-    return texte;
+    if (ligne.texte) {
+        finir();
+    }
+    return lignes;
+}
+
+/**
+ * Texte d'un PDF à partir de ses lignes : titres en Markdown (#, ##...), pages séparées par \f.
+ *
+ * Un titre a un seul style, plus haut que le corps ou égal, jamais employé pour une ligne longue.
+ * Plus un style de titre est rare, plus son niveau est haut : la taille ne suffit pas,
+ * le programme de cycle 4 met la classe (12) au-dessus du domaine (11) qui la contient.
+ *
+ * @param {{texte: string, style: ?string, page: number}[]} lignes - Lignes de toutes les pages.
+ * @returns {string} Texte du document.
+ */
+function texteDesLignes(lignes) {
+    const poids = new Map();
+    const longs = new Set();
+    for (const l of lignes.filter(l => l.style)) {
+        poids.set(l.style, (poids.get(l.style) || 0) + l.texte.length);
+        if (l.texte.trim().length > TITRE_MAX) {
+            longs.add(l.style);
+        }
+    }
+    const hauteur = (style) => parseFloat(style);
+    const corps = [...poids].sort((a, b) => b[1] - a[1])[0]?.[0];
+    const estTitre = (l) => l.style && l.style !== corps && !longs.has(l.style) && l.texte.trim()
+        && hauteur(l.style) >= hauteur(corps);
+    const candidats = lignes.filter(estTitre);
+    const cle = (l) => l.style + '\n' + l.texte.trim();
+    const repetes = new Map();
+    for (const l of candidats) {
+        repetes.set(cle(l), (repetes.get(cle(l)) || 0) + 1);
+    }
+    /* Style de rubrique : la plupart de ses lignes répètent un intitulé, même si l'une a une coquille. */
+    const parStyle = new Map();
+    for (const l of candidats) {
+        const compte = parStyle.get(l.style) || { total: 0, repetes: 0 };
+        compte.total++;
+        compte.repetes += repetes.get(cle(l)) >= RUBRIQUE_MIN ? 1 : 0;
+        parStyle.set(l.style, compte);
+    }
+    const titres = new Set(candidats.filter(l => parStyle.get(l.style).repetes * 2 <= parStyle.get(l.style).total));
+    /* Rubriques au niveau le plus profond, toutes au même : "Objectifs" remplace "Automatismes" dans le chemin. */
+    const rubriques = new Set(candidats.filter(l => !titres.has(l)));
+    /* Niveau par hauteur : deux polices de même taille sont un même niveau de titre. */
+    const nombre = new Map();
+    for (const l of titres) {
+        nombre.set(hauteur(l.style), (nombre.get(hauteur(l.style)) || 0) + 1);
+    }
+    /* ponytail: niveau d'après la rareté de la hauteur ; essayé sur le programme de cycle 4, à revoir sur les autres BO. */
+    const niveaux = [...nombre].sort((a, b) => a[1] - b[1] || b[0] - a[0]).map(([h]) => h);
+    const sortie = [];
+    let page = lignes[0]?.page;
+    for (const l of lignes) {
+        if (l.page !== page) {
+            sortie.push('\f');
+            page = l.page;
+        }
+        /* Plus de six # possibles : le texte gardé n'est pas affiché en Markdown, seul le découpage les lit. */
+        if (titres.has(l)) {
+            sortie.push('#'.repeat(niveaux.indexOf(hauteur(l.style)) + 1) + ' ' + l.texte.trim());
+        } else if (rubriques.has(l)) {
+            sortie.push('#'.repeat(niveaux.length + 1) + ' ' + l.texte.trim());
+        } else {
+            sortie.push(l.texte);
+        }
+    }
+    return sortie.join('\n');
 }
 
 /**
@@ -239,21 +327,26 @@ async function lirePdf(fichier) {
     /* Sans eval : la CSP l'interdit. */
     const chargement = pdfjs.getDocument({ data: await fichier.arrayBuffer(), isEvalSupported: false });
     const pdf = await chargement.promise;
-    let texte = '';
-    for (let n = 1; n <= pdf.numPages && texte.length <= TEXTE_MAX; n++) {
+    /* Lignes de tout le document avant texteDesLignes : les titres se repèrent d'après l'ensemble des styles. */
+    const lignes = [];
+    let longueur = 0;
+    for (let n = 1; n <= pdf.numPages && longueur <= TEXTE_MAX; n++) {
         /* Pas getTextContent : il parcourt un flux par for await, que WebKit ne sait pas faire (tous les navigateurs de l'iPad). */
         const lecteur = (await pdf.getPage(n)).streamTextContent().getReader();
-        /* Page lue en entier avant texteDePage : une fraction peut tomber entre deux morceaux du flux. */
+        /* Page lue en entier avant lignesDePage : une fraction peut tomber entre deux morceaux du flux. */
         const elements = [];
         for (let morceau = await lecteur.read(); !morceau.done; morceau = await lecteur.read()) {
-            /* Remplacé le 21 novembre 2026 par texteDePage, qui remet fractions et exposants en ligne :
+            /* Remplacé le 21 novembre 2026 par lignesDePage, qui remet fractions et exposants en ligne :
             texte += morceau.value.items.map((bout) => bout.str + (bout.hasEOL ? '\n' : '')).join(''); */
             elements.push(...morceau.value.items);
         }
-        texte += texteDePage(elements) + '\n\n';
+        for (const ligne of lignesDePage(elements)) {
+            lignes.push({ ...ligne, page: n });
+            longueur += ligne.texte.length + 1;
+        }
     }
     chargement.destroy();
-    return texte;
+    return texteDesLignes(lignes);
 }
 
 /**

@@ -382,6 +382,54 @@ test('joindreDocuments : un bloc par document, rien sans document', () => {
         'Contenu du fichier "cours.pdf" :\n\nA\n\nContenu du fichier "sujet.odt" :\n\nB');
 });
 
+test('decouper : un passage par titre, chemin de titres, page comptée aux \\f', () => {
+    const texte = '# Espace\n## Quatrième\n#### Triangles\nConnaitre le théorème de Pythagore, sa réciproque, sa contraposée.\n'
+        + '\f\n## Troisième\n#### Triangles\nÉcrire l\'égalité de Pythagore dans un triangle rectangle.';
+    assert.deepStrictEqual(Albert.decouper(texte), [
+        { page: 1, chemin: 'Espace > Quatrième > Triangles', texte: 'Connaitre le théorème de Pythagore, sa réciproque, sa contraposée.' },
+        { page: 2, chemin: 'Espace > Troisième > Triangles', texte: 'Écrire l\'égalité de Pythagore dans un triangle rectangle.' }
+    ]);
+});
+
+test('decouper : sans titre, coupe aux lignes vides ; un fragment court rejoint le précédent', () => {
+    const long = 'Une phrase assez longue pour faire un passage à elle seule, sans aucun doute possible.';
+    assert.deepStrictEqual(Albert.decouper(long + '\n\n2\n\n' + long).map(p => p.texte), [long + '\n2', long]);
+    const ligne = 'x'.repeat(600);
+    assert.strictEqual(Albert.decouper(ligne + '\n' + ligne).length, 2);
+    /* Des lignes courtes se regroupent, mais jamais au-delà de PASSAGE_MAX. */
+    assert.ok(Albert.decouper('court\n\n'.repeat(400)).every(p => p.texte.length <= Albert.PASSAGE_MAX));
+});
+
+test('joindrePassages : consigne de citation, passages numérotés à la suite d\'une source à l\'autre', () => {
+    const passages = Albert.passagesSources([{ nom: 'a.pdf', texte: '# Titre\nPremier.\n\f\nSecond.' }, { nom: 'b.txt', texte: 'Troisième.' }]);
+    assert.deepStrictEqual(passages.map(p => [p.n, p.nom, p.page, p.pages]), [[1, 'a.pdf', 1, true], [2, 'b.txt', 1, false]]);
+    assert.strictEqual(Albert.joindrePassages(passages), t('demande.citer')
+        + '\n\nContenu du fichier "a.pdf" :\n\n[P1, p. 1] Titre\nPremier.\nSecond.'
+        + '\n\nContenu du fichier "b.txt" :\n\n[P2]\nTroisième.');
+});
+
+test('motsRares : passages qui contiennent un mot rare de la question, accents ignorés', () => {
+    /* Un titre par passage : sans lui, des paragraphes courts se regrouperaient. */
+    const paragraphes = ['Théorème de Pythagore.', 'Égalité de pythagore.', ...Array(6).fill('Le triangle.')];
+    const passages = Albert.passagesSources([{ nom: 's', texte: paragraphes.map((p, i) => '# ' + i + '\n' + p).join('\n') }]);
+    assert.strictEqual(Albert.motsRares('Où est Pythagore dans le triangle ?', passages), 'Passages contenant "Pythagore" : P1, P2.');
+    assert.strictEqual(Albert.motsRares('Thales ?', passages), '');
+});
+
+test('CITATION : numéros cités, avec ou sans page, crochets pleine chasse et espaces invisibles', () => {
+    const cites = (texte) => [...texte.matchAll(Albert.CITATION)].flatMap(m => Albert.numerosCites(m[1]));
+    assert.deepStrictEqual(cites('Vrai [P107]. Aussi [P39, P40] et 【P38】, [​P113​], [P12, p. 4].'), [107, 39, 40, 38, 113, 12]);
+    assert.deepStrictEqual(cites('Note [1] et [Pythagore].'), []);
+});
+
+test('morceauxCitations : crochets, parenthèses et numéros seuls ; PDF ou P2x ne comptent pas', () => {
+    assert.deepStrictEqual(Albert.morceauxCitations('Vrai [P1] (P2), voir P3. Un PDF, P4a et le point P.'), [
+        'Vrai ', { numeros: [1], crochets: true }, ' (', { numeros: [2], crochets: false }, '), voir ',
+        { numeros: [3], crochets: false }, '. Un PDF, P4a et le point P.'
+    ]);
+    assert.deepStrictEqual(Albert.morceauxCitations('P5'), [{ numeros: [5], crochets: false }]);
+});
+
 test('plafondDocuments : 60 % du contexte, à trois caractères par jeton', () => {
     assert.strictEqual(Albert.plafondDocuments(131072), 235929);
     assert.strictEqual(Albert.plafondDocuments(null), 200000);

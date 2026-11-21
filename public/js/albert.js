@@ -128,6 +128,22 @@ const Albert = {
     /** Plafond des documents d'un projet quand le contexte du modèle est inconnu, en caractères. */
     DOCUMENTS_MAX: 200000,
 
+    /** Longueur d'un passage de source, en caractères : au-delà, il est coupé entre deux lignes. */
+    PASSAGE_MAX: 1000,
+
+    /** Passage plus court, rattaché au précédent de la même section : des chiffres isolés ne font pas un passage. */
+    PASSAGE_MIN: 80,
+
+    /** Mot rare de la question : présent dans 3 % des passages au plus, ou dans 5 pour une petite source. */
+    MOT_RARE: 0.03,
+    MOT_RARE_MIN: 5,
+
+    /** Numéros de passages donnés au plus pour un mot rare. */
+    MOT_PASSAGES_MAX: 20,
+
+    /** Numéros cités par le modèle : [P12], [P12, P13], 【P12】, avec ou sans page ni espaces invisibles. */
+    CITATION: /[[【][\s​-‍﻿]*(P\d+(?:[\s,;​-‍﻿]*(?:p\.\s*\d+|P\d+))*)[\s​-‍﻿]*[\]】]/g,
+
     /** Rédiger : notes plus courtes non envoyées, pour ne pas payer une requête par mot. */
     LONGUEUR_MIN_NOTES: 10,
 
@@ -654,6 +670,150 @@ const Albert = {
     joindreDocuments(documents) {
         /* ponytail: documents envoyés en entier ; recherche dans les documents (RAG) s'ils dépassent le contexte. */
         return documents.map(d => t('demande.fichier', { nom: d.nom, texte: d.texte })).join('\n\n');
+    },
+
+    /**
+     * Découpe le texte d'une source en passages, à chaque titre (#) et au plus à PASSAGE_MAX caractères.
+     * Une source sans titre se découpe à ses lignes vides. \f marque un changement de page (PDF).
+     *
+     * @param {string} texte - Texte d'une source.
+     * @returns {{page: number, chemin: string, texte: string}[]} Passages, chemin de titres "A > B".
+     */
+    decouper(texte) {
+        const passages = [];
+        const chemin = [];
+        const sansTitres = !/^\f?#+ /m.test(texte);
+        let page = 1;
+        let courant = null;
+        const fermer = () => {
+            const contenu = courant ? courant.lignes.join('\n').trim() : '';
+            const precedent = passages.at(-1);
+            if (contenu && contenu.length < this.PASSAGE_MIN && precedent && precedent.chemin === courant.chemin
+                && precedent.texte.length + contenu.length < this.PASSAGE_MAX) {
+                precedent.texte += '\n' + contenu;
+            } else if (contenu) {
+                passages.push({ page: courant.page, chemin: courant.chemin, texte: contenu });
+            }
+            courant = null;
+        };
+        for (const brute of texte.split('\n')) {
+            page += (brute.match(/\f/g) || []).length;
+            const ligne = brute.replace(/\f/g, '');
+            const titre = ligne.match(/^(#+) (.+)/);
+            if (titre) {
+                fermer();
+                chemin.length = titre[1].length - 1;
+                chemin.push(titre[2].trim());
+            } else if (!ligne.trim()) {
+                if (sansTitres) {
+                    fermer();
+                }
+            } else {
+                if (courant && courant.taille + ligne.length > this.PASSAGE_MAX) {
+                    fermer();
+                }
+                courant = courant || { page, chemin: chemin.filter(Boolean).join(' > '), lignes: [], taille: 0 };
+                courant.lignes.push(ligne);
+                courant.taille += ligne.length + 1;
+            }
+        }
+        fermer();
+        return passages;
+    },
+
+    /**
+     * Passages de toutes les sources cochées, numérotés à la suite.
+     * ponytail: numéros recalculés à chaque question ; une source redéposée change ceux des anciennes réponses.
+     *
+     * @param {{nom: string, texte: string}[]} documents - Sources, dans l'ordre d'envoi.
+     * @returns {{n: number, nom: string, pages: boolean, page: number, chemin: string, texte: string}[]} Passages.
+     */
+    passagesSources(documents) {
+        const passages = documents.flatMap(d => this.decouper(d.texte).map(p => ({ ...p, nom: d.nom, pages: d.texte.includes('\f') })));
+        return passages.map((p, i) => ({ n: i + 1, ...p }));
+    },
+
+    /**
+     * Texte des sources découpées en passages numérotés, précédé de la consigne de citation.
+     *
+     * @param {Object[]} passages - Passages de passagesSources.
+     * @returns {string} Consigne puis un bloc par source.
+     */
+    joindrePassages(passages) {
+        const blocs = [];
+        for (const p of passages) {
+            const entete = '[P' + p.n + (p.pages ? ', p. ' + p.page : '') + ']' + (p.chemin ? ' ' + p.chemin : '');
+            if (blocs.at(-1)?.nom !== p.nom) {
+                blocs.push({ nom: p.nom, passages: [] });
+            }
+            blocs.at(-1).passages.push(entete + '\n' + p.texte);
+        }
+        return [t('demande.citer'), ...blocs.map(b => t('demande.fichier', { nom: b.nom, texte: b.passages.join('\n\n') }))].join('\n\n');
+    },
+
+    /**
+     * Passages qui contiennent chaque mot rare de la question. Le modèle ne trouve pas seul
+     * toutes les occurrences d'une notion, même quand la source tient dans le contexte.
+     * ponytail: début de mot, sans synonymes ni formes fléchies ; à revoir si une question en souffre.
+     *
+     * @param {string} question - Texte saisi.
+     * @param {Object[]} passages - Passages de passagesSources.
+     * @returns {string} Une ligne par mot rare, ou ''.
+     */
+    motsRares(question, passages) {
+        const normaliser = (s) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+        const textes = passages.map(p => normaliser(p.chemin + '\n' + p.texte));
+        const seuil = Math.max(this.MOT_RARE_MIN, Math.floor(passages.length * this.MOT_RARE));
+        const mots = new Map((question.match(/[\p{L}\p{N}]{4,}/gu) || []).map(m => [normaliser(m), m]));
+        const lignes = [];
+        for (const [cle, mot] of mots) {
+            const debut = new RegExp('(^|[^\\p{L}\\p{N}])' + cle, 'u');
+            const trouves = passages.filter((p, i) => debut.test(textes[i]));
+            if (trouves.length && trouves.length <= seuil) {
+                const numeros = trouves.slice(0, this.MOT_PASSAGES_MAX).map(p => 'P' + p.n).join(', ');
+                lignes.push(t('demande.mot-rare', { mot: mot, passages: numeros }));
+            }
+        }
+        return lignes.join('\n');
+    },
+
+    /**
+     * Numéros de passages d'une citation trouvée par CITATION.
+     *
+     * @param {string} contenu - Groupe capturé : "P12", "P12, P13", "P12, p. 4".
+     * @returns {number[]} Numéros, sans les pages.
+     */
+    numerosCites(contenu) {
+        return [...contenu.matchAll(/P(\d+)/g)].map(m => Number(m[1]));
+    },
+
+    /**
+     * Découpe un texte autour des numéros de passages cités. Le modèle écrit [P12] comme demandé,
+     * mais aussi (P12), [Source : P12] ou P12 seul : ces formes comptent aussi.
+     *
+     * @param {string} texte - Texte d'une réponse.
+     * @returns {Array<string|{numeros: number[], crochets: boolean}>} Texte et citations, dans l'ordre.
+     */
+    morceauxCitations(texte) {
+        const morceaux = [];
+        const libres = (bout) => {
+            let debut = 0;
+            /* Sans lookbehind : absent du Safari des iPad pas à jour. */
+            for (const m of bout.matchAll(/(^|[^\p{L}\p{N}])P(\d+)(?![\p{L}\p{N}])/gu)) {
+                const position = m.index + m[1].length;
+                morceaux.push(bout.slice(debut, position), { numeros: [Number(m[2])], crochets: false });
+                debut = position + m[0].length - m[1].length;
+            }
+            morceaux.push(bout.slice(debut));
+        };
+        let debut = 0;
+        for (const m of texte.matchAll(this.CITATION)) {
+            libres(texte.slice(debut, m.index));
+            morceaux.push({ numeros: this.numerosCites(m[1]), crochets: true });
+            debut = m.index + m[0].length;
+        }
+        libres(texte.slice(debut));
+        return morceaux.filter(m => m !== '');
     },
 
     /**
