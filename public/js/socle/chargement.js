@@ -71,6 +71,36 @@ const SCRIPTS = [
     'js/conversation/app.js',
 ];
 
+/* Morceaux de pages/, tous demandés dès le départ : les cartes de Réglages n'attendent pas
+   la boîte qui les contient. Un morceau oublié ici est demandé quand même, plus tard. */
+const MORCEAUX = [
+    'menu/volet',
+    'menu/confirmer-suppression',
+    'menu/partage',
+    'menu/a-propos',
+    'menu/empreinte',
+    'bibliotheque/volet',
+    'bibliotheque/aide',
+    'bibliotheque/coller',
+    'bibliotheque/guide',
+    'conversation/accueil',
+    'conversation/chat',
+    'conversation/redaction',
+    'conversation/saisie',
+    'reglages/boite',
+    'reglages/ia',
+    'reglages/competences',
+    'reglages/outils',
+    'reglages/application',
+    'cle/saisie',
+    'cle/bienvenue',
+    'cle/confirmer',
+    'cle/absente',
+];
+
+/* Texte de chaque morceau déjà demandé : nom -> promesse du texte. */
+const demandes = new Map();
+
 /**
  * Adresse d'un fichier de la page, avec la version.
  *
@@ -82,6 +112,28 @@ function adresseFichier(chemin) {
 }
 
 /**
+ * Demande un morceau de pages/, une seule fois.
+ *
+ * @param {string} nom - Nom du morceau, par exemple "reglages/ia".
+ * @returns {Promise<string>} Texte HTML du morceau.
+ */
+function demanderMorceau(nom) {
+    if (!demandes.has(nom)) {
+        const chemin = 'pages/' + nom + '.html';
+        const texte = fetch(adresseFichier(chemin)).then((reponse) => {
+            if (!reponse.ok) {
+                throw new Error(chemin + ' : ' + reponse.status);
+            }
+            return reponse.text();
+        });
+        /* Échec lu plus tard par placerMorceaux : pas d'alerte "promesse rejetée" en attendant. */
+        texte.catch(() => {});
+        demandes.set(nom, texte);
+    }
+    return demandes.get(nom);
+}
+
+/**
  * Remplace chaque emplacement par son morceau de pages/, puis les emplacements de ce morceau.
  *
  * @param {ParentNode} racine - Page ou morceau où chercher les emplacements.
@@ -90,14 +142,11 @@ function adresseFichier(chemin) {
 async function placerMorceaux(racine) {
     const emplacements = [...racine.querySelectorAll('[data-page]')];
     await Promise.all(emplacements.map(async (emplacement) => {
-        const reponse = await fetch(adresseFichier('pages/' + emplacement.dataset.page + '.html'));
-        if (!reponse.ok) {
-            throw new Error('pages/' + emplacement.dataset.page + '.html : ' + reponse.status);
-        }
+        const texte = await demanderMorceau(emplacement.dataset.page);
         /* Contexte <body> : le HTML est lu comme s'il était écrit dans la page. */
         const plage = document.createRange();
         plage.selectNodeContents(document.body);
-        const morceau = plage.createContextualFragment(await reponse.text());
+        const morceau = plage.createContextualFragment(texte);
         await placerMorceaux(morceau);
         emplacement.replaceWith(morceau);
     }));
@@ -120,6 +169,9 @@ function chargerScripts() {
     });
 }
 
+for (const nom of MORCEAUX) {
+    demanderMorceau(nom);
+}
 placerMorceaux(document.body).then(chargerScripts, (err) => {
     console.error(err);
     rechargerUneFois();
