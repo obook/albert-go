@@ -187,7 +187,13 @@ function reprendreSources() {
 function afficherResumeSources() {
     const nombre = documentsProjet.length;
     const bouton = $('ouvrir-bibliotheque');
-    const libelle = t(nombre === 0 ? 'bibliotheque.ouvrir' : nombre === 1 ? 'bibliotheque.ouvrir-une' : 'bibliotheque.ouvrir-coches', { nombre: nombre });
+    let cleLibelle = 'bibliotheque.ouvrir-coches';
+    if (nombre === 0) {
+        cleLibelle = 'bibliotheque.ouvrir';
+    } else if (nombre === 1) {
+        cleLibelle = 'bibliotheque.ouvrir-une';
+    }
+    const libelle = t(cleLibelle, { nombre: nombre });
     bouton.classList.toggle('sources-cochees', nombre > 0);
     bouton.setAttribute('aria-label', libelle);
     bouton.title = libelle;

@@ -138,7 +138,13 @@ Object.assign(Albert, {
         /* ponytail: l'écriture StarMath de LibreOffice passe telle quelle ; la convertir en LaTeX si le modèle la lit mal. */
         const tex = lire('application/x-tex');
         const starmath = lire('StarMath 5.0');
-        return tex ? '$' + tex + '$' : (starmath ? '[formule : ' + starmath + ']' : '');
+        if (tex) {
+            return '$' + tex + '$';
+        }
+        if (starmath) {
+            return '[formule : ' + starmath + ']';
+        }
+        return '';
     },
 
     /**

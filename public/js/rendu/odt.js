@@ -192,7 +192,12 @@ Object.assign(Rendu, {
             msqrt: () => '<msqrt>' + tous() + '</msqrt>',
             mroot: () => '<mroot>' + rang(0) + rang(1) + '</mroot>',
             /* Flèche de réaction de mhchem : rien au-dessus, donc pas d'accent. */
-            mover: () => (fils[1] && this.texteMathml(fils[1]) ? '<mover>' + rang(0) + rang(1) + '</mover>' : (fils[0] ? this.mathmlOdt(fils[0]) : '')),
+            mover: () => {
+                if (fils[1] && this.texteMathml(fils[1])) {
+                    return '<mover>' + rang(0) + rang(1) + '</mover>';
+                }
+                return fils[0] ? this.mathmlOdt(fils[0]) : '';
+            },
             munder: () => '<munder>' + rang(0) + rang(1) + '</munder>',
             munderover: () => '<munderover>' + rang(0) + rang(1) + rang(2) + '</munderover>',
             mtable: () => '<mtable>' + tous() + '</mtable>',
@@ -282,7 +287,13 @@ Object.assign(Rendu, {
             annotation: () => '',
             mphantom: () => '',
             mn: () => (/\s/.test(brut) || reserve ? citer(brut) : brut),
-            mtext: () => (brut.trim() ? citer(brut) : (brut ? '~' : '')),
+            /* Texte entre guillemets ; espace seule : ~, l'espace de StarMath. */
+            mtext: () => {
+                if (brut.trim()) {
+                    return citer(brut);
+                }
+                return brut ? '~' : '';
+            },
             mspace: () => '~',
             /* Mot (lim, sin) : entre guillemets, sinon LibreOffice le prend pour une commande. */
             mo: () => {

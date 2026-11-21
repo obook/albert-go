@@ -284,7 +284,10 @@ const Formel = {
         const hauteur = (j) => {
             const haut = fleche(j - 1) === 'ne' || fleche(j + 1) === 'se';
             const bas = fleche(j - 1) === 'se' || fleche(j + 1) === 'ne';
-            return fleche(j) || haut === bas ? 'milieu' : (haut ? 'haut' : 'bas');
+            if (fleche(j) || haut === bas) {
+                return 'milieu';
+            }
+            return haut ? 'haut' : 'bas';
         };
         const etage = nom => f.map((c, j) => (hauteur(j) === nom ? c : ''));
         const rangees = [

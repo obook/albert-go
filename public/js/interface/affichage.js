@@ -268,7 +268,12 @@ function ajouterAttente(demande = '') {
     const minuteur = setInterval(() => {
         const secondes = Math.round((Date.now() - debut) / 1000);
         duree.textContent = t('duree', { secondes });
-        const message = secondes >= 60 ? t('attente.longue') : secondes >= 20 ? t('attente.lente') : '';
+        let message = '';
+        if (secondes >= 60) {
+            message = t('attente.longue');
+        } else if (secondes >= 20) {
+            message = t('attente.lente');
+        }
         /* Réécrire le même texte chaque seconde ferait répéter le lecteur d'écran. */
         if (palier.textContent !== message) {
             palier.textContent = message;

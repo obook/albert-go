@@ -69,7 +69,15 @@ Object.assign(Albert, {
     petiteUnite(valeur, unite, langue) {
         /* Arrondi avant le choix : 999,6 Wh s'écrirait sinon "1 000 Wh". */
         const arrondi = Number(valeur.toPrecision(2));
-        const [nombre, prefixe] = arrondi < 1 ? [valeur * 1000, 'm'] : arrondi >= 1000 ? [valeur / 1000, 'k'] : [valeur, ''];
+        let nombre = valeur;
+        let prefixe = '';
+        if (arrondi < 1) {
+            nombre = valeur * 1000;
+            prefixe = 'm';
+        } else if (arrondi >= 1000) {
+            nombre = valeur / 1000;
+            prefixe = 'k';
+        }
         /* Insécables : le nombre et son unité ne se séparent pas en fin de ligne. */
         return (nombre.toLocaleString(langue, { maximumSignificantDigits: 2 }) + ' ' + prefixe + unite).replace(/ /g, '\u00a0');
     },

@@ -247,8 +247,11 @@ for (const bouton of document.querySelectorAll('.suggestion')) {
         const champ = $(outilActuel === 'rediger' ? 'notes' : 'saisie');
         const cle = bouton.dataset.exemple;
         /* Traduire vers la langue de l'interface : l'exemple est pris dans une autre langue. */
-        const autreLangue = outilActuel === 'traduire' && langueCible === I18n.langue;
-        champ.value = await exempleFichier(cle, autreLangue ? (langueCible === 'en' ? 'fr' : 'en') : I18n.langue);
+        let langueExemple = I18n.langue;
+        if (outilActuel === 'traduire' && langueCible === I18n.langue) {
+            langueExemple = langueCible === 'en' ? 'fr' : 'en';
+        }
+        champ.value = await exempleFichier(cle, langueExemple);
         /* "Faire une recherche" active le globe, s'il ne l'est pas déjà. */
         if (bouton.dataset.recherche !== undefined && !globeActif) {
             $('recherche-web').click();
