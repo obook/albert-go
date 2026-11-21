@@ -239,9 +239,9 @@ I18n.TEXTES.es = {
     /* Ajustes. */
     'reglages.titre': 'Ajustes',
     'reglages.conseil': 'Recomendado: modelo Large, toda la conversación enviada, temperatura 0,2, top-k 40.',
-    'reglages.conseil-outils': 'Recomendado: todas las herramientas activadas, Internet desactivado, motor Wikipedia.',
+    'reglages.conseil-outils': 'Recomendado: todas las herramientas activadas, Internet desactivado, motor Wikipedia, solo voces del dispositivo.',
     'reglages.conseil-competences': 'Recomendado: todas las competencias activadas.',
-    'reglages.conseil-application': 'Recomendado: nombre Albert Go, ideas ocultas, clave conservada, solo voces del dispositivo.',
+    'reglages.conseil-application': 'Recomendado: nombre Albert Go, ideas ocultas, clave conservada.',
     'reglages.carte-reponse': 'IA',
     'reglages.carte-application': 'Aplicación',
     'reglages.competences': 'Competencias',
@@ -269,8 +269,13 @@ I18n.TEXTES.es = {
     'reglages.accueil': 'Inicio',
     'reglages.idees': 'Mostrar las ideas',
     'reglages.lecture': 'Lectura en voz alta',
+    /* Retiré le 21/11/2026.
     'reglages.voix-en-ligne': 'Permitir las voces en línea',
+    */
+    'reglages.voix-en-ligne': 'Permitir la síntesis de voz en línea',
+    /* Retiré le 21/11/2026.
     'reglages.aide-voix': 'Un motor de voz en línea puede recopilar y explotar los datos de la conversación.',
+    */
     'reglages.outils': 'Herramientas',
     'reglages.calcul': 'Calculadora científica',
     'reglages.calendrier': 'Calendario',
@@ -290,7 +295,10 @@ I18n.TEXTES.es = {
     'reglages.cle-recherche': 'Clave API',
     'reglages.cx': 'ID del buscador',
     'reglages.moteur-aucun': 'Ningún buscador adicional (tres como máximo)',
+    /* Retiré le 21/11/2026.
     'reglages.aide-recherche': 'Las herramientas de Internet pueden recopilar y explotar los datos de la conversación. Los textos que traen no están verificados.',
+    */
+    'reglages.aide-recherche': 'Las herramientas de Internet pueden recopilar y explotar los datos de la conversación.',
     'reglages.cle-note': 'Hay una clave guardada en este navegador.',
     'reglages.nom': 'Nombre de la aplicación',
     'reglages.aide-nom': 'Hasta 12 caracteres.',

@@ -585,3 +585,31 @@ test("iPad (WebKit) : 'Effacer la clé et quitter' est dans Réglages, Applicati
     assert.strictEqual(await page.evaluate(() => localStorage.getItem('albert-go.cle')), null);
     assert.deepStrictEqual(erreurs, []);
 });
+
+test("iPad (WebKit) : 'Autoriser la synthèse vocale en ligne' est dans Outils, sous les moteurs", async (t) => {
+    const serveur = await servir();
+    const origine = 'http://127.0.0.1:' + serveur.address().port;
+    const navigateur = await webkit.launch();
+    t.after(async () => {
+        await navigateur.close();
+        serveur.close();
+    });
+    const contexte = await navigateur.newContext({ ...devices['iPad (gen 7)'], serviceWorkers: 'block' });
+    await contexte.route((url) => url.origin !== origine, (route) => route.abort());
+    const page = await contexte.newPage();
+    const erreurs = [];
+    page.on('pageerror', (err) => erreurs.push(String(err)));
+
+    await page.goto(origine + '/');
+    assert.ok(await page.evaluate(() => $('choix-moteur').compareDocumentPosition($('voix-en-ligne')) & Node.DOCUMENT_POSITION_FOLLOWING),
+        'voix pas sous les moteurs');
+    await page.evaluate(() => $('ouvrir-reglages').click());
+    await page.click('#reglages details:has(#voix-en-ligne) > summary');
+    await page.click('label:has(#voix-en-ligne)');
+    assert.strictEqual(await page.evaluate(() => lire('voix-en-ligne', 'non')), 'oui');
+    /* Réglages conseillés de la carte Outils : voix de l'appareil seules. */
+    await page.click('#outils-conseilles');
+    assert.ok(!await page.evaluate(() => $('voix-en-ligne').checked), 'interrupteur resté coché');
+    assert.strictEqual(await page.evaluate(() => lire('voix-en-ligne', 'non')), 'non');
+    assert.deepStrictEqual(erreurs, []);
+});

@@ -671,6 +671,14 @@
                             <summary id="moteur-choisi"></summary>
                             <div id="moteurs" class="cartes-choix"></div>
                         </details>
+                        <!-- Voix en ligne : la lecture de la réponse sort aussi du navigateur. -->
+                        <label class="interrupteur">
+                            <input type="checkbox"
+                                   id="voix-en-ligne"
+                                   role="switch"
+                                   aria-describedby="aide-recherche">
+                            <span data-t="reglages.voix-en-ligne"></span>
+                        </label>
                         <p id="aide-recherche" class="note mise-en-garde" data-t="reglages.aide-recherche"></p>
                         <div id="cles-recherche">
                             <label for="cle-recherche" data-t="reglages.cle-recherche"></label>
@@ -686,7 +694,7 @@
                         </div>
                     </fieldset>
 
-                    <!-- Outils locaux et Internet activés, aucun moteur. -->
+                    <!-- Outils locaux et Internet activés, aucun moteur, voix de l'appareil seules. -->
                     <button type="button"
                             class="bouton-texte outline"
                             id="outils-conseilles"
@@ -737,6 +745,7 @@
                         -->
                     </fieldset>
 
+                    <!-- Retiré le 21/11/2026 : les voix en ligne passent dans Outils, Internet.
                     <fieldset>
                         <legend data-t="reglages.lecture"></legend>
                         <label class="interrupteur">
@@ -748,9 +757,10 @@
                         </label>
                         <p id="aide-voix" class="note mise-en-garde" data-t="reglages.aide-voix"></p>
                     </fieldset>
+                    -->
 
                     <div class="boutons-carte">
-                        <!-- Nom par défaut, idées masquées, clé conservée, voix de l'appareil seules. -->
+                        <!-- Nom par défaut, idées masquées, clé conservée. -->
                         <button type="button"
                                 class="bouton-texte outline"
                                 id="application-conseillee"

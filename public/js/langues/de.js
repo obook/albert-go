@@ -239,9 +239,9 @@ I18n.TEXTES.de = {
     /* Einstellungen. */
     'reglages.titre': 'Einstellungen',
     'reglages.conseil': 'Empfohlen: Modell Large, ganzes Gespräch gesendet, Temperatur 0,2, Top-k 40.',
-    'reglages.conseil-outils': 'Empfohlen: alle Werkzeuge an, Internet aus, Suchmaschine Wikipedia.',
+    'reglages.conseil-outils': 'Empfohlen: alle Werkzeuge an, Internet aus, Suchmaschine Wikipedia, nur Gerätestimmen.',
     'reglages.conseil-competences': 'Empfohlen: alle Kompetenzen an.',
-    'reglages.conseil-application': 'Empfohlen: Name Albert Go, Ideen ausgeblendet, Schlüssel behalten, nur Gerätestimmen.',
+    'reglages.conseil-application': 'Empfohlen: Name Albert Go, Ideen ausgeblendet, Schlüssel behalten.',
     'reglages.carte-reponse': 'KI',
     'reglages.carte-application': 'App',
     'reglages.competences': 'Kompetenzen',
@@ -269,8 +269,13 @@ I18n.TEXTES.de = {
     'reglages.accueil': 'Startseite',
     'reglages.idees': 'Ideen anzeigen',
     'reglages.lecture': 'Vorlesen',
+    /* Retiré le 21/11/2026.
     'reglages.voix-en-ligne': 'Online-Stimmen erlauben',
+    */
+    'reglages.voix-en-ligne': 'Online-Sprachsynthese erlauben',
+    /* Retiré le 21/11/2026.
     'reglages.aide-voix': 'Eine Online-Sprachausgabe kann die Daten des Gesprächs sammeln und verwerten.',
+    */
     'reglages.outils': 'Werkzeuge',
     'reglages.calcul': 'Wissenschaftlicher Taschenrechner',
     'reglages.calendrier': 'Kalender',
@@ -290,7 +295,10 @@ I18n.TEXTES.de = {
     'reglages.cle-recherche': 'API-Schlüssel',
     'reglages.cx': 'ID der Suchmaschine',
     'reglages.moteur-aucun': 'Keine zusätzliche Suchmaschine (höchstens drei)',
+    /* Retiré le 21/11/2026.
     'reglages.aide-recherche': 'Internet-Werkzeuge können die Daten des Gesprächs sammeln und verwerten. Die gelieferten Texte werden nicht geprüft.',
+    */
+    'reglages.aide-recherche': 'Internet-Werkzeuge können die Daten des Gesprächs sammeln und verwerten.',
     'reglages.cle-note': 'In diesem Browser ist ein Schlüssel gespeichert.',
     'reglages.nom': 'Name der App',
     'reglages.aide-nom': 'Höchstens 12 Zeichen.',

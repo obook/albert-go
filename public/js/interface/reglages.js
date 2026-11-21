@@ -328,7 +328,7 @@ $('cle-recherche').addEventListener('change', () => {
     ecrire('cle-recherche', reglages.cleRecherche);
 });
 
-/* Outils conseillés : outils locaux et Internet activés, aucun moteur. */
+/* Outils conseillés : outils locaux et Internet activés, aucun moteur, voix de l'appareil seules. */
 $('outils-conseilles').addEventListener('click', () => {
     for (const nom of Object.keys(OUTILS_LOCAUX)) {
         reglages[nom] = true;
@@ -336,6 +336,10 @@ $('outils-conseilles').addEventListener('click', () => {
     }
     reglages.recherche = true;
     ecrire('recherche', 'oui');
+    reglages.voixEnLigne = false;
+    Lecture.enLigne = false;
+    ecrire('voix-en-ligne', 'non');
+    $('voix-en-ligne').checked = false;
     afficherOutils();
     choisirMoteurs([]);
     afficherMoteurs();
@@ -370,16 +374,18 @@ $('nom-application').addEventListener('input', () => {
     afficherNom();
 });
 
-/* Application conseillée : nom par défaut, idées masquées, clé conservée, voix de l'appareil seules. */
+/* Application conseillée : nom par défaut, idées masquées, clé conservée. */
 $('application-conseillee').addEventListener('click', () => {
     $('nom-application').value = '';
     ecrire('nom', null);
     afficherNom();
     reglages.idees = false;
     ecrire('idees', 'non');
+    /* Retiré le 21/11/2026 : les voix en ligne sont dans la carte Outils.
     reglages.voixEnLigne = false;
     Lecture.enLigne = false;
     ecrire('voix-en-ligne', 'non');
+    */
     /* Poste invité du kiosque : le mode partagé est imposé, son interrupteur est masqué. */
     if (!(Kiosque && Kiosque.role === 'eleve') && !changerPartage(false)) {
         toast(t('toast.partage-impossible'));

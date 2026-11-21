@@ -239,9 +239,9 @@ I18n.TEXTES.fr = {
     /* Réglages. */
     'reglages.titre': 'Réglages',
     'reglages.conseil': 'Conseillé : modèle Large, toute la conversation envoyée, température 0,2, top-k 40.',
-    'reglages.conseil-outils': 'Conseillé : tous les outils activés, Internet désactivé, moteur Wikipédia.',
+    'reglages.conseil-outils': 'Conseillé : tous les outils activés, Internet désactivé, moteur Wikipédia, voix de l\'appareil seules.',
     'reglages.conseil-competences': 'Conseillé : toutes les compétences activées.',
-    'reglages.conseil-application': 'Conseillé : nom Albert Go, idées masquées, clé conservée, voix de l\'appareil seules.',
+    'reglages.conseil-application': 'Conseillé : nom Albert Go, idées masquées, clé conservée.',
     'reglages.carte-reponse': 'IA',
     'reglages.carte-application': 'Application',
     'reglages.competences': 'Compétences',
@@ -269,8 +269,13 @@ I18n.TEXTES.fr = {
     'reglages.accueil': 'Accueil',
     'reglages.idees': 'Afficher les idées',
     'reglages.lecture': 'Lecture à voix haute',
+    /* Retiré le 21/11/2026.
     'reglages.voix-en-ligne': 'Autoriser les voix en ligne',
+    */
+    'reglages.voix-en-ligne': 'Autoriser la synthèse vocale en ligne',
+    /* Retiré le 21/11/2026.
     'reglages.aide-voix': 'Un moteur de voix en ligne peut collecter et exploiter les données de la conversation.',
+    */
     'reglages.outils': 'Outils',
     'reglages.calcul': 'Calculatrice scientifique',
     'reglages.calendrier': 'Calendrier',
@@ -290,7 +295,10 @@ I18n.TEXTES.fr = {
     'reglages.cle-recherche': 'Clé API',
     'reglages.cx': 'ID du moteur de recherche',
     'reglages.moteur-aucun': 'Aucun moteur supplémentaire (trois au plus)',
+    /* Retiré le 21/11/2026.
     'reglages.aide-recherche': 'Les outils Internet peuvent collecter et exploiter les données de la conversation. Les textes qu\'ils rapportent ne sont pas vérifiés.',
+    */
+    'reglages.aide-recherche': 'Les outils Internet peuvent collecter et exploiter les données de la conversation.',
     'reglages.cle-note': 'Une clé est enregistrée dans ce navigateur.',
     'reglages.nom': 'Nom de l\'application',
     'reglages.aide-nom': '12 caractères au plus.',

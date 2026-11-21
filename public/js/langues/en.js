@@ -239,9 +239,9 @@ I18n.TEXTES.en = {
     /* Settings. */
     'reglages.titre': 'Settings',
     'reglages.conseil': 'Recommended: Large model, whole conversation sent, temperature 0.2, top-k 40.',
-    'reglages.conseil-outils': 'Recommended: all tools on, Internet off, Wikipedia as search engine.',
+    'reglages.conseil-outils': 'Recommended: all tools on, Internet off, Wikipedia as search engine, device voices only.',
     'reglages.conseil-competences': 'Recommended: all skills on.',
-    'reglages.conseil-application': 'Recommended: name Albert Go, ideas hidden, key kept, device voices only.',
+    'reglages.conseil-application': 'Recommended: name Albert Go, ideas hidden, key kept.',
     'reglages.carte-reponse': 'AI',
     'reglages.carte-application': 'App',
     'reglages.competences': 'Skills',
@@ -269,8 +269,13 @@ I18n.TEXTES.en = {
     'reglages.accueil': 'Home',
     'reglages.idees': 'Show ideas',
     'reglages.lecture': 'Read aloud',
+    /* Retiré le 21/11/2026.
     'reglages.voix-en-ligne': 'Allow online voices',
+    */
+    'reglages.voix-en-ligne': 'Allow online speech synthesis',
+    /* Retiré le 21/11/2026.
     'reglages.aide-voix': 'An online voice engine may collect and use the data of the conversation.',
+    */
     'reglages.outils': 'Tools',
     'reglages.calcul': 'Scientific calculator',
     'reglages.calendrier': 'Calendar',
@@ -290,7 +295,10 @@ I18n.TEXTES.en = {
     'reglages.cle-recherche': 'API key',
     'reglages.cx': 'Search engine ID',
     'reglages.moteur-aucun': 'No additional search engine (three at most)',
+    /* Retiré le 21/11/2026.
     'reglages.aide-recherche': 'Internet tools may collect and use the data of the conversation. The texts they bring back are not checked.',
+    */
+    'reglages.aide-recherche': 'Internet tools may collect and use the data of the conversation.',
     'reglages.cle-note': 'A key is saved in this browser.',
     'reglages.nom': 'App name',
     'reglages.aide-nom': 'Up to 12 characters.',
