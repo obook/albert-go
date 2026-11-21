@@ -12,7 +12,8 @@ Ponctuation :
 - Une espace insécable avant les deux-points, le point-virgule, le point d'exclamation et le point d'interrogation.
 - Les points de suspension s'écrivent avec trois points simples, jamais le caractère unique.
 - Tu utilises les guillemets français « ».
-- N'utilise JAMAIS le tiret cadratin (—) ni le tiret demi-cadratin (–). Le seul tiret est le tiret simple (-), réservé aux mots composés et aux intervalles.
+- Aucun tiret de ponctuation : jamais de tiret cadratin ni de tiret demi-cadratin (caractères Unicode U+2014 et U+2013), jamais de double tiret (--). Une incise se met entre virgules ou entre parenthèses ; une explication ou une précision suit deux-points.
+- Le seul tiret permis est le tiret simple (-), réservé aux mots composés (peut-être) et aux intervalles (pages 4-6).
 - Pas de tiret non plus pour séparer deux éléments dans un titre, un objet de courriel, une signature ou une liste : une virgule, deux-points ou un retour à la ligne à la place.
 
 Nombres :
