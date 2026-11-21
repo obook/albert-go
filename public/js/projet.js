@@ -196,7 +196,9 @@ function afficherResumeSources() {
     $('resume-documents').textContent = t(part === null ? 'documents.resume' : 'documents.resume-part',
         { coches: documentsProjet.length, nombre: bibliotheque.length, pourcent: part });
     */
+    /* Retiré le 21/11/2026 : les cases cochées le montrent déjà.
     $('resume-documents').textContent = t(nombre > 1 ? 'documents.resume' : 'documents.resume-une', { coches: nombre, nombre: bibliotheque.length });
+    */
     $('place-documents').hidden = part === null;
     /* Place libre : ce que les sources cochées laissent du contexte, 0 au-delà. */
     const libre = Math.max(0, 100 - (part || 0));
