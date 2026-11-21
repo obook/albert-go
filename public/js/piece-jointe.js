@@ -250,6 +250,34 @@ function lignesDePage(elements) {
 }
 
 /**
+ * Retire les en-têtes et pieds de page : une ligne parmi les deux premières ou les deux dernières
+ * de sa page, répétée à cet endroit sur au moins trois pages et la moitié d'entre elles.
+ * Chiffres neutralisés : "page 3 sur 4" se répète. 24 des 37 BO essayés en ont.
+ *
+ * @param {{texte: string, page: number}[]} lignes - Lignes de toutes les pages.
+ * @returns {Object[]} Les mêmes lignes, sans en-têtes ni pieds de page.
+ */
+function sansBordsDePage(lignes) {
+    const pages = new Map();
+    for (const l of lignes.filter(l => l.texte.trim())) {
+        pages.set(l.page, [...(pages.get(l.page) || []), l]);
+    }
+    const forme = (l) => l.texte.replace(/\d+/g, '#').trim();
+    const bords = new Set();
+    const repetitions = new Map();
+    for (const [page, contenu] of pages) {
+        const extremes = new Set([contenu[0], contenu[1], contenu.at(-2), contenu.at(-1)].filter(Boolean));
+        for (const l of extremes) {
+            bords.add(l);
+            repetitions.set(forme(l), (repetitions.get(forme(l)) || new Set()).add(page));
+        }
+    }
+    /* La moitié des pages : le vademecum alterne deux en-têtes, pages paires et impaires. */
+    const decor = (l) => bords.has(l) && repetitions.get(forme(l)).size >= 3 && repetitions.get(forme(l)).size * 2 >= pages.size;
+    return lignes.filter(l => !decor(l));
+}
+
+/**
  * Texte d'un PDF à partir de ses lignes : titres en Markdown (#, ##...), pages séparées par \f.
  *
  * Un titre a un seul style, plus haut que le corps ou égal, jamais employé pour une ligne longue.
@@ -260,6 +288,7 @@ function lignesDePage(elements) {
  * @returns {string} Texte du document.
  */
 function texteDesLignes(lignes) {
+    lignes = sansBordsDePage(lignes);
     const poids = new Map();
     const longs = new Set();
     for (const l of lignes.filter(l => l.style)) {
@@ -268,10 +297,22 @@ function texteDesLignes(lignes) {
             longs.add(l.style);
         }
     }
+    /* Texte en colonnes étroites : lignes courtes, mais la phrase continue à la ligne suivante,
+       dans le même style ou en minuscule (repères de cycle 4 : une police par classe). Un titre est isolé. */
+    const pleines = lignes.filter(l => l.texte.trim());
+    const suites = new Map();
+    pleines.forEach((l, i) => {
+        const suivante = pleines[i + 1];
+        const compte = suites.get(l.style) || { total: 0, suivies: 0 };
+        compte.total++;
+        compte.suivies += suivante && (suivante.style === l.style || /^\s*\p{Ll}/u.test(suivante.texte)) ? 1 : 0;
+        suites.set(l.style, compte);
+    });
+    const enSuite = (style) => suites.get(style).suivies * 2 > suites.get(style).total;
     const hauteur = (style) => parseFloat(style);
     const corps = [...poids].sort((a, b) => b[1] - a[1])[0]?.[0];
     const estTitre = (l) => l.style && l.style !== corps && !longs.has(l.style) && l.texte.trim()
-        && hauteur(l.style) >= hauteur(corps);
+        && hauteur(l.style) >= hauteur(corps) && !enSuite(l.style);
     const candidats = lignes.filter(estTitre);
     const cle = (l) => l.style + '\n' + l.texte.trim();
     const repetes = new Map();

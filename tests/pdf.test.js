@@ -85,7 +85,7 @@ test('lignesDePage : un appel de note après un mot n\'est pas un exposant', () 
 
 test('texteDesLignes : niveaux de titres par rareté, rubriques au niveau le plus profond, pages séparées par \\f', () => {
     /* Comme le programme de cycle 4 : la classe (12) est plus grande que le domaine (11) qui la contient. */
-    const corps = 'texte '.repeat(20);
+    const corps = 'Texte. '.repeat(20);
     const lignes = [];
     for (const [page, domaine] of [[1, 'Nombres'], [2, 'Espace']]) {
         lignes.push({ texte: domaine, style: '11|f3', page });
@@ -99,6 +99,25 @@ test('texteDesLignes : niveaux de titres par rareté, rubriques au niveau le plu
     const texte = page.texteDesLignes(lignes);
     assert.ok(texte.startsWith('# Nombres\n## Cinquième\n### Opérations\n#### Automatismes\n' + corps), texte.slice(0, 80));
     assert.ok(texte.includes('\n\f\n# Espace\n## Cinquième\n'));
+});
+
+test('texteDesLignes : des lignes courtes dont la phrase continue ne sont pas des titres', () => {
+    /* Repères de cycle 4 : colonnes étroites, une police par classe, en alternance. */
+    const corps = { texte: 'texte '.repeat(20), style: '10|f6', page: 1 };
+    const lignes = [corps, corps, { texte: 'Le travail mené au cycle 3', style: '10|f8', page: 1 }, { texte: 'est poursuivi.', style: '10|f6', page: 1 },
+        { texte: 'La notion d\'opposé', style: '10|f8', page: 1 }, { texte: 'est introduite.', style: '10|f6', page: 1 }];
+    assert.doesNotMatch(page.texteDesLignes(lignes), /^#/m);
+});
+
+test('sansBordsDePage : en-têtes et pieds de page répétés retirés, le reste gardé', () => {
+    const contenus = [['Automatismes', 'Les nombres.'], ['Les fractions.', 'Les puissances.'], ['Les triangles.', 'Les angles.'], ['Les solides.', 'Les aires.']];
+    const lignes = contenus.flatMap(([a, b], i) => [
+        { texte: '© Ministère de l\'Éducation nationale', page: i + 1 },
+        { texte: a, page: i + 1 },
+        { texte: b, page: i + 1 },
+        { texte: 'page ' + (i + 1) + ' sur 4', page: i + 1 }
+    ]);
+    assert.deepStrictEqual(page.sansBordsDePage(lignes).map(l => l.texte), contenus.flat());
 });
 
 test("lirePdf : le texte sort même sans for await sur un flux, comme sur iPad", async () => {
