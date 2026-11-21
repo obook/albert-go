@@ -145,18 +145,18 @@ placerVolet();
 
 $('menu').addEventListener('click', (e) => {
     const bouton = e.target.closest('button');
+    /* Colonne du grand écran : elle ne se replie que par son bouton (demande du 21/11/2026). */
     if (GRAND_ECRAN.matches) {
-        /* Colonne : choisir un module, une nouvelle discussion, une ligne d'historique (discussions et
+        /* Retiré le 21/11/2026 : choisir un module, une nouvelle discussion, une ligne d'historique (discussions et
            Imprimerie, Nouveau document compris), Réglages (et le résumé qui les ouvre), Partager ou À propos
-           la replie, comme son bouton.
-           Imprimerie la garde ouverte pour sa liste. */
+           repliait la colonne.
         const boites = ['ouvrir-reglages', 'resume-reglages', 'ouvrir-partage', 'ouvrir-empreinte', 'ouvrir-info'];
         if (bouton && boites.includes(bouton.id)) {
-            /* Une boîte s'ouvre : un glissement se verrait à travers son fond flou. */
             sansGlissement(() => $('ouvrir-menu').click());
         } else if (bouton && (bouton.dataset.outil || bouton.id === 'nouvelle' || bouton.classList.contains('titre-conversation'))) {
             $('ouvrir-menu').click();
         }
+        */
         return;
     }
     const clicSurLeFond = e.target === $('menu');

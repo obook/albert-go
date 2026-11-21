@@ -522,6 +522,22 @@ test("Grand écran (WebKit) : le menu s'ouvre au lancement et reste ouvert aprè
     assert.ok(await page.evaluate(() => $('menu').open), 'menu fermé au lancement');
     await page.click('#principal', { position: { x: 400, y: 300 } });
     assert.ok(await page.evaluate(() => $('menu').open), 'menu replié par un clic au centre');
+    /* Seul son bouton le replie : ni une nouvelle discussion, ni un module, ni Imprimerie, ni Réglages. */
+    for (const choix of ['#nouvelle', '#nouveau-projet', '[data-outil="discuter"]', '#ouvrir-reglages']) {
+        /* Clic par script : le groupe des modules reste masqué tant qu'il n'y en a qu'un. */
+        assert.ok(await page.evaluate((choix) => {
+            const bouton = document.querySelector(choix);
+            if (bouton) {
+                bouton.click();
+            }
+            return !!bouton;
+        }, choix), 'bouton absent : ' + choix);
+        assert.ok(await page.evaluate(() => $('menu').open), 'menu replié par ' + choix);
+        await page.evaluate(() => $('reglages').open && $('reglages').close());
+    }
+    await page.click('#ouvrir-menu');
+    assert.ok(!await page.evaluate(() => $('menu').open), 'menu non replié par son bouton');
+    await page.click('#ouvrir-menu');
     await page.reload();
     assert.ok(await page.evaluate(() => $('menu').open), 'menu fermé au rechargement');
     assert.deepStrictEqual(erreurs, []);
