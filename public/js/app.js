@@ -606,7 +606,7 @@ async function verifierVersion() {
     if (VERSION.commit === 'locale' || annulation || $('saisie').value) {
         return;
     }
-    const texte = await fetch('js/version.js', { cache: 'no-store' }).then(r => r.text()).catch(() => '');
+    const texte = await fetch('js/socle/version.js', { cache: 'no-store' }).then(r => r.text()).catch(() => '');
     const enLigne = (texte.match(/commit: '(\w+)'/) || [])[1];
     /* Un seul essai par version : pas de boucle si la page reste ancienne. */
     if (enLigne && enLigne !== VERSION.commit && sessionStorage.getItem('recharge') !== enLigne) {

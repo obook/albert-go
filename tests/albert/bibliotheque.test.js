@@ -14,7 +14,7 @@
 
 const { test } = require('node:test');
 const assert = require('node:assert');
-require('../../public/js/i18n.js');
+require('../../public/js/socle/i18n.js');
 const Albert = require('../../public/js/albert.js');
 
 test('joindreDocuments : un bloc par document, rien sans document', () => {

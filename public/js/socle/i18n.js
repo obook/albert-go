@@ -160,6 +160,6 @@ if (typeof module !== 'undefined') {
     globalThis.tn = tn;
     globalThis.I18n = I18n;
     for (const langue of I18n.LANGUES) {
-        require('./langues/' + langue + '.js');
+        require('../langues/' + langue + '.js');
     }
 }

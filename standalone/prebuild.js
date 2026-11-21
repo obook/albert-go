@@ -22,7 +22,7 @@ for (const nom of ['serveur', 'public', '.env-exemple', 'LICENSE']) {
 // Comme la publication sur Pages : commit et date dans version.js ; ?v=<commit> contre les mélanges en cache.
 const git = (args) => execSync(`git ${args}`, { cwd: DEPOT, encoding: 'utf-8' }).trim();
 const commit = git('rev-parse --short HEAD');
-fs.writeFileSync(path.join(APP, 'public', 'js', 'version.js'),
+fs.writeFileSync(path.join(APP, 'public', 'js', 'socle', 'version.js'),
     `const VERSION = { commit: '${commit}', date: '${git('log -1 --format=%cI')}' };\n`);
 for (const page of ['index.html', 'kiosque.html']) {
     const fichier = path.join(APP, 'public', page);

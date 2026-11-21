@@ -195,7 +195,7 @@ test('telechargerAvecAttente : bouton inactif pendant la préparation, rendu ens
 
 test('imageApprochee : nom inventé, vraie image qui reprend tous ses mots, sinon rien', async () => {
     const cherches = [];
-    require('../public/js/i18n.js');
+    require('../public/js/socle/i18n.js');
     global.Recherche = {
         motsCles: require('../public/js/tools/recherche.js').motsCles,
         contientTout: require('../public/js/tools/recherche.js').contientTout,

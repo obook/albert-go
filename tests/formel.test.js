@@ -19,7 +19,7 @@ const path = require('node:path');
 const vm = require('node:vm');
 /* math.js, chargé à la demande dans la page, est déjà là pour les tests. */
 globalThis.math = require('../public/vendor/mathjs/math.js');
-require('../public/js/i18n.js');
+require('../public/js/socle/i18n.js');
 const { Formel, OUTILS_LOCAUX } = require('../public/js/tools/calcul.js');
 
 const OUTILS = path.join(__dirname, '../public/js/tools');

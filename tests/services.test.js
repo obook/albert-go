@@ -13,7 +13,7 @@
 
 const { test } = require('node:test');
 const assert = require('node:assert');
-require('../public/js/i18n.js');
+require('../public/js/socle/i18n.js');
 const Recherche = require('../public/js/tools/recherche.js');
 globalThis.definirOutil = require('../public/js/tools/calcul.js').definirOutil;
 const Services = require('../public/js/tools/services.js');

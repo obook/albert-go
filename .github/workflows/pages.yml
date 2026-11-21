@@ -30,7 +30,7 @@ jobs:
           SHORT="${GITHUB_SHA::7}"
           DATE="$(git log -1 --format=%cI)"
           # Version affichée dans "À propos" : commit publié et sa date.
-          echo "const VERSION = { commit: '${SHORT}', date: '${DATE}' };" > public/js/version.js
+          echo "const VERSION = { commit: '${SHORT}', date: '${DATE}' };" > public/js/socle/version.js
           # Adresses des feuilles et scripts propres à chaque version : pas de mélange en cache.
           sed -i "s/?v=dev/?v=${SHORT}/g" public/index.html
           cp deploiement/pages/sw.js public/

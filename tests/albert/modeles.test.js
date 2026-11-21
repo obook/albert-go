@@ -16,7 +16,7 @@ const { test } = require('node:test');
 const assert = require('node:assert');
 const fs = require('node:fs');
 const path = require('node:path');
-require('../../public/js/i18n.js');
+require('../../public/js/socle/i18n.js');
 const Albert = require('../../public/js/albert.js');
 
 /* Sous Node, pas de serveur.js : les tests supposent un serveur, sauf ceux de la version en ligne. */

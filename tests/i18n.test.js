@@ -13,7 +13,7 @@
 
 const { test } = require('node:test');
 const assert = require('node:assert');
-const I18n = require('../public/js/i18n.js');
+const I18n = require('../public/js/socle/i18n.js');
 
 const FR = I18n.TEXTES.fr;
 const variables = texte => (texte.match(/\{\w+\}/g) || []).sort();

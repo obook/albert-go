@@ -112,7 +112,7 @@ pages:
     # Version affichée dans "À propos" : commit publié et sa date.
     # Bloc littéral : sans lui, YAML lit "commit: ..." comme une clé.
     - |
-      echo "const VERSION = { commit: '${CI_COMMIT_SHORT_SHA}', date: '${CI_COMMIT_TIMESTAMP}' };" > public/js/version.js
+      echo "const VERSION = { commit: '${CI_COMMIT_SHORT_SHA}', date: '${CI_COMMIT_TIMESTAMP}' };" > public/js/socle/version.js
     # Adresses des feuilles et scripts propres à chaque version : pas de mélange en cache.
     - sed -i "s/?v=dev/?v=${CI_COMMIT_SHORT_SHA}/g" public/index.html
     - cp deploiement/pages/sw.js public/
