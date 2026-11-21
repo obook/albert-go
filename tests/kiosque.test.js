@@ -3,6 +3,8 @@
  * Réglages du prof recopiés chez les élèves (public/js/kiosque/kiosque.js).
  *
  * Projet : Albert Go, https://github.com/obook/albert-go
+ * Auteur : O. Booklage
+ * Date : Octobre 2026
  * Licence : GPL-3.0-or-later
  */
 'use strict';
