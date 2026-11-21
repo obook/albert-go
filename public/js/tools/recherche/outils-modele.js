@@ -25,6 +25,20 @@ function moteursActifs() {
 }
 
 /**
+ * Mots cherchés d'un appel d'outil (argument q). Arguments mal écrits par le modèle : aucun mot.
+ *
+ * @param {Object} appel - Entrée de tool_calls.
+ * @returns {string} Les mots, ou '' s'il n'y en a pas.
+ */
+function motsDemandes(appel) {
+    try {
+        return JSON.parse(appel.function.arguments || '{}').q || '';
+    } catch (err) {
+        return '';
+    }
+}
+
+/**
  * Exécute un appel d'outil demandé par le modèle.
  *
  * Un échec de recherche est rendu au modèle en texte : il répond alors
@@ -50,12 +64,7 @@ async function executerOutil(appel, signal, faites) {
             return t(appel.function.name + '.invalide');
         }
     }
-    let mots = '';
-    try {
-        mots = JSON.parse(appel.function.arguments || '{}').q || '';
-    } catch (err) {
-        mots = '';
-    }
+    const mots = motsDemandes(appel);
     if (!mots) {
         return t('recherche.aucun-mot');
     }
@@ -93,12 +102,7 @@ async function executerOutil(appel, signal, faites) {
  * @returns {Promise<string>} Contenu du message de rôle "tool".
  */
 async function chercherImagesOutil(appel, signal, faites) {
-    let mots = '';
-    try {
-        mots = JSON.parse(appel.function.arguments || '{}').q || '';
-    } catch (err) {
-        mots = '';
-    }
+    const mots = motsDemandes(appel);
     if (!mots) {
         return t('recherche.aucun-mot');
     }

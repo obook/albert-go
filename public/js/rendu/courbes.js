@@ -215,7 +215,10 @@ Object.assign(Rendu, {
         /* Borné : une valeur immense (1/x près de 0) ne doit pas produire une coordonnée infinie. */
         const Y = y => Math.max(-1e4, Math.min(1e4, haut + (max - y) / (max - min) * hauteur));
         const n = (v) => v.toFixed(1);
+        /* Retiré le 21/11/2026 : même échappement que Rendu.echapperXml (export.js).
         const echapper = (s) => s.replace(/[&<>"]/g, (car) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[car]);
+        */
+        const echapper = (s) => Rendu.echapperXml(s);
         const langue = typeof I18n !== 'undefined' ? I18n.langue : 'fr';
         const nombre = (v) => v.toLocaleString(langue, { maximumSignificantDigits: 6 });
         /* Axes en 0 s'il est dans le cadre, sinon sur le bord. */
