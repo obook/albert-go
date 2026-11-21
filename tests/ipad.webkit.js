@@ -552,3 +552,36 @@ test("Grand écran (WebKit) : le menu s'ouvre au lancement et reste ouvert aprè
     assert.ok(await page.evaluate(() => $('menu').open), 'menu fermé au rechargement');
     assert.deepStrictEqual(erreurs, []);
 });
+
+test("iPad (WebKit) : 'Effacer la clé et quitter' est dans Réglages, Application", async (t) => {
+    const serveur = await servir();
+    const origine = 'http://127.0.0.1:' + serveur.address().port;
+    const navigateur = await webkit.launch();
+    t.after(async () => {
+        await navigateur.close();
+        serveur.close();
+    });
+    const contexte = await navigateur.newContext({ ...devices['iPad (gen 7)'], serviceWorkers: 'block' });
+    await contexte.route((url) => url.origin !== origine, (route) => route.abort());
+    await contexte.addInitScript(() => {
+        /* Clé conservée, le réglage par défaut : elle est dans localStorage. */
+        if (!sessionStorage.getItem('deja')) {
+            sessionStorage.setItem('deja', '1');
+            localStorage.setItem('albert-go.cle', 'sk-test');
+        }
+    });
+    const page = await contexte.newPage();
+    const erreurs = [];
+    page.on('pageerror', (err) => erreurs.push(String(err)));
+
+    await page.goto(origine + '/');
+    assert.strictEqual(await page.locator('#menu #changer-cle').count(), 0, 'bouton encore dans le menu');
+    await page.evaluate(() => $('ouvrir-reglages').click());
+    await page.click('#reglages details:has(#changer-cle) > summary');
+    await page.click('#changer-cle');
+    await page.click('#confirmer-cle button[value=oui]');
+    assert.ok(!await page.evaluate(() => $('reglages').open), 'réglages restés ouverts');
+    assert.strictEqual(await page.evaluate(() => Albert.cle), null);
+    assert.strictEqual(await page.evaluate(() => localStorage.getItem('albert-go.cle')), null);
+    assert.deepStrictEqual(erreurs, []);
+});

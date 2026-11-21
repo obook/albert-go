@@ -79,7 +79,8 @@ function afficher() {
         $(id).hidden = !connecte;
     }
     /* Clé de l'utilisateur : en ligne seulement. */
-    for (const id of ['trait-cle', 'changer-cle', 'note-cle']) {
+    /* Retiré le 21/11/2026 : 'trait-cle', le trait du menu au-dessus de l'ancien bouton. */
+    for (const id of ['changer-cle', 'note-cle']) {
         $(id).hidden = !Albert.cle;
     }
     if (connecte) {

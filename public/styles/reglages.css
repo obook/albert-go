@@ -197,6 +197,8 @@ legend {
     font-weight: 700;
 }
 fieldset .bouton-texte { justify-self: start; }
+/* Effacer la clé et quitter : en rouge, il fait sortir de l'application. */
+#changer-cle { margin-top: 0.75rem; color: var(--rouge); border-color: var(--rouge); }
 
 /* Mise en garde d'un réglage qui fait sortir des données, en fin de bloc.
    Nom distinct de .avertissement, déjà pris sous la saisie. */

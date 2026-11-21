@@ -303,6 +303,10 @@ $('confirmer-cle').addEventListener('close', () => {
     }
     Albert.cle = null;
     ecrire('cle', null);
+    /* Le bouton est dans les réglages : on les quitte avec la clé. */
+    if ($('reglages').open) {
+        $('reglages').close();
+    }
     afficher();
     placerVolet();
     toast(t('toast.cle-effacee'));

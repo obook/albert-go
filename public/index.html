@@ -242,7 +242,7 @@
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5M21 12H9"/></svg>
                 <span data-t="kiosque.deconnexion"></span>
             </button>
-            <!-- Masqué sans clé, comme le bouton qu'il sépare (afficher). -->
+            <!-- Retiré le 21/11/2026 : le bouton est passé dans Réglages, carte Application, rubrique Données.
             <hr id="trait-cle" hidden>
             <button type="button"
                     class="entree danger"
@@ -251,6 +251,7 @@
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5M21 12H9"/></svg>
                 <span data-t="menu.changer-cle"></span>
             </button>
+            -->
         </div>
     </dialog>
 
@@ -727,6 +728,12 @@
                             <input type="checkbox" id="partage-reglage" role="switch">
                             <span id="texte-partage-reglage"></span>
                         </label>
+                        <!-- Clé de l'utilisateur, en ligne seulement : masqué sans clé (afficher). -->
+                        <button type="button"
+                                class="bouton-texte outline"
+                                id="changer-cle"
+                                hidden
+                                data-t="menu.changer-cle"></button>
                     </fieldset>
 
                     <fieldset>
