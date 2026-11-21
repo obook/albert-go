@@ -88,7 +88,10 @@
 .titre .marque { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 0.5em; }
 
 .burger { flex: none; }
+/* Retiré le 21/11/2026 : plus d'icône .icone-replier.
 .burger .icone-volet, .burger .icone-replier { display: none; }
+*/
+.burger .icone-volet { display: none; }
 
 /* Choix de la langue, à droite du titre du volet, avant le bouton de fermeture. */
 .choix-langue {
@@ -488,9 +491,10 @@ input.recherche-historique {
     .volet-titre, .resume { grid-column: 2; }
     .fermer-menu, .burger .icone-burger { display: none; }
     .burger .icone-volet { display: block; }
-    /* Colonne ouverte : le bouton, rangé dans la colonne, la replie vers la gauche. */
+    /* Retiré le 21/11/2026 : retour à l'icône du volet, menu ouvert comme replié.
     .volet-contenu > .burger .icone-volet { display: none; }
     .volet-contenu > .burger .icone-replier { display: block; }
+    */
     /* Masqué sans clé (afficher) : l'accueil n'a pas de conversation. */
     .titre-entete:not([hidden]) { display: block; }
     /* La marque est dans le volet, le h1 reste pour les lecteurs d'écran. */
