@@ -176,6 +176,11 @@ Object.assign(Rendu, {
         }
         const balise = noeud.tagName.toUpperCase();
         const enfants = (s) => [...noeud.childNodes].flatMap((enfant) => this.lignesExport(enfant, etat, s));
+        /* Citations (lierCitations) : leur texte, (p. 8), si la case de la bibliothèque les montre, sinon rien. */
+        if (this.aClasse(noeud, 'citations')) {
+            const visibles = noeud.ownerDocument.documentElement.classList.contains('citations-visibles');
+            return visibles ? [e.texte(noeud.textContent.replace(/\s+/g, ' '), style, etat)] : [];
+        }
         if (balise === 'BUTTON' || this.aClasse(noeud, 'boutons-figure') || this.aClasse(noeud, 'image-absente')) {
             return [];
         }

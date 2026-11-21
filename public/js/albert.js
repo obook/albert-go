@@ -141,8 +141,8 @@ const Albert = {
     /** Numéros de passages donnés au plus pour un mot rare. */
     MOT_PASSAGES_MAX: 20,
 
-    /** Numéros cités par le modèle : [P12], [P12, P13], [P34-P41], [P34 à P41], 【P12】, avec ou sans page ni espaces invisibles. */
-    CITATION: /[[【][\s​-‍﻿]*(P\d+(?:[\s,;​-‍﻿]*(?:(?:[-–—]|à)[\s​-‍﻿]*P?\d+|p\.\s*\d+|P\d+))*)[\s​-‍﻿]*[\]】]/g,
+    /** Numéros cités par le modèle : [P12], (P12), [P12, P13], [P34-P41], [P34 à P41], 【P12】, avec ou sans page ni espaces invisibles. */
+    CITATION: /[[【(][\s\p{Cf}]*(P\d+(?:[\s,;\p{Cf}]*(?:(?:\p{Pd}|à)[\s\p{Cf}]*P?\d+|p\.\s*\d+|P\d+))*)[\s\p{Cf}]*[\]】)]/gu,
 
     /** Rédiger : notes plus courtes non envoyées, pour ne pas payer une requête par mot. */
     LONGUEUR_MIN_NOTES: 10,
@@ -899,7 +899,7 @@ const Albert = {
      * @returns {number[][]} Une liste par numéro ou par plage, sans les pages : [[12], [34, 35, ..., 41]].
      */
     numerosCites(contenu) {
-        return [...contenu.matchAll(/P(\d+)(?:[\s​-‍﻿]*(?:[-–—]|à)[\s​-‍﻿]*P?(\d+))?/g)].map((m) => {
+        return [...contenu.matchAll(/P(\d+)(?:[\s\p{Cf}]*(?:\p{Pd}|à)[\s\p{Cf}]*P?(\d+))?/gu)].map((m) => {
             const [debut, fin] = [Number(m[1]), Number(m[2] || m[1])].sort((a, b) => a - b);
             /* Borne contre une plage absurde ([P1-P99999999]) qui bloquerait la page. */
             return Array.from({ length: Math.min(fin - debut + 1, 1000) }, (_, i) => debut + i);

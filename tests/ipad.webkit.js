@@ -361,6 +361,12 @@ test("iPad (WebKit) : un numéro de passage cité ouvre le passage sous la répo
     assert.match(consignes[0], /"volcan"[^\n]*P1\./);
     assert.deepStrictEqual(await page.evaluate(() => [...$('fil').querySelectorAll('.citation')].map(b => b.textContent)), ['P1']);
     assert.strictEqual((await page.textContent('#fil li.assistant .texte')).trim(), 'Une ouverture de la croûte (P1).');
+    /* Citations masquées par défaut, montrées par la case de la bibliothèque, réglage gardé au rechargement. */
+    assert.ok(!await page.isVisible('#fil .citation'));
+    await page.click('#ouvrir-bibliotheque');
+    await page.click('#afficher-citations');
+    await page.evaluate(() => $('bibliotheque').close());
+    assert.strictEqual(await page.evaluate(() => localStorage.getItem('albert-go.citations')), 'oui');
     await page.click('#fil .citation');
     assert.match(await page.textContent('#fil .passage'), /Le volcan est une ouverture de la croûte terrestre\./);
     assert.ok(await page.isVisible('#fil .passage'));
@@ -408,6 +414,15 @@ test("iPad (WebKit) : les citations donnent la page, une plage ouvre tous ses pa
     /* Plage à cheval sur deux sources : numéros de passages, faute d'une page commune. */
     assert.deepStrictEqual(await rendu('Vu [P3-P9].'), { texte: 'Vu (P3 à P5).', ouverts: ['Texte 3,Texte 4,Texte 5'] });
     assert.deepStrictEqual(await rendu('Vu [P5-P9] et [P8].'), { texte: 'Vu (P5) et .', ouverts: ['Texte 5'] });
+
+    /* Copie : citations comme à l'écran si la case les montre, retirées sinon. */
+    const copie = (visibles) => page.evaluate((visibles) => {
+        document.documentElement.classList.toggle('citations-visibles', visibles);
+        const passages = [1, 2].map(n => ({ n, nom: 'Programme', pages: true, page: 4 + n, chemin: '', texte: '' }));
+        return texteCitations('Vu [P1] et [P1-P2], fin [P9].', passages);
+    }, visibles);
+    assert.strictEqual(await copie(true), 'Vu (p. 5) et (p. 5 à 6), fin.');
+    assert.strictEqual(await copie(false), 'Vu et, fin.');
     assert.deepStrictEqual(erreurs, []);
 });
 
@@ -442,6 +457,7 @@ test("iPad (WebKit) : au-delà du contexte, seuls les passages proches de la que
     await contexte.addInitScript(() => {
         localStorage.setItem('albert-go.cle', 'sk-test');
         sessionStorage.setItem('albert-go.cle', 'sk-test');
+        localStorage.setItem('albert-go.citations', 'oui');
     });
     const page = await contexte.newPage();
     const erreurs = [];

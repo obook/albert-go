@@ -18,6 +18,8 @@ try {
     if (theme) {
         document.documentElement.dataset.theme = theme;
     }
+    /* Citations des réponses : réglage lu ici pour que les réponses rendues au lancement le suivent. */
+    document.documentElement.classList.toggle('citations-visibles', localStorage.getItem('albert-go.citations') === 'oui');
 } catch (err) {
     /* Stockage bloqué : on suit le thème du système. */
 }

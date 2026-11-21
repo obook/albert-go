@@ -281,6 +281,13 @@
                            hidden>
                     <!-- Masqué tant que la bibliothèque est vide (projet.js). -->
                     <button type="button" id="vider-bibliotheque" class="deposer" data-t="bibliotheque.vider" hidden></button>
+                    <!-- Pages citées dans les réponses, masquées par défaut (projet.js, theme.js). -->
+                    <div class="outils-locaux">
+                        <label class="interrupteur">
+                            <input type="checkbox" id="afficher-citations" role="switch">
+                            <span data-t="bibliotheque.citations"></span>
+                        </label>
+                    </div>
                 </details>
             </div>
             <!-- Versions du document affiché : masquées tant qu'il n'en a qu'une (projet.js). -->

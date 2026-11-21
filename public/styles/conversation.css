@@ -144,6 +144,8 @@ main {
     cursor: pointer;
 }
 .citation:hover, .citation[aria-expanded="true"] { text-decoration-style: solid; }
+/* Case "Afficher les citations" de la bibliothèque, décochée par défaut. */
+:root:not(.citations-visibles) .citations { display: none; }
 
 /* Entrée dans le chat : fondu court, sauf si le système demande moins d'animations. */
 @media (prefers-reduced-motion: no-preference) {

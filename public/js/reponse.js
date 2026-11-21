@@ -35,7 +35,7 @@ function boutonAction(icone, libelle) {
 /**
  * Crée un bouton de copie, par défaut "Copier la réponse".
  *
- * @param {string} texte - Texte brut à copier.
+ * @param {string|function(): string} texte - Texte brut à copier, ou qui le donne au moment du clic.
  * @param {string} [libelle] - Libellé du bouton.
  * @param {string} [message] - Toast affiché après la copie.
  * @returns {HTMLButtonElement} Le bouton.
@@ -43,7 +43,7 @@ function boutonAction(icone, libelle) {
 function boutonCopier(texte, libelle = t('reponse.copier'), message = t('toast.reponse-copiee')) {
     const bouton = boutonAction(ICONES.copier, libelle);
     bouton.addEventListener('click', () => {
-        navigator.clipboard.writeText(texte).then(() => {
+        navigator.clipboard.writeText(typeof texte === 'function' ? texte() : texte).then(() => {
             bouton.innerHTML = ICONES.copie;
             toast(message);
             setTimeout(() => {
@@ -107,21 +107,53 @@ function lierCitations(contenu, passages, note) {
     }
     const connu = (n) => n >= 1 && n <= passages.length;
     for (const noeud of noeuds) {
-        noeud.replaceWith(...Albert.morceauxCitations(noeud.data).flatMap((m) => {
-            if (typeof m === 'string') {
-                return [m];
-            }
-            if (!m.crochets && !connu(m.plages[0][0])) {
-                return ['P' + m.plages[0][0]];
+        const sortie = [];
+        for (const m of Albert.morceauxCitations(noeud.data)) {
+            if (typeof m === 'string' || (!m.crochets && !connu(m.plages[0][0]))) {
+                sortie.push(typeof m === 'string' ? m : 'P' + m.plages[0][0]);
+                continue;
             }
             const mentions = mentionsCitees(m.plages.map(plage => plage.filter(connu).map(n => passages[n - 1])).filter(plage => plage.length));
             if (!mentions.length) {
-                return [];
+                continue;
             }
-            const boutons = mentions.flatMap((mention, i) => (i ? [', '] : []).concat(boutonCitation(mention, note)));
-            return m.crochets ? ['(', ...boutons, ')'] : boutons;
-        }));
+            /* L'espace qui précède va dans le groupe : citations masquées, il ne reste pas "croûte ." */
+            const groupe = document.createElement('span');
+            groupe.className = 'citations';
+            const avant = typeof sortie[sortie.length - 1] === 'string' ? sortie.pop() : '';
+            sortie.push(avant.replace(/\s+$/, ''));
+            groupe.append(avant.slice(avant.replace(/\s+$/, '').length), ...(m.crochets ? ['('] : []),
+                ...mentions.flatMap((mention, i) => (i ? [', '] : []).concat(boutonCitation(mention, note))), ...(m.crochets ? [')'] : []));
+            sortie.push(groupe);
+        }
+        noeud.replaceWith(...sortie.filter(s => s !== ''));
     }
+}
+
+/**
+ * Texte d'une réponse à copier : citations écrites comme à l'écran, (p. 8), ou retirées si elles sont masquées.
+ *
+ * @param {string} texte - Réponse en Markdown.
+ * @param {Object[]} passages - Passages de Albert.passagesSources, ou [] si une source manque.
+ * @returns {string} Texte à copier.
+ */
+function texteCitations(texte, passages) {
+    if (!passages.length) {
+        return texte;
+    }
+    const visibles = document.documentElement.classList.contains('citations-visibles');
+    const connu = (n) => n >= 1 && n <= passages.length;
+    return Albert.morceauxCitations(texte).map((m) => {
+        if (typeof m === 'string' || (!m.crochets && !connu(m.plages[0][0]))) {
+            return typeof m === 'string' ? m : 'P' + m.plages[0][0];
+        }
+        const mentions = mentionsCitees(m.plages.map(plage => plage.filter(connu).map(n => passages[n - 1])).filter(plage => plage.length));
+        if (!mentions.length || !visibles) {
+            return '\0';
+        }
+        const liste = mentions.map(mention => mention.libelle).join(', ');
+        return m.crochets ? '(' + liste + ')' : liste;
+    }).join('').replace(/[ \t]*\0/g, '');
 }
 
 /**
@@ -468,7 +500,9 @@ function bulleReponse(texte, titre, langue, animer = false, recherches = null) {
 
     const actions = document.createElement('div');
     actions.className = 'actions-reponse';
-    actions.append(boutonCopier(texte));
+    /* Passages des sources citées, pour copier les citations comme à l'écran. */
+    let passages = [];
+    actions.append(boutonCopier(() => texteCitations(texte, passages)));
     if (typeof speechSynthesis !== 'undefined') {
         actions.append(boutonLire(contenu, langue));
     }
@@ -481,7 +515,7 @@ function bulleReponse(texte, titre, langue, animer = false, recherches = null) {
         note.hidden = true;
         carte.append(note);
         const documents = cites.passages.map(nom => bibliotheque.find(d => d.nom === nom));
-        const passages = documents.every(Boolean) ? Albert.passagesSources(documents) : [];
+        passages = documents.every(Boolean) ? Albert.passagesSources(documents) : [];
         pret.then(() => lierCitations(contenu, passages, note));
     }
     /* Une icône par outil local qui a servi. */

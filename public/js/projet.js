@@ -687,6 +687,17 @@ function viderBibliotheque() {
     enregistrerProjet();
 }
 
+/* Afficher les citations : agit aussi sur les réponses déjà affichées, et la copie et les exports le suivent. */
+$('afficher-citations').checked = document.documentElement.classList.contains('citations-visibles');
+$('afficher-citations').addEventListener('change', (e) => {
+    document.documentElement.classList.toggle('citations-visibles', e.target.checked);
+    try {
+        localStorage.setItem('albert-go.citations', e.target.checked ? 'oui' : 'non');
+    } catch (err) {
+        /* Stockage bloqué : le réglage vaut jusqu'à la fermeture. */
+    }
+});
+
 $('vider-bibliotheque').addEventListener('click', () => {
     $('texte-confirmer-suppression').textContent = t('confirmer-suppression.bibliotheque-texte');
     $('titre-confirmer-suppression').textContent = t('confirmer-suppression.bibliotheque');

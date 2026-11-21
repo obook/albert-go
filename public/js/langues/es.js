@@ -87,6 +87,7 @@ I18n.TEXTES.es = {
     'bibliotheque.ouvrir-coches': 'Abrir la biblioteca ({nombre} fuentes marcadas)',
     'bibliotheque.fermer': 'Cerrar la biblioteca',
     'bibliotheque.vider': 'Vaciar la biblioteca',
+    'bibliotheque.citations': 'Mostrar las citas',
     'versions.titre': 'Versiones',
     'aide.bibliotheque-bouton': 'Ayuda sobre la biblioteca',
     'aide.versions-bouton': 'Ayuda sobre las versiones',

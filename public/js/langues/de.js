@@ -87,6 +87,7 @@ I18n.TEXTES.de = {
     'bibliotheque.ouvrir-coches': 'Bibliothek öffnen ({nombre} Quellen angehakt)',
     'bibliotheque.fermer': 'Bibliothek schließen',
     'bibliotheque.vider': 'Bibliothek leeren',
+    'bibliotheque.citations': 'Quellenangaben anzeigen',
     'versions.titre': 'Versionen',
     'aide.bibliotheque-bouton': 'Hilfe zur Bibliothek',
     'aide.versions-bouton': 'Hilfe zu den Versionen',
