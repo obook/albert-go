@@ -433,9 +433,11 @@ test("iPad (WebKit) : le bouton de la bibliothèque la désactive sans décocher
     assert.ok(await page.evaluate(() => $('bibliotheque').open));
     await page.evaluate(() => $('bibliotheque').close());
 
-    /* Imprimerie travaille à partir des sources : la désactivation n'y vaut pas, le bouton n'y est pas. */
-    assert.deepStrictEqual(await page.evaluate(() => [sourcesEnvoyees('discuter').length, sourcesEnvoyees('projet').length]), [0, 1]);
+    /* Imprimerie a le même bouton, dans le même état ; les autres modules ne l'ont pas. */
+    assert.deepStrictEqual(await page.evaluate(() => [sourcesEnvoyees('discuter').length, sourcesEnvoyees('projet').length]), [0, 0]);
     await page.evaluate(() => choisirOutil('projet'));
+    assert.strictEqual(await page.evaluate(() => $('bibliotheque-saisie').hidden), false);
+    await page.evaluate(() => choisirOutil('corriger'));
     assert.strictEqual(await page.evaluate(() => $('bibliotheque-saisie').hidden), true);
     await page.evaluate(() => choisirOutil('discuter'));
 

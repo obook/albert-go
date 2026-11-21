@@ -1,11 +1,10 @@
 /*
  * bibliotheque/pause.js
- * Bouton de la bibliothèque dans la barre de saisie de Discussion, à côté du globe.
+ * Bouton de la bibliothèque dans la barre de saisie de Discussion et d'Imprimerie, à côté du globe.
  *
- * En pause, les cases restent cochées mais aucune source ne part avec les questions :
- * demanderReponse et recevoirReponse (app.js), puis le résumé du volet (projet.js),
- * lisent sourcesEnvoyees() au lieu de documentsProjet. Imprimerie travaille à partir
- * des sources : le bouton n'y est pas et la pause n'y vaut pas.
+ * Désactivée (en pause dans le code), la bibliothèque garde ses cases cochées mais aucune
+ * source ne part avec les questions : demanderReponse et recevoirReponse (app.js), puis
+ * le résumé du volet (projet.js), lisent sourcesEnvoyees() au lieu de documentsProjet.
  *
  * Chargé avant projet.js, qui l'appelle depuis afficherResumeSources.
  *
@@ -45,13 +44,16 @@ function nomsCoches() {
 }
 
 /**
- * Dit si la pause s'applique au module : partout sauf Imprimerie.
+ * Dit si la pause s'applique au module : ceux qui ont une bibliothèque.
  *
  * @param {string} outil - Clé de Albert.OUTILS.
  * @returns {boolean} true si aucune source ne part.
  */
 function pauseEffective(outil) {
+    /* Retiré le 21/11/2026 : Imprimerie a aussi le bouton.
     return bibliothequeEnPause && !Albert.OUTILS[outil].documents;
+    */
+    return bibliothequeEnPause && !!Albert.OUTILS[outil].sources;
 }
 
 /**
@@ -92,7 +94,10 @@ function afficherPause() {
     const bouton = $('bibliotheque-saisie');
     const nombre = documentsProjet.length;
     const enPause = pauseEffective(outil);
+    /* Retiré le 21/11/2026 : Imprimerie a aussi le bouton.
     bouton.hidden = !Albert.OUTILS[outil].sources || !!Albert.OUTILS[outil].documents;
+    */
+    bouton.hidden = !Albert.OUTILS[outil].sources;
     /* Sans source cochée, rien à mettre en pause : le bouton ouvre la bibliothèque. */
     let libelle = t('bibliotheque.ouvrir');
     if (nombre === 0) {
