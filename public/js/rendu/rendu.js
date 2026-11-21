@@ -339,10 +339,10 @@ const Rendu = {
 if (typeof module !== 'undefined') {
     module.exports = Rendu;
     globalThis.Rendu = Rendu;
-    require('./rendu/diagrammes.js');
-    require('./rendu/courbes.js');
-    require('./rendu/images.js');
-    require('./rendu/export.js');
-    require('./rendu/docx.js');
-    require('./rendu/odt.js');
+    require('./diagrammes.js');
+    require('./courbes.js');
+    require('./images.js');
+    require('./export.js');
+    require('./docx.js');
+    require('./odt.js');
 }

@@ -1,6 +1,6 @@
 /*
  * rendu.test.js
- * Tests de public/js/rendu.js : formules protégées, adresses dangereuses,
+ * Tests de public/js/rendu/rendu.js : formules protégées, adresses dangereuses,
  * réparation des diagrammes Mermaid.
  *
  * Lancement : node --test
@@ -15,7 +15,7 @@
 const { test } = require('node:test');
 const assert = require('node:assert');
 global.marked = require('../public/vendor/marked/marked.umd.js');
-const Rendu = require('../public/js/rendu.js');
+const Rendu = require('../public/js/rendu/rendu.js');
 
 test('versHtml : les formules traversent Marked intactes', () => {
     const html = Rendu.versHtml('Soit $\\frac{a}{b}$ et\n\n\\[x_1 = \\sqrt{2}\\]\n\n**gras**');

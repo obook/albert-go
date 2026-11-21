@@ -17,7 +17,7 @@ globalThis.math = require('../public/vendor/mathjs/math.js');
 require('../public/js/socle/i18n.js');
 globalThis.Calcul = require('../public/js/tools/calcul.js').Calcul;
 global.marked = require('../public/vendor/marked/marked.umd.js');
-const Rendu = require('../public/js/rendu.js');
+const Rendu = require('../public/js/rendu/rendu.js');
 
 /* Sous-chemins et points d'un attribut d du SVG. */
 const trace = (svg) => {

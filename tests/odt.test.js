@@ -17,7 +17,7 @@ globalThis.math = require('../public/vendor/mathjs/math.js');
 require('../public/js/socle/i18n.js');
 globalThis.Calcul = require('../public/js/tools/calcul.js').Calcul;
 global.marked = require('../public/vendor/marked/marked.umd.js');
-const Rendu = require('../public/js/rendu.js');
+const Rendu = require('../public/js/rendu/rendu.js');
 
 /* Faux nœuds : le parcours ne lit que nodeType, tagName, childNodes, data, textContent et getAttribute. */
 const n = (balise, attributs = {}, ...enfants) => {
