@@ -67,6 +67,7 @@ const SCRIPTS = [
     'js/tools/services/services.js',
     'js/tools/recherche/outils-modele.js',
     'js/socle/stockage.js',
+    'js/bibliotheque/pause.js',
     'js/bibliotheque/projet.js',
     'js/interface/affichage.js',
     /* Avant reglages.js : les réglages du prof sont recopiés avant que la boîte Réglages soit remplie. */

@@ -100,13 +100,29 @@
 
 .saisie .fleche { display: none; flex: none; width: 2.25rem; height: 2.25rem; }
 /* Le trombone puis le globe à gauche, les autres boutons à droite. */
-.saisie .joindre, .saisie .recherche-web {
+.saisie .joindre, .saisie .recherche-web, .saisie .bibliotheque-saisie {
     flex: none;
     color: var(--texte-doux);
 }
+/* Retiré le 21/11/2026 : la bibliothèque suit le globe, la marge passe au dernier bouton visible.
 .saisie .recherche-web, .saisie .joindre:has(+ .recherche-web[hidden]) { margin-right: auto; }
+*/
+.saisie .bibliotheque-saisie,
+.saisie .recherche-web:has(+ .bibliotheque-saisie[hidden]),
+.saisie .joindre:has(+ .recherche-web[hidden] + .bibliotheque-saisie[hidden]) { margin-right: auto; }
 /* Recherche activée : le globe seul en orange, sans fond. */
 .saisie .recherche-web[aria-pressed="true"] { color: var(--accent); }
+/* Bibliothèque utilisée : orange comme le globe, le nombre de sources en exposant. */
+.saisie .bibliotheque-saisie { position: relative; }
+.saisie .bibliotheque-saisie[aria-pressed="true"] { color: var(--accent); }
+.saisie .bibliotheque-saisie .nombre-sources {
+    position: absolute;
+    top: 0.1rem;
+    right: 0.1rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    line-height: 1;
+}
 
 /* Fichier glissé au-dessus de la carte. */
 .saisie.depot {
@@ -202,6 +218,20 @@
     pointer-events: none;
     transition: transform 0.3s ease-in;
 }
+/* Bouton du toast ("Voir") : seul à recevoir le clic ; caché avec le toast, il sort de l'ordre du clavier. */
+.toast .action-toast {
+    pointer-events: auto;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    font-weight: 600;
+    text-decoration: underline;
+    cursor: pointer;
+}
+.toast:not(.visible) .action-toast { visibility: hidden; transition: visibility 0.3s; }
 .toast.visible {
     transform: translate(-50%, 0);
     /* Descente avec un léger rebond à l'arrivée. */

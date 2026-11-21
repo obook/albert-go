@@ -360,6 +360,89 @@ test("iPad (WebKit) : un texte collé devient une source cochée et une réponse
     assert.deepStrictEqual(erreurs, []);
 });
 
+test("iPad (WebKit) : le bouton de la bibliothèque la désactive sans décocher, aucune source ne part", async (t) => {
+    const serveur = await servir();
+    const origine = 'http://127.0.0.1:' + serveur.address().port;
+    const navigateur = await webkit.launch();
+    t.after(async () => {
+        await navigateur.close();
+        serveur.close();
+    });
+    const contexte = await navigateur.newContext({ ...devices['iPad (gen 7)'], serviceWorkers: 'block' });
+    /* Albert simulé : une fiche de lecture en JSON, sinon une réponse ; la consigne de chaque question est gardée. */
+    const consignes = [];
+    await contexte.route((url) => url.origin !== origine, (route) => {
+        if (!route.request().url().endsWith('/chat/completions')) {
+            return route.abort();
+        }
+        const corps = route.request().postDataJSON();
+        if (corps.response_format) {
+            return route.fulfill({ json: { choices: [{ message: { content: JSON.stringify({ resume: 'Les volcans.', themes: [], questions: [] }) } }] } });
+        }
+        consignes.push(corps.messages[0].content);
+        return route.fulfill({ json: { choices: [{ message: { role: 'assistant', content: 'Réponse.' }, finish_reason: 'stop' }] } });
+    });
+    await contexte.addInitScript(SAFARI_ANCIEN);
+    await contexte.addInitScript(() => {
+        localStorage.setItem('albert-go.cle', 'sk-test');
+        sessionStorage.setItem('albert-go.cle', 'sk-test');
+    });
+    const page = await contexte.newPage();
+    const erreurs = [];
+    page.on('pageerror', (err) => erreurs.push(String(err)));
+    const etatBouton = () => page.evaluate(() => ({
+        appuye: $('bibliotheque-saisie').getAttribute('aria-pressed'),
+        nombre: $('bibliotheque-saisie').textContent.trim(),
+        ligne: !$('bibliotheque-pause').hidden
+    }));
+
+    await ouvrir(page, origine + '/');
+    /* Bibliothèque vide : le bouton l'ouvre. */
+    await page.click('#bibliotheque-saisie');
+    assert.ok(await page.evaluate(() => $('bibliotheque').open));
+    await page.click('#coller-texte');
+    await page.fill('#texte-colle', 'Le basalte est une roche volcanique.');
+    await page.click('#dialogue-coller button[value=oui]');
+    await page.waitForFunction(() => !guidesEnCours.size);
+    await page.evaluate(() => $('bibliotheque').close());
+    assert.deepStrictEqual(await etatBouton(), { appuye: 'true', nombre: '1', ligne: false });
+
+    /* Désactivée : toast avec "Voir", case toujours cochée, rien ne part. */
+    await page.click('#bibliotheque-saisie');
+    assert.deepStrictEqual(await etatBouton(), { appuye: 'false', nombre: '', ligne: true });
+    assert.deepStrictEqual(await page.evaluate(() => ({ toast: $('toast').textContent, coches: sourcesProjet.length })),
+        { toast: await page.evaluate(() => t('toast.bibliotheque-desactivee') + ' ' + t('toast.voir')), coches: 1 });
+    await page.fill('#saisie', 'Le basalte ?');
+    await page.press('#saisie', 'Enter');
+    await page.waitForFunction(() => !annulation);
+    assert.doesNotMatch(consignes[0], /basalte est une roche/);
+    assert.strictEqual(await page.evaluate(() => conversation.at(-1).recherches.some(r => r.passages)), false);
+
+    /* Gardée au rechargement ; "Voir" ouvre la colonne. */
+    await recharger(page);
+    assert.deepStrictEqual(await etatBouton(), { appuye: 'false', nombre: '', ligne: true });
+    await page.click('#bibliotheque-saisie');
+    await page.click('#bibliotheque-saisie');
+    await page.click('#toast .action-toast');
+    assert.ok(await page.evaluate(() => $('bibliotheque').open));
+    await page.evaluate(() => $('bibliotheque').close());
+
+    /* Imprimerie travaille à partir des sources : la désactivation n'y vaut pas, le bouton n'y est pas. */
+    assert.deepStrictEqual(await page.evaluate(() => [sourcesEnvoyees('discuter').length, sourcesEnvoyees('projet').length]), [0, 1]);
+    await page.evaluate(() => choisirOutil('projet'));
+    assert.strictEqual(await page.evaluate(() => $('bibliotheque-saisie').hidden), true);
+    await page.evaluate(() => choisirOutil('discuter'));
+
+    /* Réactivée : le texte part avec la question. */
+    await page.click('#bibliotheque-saisie');
+    assert.deepStrictEqual(await etatBouton(), { appuye: 'true', nombre: '1', ligne: false });
+    await page.fill('#saisie', 'Et le granite ?');
+    await page.press('#saisie', 'Enter');
+    await page.waitForFunction(() => !annulation);
+    assert.match(consignes.at(-1), /basalte est une roche/);
+    assert.deepStrictEqual(erreurs, []);
+});
+
 test("iPad (WebKit) : jetons lus pendant l'attente, chronomètre sous la réponse, gardé au rechargement", async (t) => {
     const serveur = await servir();
     const origine = 'http://127.0.0.1:' + serveur.address().port;

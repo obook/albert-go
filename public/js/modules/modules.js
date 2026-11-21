@@ -173,6 +173,8 @@ function afficherOutil() {
     $('chat').dataset.module = outilActuel;
     /* Le volet de la bibliothèque n'existe que dans Discussion et Imprimerie. */
     placerBibliotheque();
+    /* La pause de la bibliothèque ne vaut pas en Imprimerie : bouton et résumé suivent le module. */
+    afficherResumeSources();
 }
 
 /* Ce qu'affichait chaque outil dans cet onglet (conversation, saisie, notes de Rédiger), retrouvé au retour. */

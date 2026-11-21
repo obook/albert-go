@@ -185,7 +185,10 @@ function reprendreSources() {
  * part avec les questions. Appelée aussi au changement de langue, qui remet le libellé simple.
  */
 function afficherResumeSources() {
-    const nombre = documentsProjet.length;
+    afficherPause();
+    /* En pause, rien ne part : ni orange, ni nombre, toute la place libre. */
+    const envoyees = typeof outilActuel === 'undefined' ? documentsProjet : sourcesEnvoyees();
+    const nombre = envoyees.length;
     const bouton = $('ouvrir-bibliotheque');
     let cleLibelle = 'bibliotheque.ouvrir-coches';
     if (nombre === 0) {
@@ -197,7 +200,7 @@ function afficherResumeSources() {
     bouton.classList.toggle('sources-cochees', nombre > 0);
     bouton.setAttribute('aria-label', libelle);
     bouton.title = libelle;
-    const part = Albert.partDocuments(documentsProjet, modeleActuel().contexte);
+    const part = Albert.partDocuments(envoyees, modeleActuel().contexte);
     /* Retiré le 21/11/2026 : une seule ligne, "Utilisés : 1 sur 2 - 19 % du contexte".
     $('resume-documents').textContent = t(part === null ? 'documents.resume' : 'documents.resume-part',
         { coches: documentsProjet.length, nombre: bibliotheque.length, pourcent: part });
@@ -383,6 +386,7 @@ function cocherSource(nom, coche) {
             return;
         }
         choisirSources([...sourcesProjet, nom]);
+        reprendreBibliotheque();
     } else {
         choisirSources(sourcesProjet.filter(s => s !== nom));
     }
@@ -515,6 +519,7 @@ function ajouterDocument(piece, note = false) {
         return true;
     }
     choisirSources([...sourcesProjet.filter(s => s !== nouveau.nom), nouveau.nom]);
+    reprendreBibliotheque();
     afficherDocuments();
     sauverConversation();
     /* Guide rédigé dès le dépôt, sans l'attendre : en cas d'échec, il le sera à l'ouverture. */

@@ -292,23 +292,45 @@ function ajouterAttente(demande = '') {
  *
  * @param {string} texte - Message à afficher.
  * @param {boolean} [jusquAuSuivant] - Garder le message jusqu'au prochain toast.
+ * @param {?{libelle: string, faire: Function}} [action] - Bouton à la suite du message, par exemple "Voir".
  */
-function toast(texte, jusquAuSuivant) {
+function toast(texte, jusquAuSuivant, action = null) {
     const boite = $('toast');
     /* Rouvert dans la couche du dessus : sinon une boîte modale et son fond flou le couvrent. */
     boite.togglePopover?.(false);
     boite.togglePopover?.(true);
     boite.textContent = texte;
+    if (action) {
+        const bouton = document.createElement('button');
+        bouton.type = 'button';
+        bouton.className = 'action-toast';
+        bouton.textContent = action.libelle;
+        bouton.addEventListener('click', () => {
+            cacherToast();
+            action.faire();
+        });
+        /* Atteint au clavier : le message attend qu'on quitte le bouton. */
+        bouton.addEventListener('focus', () => {
+            clearTimeout(minuteurToast);
+        });
+        bouton.addEventListener('blur', () => {
+            minuteurToast = setTimeout(cacherToast, 2000);
+        });
+        boite.append(' ', bouton);
+    }
     boite.classList.add('visible');
     clearTimeout(minuteurToast);
     if (jusquAuSuivant) {
         return;
     }
-    /* Un message long reste plus longtemps. */
-    const duree = Math.max(2000, texte.length * 60);
-    minuteurToast = setTimeout(() => {
-        $('toast').classList.remove('visible');
-    }, duree);
+    /* Un message long reste plus longtemps ; un bouton laisse le temps de l'atteindre. */
+    const duree = Math.max(action ? 6000 : 2000, texte.length * 60);
+    minuteurToast = setTimeout(cacherToast, duree);
+}
+
+/** Fait remonter le toast hors de l'écran. */
+function cacherToast() {
+    $('toast').classList.remove('visible');
 }
 
 /**

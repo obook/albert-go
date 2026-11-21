@@ -162,13 +162,15 @@ async function demanderReponse(outil, question, image, modele) {
     let rechercheMs = 0;
     /* Discussion et Imprimerie : les sources cochées partent à chaque question, à la suite de la consigne.
        Discussion les numérote par passage pour les citer ; Imprimerie les garde entières, un numéro finirait imprimé. */
-    const avecSources = Albert.OUTILS[outil].sources && documentsProjet.length > 0;
+    /* Bibliothèque en pause (pause.js) : aucune source, ni passage, ni mot rare, ni recherche dans les sources. */
+    const envoyees = sourcesEnvoyees(outil);
+    const avecSources = Albert.OUTILS[outil].sources && envoyees.length > 0;
     if (avecSources && Albert.OUTILS[outil].documents) {
-        texteConsigne += '\n\n' + Albert.joindreDocuments(documentsProjet);
+        texteConsigne += '\n\n' + Albert.joindreDocuments(envoyees);
     } else if (avecSources) {
-        const passages = Albert.passagesSources(documentsProjet);
+        const passages = Albert.passagesSources(envoyees);
         /* Au-delà du contexte, seuls les passages utiles à la question partent, avec leur numéro. */
-        const tiennent = documentsProjet.reduce((s, d) => s + d.texte.length, 0) <= Albert.plafondDocuments(modeleActuel().contexte);
+        const tiennent = envoyees.reduce((s, d) => s + d.texte.length, 0) <= Albert.plafondDocuments(modeleActuel().contexte);
         const avantRecherche = Date.now();
         const envoyes = tiennent ? passages : await passagesPertinents(question, passages, annulation.signal);
         rechercheMs = Date.now() - avantRecherche;
@@ -241,9 +243,10 @@ function recevoirReponse(reponse, outil, anciennes = null) {
     const texte = Albert.OUTILS[outil].documents ? Albert.sansGras(reponse.texte) : reponse.texte;
     /* Sources cochées : notées avec la réponse, pour son icône de bibliothèque.
        Discussion garde aussi leur liste : elle retrouve les passages cités. */
-    const noms = documentsProjet.map(d => d.nom);
+    const envoyees = sourcesEnvoyees(outil);
+    const noms = envoyees.map(d => d.nom);
     const sources = Albert.OUTILS[outil].documents ? { bibliotheque: noms.join(', ') } : { bibliotheque: noms.join(', '), passages: noms };
-    let recherches = Albert.OUTILS[outil].sources && documentsProjet.length
+    let recherches = Albert.OUTILS[outil].sources && envoyees.length
         ? [...(reponse.recherches || []), sources]
         : reponse.recherches;
     /* Jetons et durées de la réponse : gardés avec elle, comme ses traces, et relus avec l'historique. */

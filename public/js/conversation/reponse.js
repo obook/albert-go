@@ -206,18 +206,6 @@ function partiesCitation(m, passages) {
 }
 
 /**
- * Nom d'une source dans une citation : sans extension ni numéro de téléchargement, coupé à 30 caractères.
- * Le nom entier se lit à l'ouverture du passage.
- *
- * @param {string} nom - Nom de la source.
- * @returns {string} Nom court.
- */
-function nomCourt(nom) {
-    const court = nom.replace(/\.\w{2,4}$/, '').replace(/[-_]\d{5,}$/, '');
-    return court.length > 30 ? court.slice(0, 30).trimEnd() + '...' : court;
-}
-
-/**
  * Libellé de chaque numéro ou plage cité : la page, ou le numéro de passage pour une source sans pages.
  * Deux passages de la même page donnent une seule mention, qui les ouvre tous les deux.
  *
