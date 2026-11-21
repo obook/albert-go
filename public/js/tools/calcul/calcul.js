@@ -1,5 +1,5 @@
 /*
- * tools/calcul.js
+ * tools/calcul/calcul.js
  * Outils locaux du modèle : calcul (math.js, avec facteurs premiers, PGCD, PPCM, statistiques, moyenne
  * pondérée et dérivée ; calcul formel par Giac), calendrier (jours ouvrés, fériés et échéances), compteur (mots, lettres, lisibilité), tirage.
  * Là où les modèles se trompent ; tout reste dans le navigateur.
@@ -159,7 +159,7 @@ const Calcul = {
 /* Calcul formel : Giac dans un worker (formel-worker.js), lancé au premier usage. */
 const Formel = {
     /** Adresse du worker, relative à la page. */
-    WORKER: 'js/tools/formel-worker.js',
+    WORKER: 'js/tools/calcul/formel-worker.js',
 
     /** Temps laissé à un calcul. Giac ne s'interrompt pas : passé ce délai, le worker est arrêté. */
     DELAI_MS: 10000,

@@ -1,5 +1,5 @@
 /*
- * tools/recherche.js
+ * tools/recherche/recherche.js
  * Recherche documentaire, proposée au modèle comme un outil.
  *
  * Le modèle reçoit la définition de l'outil et décide lui-même s'il
@@ -415,6 +415,6 @@ const Recherche = {
 if (typeof module !== 'undefined') {
     module.exports = Recherche;
     globalThis.Recherche = Recherche;
-    require('./recherche/commons.js');
-    require('./recherche/extraits.js');
+    require('./commons.js');
+    require('./extraits.js');
 }

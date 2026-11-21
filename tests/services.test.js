@@ -1,6 +1,6 @@
 /*
  * services.test.js
- * Tests de public/js/tools/services.js : outils, adresses et extraits.
+ * Tests de public/js/tools/services/services.js : outils, adresses et extraits.
  *
  * Lancement : node --test
  *
@@ -14,9 +14,9 @@
 const { test } = require('node:test');
 const assert = require('node:assert');
 require('../public/js/socle/i18n.js');
-const Recherche = require('../public/js/tools/recherche.js');
-globalThis.definirOutil = require('../public/js/tools/calcul.js').definirOutil;
-const Services = require('../public/js/tools/services.js');
+const Recherche = require('../public/js/tools/recherche/recherche.js');
+globalThis.definirOutil = require('../public/js/tools/calcul/calcul.js').definirOutil;
+const Services = require('../public/js/tools/services/services.js');
 
 const { TABLE } = Services;
 

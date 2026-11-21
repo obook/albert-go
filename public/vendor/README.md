@@ -18,4 +18,4 @@ Servies depuis Pages, sans CDN : aucune adresse IP n'est transmise à un tiers.
 
 Icônes des titres des Réglages et de la boîte Empreinte : tracés de Lucide 0.460.0 (`cpu`, `wrench`, `smartphone`, `sprout`, `puzzle`, `zap`, `factory`) copiés dans `index.html`. Licence ISC, https://lucide.dev
 
-Mise à jour : prendre les fichiers dans le paquet npm officiel (`https://registry.npmjs.org/<nom>/-/<nom>-<version>.tgz`), puis vérifier avec `npm audit` sur un `package.json` listant les neuf versions (Luciole et Giac ne sont pas sur npm : reprendre l'archive de leur site ; pour Giac, changer aussi la version dans l'adresse de `js/tools/formel-worker.js`).
+Mise à jour : prendre les fichiers dans le paquet npm officiel (`https://registry.npmjs.org/<nom>/-/<nom>-<version>.tgz`), puis vérifier avec `npm audit` sur un `package.json` listant les neuf versions (Luciole et Giac ne sont pas sur npm : reprendre l'archive de leur site ; pour Giac, changer aussi la version dans l'adresse de `js/tools/calcul/formel-worker.js`).

@@ -1,5 +1,5 @@
 /*
- * tools/services.js
+ * tools/services/services.js
  * Services de l'État proposés au modèle : annuaires, entreprises, adresses,
  * communes, calendrier scolaire, marchés publics, données publiques, formations Parcoursup,
  * eau du robinet.

@@ -1,7 +1,7 @@
 /*
  * formel.test.js
- * Tests du calcul formel : Formel (public/js/tools/calcul.js) et son worker
- * (public/js/tools/formel-worker.js), avec le vrai Giac.
+ * Tests du calcul formel : Formel (public/js/tools/calcul/calcul.js) et son worker
+ * (public/js/tools/calcul/formel-worker.js), avec le vrai Giac.
  *
  * Lancement : node --test
  *
@@ -20,9 +20,9 @@ const vm = require('node:vm');
 /* math.js, chargé à la demande dans la page, est déjà là pour les tests. */
 globalThis.math = require('../public/vendor/mathjs/math.js');
 require('../public/js/socle/i18n.js');
-const { Formel, OUTILS_LOCAUX } = require('../public/js/tools/calcul.js');
+const { Formel, OUTILS_LOCAUX } = require('../public/js/tools/calcul/calcul.js');
 
-const OUTILS = path.join(__dirname, '../public/js/tools');
+const OUTILS = path.join(__dirname, '../public/js/tools/calcul');
 const lire = adresse => fs.readFileSync(path.resolve(OUTILS, adresse.split('?')[0]), 'utf8');
 
 /*
@@ -165,7 +165,7 @@ test('commande Xcas écrite dans expression : passée à Giac quand math.js la r
 
 test('adresse de Giac : le fichier existe dans public/', () => {
     const adresse = /const GIAC = '([^']+)'/.exec(lire('formel-worker.js'))[1];
-    const url = new URL(adresse, 'https://exemple.fr/js/tools/formel-worker.js');
+    const url = new URL(adresse, 'https://exemple.fr/js/tools/calcul/formel-worker.js');
     assert.ok(fs.existsSync(path.join(__dirname, '../public', url.pathname)));
 });
 

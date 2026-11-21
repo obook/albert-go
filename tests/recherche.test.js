@@ -1,6 +1,6 @@
 /*
  * recherche.test.js
- * Tests de public/js/tools/recherche.js : mise en forme et clé refusée.
+ * Tests de public/js/tools/recherche/recherche.js : mise en forme et clé refusée.
  *
  * Lancement : node --test
  *
@@ -14,7 +14,7 @@
 const { test } = require('node:test');
 const assert = require('node:assert');
 require('../public/js/socle/i18n.js');
-const Recherche = require('../public/js/tools/recherche.js');
+const Recherche = require('../public/js/tools/recherche/recherche.js');
 
 test('formater : un numéro par résultat, rien sans résultat', () => {
     const bloc = Recherche.formater(Recherche.numeroter([
@@ -135,7 +135,7 @@ test('chercherBase : la requête raccourcit tant que rien ne vient', async () =>
         return { ok: true, json: async () => ({ data: trouve
             ? [{ title: 'Recensement', page: 'https://www.data.gouv.fr/datasets/recensement' }] : [] }) };
     };
-    const { TABLE } = require('../public/js/tools/services.js');
+    const { TABLE } = require('../public/js/tools/services/services.js');
     const resultats = await Recherche.chercherBase(TABLE.donnees_publiques, 'quelle est la population');
     assert.strictEqual(vues.length, 4);
     assert.strictEqual(resultats.length, 1);
@@ -403,7 +403,7 @@ test('rappel : l\'outil calcul, sans lequel un modèle moyen calcule de tête', 
 test('executerOutil : une recherche en échec interdit au modèle de répondre de mémoire', async () => {
     I18n.langue = 'fr';
     globalThis.Recherche = Recherche;
-    globalThis.Services = require('../public/js/tools/services.js');
+    globalThis.Services = require('../public/js/tools/services/services.js');
     globalThis.OUTILS_LOCAUX = {};
     globalThis.etat = () => {};
     const toasts = [];
@@ -423,7 +423,7 @@ test('repondreAvecOutils : réseau en échec, pas de repli sans outils ni reproc
     I18n.langue = 'fr';
     globalThis.Albert = require('../public/js/albert.js');
     Albert.EN_LIGNE = false;
-    globalThis.definirOutil = require('../public/js/tools/calcul.js').definirOutil;
+    globalThis.definirOutil = require('../public/js/tools/calcul/calcul.js').definirOutil;
     globalThis.reglages = { recherche: true, fournisseurs: ['wikipedia'], calcul: false };
     globalThis.globeActif = true;
     const toasts = [];

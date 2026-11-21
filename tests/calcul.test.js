@@ -1,6 +1,6 @@
 /*
  * calcul.test.js
- * Tests de public/js/tools/calcul.js.
+ * Tests de public/js/tools/calcul/calcul.js.
  *
  * Lancement : node --test
  *
@@ -16,7 +16,7 @@ const assert = require('node:assert');
 /* math.js, chargé à la demande dans la page, est déjà là pour les tests. */
 globalThis.math = require('../public/vendor/mathjs/math.js');
 require('../public/js/socle/i18n.js');
-const { Calcul, Calendrier, Compteur, Controle, Tirage, Statistiques, Facteurs, OUTILS_LOCAUX } = require('../public/js/tools/calcul.js');
+const { Calcul, Calendrier, Compteur, Controle, Tirage, Statistiques, Facteurs, OUTILS_LOCAUX } = require('../public/js/tools/calcul/calcul.js');
 
 test('evaluer : priorités, parenthèses, puissance, point décimal', () => {
     assert.strictEqual(Calcul.evaluer('2 + 3 * 4'), 14);

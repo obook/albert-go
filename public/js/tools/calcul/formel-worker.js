@@ -1,5 +1,5 @@
 /*
- * tools/formel-worker.js
+ * tools/calcul/formel-worker.js
  * Giac, le moteur de calcul formel de Xcas, hors du fil de la page : une
  * commande reçue, un résultat rendu. Lancé par Formel (calcul.js).
  *
@@ -11,7 +11,7 @@
 'use strict';
 
 /* La version dans l'adresse : le service worker garde les 19 Mo une fois pour toutes. */
-const GIAC = '../../vendor/giac/giacwasm.js?v=1.9.0';
+const GIAC = '../../../vendor/giac/giacwasm.js?v=1.9.0';
 
 /* La commande vient du modèle et Giac sait lire une adresse (read) : plus de
    réseau ici. Son WebAssembly est dans le fichier, il n'en a pas besoin. */
