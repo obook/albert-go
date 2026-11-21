@@ -99,7 +99,7 @@
 .envoyer.en-cours .icone-arreter { display: block; }
 
 .saisie .fleche { display: none; flex: none; width: 2.25rem; height: 2.25rem; }
-/* Le trombone puis le globe à gauche, les autres boutons à droite. */
+/* Le trombone, la bibliothèque puis le globe à gauche, les autres boutons à droite. */
 .saisie .joindre, .saisie .recherche-web, .saisie .bibliotheque-saisie {
     flex: none;
     color: var(--texte-doux);
@@ -107,9 +107,15 @@
 /* Retiré le 21/11/2026 : la bibliothèque suit le globe, la marge passe au dernier bouton visible.
 .saisie .recherche-web, .saisie .joindre:has(+ .recherche-web[hidden]) { margin-right: auto; }
 */
+/* Retiré le 21/11/2026 : le globe passe après la bibliothèque.
 .saisie .bibliotheque-saisie,
 .saisie .recherche-web:has(+ .bibliotheque-saisie[hidden]),
 .saisie .joindre:has(+ .recherche-web[hidden] + .bibliotheque-saisie[hidden]) { margin-right: auto; }
+*/
+/* Trombone, bibliothèque, globe à gauche : la marge revient au dernier visible. */
+.saisie .recherche-web,
+.saisie .bibliotheque-saisie:has(+ .recherche-web[hidden]),
+.saisie .joindre:has(+ .bibliotheque-saisie[hidden] + .recherche-web[hidden]) { margin-right: auto; }
 /* Recherche activée : le globe seul en orange, sans fond. */
 .saisie .recherche-web[aria-pressed="true"] { color: var(--accent); }
 /* Bibliothèque utilisée : orange comme le globe, le nombre de sources en exposant. */
