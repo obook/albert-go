@@ -141,8 +141,8 @@ const Albert = {
     /** Numéros de passages donnés au plus pour un mot rare. */
     MOT_PASSAGES_MAX: 20,
 
-    /** Numéros cités par le modèle : [P12], [P12, P13], 【P12】, avec ou sans page ni espaces invisibles. */
-    CITATION: /[[【][\s​-‍﻿]*(P\d+(?:[\s,;​-‍﻿]*(?:p\.\s*\d+|P\d+))*)[\s​-‍﻿]*[\]】]/g,
+    /** Numéros cités par le modèle : [P12], [P12, P13], [P34-P41], [P34 à P41], 【P12】, avec ou sans page ni espaces invisibles. */
+    CITATION: /[[【][\s​-‍﻿]*(P\d+(?:[\s,;​-‍﻿]*(?:(?:[-–—]|à)[\s​-‍﻿]*P?\d+|p\.\s*\d+|P\d+))*)[\s​-‍﻿]*[\]】]/g,
 
     /** Rédiger : notes plus courtes non envoyées, pour ne pas payer une requête par mot. */
     LONGUEUR_MIN_NOTES: 10,
@@ -895,19 +895,24 @@ const Albert = {
     /**
      * Numéros de passages d'une citation trouvée par CITATION.
      *
-     * @param {string} contenu - Groupe capturé : "P12", "P12, P13", "P12, p. 4".
-     * @returns {number[]} Numéros, sans les pages.
+     * @param {string} contenu - Groupe capturé : "P12", "P12, P13", "P12, p. 4", "P34-P41".
+     * @returns {number[][]} Une liste par numéro ou par plage, sans les pages : [[12], [34, 35, ..., 41]].
      */
     numerosCites(contenu) {
-        return [...contenu.matchAll(/P(\d+)/g)].map(m => Number(m[1]));
+        return [...contenu.matchAll(/P(\d+)(?:[\s​-‍﻿]*(?:[-–—]|à)[\s​-‍﻿]*P?(\d+))?/g)].map((m) => {
+            const [debut, fin] = [Number(m[1]), Number(m[2] || m[1])].sort((a, b) => a - b);
+            /* Borne contre une plage absurde ([P1-P99999999]) qui bloquerait la page. */
+            return Array.from({ length: Math.min(fin - debut + 1, 1000) }, (_, i) => debut + i);
+        });
     },
 
     /**
      * Découpe un texte autour des numéros de passages cités. Le modèle écrit [P12] comme demandé,
      * mais aussi (P12), [Source : P12] ou P12 seul : ces formes comptent aussi.
+     * Des crochets collés, [P13][P28], forment une seule citation.
      *
      * @param {string} texte - Texte d'une réponse.
-     * @returns {Array<string|{numeros: number[], crochets: boolean}>} Texte et citations, dans l'ordre.
+     * @returns {Array<string|{plages: number[][], crochets: boolean}>} Texte et citations, dans l'ordre.
      */
     morceauxCitations(texte) {
         const morceaux = [];
@@ -916,15 +921,22 @@ const Albert = {
             /* Sans lookbehind : absent du Safari des iPad pas à jour. */
             for (const m of bout.matchAll(/(^|[^\p{L}\p{N}])P(\d+)(?![\p{L}\p{N}])/gu)) {
                 const position = m.index + m[1].length;
-                morceaux.push(bout.slice(debut, position), { numeros: [Number(m[2])], crochets: false });
+                morceaux.push(bout.slice(debut, position), { plages: [[Number(m[2])]], crochets: false });
                 debut = position + m[0].length - m[1].length;
             }
             morceaux.push(bout.slice(debut));
         };
         let debut = 0;
+        let groupe = null;
         for (const m of texte.matchAll(this.CITATION)) {
-            libres(texte.slice(debut, m.index));
-            morceaux.push({ numeros: this.numerosCites(m[1]), crochets: true });
+            const entre = texte.slice(debut, m.index);
+            if (groupe && !entre.trim()) {
+                groupe.plages.push(...this.numerosCites(m[1]));
+            } else {
+                libres(entre);
+                groupe = { plages: this.numerosCites(m[1]), crochets: true };
+                morceaux.push(groupe);
+            }
             debut = m.index + m[0].length;
         }
         libres(texte.slice(debut));

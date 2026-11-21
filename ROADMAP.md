@@ -38,7 +38,7 @@ Ce qui reste à faire, du plus simple au plus long. Le détail des failles est d
 - [x] Fiche de lecture : un échec au dépôt ne se voit pas (le nom cesse de pulser). Gardé ainsi : le repli à l'ouverture le rattrape, et une erreur sur une action non demandée ferait du bruit.
 - [ ] Supports en un clic à partir des sources cochées : fiche de révision, FAQ, chronologie, quiz, cartes mémoire et carte mentale (Mermaid). Les proposer aussi dans la boîte de la fiche de lecture, pour cette seule source.
 - [x] Notes : épingler une réponse dans la bibliothèque, puis la cocher comme une source. Fait le 10/11/2026 : bouton sous la réponse, note non cochée, fiche de lecture rédigée à l'ouverture.
-- [x] Citations (21/11/2026) : en Discussion, les sources partent en passages numérotés ; le numéro cité ouvre le passage sous la réponse. Titres et pages des PDF écrits au dépôt : redéposer les anciens PDF. Programme de cycle 4 avec Large : 10 réponses justes sur 10. Pas de surlignage.
+- [x] Citations (21/11/2026) : en Discussion, les sources partent en passages numérotés ; la réponse affiche la page citée, (p. 8) ou (p. 4 à 6), qui ouvre le ou les passages sous la réponse. Titres et pages des PDF écrits au dépôt : redéposer les anciens PDF. Programme de cycle 4 avec Large : 10 réponses justes sur 10. Pas de surlignage.
 - [x] Titres des PDF vérifiés sur les 37 BO (21/11/2026) : en-têtes et pieds de page retirés, texte en colonnes plus pris pour des titres.
 - [x] Texte collé comme source, fait le 10/11/2026.
 - [ ] Autres sources que les fichiers : page web par son adresse (le navigateur ne peut pas la lire seul : passer par le relais), transcription d'une vidéo.

@@ -360,12 +360,54 @@ test("iPad (WebKit) : un numéro de passage cité ouvre le passage sous la répo
     assert.match(consignes[0], /\[P1\]\nLe volcan est une ouverture/);
     assert.match(consignes[0], /"volcan"[^\n]*P1\./);
     assert.deepStrictEqual(await page.evaluate(() => [...$('fil').querySelectorAll('.citation')].map(b => b.textContent)), ['P1']);
-    assert.strictEqual((await page.textContent('#fil li.assistant .texte')).trim(), 'Une ouverture de la croûte P1.');
+    assert.strictEqual((await page.textContent('#fil li.assistant .texte')).trim(), 'Une ouverture de la croûte (P1).');
     await page.click('#fil .citation');
     assert.match(await page.textContent('#fil .passage'), /Le volcan est une ouverture de la croûte terrestre\./);
     assert.ok(await page.isVisible('#fil .passage'));
     await page.click('#fil .citation');
     assert.ok(!await page.isVisible('#fil .passage'));
+    assert.deepStrictEqual(erreurs, []);
+});
+
+test("iPad (WebKit) : les citations donnent la page, une plage ouvre tous ses passages", async (t) => {
+    const serveur = await servir();
+    const navigateur = await webkit.launch();
+    t.after(async () => {
+        await navigateur.close();
+        serveur.close();
+    });
+    const page = await (await navigateur.newContext({ ...devices['iPad (gen 7)'], locale: 'fr-FR', serviceWorkers: 'block' })).newPage();
+    const erreurs = [];
+    page.on('pageerror', (err) => erreurs.push(String(err)));
+    await page.goto('http://127.0.0.1:' + serveur.address().port + '/');
+
+    /* Passages 1 à 4 d'un PDF (pages 4, 4, 5, 6), passage 5 d'un texte sans pages. */
+    const rendu = (texte) => page.evaluate((texte) => {
+        const pdf = (n, page) => ({ n, nom: 'Programme', pages: true, page, chemin: '', texte: 'Texte ' + n });
+        const passages = [pdf(1, 4), pdf(2, 4), pdf(3, 5), pdf(4, 6), { n: 5, nom: 'Note', pages: false, page: 1, chemin: '', texte: 'Texte 5' }];
+        const carte = document.createElement('div');
+        carte.className = 'carte';
+        carte.innerHTML = '<p></p><p class="passage" hidden></p>';
+        carte.firstChild.textContent = texte;
+        document.body.append(carte);
+        lierCitations(carte.firstChild, passages, carte.lastChild);
+        const boutons = [...carte.querySelectorAll('.citation')];
+        const ouverts = boutons.map((b) => {
+            b.click();
+            return (carte.lastChild.textContent.match(/Texte \d/g) || []).join(',');
+        });
+        return { texte: carte.firstChild.textContent, ouverts };
+    }, texte);
+
+    assert.deepStrictEqual(await rendu('Vu [P1].'), { texte: 'Vu (p. 4).', ouverts: ['Texte 1'] });
+    assert.deepStrictEqual(await rendu('Vu [P1, P2].'), { texte: 'Vu (p. 4).', ouverts: ['Texte 1,Texte 2'] });
+    assert.deepStrictEqual(await rendu('Vu [P1][P4].'), { texte: 'Vu (p. 4, p. 6).', ouverts: ['Texte 1', 'Texte 4'] });
+    assert.deepStrictEqual(await rendu('Vu [P2-P4].'), { texte: 'Vu (p. 4 à 6).', ouverts: ['Texte 2,Texte 3,Texte 4'] });
+    assert.deepStrictEqual(await rendu('Vu [P1 à P2].'), { texte: 'Vu (p. 4).', ouverts: ['Texte 1,Texte 2'] });
+    assert.deepStrictEqual(await rendu('Vu [P5].'), { texte: 'Vu (P5).', ouverts: ['Texte 5'] });
+    /* Plage à cheval sur deux sources : numéros de passages, faute d'une page commune. */
+    assert.deepStrictEqual(await rendu('Vu [P3-P9].'), { texte: 'Vu (P3 à P5).', ouverts: ['Texte 3,Texte 4,Texte 5'] });
+    assert.deepStrictEqual(await rendu('Vu [P5-P9] et [P8].'), { texte: 'Vu (P5) et .', ouverts: ['Texte 5'] });
     assert.deepStrictEqual(erreurs, []);
 });
 

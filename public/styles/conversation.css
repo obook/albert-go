@@ -131,19 +131,19 @@ main {
 /* Lecture d'un tableau de variations : une ligne pour x, f' et f (Albert.traceCalcul). */
 .calculs { white-space: pre-line; }
 
-/* Numéro de passage cité dans une réponse (lierCitations) : il ouvre le passage en dessous. */
+/* Page citée dans une réponse (lierCitations) : un lien discret qui ouvre le passage en dessous. */
 .citation {
-    margin: 0 0.125em;
-    padding: 0 0.25em;
-    border: 1px solid currentColor;
-    border-radius: 0.25rem;
+    margin: 0;
+    padding: 0;
+    border: 0;
     background: none;
     color: var(--accent);
     font: inherit;
-    font-size: 0.8em;
+    text-decoration: underline dotted;
+    text-underline-offset: 0.15em;
     cursor: pointer;
 }
-.citation:hover, .citation[aria-expanded="true"] { background: var(--accent-clair); }
+.citation:hover, .citation[aria-expanded="true"] { text-decoration-style: solid; }
 
 /* Entrée dans le chat : fondu court, sauf si le système demande moins d'animations. */
 @media (prefers-reduced-motion: no-preference) {

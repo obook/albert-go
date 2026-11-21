@@ -436,16 +436,33 @@ test('cosinus et empreinte', () => {
 
 test('CITATION : numéros cités, avec ou sans page, crochets pleine chasse et espaces invisibles', () => {
     const cites = (texte) => [...texte.matchAll(Albert.CITATION)].flatMap(m => Albert.numerosCites(m[1]));
-    assert.deepStrictEqual(cites('Vrai [P107]. Aussi [P39, P40] et 【P38】, [​P113​], [P12, p. 4].'), [107, 39, 40, 38, 113, 12]);
+    assert.deepStrictEqual(cites('Vrai [P107]. Aussi [P39, P40] et 【P38】, [​P113​], [P12, p. 4].'), [[107], [39], [40], [38], [113], [12]]);
     assert.deepStrictEqual(cites('Note [1] et [Pythagore].'), []);
+});
+
+test('CITATION : plages au tiret, au tiret long et avec "à"', () => {
+    const cites = (texte) => [...texte.matchAll(Albert.CITATION)].flatMap(m => Albert.numerosCites(m[1]));
+    assert.deepStrictEqual(cites('[P34-P37]'), [[34, 35, 36, 37]]);
+    assert.deepStrictEqual(cites('[P34 – P36] [P5—P6] [P8 à P9]'), [[34, 35, 36], [5, 6], [8, 9]]);
+    assert.deepStrictEqual(cites('[P12, P20-22]'), [[12], [20, 21, 22]]);
+    assert.deepStrictEqual(cites('[P9-P7]'), [[7, 8, 9]]);
+    assert.strictEqual(cites('[P1-P99999999]')[0].length, 1000);
 });
 
 test('morceauxCitations : crochets, parenthèses et numéros seuls ; PDF ou P2x ne comptent pas', () => {
     assert.deepStrictEqual(Albert.morceauxCitations('Vrai [P1] (P2), voir P3. Un PDF, P4a et le point P.'), [
-        'Vrai ', { numeros: [1], crochets: true }, ' (', { numeros: [2], crochets: false }, '), voir ',
-        { numeros: [3], crochets: false }, '. Un PDF, P4a et le point P.'
+        'Vrai ', { plages: [[1]], crochets: true }, ' (', { plages: [[2]], crochets: false }, '), voir ',
+        { plages: [[3]], crochets: false }, '. Un PDF, P4a et le point P.'
     ]);
-    assert.deepStrictEqual(Albert.morceauxCitations('P5'), [{ numeros: [5], crochets: false }]);
+    assert.deepStrictEqual(Albert.morceauxCitations('P5'), [{ plages: [[5]], crochets: false }]);
+});
+
+test('morceauxCitations : crochets collés en une citation, plage entière', () => {
+    assert.deepStrictEqual(Albert.morceauxCitations('Vu [P13][P28] et [P2] [P3], puis [P4], [P5].'), [
+        'Vu ', { plages: [[13], [28]], crochets: true }, ' et ', { plages: [[2], [3]], crochets: true }, ', puis ',
+        { plages: [[4]], crochets: true }, ', ', { plages: [[5]], crochets: true }, '.'
+    ]);
+    assert.deepStrictEqual(Albert.morceauxCitations('Fin [P34 à P36].'), ['Fin ', { plages: [[34, 35, 36]], crochets: true }, '.']);
 });
 
 test('plafondDocuments : 60 % du contexte, à trois caractères par jeton', () => {

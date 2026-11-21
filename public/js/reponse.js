@@ -84,6 +84,7 @@ function boutonRecherches(note, recherches) {
 
 /**
  * Remplace les numéros de passages cités ([P12], P12) par des boutons qui montrent le passage.
+ * Le bouton donne la page, (p. 8), ou le numéro pour une source sans pages ; les crochets deviennent des parenthèses.
  * Entre crochets, un numéro qui ne désigne aucun passage est retiré ; seul, il reste du texte (un point P2).
  * Sans les passages (source supprimée), rien ne change.
  *
@@ -110,38 +111,74 @@ function lierCitations(contenu, passages, note) {
             if (typeof m === 'string') {
                 return [m];
             }
-            if (!m.crochets && !connu(m.numeros[0])) {
-                return ['P' + m.numeros[0]];
+            if (!m.crochets && !connu(m.plages[0][0])) {
+                return ['P' + m.plages[0][0]];
             }
-            return m.numeros.filter(connu).map(n => boutonCitation(passages[n - 1], note));
+            const mentions = mentionsCitees(m.plages.map(plage => plage.filter(connu).map(n => passages[n - 1])).filter(plage => plage.length));
+            if (!mentions.length) {
+                return [];
+            }
+            const boutons = mentions.flatMap((mention, i) => (i ? [', '] : []).concat(boutonCitation(mention, note)));
+            return m.crochets ? ['(', ...boutons, ')'] : boutons;
         }));
     }
 }
 
 /**
- * Bouton d'un numéro de passage : il montre le passage sous la réponse, puis le cache.
+ * Libellé de chaque numéro ou plage cité : la page, ou le numéro de passage pour une source sans pages.
+ * Deux passages de la même page donnent une seule mention, qui les ouvre tous les deux.
  *
- * @param {Object} passage - Passage de Albert.passagesSources.
+ * @param {Object[][]} plages - Passages connus de chaque numéro ou plage, dans l'ordre.
+ * @returns {{libelle: string, passages: Object[]}[]} Mentions à afficher.
+ */
+function mentionsCitees(plages) {
+    const mentions = new Map();
+    for (const plage of plages) {
+        const premier = plage[0];
+        const dernier = plage[plage.length - 1];
+        let libelle;
+        if (premier.pages && dernier.pages && premier.nom === dernier.nom) {
+            libelle = premier.page === dernier.page ? t('reponse.page', { page: premier.page })
+                : t('reponse.pages', { debut: premier.page, fin: dernier.page });
+        } else {
+            libelle = plage.length === 1 ? 'P' + premier.n : t('reponse.passages', { debut: premier.n, fin: dernier.n });
+        }
+        const cle = premier.nom + '\n' + libelle;
+        const mention = mentions.get(cle) || { libelle, passages: [] };
+        mention.passages.push(...plage.filter(p => !mention.passages.includes(p)));
+        mentions.set(cle, mention);
+    }
+    return [...mentions.values()];
+}
+
+/**
+ * Bouton d'une mention citée : il montre ses passages sous la réponse, puis les cache.
+ *
+ * @param {{libelle: string, passages: Object[]}} mention - Mention de mentionsCitees.
  * @param {HTMLElement} note - Ligne grise sous la réponse.
  * @returns {HTMLButtonElement} Le bouton.
  */
-function boutonCitation(passage, note) {
+function boutonCitation(mention, note) {
     const bouton = document.createElement('button');
     bouton.type = 'button';
     bouton.className = 'citation';
-    bouton.textContent = 'P' + passage.n;
-    bouton.setAttribute('aria-label', t('reponse.citation', { n: passage.n }));
+    bouton.textContent = mention.libelle;
+    const numeros = mention.passages.map(p => 'P' + p.n);
+    bouton.setAttribute('aria-label', numeros.length > 1 ? t('reponse.citations', { liste: numeros.join(', ') })
+        : t('reponse.citation', { n: mention.passages[0].n }));
     bouton.setAttribute('aria-expanded', 'false');
     bouton.addEventListener('click', () => {
-        const ouvert = !note.hidden && note.dataset.passage === String(passage.n);
+        const ouvert = !note.hidden && note.dataset.passage === numeros.join(',');
         for (const autre of note.closest('.carte').querySelectorAll('.citation')) {
             autre.setAttribute('aria-expanded', 'false');
         }
         note.hidden = ouvert;
-        note.dataset.passage = passage.n;
-        const titre = passage.pages ? t('reponse.passage-page', { n: passage.n, nom: passage.nom, page: passage.page })
-            : t('reponse.passage', { n: passage.n, nom: passage.nom });
-        note.textContent = [titre, passage.chemin, passage.texte].filter(Boolean).join('\n');
+        note.dataset.passage = numeros.join(',');
+        note.textContent = mention.passages.map((passage) => {
+            const titre = passage.pages ? t('reponse.passage-page', { n: passage.n, nom: passage.nom, page: passage.page })
+                : t('reponse.passage', { n: passage.n, nom: passage.nom });
+            return [titre, passage.chemin, passage.texte].filter(Boolean).join('\n');
+        }).join('\n\n');
         bouton.setAttribute('aria-expanded', String(!ouvert));
     });
     return bouton;
