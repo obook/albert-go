@@ -144,6 +144,89 @@ async function audioEnWav(fichier) {
     return new Blob([Albert.wav(mono.getChannelData(0), TAUX_AUDIO)], { type: 'audio/wav' });
 }
 
+/** Contenu d'un numérateur, d'un dénominateur ou d'un exposant : un nombre ou des points de suspension. */
+const NOMBRE_PDF = /^\s*[\d…][\d…,. ]*\s*$/;
+
+/**
+ * Ligne de base d'un élément de texte pdf.js.
+ *
+ * @param {Object} bout - Élément de getTextContent.
+ * @returns {number} Ordonnée, vers le haut.
+ */
+function baseDe(bout) {
+    return bout.transform[5];
+}
+
+/**
+ * Dit si deux éléments forment une fraction : numérateur au-dessus, dénominateur dessous.
+ * Le texte voisin a sa ligne de base entre les deux, ce qui écarte une colonne de nombres.
+ *
+ * @param {Object} haut - Élément candidat au numérateur.
+ * @param {?Object} bas - Élément qui le suit.
+ * @param {?Object} voisin - Élément non vide qui précède le numérateur ou suit le dénominateur.
+ * @returns {boolean} true pour une fraction.
+ */
+function estFraction(haut, bas, voisin) {
+    if (!bas || !voisin || !NOMBRE_PDF.test(haut.str) || !NOMBRE_PDF.test(bas.str)) {
+        return false;
+    }
+    const xHaut = haut.transform[4];
+    const xBas = bas.transform[4];
+    const superposes = xHaut < xBas + bas.width && xBas < xHaut + haut.width;
+    const entre = baseDe(bas) + 0.5 < baseDe(voisin) && baseDe(voisin) < baseDe(haut) - 0.5;
+    return superposes && entre && baseDe(haut) - baseDe(bas) < 2 * haut.height;
+}
+
+/**
+ * Dit si un élément est l'exposant du précédent : plus petit, surélevé, collé à lui.
+ * Il doit suivre un chiffre, une parenthèse ou une lettre isolée : un appel de note suit un mot.
+ *
+ * @param {Object} avant - Dernier élément non vide.
+ * @param {Object} bout - Élément candidat.
+ * @returns {boolean} true pour un exposant.
+ */
+function estExposant(avant, bout) {
+    const ecart = baseDe(bout) - baseDe(avant);
+    const colle = Math.abs(bout.transform[4] - avant.transform[4] - avant.width) < avant.height;
+    return /^[−-]?\d{1,3}$/.test(bout.str) && bout.height > 0 && bout.height < 0.8 * avant.height
+        && ecart > 0 && ecart < avant.height && colle
+        && /(\d|\)|(^|[^\p{L}])\p{L})$/u.test(avant.str);
+}
+
+/**
+ * Texte d'une page PDF. pdf.js rend une fraction sur deux lignes et un exposant
+ * comme un chiffre de plus : 2³ devenait "23". Ils sont remis en "a/b" et "a^n".
+ *
+ * @param {Object[]} elements - Éléments de getTextContent, dans l'ordre.
+ * @returns {string} Texte de la page.
+ */
+function texteDePage(elements) {
+    let texte = '';
+    let avant = null;
+    for (let i = 0; i < elements.length; i++) {
+        const bout = elements[i];
+        const bas = elements[i + 1];
+        /* Le voisin suivant n'est cherché que pour deux nombres consécutifs : rare, et la page peut être longue. */
+        const candidats = bas && NOMBRE_PDF.test(bout.str) && NOMBRE_PDF.test(bas.str);
+        if (candidats && (estFraction(bout, bas, avant)
+            || estFraction(bout, bas, elements.slice(i + 2).find((e) => e.str.trim())))) {
+            texte += bout.str.trim() + '/' + bas.str.trim() + (bas.hasEOL ? '\n' : '');
+            avant = bas;
+            i++;
+            continue;
+        }
+        if (avant && estExposant(avant, bout)) {
+            texte = texte.replace(/ +$/, '') + '^' + bout.str + (bout.hasEOL ? '\n' : '');
+        } else {
+            texte += bout.str + (bout.hasEOL ? '\n' : '');
+        }
+        if (bout.str.trim()) {
+            avant = bout;
+        }
+    }
+    return texte;
+}
+
 /**
  * Texte d'un PDF, page par page. Un PDF scanné n'en a pas.
  *
@@ -160,10 +243,14 @@ async function lirePdf(fichier) {
     for (let n = 1; n <= pdf.numPages && texte.length <= TEXTE_MAX; n++) {
         /* Pas getTextContent : il parcourt un flux par for await, que WebKit ne sait pas faire (tous les navigateurs de l'iPad). */
         const lecteur = (await pdf.getPage(n)).streamTextContent().getReader();
+        /* Page lue en entier avant texteDePage : une fraction peut tomber entre deux morceaux du flux. */
+        const elements = [];
         for (let morceau = await lecteur.read(); !morceau.done; morceau = await lecteur.read()) {
-            texte += morceau.value.items.map((bout) => bout.str + (bout.hasEOL ? '\n' : '')).join('');
+            /* Remplacé le 21 novembre 2026 par texteDePage, qui remet fractions et exposants en ligne :
+            texte += morceau.value.items.map((bout) => bout.str + (bout.hasEOL ? '\n' : '')).join(''); */
+            elements.push(...morceau.value.items);
         }
-        texte += '\n\n';
+        texte += texteDePage(elements) + '\n\n';
     }
     chargement.destroy();
     return texte;

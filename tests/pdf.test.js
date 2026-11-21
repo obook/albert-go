@@ -31,6 +31,53 @@ const PDF = '%PDF-1.4\n'
     + '5 0 obj<</Type/Font/Subtype/Type1/BaseFont/Helvetica>>endobj\n'
     + 'trailer<</Root 1 0 R>>\n%%EOF';
 
+/* Fonctions de mise en ligne : elles ne lisent que des éléments, pdf.js n'est pas chargé. */
+const page = vm.createContext({ $: () => ({ addEventListener() {} }), document: { addEventListener() {} }, URL });
+vm.runInContext(SOURCE, page);
+
+/* Élément de getTextContent ; positions relevées dans le programme de cycle 4 (2026). */
+function el(str, x, y, largeur, hauteur, eol = false) {
+    return { str, transform: [hauteur, 0, 0, hauteur, x, y], width: largeur, height: hauteur, hasEOL: eol };
+}
+
+test('texteDePage : fractions sur deux lignes remises en a/b', () => {
+    const elements = [
+        el('fractions simples comme', 53, 570.8, 242.1, 8.5), el(' ', 295.2, 570.8, 2.7, 0),
+        el('1', 297.9, 575.9, 2.8, 6, true), el('2', 297.5, 566.5, 3.6, 6), el(' ', 301.1, 566.5, 2.3, 0),
+        el(';', 303.4, 570.8, 2.3, 8.5), el(' ', 305.7, 570.8, 2.6, 0),
+        el('100', 373.8, 575.9, 10, 6, true), el('100', 373.8, 566.5, 10, 6), el(' ', 383.7, 566.5, 2.3, 0),
+        el(';', 386, 570.8, 2.3, 8.5), el(' ', 388.3, 570.8, 2.3, 0),
+        el('7', 390.6, 575.9, 3.6, 6, true), el('1', 390.9, 566.5, 2.8, 6), el(' ', 393.7, 566.5, 2.7, 0),
+        el('.', 396.4, 570.8, 2.3, 8.5)
+    ];
+    assert.strictEqual(page.texteDePage(elements), 'fractions simples comme 1/2 ; 100/100 ; 7/1 .');
+});
+
+test('texteDePage : une colonne de nombres reste sur deux lignes', () => {
+    const elements = [el('A', 20, 100, 5, 8.5), el('12', 60, 100, 10, 8.5, true), el('15', 60, 88.3, 10, 8.5), el('B', 80, 88.3, 5, 8.5)];
+    assert.strictEqual(page.texteDePage(elements), 'A12\n15B');
+});
+
+test('texteDePage : exposants remis en a^n, ² Unicode inchangé', () => {
+    const puissances = [
+        el('Puissances simples : 2² = 4 ; 2', 53, 58.3, 118.4, 8.5), el('3', 171.5, 61.3, 3, 5), el(' ', 174.5, 61.3, 2.1, 0),
+        el('= 8 ; 10', 176.7, 58.3, 30, 8.5), el('3', 206.8, 61.3, 3, 5), el(' ', 209.8, 61.3, 2.3, 0),
+        el('= 1 000.', 212.1, 58.3, 31.2, 8.5)
+    ];
+    assert.strictEqual(page.texteDePage(puissances), 'Puissances simples : 2² = 4 ; 2^3 = 8 ; 10^3 = 1 000.');
+    const identite = [
+        el('a', 40.6, 231.5, 4.8, 8.5), el(' ', 45.3, 231.5, 1.1, 0), el('2', 46.4, 234.5, 3, 5), el(' ', 49.5, 234.5, 2.3, 0),
+        el('+ 2ab + b', 51.7, 231.5, 38.4, 8.5), el(' ', 90.1, 231.5, 1.1, 0), el('2', 91.2, 234.5, 3, 5), el(' ', 94.2, 234.5, 2.3, 0),
+        el('= (a + b)', 96.5, 231.5, 33, 8.5), el(' ', 129.5, 231.5, 1.1, 0), el('2', 130.6, 234.5, 3, 5)
+    ];
+    assert.strictEqual(page.texteDePage(identite), 'a^2 + 2ab + b^2 = (a + b)^2');
+});
+
+test('texteDePage : un appel de note après un mot n\'est pas un exposant', () => {
+    const elements = [el('le programme', 53, 100, 50, 8.5), el('1', 103, 103, 3, 5), el(' fixe', 106, 100, 20, 8.5)];
+    assert.strictEqual(page.texteDePage(elements), 'le programme1 fixe');
+});
+
 test("lirePdf : le texte sort même sans for await sur un flux, comme sur iPad", async () => {
     /* Worker de pdf.js dans le même fil, Node n'a pas de Worker. */
     globalThis.pdfjsWorker = await import(pathToFileURL(path.join(PUBLIC, 'vendor', 'pdfjs', 'pdf.worker.min.mjs')).href);
