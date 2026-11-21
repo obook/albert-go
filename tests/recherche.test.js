@@ -449,3 +449,41 @@ test('repondreAvecOutils : réseau en échec, pas de repli sans outils ni reproc
     assert.strictEqual(appels, 2);
     assert.deepStrictEqual(toasts, ['Recherche indisponible avec ce modèle.']);
 });
+
+/* Revue du 21/11/2026 : au deuxième tour, le repli renvoyait les messages "tool" sans le champ tools. */
+test('repondreAvecOutils : repli au deuxième tour, sans message d\'outil, extraits en texte', async () => {
+    I18n.langue = 'fr';
+    globalThis.Albert = require('../public/js/albert.js');
+    Albert.EN_LIGNE = false;
+    globalThis.reglages = { recherche: false, fournisseurs: [], compteur: true };
+    globalThis.globeActif = false;
+    globalThis.etat = () => {};
+    globalThis.toast = () => {};
+    globalThis.OUTILS_LOCAUX = {
+        compteur: {
+            outil: () => ({ type: 'function', function: { name: 'compteur', parameters: { type: 'object' } } }),
+            executer: async () => 'Mots : 5',
+        },
+    };
+    const { repondreAvecOutils } = require('../public/js/tools/recherche/outils-modele.js');
+    const corps = [];
+    globalThis.fetch = async (adresse, options) => {
+        corps.push(JSON.parse(options.body));
+        if (corps.length === 1) {
+            const appel = { id: 'a1', type: 'function', function: { name: 'compteur', arguments: '{}' } };
+            return { ok: true, status: 200, json: async () => ({ choices: [{ message: { role: 'assistant', content: '', tool_calls: [appel] } }] }) };
+        }
+        if (corps.length === 2) {
+            return { ok: false, status: 400, json: async () => ({ detail: 'tool messages refused' }) };
+        }
+        return { ok: true, status: 200, json: async () => ({ choices: [{ message: { content: 'cinq mots' } }] }) };
+    };
+    const reponse = await repondreAvecOutils({ model: 'm', messages: [{ role: 'user', content: 'Combien de mots ?' }] },
+        new AbortController().signal);
+    assert.strictEqual(reponse.texte, 'cinq mots');
+    assert.strictEqual(corps.length, 3);
+    const repli = corps[2];
+    assert.strictEqual(repli.tools, undefined);
+    assert.ok(repli.messages.every((m) => m.role !== 'tool' && !m.tool_calls), 'message d\'outil dans le repli');
+    assert.match(repli.messages[repli.messages.length - 1].content, /Mots : 5/);
+});

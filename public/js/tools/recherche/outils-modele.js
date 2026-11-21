@@ -213,6 +213,16 @@ async function repondreAvecOutils(requete, signal) {
     /* Extraits trouvés, pour le dernier tour. */
     const extraits = [];
     const rendre = (reponse) => ({ ...reponse, texte: avecTableaux(Recherche.citations(reponse.texte), faites), recherches: faites });
+    /* Demande sans outil ni message "tool" : gpt-oss rappellerait l'outil et ne rédigerait rien,
+       et une API refuse des messages "tool" sans le champ tools. Les extraits repartent en texte ;
+       sans recherche, pas de sources à citer, d'où un texte neutre. */
+    const messagesSansOutils = () => {
+        if (!extraits.length) {
+            return requete.messages;
+        }
+        const consigne = faites.some(f => f.mots) ? 'recherche.resultats' : 'outils.resultats';
+        return [...requete.messages, { role: 'user', content: t(consigne, { extraits: extraits.join('\n') }) }];
+    };
     for (let tour = 0; tour < TOURS_MAX; tour++) {
         let reponse;
         try {
@@ -231,7 +241,9 @@ async function repondreAvecOutils(requete, signal) {
             if (cherche) {
                 toast(t('toast.recherche-indisponible'));
             }
-            return rendre(await Albert.repondre({ ...requete, messages: avecDate(messages) }, signal));
+            /* Au premier tour, messages ne contient encore aucun appel d'outil. */
+            const repli = tour === 0 ? avecDate(messages) : messagesSansOutils();
+            return rendre(await Albert.repondre({ ...requete, messages: repli }, signal));
         }
         const appels = (reponse.message && reponse.message.tool_calls) || [];
         if (!appels.length) {
@@ -245,14 +257,8 @@ async function repondreAvecOutils(requete, signal) {
         }
         etat(t('etat.reflechit'));
     }
-    /* Dernier tour sans outil ni message "tool" : gpt-oss rappellerait l'outil
-       et ne rédigerait rien. Les extraits repartent en texte ; sans recherche,
-       pas de sources à citer, d'où un texte neutre. */
-    const consigne = faites.some(f => f.mots) ? 'recherche.resultats' : 'outils.resultats';
-    const dernier = extraits.length
-        ? [...requete.messages, { role: 'user', content: t(consigne, { extraits: extraits.join('\n') }) }]
-        : requete.messages;
-    return rendre(await Albert.repondre({ ...requete, messages: dernier }, signal));
+    /* Dernier tour : réponse rédigée sans outil. */
+    return rendre(await Albert.repondre({ ...requete, messages: messagesSansOutils() }, signal));
 }
 
 /* Export pour les tests Node ; ignoré dans le navigateur. */
