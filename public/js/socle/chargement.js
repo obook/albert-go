@@ -53,6 +53,7 @@ const SCRIPTS = [
     'js/albert/reponses.js',
     /* Avant stockage.js : le réglage cx part de Recherche.CX. */
     'js/tools/calcul/calcul.js',
+    'js/tools/calcul/controle.js',
     'js/tools/calcul/compteur.js',
     'js/tools/calcul/tirage.js',
     'js/tools/calcul/nombres.js',
