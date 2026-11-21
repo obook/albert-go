@@ -1,7 +1,7 @@
 /*
  * albert/empreinte.js
  * Consommation des appels à Albert : part du contexte occupée, jetons lus et écrits,
- * énergie et carbone cumulés depuis le chargement de la page.
+ * énergie et carbone cumulés depuis l'ouverture de l'onglet.
  *
  * repondre (albert.js) note chaque appel ; menu.js affiche le cumul dans la boîte
  * Empreinte et app.js la part du contexte sous la saisie.
@@ -30,8 +30,31 @@ Object.assign(Albert, {
         return Math.min(100, Math.round(jetons / contexte * 100));
     },
 
-    /* Empreinte rendue par Albert, cumulée depuis le chargement de la page. */
+    /* Retiré le 21/11/2026 : le cumul repartait de zéro à chaque rechargement, même automatique.
     empreinte: { kwh: 0, kgco2: 0, appels: 0, renseignes: 0, lus: 0, ecrits: 0, depuis: new Date() },
+    */
+
+    /* Cumul gardé dans l'onglet (sessionStorage) : il survit aux rechargements, nouvelle version
+       ou onglet rechargé par l'iPad, et repart de zéro à la fermeture de l'onglet. */
+    CLE_EMPREINTE: 'albert-go.empreinte',
+
+    /**
+     * Empreinte gardée dans l'onglet, ou un cumul neuf.
+     *
+     * @returns {Object} Cumul : kwh, kgco2, appels, renseignes, lus, ecrits, depuis (Date).
+     */
+    empreinteGardee() {
+        const neuve = { kwh: 0, kgco2: 0, appels: 0, renseignes: 0, lus: 0, ecrits: 0, depuis: new Date() };
+        try {
+            const gardee = JSON.parse(globalThis.sessionStorage.getItem(this.CLE_EMPREINTE));
+            if (gardee) {
+                return { ...neuve, ...gardee, depuis: new Date(gardee.depuis) };
+            }
+        } catch (err) {
+            /* Stockage bloqué, ou absent sous Node : cumul neuf. */
+        }
+        return neuve;
+    },
 
     /* Énergie d'une batterie de smartphone, en Wh : 4 000 mAh à 3,85 V. */
     TELEPHONE_WH: 15,
@@ -55,6 +78,11 @@ Object.assign(Albert, {
             this.empreinte.kwh += kwh;
             this.empreinte.kgco2 += kgco2;
             this.empreinte.renseignes++;
+        }
+        try {
+            globalThis.sessionStorage.setItem(this.CLE_EMPREINTE, JSON.stringify(this.empreinte));
+        } catch (err) {
+            /* Stockage bloqué, ou absent sous Node : le cumul reste en mémoire. */
         }
     },
 
@@ -107,3 +135,6 @@ Object.assign(Albert, {
         return tn('empreinte.telephone', part, { n: part.toLocaleString(I18n.langue, { maximumFractionDigits: 1 }) });
     }
 });
+
+/* Empreinte rendue par Albert, cumulée dans l'onglet. */
+Albert.empreinte = Albert.empreinteGardee();

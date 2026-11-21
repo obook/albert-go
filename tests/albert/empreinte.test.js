@@ -45,6 +45,22 @@ test('repondre : cumule l\'empreinte d\'Albert, valeur haute, les jetons, et com
     }
 });
 
+test('empreinte : gardée dans l\'onglet, reprise après un rechargement', () => {
+    const memoire = new Map();
+    globalThis.sessionStorage = { getItem: (cle) => memoire.get(cle) ?? null, setItem: (cle, valeur) => memoire.set(cle, valeur) };
+    try {
+        assert.strictEqual(Albert.empreinteGardee().appels, 0);
+        Albert.empreinte = Albert.empreinteGardee();
+        Albert.noterEmpreinte({ prompt_tokens: 100, completion_tokens: 20, impacts: { kWh: 0.002, kgCO2eq: 0.0003 } });
+        /* Rechargement : le cumul revient, sa date de départ aussi. */
+        const reprise = Albert.empreinteGardee();
+        assert.deepStrictEqual({ appels: reprise.appels, lus: reprise.lus, kwh: reprise.kwh }, { appels: 1, lus: 100, kwh: 0.002 });
+        assert.strictEqual(reprise.depuis.getTime(), Albert.empreinte.depuis.getTime());
+    } finally {
+        delete globalThis.sessionStorage;
+    }
+});
+
 test('petiteUnite : l\'unité, son millième sous 1, son millier au-dessus de 999', () => {
     /* Espaces insécables : le nombre et son unité restent sur la même ligne. */
     assert.doesNotMatch(Albert.petiteUnite(0.42, 'g CO2eq', 'fr'), / /);
