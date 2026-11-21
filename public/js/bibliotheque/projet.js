@@ -388,7 +388,9 @@ function cocherSource(nom, coche) {
             return;
         }
         choisirSources([...sourcesProjet, nom]);
+        /* Retiré le 21/11/2026 : bibliothèque désactivée, on coche pour préparer son travail.
         reprendreBibliotheque();
+        */
     } else {
         choisirSources(sourcesProjet.filter(s => s !== nom));
     }
@@ -521,7 +523,9 @@ function ajouterDocument(piece, note = false) {
         return true;
     }
     choisirSources([...sourcesProjet.filter(s => s !== nouveau.nom), nouveau.nom]);
+    /* Retiré le 21/11/2026 : déposer un fichier ne réactive plus la bibliothèque.
     reprendreBibliotheque();
+    */
     afficherDocuments();
     sauverConversation();
     /* Guide rédigé dès le dépôt, sans l'attendre : en cas d'échec, il le sera à l'ouverture. */

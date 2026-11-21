@@ -78,14 +78,12 @@ function mettreEnPause(enPause) {
     afficherResumeSources();
 }
 
-/**
- * Arrête la pause sans rien afficher : cocher ou déposer une source, c'est vouloir s'en servir.
- * L'appelant (projet.js) met le volet à jour ensuite.
- */
+/* Retiré le 21/11/2026 : seul le bouton réactive la bibliothèque, cocher sert à préparer son travail.
 function reprendreBibliotheque() {
     bibliothequeEnPause = false;
     ecrire('bibliotheque-pause', 'non');
 }
+*/
 
 /** Bouton de la barre de saisie et liste du volet, d'après la pause et les sources cochées. */
 function afficherPause() {

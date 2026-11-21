@@ -255,7 +255,9 @@ hidden et le focus (autofocus, bouton du volet) ne pourrait pas y entrer. */
 #ouvrir-bibliotheque.sources-cochees { color: var(--accent); }
 */
 /* Bibliothèque en pause (pause.js) : liste et jauge grisées, les cases restent utilisables. */
+/* Retiré le 21/11/2026 : la liste grisée semblait bloquée, on y prépare son travail.
 #groupe-sources.en-pause :is(.liste-documents, .place-documents) { opacity: 0.5; }
+*/
 /* Nom de fichier long pendant la lecture (piece-jointe.js) : coupé n'importe où plutôt que de sortir du volet. */
 .volet-droit .deposer { display: block; margin-top: 0.5rem; max-width: 100%; overflow-wrap: anywhere; }
 /* Retiré le 21/11/2026 : bouton rouge sous les deux boutons d'ajout.

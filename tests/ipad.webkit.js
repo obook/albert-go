@@ -412,6 +412,12 @@ test("iPad (WebKit) : le bouton de la bibliothèque la désactive sans décocher
     assert.deepStrictEqual(await etatBouton(), { appuye: 'false', nombre: '', ligne: true });
     assert.deepStrictEqual(await page.evaluate(() => ({ toast: $('toast').textContent, coches: sourcesProjet.length })),
         { toast: await page.evaluate(() => t('toast.bibliotheque-desactivee') + ' ' + t('toast.voir')), coches: 1 });
+    /* On prépare son travail : décocher puis recocher laisse la bibliothèque désactivée. */
+    await page.click('#ouvrir-bibliotheque');
+    await page.click('#liste-documents input');
+    await page.click('#liste-documents input');
+    await page.evaluate(() => $('bibliotheque').close());
+    assert.deepStrictEqual(await etatBouton(), { appuye: 'false', nombre: '', ligne: true });
     await page.fill('#saisie', 'Le basalte ?');
     await page.press('#saisie', 'Enter');
     await page.waitForFunction(() => !annulation);
