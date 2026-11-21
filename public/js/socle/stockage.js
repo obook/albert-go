@@ -1,11 +1,11 @@
 /*
- * stockage.js
- * Premier script de l'interface : garde contre le cadrage, stockage, état partagé.
+ * socle/stockage.js
+ * Garde contre le cadrage, stockage, état partagé : premier des scripts qui
+ * lisent l'état de l'interface.
  *
  * Les scripts de l'interface sont des scripts classiques qui partagent
- * leurs variables globales. Ordre de chargement (index.html) :
- *   stockage.js -> affichage.js -> reponse.js -> reglages.js -> historique.js
- *   -> modules.js -> redaction.js -> menu.js -> piece-jointe.js -> cle.js -> app.js
+ * leurs variables globales. Leur ordre de chargement est la liste SCRIPTS
+ * de socle/chargement.js.
  * Ce fichier définit $, lire, ecrire, reglages, conversation et historique.
  *
  * Projet : Albert Go, https://github.com/obook/albert-go

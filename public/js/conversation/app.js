@@ -624,7 +624,7 @@ document.addEventListener('visibilitychange', () => {
     }
 });
 
-/* Démarrage. */
+/* Dès l'ouverture : une version plus récente en ligne est signalée avant la première question. */
 verifierVersion();
 /* En ligne, relais vérifié en arrière-plan : la panne s'annonce avant la première question. */
 if (Albert.EN_LIGNE) {

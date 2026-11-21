@@ -6,7 +6,7 @@
  * Tracées à la main par le modèle, les courbes n'avaient que quelques points
  * reliés par des segments, et des valeurs parfois fausses.
  *
- * Complète l'objet Rendu de rendu.js ; utilise Calcul (tools/calcul.js)
+ * Complète l'objet Rendu de rendu.js ; utilise Calcul (tools/calcul/calcul.js)
  * pour math.js.
  *
  * Projet : Albert Go, https://github.com/obook/albert-go

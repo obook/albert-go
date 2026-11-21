@@ -10,7 +10,7 @@
  */
 'use strict';
 
-/* La version dans l'adresse : le service worker garde les 19 Mo une fois pour toutes. */
+/* La version dans l'adresse : le cache du navigateur garde les 19 Mo tant qu'elle ne change pas. */
 const GIAC = '../../../vendor/giac/giacwasm.js?v=1.9.0';
 
 /* La commande vient du modèle et Giac sait lire une adresse (read) : plus de

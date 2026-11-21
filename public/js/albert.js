@@ -35,6 +35,12 @@ const Albert = {
     /** Attente avant de vérifier que le relais répond encore (via /stats). */
     SONDE_MS: 10000,
 
+    /** Délai laissé au relais pour rendre le compte des appels (/stats). */
+    STATS_DELAI_MS: 10000,
+
+    /** Une heure en millisecondes, pour la moyenne horaire des appels. */
+    HEURE_MS: 3600000,
+
     /** Adresse des appels : le relais n8n en ligne, sinon le serveur d'Albert Go. */
     get BASE() {
         return this.EN_LIGNE ? this.RELAIS : '/v1';
@@ -135,7 +141,7 @@ const Albert = {
 
     /* Plafond retiré le 15 novembre 2026 : à 1,6, toute réponse développée était coupée (finish_reason "length").
        Gardé en réserve si un modèle qui déraille ne s'arrête plus. */
-    // JETONS_EXPERIENCE: 600,
+    /* JETONS_EXPERIENCE: 600, */
 
     /* Lecture des fichiers joints (image, audio, formules) et leurs modèles : albert/fichiers.js. */
 
@@ -145,7 +151,7 @@ const Albert = {
      * @returns {Promise<{total: number, parHeure: number}>} Somme des jours et moyenne horaire depuis le premier jour.
      */
     async appels() {
-        const res = await fetch(this.RELAIS.replace('/v1', '/stats'), { signal: AbortSignal.timeout(10000) });
+        const res = await fetch(this.RELAIS.replace('/v1', '/stats'), { signal: AbortSignal.timeout(this.STATS_DELAI_MS) });
         if (!res.ok) {
             throw new Error(res.status);
         }
@@ -153,14 +159,16 @@ const Albert = {
         const total = Object.values(jours).reduce((n, jour) => n + jour.appels, 0);
         /* ponytail: moyenne depuis minuit UTC du premier jour, compteur par heure si le rythme récent compte. */
         const debut = Date.parse(Object.keys(jours).sort()[0] + 'T00:00:00Z');
-        const heures = Math.max(1, (Date.now() - debut) / 3600000);
+        const heures = Math.max(1, (Date.now() - debut) / this.HEURE_MS);
         return { total, parHeure: total ? total / heures : 0 };
     },
 
     /* Plafonnait la réponse d'une requête dont la température dépasse 1. Retiré, voir JETONS_EXPERIENCE. */
-    // plafonnee(requete) {
-    //     return requete.temperature > 1 ? { max_tokens: this.JETONS_EXPERIENCE, ...requete } : requete;
-    // },
+    /*
+    plafonnee(requete) {
+        return requete.temperature > 1 ? { max_tokens: this.JETONS_EXPERIENCE, ...requete } : requete;
+    },
+    */
 
     /**
      * Envoie une requête de conversation à Albert.
@@ -182,7 +190,7 @@ const Albert = {
             res = await fetch(this.BASE + '/chat/completions', {
                 method: 'POST',
                 headers: this.entetes({ 'Content-Type': 'application/json' }),
-                // body: JSON.stringify(this.plafonnee(requete)),
+                /* body: JSON.stringify(this.plafonnee(requete)), */
                 body: JSON.stringify(requete),
                 signal: AbortSignal.any([annulation, sonde.signal, AbortSignal.timeout(this.DELAI_MS)])
             });

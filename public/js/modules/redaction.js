@@ -23,6 +23,8 @@ let dernierEnvoi = '';
 
 /** Symboles qui défilent dans le statut, à la manière de l'agent Crush. */
 const SYMBOLES = '#%&*+=<>/~^?!$@';
+/** Intervalle entre deux tirages de symboles : assez vif pour paraître animé. */
+const SYMBOLES_PAS_MS = 60;
 let minuteurSymboles = null;
 
 /**
@@ -72,7 +74,7 @@ function afficherStatut(texte, effet) {
         }
     };
     dessiner();
-    minuteurSymboles = setInterval(dessiner, 60);
+    minuteurSymboles = setInterval(dessiner, SYMBOLES_PAS_MS);
 }
 
 /**

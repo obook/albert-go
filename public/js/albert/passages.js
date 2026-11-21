@@ -150,8 +150,8 @@ Object.assign(Albert, {
      * @returns {{mot: string, trouves: Object[]}[]} Un élément par mot rare.
      */
     passagesMotsRares(question, passages) {
-        /* Accents retirés : NFD les sépare de leur lettre (U+0300 à U+036F), puis on les efface. */
-        const normaliser = (s) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+        /* Accents retirés : NFD les sépare de leur lettre, puis \p{M} (signes combinants) les efface. */
+        const normaliser = (s) => s.toLowerCase().normalize('NFD').replace(/\p{M}/gu, '');
         const textes = passages.map(p => normaliser(p.chemin + '\n' + p.texte));
         const seuil = Math.max(this.MOT_RARE_MIN, Math.floor(passages.length * this.MOT_RARE));
         const mots = new Map((question.match(/[\p{L}\p{N}]{4,}/gu) || []).map(m => [normaliser(m), m]));

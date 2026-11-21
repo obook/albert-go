@@ -1,7 +1,7 @@
 # Projet : Albert Go, https://github.com/obook/albert-go
 # Repris de L'Atelier d'Albert (Romain P., Luce P.B., Théossian S.D., O. Booklage)
 # Licence : GPL-3.0-or-later
-"""Tests du module api/proxy.py -- bascule sans proxy en cas de 407.
+"""Tests du module serveur/proxy.py : bascule sans proxy en cas de 407.
 
 Sur certains réseaux d'administration, le proxy système exige une
 authentification : la première requête échoue en 407 et le client

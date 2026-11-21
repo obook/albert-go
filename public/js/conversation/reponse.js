@@ -449,6 +449,9 @@ document.addEventListener('click', (e) => {
     }
 });
 
+/* Attente de beforeprint après print() : sans lui, le navigateur n'a pas ouvert l'impression. */
+const IMPRESSION_ATTENTE_MS = 1000;
+
 /* Attributs qui listent des identifiants séparés par des espaces, sans "#". */
 const LISTES_IDENTIFIANTS = ['aria-labelledby', 'aria-describedby', 'aria-controls', 'aria-owns'];
 
@@ -531,7 +534,7 @@ function imprimer(contenu, sujet) {
         if (!ouverte) {
             toast(t('toast.impression-impossible'));
         }
-    }, 1000);
+    }, IMPRESSION_ATTENTE_MS);
 }
 
 /**

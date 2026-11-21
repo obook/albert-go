@@ -95,15 +95,17 @@ I18n.TEXTES.en = {
     'versions.titre': 'Versions',
     'aide.bibliotheque-bouton': 'Help with the library',
     'aide.versions-bouton': 'Help with versions',
-    // Retiré le 21/11/2026 : 'aide.bibliotheque': 'The library keeps the text of the files you add, in this browser. It is shared by Chat and Print shop: tick the sources the displayed conversation or document should use. Ticked sources are sent with every request. Click a source name to read its reading notes, written by Albert when you add it. Paste text turns a text into a source too. Under an answer, the Add to the library button keeps it as a note.',
+    /* Retiré le 21/11/2026 : 'aide.bibliotheque': 'The library keeps the text of the files you add, in this browser. It is shared by Chat and Print shop: tick the sources the displayed conversation or document should use. Ticked sources are sent with every request. Click a source name to read its reading notes, written by Albert when you add it. Paste text turns a text into a source too. Under an answer, the Add to the library button keeps it as a note.', */
     'aide.bibliotheque': 'Add your documents with Add files or Paste text. While the file is read, then while Albert writes its reading notes, a ring spins in place of the checkbox.\n\nTick the sources Albert should use to answer: the ticks apply to the displayed conversation or document, in Chat and in Print shop. A source name opens its reading notes (a summary, its themes and questions to ask it), and the cross removes it from the library. The gauge under the list shows the space still available. In Chat, when the ticked sources no longer fit, Albert only receives the passages closest to the question; in Print shop, a source that no longer fits stays unticked.\n\nShow cited pages adds to Chat answers the page each piece of information comes from, for example (p. 8). Click the page to open the passage under the answer. With several sources ticked, the document name comes before the page.\n\nUnder an answer, the Add to the library button keeps it as a source.\n\nFiles stay stored in this browser, but their text is sent to Albert: when you add them, for the reading notes, then with every question while the source is ticked. Do not add personal data.',
     'aide.versions': 'Each request produces a new version of the document. The last {nombre} are kept: click a version to go back to it. It becomes the displayed document again and the basis for the next request.',
     'confirmer-suppression.bibliotheque': 'Empty the library?',
     'confirmer-suppression.bibliotheque-texte': 'Every file will be deleted and will leave every document.',
-    // Retiré le 21/11/2026 : 'documents.resume': 'In use: {coches} of {nombre}',
-    // Retiré le 21/11/2026 : 'documents.resume-part': 'In use: {coches} of {nombre} - {pourcent}% of the context',
-    // Retiré le 21/11/2026 : 'documents.resume': '{coches} of {nombre} sources ticked',
-    // Retiré le 21/11/2026 : 'documents.resume-une': '{coches} of {nombre} sources ticked',
+    /*
+    Retiré le 21/11/2026 : 'documents.resume': 'In use: {coches} of {nombre}',
+    Retiré le 21/11/2026 : 'documents.resume-part': 'In use: {coches} of {nombre} - {pourcent}% of the context',
+    Retiré le 21/11/2026 : 'documents.resume': '{coches} of {nombre} sources ticked',
+    Retiré le 21/11/2026 : 'documents.resume-une': '{coches} of {nombre} sources ticked',
+    */
     'documents.place-libre': 'Space available',
     'documents.place': '{libre}%',
     'menu.projets': 'Print shop',
@@ -118,7 +120,7 @@ I18n.TEXTES.en = {
     'coller.nom': 'Name (optional)',
     'coller.texte': 'Text',
     'coller.ajouter': 'Add',
-    // Retiré le 21/11/2026, passé dans aide.bibliotheque : 'documents.garde': 'Their text is kept in this browser: do not add personal data.',
+    /* Retiré le 21/11/2026, passé dans aide.bibliotheque : 'documents.garde': 'Their text is kept in this browser: do not add personal data.', */
     'documents.supprimer': 'Delete {nom} from the library',
     'documents.utiliser': 'Use {nom} here',
     'documents.telecharger': 'Download the text: {nom}',

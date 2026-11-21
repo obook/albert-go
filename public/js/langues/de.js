@@ -95,15 +95,17 @@ I18n.TEXTES.de = {
     'versions.titre': 'Versionen',
     'aide.bibliotheque-bouton': 'Hilfe zur Bibliothek',
     'aide.versions-bouton': 'Hilfe zu den Versionen',
-    // Retiré le 21/11/2026 : 'aide.bibliotheque': 'Die Bibliothek speichert den Text der hinzugefügten Dateien in diesem Browser. Sie gilt für Chat und Druckerei: Haken Sie die Quellen an, die der angezeigte Chat oder das angezeigte Dokument verwenden soll. Angehakte Quellen werden mit jeder Anfrage gesendet. Klicken Sie auf den Namen einer Quelle, um ihre Lesenotiz zu lesen, die Albert beim Hinzufügen schreibt. Mit Text einfügen wird ein Text ebenfalls zur Quelle. Unter einer Antwort speichert die Schaltfläche Zur Bibliothek hinzufügen sie als Notiz.',
+    /* Retiré le 21/11/2026 : 'aide.bibliotheque': 'Die Bibliothek speichert den Text der hinzugefügten Dateien in diesem Browser. Sie gilt für Chat und Druckerei: Haken Sie die Quellen an, die der angezeigte Chat oder das angezeigte Dokument verwenden soll. Angehakte Quellen werden mit jeder Anfrage gesendet. Klicken Sie auf den Namen einer Quelle, um ihre Lesenotiz zu lesen, die Albert beim Hinzufügen schreibt. Mit Text einfügen wird ein Text ebenfalls zur Quelle. Unter einer Antwort speichert die Schaltfläche Zur Bibliothek hinzufügen sie als Notiz.', */
     'aide.bibliotheque': 'Fügen Sie Ihre Dokumente mit Dateien hinzufügen oder Text einfügen hinzu. Während die Datei gelesen wird und Albert danach ihre Lesenotiz schreibt, dreht sich ein Ring an der Stelle des Kästchens.\n\nHaken Sie die Quellen an, die Albert zum Antworten verwenden soll: Die Haken gelten für den angezeigten Chat oder das angezeigte Dokument, im Chat wie in der Druckerei. Der Name einer Quelle öffnet ihre Lesenotiz (eine Zusammenfassung, ihre Themen und Fragen, die man ihr stellen kann), und das Kreuz entfernt sie aus der Bibliothek. Die Anzeige unter der Liste zeigt den noch verfügbaren Platz. Im Chat erhält Albert, wenn die angehakten Quellen nicht mehr hineinpassen, nur die Abschnitte, die der Frage am nächsten sind; in der Druckerei bleibt eine Quelle, die nicht mehr passt, ohne Haken.\n\nZitierte Seiten anzeigen nennt in den Antworten im Chat die Seite, aus der jede Information stammt, zum Beispiel (S. 8). Ein Klick auf die Seite öffnet den Abschnitt unter der Antwort. Bei mehreren angehakten Quellen steht der Name des Dokuments vor der Seite.\n\nUnter einer Antwort speichert die Schaltfläche Zur Bibliothek hinzufügen sie als Quelle.\n\nDie Dateien bleiben in diesem Browser gespeichert, aber ihr Text geht an Albert: beim Hinzufügen für die Lesenotiz, danach mit jeder Frage, solange die Quelle angehakt ist. Fügen Sie keine personenbezogenen Daten hinzu.',
     'aide.versions': 'Jede Anfrage erzeugt eine neue Version des Dokuments. Die letzten {nombre} bleiben erhalten: Klicken Sie auf eine Version, um sie wieder aufzunehmen. Sie wird wieder zum angezeigten Dokument und zur Grundlage der nächsten Anfrage.',
     'confirmer-suppression.bibliotheque': 'Bibliothek leeren?',
     'confirmer-suppression.bibliotheque-texte': 'Alle Dateien werden gelöscht und verschwinden aus allen Dokumenten.',
-    // Retiré le 21/11/2026 : 'documents.resume': 'Verwendet: {coches} von {nombre}',
-    // Retiré le 21/11/2026 : 'documents.resume-part': 'Verwendet: {coches} von {nombre} - {pourcent} % des Kontexts',
-    // Retiré le 21/11/2026 : 'documents.resume': '{coches} von {nombre} Quellen angehakt',
-    // Retiré le 21/11/2026 : 'documents.resume-une': '{coches} von {nombre} Quellen angehakt',
+    /*
+    Retiré le 21/11/2026 : 'documents.resume': 'Verwendet: {coches} von {nombre}',
+    Retiré le 21/11/2026 : 'documents.resume-part': 'Verwendet: {coches} von {nombre} - {pourcent} % des Kontexts',
+    Retiré le 21/11/2026 : 'documents.resume': '{coches} von {nombre} Quellen angehakt',
+    Retiré le 21/11/2026 : 'documents.resume-une': '{coches} von {nombre} Quellen angehakt',
+    */
     'documents.place-libre': 'Verfügbarer Platz',
     'documents.place': '{libre} %',
     'menu.projets': 'Druckerei',
@@ -118,7 +120,7 @@ I18n.TEXTES.de = {
     'coller.nom': 'Name (optional)',
     'coller.texte': 'Text',
     'coller.ajouter': 'Hinzufügen',
-    // Retiré le 21/11/2026, passé dans aide.bibliotheque : 'documents.garde': 'Ihr Text bleibt in diesem Browser gespeichert: keine personenbezogenen Daten hinzufügen.',
+    /* Retiré le 21/11/2026, passé dans aide.bibliotheque : 'documents.garde': 'Ihr Text bleibt in diesem Browser gespeichert: keine personenbezogenen Daten hinzufügen.', */
     'documents.supprimer': '{nom} aus der Bibliothek löschen',
     'documents.utiliser': '{nom} hier verwenden',
     'documents.telecharger': 'Text herunterladen: {nom}',

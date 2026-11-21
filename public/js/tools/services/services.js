@@ -51,7 +51,8 @@ const accoler = (...morceaux) => morceaux.filter(Boolean).join(' ; ');
  * 22 h ou 23 h UTC la veille. Midi ajouté, le jour tombe juste de
  * l'outre-mer à la métropole (décalage de moins de 12 h).
  */
-const jourLocal = (iso) => new Date(Date.parse(iso) + 12 * 3600000).toISOString().slice(0, 10);
+const MIDI_MS = 12 * 60 * 60 * 1000;
+const jourLocal = (iso) => new Date(Date.parse(iso) + MIDI_MS).toISOString().slice(0, 10);
 
 /** Horaires de l'Annuaire de l'administration : "Lundi-Mercredi 08:45-16:45, Jeudi 08:45-12:00 14:00-16:45". */
 const horaires = (valeur) => listeJson(valeur).map((p) => {

@@ -103,7 +103,7 @@ if (typeof document !== 'undefined' && Kiosque) {
         ecrire('volet', 'replie');
     }
 
-    /* Derniers réglages reçus du prof. */
+    /* Derniers réglages reçus du prof : seul ce qu'il change ensuite écrase un réglage de l'élève. */
     let recus = null;
     try {
         recus = JSON.parse(sessionStorage.getItem('albert-go.kiosque-reglages'));

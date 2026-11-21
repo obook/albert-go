@@ -126,7 +126,7 @@ main {
     font-size: 0.875rem;
     color: var(--texte-doux);
 }
-/* Trace sous une réponse : « Recherche web : ... ». */
+/* Trace sous une réponse : "Recherche web : ...". */
 .recherches, .calculs { margin: 0.75rem 0 0; }
 /* Lecture d'un tableau de variations : une ligne pour x, f' et f (Albert.traceCalcul). */
 .calculs { white-space: pre-line; }

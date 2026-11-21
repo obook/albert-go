@@ -23,7 +23,7 @@ const EXTENSIONS_TEXTE = /\.(txt|md|csv|tsv|json|xml|html|css|js|py|tex|sql)$/i;
 /** Documents dont on extrait le texte. */
 const EXTENSIONS_DOCUMENT = /\.(pdf|docx|odt)$/i;
 
-/* Version de pdf.js dans son adresse : le service worker garde le fichier tant qu'elle ne change pas.
+/* Version de pdf.js dans son adresse : le cache du navigateur garde le fichier tant qu'elle ne change pas.
    Sans elle, un appareil gardait l'ancienne version moderne, illisible sur un iPad sans Safari 18.2. */
 const PDFJS = '6.3.289-legacy';
 

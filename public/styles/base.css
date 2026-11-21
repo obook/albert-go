@@ -321,6 +321,7 @@ button {
     stroke-linejoin: round;
 }
 
+/* Retiré le 21/11/2026 : plus aucun élément n'a cette classe.
 .bouton-lien {
     padding: 0;
     border: 0;
@@ -330,6 +331,7 @@ button {
     text-underline-offset: 0.2em;
     font-size: 0.875rem;
 }
+*/
 
 @media (prefers-reduced-motion: reduce) {
     * { transition: none !important; }

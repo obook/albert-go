@@ -1,7 +1,7 @@
 # Projet : Albert Go, https://github.com/obook/albert-go
 # Repris de L'Atelier d'Albert (Romain P., Luce P.B., Théossian S.D., O. Booklage)
 # Licence : GPL-3.0-or-later
-"""Tests du module web/certificat.py — Certificat HTTPS auto-signé.
+"""Tests du module serveur/certificat.py : certificat HTTPS auto-signé.
 
 Vérifie la génération, la détection et le fallback du certificat
 utilisé par le serveur web pour le HTTPS.
