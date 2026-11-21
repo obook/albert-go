@@ -391,6 +391,11 @@ test('decouper : un passage par titre, chemin de titres, page comptée aux \\f',
     ]);
 });
 
+test('decouper : une table des matières, avec ou sans pages, ne fait pas de passage', () => {
+    const texte = '# Sommaire\nNombres\nEspace ........ 12\n# Nombres\nLes nombres relatifs.\n# Espace\nLes triangles.';
+    assert.deepStrictEqual(Albert.decouper(texte).map(p => p.texte), ['Les nombres relatifs.', 'Les triangles.']);
+});
+
 test('decouper : sans titre, coupe aux lignes vides ; un fragment court rejoint le précédent', () => {
     const long = 'Une phrase assez longue pour faire un passage à elle seule, sans aucun doute possible.';
     assert.deepStrictEqual(Albert.decouper(long + '\n\n2\n\n' + long).map(p => p.texte), [long + '\n2', long]);
@@ -412,7 +417,7 @@ test('motsRares : passages qui contiennent un mot rare de la question, accents i
     /* Un titre par passage : sans lui, des paragraphes courts se regrouperaient. */
     const paragraphes = ['Théorème de Pythagore.', 'Égalité de pythagore.', ...Array(6).fill('Le triangle.')];
     const passages = Albert.passagesSources([{ nom: 's', texte: paragraphes.map((p, i) => '# ' + i + '\n' + p).join('\n') }]);
-    assert.strictEqual(Albert.motsRares('Où est Pythagore dans le triangle ?', passages), 'Passages contenant "Pythagore" : P1, P2.');
+    assert.strictEqual(Albert.motsRares('Où est Pythagore dans le triangle ?', passages), 'Passages contenant "Pythagore" : P1 (0), P2 (1).');
     assert.strictEqual(Albert.motsRares('Thales ?', passages), '');
 });
 

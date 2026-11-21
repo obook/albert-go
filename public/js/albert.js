@@ -683,9 +683,17 @@ const Albert = {
         const passages = [];
         const chemin = [];
         const sansTitres = !/^\f?#+ /m.test(texte);
+        /* Table des matières : ses lignes reprennent les titres, avec ou sans page. Citée, elle ne prouve rien. */
+        const sansPage = (ligne) => ligne.replace(/[\s.…]*\d*\s*$/, '').trim();
+        const titres = new Set([...texte.matchAll(/^\f?#+ (.+)$/gm)].map(m => sansPage(m[1])));
+        const sommaire = (lignes) => lignes.filter(l => titres.has(sansPage(l))).length * 2 > lignes.length;
         let page = 1;
         let courant = null;
         const fermer = () => {
+            if (courant && sommaire(courant.lignes)) {
+                courant = null;
+                return;
+            }
             const contenu = courant ? courant.lignes.join('\n').trim() : '';
             const precedent = passages.at(-1);
             if (contenu && contenu.length < this.PASSAGE_MIN && precedent && precedent.chemin === courant.chemin
@@ -770,7 +778,8 @@ const Albert = {
             const debut = new RegExp('(^|[^\\p{L}\\p{N}])' + cle, 'u');
             const trouves = passages.filter((p, i) => debut.test(textes[i]));
             if (trouves.length && trouves.length <= seuil) {
-                const numeros = trouves.slice(0, this.MOT_PASSAGES_MAX).map(p => 'P' + p.n).join(', ');
+                /* Chemin à côté du numéro : sans lui, le modèle prêtait à une classe ce qui est dans une autre. */
+                const numeros = trouves.slice(0, this.MOT_PASSAGES_MAX).map(p => 'P' + p.n + (p.chemin ? ' (' + p.chemin + ')' : '')).join(', ');
                 lignes.push(t('demande.mot-rare', { mot: mot, passages: numeros }));
             }
         }
