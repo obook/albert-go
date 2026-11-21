@@ -121,11 +121,12 @@ Ailleurs (Firefox, Safari), la liste du système reste affichée.
     }
 }
 
-/* Boîtes de dialogue : "Fermer", "Oui"... à la largeur du texte (Pico les met en pleine largeur). */
+/* Retiré le 21/11/2026 : remplacé par la règle de .boutons-dialogue (reglages.css).
 .reglages.pico button[type=submit] {
     width: auto;
     margin-bottom: 0;
 }
+*/
 
 /* Grand écran : rien sous 14 px (--taille-mini, base.css). Pico réduit code à 0.875em. */
 @media (min-width: 64rem) {

@@ -917,7 +917,9 @@
                             data-t="partage.copier"></button>
                 </div>
             </div>
-            <button type="submit" class="bouton-principal" data-t="dialogue.fermer"></button>
+            <div class="boutons-dialogue">
+                <button type="submit" class="bouton-principal" data-t="dialogue.fermer"></button>
+            </div>
         </form>
     </dialog>
 
@@ -954,7 +956,10 @@
                 </section>
             </div>
 
-            <button type="submit" class="bouton-principal" data-t="dialogue.fermer"></button>
+            <!-- pico sur le seul bouton : le même "Fermer" que les autres boîtes, sans toucher au texte. -->
+            <div class="boutons-dialogue pico">
+                <button type="submit" class="bouton-principal" data-t="dialogue.fermer"></button>
+            </div>
         </form>
     </dialog>
 
@@ -986,7 +991,9 @@
                 <p id="empreinte-source" data-t="empreinte.source"></p>
             </div>
 
-            <button type="submit" class="bouton-principal" data-t="dialogue.fermer"></button>
+            <div class="boutons-dialogue pico">
+                <button type="submit" class="bouton-principal" data-t="dialogue.fermer"></button>
+            </div>
         </form>
     </dialog>
 

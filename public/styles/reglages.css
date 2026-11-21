@@ -48,11 +48,20 @@ label.interrupteur {
 }
 .reglages form { display: grid; gap: 1.25rem; }
 .reglages h2 { font-size: 1.375rem; }
+/* Retiré le 21/11/2026 : chaque bouton est dans .boutons-dialogue, qui l'aligne à droite.
 .reglages .bouton-principal { justify-self: end; }
+*/
 .boutons-dialogue { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 0.75rem; }
-/* Pico met une marge basse à [type="button"], pas au submit : les hauteurs différaient. */
-/* Le préfixe .pico est nécessaire pour passer devant le sélecteur de Pico. */
+/* Retiré le 21/11/2026 : remplacé par la règle suivante, qui couvre aussi .boutons-dialogue.pico.
 .pico .boutons-dialogue button { margin-bottom: 0; }
+*/
+/* Boutons à la largeur du texte, sans marge basse : Pico les met en pleine largeur.
+   Le .pico du sélecteur le fait passer devant celui de Pico. */
+.pico .boutons-dialogue button,
+.boutons-dialogue.pico button {
+    width: auto;
+    margin-bottom: 0;
+}
 
 /* Guide d'une source : un nom de fichier sans espace ne déborde pas de la boîte. */
 .titre-guide { overflow-wrap: anywhere; }

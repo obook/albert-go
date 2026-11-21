@@ -258,6 +258,8 @@ button {
     cursor: pointer;
 }
 
+/* Retiré le 21/11/2026 : chaque bouton principal est sous .pico, que Pico dessine
+   aux couleurs de l'application (pico.css). Le lien de l'accueil a sa propre règle.
 .bouton-principal {
     padding: 0.5rem 1.25rem;
     border: 2px solid var(--accent);
@@ -267,6 +269,9 @@ button {
     font-weight: 700;
 }
 .bouton-principal:hover { background: var(--accent-survol); border-color: var(--accent-survol); }
+*/
+/* Lien "Demander" de l'accueil : Pico ne met pas un lien en forme de bouton. */
+.bouton-principal { border-radius: 0.25rem; }
 .bouton-principal:disabled { opacity: 0.6; cursor: progress; }
 
 .bouton-texte {
