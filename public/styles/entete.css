@@ -251,7 +251,9 @@ hidden et le focus (autofocus, bouton du volet) ne pourrait pas y entrer. */
 /* À droite de l'en-tête, même quand le titre est sorti de l'écran (grand écran). */
 #ouvrir-bibliotheque { flex: none; margin-left: auto; }
 /* Au moins une source cochée : le dessin seul en orange, comme le globe actif (saisie.css). */
+/* Retiré le 21/11/2026 : le bouton de la barre de saisie montre seul les sources utilisées.
 #ouvrir-bibliotheque.sources-cochees { color: var(--accent); }
+*/
 /* Bibliothèque en pause (pause.js) : liste et jauge grisées, les cases restent utilisables. */
 #groupe-sources.en-pause :is(.liste-documents, .place-documents) { opacity: 0.5; }
 /* Nom de fichier long pendant la lecture (piece-jointe.js) : coupé n'importe où plutôt que de sortir du volet. */

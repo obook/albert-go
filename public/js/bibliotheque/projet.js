@@ -181,12 +181,12 @@ function reprendreSources() {
 /**
  * Met le résumé du volet à jour : fichiers cochés, taille de la bibliothèque, part du contexte.
  *
- * Le bouton de l'en-tête suit : orange et nombre de sources dans son libellé tant qu'une source
- * part avec les questions. Appelée aussi au changement de langue, qui remet le libellé simple.
+ * Le libellé du bouton de l'en-tête donne le nombre de sources tant qu'une source part
+ * avec les questions. Appelée aussi au changement de langue, qui remet le libellé simple.
  */
 function afficherResumeSources() {
     afficherPause();
-    /* En pause, rien ne part : ni orange, ni nombre, toute la place libre. */
+    /* Désactivée, rien ne part : ni nombre, toute la place libre. */
     const envoyees = typeof outilActuel === 'undefined' ? documentsProjet : sourcesEnvoyees();
     const nombre = envoyees.length;
     const bouton = $('ouvrir-bibliotheque');
@@ -197,7 +197,9 @@ function afficherResumeSources() {
         cleLibelle = 'bibliotheque.ouvrir-une';
     }
     const libelle = t(cleLibelle, { nombre: nombre });
+    /* Retiré le 21/11/2026 : le bouton de l'en-tête ne se colore plus.
     bouton.classList.toggle('sources-cochees', nombre > 0);
+    */
     bouton.setAttribute('aria-label', libelle);
     bouton.title = libelle;
     const part = Albert.partDocuments(envoyees, modeleActuel().contexte);
