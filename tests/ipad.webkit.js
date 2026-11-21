@@ -421,6 +421,15 @@ test("iPad (WebKit) : au-delà du contexte, seuls les passages proches de la que
 
     assert.match(consignes[0], /\[P2\]\nCe paragraphe parle du volcan/);
     assert.doesNotMatch(consignes[0], /\[P1\]|\[P3\]/);
+
+    /* Relais sans route des vecteurs (n8n pas réimporté) : message clair, pas de panne du relais. */
+    await page.evaluate(() => { Albert.vecteurs = () => Promise.reject(new TypeError('Load failed')); });
+    await page.fill('#saisie', 'Et les glaciers ?');
+    await page.press('#saisie', 'Enter');
+    await page.waitForFunction(() => !annulation);
+    const attendu = await page.evaluate(() => t('erreur.recherche-sources', { message: 'Load failed' }));
+    assert.strictEqual(await page.textContent('#etat'), attendu);
+    assert.strictEqual(consignes.length, 1);
     await page.click('#fil .citation');
     assert.match(await page.textContent('#fil .passage'), /parle du volcan/);
     assert.deepStrictEqual(erreurs, []);
