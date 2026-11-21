@@ -1,6 +1,6 @@
 /*
  * kiosque.test.js
- * Réglages du prof recopiés chez les élèves (public/js/kiosque.js).
+ * Réglages du prof recopiés chez les élèves (public/js/kiosque/kiosque.js).
  *
  * Projet : Albert Go, https://github.com/obook/albert-go
  * Licence : GPL-3.0-or-later
@@ -9,7 +9,7 @@
 
 const { test } = require('node:test');
 const assert = require('node:assert');
-const { reglagesProf, reglagesAppliques, reglagesChanges, valeurStockee, adresseDeSortie } = require('../public/js/kiosque.js');
+const { reglagesProf, reglagesAppliques, reglagesChanges, valeurStockee, adresseDeSortie } = require('../public/js/kiosque/kiosque.js');
 
 test('reglagesProf : seulement les réglages partagés', () => {
     const r = { modele: 'm', temperature: 0.2, topK: 40, echanges: 11, recherche: true, calcul: true,
