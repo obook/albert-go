@@ -185,8 +185,12 @@ const Albert = {
         /* En ligne, relais bloqué : Scalingo ne rend son 504 sans CORS qu'après 60 s.
            Si /stats ne répond pas non plus, inutile d'attendre. */
         const sonde = new AbortController();
+        /* /stats a répondu pendant l'attente : le relais vit, un échec ensuite coupe la réponse. */
+        let relaisRepond = false;
         const minuterie = this.EN_LIGNE ? setTimeout(() => {
-            this.appels().catch(() => sonde.abort(new Error(this.texte('erreur.relais-hs'))));
+            this.appels().then(() => {
+                relaisRepond = true;
+            }, () => sonde.abort(new Error(this.texte('erreur.relais-hs'))));
         }, this.SONDE_MS) : null;
         let res, corps;
         const debut = Date.now();
@@ -200,7 +204,7 @@ const Albert = {
             });
             corps = await res.json().catch(() => null);
         } catch (err) {
-            throw this.erreurAppel(err, Date.now() - debut);
+            throw this.erreurAppel(err, Date.now() - debut, relaisRepond);
         } finally {
             clearTimeout(minuterie);
         }
@@ -225,16 +229,19 @@ const Albert = {
     },
 
     /**
-     * Erreur à rendre après un échec de fetch. En ligne, un échec réseau après COUPURE_RELAIS_MS
-     * n'est pas une panne : le relais a coupé une réponse trop longue à venir. Le message le dit,
-     * et n'est pas pris pour une panne du relais (messageEchec, app.js).
+     * Erreur à rendre après un échec de fetch. En ligne, un échec réseau après COUPURE_RELAIS_MS,
+     * ou alors que le relais répondait encore à /stats, n'est pas une panne : le relais a coupé
+     * une réponse trop longue à venir. Le message le dit, et n'est pas pris pour une panne du
+     * relais (messageEchec, app.js).
      *
      * @param {Error} err - Erreur de fetch.
      * @param {number} duree - Temps écoulé depuis l'envoi, en millisecondes.
+     * @param {boolean} [relaisRepond] - true si /stats a répondu pendant l'attente.
      * @returns {Error} L'erreur d'origine, ou une erreur "coupure" avec son message.
      */
-    erreurAppel(err, duree) {
-        if (!this.EN_LIGNE || !(err instanceof TypeError) || duree < this.COUPURE_RELAIS_MS) {
+    erreurAppel(err, duree, relaisRepond = false) {
+        const coupee = duree >= this.COUPURE_RELAIS_MS || relaisRepond;
+        if (!this.EN_LIGNE || !(err instanceof TypeError) || !coupee) {
             return err;
         }
         const coupure = new Error(t('erreur.relais-coupure', { secondes: Math.round(duree / 1000) }));

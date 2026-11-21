@@ -257,6 +257,21 @@ test('repondre en ligne : un échec réseau après 55 s est la coupure du relais
     }
 });
 
+test('erreurAppel : relais vivant pendant l\'attente, l\'échec à 30 s est aussi une coupure', () => {
+    Albert.EN_LIGNE = true;
+    try {
+        const reseau = new TypeError('Load failed');
+        assert.strictEqual(Albert.erreurAppel(reseau, 30000, true).name, 'CoupureRelais');
+        assert.match(Albert.erreurAppel(reseau, 30000, true).message, /au bout de 30 s/);
+        assert.strictEqual(Albert.erreurAppel(reseau, 30000, false), reseau);
+        /* Une annulation n'est jamais une coupure. */
+        const arret = new DOMException('stop', 'AbortError');
+        assert.strictEqual(Albert.erreurAppel(arret, 70000, true), arret);
+    } finally {
+        Albert.EN_LIGNE = false;
+    }
+});
+
 test('messageErreur : session terminée, retour à la connexion', () => {
     globalThis.location = { href: '/' };
     try {
