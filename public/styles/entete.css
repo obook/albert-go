@@ -367,7 +367,10 @@ colonne au-delà du volet et décale tout le menu vers la droite. */
 }
 .entree.danger { color: var(--rouge); }
 /* Module actif, Imprimerie comprise (modules.js, afficherOutil). */
+/* Retiré le 21/11/2026 : essai sans fond, la couleur du texte suffit.
 .entree[aria-current="true"] { background: var(--accent-clair); color: var(--accent); }
+*/
+.entree[aria-current="true"] { color: var(--accent); }
 .outils { display: grid; gap: 0.125rem; }
 summary.entree { list-style: none; }
 summary.entree::-webkit-details-marker { display: none; }
