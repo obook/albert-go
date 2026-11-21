@@ -83,6 +83,36 @@ function boutonRecherches(note, recherches) {
 }
 
 /**
+ * Dit si un numéro de passage cité désigne un passage connu.
+ *
+ * @param {number} numero - Numéro écrit dans la réponse, 12 pour [P12].
+ * @param {Object[]} passages - Passages de Albert.passagesSources.
+ * @returns {boolean} true si le passage existe.
+ */
+function numeroConnu(numero, passages) {
+    return numero >= 1 && numero <= passages.length;
+}
+
+/**
+ * Texte à garder tel quel pour un morceau de Albert.morceauxCitations : le texte lui-même,
+ * ou "P12" écrit sans crochets avec un numéro inconnu (un point P2 d'un plan, pas une citation).
+ *
+ * @param {string|{plages: number[][], crochets: boolean}} m - Morceau de Albert.morceauxCitations.
+ * @param {Object[]} passages - Passages de Albert.passagesSources.
+ * @returns {?string} Texte à garder, ou null si le morceau est une citation à traiter.
+ */
+function texteHorsCitation(m, passages) {
+    if (typeof m === 'string') {
+        return m;
+    }
+    const premier = m.plages[0][0];
+    if (!m.crochets && !numeroConnu(premier, passages)) {
+        return 'P' + premier;
+    }
+    return null;
+}
+
+/**
  * Remplace les numéros de passages cités ([P12], P12) par des boutons qui montrent le passage.
  * Le bouton donne la page, (p. 8), ou le numéro pour une source sans pages ; les crochets deviennent des parenthèses.
  * Entre crochets, un numéro qui ne désigne aucun passage est retiré ; seul, il reste du texte (un point P2).
@@ -105,12 +135,12 @@ function lierCitations(contenu, passages, note) {
             noeuds.push(n);
         }
     }
-    const connu = (n) => n >= 1 && n <= passages.length;
     for (const noeud of noeuds) {
         const sortie = [];
         for (const m of Albert.morceauxCitations(noeud.data)) {
-            if (typeof m === 'string' || (!m.crochets && !connu(m.plages[0][0]))) {
-                sortie.push(typeof m === 'string' ? m : 'P' + m.plages[0][0]);
+            const texte = texteHorsCitation(m, passages);
+            if (texte !== null) {
+                sortie.push(texte);
                 continue;
             }
             const parties = partiesCitation(m, passages);
@@ -142,10 +172,10 @@ function texteCitations(texte, passages) {
         return texte;
     }
     const visibles = document.documentElement.classList.contains('citations-visibles');
-    const connu = (n) => n >= 1 && n <= passages.length;
     return Albert.morceauxCitations(texte).map((m) => {
-        if (typeof m === 'string' || (!m.crochets && !connu(m.plages[0][0]))) {
-            return typeof m === 'string' ? m : 'P' + m.plages[0][0];
+        const tel = texteHorsCitation(m, passages);
+        if (tel !== null) {
+            return tel;
         }
         const parties = partiesCitation(m, passages);
         return parties && visibles ? parties.map(p => (typeof p === 'string' ? p : p.libelle)).join('') : '\0';
@@ -160,8 +190,8 @@ function texteCitations(texte, passages) {
  * @returns {?Array<string|Object>} Texte et mentions de mentionsCitees, ou null si aucun numéro n'est connu.
  */
 function partiesCitation(m, passages) {
-    const connu = (n) => n >= 1 && n <= passages.length;
-    const mentions = mentionsCitees(m.plages.map(plage => plage.filter(connu).map(n => passages[n - 1])).filter(plage => plage.length));
+    const connus = (plage) => plage.filter((n) => numeroConnu(n, passages));
+    const mentions = mentionsCitees(m.plages.map(plage => connus(plage).map(n => passages[n - 1])).filter(plage => plage.length));
     if (!mentions.length) {
         return null;
     }
