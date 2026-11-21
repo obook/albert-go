@@ -387,10 +387,13 @@ test("iPad (WebKit) : les citations donnent la page, une plage ouvre tous ses pa
     page.on('pageerror', (err) => erreurs.push(String(err)));
     await page.goto('http://127.0.0.1:' + serveur.address().port + '/');
 
-    /* Passages 1 à 4 d'un PDF (pages 4, 4, 5, 6), passage 5 d'un texte sans pages. */
-    const rendu = (texte) => page.evaluate((texte) => {
-        const pdf = (n, page) => ({ n, nom: 'Programme', pages: true, page, chemin: '', texte: 'Texte ' + n });
-        const passages = [pdf(1, 4), pdf(2, 4), pdf(3, 5), pdf(4, 6), { n: 5, nom: 'Note', pages: false, page: 1, chemin: '', texte: 'Texte 5' }];
+    /* Passages 1 à 4 d'un PDF (pages 4, 4, 5, 6) ; avec une note, passage 5 d'un texte sans pages. */
+    const rendu = (texte, note = false) => page.evaluate(([texte, note]) => {
+        const pdf = (n, page) => ({ n, nom: 'Programme.pdf', pages: true, page, chemin: '', texte: 'Texte ' + n });
+        const passages = [pdf(1, 4), pdf(2, 4), pdf(3, 5), pdf(4, 6)];
+        if (note) {
+            passages.push({ n: 5, nom: 'Note', pages: false, page: 1, chemin: '', texte: 'Texte 5' });
+        }
         const carte = document.createElement('div');
         carte.className = 'carte';
         carte.innerHTML = '<p></p><p class="passage" hidden></p>';
@@ -403,17 +406,21 @@ test("iPad (WebKit) : les citations donnent la page, une plage ouvre tous ses pa
             return (carte.lastChild.textContent.match(/Texte \d/g) || []).join(',');
         });
         return { texte: carte.firstChild.textContent, ouverts };
-    }, texte);
+    }, [texte, note]);
 
     assert.deepStrictEqual(await rendu('Vu [P1].'), { texte: 'Vu (p. 4).', ouverts: ['Texte 1'] });
     assert.deepStrictEqual(await rendu('Vu [P1, P2].'), { texte: 'Vu (p. 4).', ouverts: ['Texte 1,Texte 2'] });
     assert.deepStrictEqual(await rendu('Vu [P1][P4].'), { texte: 'Vu (p. 4, p. 6).', ouverts: ['Texte 1', 'Texte 4'] });
     assert.deepStrictEqual(await rendu('Vu [P2-P4].'), { texte: 'Vu (p. 4 à 6).', ouverts: ['Texte 2,Texte 3,Texte 4'] });
     assert.deepStrictEqual(await rendu('Vu [P1 à P2].'), { texte: 'Vu (p. 4).', ouverts: ['Texte 1,Texte 2'] });
-    assert.deepStrictEqual(await rendu('Vu [P5].'), { texte: 'Vu (P5).', ouverts: ['Texte 5'] });
+    assert.deepStrictEqual(await rendu('Vu [P3-P9] et [P8].'), { texte: 'Vu (p. 5 à 6) et .', ouverts: ['Texte 3,Texte 4'] });
+    /* Deux sources : le nom du document, sans extension, devant ses pages. */
+    assert.deepStrictEqual(await rendu('Vu [P1, P4, P5].', true), { texte: 'Vu (Programme, p. 4, p. 6 ; Note, P5).', ouverts: ['Texte 1', 'Texte 4', 'Texte 5'] });
     /* Plage à cheval sur deux sources : numéros de passages, faute d'une page commune. */
-    assert.deepStrictEqual(await rendu('Vu [P3-P9].'), { texte: 'Vu (P3 à P5).', ouverts: ['Texte 3,Texte 4,Texte 5'] });
-    assert.deepStrictEqual(await rendu('Vu [P5-P9] et [P8].'), { texte: 'Vu (P5) et .', ouverts: ['Texte 5'] });
+    assert.deepStrictEqual(await rendu('Vu [P3-P9].', true), { texte: 'Vu (Programme, P3 à P5).', ouverts: ['Texte 3,Texte 4,Texte 5'] });
+    assert.deepStrictEqual(await page.evaluate(() => [
+        'Annexe 2 - Programme de mathématiques pour le cycle 4-480716.pdf', '26-Maths-C4-reperes-eduscol_1114756.pdf', 'Cycle 4 - Compétences'
+    ].map(nomCourt)), ['Annexe 2 - Programme de mathém...', '26-Maths-C4-reperes-eduscol', 'Cycle 4 - Compétences']);
 
     /* Copie : citations comme à l'écran si la case les montre, retirées sinon. */
     const copie = (visibles) => page.evaluate((visibles) => {

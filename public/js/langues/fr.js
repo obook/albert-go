@@ -595,6 +595,7 @@ I18n.TEXTES.fr = {
     'reponse.citation': 'Voir le passage P{n}',
     'reponse.citations': 'Voir les passages {liste}',
     'reponse.page': 'p. {page}',
+    'reponse.entre-sources': ' ; ',
     'reponse.pages': 'p. {debut} à {fin}',
     'reponse.passages': 'P{debut} à P{fin}',
     'reponse.passage': 'Passage {n}, "{nom}"',

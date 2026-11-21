@@ -595,6 +595,7 @@ I18n.TEXTES.es = {
     'reponse.citation': 'Ver el pasaje P{n}',
     'reponse.citations': 'Ver los pasajes {liste}',
     'reponse.page': 'p. {page}',
+    'reponse.entre-sources': '; ',
     'reponse.pages': 'pp. {debut} a {fin}',
     'reponse.passages': 'P{debut} a P{fin}',
     'reponse.passage': 'Pasaje {n}, "{nom}"',

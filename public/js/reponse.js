@@ -113,8 +113,8 @@ function lierCitations(contenu, passages, note) {
                 sortie.push(typeof m === 'string' ? m : 'P' + m.plages[0][0]);
                 continue;
             }
-            const mentions = mentionsCitees(m.plages.map(plage => plage.filter(connu).map(n => passages[n - 1])).filter(plage => plage.length));
-            if (!mentions.length) {
+            const parties = partiesCitation(m, passages);
+            if (!parties) {
                 continue;
             }
             /* L'espace qui précède va dans le groupe : citations masquées, il ne reste pas "croûte ." */
@@ -122,8 +122,8 @@ function lierCitations(contenu, passages, note) {
             groupe.className = 'citations';
             const avant = typeof sortie[sortie.length - 1] === 'string' ? sortie.pop() : '';
             sortie.push(avant.replace(/\s+$/, ''));
-            groupe.append(avant.slice(avant.replace(/\s+$/, '').length), ...(m.crochets ? ['('] : []),
-                ...mentions.flatMap((mention, i) => (i ? [', '] : []).concat(boutonCitation(mention, note))), ...(m.crochets ? [')'] : []));
+            groupe.append(avant.slice(avant.replace(/\s+$/, '').length),
+                ...parties.map(p => (typeof p === 'string' ? p : boutonCitation(p, note))));
             sortie.push(groupe);
         }
         noeud.replaceWith(...sortie.filter(s => s !== ''));
@@ -147,13 +147,44 @@ function texteCitations(texte, passages) {
         if (typeof m === 'string' || (!m.crochets && !connu(m.plages[0][0]))) {
             return typeof m === 'string' ? m : 'P' + m.plages[0][0];
         }
-        const mentions = mentionsCitees(m.plages.map(plage => plage.filter(connu).map(n => passages[n - 1])).filter(plage => plage.length));
-        if (!mentions.length || !visibles) {
-            return '\0';
-        }
-        const liste = mentions.map(mention => mention.libelle).join(', ');
-        return m.crochets ? '(' + liste + ')' : liste;
+        const parties = partiesCitation(m, passages);
+        return parties && visibles ? parties.map(p => (typeof p === 'string' ? p : p.libelle)).join('') : '\0';
     }).join('').replace(/[ \t]*\0/g, '');
+}
+
+/**
+ * Ce qu'affiche une citation : (p. 8, p. 12), ou avec plusieurs sources (Programme, p. 8 ; Attendus, p. 3).
+ *
+ * @param {{plages: number[][], crochets: boolean}} m - Citation de Albert.morceauxCitations.
+ * @param {Object[]} passages - Passages de Albert.passagesSources.
+ * @returns {?Array<string|Object>} Texte et mentions de mentionsCitees, ou null si aucun numéro n'est connu.
+ */
+function partiesCitation(m, passages) {
+    const connu = (n) => n >= 1 && n <= passages.length;
+    const mentions = mentionsCitees(m.plages.map(plage => plage.filter(connu).map(n => passages[n - 1])).filter(plage => plage.length));
+    if (!mentions.length) {
+        return null;
+    }
+    const liste = (ms) => ms.flatMap((mention, i) => (i ? [', ', mention] : [mention]));
+    let parties = liste(mentions);
+    if (new Set(passages.map(p => p.nom)).size > 1) {
+        /* Sans Map.groupBy : absent du Safari des iPad pas à jour. */
+        const parNom = mentions.reduce((carte, mention) => carte.set(mention.nom, [...(carte.get(mention.nom) || []), mention]), new Map());
+        parties = [...parNom].flatMap(([nom, ms], i) => (i ? [t('reponse.entre-sources')] : []).concat(nomCourt(nom) + ', ', liste(ms)));
+    }
+    return m.crochets ? ['(', ...parties, ')'] : parties;
+}
+
+/**
+ * Nom d'une source dans une citation : sans extension ni numéro de téléchargement, coupé à 30 caractères.
+ * Le nom entier se lit à l'ouverture du passage.
+ *
+ * @param {string} nom - Nom de la source.
+ * @returns {string} Nom court.
+ */
+function nomCourt(nom) {
+    const court = nom.replace(/\.\w{2,4}$/, '').replace(/[-_]\d{5,}$/, '');
+    return court.length > 30 ? court.slice(0, 30).trimEnd() + '...' : court;
 }
 
 /**
@@ -161,7 +192,7 @@ function texteCitations(texte, passages) {
  * Deux passages de la même page donnent une seule mention, qui les ouvre tous les deux.
  *
  * @param {Object[][]} plages - Passages connus de chaque numéro ou plage, dans l'ordre.
- * @returns {{libelle: string, passages: Object[]}[]} Mentions à afficher.
+ * @returns {{libelle: string, nom: string, passages: Object[]}[]} Mentions à afficher.
  */
 function mentionsCitees(plages) {
     const mentions = new Map();
@@ -176,7 +207,7 @@ function mentionsCitees(plages) {
             libelle = plage.length === 1 ? 'P' + premier.n : t('reponse.passages', { debut: premier.n, fin: dernier.n });
         }
         const cle = premier.nom + '\n' + libelle;
-        const mention = mentions.get(cle) || { libelle, passages: [] };
+        const mention = mentions.get(cle) || { libelle, nom: premier.nom, passages: [] };
         mention.passages.push(...plage.filter(p => !mention.passages.includes(p)));
         mentions.set(cle, mention);
     }

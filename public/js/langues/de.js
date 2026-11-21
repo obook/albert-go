@@ -595,6 +595,7 @@ I18n.TEXTES.de = {
     'reponse.citation': 'Abschnitt P{n} anzeigen',
     'reponse.citations': 'Abschnitte {liste} anzeigen',
     'reponse.page': 'S. {page}',
+    'reponse.entre-sources': '; ',
     'reponse.pages': 'S. {debut} bis {fin}',
     'reponse.passages': 'P{debut} bis P{fin}',
     'reponse.passage': 'Abschnitt {n}, "{nom}"',
