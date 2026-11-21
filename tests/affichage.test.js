@@ -21,7 +21,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
 
-const SOURCE = fs.readFileSync(path.join(__dirname, '..', 'public', 'js', 'affichage.js'), 'utf8');
+const SOURCE = fs.readFileSync(path.join(__dirname, '..', 'public', 'js', 'interface', 'affichage.js'), 'utf8');
 
 test('toast : rouvert à chaque message, donc devant la boîte ouverte entre-temps', () => {
     const appels = [];
