@@ -198,7 +198,13 @@ legend {
 }
 fieldset .bouton-texte { justify-self: start; }
 /* Effacer la clé et quitter : en rouge, il fait sortir de l'application. */
+/* Retiré le 21/11/2026 : le bouton est sur la ligne de "Réglages conseillés".
 #changer-cle { margin-top: 0.75rem; color: var(--rouge); border-color: var(--rouge); }
+*/
+#changer-cle { color: var(--rouge); border-color: var(--rouge); }
+/* Boutons du bas d'une carte, sur une ligne, à la ligne si l'écran est étroit. */
+.boutons-carte { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.boutons-carte .bouton-texte { margin-bottom: 0; }
 
 /* Mise en garde d'un réglage qui fait sortir des données, en fin de bloc.
    Nom distinct de .avertissement, déjà pris sous la saisie. */

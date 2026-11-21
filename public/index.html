@@ -728,12 +728,13 @@
                             <input type="checkbox" id="partage-reglage" role="switch">
                             <span id="texte-partage-reglage"></span>
                         </label>
-                        <!-- Clé de l'utilisateur, en ligne seulement : masqué sans clé (afficher). -->
+                        <!-- Retiré le 21/11/2026 : le bouton passe en bas de la carte.
                         <button type="button"
                                 class="bouton-texte outline"
                                 id="changer-cle"
                                 hidden
                                 data-t="menu.changer-cle"></button>
+                        -->
                     </fieldset>
 
                     <fieldset>
@@ -748,12 +749,20 @@
                         <p id="aide-voix" class="note mise-en-garde" data-t="reglages.aide-voix"></p>
                     </fieldset>
 
-                    <!-- Nom par défaut, idées masquées, clé conservée, voix de l'appareil seules. -->
-                    <button type="button"
-                            class="bouton-texte outline"
-                            id="application-conseillee"
-                            data-t="reglages.conseilles"
-                            data-t-attr="title:reglages.conseil-application"></button>
+                    <div class="boutons-carte">
+                        <!-- Nom par défaut, idées masquées, clé conservée, voix de l'appareil seules. -->
+                        <button type="button"
+                                class="bouton-texte outline"
+                                id="application-conseillee"
+                                data-t="reglages.conseilles"
+                                data-t-attr="title:reglages.conseil-application"></button>
+                        <!-- Clé de l'utilisateur, en ligne seulement : masqué sans clé (afficher). -->
+                        <button type="button"
+                                class="bouton-texte outline"
+                                id="changer-cle"
+                                hidden
+                                data-t="menu.changer-cle"></button>
+                    </div>
                 </div>
             </details>
 
