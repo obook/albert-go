@@ -436,6 +436,8 @@ main {
     main { padding: 1.5rem 0.75rem; }
     /* Onze suggestions : en plus petit, elles tiennent sans faire défiler l'accueil. */
     .suggestion { padding: 0.375rem 0.75rem; font-size: 0.8125rem; }
+    /* Idées collées sous l'en-tête : la marge de 2rem grandissait avec le texte agrandi (Pixel). */
+    .bienvenue, .accueil-projet { margin-top: 0; }
     /* Texte agrandi sur téléphone : la barre sous la réponse tient sur une ligne. */
     .actions-reponse { gap: 0.125rem; }
     .actions-reponse .bouton-action { width: 1.75rem; }
