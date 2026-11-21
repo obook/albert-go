@@ -135,7 +135,10 @@ label.interrupteur {
     #reglages .carte[open]::details-content { grid-template-rows: 1fr; }
     #reglages .carte .corps { min-height: 0; }
 }
+/* Retiré le 21/11/2026 : les boutons "Réglages conseillés" sont centrés.
 #reglages .carte .corps > .bouton-texte { justify-self: start; margin-bottom: 0; }
+*/
+#reglages .carte .corps > .bouton-texte { justify-self: center; margin-bottom: 0; }
 /* La grille espace déjà : la marge de Pico sous un <p> doublerait l'écart. */
 #reglages .carte .corps p { margin-bottom: 0; }
 
