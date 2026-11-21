@@ -2,7 +2,7 @@
 tests:
   image: mcr.microsoft.com/playwright:v1.63.0-noble
   script:
-    - node --test tests/*.test.js
+    - node --test tests/*.test.js tests/albert/*.test.js
     - npm i --no-save --no-audit --no-fund playwright@1.63.0
     - node --test tests/ipad.webkit.js
   rules:
