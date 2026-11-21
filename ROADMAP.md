@@ -45,7 +45,7 @@ Ce qui reste à faire, du plus simple au plus long. Le détail des failles est d
 - [ ] Carnets : plusieurs bibliothèques séparées, chacune avec ses sources, au lieu d'une seule filtrée par les cases.
 - [ ] Résumé audio à deux voix, comme une émission de radio : dialogue écrit par le modèle à partir des sources, lu par la synthèse vocale du navigateur.
 - [x] RAG dans le navigateur (21/11/2026) : au-delà du contexte, Discussion n'envoie que les passages des mots rares et les plus proches de la question (`/v1/embeddings`, vecteurs gardés dans IndexedDB). 37 BO : 2 383 passages indexés en 10 s. Écartée : les collections d'Albert, qui gardent les sources chez lui.
-- [ ] RAG en ligne : réimporter `n8n/albert-proxy.json` dans n8n (route `embeddings` ajoutée).
+- [ ] RAG en ligne : flux n8n réimporté le 21/11/2026, la route `embeddings` répond (401 sans clé, comme `models`). Reste à poser une question avec une vraie clé sur des sources qui dépassent le contexte.
 - [ ] RAG : le texte des sources reste dans le localStorage. WebKit y accepte 5,2 millions de caractères (mesuré le 21/11/2026), les 37 BO en font 1,6 million. Chrome et Firefox non mesurés. Passer à IndexedDB seulement si la bibliothèque se remplit.
 - [ ] Sources contradictoires : avec les 37 BO, le modèle a pris le cosinus en 4e dans les attendus de fin de 4e (antérieurs au programme, date à vérifier), contre la 3e dans le programme de 2026. Dater les sources, ou ne cocher que les textes en vigueur.
 
