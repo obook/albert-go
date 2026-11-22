@@ -109,7 +109,7 @@ I18n.TEXTES.en = {
     Retiré le 21/11/2026 : 'documents.resume-une': '{coches} of {nombre} sources ticked',
     */
     /* Retiré le 21/11/2026 : la jauge montre la place utilisée.
-    'documents.place-libre': 'Space available',
+    'documents.place-libre': 'Free storage',
     'documents.place': '{libre}%',
     */
     'documents.place-utilisee': 'Space used',

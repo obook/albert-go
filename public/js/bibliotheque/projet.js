@@ -211,15 +211,15 @@ function afficherResumeSources() {
     $('resume-documents').textContent = t(nombre > 1 ? 'documents.resume' : 'documents.resume-une', { coches: nombre, nombre: bibliotheque.length });
     */
     $('place-documents').hidden = part === null;
-    /* Retiré le 21/11/2026 : la jauge montre la place utilisée.
-    const libre = Math.max(0, 100 - (part || 0));
-    $('jauge-documents').value = libre;
-    $('part-documents').textContent = t('documents.place', { libre });
-    */
-    /* Place utilisée : la part du contexte que prennent les sources envoyées, 100 au-delà. */
+    /* Retiré le 22/11/2026 : la jauge montre de nouveau le stockage libre.
     const utilisee = Math.min(100, part || 0);
     $('jauge-documents').value = utilisee;
     $('part-documents').textContent = t('documents.place-pourcent', { pourcent: utilisee });
+    */
+    /* Stockage libre : la part du contexte que les sources envoyées laissent, 0 au-delà. */
+    const libre = Math.max(0, 100 - (part || 0));
+    $('jauge-documents').value = libre;
+    $('part-documents').textContent = t('documents.place', { libre });
 }
 
 /**
