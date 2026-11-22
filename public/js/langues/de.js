@@ -112,7 +112,7 @@ I18n.TEXTES.de = {
     'documents.place-utilisee': 'Belegter Platz',
     'documents.place-pourcent': '{pourcent} %',
     */
-    'documents.place-libre': 'Freier Speicher',
+    'documents.place-libre': 'Frei',
     'documents.place': '{libre} %',
     'menu.projets': 'Druckerei',
     'projets.nouveau': 'Neues Dokument',

@@ -112,7 +112,7 @@ I18n.TEXTES.fr = {
     'documents.place-utilisee': 'Place utilisée',
     'documents.place-pourcent': '{pourcent} %',
     */
-    'documents.place-libre': 'Stockage libre',
+    'documents.place-libre': 'Libre',
     'documents.place': '{libre} %',
     'menu.projets': 'Imprimerie',
     'projets.nouveau': 'Nouveau document',

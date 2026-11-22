@@ -112,7 +112,7 @@ I18n.TEXTES.es = {
     'documents.place-utilisee': 'Espacio usado',
     'documents.place-pourcent': '{pourcent} %',
     */
-    'documents.place-libre': 'Almacenamiento libre',
+    'documents.place-libre': 'Libre',
     'documents.place': '{libre} %',
     'menu.projets': 'Imprenta',
     'projets.nouveau': 'Nuevo documento',

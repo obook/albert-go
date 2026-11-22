@@ -112,7 +112,7 @@ I18n.TEXTES.en = {
     'documents.place-utilisee': 'Space used',
     'documents.place-pourcent': '{pourcent}%',
     */
-    'documents.place-libre': 'Free storage',
+    'documents.place-libre': 'Free',
     'documents.place': '{libre}%',
     'menu.projets': 'Print shop',
     'projets.nouveau': 'New document',
