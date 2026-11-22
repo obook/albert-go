@@ -93,7 +93,8 @@ test('morceauxCitations : crochets, parenthèses et numéros seuls ; PDF ou P2x 
         'Vrai ', { plages: [[1]], crochets: true }, ', ', { plages: [[2]], crochets: true }, ', voir ',
         { plages: [[3]], crochets: false }, '. Un PDF, P4a et le point P.'
     ]);
-    assert.deepStrictEqual(Albert.morceauxCitations('(voir P2)'), ['(voir ', { plages: [[2]], crochets: false }, ')']);
+    assert.deepStrictEqual(Albert.morceauxCitations('(voir P2, P3)'), [{ plages: [[2], [3]], crochets: true }]);
+    assert.deepStrictEqual(Albert.morceauxCitations('[Source : P4]'), [{ plages: [[4]], crochets: true }]);
     assert.deepStrictEqual(Albert.morceauxCitations('P5'), [{ plages: [[5]], crochets: false }]);
 });
 

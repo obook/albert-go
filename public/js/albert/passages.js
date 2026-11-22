@@ -29,8 +29,9 @@ Object.assign(Albert, {
     /** Numéros de passages donnés au plus pour un mot rare. */
     MOT_PASSAGES_MAX: 20,
 
-    /** Numéros cités par le modèle : [P12], (P12), [P12, P13], [P34-P41], [P34 à P41], 【P12】, avec ou sans page ni espaces invisibles. */
-    CITATION: /[[【(][\s\p{Cf}]*(P\d+(?:[\s,;\p{Cf}]*(?:(?:\p{Pd}|à)[\s\p{Cf}]*P?\d+|p\.\s*\d+|P\d+))*)[\s\p{Cf}]*[\]】)]/gu,
+    /** Numéros cités par le modèle : [P12], (P12), [P12, P13], [P34-P41], [P34 à P41], 【P12】, avec ou sans page ni espaces invisibles.
+        (voir P3, P4) aussi : sinon, citations masquées, il resterait "(voir,)". */
+    CITATION: /[[【(][\s\p{Cf}]*(?:(?:[Vv]oir|[Cc]f\.?|[Ss]ee|[Vv]er|[Ss]iehe|[Ss]ources?)[\s\p{Cf}]*:?[\s\p{Cf}]*)?(P\d+(?:[\s,;\p{Cf}]*(?:(?:\p{Pd}|à)[\s\p{Cf}]*P?\d+|p\.\s*\d+|P\d+))*)[\s\p{Cf}]*[\]】)]/gu,
 
     /** Modèle des vecteurs (/v1/embeddings), 1 024 dimensions le 21/11/2026. */
     MODELE_VECTEURS: 'openweight-embeddings',
