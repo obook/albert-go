@@ -540,6 +540,7 @@ I18n.TEXTES.en = {
     'etat.recherche': 'Searching for "{mots}"...',
 
     /* Errors. */
+    'erreur.cle-format': 'Invalid key: it must not contain spaces, accents or line breaks.',
     'erreur.cle-refusee': 'Server key refused by Albert: check ALBERT_API_KEY in the .env file.',
     'erreur.poste-distant': 'This server\'s key only works on the computer running it. For a class, open a kiosk session.',
     'erreur.cle-refusee-en-ligne': 'Key refused by Albert. Check it or change it.',

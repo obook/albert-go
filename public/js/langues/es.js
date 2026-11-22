@@ -540,6 +540,7 @@ I18n.TEXTES.es = {
     'etat.recherche': 'Buscando "{mots}"...',
 
     /* Errores. */
+    'erreur.cle-format': 'Clave no válida: no debe contener espacios, acentos ni saltos de línea.',
     'erreur.cle-refusee': 'Clave del servidor rechazada por Albert: revise ALBERT_API_KEY en el archivo .env.',
     'erreur.poste-distant': 'La clave de este servidor solo sirve en el equipo que lo ejecuta. Para una clase, abra una sesión de quiosco.',
     'erreur.cle-refusee-en-ligne': 'Clave rechazada por Albert. Compruébela o cámbiela.',

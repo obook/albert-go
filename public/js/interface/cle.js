@@ -30,6 +30,10 @@ async function validerCle() {
     points.append(document.createElement('span'), document.createElement('span'), document.createElement('span'));
     $('message-cle').append(points);
     try {
+        /* Espace, accent ou retour à la ligne : fetch refuse l'en-tête, et l'échec passerait pour une panne. */
+        if (/[^\x21-\x7e]/.test(cle)) {
+            throw new Error(t('erreur.cle-format'));
+        }
         const liste = await Albert.modeles(cle);
         /* Réponse sans modèles : n8n a répondu sans passer par Albert, la clé n'est pas vérifiée. */
         if (!liste.length) {

@@ -540,6 +540,7 @@ I18n.TEXTES.de = {
     'etat.recherche': 'Suche nach "{mots}"...',
 
     /* Fehler. */
+    'erreur.cle-format': 'Ungültiger Schlüssel: Er darf keine Leerzeichen, Akzente oder Zeilenumbrüche enthalten.',
     'erreur.cle-refusee': 'Serverschlüssel von Albert abgelehnt: prüfen Sie ALBERT_API_KEY in der Datei .env.',
     'erreur.poste-distant': 'Der Schlüssel dieses Servers gilt nur auf dem Rechner, auf dem er läuft. Für eine Klasse öffnen Sie eine Kiosk-Sitzung.',
     'erreur.cle-refusee-en-ligne': 'Schlüssel von Albert abgelehnt. Prüfen oder wechseln Sie ihn.',

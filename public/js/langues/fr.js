@@ -540,6 +540,7 @@ I18n.TEXTES.fr = {
     'etat.recherche': 'Recherche de « {mots} »...',
 
     /* Erreurs. */
+    'erreur.cle-format': 'Clé invalide : elle ne doit contenir ni espace, ni accent, ni retour à la ligne.',
     'erreur.cle-refusee': 'Clé du serveur refusée par Albert : vérifiez ALBERT_API_KEY dans le fichier .env.',
     'erreur.poste-distant': 'La clé de ce serveur ne sert qu\'au poste qui le lance. Pour une classe, ouvrez une session kiosque.',
     'erreur.cle-refusee-en-ligne': 'Clé refusée par Albert. Vérifiez-la ou changez-la.',
