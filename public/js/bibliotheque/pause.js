@@ -131,10 +131,13 @@ $('bibliotheque-saisie').addEventListener('click', () => {
         return;
     }
     mettreEnPause(!bibliothequeEnPause);
-    const texte = bibliothequeEnPause ? t('toast.bibliotheque-desactivee')
-        : t('toast.bibliotheque-activee', { noms: nomsCoches() });
+    /* Désactivée, aucune source ne part : rien à voir, pas de bouton. */
+    if (bibliothequeEnPause) {
+        toast(t('toast.bibliotheque-desactivee'));
+        return;
+    }
     /* "Voir" ouvre la colonne, où se lit la liste complète ; déjà ouverte, elle le reste. */
-    toast(texte, false, {
+    toast(t('toast.bibliotheque-activee', { noms: nomsCoches() }), false, {
         libelle: t('toast.voir'),
         faire: () => {
             if (!$('bibliotheque').open) {
