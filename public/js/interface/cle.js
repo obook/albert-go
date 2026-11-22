@@ -1,7 +1,7 @@
 /*
  * cle.js
- * Version en ligne, écran de la clé : vérification auprès d'Albert, enregistrement,
- * puis le chat. Sur un serveur d'Albert Go, l'écran ne s'affiche pas (Albert.pret).
+ * Écran de la clé, en ligne ou sur un serveur sans clé dans son .env : vérification
+ * auprès d'Albert, enregistrement, puis le chat. Sinon l'écran ne s'affiche pas (Albert.pret).
  *
  * Une clé refusée n'est jamais enregistrée. La clé déjà enregistrée est
  * revérifiée au démarrage par chargerModeles (reglages.js).

@@ -5,6 +5,8 @@ import http.client
 import httpx
 import pytest
 
+from serveur import config
+
 
 def test_page_servie(client):
     reponse = client.get("/")
@@ -157,3 +159,11 @@ def test_ssl_un_client_muet_ne_bloque_pas_les_autres(albert, tmp_path, monkeypat
     finally:
         muet.close()
         serveur.shutdown()
+
+
+def test_sans_cle_dans_le_env_la_cle_de_la_page_est_relayee(client, albert):
+    with open(config.CONFIG_FILE, "w", encoding="utf-8") as f:
+        f.write(f"ALBERT_API_URL={albert.url}\n")
+    reponse = client.get("/v1/models", headers={"Authorization": "Bearer sk-page"})
+    assert reponse.status_code == 200
+    assert albert.recues[0]["auth"] == "Bearer sk-page"

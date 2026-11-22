@@ -698,11 +698,11 @@ if (Albert.pret()) {
     rouvrirCourante();
 }
 chargerModeles();
-/* Serveur sans clé : le dire dès l'ouverture plutôt qu'à la première question.
-   Le bouton d'ouverture du .env n'existe que dans l'application (standalone/preload.js). */
-if (Serveur.cleAbsente) {
+/* Application sans clé : proposer aussi d'ouvrir le .env (standalone/preload.js).
+   Ailleurs, l'écran de la clé suffit (Albert.CLE_PAGE). */
+if (Serveur.cleAbsente && window.Application) {
     $('texte-cle-absente').textContent = t('cle-absente.texte', { chemin: Serveur.cleAbsente });
-    $('ouvrir-env').hidden = !window.Application;
+    $('ouvrir-env').hidden = false;
     $('cle-absente').addEventListener('close', () => {
         if ($('cle-absente').returnValue === 'ouvrir') {
             window.Application.ouvrirEnv();

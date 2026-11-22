@@ -122,6 +122,9 @@ class Gestionnaire(http.server.BaseHTTPRequestHandler):
             if not cle:
                 self._session_terminee()
                 return
+        elif not config.load_config()["api_key"]:
+            # .env sans clé : celle que l'utilisateur a saisie dans la page (Albert.CLE_PAGE).
+            cle = self.headers.get("Authorization", "").removeprefix("Bearer ").strip() or None
         relais.relayer(self, methode, chemin, corps, self.headers.get("Content-Type"), cle)
 
     def _session_terminee(self):

@@ -20,7 +20,10 @@ const Albert = {
     /** Version en ligne (Pages) : pas de serveur d'Albert Go pour écrire serveur.js. */
     EN_LIGNE: typeof SERVEUR === 'undefined',
 
-    /** Clé de l'utilisateur, en ligne seulement (cle.js) ; un serveur garde la sienne. */
+    /** La page demande la clé de l'utilisateur : en ligne, ou serveur sans clé dans son .env. */
+    CLE_PAGE: typeof SERVEUR === 'undefined' || !!SERVEUR.cleAbsente,
+
+    /** Clé de l'utilisateur (cle.js), si CLE_PAGE ; sinon le serveur garde la sienne. */
     cle: null,
 
     /** Relais n8n de la version en ligne. */
@@ -47,23 +50,23 @@ const Albert = {
     },
 
     /**
-     * Albert est joignable : par un serveur ou en ligne avec une clé.
+     * Albert est joignable : par un serveur qui a sa clé, ou avec celle de l'utilisateur.
      *
      * @returns {boolean} true si la page peut interroger Albert.
      */
     pret() {
-        return !this.EN_LIGNE || !!this.cle;
+        return !this.CLE_PAGE || !!this.cle;
     },
 
     /**
-     * En-têtes d'une requête, avec la clé de l'utilisateur en ligne.
+     * En-têtes d'une requête, avec la clé de l'utilisateur si la page la demande.
      *
      * @param {Object} [autres] - Autres en-têtes.
      * @param {?string} [cle] - Clé à envoyer, celle enregistrée par défaut.
      * @returns {Object} En-têtes de fetch.
      */
     entetes(autres = {}, cle = this.cle) {
-        return this.EN_LIGNE && cle ? { ...autres, 'Authorization': 'Bearer ' + cle } : autres;
+        return this.CLE_PAGE && cle ? { ...autres, 'Authorization': 'Bearer ' + cle } : autres;
     },
 
     /**

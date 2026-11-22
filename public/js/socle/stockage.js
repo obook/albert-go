@@ -297,8 +297,8 @@ const reglages = {
     cleRecherche: lire('cle-recherche', null)
 };
 
-/* En ligne, la clé de l'utilisateur ; un serveur garde la sienne. */
-if (Albert.EN_LIGNE) {
+/* En ligne ou serveur sans clé, celle de l'utilisateur ; sinon le serveur garde la sienne. */
+if (Albert.CLE_PAGE) {
     Albert.cle = lire('cle', null);
 }
 if (typeof Lecture !== 'undefined') {

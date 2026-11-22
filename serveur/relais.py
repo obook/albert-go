@@ -54,7 +54,7 @@ def _retry_after(valeur):
 def relayer(handler, methode, chemin, corps=b"", type_contenu=None, cle=None):
     """Relaie une requête /v1/... vers Albert et recopie sa réponse.
 
-    cle : celle de la session kiosque ; sinon celle du .env.
+    cle : celle de la session kiosque, ou celle de la page si le .env n'en a pas ; sinon celle du .env.
     """
     reglages = config.load_config()
     api_base = reglages["api_base"].rstrip("/")
