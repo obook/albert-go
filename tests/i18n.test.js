@@ -100,3 +100,10 @@ test('le relais n8n n\'apparaît que dans les textes de la version en ligne', ()
         assert.doesNotMatch(textes['partage.texte'], /clé|key|clave|schlüssel/i, langue);
     }
 });
+
+test('chaque data-t de la page a son texte en français', () => {
+    const page = require('./page-complete.js').lirePageComplete();
+    /* Hors commentaires HTML, qui gardent les anciens textes retirés. */
+    const cles = [...page.replace(/<!--[\s\S]*?-->/g, '').matchAll(/data-t="([^"]+)"/g)].map(m => m[1]);
+    assert.deepStrictEqual(cles.filter(c => !(c in FR)), []);
+});

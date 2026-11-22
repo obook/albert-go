@@ -108,12 +108,12 @@ I18n.TEXTES.es = {
     Retiré le 21/11/2026 : 'documents.resume': '{coches} fuentes marcadas de {nombre}',
     Retiré le 21/11/2026 : 'documents.resume-une': '{coches} fuente marcada de {nombre}',
     */
-    /* Retiré le 21/11/2026 : la jauge montre la place utilisée.
-    'documents.place-libre': 'Almacenamiento libre',
-    'documents.place': '{libre} %',
-    */
+    /* Retiré le 22/11/2026 : la jauge montre de nouveau le stockage libre.
     'documents.place-utilisee': 'Espacio usado',
     'documents.place-pourcent': '{pourcent} %',
+    */
+    'documents.place-libre': 'Almacenamiento libre',
+    'documents.place': '{libre} %',
     'menu.projets': 'Imprenta',
     'projets.nouveau': 'Nuevo documento',
     'projets.supprimer-aria': 'Eliminar el documento: {titre}',

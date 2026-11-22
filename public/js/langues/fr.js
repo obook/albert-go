@@ -108,12 +108,12 @@ I18n.TEXTES.fr = {
     Retiré le 21/11/2026 : 'documents.resume': '{coches} sources cochées sur {nombre}',
     Retiré le 21/11/2026 : 'documents.resume-une': '{coches} source cochée sur {nombre}',
     */
-    /* Retiré le 21/11/2026 : la jauge montre la place utilisée.
-    'documents.place-libre': 'Stockage libre',
-    'documents.place': '{libre} %',
-    */
+    /* Retiré le 22/11/2026 : la jauge montre de nouveau le stockage libre.
     'documents.place-utilisee': 'Place utilisée',
     'documents.place-pourcent': '{pourcent} %',
+    */
+    'documents.place-libre': 'Stockage libre',
+    'documents.place': '{libre} %',
     'menu.projets': 'Imprimerie',
     'projets.nouveau': 'Nouveau document',
     'projets.supprimer-aria': 'Supprimer le document : {titre}',
