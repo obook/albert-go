@@ -407,11 +407,11 @@ test("iPad (WebKit) : le bouton de la bibliothèque la désactive sans décocher
     await page.evaluate(() => $('bibliotheque').close());
     assert.deepStrictEqual(await etatBouton(), { appuye: 'true', nombre: '1', ligne: false });
 
-    /* Désactivée : toast avec "Voir", case toujours cochée, rien ne part. */
+    /* Désactivée : toast sans "Voir", case toujours cochée, rien ne part. */
     await page.click('#bibliotheque-saisie');
     assert.deepStrictEqual(await etatBouton(), { appuye: 'false', nombre: '', ligne: true });
     assert.deepStrictEqual(await page.evaluate(() => ({ toast: $('toast').textContent, coches: sourcesProjet.length })),
-        { toast: await page.evaluate(() => t('toast.bibliotheque-desactivee') + ' ' + t('toast.voir')), coches: 1 });
+        { toast: await page.evaluate(() => t('toast.bibliotheque-desactivee')), coches: 1 });
     /* On prépare son travail : décocher puis recocher laisse la bibliothèque désactivée. */
     await page.click('#ouvrir-bibliotheque');
     await page.click('#liste-documents input');
@@ -424,14 +424,14 @@ test("iPad (WebKit) : le bouton de la bibliothèque la désactive sans décocher
     assert.doesNotMatch(consignes[0], /basalte est une roche/);
     assert.strictEqual(await page.evaluate(() => conversation.at(-1).recherches.some(r => r.passages)), false);
 
-    /* Gardée au rechargement ; "Voir" ouvre la colonne. */
+    /* Gardée au rechargement ; à la réactivation, "Voir" ouvre la colonne. */
     await recharger(page);
     assert.deepStrictEqual(await etatBouton(), { appuye: 'false', nombre: '', ligne: true });
-    await page.click('#bibliotheque-saisie');
     await page.click('#bibliotheque-saisie');
     await page.click('#toast .action-toast');
     assert.ok(await page.evaluate(() => $('bibliotheque').open));
     await page.evaluate(() => $('bibliotheque').close());
+    await page.click('#bibliotheque-saisie');
 
     /* Imprimerie a le même bouton, dans le même état ; les autres modules ne l'ont pas. */
     assert.deepStrictEqual(await page.evaluate(() => [sourcesEnvoyees('discuter').length, sourcesEnvoyees('projet').length]), [0, 0]);
@@ -596,13 +596,13 @@ test("iPad (WebKit) : les citations donnent la page, une plage ouvre tous ses pa
     assert.deepStrictEqual(await rendu('Vu [P1].'), { texte: 'Vu (p. 4).', ouverts: ['Texte 1'] });
     assert.deepStrictEqual(await rendu('Vu [P1, P2].'), { texte: 'Vu (p. 4).', ouverts: ['Texte 1,Texte 2'] });
     assert.deepStrictEqual(await rendu('Vu [P1][P4].'), { texte: 'Vu (p. 4, p. 6).', ouverts: ['Texte 1', 'Texte 4'] });
-    assert.deepStrictEqual(await rendu('Vu [P2-P4].'), { texte: 'Vu (p. 4 à 6).', ouverts: ['Texte 2,Texte 3,Texte 4'] });
+    assert.deepStrictEqual(await rendu('Vu [P2-P4].'), { texte: 'Vu (p. 4-6).', ouverts: ['Texte 2,Texte 3,Texte 4'] });
     assert.deepStrictEqual(await rendu('Vu [P1 à P2].'), { texte: 'Vu (p. 4).', ouverts: ['Texte 1,Texte 2'] });
-    assert.deepStrictEqual(await rendu('Vu [P3-P9] et [P8].'), { texte: 'Vu (p. 5 à 6) et .', ouverts: ['Texte 3,Texte 4'] });
+    assert.deepStrictEqual(await rendu('Vu [P3-P9] et [P8].'), { texte: 'Vu (p. 5-6) et .', ouverts: ['Texte 3,Texte 4'] });
     /* Deux sources : le nom du document, sans extension, devant ses pages. */
     assert.deepStrictEqual(await rendu('Vu [P1, P4, P5].', true), { texte: 'Vu (Programme, p. 4, p. 6 ; Note, P5).', ouverts: ['Texte 1', 'Texte 4', 'Texte 5'] });
     /* Plage à cheval sur deux sources : numéros de passages, faute d'une page commune. */
-    assert.deepStrictEqual(await rendu('Vu [P3-P9].', true), { texte: 'Vu (Programme, P3 à P5).', ouverts: ['Texte 3,Texte 4,Texte 5'] });
+    assert.deepStrictEqual(await rendu('Vu [P3-P9].', true), { texte: 'Vu (Programme, P3-P5).', ouverts: ['Texte 3,Texte 4,Texte 5'] });
     assert.deepStrictEqual(await page.evaluate(() => [
         'Annexe 2 - Programme de mathématiques pour le cycle 4-480716.pdf', '26-Maths-C4-reperes-eduscol_1114756.pdf', 'Cycle 4 - Compétences'
     ].map(nomCourt)), ['Annexe 2 - Programme de mathém...', '26-Maths-C4-reperes-eduscol', 'Cycle 4 - Compétences']);
@@ -613,7 +613,7 @@ test("iPad (WebKit) : les citations donnent la page, une plage ouvre tous ses pa
         const passages = [1, 2].map(n => ({ n, nom: 'Programme', avecPages: true, page: 4 + n, chemin: '', texte: '' }));
         return texteCitations('Vu [P1] et [P1-P2], fin [P9].', passages);
     }, visibles);
-    assert.strictEqual(await copie(true), 'Vu (p. 5) et (p. 5 à 6), fin.');
+    assert.strictEqual(await copie(true), 'Vu (p. 5) et (p. 5-6), fin.');
     assert.strictEqual(await copie(false), 'Vu et, fin.');
     assert.deepStrictEqual(erreurs, []);
 });
