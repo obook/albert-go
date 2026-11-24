@@ -9,6 +9,10 @@
 
 Chatbot minimal pour [Albert](https://ia.numerique.gouv.fr/outils-ia/albert-api/), l'IA de l'État portée par la DINUM.
 
+> [!IMPORTANT]
+> **Essayez dès maintenant Albert Go avec votre clé API → [obook.github.io/albert-go](https://obook.github.io/albert-go/)**
+
+
 <p align="center"><img src="media/albert-go.png" width="640" alt="Albert Go : une réponse d'Albert avec le schéma du parcours d'une loi et une photo du palais de l'Élysée"></p>
 
 Albert Go s'utilise :
