@@ -223,5 +223,17 @@ Object.assign(Albert, {
      */
     sansSource(conversations, nom) {
         return conversations.map(c => (c.sources ? { ...c, sources: c.sources.filter(s => s !== nom) } : c));
+    },
+
+    /**
+     * Donne son nouveau nom à un fichier renommé dans les documents qui le cochaient.
+     *
+     * @param {Object[]} conversations - Entrées d'historique.
+     * @param {string} ancien - Nom avant.
+     * @param {string} nouveau - Nom après.
+     * @returns {Object[]} Entrées, avec le nouveau nom dans leurs sources.
+     */
+    renommerSource(conversations, ancien, nouveau) {
+        return conversations.map(c => (c.sources ? { ...c, sources: c.sources.map(s => (s === ancien ? nouveau : s)) } : c));
     }
 });

@@ -78,6 +78,13 @@ test('sansSource : un fichier supprimé de la bibliothèque quitte tous les docu
     assert.deepStrictEqual(liste[0].sources, ['a.pdf', 'b.pdf']);
 });
 
+test('renommerSource : un fichier renommé garde ses cases dans tous les documents', () => {
+    const liste = [{ id: 'p1', sources: ['a.pdf', 'Contraintes'] }, { id: 'p2', sources: ['a.pdf'] }, { id: 'd1' }];
+    assert.deepStrictEqual(Albert.renommerSource(liste, 'Contraintes', 'Barème').map(c => c.sources),
+        [['a.pdf', 'Barème'], ['a.pdf'], undefined]);
+    assert.deepStrictEqual(liste[0].sources, ['a.pdf', 'Contraintes']);
+});
+
 test('nomTexte : le texte d\'un fichier se télécharge en .txt, sauf s\'il est déjà du texte', () => {
     assert.strictEqual(Albert.nomTexte('cours.pdf'), 'cours.pdf.txt');
     assert.strictEqual(Albert.nomTexte('photo.PNG'), 'photo.PNG.txt');

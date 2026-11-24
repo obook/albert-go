@@ -554,34 +554,47 @@ function ajouterNote(texte, question) {
 }
 
 /**
- * Remplace le texte d'une source sans toucher à ses cases, puis rouvre sa fiche, rédigée à nouveau.
+ * Remplace le texte et le nom d'une source sans toucher à ses cases, puis rouvre sa fiche, rédigée à nouveau.
  *
  * Même texte : la fiche est quand même refaite, comme le faisait "Refaire la fiche".
  *
- * @param {string} nom - Nom de la source, inchangé : les documents la cochent par son nom.
+ * @param {string} nom - Nom actuel de la source.
  * @param {string} texte - Nouveau texte.
+ * @param {string} [voulu] - Nouveau nom ; vide, le nom ne change pas.
  */
-function modifierSource(nom, texte) {
+function modifierSource(nom, texte, voulu = '') {
     if (!texte.trim()) {
         etat(t('erreur.document-vide'), true);
         return;
     }
-    const modifiee = { nom, texte };
-    if (sourcesProjet.includes(nom) && tropDeSources(modifiee)) {
+    /* Sous l'ancien nom : le calcul la remplace au lieu de la compter deux fois. */
+    if (sourcesProjet.includes(nom) && tropDeSources({ nom, texte })) {
         etat(t('erreur.projet-plein'), true);
         return;
     }
+    /* Un nom pris par une autre source est numéroté, comme à l'ajout. */
+    const nouveau = voulu.trim() && voulu.trim() !== nom
+        ? Albert.nomLibre(voulu.trim(), bibliotheque.filter(d => d.nom !== nom).map(d => d.nom)) : nom;
     /* À sa place dans la liste, sans l'ancienne fiche. */
-    const fichiers = bibliotheque.map(d => (d.nom === nom ? modifiee : d));
+    const fichiers = bibliotheque.map(d => (d.nom === nom ? { nom: nouveau, texte } : d));
     if (!ecrireBibliotheque(fichiers)) {
         etat(t('erreur.bibliotheque-pleine'), true);
         return;
     }
     bibliotheque = fichiers;
-    /* Les sources envoyées pointent encore vers l'ancien texte. */
-    choisirSources(sourcesProjet);
+    if (nouveau !== nom) {
+        /* Les documents cochent leurs sources par leur nom. */
+        conversations = Albert.renommerSource(conversations, nom, nouveau);
+        try {
+            ecrireConversations(conversations);
+        } catch (err) {
+            /* Stockage bloqué : la liste en mémoire suffit. */
+        }
+    }
+    /* Les sources envoyées pointent encore vers l'ancien texte et l'ancien nom. */
+    choisirSources(sourcesProjet.map(s => (s === nom ? nouveau : s)));
     afficherDocuments();
-    ouvrirGuide(nom);
+    ouvrirGuide(nouveau);
 }
 
 /**
@@ -593,7 +606,6 @@ function ouvrirCollage(nom = '') {
     const doc = bibliotheque.find(d => d.nom === nom);
     $('dialogue-coller').dataset.source = nom;
     $('nom-colle').value = nom;
-    $('nom-colle').readOnly = !!nom;
     $('texte-colle').value = doc ? doc.texte : '';
     $('titre-coller').dataset.t = nom ? 'guide.modifier' : 'documents.coller';
     $('titre-coller').textContent = t($('titre-coller').dataset.t);
@@ -621,7 +633,7 @@ $('dialogue-coller').addEventListener('close', () => {
         return;
     }
     if (source) {
-        modifierSource(source, $('texte-colle').value);
+        modifierSource(source, $('texte-colle').value, $('nom-colle').value);
         return;
     }
     /* Un nom déjà pris est numéroté : il remplacerait sinon la source de même nom. */
