@@ -73,6 +73,7 @@ Mesure du 11/11/2026 avec Large, 6 questions x 3, sans outils : les réponses so
 
 - [ ] Style direct : les tirets longs remontent (6 contre 3 avec Écriture soignée seule) et la virgule décimale tombe (3 contre 14). Lire les réponses pour savoir pourquoi, puis corriger `style-direct.txt`.
 - [ ] Sans redite : mesurer son effet sur un document de l'Imprimerie construit par ajouts, avec et sans la compétence.
+- [ ] Compétence personnalisée : une boîte de saisie dans Réglages, Compétences, où l'utilisateur écrit sa propre règle. Albert la suit à chaque réponse, comme les autres compétences.
 
 ## Interface
 
