@@ -218,7 +218,7 @@ fieldset .bouton-texte { justify-self: start; }
 .boutons-carte { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; }
 .boutons-carte .bouton-texte { margin-bottom: 0; }
 
-/* Mise en garde d'un réglage qui fait sortir des données, en fin de bloc.
+/* Mise en garde d'un réglage qui fait sortir des données.
    Nom distinct de .avertissement, déjà pris sous la saisie. */
 .mise-en-garde {
     padding: 0.625rem 0.75rem;
