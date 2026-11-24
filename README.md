@@ -17,7 +17,7 @@ Chatbot minimal pour [Albert](https://ia.numerique.gouv.fr/outils-ia/albert-api/
 > 
 > <p align="center"><i>sur téléphone ou tablette, ajoutez-le à votre écran d'accueil.</i></p>
 
-<p align="center"><img src="media/albert-go.png" width="640" alt="Albert Go : une réponse d'Albert avec le schéma du parcours d'une loi et une photo du palais de l'Élysée"></p>
+<p align="center"><img src="media/albert-go.png" width="500" alt="Albert Go : une réponse d'Albert avec le schéma du parcours d'une loi et une photo du palais de l'Élysée"></p>
 
 Albert Go s'utilise :
 
