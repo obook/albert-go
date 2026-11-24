@@ -96,9 +96,24 @@ test('donnees_publiques : recherche de l\'API v2, souple sur les mots', () => {
         /^https:\/\/www\.data\.gouv\.fr\/api\/2\/datasets\/search\/\?page_size=5&q=transports%20Rennes$/);
 });
 
+test('etablissement_scolaire : un arrondissement cherché par son code postal', () => {
+    const mots = (q) => /search\(.*, "(.*)"\)/.exec(decodeURIComponent(TABLE.etablissement_scolaire.adresse(q, 5)))[1];
+    assert.strictEqual(mots('collège public 11e arrondissement de Paris'), 'collège public 75011');
+    assert.strictEqual(mots('lycée Lyon 3ème'), 'lycée 69003');
+    assert.strictEqual(mots('collège Marseille 1er'), 'collège 13001');
+    assert.strictEqual(mots('lycée Ampère Lyon'), 'lycée Ampère Lyon');
+    assert.strictEqual(mots('collège Paris 2026'), 'collège Paris 2026');
+});
+
+test('entreprise : une ville cherchée parmi les collectivités', () => {
+    assert.match(TABLE.entreprise.adresse('Ville de Nantes', 5), /&est_collectivite_territoriale=true$/);
+    assert.match(TABLE.entreprise.adresse('mairie d\'Angers', 5), /&est_collectivite_territoriale=true$/);
+    assert.doesNotMatch(TABLE.entreprise.adresse('La ville est belle', 5), /collectivite/);
+});
+
 test('marches_publics : champs choisis, du plus récent au plus ancien', () => {
     const adresse = decodeURIComponent(TABLE.marches_publics.adresse('nettoyage Lyon', 5));
-    assert.match(adresse, /where="nettoyage Lyon"/);
+    assert.match(adresse, /where=search\(objet, nomacheteur, code_departement, "nettoyage Lyon"\)/);
     assert.match(adresse, /select=/);
     assert.match(adresse, /order_by=dateparution desc/);
 });

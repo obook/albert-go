@@ -664,10 +664,10 @@ I18n.TEXTES.en = {
     'annuaire_administration.q': 'Type of service and municipality, for example: mairie Lyon 2e, préfecture Rhône.',
     'entreprise.description': 'Looks up a company, an association or a public body in the French business directory (Sirene): SIREN, head office SIRET, address, NAF code, creation date, active or closed.',
     'entreprise.q': 'Name, SIREN or SIRET, with the municipality if the name is common.',
-    'etablissement_scolaire.description': 'Looks up a school or another establishment in the French education directory: UAI code, address, phone, email, website, education authority.',
-    'etablissement_scolaire.q': 'Name and municipality, or UAI code, for example: lycée Ampère Lyon.',
+    'etablissement_scolaire.description': 'Looks up a school or another establishment in the French education directory, or lists those of a municipality (for example the vocational high schools of Lille): UAI code, address, phone, email, website, education authority.',
+    'etablissement_scolaire.q': 'Type or name, and municipality, or UAI code, for example: lycée professionnel Lille, lycée Ampère Lyon.',
     'vacances_scolaires.description': 'Gives the dates of school holidays in France, by education authority, from the official school calendar.',
-    'vacances_scolaires.q': 'Education authority or zone, and school year, for example: Lyon 2026-2027, Zone C 2026-2027.',
+    'vacances_scolaires.q': 'Education authority (or city) and school year, for example: Lyon 2026-2027. Never a zone alone: it returns too many dates.',
     'adresse.description': 'Finds an address in France in the national address database (IGN): standardised address, postcode, INSEE code of the municipality, department and region.',
     'adresse.q': 'Address, even incomplete or misspelt, for example: 20 avenue de Ségur Paris.',
     'commune.description': 'Gives the data of a French municipality (API Géo): INSEE code, postcodes, population, area, department, region.',
@@ -679,6 +679,6 @@ I18n.TEXTES.en = {
     'eau_potable.description': 'Gives the latest health checks of the tap water of a French municipality (Hub\'eau): sampling date, compliance conclusion, supplier, measured parameters.',
     'eau_potable.q': 'Five-digit INSEE code of the municipality (the commune tool gives it), or failing that its name alone. With a name, check the municipality of each result.',
     'marches_publics.description': 'Looks up French public procurement notices in the BOAMP, most recent first: subject, buyer, type of notice, procedure, reply deadline.',
-    'marches_publics.q': 'Two or three keywords in French, for example: nettoyage Lyon.',
+    'marches_publics.q': 'Two or three keywords in French, with the buyer or the department number, for example: nettoyage Lyon, transport scolaire 59.',
     'reglages.outils-externes': 'Internet'
 };

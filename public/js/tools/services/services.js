@@ -46,6 +46,28 @@ const listeJson = (valeur) => {
 /** Morceaux non vides, séparés par des points-virgules. */
 const accoler = (...morceaux) => morceaux.filter(Boolean).join(' ; ');
 
+/** Début des codes postaux des villes à arrondissements : 75011, 69003, 13008. */
+const ARRONDISSEMENTS = { paris: '750', lyon: '690', marseille: '130' };
+
+/**
+ * "collège 11e arrondissement de Paris" devient "collège 75011" : dans
+ * l'Annuaire de l'éducation, la commune vaut souvent "Paris" tout court,
+ * seul le code postal porte l'arrondissement.
+ *
+ * @param {string} q - Mots cherchés.
+ * @returns {string} Les mots, la ville et son rang remplacés par le code postal.
+ */
+const parCodePostal = (q) => {
+    const ville = /\b(paris|lyon|marseille)\b/i.exec(q);
+    const rang = /\b(\d{1,2}) ?(?:er|ème|eme|e)\b/i.exec(q);
+    if (!ville || !rang) {
+        return q;
+    }
+    const code = ARRONDISSEMENTS[ville[1].toLowerCase()] + rang[1].padStart(2, '0');
+    return q.replace(ville[0], '').replace(rang[0], '').replace(/\b(arrondissement|de|du)\b/gi, '')
+        .replace(/\s+/g, ' ').trim() + ' ' + code;
+};
+
 /**
  * Jour AAAA-MM-JJ d'un minuit local donné en UTC : minuit à Paris est
  * 22 h ou 23 h UTC la veille. Midi ajouté, le jour tombe juste de
@@ -87,10 +109,12 @@ const Services = {
                     r.commentaire_plage_ouverture)
             }))
         },
-        /* Les dirigeants ne partent pas au modèle : ce sont des personnes. */
+        /* Les dirigeants ne partent pas au modèle : ce sont des personnes.
+           "Ville de Nantes" ramenait des associations : la ville se cherche parmi les collectivités. */
         entreprise: {
             nom: 'Annuaire des entreprises',
-            adresse: (q, n) => 'https://recherche-entreprises.api.gouv.fr/search?per_page=' + n + '&q=' + encodeURIComponent(q),
+            adresse: (q, n) => 'https://recherche-entreprises.api.gouv.fr/search?per_page=' + n + '&q=' + encodeURIComponent(q)
+                + (/\b(ville|commune|mairie) d/i.test(q) ? '&est_collectivite_territoriale=true' : ''),
             extraire: (corps) => (corps.results || []).map(r => ({
                 title: r.nom_complet,
                 url: 'https://annuaire-entreprises.data.gouv.fr/entreprise/' + r.siren,
@@ -104,9 +128,10 @@ const Services = {
         },
         etablissement_scolaire: {
             nom: 'Annuaire de l\'éducation',
-            /* Pas tout le texte : "Lille" ramenait toute l'académie (champ académie, courriels @ac-lille.fr). */
-            adresse: (q, n) => opendatasoft('https://data.education.gouv.fr', 'fr-en-annuaire-education', q, n, '',
-                'nom_etablissement, type_etablissement, nom_commune, code_postal, identifiant_de_l_etablissement'),
+            /* Pas tout le texte : "Lille" ramenait toute l'académie (champ académie, courriels @ac-lille.fr).
+               Le statut, pour "collège public". */
+            adresse: (q, n) => opendatasoft('https://data.education.gouv.fr', 'fr-en-annuaire-education', parCodePostal(q), n, '',
+                'nom_etablissement, type_etablissement, statut_public_prive, nom_commune, code_postal, identifiant_de_l_etablissement'),
             extraire: (corps) => (corps.results || []).map(r => ({
                 title: r.nom_etablissement + ' (' + r.nom_commune + ')',
                 url: 'https://data.education.gouv.fr/explore/dataset/fr-en-annuaire-education/table/?q='
@@ -156,12 +181,13 @@ const Services = {
                     c.region && c.region.nom)
             }))
         },
-        /* Le champ donnees pèse des dizaines de ko par avis : on choisit les champs. */
+        /* Le champ donnees pèse des dizaines de ko par avis : on choisit les champs.
+           Recherche dans l'objet, l'acheteur et le département : dans tout le texte, "Nord" ramenait "Nord Réunion". */
         marches_publics: {
             nom: 'BOAMP',
             adresse: (q, n) => opendatasoft('https://boamp-datadila.opendatasoft.com', 'boamp', q, n,
                 '&select=objet,nomacheteur,nature_libelle,procedure_libelle,dateparution,datelimitereponse,code_departement,url_avis'
-                + '&order_by=' + encodeURIComponent('dateparution desc')),
+                + '&order_by=' + encodeURIComponent('dateparution desc'), 'objet, nomacheteur, code_departement'),
             extraire: (corps) => (corps.results || []).map(r => ({
                 title: r.objet,
                 url: r.url_avis,
