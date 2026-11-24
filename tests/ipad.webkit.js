@@ -311,7 +311,7 @@ test("iPad (WebKit) : la fiche de lecture d'une source s'ouvre par son nom et sa
     assert.deepStrictEqual(erreurs, []);
 });
 
-test("iPad (WebKit) : 'Modifier la source' remplace son texte sans la cocher et refait sa fiche", async (t) => {
+test("iPad (WebKit) : 'Modifier la source' remplace son texte et son nom sans la cocher et refait sa fiche", async (t) => {
     const serveur = await servir();
     const origine = 'http://127.0.0.1:' + serveur.address().port;
     const navigateur = await webkit.launch();
@@ -347,14 +347,18 @@ test("iPad (WebKit) : 'Modifier la source' remplace son texte sans la cocher et 
     await page.click('#liste-documents input[type=checkbox]');
     await page.click('#liste-documents .nom-source');
     await page.click('#modifier-source');
-    assert.deepStrictEqual(await page.evaluate(() => ({ texte: $('texte-colle').value, nomFige: $('nom-colle').readOnly })),
-        { texte: 'Le basalte est une roche.', nomFige: true });
+    assert.deepStrictEqual(await page.evaluate(() => ({
+        texte: $('texte-colle').value, nomActuel: $('nom-colle').value === bibliotheque[0].nom, nomFige: $('nom-colle').readOnly
+    })), { texte: 'Le basalte est une roche.', nomActuel: true, nomFige: false });
+    await page.fill('#nom-colle', 'Basalte');
     await page.fill('#texte-colle', 'Le basalte est une roche volcanique.');
     await page.click('#dialogue-coller button[value=oui]');
     await page.waitForFunction(() => !guidesEnCours.size);
     assert.deepStrictEqual(await page.evaluate(() => ({
-        sources: bibliotheque.map(d => d.texte), coches: sourcesProjet.length, fiche: $('guide').open && $('resume-guide').textContent
-    })), { sources: ['Le basalte est une roche volcanique.'], coches: 0, fiche: 'Le basalte est une roche volcanique.' });
+        noms: bibliotheque.map(d => d.nom), sources: bibliotheque.map(d => d.texte), coches: sourcesProjet.length,
+        titre: $('titre-guide').textContent, fiche: $('guide').open && $('resume-guide').textContent
+    })), { noms: ['Basalte'], sources: ['Le basalte est une roche volcanique.'], coches: 0,
+        titre: 'Basalte', fiche: 'Le basalte est une roche volcanique.' });
 
     /* Un nouveau texte collé retrouve la boîte vide, nom modifiable. */
     await page.evaluate(() => $('guide').close());
