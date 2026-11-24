@@ -10,7 +10,7 @@
 Chatbot minimal pour [Albert](https://ia.numerique.gouv.fr/outils-ia/albert-api/), l'IA de l'État portée par la DINUM.
 
 > [!IMPORTANT]
-> **Albert Go en ligne se trouve sur la page** → [obook.github.io/albert-go](https://obook.github.io/albert-go/)
+> **Utilisez Albert Go en ligne** → [obook.github.io/albert-go](https://obook.github.io/albert-go/)
 >
 > <a href="https://obook.github.io/albert-go/"><img src="media/qrcode.svg" width="120" alt="QR code de la version en ligne"></a>
 
