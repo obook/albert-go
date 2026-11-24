@@ -667,7 +667,7 @@ I18n.TEXTES.fr = {
     'etablissement_scolaire.description': 'Cherche une école, un collège, un lycée ou un autre établissement dans l\'Annuaire de l\'éducation, ou liste ceux d\'une commune (par exemple les lycées professionnels de Lille) : code UAI, adresse, téléphone, courriel, site, académie.',
     'etablissement_scolaire.q': 'Type ou nom, et commune (ou code UAI), par exemple : lycée professionnel Lille, lycée Ampère Lyon.',
     'vacances_scolaires.description': 'Donne les dates des vacances scolaires en France, par académie, d\'après le calendrier scolaire officiel.',
-    'vacances_scolaires.q': 'Académie (ou zone) et année scolaire, par exemple : Lyon 2026-2027, Zone C 2026-2027.',
+    'vacances_scolaires.q': 'Académie (ou ville) et année scolaire, par exemple : Lyon 2026-2027. Jamais une zone seule : elle rend trop de dates.',
     'adresse.description': 'Retrouve une adresse en France dans la Base adresse nationale (IGN) : adresse normalisée, code postal, code INSEE de la commune, département et région.',
     'adresse.q': 'Adresse, même incomplète ou mal orthographiée, par exemple : 20 avenue de Ségur Paris.',
     'commune.description': 'Donne les données d\'une commune française (API Géo) : code INSEE, codes postaux, population, superficie, département, région.',
@@ -679,6 +679,6 @@ I18n.TEXTES.fr = {
     'eau_potable.description': 'Donne les derniers contrôles sanitaires de l\'eau du robinet d\'une commune française (Hub\'eau) : date du prélèvement, conclusion de conformité, distributeur, paramètres mesurés.',
     'eau_potable.q': 'Code INSEE de la commune à cinq chiffres (l\'outil commune le donne), ou à défaut son nom seul. Avec un nom, vérifie la commune de chaque résultat.',
     'marches_publics.description': 'Cherche des avis de marchés publics au BOAMP, les plus récents d\'abord : objet, acheteur, type d\'avis, procédure, date limite de réponse.',
-    'marches_publics.q': 'Deux ou trois mots-clés, par exemple : nettoyage Lyon.',
+    'marches_publics.q': 'Deux ou trois mots-clés, avec l\'acheteur ou le numéro du département, par exemple : nettoyage Lyon, transport scolaire 59.',
     'reglages.outils-externes': 'Internet'
 };

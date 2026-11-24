@@ -667,7 +667,7 @@ I18n.TEXTES.es = {
     'etablissement_scolaire.description': 'Busca una escuela, un colegio, un liceo u otro centro en el directorio francés de educación, o lista los de un municipio (por ejemplo los liceos profesionales de Lille): código UAI, dirección, teléfono, correo, sitio web, académie.',
     'etablissement_scolaire.q': 'Tipo o nombre, y municipio, o código UAI, por ejemplo: lycée professionnel Lille, lycée Ampère Lyon.',
     'vacances_scolaires.description': 'Da las fechas de las vacaciones escolares en Francia, por académie, según el calendario escolar oficial.',
-    'vacances_scolaires.q': 'Académie o zona, y curso escolar, por ejemplo: Lyon 2026-2027, Zone C 2026-2027.',
+    'vacances_scolaires.q': 'Académie (o ciudad) y curso escolar, por ejemplo: Lyon 2026-2027. Nunca una zona sola: devuelve demasiadas fechas.',
     'adresse.description': 'Encuentra una dirección en Francia en la base nacional de direcciones (IGN): dirección normalizada, código postal, código INSEE del municipio, departamento y región.',
     'adresse.q': 'Dirección, aunque esté incompleta o mal escrita, por ejemplo: 20 avenue de Ségur Paris.',
     'commune.description': 'Da los datos de un municipio francés (API Géo): código INSEE, códigos postales, población, superficie, departamento, región.',
@@ -679,6 +679,6 @@ I18n.TEXTES.es = {
     'eau_potable.description': 'Da los últimos controles sanitarios del agua del grifo de un municipio francés (Hub\'eau): fecha de la muestra, conclusión de conformidad, distribuidor, parámetros medidos.',
     'eau_potable.q': 'Código INSEE del municipio de cinco cifras (lo da la herramienta commune) o, en su defecto, solo su nombre. Con un nombre, comprueba el municipio de cada resultado.',
     'marches_publics.description': 'Busca anuncios de contratos públicos franceses en el BOAMP, los más recientes primero: objeto, comprador, tipo de anuncio, procedimiento, plazo de respuesta.',
-    'marches_publics.q': 'Dos o tres palabras clave en francés, por ejemplo: nettoyage Lyon.',
+    'marches_publics.q': 'Dos o tres palabras clave en francés, con el comprador o el número del departamento, por ejemplo: nettoyage Lyon, transport scolaire 59.',
     'reglages.outils-externes': 'Internet'
 };
