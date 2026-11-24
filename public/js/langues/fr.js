@@ -222,7 +222,8 @@ I18n.TEXTES.fr = {
     'bienvenue.exemple-dissertation': 'Propose un plan en trois parties pour le sujet : Peut-on être libre sans les autres ?',
     'bienvenue.exemple-latin': 'Traduis et donne le cas de chaque nom : Gallia est omnis divisa in partes tres.',
     'cle.titre': 'Bienvenue sur Albert Go',
-    'cle.bienvenue': 'Votre clé est acceptée. Posez votre première question ou choisissez un module dans le menu.',
+    /* Retiré le 24/11/2026 : 'cle.bienvenue': 'Votre clé est acceptée. Posez votre première question ou choisissez un module dans le menu.', */
+    'cle.bienvenue': 'Votre clé est acceptée.',
     'cle.label': 'Clé',
     'cle.stockee': '<ul><li>Par défaut, "La conserver" est activé : elle reste dans le stockage <code>localStorage</code> du navigateur jusqu\'à ce que vous choisissiez "Effacer la clé et quitter" dans le menu.</li><li>Elle ne quitte ce navigateur que pour joindre Albert, en passant par le <a href="https://n8n.incubateur.education.gouv.fr" target="_blank" rel="noopener noreferrer">relais de l\'incubateur de l\'Éducation nationale</a>, qui ne l\'enregistre pas.</li></ul>',
     'cle.demander': 'Demander',

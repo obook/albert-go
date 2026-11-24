@@ -222,7 +222,8 @@ I18n.TEXTES.en = {
     'bienvenue.exemple-dissertation': 'Suggest a three-part outline for the essay question: Can we be free without others?',
     'bienvenue.exemple-latin': 'Translate and give the case of each noun: Gallia est omnis divisa in partes tres.',
     'cle.titre': 'Welcome to Albert Go',
-    'cle.bienvenue': 'Your key is accepted. Ask your first question or choose a module in the menu.',
+    /* Retiré le 24/11/2026 : 'cle.bienvenue': 'Your key is accepted. Ask your first question or choose a module in the menu.', */
+    'cle.bienvenue': 'Your key is accepted.',
     'cle.label': 'Key',
     'cle.stockee': '<ul><li>By default, "Keep it" is on: it stays in the browser\'s <code>localStorage</code> storage until you choose "Erase the key and quit" in the menu.</li><li>It only leaves this browser to reach Albert, through the <a href="https://n8n.incubateur.education.gouv.fr" target="_blank" rel="noopener noreferrer">relay of the Éducation nationale incubator</a>, which does not record it.</li></ul>',
     'cle.demander': 'Request',

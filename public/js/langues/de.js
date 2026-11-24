@@ -222,7 +222,8 @@ I18n.TEXTES.de = {
     'bienvenue.exemple-dissertation': 'Schlag eine dreiteilige Gliederung für das Thema vor: Kann man ohne die anderen frei sein?',
     'bienvenue.exemple-latin': 'Übersetze und bestimme den Kasus jedes Substantivs: Gallia est omnis divisa in partes tres.',
     'cle.titre': 'Willkommen bei Albert Go',
-    'cle.bienvenue': 'Ihr Schlüssel wurde akzeptiert. Stellen Sie Ihre erste Frage oder wählen Sie ein Modul im Menü.',
+    /* Retiré le 24/11/2026 : 'cle.bienvenue': 'Ihr Schlüssel wurde akzeptiert. Stellen Sie Ihre erste Frage oder wählen Sie ein Modul im Menü.', */
+    'cle.bienvenue': 'Ihr Schlüssel wurde akzeptiert.',
     'cle.label': 'Schlüssel',
     'cle.stockee': '<ul><li>Standardmäßig ist "Im Browser behalten" aktiviert: er bleibt im Speicher <code>localStorage</code> des Browsers, bis Sie im Menü "Schlüssel löschen und beenden" wählen.</li><li>Er verlässt diesen Browser nur, um Albert zu erreichen, über das <a href="https://n8n.incubateur.education.gouv.fr" target="_blank" rel="noopener noreferrer">Relais des Inkubators der Éducation nationale</a>, das ihn nicht speichert.</li></ul>',
     'cle.demander': 'Beantragen',
