@@ -131,6 +131,7 @@ I18n.TEXTES.es = {
     'coller.nom': 'Nombre (opcional)',
     'coller.texte': 'Texto',
     'coller.ajouter': 'Añadir',
+    'coller.enregistrer': 'Guardar',
     /* Retiré le 21/11/2026, passé dans aide.bibliotheque : 'documents.garde': 'Su texto se guarda en este navegador: no añada datos personales.', */
     'documents.supprimer': 'Eliminar {nom} de la biblioteca',
     'documents.utiliser': 'Usar {nom} aquí',
@@ -140,8 +141,8 @@ I18n.TEXTES.es = {
     'guide.questions': 'Preguntas que hacerle',
     'guide.lecture': 'Albert está leyendo el documento...',
     'guide.telecharger': 'Descargar el texto',
-    'guide.refaire': 'Rehacer la ficha',
-    'guide.illisible': 'Albert no devolvió una ficha legible: haga clic en Rehacer la ficha para intentarlo de nuevo.',
+    'guide.modifier': 'Modificar la fuente',
+    'guide.illisible': 'Albert no devolvió una ficha legible: haga clic en Modificar la fuente y luego en Guardar para intentarlo de nuevo.',
     'confirmer-suppression.source': '¿Eliminar este archivo de la biblioteca? Saldrá de todos los documentos.',
     'erreur.bibliotheque-pleine': 'Biblioteca llena: elimine archivos para añadir otros.',
     'erreur.projet-plein': 'Fuentes demasiado voluminosas: quite una o elija un modelo con un contexto mayor.',

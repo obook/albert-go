@@ -131,6 +131,7 @@ I18n.TEXTES.fr = {
     'coller.nom': 'Nom (facultatif)',
     'coller.texte': 'Texte',
     'coller.ajouter': 'Ajouter',
+    'coller.enregistrer': 'Enregistrer',
     /* Retiré le 21/11/2026, passé dans aide.bibliotheque : 'documents.garde': 'Le texte reste dans le navigateur, n\'y déposez pas de données personnelles.', */
     'documents.supprimer': 'Supprimer {nom} de la bibliothèque',
     'documents.utiliser': 'Utiliser {nom} ici',
@@ -140,8 +141,8 @@ I18n.TEXTES.fr = {
     'guide.questions': 'Questions à lui poser',
     'guide.lecture': 'Albert lit le document...',
     'guide.telecharger': 'Télécharger le texte',
-    'guide.refaire': 'Refaire la fiche',
-    'guide.illisible': 'Albert n\'a pas rendu de fiche lisible : cliquez sur Refaire la fiche pour réessayer.',
+    'guide.modifier': 'Modifier la source',
+    'guide.illisible': 'Albert n\'a pas rendu de fiche lisible : cliquez sur Modifier la source puis sur Enregistrer pour réessayer.',
     'confirmer-suppression.source': 'Supprimer ce fichier de la bibliothèque ? Il quittera tous les documents.',
     'erreur.bibliotheque-pleine': 'Bibliothèque pleine : supprimez des fichiers pour en déposer d\'autres.',
     'erreur.projet-plein': 'Sources trop volumineuses : retirez-en une ou choisissez un modèle au contexte plus grand.',

@@ -553,15 +553,75 @@ function ajouterNote(texte, question) {
     }
 }
 
-$('coller-texte').addEventListener('click', () => {
-    $('nom-colle').value = '';
-    $('texte-colle').value = '';
+/**
+ * Remplace le texte d'une source sans toucher à ses cases, puis rouvre sa fiche, rédigée à nouveau.
+ *
+ * Même texte : la fiche est quand même refaite, comme le faisait "Refaire la fiche".
+ *
+ * @param {string} nom - Nom de la source, inchangé : les documents la cochent par son nom.
+ * @param {string} texte - Nouveau texte.
+ */
+function modifierSource(nom, texte) {
+    if (!texte.trim()) {
+        etat(t('erreur.document-vide'), true);
+        return;
+    }
+    const modifiee = { nom, texte };
+    if (sourcesProjet.includes(nom) && tropDeSources(modifiee)) {
+        etat(t('erreur.projet-plein'), true);
+        return;
+    }
+    /* À sa place dans la liste, sans l'ancienne fiche. */
+    const fichiers = bibliotheque.map(d => (d.nom === nom ? modifiee : d));
+    if (!ecrireBibliotheque(fichiers)) {
+        etat(t('erreur.bibliotheque-pleine'), true);
+        return;
+    }
+    bibliotheque = fichiers;
+    /* Les sources envoyées pointent encore vers l'ancien texte. */
+    choisirSources(sourcesProjet);
+    afficherDocuments();
+    ouvrirGuide(nom);
+}
+
+/**
+ * Ouvre la boîte du texte collé : vide pour un nouveau texte, remplie pour modifier une source.
+ *
+ * @param {string} [nom] - Source à modifier ; absent pour un nouveau texte.
+ */
+function ouvrirCollage(nom = '') {
+    const doc = bibliotheque.find(d => d.nom === nom);
+    $('dialogue-coller').dataset.source = nom;
+    $('nom-colle').value = nom;
+    $('nom-colle').readOnly = !!nom;
+    $('texte-colle').value = doc ? doc.texte : '';
+    $('titre-coller').dataset.t = nom ? 'guide.modifier' : 'documents.coller';
+    $('titre-coller').textContent = t($('titre-coller').dataset.t);
+    const valider = $('dialogue-coller').querySelector('button[value=oui]');
+    valider.dataset.t = nom ? 'coller.enregistrer' : 'coller.ajouter';
+    valider.textContent = t(valider.dataset.t);
     $('dialogue-coller').returnValue = '';
     $('dialogue-coller').showModal();
+}
+
+$('coller-texte').addEventListener('click', () => ouvrirCollage());
+
+$('modifier-source').addEventListener('click', () => {
+    $('guide').close();
+    ouvrirCollage(guideAffiche);
 });
 
 $('dialogue-coller').addEventListener('close', () => {
+    const source = $('dialogue-coller').dataset.source;
     if ($('dialogue-coller').returnValue !== 'oui') {
+        /* Annulé : retour à la fiche d'où l'on venait. */
+        if (source) {
+            ouvrirGuide(source);
+        }
+        return;
+    }
+    if (source) {
+        modifierSource(source, $('texte-colle').value);
         return;
     }
     /* Un nom déjà pris est numéroté : il remplacerait sinon la source de même nom. */
@@ -653,7 +713,7 @@ function ouvrirGuide(nom) {
 async function attendreGuide(nom) {
     /* Points animés à la place des points de suspension, comme à la vérification de la clé. */
     afficherGuide(null, t('guide.lecture').replace(/\.+$/, ''));
-    $('refaire-guide').hidden = true;
+    $('modifier-source').hidden = true;
     const points = document.createElement('span');
     points.className = 'points';
     points.append(document.createElement('span'), document.createElement('span'), document.createElement('span'));
@@ -671,7 +731,9 @@ async function attendreGuide(nom) {
     }
 }
 
+/* Retiré le 24/11/2026 : remplacé par "Modifier la source" (modifierSource).
 $('refaire-guide').addEventListener('click', () => attendreGuide(guideAffiche));
+*/
 
 /**
  * Remplit la boîte du guide : le guide s'il est là, sinon un message d'attente ou d'erreur.
@@ -680,7 +742,7 @@ $('refaire-guide').addEventListener('click', () => attendreGuide(guideAffiche));
  * @param {string} message - Texte affiché à la place du guide, ou ''.
  */
 function afficherGuide(guide, message) {
-    $('refaire-guide').hidden = false;
+    $('modifier-source').hidden = false;
     $('etat-guide').textContent = message;
     $('etat-guide').hidden = !message;
     $('contenu-guide').hidden = !guide;

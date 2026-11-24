@@ -311,6 +311,59 @@ test("iPad (WebKit) : la fiche de lecture d'une source s'ouvre par son nom et sa
     assert.deepStrictEqual(erreurs, []);
 });
 
+test("iPad (WebKit) : 'Modifier la source' remplace son texte sans la cocher et refait sa fiche", async (t) => {
+    const serveur = await servir();
+    const origine = 'http://127.0.0.1:' + serveur.address().port;
+    const navigateur = await webkit.launch();
+    t.after(async () => {
+        await navigateur.close();
+        serveur.close();
+    });
+    const contexte = await navigateur.newContext({ ...devices['iPad (gen 7)'], serviceWorkers: 'block' });
+    /* Albert simulé : chaque fiche reprend le texte lu, pour voir laquelle est gardée. */
+    await contexte.route((url) => url.origin !== origine, (route) => {
+        if (!route.request().url().endsWith('/chat/completions')) {
+            return route.abort();
+        }
+        const lu = route.request().postDataJSON().messages.at(-1).content;
+        return route.fulfill({ json: { choices: [{ message: { content: JSON.stringify({ resume: lu, themes: [], questions: [] }) } }] } });
+    });
+    await contexte.addInitScript(SAFARI_ANCIEN);
+    await contexte.addInitScript(() => {
+        localStorage.setItem('albert-go.cle', 'sk-test');
+        sessionStorage.setItem('albert-go.cle', 'sk-test');
+    });
+    const page = await contexte.newPage();
+    const erreurs = [];
+    page.on('pageerror', (err) => erreurs.push(String(err)));
+
+    await ouvrir(page, origine + '/');
+    await page.click('#ouvrir-bibliotheque');
+    await page.click('#coller-texte');
+    await page.fill('#texte-colle', 'Le basalte est une roche.');
+    await page.click('#dialogue-coller button[value=oui]');
+    await page.waitForFunction(() => !guidesEnCours.size);
+    /* Décochée : la modifier ne la recoche pas. */
+    await page.click('#liste-documents input[type=checkbox]');
+    await page.click('#liste-documents .nom-source');
+    await page.click('#modifier-source');
+    assert.deepStrictEqual(await page.evaluate(() => ({ texte: $('texte-colle').value, nomFige: $('nom-colle').readOnly })),
+        { texte: 'Le basalte est une roche.', nomFige: true });
+    await page.fill('#texte-colle', 'Le basalte est une roche volcanique.');
+    await page.click('#dialogue-coller button[value=oui]');
+    await page.waitForFunction(() => !guidesEnCours.size);
+    assert.deepStrictEqual(await page.evaluate(() => ({
+        sources: bibliotheque.map(d => d.texte), coches: sourcesProjet.length, fiche: $('guide').open && $('resume-guide').textContent
+    })), { sources: ['Le basalte est une roche volcanique.'], coches: 0, fiche: 'Le basalte est une roche volcanique.' });
+
+    /* Un nouveau texte collé retrouve la boîte vide, nom modifiable. */
+    await page.evaluate(() => $('guide').close());
+    await page.click('#coller-texte');
+    assert.deepStrictEqual(await page.evaluate(() => ({ texte: $('texte-colle').value, nomFige: $('nom-colle').readOnly })),
+        { texte: '', nomFige: false });
+    assert.deepStrictEqual(erreurs, []);
+});
+
 test("iPad (WebKit) : un texte collé devient une source cochée et une réponse devient une note", async (t) => {
     const serveur = await servir();
     const origine = 'http://127.0.0.1:' + serveur.address().port;

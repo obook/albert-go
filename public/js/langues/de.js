@@ -131,6 +131,7 @@ I18n.TEXTES.de = {
     'coller.nom': 'Name (optional)',
     'coller.texte': 'Text',
     'coller.ajouter': 'Hinzufügen',
+    'coller.enregistrer': 'Speichern',
     /* Retiré le 21/11/2026, passé dans aide.bibliotheque : 'documents.garde': 'Ihr Text bleibt in diesem Browser gespeichert: keine personenbezogenen Daten hinzufügen.', */
     'documents.supprimer': '{nom} aus der Bibliothek löschen',
     'documents.utiliser': '{nom} hier verwenden',
@@ -140,8 +141,8 @@ I18n.TEXTES.de = {
     'guide.questions': 'Fragen an die Quelle',
     'guide.lecture': 'Albert liest das Dokument...',
     'guide.telecharger': 'Text herunterladen',
-    'guide.refaire': 'Lesenotiz neu erstellen',
-    'guide.illisible': 'Albert hat keine lesbare Lesenotiz geliefert: Klicken Sie auf Lesenotiz neu erstellen, um es noch einmal zu versuchen.',
+    'guide.modifier': 'Quelle bearbeiten',
+    'guide.illisible': 'Albert hat keine lesbare Lesenotiz geliefert: Klicken Sie auf Quelle bearbeiten und dann auf Speichern, um es noch einmal zu versuchen.',
     'confirmer-suppression.source': 'Diese Datei aus der Bibliothek löschen? Sie verschwindet aus allen Dokumenten.',
     'erreur.bibliotheque-pleine': 'Bibliothek voll: Löschen Sie Dateien, um weitere hinzuzufügen.',
     'erreur.projet-plein': 'Quellen zu umfangreich: Entfernen Sie eine oder wählen Sie ein Modell mit größerem Kontext.',

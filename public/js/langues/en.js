@@ -131,6 +131,7 @@ I18n.TEXTES.en = {
     'coller.nom': 'Name (optional)',
     'coller.texte': 'Text',
     'coller.ajouter': 'Add',
+    'coller.enregistrer': 'Save',
     /* Retiré le 21/11/2026, passé dans aide.bibliotheque : 'documents.garde': 'Their text is kept in this browser: do not add personal data.', */
     'documents.supprimer': 'Delete {nom} from the library',
     'documents.utiliser': 'Use {nom} here',
@@ -140,8 +141,8 @@ I18n.TEXTES.en = {
     'guide.questions': 'Questions to ask it',
     'guide.lecture': 'Albert is reading the document...',
     'guide.telecharger': 'Download the text',
-    'guide.refaire': 'Rewrite the notes',
-    'guide.illisible': 'Albert did not return readable notes: click Rewrite the notes to try again.',
+    'guide.modifier': 'Edit the source',
+    'guide.illisible': 'Albert did not return readable notes: click Edit the source, then Save to try again.',
     'confirmer-suppression.source': 'Delete this file from the library? It will leave every document.',
     'erreur.bibliotheque-pleine': 'Library full: delete files to add more.',
     'erreur.projet-plein': 'Sources too large: remove one or choose a model with a larger context.',
