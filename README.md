@@ -12,6 +12,8 @@ Chatbot minimal pour [Albert](https://ia.numerique.gouv.fr/outils-ia/albert-api/
 > [!IMPORTANT]
 > **Utilisez Albert Go en ligne** → [obook.github.io/albert-go](https://obook.github.io/albert-go/)
 >
+> Sur téléphone ou tablette, ajoutez-le à votre écran d'accueil.
+>
 > <a href="https://obook.github.io/albert-go/"><img src="media/qrcode.svg" width="120" alt="QR code de la version en ligne"></a>
 
 
