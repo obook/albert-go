@@ -376,6 +376,9 @@ test('rappel : le mois en cours, sans lequel un fait récent passe pour à venir
     /* Sans cette consigne, une réponse écrite dès la première recherche cite à la façon du modèle. */
     assert.ok(rappel.includes('par exemple [1]'));
     assert.ok(rappel.includes('dis d\'abord que tu n\'as pas trouvé'));
+    /* Sans moteur coché, les services de l'État restent : "cette année" doit tomber juste. */
+    globalThis.reglages = { fournisseurs: [], recherche: true };
+    assert.ok(avecRappel([{ role: 'user', content: 'Vacances cette année ?' }], false)[0].content.includes('Nous sommes en ' + mois + '.'));
 });
 
 test('tableau rendu par l\'outil calcul : ajouté par la page sous la réponse, sans doublon', () => {

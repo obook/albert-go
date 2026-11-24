@@ -149,11 +149,12 @@ function avecRappel(messages, cherche) {
         : t('recherche.source-web');
     /* Sans ces rappels, une photo demandée partait en recherche web. */
     const internet = reglages.recherche && globeActif;
-    /* Sans le mois, le modèle croit un fait récent à venir et répond de mémoire. */
+    /* Sans le mois, le modèle croit un fait récent à venir et répond de mémoire. Avec les services,
+       même sans moteur coché : sinon Mistral cherchait les vacances de son année d'entraînement. */
     const mois = new Date().toLocaleDateString(I18n.langue, { month: 'long', year: 'numeric' });
-    const rappel = [cherche ? t('recherche.rappel', { source: source, mois: mois }) : '',
+    const rappel = [cherche ? t('recherche.rappel', { source: source }) : '',
         t(internet ? 'images.rappel' : 'images.absent'),
-        internet ? t('services.rappel') : '',
+        internet ? t('services.rappel', { mois: mois }) : '',
         /* Sans lui, le modèle reprenait une heure déjà donnée et se trompait de jour. */
         reglages.calendrier ? t('calendrier.rappel') : '',
         /* Sans lui, le modèle moyen n'appelait l'outil qu'une fois sur sept (mesuré le 13/10/2026). */
