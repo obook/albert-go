@@ -75,13 +75,10 @@ jobs:
           # dir et non portable : pas besoin de Wine.
           npm run build -- --win dir
           (cd dist/win-unpacked && zip -qr "../../Albert-Go-${TAG}-win64.zip" .)
-          cp ../docs/documentation.pdf "Albert-Go-${TAG}-documentation.pdf"
       - uses: actions/upload-artifact@v7
         with:
           name: windows
-          path: |
-            standalone/Albert-Go-*-win64.zip
-            standalone/Albert-Go-*-documentation.pdf
+          path: standalone/Albert-Go-*-win64.zip
 
   release:
     needs: [paquet-linux, paquet-windows]
