@@ -125,7 +125,7 @@ I18n.TEXTES.fr = {
     */
     'documents.ajout-fichiers': 'Des fichiers',
     'documents.ajout-texte': 'Des contraintes',
-    'documents.coller': 'Coller du texte',
+    'documents.coller': 'Ajouter des contraintes',
     'documents.texte-colle': 'Texte collé',
     'documents.note': 'Note',
     'coller.nom': 'Nom (facultatif)',

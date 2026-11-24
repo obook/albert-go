@@ -125,7 +125,7 @@ I18n.TEXTES.es = {
     */
     'documents.ajout-fichiers': 'Archivos',
     'documents.ajout-texte': 'Restricciones',
-    'documents.coller': 'Pegar texto',
+    'documents.coller': 'Añadir restricciones',
     'documents.texte-colle': 'Texto pegado',
     'documents.note': 'Nota',
     'coller.nom': 'Nombre (opcional)',

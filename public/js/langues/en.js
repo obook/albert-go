@@ -125,7 +125,7 @@ I18n.TEXTES.en = {
     */
     'documents.ajout-fichiers': 'Files',
     'documents.ajout-texte': 'Constraints',
-    'documents.coller': 'Paste text',
+    'documents.coller': 'Add constraints',
     'documents.texte-colle': 'Pasted text',
     'documents.note': 'Note',
     'coller.nom': 'Name (optional)',

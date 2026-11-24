@@ -125,7 +125,7 @@ I18n.TEXTES.de = {
     */
     'documents.ajout-fichiers': 'Dateien',
     'documents.ajout-texte': 'Vorgaben',
-    'documents.coller': 'Text einfügen',
+    'documents.coller': 'Vorgaben hinzufügen',
     'documents.texte-colle': 'Eingefügter Text',
     'documents.note': 'Notiz',
     'coller.nom': 'Name (optional)',
