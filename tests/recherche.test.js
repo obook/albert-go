@@ -147,6 +147,11 @@ test('chercherBase : une base injoignable remonte son code', async () => {
     await assert.rejects(Recherche.chercherBase(Recherche.MOTEURS.openalex, 'test'), /503/);
 });
 
+test('chercherBase : un quota épuisé est dit comme tel, pas comme une panne', async () => {
+    global.fetch = async () => ({ ok: false, status: 429, json: async () => ({}) });
+    await assert.rejects(Recherche.chercherBase(Recherche.MOTEURS.openalex, 'test'), { message: t('recherche.quota', { nom: 'OpenAlex' }) });
+});
+
 test('resumeInverse : le résumé d\'OpenAlex revient en phrase', () => {
     assert.strictEqual(Recherche.resumeInverse({ Le: [0], chat: [1], dort: [2] }), 'Le chat dort');
     assert.strictEqual(Recherche.resumeInverse(null), '');

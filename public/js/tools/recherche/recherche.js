@@ -316,6 +316,10 @@ const Recherche = {
         for (const essai of this.replis(question)) {
             const reponse = await fetch(moteur.adresse(essai, this.NOMBRE), { signal: signal });
             const corps = await reponse.json().catch(() => ({}));
+            /* 429 : OpenAlex sans clé partage un budget par jour entre tous les postes d'un réseau. */
+            if (reponse.status === 429) {
+                throw new Error(t('recherche.quota', { nom: moteur.nom }));
+            }
             if (!reponse.ok) {
                 throw new Error(t('recherche.moteur-injoignable', { nom: moteur.nom, status: reponse.status }));
             }
