@@ -232,15 +232,18 @@ $('adresse-partage').addEventListener('focus', () => {
 
 /**
  * Texte de la version pour "À propos" : commit et date dans la langue affichée.
+ * En mode serveur, version.js reste "locale" : le commit vient alors du dépôt servi.
  *
  * @returns {string} Par exemple "96941b9 du 19/09/2026 13:20".
  */
 function texteVersion() {
-    if (!VERSION.date) {
-        return VERSION.commit;
+    const depot = VERSION.commit === 'locale' && typeof SERVEUR !== 'undefined' && SERVEUR.version;
+    const { commit, date } = depot || VERSION;
+    const texte = date ? t('version.format', { commit: commit, date: I18n.dateHeure(new Date(date)) }) : commit;
+    if (!depot) {
+        return texte;
     }
-    const date = I18n.dateHeure(new Date(VERSION.date));
-    return t('version.format', { commit: VERSION.commit, date: date });
+    return t(depot.modifiee ? 'version.serveur-modifiee' : 'version.serveur', { version: texte, branche: depot.branche });
 }
 
 /**

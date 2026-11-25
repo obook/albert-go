@@ -403,6 +403,8 @@ I18n.TEXTES.de = {
     'empreinte.partielle': 'Gemessen bei {n} von {total} Aufrufen: Die anderen enthielten keinen.',
     'empreinte.source': 'Schätzung des KI-Servers (Methode EcoLogits). Wird beim Neuladen der Seite zurückgesetzt.',
     'version.format': '{commit} vom {date}',
+    'version.serveur': '{version} (Server, Branch {branche})',
+    'version.serveur-modifiee': '{version} (Server, Branch {branche}, geändert)',
 
     /* Antworten. */
     'reponse.copier': 'Antwort kopieren',

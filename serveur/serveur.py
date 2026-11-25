@@ -13,6 +13,7 @@ import os
 import shutil
 import socket
 import ssl
+import subprocess
 import sys
 import urllib.parse
 # Retiré le 21/11/2026 : un seul style d'import, urllib.parse.parse_qs et urllib.parse.urlencode.
@@ -236,6 +237,8 @@ class Gestionnaire(http.server.BaseHTTPRequestHandler):
             "adresses": [f"{protocole}://{ip}:{port}" for ip in self.server.adresses],
             "kiosque": session,
             "portable": config.MODE == "portable",
+            # Commit du dépôt servi : version.js reste "locale" hors déploiement par la CI.
+            "version": self.server.version,
             # Fichier où coller la clé, si elle manque ; relu à chaque page, la clé ajoutée compte sans redémarrage.
             "cleAbsente": None if self.server.kiosque or config.load_config()["api_key"] else config.chemin_config(),
         }
@@ -293,6 +296,7 @@ def creer_serveur(port=8913, utiliser_ssl=False, mode_kiosque=False):
     serveur.kiosque = mode_kiosque
     serveur.ssl = utiliser_ssl
     serveur.adresses = adresses_locales()
+    serveur.version = version_depot()
     if utiliser_ssl:
         contexte = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
         contexte.load_cert_chain(certificat.CERT_FILE, certificat.KEY_FILE)
@@ -300,6 +304,32 @@ def creer_serveur(port=8913, utiliser_ssl=False, mode_kiosque=False):
         # muet ne bloque plus accept() pour toute la classe.
         serveur.socket = contexte.wrap_socket(serveur.socket, server_side=True, do_handshake_on_connect=False)
     return serveur
+
+
+def version_depot():
+    """Commit, date, branche et modifications du dépôt servi ; None sans git ou hors dépôt.
+
+    Lu une fois au démarrage : demarrage.sh et redemarrage.sh font le git pull
+    puis relancent le serveur. Commandes locales seulement, sans réseau ;
+    le délai couvre un disque lent ou un dépôt verrouillé.
+    """
+    dossier = os.path.dirname(RACINE)
+
+    def git(*arguments):
+        return subprocess.run(["git", "-C", dossier, *arguments], capture_output=True, text=True,
+                              timeout=5, check=True).stdout.strip()
+
+    try:
+        commit, date = git("log", "-1", "--format=%h%n%cI").splitlines()
+        return {
+            "commit": commit,
+            "date": date,
+            "branche": git("rev-parse", "--abbrev-ref", "HEAD"),
+            # Fichiers suivis seulement : journal, .env et .venv ne comptent pas.
+            "modifiee": bool(git("status", "--porcelain", "--untracked-files=no")),
+        }
+    except (OSError, ValueError, subprocess.SubprocessError):
+        return None
 
 
 def adresses_locales():

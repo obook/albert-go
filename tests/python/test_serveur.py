@@ -167,3 +167,25 @@ def test_sans_cle_dans_le_env_la_cle_de_la_page_est_relayee(client, albert):
     reponse = client.get("/v1/models", headers={"Authorization": "Bearer sk-page"})
     assert reponse.status_code == 200
     assert albert.recues[0]["auth"] == "Bearer sk-page"
+
+
+def test_version_du_depot_dans_serveur_js(client):
+    import json
+    import subprocess
+    texte = client.get("/serveur.js").text
+    version = json.loads(texte.removeprefix("var SERVEUR = ").removesuffix(";\n"))["version"]
+    attendu = subprocess.run(["git", "log", "-1", "--format=%h"], capture_output=True, text=True).stdout.strip()
+    assert version["commit"] == attendu
+    assert version["date"][:4].isdigit() and version["branche"]
+    assert isinstance(version["modifiee"], bool)
+
+
+@pytest.mark.parametrize("erreur", [FileNotFoundError(), __import__("subprocess").TimeoutExpired("git", 5)])
+def test_version_sans_git_ou_bloque(monkeypatch, erreur):
+    """Sans git, ou git bloqué : le serveur démarre quand même, version absente."""
+    from serveur import serveur
+
+    def echec(*args, **kwargs):
+        raise erreur
+    monkeypatch.setattr(serveur.subprocess, "run", echec)
+    assert serveur.version_depot() is None
