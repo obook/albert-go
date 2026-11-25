@@ -627,7 +627,7 @@ I18n.TEXTES.en = {
     'recherche.impossible': 'Search failed: {message}',
     'recherche.impossible-modele': 'The search failed ({message}). First say that you could not search. Add no address, date, number or name from memory.',
     'recherche.moteur-injoignable': '{nom} unreachable ({status}).',
-    'recherche.quota': '{nom} quota used up for this network.',
+    'recherche.quota': '{nom}: quota used up for this network.',
     'recherche.moteur-refus': 'request refused by {nom}.',
     'images.description': 'Searches real images on Wikimedia Commons and returns the link to their page. Use it whenever a photo or an image is asked for. Then cite one of these links, never an invented file name.',
     'images.aucune': 'No image found on Wikimedia Commons.',

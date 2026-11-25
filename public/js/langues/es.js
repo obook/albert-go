@@ -627,7 +627,7 @@ I18n.TEXTES.es = {
     'recherche.impossible': 'Búsqueda imposible: {message}',
     'recherche.impossible-modele': 'La búsqueda ha fallado ({message}). Di primero que no has podido buscar. No añadas de memoria ninguna dirección, fecha, cifra ni nombre.',
     'recherche.moteur-injoignable': '{nom} inalcanzable ({status}).',
-    'recherche.quota': 'Cuota de {nom} agotada para esta red.',
+    'recherche.quota': '{nom}: cuota agotada para esta red.',
     'recherche.moteur-refus': 'petición rechazada por {nom}.',
     'images.description': 'Busca imágenes reales en Wikimedia Commons y devuelve el enlace a su página. Úsala cuando se pida una foto o una imagen. Cita después uno de esos enlaces, nunca un nombre de archivo inventado.',
     'images.aucune': 'Ninguna imagen encontrada en Wikimedia Commons.',

@@ -627,7 +627,7 @@ I18n.TEXTES.fr = {
     'recherche.impossible': 'Recherche impossible : {message}',
     'recherche.impossible-modele': 'La recherche a échoué ({message}). Dis d\'abord que tu n\'as pas pu chercher. N\'ajoute de mémoire aucune adresse, aucune date, aucun chiffre ni aucun nom.',
     'recherche.moteur-injoignable': '{nom} injoignable ({status}).',
-    'recherche.quota': 'Quota de {nom} épuisé pour ce réseau.',
+    'recherche.quota': '{nom} : quota épuisé pour ce réseau.',
     'recherche.moteur-refus': 'requête refusée par {nom}.',
     'images.description': 'Cherche de vraies images sur Wikimedia Commons et renvoie le lien vers leur page. À utiliser dès qu\'on demande une photo ou une image. Cite ensuite un de ces liens, jamais un nom de fichier inventé.',
     'images.aucune': 'Aucune image trouvée sur Wikimedia Commons.',
