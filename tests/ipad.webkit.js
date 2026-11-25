@@ -935,3 +935,47 @@ test("iPad (WebKit) : copie à imprimer, identifiants préfixés sans toucher au
         lien: '#impression-intro',
     });
 });
+
+test("iPad (WebKit) : Imprimerie, le champ du nom montre en grisé le titre du document dans la liste", async (t) => {
+    const serveur = await servir();
+    const origine = 'http://127.0.0.1:' + serveur.address().port;
+    const navigateur = await webkit.launch();
+    t.after(async () => {
+        await navigateur.close();
+        serveur.close();
+    });
+    const contexte = await navigateur.newContext({ ...devices['iPad (gen 7)'], serviceWorkers: 'block' });
+    const guide = { resume: 'Une contrainte.', themes: [], questions: [] };
+    await contexte.route((url) => url.origin !== origine, (route) => (route.request().url().endsWith('/chat/completions')
+        ? route.fulfill({ json: { choices: [{ message: { role: 'assistant', content: JSON.stringify(guide) }, finish_reason: 'stop' }] } })
+        : route.abort()));
+    await contexte.addInitScript(SAFARI_ANCIEN);
+    await contexte.addInitScript(() => {
+        localStorage.setItem('albert-go.cle', 'sk-test');
+        sessionStorage.setItem('albert-go.cle', 'sk-test');
+    });
+    const page = await contexte.newPage();
+    const erreurs = [];
+    page.on('pageerror', (err) => erreurs.push(String(err)));
+    const texteGrise = () => page.getAttribute('#nom-projet', 'placeholder');
+
+    await ouvrir(page, origine + '/');
+    await page.evaluate(() => choisirOutil('projet'));
+    const defaut = await page.evaluate(() => t('documents.nom'));
+    assert.strictEqual(await texteGrise(), defaut);
+    /* Le texte collé arrive coché : le document entre dans la liste sous le nom de la source. */
+    await page.click('#ouvrir-bibliotheque');
+    await page.click('#coller-texte');
+    await page.fill('#texte-colle', 'Une page au plus.');
+    await page.click('#dialogue-coller button[value=oui]');
+    await page.waitForFunction(() => !guidesEnCours.size);
+    const nom = await page.evaluate(() => bibliotheque[0].nom);
+    assert.strictEqual(await texteGrise(), nom);
+    /* Décochée avant toute demande : le document quitte la liste, le champ revient à son invite. */
+    await page.click('#liste-documents input[type=checkbox]');
+    assert.strictEqual(await texteGrise(), defaut);
+    await page.click('#liste-documents input[type=checkbox]');
+    assert.strictEqual(await texteGrise(), nom);
+    assert.strictEqual(await page.inputValue('#nom-projet'), '');
+    assert.deepStrictEqual(erreurs, []);
+});
