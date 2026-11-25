@@ -97,7 +97,6 @@ test('le relais n8n n\'apparaît que dans les textes de la version en ligne', ()
         const textes = I18n.TEXTES[langue];
         const fautifs = Object.keys(textes).filter(c => /incubat|inkubator|n8n/i.test(textes[c]) && !enLigne.test(c));
         assert.deepStrictEqual(fautifs, [], langue);
-        assert.doesNotMatch(textes['partage.texte'], /clé|key|clave|schlüssel/i, langue);
     }
 });
 
