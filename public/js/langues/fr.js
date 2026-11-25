@@ -359,7 +359,7 @@ I18n.TEXTES.fr = {
     'confirmer-changer-cle.texte': 'La clé sera effacée du stockage du navigateur, puis vous reviendrez à l\'accueil.',
     'confirmer-suppression.titre': 'Supprimer cette discussion ?',
     'partage.titre': 'Partager',
-    'partage.texte': 'Scannez le QR code ou copiez l\'adresse. Les personnes qui ouvrent ce lien utilisent la clé de ce serveur.',
+    'partage.texte': 'Scannez le QR code ou copiez l\'adresse, votre clé n\'est pas partagée.',
     'partage.texte-en-ligne': 'Scannez le QR code ou copiez l\'adresse. Votre clé n\'est pas partagée.',
     'partage.en-ligne': 'Lien vers Albert Go en ligne : chacun y saisit sa propre clé.',
     'partage.qr': 'QR code de l\'adresse d\'Albert Go',

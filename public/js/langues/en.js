@@ -359,7 +359,7 @@ I18n.TEXTES.en = {
     'confirmer-changer-cle.texte': 'The key will be erased from the browser storage, then you will return to the home screen.',
     'confirmer-suppression.titre': 'Delete this conversation?',
     'partage.titre': 'Share',
-    'partage.texte': 'Scan the QR code or copy the address. People who open this link use this server\'s key.',
+    'partage.texte': 'Scan the QR code or copy the address, your key is not shared.',
     'partage.texte-en-ligne': 'Scan the QR code or copy the address. Your key is not shared.',
     'partage.en-ligne': 'Link to Albert Go online: everyone enters their own key there.',
     'partage.qr': 'QR code of the Albert Go address',
