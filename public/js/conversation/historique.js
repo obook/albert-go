@@ -137,6 +137,8 @@ function afficherCourante() {
     /* Imprimerie, document commencé : on demande une modification. */
     const commence = Albert.OUTILS[outilActuel].documents && conversation.some(m => m.role === 'assistant');
     $('saisie').placeholder = t(commence ? 'invite.modifier' : 'invite.' + outilActuel);
+    /* Document sans nom : son titre dans la liste (première source, puis première demande). */
+    $('nom-projet').placeholder = entree && Albert.estProjet(entree) ? entree.titre : t('documents.nom');
 }
 
 /**

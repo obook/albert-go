@@ -367,6 +367,7 @@ function enregistrerProjet() {
     conversationId = null;
     retenirCourante(null);
     afficherHistorique();
+    afficherCourante();
 }
 
 /**
