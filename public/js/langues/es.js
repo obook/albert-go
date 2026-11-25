@@ -403,6 +403,8 @@ I18n.TEXTES.es = {
     'empreinte.partielle': 'Medida en {n} de {total} llamadas: las demás no la incluían.',
     'empreinte.source': 'Estimación calculada por el servidor de la IA (método EcoLogits). Se reinicia al recargar la página.',
     'version.format': '{commit} del {date}',
+    'version.serveur': '{version} (servidor, rama {branche})',
+    'version.serveur-modifiee': '{version} (servidor, rama {branche}, modificada)',
 
     /* Respuestas. */
     'reponse.copier': 'Copiar la respuesta',

@@ -403,6 +403,8 @@ I18n.TEXTES.en = {
     'empreinte.partielle': 'Measured on {n} of {total} calls: the others did not include one.',
     'empreinte.source': 'Estimate computed by the AI server (EcoLogits method). Reset when the page is reloaded.',
     'version.format': '{commit} of {date}',
+    'version.serveur': '{version} (server, branch {branche})',
+    'version.serveur-modifiee': '{version} (server, branch {branche}, modified)',
 
     /* Answers. */
     'reponse.copier': 'Copy the answer',
