@@ -293,7 +293,7 @@ I18n.TEXTES.de = {
     'reglages.aide-voix': 'Eine Online-Sprachausgabe kann die Daten des Gesprächs sammeln und verwerten.',
     */
     'reglages.outils': 'Werkzeuge',
-    'reglages.calcul': 'Wissenschaftlicher Taschenrechner',
+    'reglages.calcul': 'Taschenrechner',
     'reglages.calendrier': 'Kalender',
     'reglages.compteur': 'Wort- und Zeichenzähler',
     'reglages.controle': 'SIRET- und IBAN-Prüfung',
