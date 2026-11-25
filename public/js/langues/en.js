@@ -306,6 +306,7 @@ I18n.TEXTES.en = {
     'moteur.open-library': 'Books and editions',
     'moteur.openalex': 'Scientific publications worldwide',
     'moteur.vikidia': 'Encyclopedia for ages 8 to 13',
+    'moteur.wiktionnaire': 'Dictionary: definitions and etymology',
     'moteur.google': 'The whole web, key required, service being retired',
     'moteur.mojeek': 'The whole web, independent index, paid key',
     'reglages.cle-recherche': 'API key',

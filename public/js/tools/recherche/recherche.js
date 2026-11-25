@@ -7,10 +7,10 @@
  * renvoyés pour qu'il rédige sa réponse (function calling, comme
  * albert-atelier le fait pour l'OCR).
  *
- * Huit moteurs, les seuls testés qui acceptent un appel direct du
- * navigateur. Six répondent sans clé. Wikipédia, par défaut, et Vikidia
- * rendent le texte des articles ; les quatre catalogues n'acceptent que des
- * mots-clés. Google et Mojeek demandent une clé, qui voyage dans l'adresse
+ * Neuf moteurs, les seuls testés qui acceptent un appel direct du
+ * navigateur. Sept répondent sans clé. Wikipédia, par défaut, et Vikidia
+ * rendent le texte des articles, le Wiktionnaire la définition des mots
+ * cherchés ; les quatre catalogues n'acceptent que des mots-clés. Google et Mojeek demandent une clé, qui voyage dans l'adresse
  * comme leurs API la lisent, et ne rendent que de courts extraits.
  *
  * Projet : Albert Go, https://github.com/obook/albert-go
@@ -73,6 +73,8 @@ const Recherche = {
         },
         /* Vikidia n'existe pas dans toutes les langues de l'interface. */
         vikidia: { nom: 'Vikidia', wiki: 'vikidia.org', langues: ['fr', 'es'] },
+        /* Un dictionnaire : ses pages portent le nom d'un mot, pas d'un sujet. */
+        wiktionnaire: { nom: 'Wiktionnaire', wiki: 'wiktionary.org', dictionnaire: true },
         google: { nom: 'Google Programmable Search', cle: true },
         mojeek: { nom: 'Mojeek', cle: true }
     },
@@ -347,12 +349,17 @@ const Recherche = {
      * @returns {Promise<Array<Object>>} Articles { title, url, desc }.
      */
     async chercherMediaWiki(fournisseur, question, signal) {
-        const nom = this.MOTEURS[fournisseur].nom;
+        const { nom, dictionnaire } = this.MOTEURS[fournisseur];
         /* origin=* : c'est ainsi que MediaWiki ouvre CORS aux appels anonymes. */
         const base = this.wiki(fournisseur) + '?action=query&format=json&origin=*&redirects=1';
-        const trouves = await this.interroger(base + '&list=search&srlimit=' + this.ARTICLES
-            + '&srsearch=' + encodeURIComponent(question), signal, nom);
-        const titres = ((trouves.query && trouves.query.search) || []).map(r => r.title);
+        let titres;
+        if (dictionnaire) {
+            titres = this.motsDictionnaire(question);
+        } else {
+            const trouves = await this.interroger(base + '&list=search&srlimit=' + this.ARTICLES
+                + '&srsearch=' + encodeURIComponent(question), signal, nom);
+            titres = ((trouves.query && trouves.query.search) || []).map(r => r.title);
+        }
         const corps = await Promise.all(titres.map(titre => this.interroger(base
             + '&prop=extracts|info|revisions&inprop=url&explaintext=1'
             + '&rvprop=content&rvslots=main&rvsection=0'
@@ -362,12 +369,31 @@ const Recherche = {
             const page = Object.keys(pages).map(id => pages[id])[0] || {};
             const revision = (page.revisions || [])[0];
             const wikitexte = (revision && revision.slots && revision.slots.main && revision.slots.main['*']) || '';
+            const texte = dictionnaire ? this.sansCitations(page.extract || '') : (page.extract || '');
             return {
                 title: page.title || titres[rang],
                 url: page.fullurl,
-                desc: this.avecFiche(this.fiche(wikitexte), this.passages(page.extract || '', question))
+                desc: this.avecFiche(this.fiche(wikitexte), this.passages(texte, question))
             };
-        });
+        }).filter(r => r.desc); /* Un mot absent du dictionnaire revient sans texte. */
+    },
+
+    /**
+     * Mots de la recherche à lire dans le dictionnaire, les plus longs d'abord.
+     *
+     * Sa recherche plein texte se perd sur plusieurs mots ("photosynthèse
+     * respiration plantes" ramène "respiration" et un mot italien) : chaque
+     * mot est lu comme un titre de page. Une majuscule hors du premier mot
+     * signale un nom propre, que le dictionnaire ne définit pas.
+     *
+     * @param {string} question - Texte cherché.
+     * @returns {Array<string>} ARTICLES mots au plus, en minuscules.
+     */
+    motsDictionnaire(question) {
+        const mots = (question.match(/[\p{L}-]{4,}/gu) || [])
+            .filter((mot, rang) => rang === 0 || mot === mot.toLowerCase())
+            .map(mot => mot.toLowerCase());
+        return [...new Set(mots)].sort((a, b) => b.length - a.length).slice(0, this.ARTICLES);
     },
 
     /**
