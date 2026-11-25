@@ -306,6 +306,7 @@ I18n.TEXTES.fr = {
     'moteur.open-library': 'Livres et éditions',
     'moteur.openalex': 'Publications scientifiques du monde entier',
     'moteur.vikidia': 'Encyclopédie pour les 8-13 ans',
+    'moteur.wiktionnaire': 'Dictionnaire : définitions et étymologie',
     'moteur.google': 'Tout le web, clé nécessaire, service en fin de vie',
     'moteur.mojeek': 'Tout le web, index indépendant, clé payante',
     'reglages.cle-recherche': 'Clé API',

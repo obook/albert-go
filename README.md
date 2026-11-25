@@ -115,7 +115,7 @@ Le serveur et le kiosque viennent de L'Atelier d'Albert, écrit par Romain P., L
 | [Giac](https://www-fourier.univ-grenoble-alpes.fr/~parisse/giac_fr.html), le moteur de calcul formel de Xcas | GPL 3.0 ou ultérieure, texte dans `public/vendor/giac/LICENSE` |
 | Icônes des titres des Réglages et de la boîte Empreinte, de [Lucide](https://lucide.dev/) | ISC |
 | Logos des éditeurs de modèles (`public/images/editeurs/`) | Marques de leurs éditeurs, reprises de la [page des modèles d'Albert API](https://ia.numerique.gouv.fr/outils-ia/albert-api/mod%C3%A8les/) |
-| Logos des moteurs de recherche (`public/images/moteurs/`) | Marques de leurs éditeurs, reprises de leurs sites ; OpenAlex depuis [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:OpenAlex_logo_icon.svg) (MIT) |
+| Logos des moteurs de recherche (`public/images/moteurs/`) | Marques de leurs éditeurs, reprises de leurs sites ; OpenAlex depuis [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:OpenAlex_logo_icon.svg) (MIT) ; Wiktionnaire depuis [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Wiktionary-logo.svg), par Smurrayinchester (CC BY-SA 3.0) |
 
 Les sources de Giac sont sur le site de son auteur : [giac_stable.tgz](https://www-fourier.univ-grenoble-alpes.fr/~parisse/giac/giac_stable.tgz).
 

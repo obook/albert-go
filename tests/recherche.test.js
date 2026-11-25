@@ -234,6 +234,29 @@ test('chercherMediaWiki : sans clé, articles dans l\'ordre de la recherche', as
     assert.strictEqual(resultats[1].desc, 'B.');
 });
 
+test('motsDictionnaire : les mots les plus longs, sans les noms propres', () => {
+    assert.deepStrictEqual(Recherche.motsDictionnaire('Photosynthèse respiration des plantes'), ['photosynthèse', 'respiration']);
+    assert.deepStrictEqual(Recherche.motsDictionnaire('radium de Marie Curie'), ['radium']);
+});
+
+test('chercherMediaWiki : le Wiktionnaire lit chaque mot comme une page, sans ses exemples', async () => {
+    const vues = [];
+    global.fetch = async (adresse) => {
+        vues.push(adresse);
+        const page = adresse.includes('photosynth')
+            ? { title: 'photosynthèse', fullurl: 'https://fr.wiktionary.org/wiki/photosynth%C3%A8se',
+                extract: '== Français ==\nProcessus de la photosynthèse.\nLa photosynthèse nourrit. \u2014 (Auteur, Livre, 1997)' }
+            : { title: 'chlorophyllien', missing: '' };
+        return { ok: true, json: async () => ({ query: { pages: { '1': page } } }) };
+    };
+    const resultats = await Recherche.chercherMediaWiki('wiktionnaire', 'photosynthèse chlorophyllien');
+    assert.ok(vues.every(adresse => !adresse.includes('list=search')));
+    assert.ok(vues[0].startsWith('https://fr.wiktionary.org/w/api.php?'));
+    assert.deepStrictEqual(resultats.map(r => r.title), ['photosynthèse']);
+    assert.ok(resultats[0].desc.includes('Processus de la photosynthèse.'));
+    assert.ok(!resultats[0].desc.includes('Auteur'));
+});
+
 test('chercherMediaWiki : une erreur de l\'API remonte', async () => {
     global.fetch = async () => ({ ok: true, json: async () => ({ error: { info: 'paramètre inconnu' } }) });
     await assert.rejects(Recherche.chercherMediaWiki('wikipedia', 'test'), /paramètre inconnu/);

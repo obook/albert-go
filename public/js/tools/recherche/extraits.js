@@ -77,6 +77,20 @@ Object.assign(Recherche, {
     },
 
     /**
+     * Retire du Wiktionnaire ses exemples cités, qui noient les définitions.
+     *
+     * shortcut: reconnaît la forme française, un tiret cadratin puis la
+     * source entre parenthèses ; les autres langues gardent leurs exemples.
+     * Ajouter leur forme si leurs extraits débordent.
+     *
+     * @param {string} texte - Page du Wiktionnaire en texte brut.
+     * @returns {string} Texte sans les lignes d'exemple.
+     */
+    sansCitations(texte) {
+        return texte.split('\n').filter(ligne => !ligne.includes(' \u2014 (')).join('\n');
+    },
+
+    /**
      * Assemble la fiche et le texte de l'article.
      *
      * @param {string} fiche - Champs de l'infobox.
