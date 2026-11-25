@@ -293,7 +293,7 @@ I18n.TEXTES.en = {
     'reglages.aide-voix': 'An online voice engine may collect and use the data of the conversation.',
     */
     'reglages.outils': 'Tools',
-    'reglages.calcul': 'Scientific calculator',
+    'reglages.calcul': 'Calculator',
     'reglages.calendrier': 'Calendar',
     'reglages.compteur': 'Word and character counter',
     'reglages.controle': 'SIRET and IBAN check',

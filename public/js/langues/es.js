@@ -293,7 +293,7 @@ I18n.TEXTES.es = {
     'reglages.aide-voix': 'Un motor de voz en línea puede recopilar y explotar los datos de la conversación.',
     */
     'reglages.outils': 'Herramientas',
-    'reglages.calcul': 'Calculadora científica',
+    'reglages.calcul': 'Calculadora',
     'reglages.calendrier': 'Calendario',
     'reglages.compteur': 'Contador de palabras y caracteres',
     'reglages.controle': 'Control de SIRET e IBAN',
