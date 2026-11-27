@@ -11,7 +11,7 @@
 
 const { test } = require('node:test');
 const assert = require('node:assert');
-const { reglagesProf, reglagesAppliques, reglagesChanges, valeurStockee, adresseDeSortie, texteTempsRestant } = require('../public/js/kiosque/kiosque.js');
+const { reglagesProf, reglagesAppliques, reglagesChanges, valeurStockee, adresseDeSortie, heureDeFin } = require('../public/js/kiosque/kiosque.js');
 
 test('reglagesProf : seulement les réglages partagés', () => {
     const r = { modele: 'm', temperature: 0.2, topK: 40, echanges: 11, recherche: true, calcul: true,
@@ -50,12 +50,10 @@ test('adresseDeSortie : l\'invité lit un message, le prof retrouve son formulai
     assert.strictEqual(adresseDeSortie({ role: 'enseignant' }, true), '/kiosque?erreur=terminee');
 });
 
-test('texteTempsRestant : heures et minutes, arrondies à la minute supérieure', () => {
-    assert.strictEqual(texteTempsRestant(7200), '2 h 00 min');
-    assert.strictEqual(texteTempsRestant(3661), '1 h 02 min');
-    assert.strictEqual(texteTempsRestant(3600), '1 h 00 min');
-    assert.strictEqual(texteTempsRestant(3541), '1 h 00 min');
-    assert.strictEqual(texteTempsRestant(720), '12 min');
-    assert.strictEqual(texteTempsRestant(20), '1 min');
-    assert.strictEqual(texteTempsRestant(0), '0 min');
+test('heureDeFin : heure de ce poste, à la minute la plus proche', () => {
+    assert.strictEqual(heureDeFin(7200, new Date(2026, 10, 27, 13, 30, 0)), '15:30');
+    /* Le sondage arrive un peu après l'ouverture : 15:29:58 reste 15:30. */
+    assert.strictEqual(heureDeFin(7198, new Date(2026, 10, 27, 13, 30, 0)), '15:30');
+    assert.strictEqual(heureDeFin(600, new Date(2026, 10, 27, 8, 55, 20)), '09:05');
+    assert.strictEqual(heureDeFin(3600, new Date(2026, 10, 27, 23, 30, 0)), '00:30');
 });

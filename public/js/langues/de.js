@@ -41,7 +41,7 @@ I18n.TEXTES.de = {
     'kiosque.bandeau': 'Kiosk-Sitzung: Code {code}.',
     'kiosque.partage': 'Die Gäste scannen den QR-Code und geben dann den Code {code} ein. Sie übernehmen die Einstellungen dieses Rechners.',
     'kiosque.deconnexion': 'Sitzung verlassen',
-    'kiosque.reste': 'Sitzung endet in {duree}',
+    'kiosque.fin': 'Sitzung endet um {heure}',
     'kiosque.terminee': 'Die Sitzung ist beendet.',
     'menu.historique': 'Gesprächsverlauf',
     'menu.reglages': 'Einstellungen',

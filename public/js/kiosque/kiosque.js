@@ -91,17 +91,15 @@ function valeurStockee(valeur) {
 }
 
 /**
- * Temps restant de la session, à la minute supérieure.
+ * Heure de fin de la session, à l'horloge de ce poste.
  *
  * @param {number} secondes - Temps restant donné par le serveur.
- * @returns {string} "1 h 05 min" ou "12 min".
+ * @param {Date} maintenant - Heure de ce poste.
+ * @returns {string} "15:30", arrondie à la minute la plus proche.
  */
-function texteTempsRestant(secondes) {
-    const minutes = Math.ceil(secondes / 60);
-    if (minutes < 60) {
-        return `${minutes} min`;
-    }
-    return `${Math.floor(minutes / 60)} h ${String(minutes % 60).padStart(2, '0')} min`;
+function heureDeFin(secondes, maintenant) {
+    const fin = new Date(Math.round((maintenant.getTime() / 1000 + secondes) / 60) * 60000);
+    return `${String(fin.getHours()).padStart(2, '0')}:${String(fin.getMinutes()).padStart(2, '0')}`;
 }
 
 /* Sauté sous Node, où le fichier n'est chargé que pour ses tests. */
@@ -181,9 +179,11 @@ if (typeof document !== 'undefined' && Kiosque) {
                 location.href = adresseDeSortie(Kiosque, true);
                 return;
             }
-            /* Décompte du volet : rafraîchi à chaque sondage, précis à la minute. */
-            $('reste-kiosque').textContent = t('kiosque.reste', { duree: texteTempsRestant(statut.temps_restant) });
-            $('reste-kiosque').hidden = false;
+            /* Heure de fin dans le volet : écrite une fois, elle ne change pas pendant la session. */
+            if ($('fin-kiosque').hidden) {
+                $('fin-kiosque').textContent = t('kiosque.fin', { heure: heureDeFin(statut.temps_restant, new Date()) });
+                $('fin-kiosque').hidden = false;
+            }
             if (statut.reglages && appliquerReglagesProf(statut.reglages)) {
                 /* Réglages changés par le prof pendant la session : la page suit. */
                 afficherOutils();
@@ -203,5 +203,5 @@ if (typeof document !== 'undefined' && Kiosque) {
 
 /* Export pour les tests Node ; ignoré dans le navigateur. */
 if (typeof module !== 'undefined') {
-    module.exports = { reglagesProf, reglagesAppliques, reglagesChanges, valeurStockee, adresseDeSortie, texteTempsRestant };
+    module.exports = { reglagesProf, reglagesAppliques, reglagesChanges, valeurStockee, adresseDeSortie, heureDeFin };
 }
