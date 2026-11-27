@@ -122,22 +122,33 @@ def cookie(role):
     return f"{token}.{role}.{_signature(token, role)}"
 
 
-def role_du_cookie(valeur):
-    """Rôle signé dans le cookie, ou None : signature fausse, autre session, session expirée."""
-    morceaux = (valeur or "").split(".")
+def motif_refus(valeur):
+    """Pourquoi ce cookie n'ouvre pas la session, ou None s'il l'ouvre. Pour le journal du serveur."""
+    if valeur is None:
+        return "sans-cookie"
+    morceaux = valeur.split(".")
     if len(morceaux) != 3:
-        return None
+        return "cookie-illisible"
     token, role, signature = morceaux
     # isascii : compare_digest lève TypeError sur une chaîne non ASCII.
     if role not in ROLES or not (token.isascii() and signature.isascii()):
-        return None
+        return "cookie-illisible"
+    # Signature fausse : cookie d'avant un redémarrage du serveur, ou contrefait.
     if not hmac.compare_digest(signature, _signature(token, role)):
-        return None
+        return "signature"
     with _verrou:
         session = _courante()
-        if session is None or not hmac.compare_digest(session["token"], token):
-            return None
-    return role
+        # Session expirée ou fermée par le prof.
+        if session is None:
+            return "aucune-session"
+        if not hmac.compare_digest(session["token"], token):
+            return "autre-session"
+    return None
+
+
+def role_du_cookie(valeur):
+    """Rôle signé dans le cookie, ou None : signature fausse, autre session, session expirée."""
+    return None if motif_refus(valeur) else valeur.split(".")[1]
 
 
 def valeur_cookie(handler):

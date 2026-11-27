@@ -131,3 +131,17 @@ def test_cookie_lu_malgre_un_cookie_mal_forme_d_une_autre_appli():
     assert kiosque.valeur_cookie(requete('prefs={"a":1,"b":2}; kiosque-session=jeton.eleve.sig')) == "jeton.eleve.sig"
     assert kiosque.valeur_cookie(requete("theme=sombre")) is None
     assert kiosque.valeur_cookie(SimpleNamespace(headers={})) is None
+
+
+def test_motif_refus_dit_pourquoi_un_cookie_ne_passe_plus():
+    kiosque.creer_session("sk-prof", "1h")
+    ancien = kiosque.cookie("eleve")
+    assert kiosque.motif_refus(ancien) is None
+    assert kiosque.motif_refus(None) == "sans-cookie"
+    assert kiosque.motif_refus("n'importe quoi") == "cookie-illisible"
+    jeton, role, _ = ancien.split(".")
+    assert kiosque.motif_refus(f"{jeton}.{role}.{'0' * 64}") == "signature"
+    kiosque.creer_session("sk-prof", "1h")
+    assert kiosque.motif_refus(ancien) == "autre-session"
+    kiosque.terminer_session()
+    assert kiosque.motif_refus(ancien) == "aucune-session"

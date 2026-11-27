@@ -41,6 +41,7 @@ I18n.TEXTES.en = {
     'kiosque.bandeau': 'Kiosk session: code {code}.',
     'kiosque.partage': 'Guests scan the QR code, then enter the code {code}. They follow this computer\'s settings.',
     'kiosque.deconnexion': 'Leave the session',
+    'kiosque.reste': 'Session ends in {duree}',
     'kiosque.terminee': 'The session has ended.',
     'menu.historique': 'Conversation history',
     'menu.reglages': 'Settings',

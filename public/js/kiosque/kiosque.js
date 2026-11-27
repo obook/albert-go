@@ -90,6 +90,20 @@ function valeurStockee(valeur) {
     return Array.isArray(valeur) ? valeur.join(',') : String(valeur);
 }
 
+/**
+ * Temps restant de la session, à la minute supérieure.
+ *
+ * @param {number} secondes - Temps restant donné par le serveur.
+ * @returns {string} "1 h 05 min" ou "12 min".
+ */
+function texteTempsRestant(secondes) {
+    const minutes = Math.ceil(secondes / 60);
+    if (minutes < 60) {
+        return `${minutes} min`;
+    }
+    return `${Math.floor(minutes / 60)} h ${String(minutes % 60).padStart(2, '0')} min`;
+}
+
 /* Sauté sous Node, où le fichier n'est chargé que pour ses tests. */
 if (typeof document !== 'undefined' && Kiosque) {
     if (Kiosque.role === 'eleve') {
@@ -161,11 +175,16 @@ if (typeof document !== 'undefined' && Kiosque) {
             });
     });
 
-    setInterval(() => {
-        fetch('/api/kiosque-status').then(r => r.json()).then((statut) => {
+    const sonder = () => {
+        fetch('/api/kiosque-status', { cache: 'no-store' }).then(r => r.json()).then((statut) => {
             if (!statut.active) {
                 location.href = adresseDeSortie(Kiosque, true);
-            } else if (statut.reglages && appliquerReglagesProf(statut.reglages)) {
+                return;
+            }
+            /* Décompte du volet : rafraîchi à chaque sondage, précis à la minute. */
+            $('reste-kiosque').textContent = t('kiosque.reste', { duree: texteTempsRestant(statut.temps_restant) });
+            $('reste-kiosque').hidden = false;
+            if (statut.reglages && appliquerReglagesProf(statut.reglages)) {
                 /* Réglages changés par le prof pendant la session : la page suit. */
                 afficherOutils();
                 afficherMoteurs();
@@ -177,10 +196,12 @@ if (typeof document !== 'undefined' && Kiosque) {
         }).catch(() => {
             /* Coupure réseau ponctuelle : on réessaie au tour suivant. */
         });
-    }, SONDAGE_KIOSQUE_MS);
+    };
+    sonder();
+    setInterval(sonder, SONDAGE_KIOSQUE_MS);
 }
 
 /* Export pour les tests Node ; ignoré dans le navigateur. */
 if (typeof module !== 'undefined') {
-    module.exports = { reglagesProf, reglagesAppliques, reglagesChanges, valeurStockee, adresseDeSortie };
+    module.exports = { reglagesProf, reglagesAppliques, reglagesChanges, valeurStockee, adresseDeSortie, texteTempsRestant };
 }

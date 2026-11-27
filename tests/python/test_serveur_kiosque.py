@@ -167,3 +167,17 @@ def test_sans_kiosque_la_page_kiosque_renvoie_a_l_accueil(client):
     for adresse in ("/kiosque", "/kiosque?erreur=terminee"):
         reponse = client.get(adresse)
         assert reponse.status_code == 302 and reponse.headers["Location"] == "/"
+
+
+def test_statut_jamais_garde_en_cache(kiosque_client):
+    """La réponse dépend du cookie : un cache (proxy d'établissement) ne doit pas la resservir à un autre poste."""
+    assert kiosque_client.get("/api/kiosque-status").headers["Cache-Control"] == "no-store"
+
+
+def test_refus_de_session_journalise(kiosque_client, capsys):
+    """Un poste renvoyé laisse une ligne avec son motif : seule trace pour comprendre une session perdue."""
+    kiosque_client.get("/api/kiosque-status")
+    assert "/api/kiosque-status (sans-cookie)" in capsys.readouterr().out
+    _ouvrir(kiosque_client)
+    kiosque_client.get("/api/kiosque-status")
+    assert capsys.readouterr().out == ""
