@@ -15,6 +15,7 @@ import socket
 import ssl
 import subprocess
 import sys
+import time
 import urllib.parse
 # Retiré le 21/11/2026 : un seul style d'import, urllib.parse.parse_qs et urllib.parse.urlencode.
 # from urllib.parse import parse_qs, urlencode
@@ -73,7 +74,10 @@ class Gestionnaire(http.server.BaseHTTPRequestHandler):
             # L'invité suit les réglages du poste maître pendant la session.
             if role == "eleve":
                 statut["reglages"] = kiosque.reglages()
-            relais.repondre_json(self, 200, statut)
+            elif role is None:
+                self._journal_refus(chemin)
+            # Réponse propre à ce navigateur : un cache ne doit pas la resservir à un autre poste.
+            relais.repondre_json(self, 200, statut, {"Cache-Control": "no-store"})
         elif not self._porte_kiosque(chemin):
             return
         elif chemin.startswith("/v1/"):
@@ -144,6 +148,7 @@ class Gestionnaire(http.server.BaseHTTPRequestHandler):
             return True
         if kiosque.role_de_la_requete(self):
             return True
+        self._journal_refus(chemin)
         if chemin.startswith("/v1/"):
             self._session_terminee()
         elif kiosque.valeur_cookie(self) is not None:
@@ -152,6 +157,11 @@ class Gestionnaire(http.server.BaseHTTPRequestHandler):
         else:
             self._rediriger("/kiosque")
         return False
+
+    def _journal_refus(self, chemin):
+        """Une ligne par poste renvoyé, avec le motif : seule trace d'une session perdue sur un seul poste."""
+        motif = kiosque.motif_refus(kiosque.valeur_cookie(self))
+        print(f"{time.strftime('%d/%m %H:%M:%S')} kiosque : {self.client_address[0]} renvoyé sur {chemin} ({motif})", flush=True)
 
     def _longueur_corps(self):
         """Content-Length de la requête, 0 s'il manque, -1 s'il n'est pas un nombre."""

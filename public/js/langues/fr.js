@@ -41,6 +41,7 @@ I18n.TEXTES.fr = {
     'kiosque.bandeau': 'Session kiosque : code {code}.',
     'kiosque.partage': 'Les invités scannent le QR code, puis saisissent le code {code}. Ils suivent les réglages de ce poste.',
     'kiosque.deconnexion': 'Quitter la session',
+    'kiosque.fin': 'Fin de session à {heure}',
     'kiosque.terminee': 'La session est terminée.',
     'menu.historique': 'Historique des discussions',
     'menu.reglages': 'Réglages',

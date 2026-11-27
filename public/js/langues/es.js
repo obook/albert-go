@@ -41,6 +41,7 @@ I18n.TEXTES.es = {
     'kiosque.bandeau': 'Sesión de quiosco: código {code}.',
     'kiosque.partage': 'Los invitados escanean el código QR y luego introducen el código {code}. Siguen los ajustes de este equipo.',
     'kiosque.deconnexion': 'Salir de la sesión',
+    'kiosque.fin': 'La sesión termina a las {heure}',
     'kiosque.terminee': 'La sesión ha terminado.',
     'menu.historique': 'Historial de conversaciones',
     'menu.reglages': 'Ajustes',

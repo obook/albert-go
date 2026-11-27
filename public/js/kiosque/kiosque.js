@@ -90,6 +90,18 @@ function valeurStockee(valeur) {
     return Array.isArray(valeur) ? valeur.join(',') : String(valeur);
 }
 
+/**
+ * Heure de fin de la session, à l'horloge de ce poste.
+ *
+ * @param {number} secondes - Temps restant donné par le serveur.
+ * @param {Date} maintenant - Heure de ce poste.
+ * @returns {string} "15:30", arrondie à la minute la plus proche.
+ */
+function heureDeFin(secondes, maintenant) {
+    const fin = new Date(Math.round((maintenant.getTime() / 1000 + secondes) / 60) * 60000);
+    return `${String(fin.getHours()).padStart(2, '0')}:${String(fin.getMinutes()).padStart(2, '0')}`;
+}
+
 /* Sauté sous Node, où le fichier n'est chargé que pour ses tests. */
 if (typeof document !== 'undefined' && Kiosque) {
     if (Kiosque.role === 'eleve') {
@@ -161,11 +173,18 @@ if (typeof document !== 'undefined' && Kiosque) {
             });
     });
 
-    setInterval(() => {
-        fetch('/api/kiosque-status').then(r => r.json()).then((statut) => {
+    const sonder = () => {
+        fetch('/api/kiosque-status', { cache: 'no-store' }).then(r => r.json()).then((statut) => {
             if (!statut.active) {
                 location.href = adresseDeSortie(Kiosque, true);
-            } else if (statut.reglages && appliquerReglagesProf(statut.reglages)) {
+                return;
+            }
+            /* Heure de fin dans le volet : écrite une fois, elle ne change pas pendant la session. */
+            if ($('fin-kiosque').hidden) {
+                $('fin-kiosque').textContent = t('kiosque.fin', { heure: heureDeFin(statut.temps_restant, new Date()) });
+                $('fin-kiosque').hidden = false;
+            }
+            if (statut.reglages && appliquerReglagesProf(statut.reglages)) {
                 /* Réglages changés par le prof pendant la session : la page suit. */
                 afficherOutils();
                 afficherMoteurs();
@@ -177,10 +196,12 @@ if (typeof document !== 'undefined' && Kiosque) {
         }).catch(() => {
             /* Coupure réseau ponctuelle : on réessaie au tour suivant. */
         });
-    }, SONDAGE_KIOSQUE_MS);
+    };
+    sonder();
+    setInterval(sonder, SONDAGE_KIOSQUE_MS);
 }
 
 /* Export pour les tests Node ; ignoré dans le navigateur. */
 if (typeof module !== 'undefined') {
-    module.exports = { reglagesProf, reglagesAppliques, reglagesChanges, valeurStockee, adresseDeSortie };
+    module.exports = { reglagesProf, reglagesAppliques, reglagesChanges, valeurStockee, adresseDeSortie, heureDeFin };
 }

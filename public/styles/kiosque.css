@@ -51,3 +51,11 @@
     font-size: inherit;
     line-height: 1.5;
 }
+
+/* Heure de fin de la session, dans le volet au-dessus de "Quitter la session". */
+.fin-kiosque {
+    margin: 0;
+    padding: 0.5rem 0.75rem 0.25rem;
+    font-size: var(--taille-petite);
+    color: var(--texte-doux);
+}
